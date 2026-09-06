@@ -1,16 +1,18 @@
 name: fgbio_sortbam
-description: Sorts a SAM or BAM file. Several sort orders are available, including
-  coordinate, queryname, random, and randomquery.
+description: Sorts a SAM or BAM file. Several sort orders are available,
+  including coordinate, queryname, random, and randomquery.
 keywords:
   - sort
   - bam
   - sam
 tools:
   - fgbio:
-      description: Tools for working with genomic and high throughput sequencing data.
+      description: Tools for working with genomic and high throughput sequencing
+        data.
       homepage: https://github.com/fulcrumgenomics/fgbio
       documentation: http://fulcrumgenomics.github.io/fgbio/
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:fgbio
 input:
   - - meta:
@@ -47,7 +49,6 @@ output:
       - 'fgbio --version 2>&1 | tr -d "[:cntrl:]" | sed -e "s/^.*Version: //;s/\[.*$//"':
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
     - - ${task.process}:

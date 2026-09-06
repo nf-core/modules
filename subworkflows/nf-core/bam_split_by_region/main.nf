@@ -11,9 +11,6 @@ workflow BAM_SPLIT_BY_REGION {
     ch_bam // channel: [ val(meta), path(bam), path(bai), path(regions_file) ]
 
     main:
-
-    ch_versions = channel.empty()
-
     //
     // Create channel containing the region names from the bed file.
     //
@@ -66,5 +63,4 @@ workflow BAM_SPLIT_BY_REGION {
 
     emit:
     bam_bai     = ch_output                         // channel: [ val(meta), path(bam), path(bai) ]
-    versions    = ch_versions                       // channel: [ path(versions.yml) ]
 }

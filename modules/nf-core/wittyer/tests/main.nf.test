@@ -7,33 +7,43 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "wittyer"
-    tag "tabix/bgzip"
+    tag "htslib/bgziptabix"
 
     config "./nextflow.config"
 
     setup {
-        run('TABIX_BGZIP', alias: 'TABIX_BGZIP_1') {
-            script "../../../nf-core/tabix/bgzip"
+        run('HTSLIB_BGZIPTABIX', alias: 'HTSLIB_BGZIPTABIX_1') {
+            script "../../../nf-core/htslib/bgziptabix/main.nf"
 
             process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz', checkIfExists: true),
+                    [],
+                    []
                 ]
+                input[1] = "decompress"
+                input[2] = false
+                input[3] = "vcf"
                 """
             }
         }
 
-        run('TABIX_BGZIP', alias: 'TABIX_BGZIP_2') {
-            script "../../../nf-core/tabix/bgzip"
+        run('HTSLIB_BGZIPTABIX', alias: 'HTSLIB_BGZIPTABIX_2') {
+            script "../../../nf-core/htslib/bgziptabix/main.nf"
 
             process {
                 """
                 input[0] = [
                     [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv2.vcf.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv2.vcf.gz', checkIfExists: true),
+                    [],
+                    []
                 ]
+                input[1] = "decompress"
+                input[2] = false
+                input[3] = "vcf"
                 """
             }
         }
@@ -44,7 +54,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = TABIX_BGZIP_1.out.output.join(TABIX_BGZIP_2.out.output).map{meta, vcf1, vcf2 -> tuple(meta, vcf1, vcf2, [], [])}
+                input[0] = HTSLIB_BGZIPTABIX_1.out.output.join(HTSLIB_BGZIPTABIX_2.out.output).map{meta, vcf1, vcf2 -> tuple(meta, vcf1, vcf2, [], [])}
                 """
             }
         }
@@ -68,8 +78,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = TABIX_BGZIP_1.out.output
-                    .join(TABIX_BGZIP_2.out.output)
+                input[0] = HTSLIB_BGZIPTABIX_1.out.output
+                    .join(HTSLIB_BGZIPTABIX_2.out.output)
                     .map{meta, vcf1, vcf2 ->
                         tuple(meta, vcf1, vcf2,
                             [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true)],
@@ -98,8 +108,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = TABIX_BGZIP_1.out.output
-                    .join(TABIX_BGZIP_2.out.output)
+                input[0] = HTSLIB_BGZIPTABIX_1.out.output
+                    .join(HTSLIB_BGZIPTABIX_2.out.output)
                     .map{meta, vcf1, vcf2 ->
                         tuple(meta, vcf1, vcf2, [],
                         // change to config file
@@ -130,8 +140,8 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = TABIX_BGZIP_1.out.output
-                    .join(TABIX_BGZIP_2.out.output)
+                input[0] = HTSLIB_BGZIPTABIX_1.out.output
+                    .join(HTSLIB_BGZIPTABIX_2.out.output)
                     .map{meta, vcf1, vcf2 ->
                         tuple(meta, vcf1, vcf2, [],
                             [file(params.modules_testdata_base_path + 'generic/config/wittyer_config.json', checkIfExists: true)])

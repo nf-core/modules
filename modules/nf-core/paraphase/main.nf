@@ -4,9 +4,9 @@ process PARAPHASE {
 
     conda "${moduleDir}/environment.yml"
 
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d2/d2f7e7ef6dd6def56bef5252c28a65f279d5fcef09a832510d0de1d6dab09194/data'
-        : 'community.wave.seqera.io/library/minimap2_paraphase_samtools:2c52f03fe994efa6'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/44/4438b3091fe6cc6f4c5bc79c1722f359155539b5f657846d11a76cd36b1df729/data'
+        : 'community.wave.seqera.io/library/minimap2_paraphase_samtools:a2e6a25ed8d1a8e5'}"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -68,7 +68,7 @@ process PARAPHASE {
     touch ${prefix}.paraphase.json
     touch ${prefix}.paraphase.bam
     touch ${prefix}.paraphase.bam.bai
-    echo '' | gzip > ${prefix}_paraphase_vcfs/${prefix}_stub.vcf.gz
+    echo "" | gzip > ${prefix}_paraphase_vcfs/${prefix}_stub.vcf.gz
     touch ${prefix}_paraphase_vcfs/${prefix}_stub.vcf.gz.${index}
     """
 }

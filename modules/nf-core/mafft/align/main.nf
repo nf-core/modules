@@ -3,9 +3,9 @@ process MAFFT_ALIGN {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-12eba4a074f913c639117640936668f5a6a01da6:425707898cf4f85051b77848be253b88f1d2298a-0':
-        'biocontainers/mulled-v2-12eba4a074f913c639117640936668f5a6a01da6:425707898cf4f85051b77848be253b88f1d2298a-0' }"
+        'quay.io/biocontainers/mulled-v2-12eba4a074f913c639117640936668f5a6a01da6:425707898cf4f85051b77848be253b88f1d2298a-0' }"
 
     input:
     tuple val(meta) , path(fasta)
@@ -18,7 +18,7 @@ process MAFFT_ALIGN {
 
     output:
     tuple val(meta), path("*.fas{.gz,}"), emit: fas
-    tuple val("${task.process}"), val("mafft"), eval("mafft --version 2>&1 | sed 's/ (.*) //g'"), topic: versions, emit: versions_mafft
+    tuple val("${task.process}"), val("mafft"), eval("mafft --version 2>&1 | sed 's/v//;s/ .*//'"), topic: versions, emit: versions_mafft
     tuple val("${task.process}"), val("pigz"), eval("pigz --version 2>&1 | sed 's/pigz //g'")   , topic: versions, emit: versions_pigz
 
     when:
@@ -49,14 +49,11 @@ process MAFFT_ALIGN {
     """
 
     stub:
-    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if ("$fasta" == "${prefix}.fas" ) error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${fasta}" == "${prefix}.fas" ) error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
-    echo ${args}
-
-    if [[ "$compress" == "true" ]]; then
-        echo "" | pigz -cp ${task.cpus} > ${prefix}.fas.gz
+    if [[ "${compress}" == "true" ]]; then
+        echo "" | gzip > ${prefix}.fas.gz
     else
         touch ${prefix}.fas
     fi

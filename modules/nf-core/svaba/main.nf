@@ -3,9 +3,9 @@ process SVABA {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/svaba:1.2.0--h69ac913_1'
-        : 'biocontainers/svaba:1.2.0--h69ac913_1'}"
+        : 'quay.io/biocontainers/svaba:1.2.0--h69ac913_1'}"
 
     input:
     tuple val(meta), path(tumorbam), path(tumorbai), path(normalbam), path(normalbai)

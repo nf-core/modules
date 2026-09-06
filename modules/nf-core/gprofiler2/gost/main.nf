@@ -3,7 +3,7 @@ process GPROFILER2_GOST {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e4/e4b0e10a72db4ad519c128c4e3cef6e10bc1a83440af31f105ab389a5532589a/data':
         'community.wave.seqera.io/library/r-ggplot2_r-gprofiler2:fab855ea9f680400' }"
 
@@ -21,7 +21,7 @@ process GPROFILER2_GOST {
     tuple val(meta), path("*.gprofiler2.*.sub_enriched_pathways.png")   , emit: sub_plot    , optional: true
     tuple val(meta), path("*ENSG_filtered.gmt")                         , emit: filtered_gmt, optional: true
     tuple val(meta), path("*R_sessionInfo.log")                         , emit: session_info
-    path "versions.yml"                                                 , emit: versions
+    path "versions.yml"                                                 , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -43,9 +43,10 @@ process GPROFILER2_GOST {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        r-ggplot2: \$(Rscript -e "library(ggplot2); cat(as.character(packageVersion('ggplot2')))")
-        r-gprofiler2: \$(Rscript -e "library(gprofiler2); cat(as.character(packageVersion('gprofiler2')))")
-        gprofiler-data: \$(Rscript -e "library(gprofiler2); library(yaml); cat(as.yaml(get_version_info()))")
+        r-base: \$(Rscript -e "cat(strsplit(R.version[['version.string']], ' ')[[1]][3])")
+        r-ggplot2: \$(Rscript -e "cat(as.character(packageVersion('ggplot2')))")
+        r-gprofiler2: \$(Rscript -e "cat(as.character(packageVersion('gprofiler2')))")
+        gprofiler-data: \$(Rscript -e "cat(gprofiler2::get_version_info()[['gprofiler_version']])")
     END_VERSIONS
     """
 }

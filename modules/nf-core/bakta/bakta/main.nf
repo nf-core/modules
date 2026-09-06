@@ -3,9 +3,9 @@ process BAKTA_BAKTA {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/bakta:1.11.4--pyhdfd78af_0'
-        : 'biocontainers/bakta:1.11.4--pyhdfd78af_0'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/50/50b75335f6394ae83fd05f364db27ee2eb75f4170e3525bb2aea47ad717a9e64/data'
+        : 'community.wave.seqera.io/library/bakta_diamond:7830b94718da4f96'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -26,7 +26,8 @@ process BAKTA_BAKTA {
     tuple val(meta), path("${prefix}.hypotheticals.faa"), emit: hypotheticals_faa
     tuple val(meta), path("${prefix}.tsv"), emit: tsv
     tuple val(meta), path("${prefix}.txt"), emit: txt
-    tuple val("${task.process}"), val('bakta'), eval("bakta --version 2>&1 | sed 's/bakta //'"), emit: versions_bakta, topic: versions
+    tuple val(meta), path("${prefix}.json"), emit: json
+    tuple val("${task.process}"), val('bakta'), eval("bakta --version 2>&1 | sed 's/.*bakta //'"), emit: versions_bakta, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,7 +41,9 @@ process BAKTA_BAKTA {
     def hmms_opt = hmms ? "--hmms ${hmms}" : ""
 
     """
-    export MPLCONFIGDIR=\$PWD/.matplotlib
+    ## Fake home due to fontconfig 'no writeable cache directory' issue
+    mkdir nxf_home
+    export HOME=\$PWD/nxf_home
 
     bakta \\
         ${fasta} \\
@@ -58,6 +61,11 @@ process BAKTA_BAKTA {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     export MPLCONFIGDIR=\$PWD/.matplotlib
+    export FONTCONFIG_PATH=\$PWD/.fontconfig
+    export XDG_CACHE_HOME=\$PWD/.cache
+    mkdir .fontconfig .cache
+    mkdir nxf_home
+    export HOME=\$PWD/nxf_home
 
     touch ${prefix}.embl
     touch ${prefix}.faa
@@ -69,5 +77,6 @@ process BAKTA_BAKTA {
     touch ${prefix}.hypotheticals.faa
     touch ${prefix}.tsv
     touch ${prefix}.txt
+    touch ${prefix}.json
     """
 }

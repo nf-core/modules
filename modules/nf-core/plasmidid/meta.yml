@@ -10,7 +10,8 @@ tools:
       homepage: https://github.com/BU-ISCIII/plasmidID/wiki
       documentation: https://github.com/BU-ISCIII/plasmidID#readme
       tool_dev_url: https://github.com/BU-ISCIII/plasmidID
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:plasmidid
 input:
   - - meta:
@@ -112,13 +113,46 @@ output:
           type: directory
           description: Directory containing the kmer files produced by plasmidid
           pattern: "database"
+  versions_plasmidid:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - plasmidid:
+          type: string
+          description: The name of the tool
+      - plasmidID --version 2>&1 | sed 's/^plasmidID //':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_parallel:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - parallel:
+          type: string
+          description: The name of the tool
+      - parallel --version | sed '1!d;s/GNU parallel //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - plasmidid:
+          type: string
+          description: The name of the tool
+      - plasmidID --version 2>&1 | sed 's/^plasmidID //':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - parallel:
+          type: string
+          description: The name of the tool
+      - parallel --version | sed '1!d;s/GNU parallel //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@joseespinosa"
   - "@drpatelh"

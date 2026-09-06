@@ -66,6 +66,9 @@ nextflow_workflow {
                 { assert workflow.out.inferexperiment_txt.size() == 1 },
                 { assert workflow.out.readdistribution_txt.size() == 1 },
                 { assert workflow.out.multiqc_files.size() > 0 },
+                { assert workflow.out.per_sample_mqc_bundle.size() == 1 },
+                { assert workflow.out.per_sample_mqc_bundle[0][0] == [ id:'test', single_end:false, strandedness:'reverse' ] },
+                { assert workflow.out.per_sample_mqc_bundle[0][1].size() >= 12 },
                 { assert snapshot(
                     workflow.out.dupradar_dupmatrix,
                     workflow.out.dupradar_intercept_slope,
@@ -128,6 +131,10 @@ nextflow_workflow {
                 { assert workflow.out.inferexperiment_txt.size() == 1 },
                 { assert workflow.out.readdistribution_txt.size() == 1 },
                 { assert workflow.out.multiqc_files.size() > 0 },
+                { assert workflow.out.per_sample_mqc_bundle.size() == 1 },
+                { assert workflow.out.per_sample_mqc_bundle[0][0] == [ id:'test', single_end:true, strandedness:'reverse' ] },
+                // single-end drops rseqc_inner_distance
+                { assert workflow.out.per_sample_mqc_bundle[0][1].size() >= 11 },
                 { assert snapshot(
                     workflow.out.dupradar_dupmatrix,
                     workflow.out.dupradar_intercept_slope,
@@ -180,7 +187,8 @@ nextflow_workflow {
                 { assert workflow.out.qualimap_results.size() == 0 },
                 { assert workflow.out.dupradar_multiqc.size() == 0 },
                 { assert workflow.out.bamstat_txt.size() == 0 },
-                { assert workflow.out.multiqc_files.size() == 0 }
+                { assert workflow.out.multiqc_files.size() == 0 },
+                { assert workflow.out.per_sample_mqc_bundle.size() == 0 }
             )
         }
     }
@@ -225,7 +233,7 @@ nextflow_workflow {
                 { def getNames = { ch -> ch.collect { it[1] instanceof List ? it[1].collect { file(it).name } : file(it[1]).name }.flatten().sort() }
                   def channels = ['preseq_lc_extrap', 'qualimap_results', 'dupradar_multiqc',
                       'featurecounts_counts', 'biotype_tsv', 'bamstat_txt', 'inferexperiment_txt',
-                      'readdistribution_txt', 'tin_txt', 'multiqc_files']
+                      'readdistribution_txt', 'tin_txt', 'multiqc_files', 'per_sample_mqc_bundle']
                   assert snapshot(
                     channels.collectEntries { [it, getNames(workflow.out[it])] }.sort()
                 ).match() }

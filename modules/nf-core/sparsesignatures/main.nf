@@ -3,9 +3,9 @@ process SPARSE_SIGNATURES {
     label "process_long"
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-d410175e2fbd9c47aa685bb5dfb87cfad76d408b:a995bb98b7122825523ffed7ae131cb006e56cbe-0':
-        'biocontainers/mulled-v2-d410175e2fbd9c47aa685bb5dfb87cfad76d408b:a995bb98b7122825523ffed7ae131cb006e56cbe-0' }"
+        'quay.io/biocontainers/mulled-v2-d410175e2fbd9c47aa685bb5dfb87cfad76d408b:a995bb98b7122825523ffed7ae131cb006e56cbe-0' }"
 
     input:
     tuple val(meta), path(tsv_join,  stageAs: '*.tsv')

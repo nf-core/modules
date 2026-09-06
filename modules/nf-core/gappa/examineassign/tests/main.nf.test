@@ -14,14 +14,16 @@ nextflow_process {
     test("test-gappa-examineassign") {
 
         when {
+            params {
+                module_args = "--per-query-results --krona --sativa"
+            }
             process {
                 """
                 input[0] = [
-				    [ id:'test' ], // meta map
-				    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/gappa/epa_result.jplace.gz', checkIfExists: true),
-				    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/gappa/gappa_taxonomy.tsv', checkIfExists: true)
-				]
-
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/gappa/epa_result.jplace.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/gappa/gappa_taxonomy.tsv', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -29,16 +31,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.examineassign }, // The entire work folder
-                { assert snapshot(
-                    process.out.profile,
-                    process.out.labelled_tree,
-                    process.out.per_query,
-                    process.out.krona,
-                    process.out.sativa,
-                    process.out.versions
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match()}
             )
         }
     }
@@ -47,14 +40,16 @@ nextflow_process {
         options '-stub'
 
         when {
+            params {
+                module_args = "--per-query-results --krona --sativa"
+            }
             process {
                 """
                 input[0] = [
-				    [ id:'test' ], // meta map
-				    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/gappa/epa_result.jplace.gz', checkIfExists: true),
-				    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/gappa/gappa_taxonomy.tsv', checkIfExists: true)
-				]
-
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/gappa/epa_result.jplace.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/gappa/gappa_taxonomy.tsv', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -62,16 +57,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.examineassign }, // The entire work folder
-                { assert snapshot(
-                    process.out.profile,
-                    process.out.labelled_tree,
-                    process.out.per_query,
-                    process.out.krona,
-                    process.out.sativa,
-                    process.out.versions
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match()}
             )
         }
     }

@@ -1,11 +1,9 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "fusioncatcher_build"
 description: Build references for fusioncatcher
 keywords:
   - references
   - fusions
   - rna
-
 tools:
   - fusioncatcher:
       description: Build genome for fusioncatcher
@@ -13,16 +11,15 @@ tools:
       documentation: https://github.com/ndaniel/fusioncatcher/blob/master/doc/manual.md
       tool_dev_url: https://github.com/ndaniel/fusioncatcher/
       doi: "10.1101/011650"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:fusioncatcher
-
 input:
   - meta:
       type: map
       description: |
         Groovy Map containing sample information
         e.g. `[ id:'sample1', single_end:false ]`
-
 output:
   reference:
     - - meta:
@@ -33,16 +30,28 @@ output:
       - ${prefix}:
           type: file
           description: Diretory containing the fusioncatcher reference files
-
           ontologies: []
+  versions_fusioncatcher:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fusioncatcher:
+          type: string
+          description: The name of the tool
+      - fusioncatcher --version |& sed 's/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fusioncatcher:
+          type: string
+          description: The name of the tool
+      - fusioncatcher --version |& sed 's/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:

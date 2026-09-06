@@ -38,6 +38,7 @@ nextflow_process {
                     .combine(ref_panel)
                     .combine(map_file)
                 input[1] = channel.of([[],[],[]])
+                input[2] = []
                 """
             }
         }
@@ -83,6 +84,7 @@ nextflow_process {
                     .combine(ref_panel)
                     .combine(map_file)
                 input[1] = channel.of([[],[],[]])
+                input[2] = []
                 """
             }
         }
@@ -155,6 +157,7 @@ nextflow_process {
                     .combine(ref_panel)
                     .combine(map_file)
                 input[1] = reference_genome
+                input[2] = []
                 """
                 }
         }
@@ -204,6 +207,7 @@ nextflow_process {
                     .combine(ref_panel)
                     .combine(map_file)
                 input[1] = channel.of([[],[],[]])
+                input[2] = []
                 """
                 }
         }
@@ -246,6 +250,7 @@ nextflow_process {
                 // [meta, vcf, index, sample_infos, regionin, regionout,ref, index, map] [meta, fasta, fai]
                 input[0] = input_bam
                 input[1] = channel.of([[],[],[]])
+                input[2] = []
                 """
                 }
         }
@@ -279,6 +284,7 @@ nextflow_process {
                 // [meta, vcf, index, sample_infos, regionin, regionout,ref, index, map] [meta, fasta, fai]
                 input[0] = input_bam
                 input[1] = channel.of([[],[],[]])
+                input[2] = []
                 """
                 }
         }
@@ -326,6 +332,7 @@ nextflow_process {
                     .combine(ref_panel)
                     .combine(map_file)
                 input[1] = channel.of([[],[],[]])
+                input[2] = []
                 """
                 }
         }
@@ -345,7 +352,7 @@ nextflow_process {
         }
     }
 
-    test("homo_sapiens - vcf region - panel -- stub") {
+    test("homo_sapiens - vcf region - panel - bcf output -- stub") {
         options "-stub"
         when {
             process {
@@ -363,6 +370,7 @@ nextflow_process {
                 // [meta, vcf, index, sample_infos, regionin, regionout,ref, index, map] [meta, fasta, fai]
                 input[0] = input_vcf
                 input[1] = channel.of([[],[],[]])
+                input[2] = "bcf"
                 """
             }
         }

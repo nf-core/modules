@@ -37,6 +37,9 @@ process DEEPVARIANT_RUNDEEPVARIANT {
     def par_regions = par_bed ? "--par_regions_bed=${par_bed}" : ""
 
     """
+    export MPLCONFIGDIR=\$PWD/.matplotlib
+    mkdir -p \$MPLCONFIGDIR
+
     /opt/deepvariant/bin/run_deepvariant \\
         --ref=${fasta} \\
         --reads=${input} \\
@@ -59,5 +62,6 @@ process DEEPVARIANT_RUNDEEPVARIANT {
     echo "stub" | gzip > ${prefix}.vcf.gz
     echo "stub" | gzip > ${prefix}.vcf.gz.tbi
     echo "stub" | gzip > ${prefix}.g.vcf.gz
-    echo "stub" | gzip > ${prefix}.g.vcf.gz.tbi    """
+    echo "stub" | gzip > ${prefix}.g.vcf.gz.tbi
+    """
 }

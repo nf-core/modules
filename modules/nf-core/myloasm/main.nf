@@ -3,9 +3,9 @@ process MYLOASM {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b7/b752566c7444cbfddc44bfb332078cf36602fcfeb1e57887cee0d5d6195e1923/data'
-        : 'community.wave.seqera.io/library/myloasm:0.5.1--1699da7b77a4bbdd'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/83/8369a41d8a2d92487caa26e8604015f6b2cfd48a78fbe732e891f7c5cd1f1861/data'
+        : 'community.wave.seqera.io/library/myloasm:0.6.0--4ee38265ad9e0a04' }"
 
     input:
     tuple val(meta), path(reads)

@@ -3,7 +3,7 @@ process BISCUIT_MERGECG {
     label 'process_long'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/50/5021d3f67d0221a5fa1eb692573a20fa28a5a552754d89c4351eb0eba42eadb0/data':
         'community.wave.seqera.io/library/biscuit_samtools:1e5147589c9d9ec1' }"
 

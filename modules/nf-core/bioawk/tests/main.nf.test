@@ -35,7 +35,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -65,7 +65,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -75,6 +75,7 @@ nextflow_process {
         when {
             params {
                 bioawk_extension = "-c fastx"
+                bioawk_command = ""
                 bioawk_prefix = "telomere_summary"
             }
 
@@ -94,7 +95,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -104,6 +105,7 @@ nextflow_process {
         when {
             params {
                 bioawk_extension = "-c fastx"
+                bioawk_command = ""
                 bioawk_prefix = "telomere_summary"
             }
 
@@ -123,7 +125,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

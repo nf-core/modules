@@ -3,7 +3,7 @@ process BCFTOOLS_CONVERT {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0b/0b4d52ca9a56d07be3f78a12af654e5116f5112908dba277e6796fd9dfb83fe5/data'
         : 'community.wave.seqera.io/library/bcftools_htslib:1.23.1--9f08ec665533d64a'}"
 
@@ -20,8 +20,7 @@ process BCFTOOLS_CONVERT {
     tuple val(meta), path("*.hap.gz"), emit: hap, optional: true
     tuple val(meta), path("*.legend.gz"), emit: legend, optional: true
     tuple val(meta), path("*.samples"), emit: samples, optional: true
-    tuple val(meta), path("*.tbi"), emit: tbi, optional: true
-    tuple val(meta), path("*.csi"), emit: csi, optional: true
+    tuple val(meta), path("*.{tbi,csi}"), emit: index, optional: true
     tuple val("${task.process}"), val('bcftools'), eval("bcftools --version | sed '1!d; s/^.*bcftools //'"), topic: versions, emit: versions_bcftools
 
     when:
@@ -85,7 +84,7 @@ process BCFTOOLS_CONVERT {
                 ? "csi"
                 : ""
 
-    def create_cmd = extension.endsWith(".gz") ? "echo '' | gzip >" : "touch"
+    def create_cmd = extension.endsWith(".gz") ? "echo \"\" | gzip >" : "touch"
     def create_index = extension.endsWith(".gz") && index.matches("csi|tbi") ? "touch ${prefix}.${extension}.${index}" : ""
 
     if ("${input}" == "${prefix}.${extension}") {
@@ -101,8 +100,8 @@ process BCFTOOLS_CONVERT {
     }
     """
     if [ -n "${hap}" ] ; then
-        ${create_cmd} ${prefix}.hap.gz
-        ${create_cmd} ${prefix}.legend.gz
+        echo "" | gzip > ${prefix}.hap.gz
+        echo "" | gzip > ${prefix}.legend.gz
         touch ${prefix}.samples
     else
         ${create_cmd} ${prefix}.${extension}

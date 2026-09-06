@@ -3,9 +3,9 @@ process PLINK2_VCF2BGEN {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/plink2:2.00a5.10--h4ac6f70_0'
-        : 'biocontainers/plink2:2.00a5.10--h4ac6f70_0'}"
+        : 'quay.io/biocontainers/plink2:2.00a5.10--h4ac6f70_0'}"
 
     input:
     tuple val(meta), path(vcf), val(dosage_field), val(bgen_reffirst), val(sample_name_mode)
@@ -14,7 +14,7 @@ process PLINK2_VCF2BGEN {
     tuple val(meta), path("*.bgen"), emit: bgen_file
     tuple val(meta), path("*.sample"), emit: sample_file
     tuple val(meta), path("*.log"), emit: log_file
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('plink2'), eval("plink2 --version 2>&1 | sed 's/^PLINK v//; s/ 64.*\$//'"), topic: versions, emit: versions_plink2
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,11 +32,6 @@ process PLINK2_VCF2BGEN {
         --${sample_name_mode} \
         --out ${prefix} \
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        plink2: \$(plink2 --version 2>&1 | sed 's/^PLINK v//; s/ 64.*\$//' )
-    END_VERSIONS
     """
 
     stub:
@@ -45,10 +40,5 @@ process PLINK2_VCF2BGEN {
     touch ${prefix}.bgen
     touch ${prefix}.sample
     touch ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        plink2: \$(plink2 --version 2>&1 | sed 's/^PLINK v//; s/ 64.*\$//' )
-    END_VERSIONS
     """
 }

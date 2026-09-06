@@ -3,9 +3,9 @@ process BWAMETH_ALIGN {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bwameth:0.2.9--pyh7e72e81_0' :
-        'biocontainers/bwameth:0.2.9--pyh7e72e81_0' }"
+        'quay.io/biocontainers/bwameth:0.2.9--pyh7e72e81_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -26,7 +26,7 @@ process BWAMETH_ALIGN {
     def prefix     = task.ext.prefix ?: "${meta.id}"
     """
     export BWA_METH_SKIP_TIME_CHECKS=1
-    ln -sf \$(readlink ${fasta}) ${index}/${fasta}
+    [ -e "${index}/${fasta}" ] || ln -s \$(readlink ${fasta}) ${index}/${fasta}
 
     bwameth.py \\
         ${args} \\

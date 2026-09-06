@@ -3,7 +3,7 @@ process HMMCOPY_READCOUNTER {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b6/b656ae8c47699d1ae8f4d97995da8fda08aaed7a23d9b7078e034ff0981f7487/data'
         : 'community.wave.seqera.io/library/hmmcopy_samtools:875db3767c6d4ea2'}"
 

@@ -125,9 +125,7 @@ nextflow_workflow {
         then {
             assert workflow.success
             assertAll(
-                { assert snapshot(
-                    workflow.out.index[0][1].collect { file(it).name }.toSorted()
-                ).match() }
+                { assert snapshot(sanitizeOutput(workflow.out, unstablePatterns: ["**/GenomeIndexHash*", "**/OverflowTable*"])).match() }
             )
         }
     }

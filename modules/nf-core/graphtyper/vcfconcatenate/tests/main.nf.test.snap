@@ -2,68 +2,55 @@
     "test-graphtyper-vcfconcatenate-stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "prefix.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "prefix.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
-                    "versions.yml:md5,98cf72d3f556b54f0cb2c11c6d3b46b9"
-                ],
                 "tbi": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test_all"
                         },
-                        "prefix.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test_all.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "vcf": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test_all"
                         },
-                        "prefix.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "test_all.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,98cf72d3f556b54f0cb2c11c6d3b46b9"
+                "versions_graphtyper": [
+                    [
+                        "GRAPHTYPER_VCFCONCATENATE",
+                        "graphtyper",
+                        "2.7.7"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-05-11T22:31:01.584613437",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.5"
-        },
-        "timestamp": "2025-03-14T14:07:03.164929021"
+            "nf-test": "0.9.5",
+            "nextflow": "26.03.2"
+        }
     },
     "test-graphtyper-vcfconcatenate": {
         "content": [
             "93f741cc7a648675dfc13f0a42a39788",
-            "prefix.vcf.gz.tbi",
-            [
-                "versions.yml:md5,98cf72d3f556b54f0cb2c11c6d3b46b9"
-            ]
+            "test_all.vcf.gz.tbi",
+            {
+                "versions_graphtyper": [
+                    [
+                        "GRAPHTYPER_VCFCONCATENATE",
+                        "graphtyper",
+                        "2.7.7"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-05-11T22:30:54.301437614",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.5"
-        },
-        "timestamp": "2025-03-14T13:58:20.53915175"
+            "nf-test": "0.9.5",
+            "nextflow": "26.03.2"
+        }
     }
 }

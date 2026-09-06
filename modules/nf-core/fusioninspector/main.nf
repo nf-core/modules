@@ -3,9 +3,9 @@ process FUSIONINSPECTOR {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/13/139b94a1f10c6e23a8c27eaed1e5a689db978a513d0ee155e74d35f0970814fe/data' :
-        'community.wave.seqera.io/library/fusion-inspector_igv-reports_perl-json-xs_pysam_pruned:c6147971d107ab11'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/42/4230f4794a421af3e8caf8de4b5b8a50ecff4768625543d97e2c1cdf5518f38e/data' :
+        'community.wave.seqera.io/library/fusion-inspector_perl-json-xs_perl-carp-assert_pip_pruned:367be466d24aba4a'}"
 
     input:
     tuple val(meta), path(reads), path(fusion_list)
@@ -20,7 +20,7 @@ process FUSIONINSPECTOR {
     tuple val(meta), path("IGV_inputs")                  , emit: igv_inputs  , optional:true
     tuple val(meta), path("fi_workdir")                  , emit: fi_workdir  , optional:true
     tuple val(meta), path("chckpts_dir")                 , emit: chckpts_dir , optional:true
-    path  "versions.yml"                                 , emit: versions
+    tuple val("${task.process}"), val('fusion-inspector'), eval("FusionInspector --version |& sed -n 's/.*version: //p'"), topic: versions, emit: versions_fusioninspector
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,18 +32,13 @@ process FUSIONINSPECTOR {
     def args2  = task.ext.args2  ?: ''
     """
     FusionInspector \\
-        --fusions $fusion_list \\
+        --fusions ${fusion_list} \\
         --genome_lib ${reference} \\
-        $fasta \\
+        ${fasta} \\
         --CPU ${task.cpus} \\
         -O . \\
-        --out_prefix $prefix \\
-        --vis $args $args2
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        FusionInspector: \$(FusionInspector --version 2>&1 | grep -i 'version' | sed -e 's/FusionInspector version: //' -e 's/[[:space:]]//g')
-    END_VERSIONS
+        --out_prefix ${prefix} \\
+        --vis ${args} ${args2}
     """
 
     stub:
@@ -57,10 +52,5 @@ process FUSIONINSPECTOR {
     mkdir -p fi_workdir
     touch fi_workdir/${prefix}.gtf
     mkdir -p IGV_inputs
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        FusionInspector: \$(FusionInspector --version 2>&1 | grep -i 'version' | sed -e 's/FusionInspector version: //' -e 's/[[:space:]]//g')
-    END_VERSIONS
     """
 }

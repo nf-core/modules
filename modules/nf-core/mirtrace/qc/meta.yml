@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "mirtrace_qc"
 description: "A tool for quality control and tracing taxonomic origins of microRNA
   sequencing data"
@@ -23,7 +22,8 @@ tools:
       documentation: "https://github.com/friedlanderlab/mirtrace/blob/master/release-bundle-includes/doc/manual/mirtrace_manual.pdf"
       tool_dev_url: "https://github.com/friedlanderlab/mirtrace/tree/master"
       doi: "10.1186/s13059-018-1588-9"
-      licence: ["GPL v2"]
+      licence:
+        - "GPL v2"
       identifier: biotools:miRTrace
 
 input:
@@ -40,14 +40,14 @@ input:
           - edam: http://edamontology.org/format_1930 # FASTQ
     - mirtrace_config:
         type: file
-        description: (Optional) CSV with list of FASTQ files to process with one entry
-          per row. No headers. Each row consists of the following columns "FASTQ file
-          path, id, adapter, PHRED-ASCII-offset".
+        description: (Optional) CSV with list of FASTQ files to process with one
+          entry per row. No headers. Each row consists of the following columns
+          "FASTQ file path, id, adapter, PHRED-ASCII-offset".
         ontologies: []
   - mirtrace_species:
       type: string
-      description: Target species in microRNA sequencing data (miRbase encoding, e.g.
-        “hsa” for Homo sapiens)
+      description: Target species in microRNA sequencing data (miRbase encoding,
+        e.g. “hsa” for Homo sapiens)
 output:
   html:
     - - meta:
@@ -92,8 +92,8 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - qc_passed_reads.all.collapsed/*.{fa,fasta}:
           type: file
-          description: QC-passed reads in FASTA file. Identical reads are collapsed.
-            Entries are sorted by abundance.
+          description: QC-passed reads in FASTA file. Identical reads are
+            collapsed. Entries are sorted by abundance.
           pattern: "*.{fa,fasta}"
           ontologies: []
   rnatype_unknown_fa:
@@ -104,17 +104,33 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - qc_passed_reads.rnatype_unknown.collapsed/*.{fa,fasta}:
           type: file
-          description: Unknown RNA type QC-passed reads in FASTA file. Identical reads
-            are collapsed. Entries are sorted by abundance.
+          description: Unknown RNA type QC-passed reads in FASTA file. Identical
+            reads are collapsed. Entries are sorted by abundance.
           pattern: "*.{fa,fasta}"
           ontologies: []
+  versions_mirtrace:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mirtrace:
+          type: string
+          description: The name of the tool
+      - mirtrace -v:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mirtrace:
+          type: string
+          description: The name of the tool
+      - mirtrace -v:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@atrigila"
 maintainers:

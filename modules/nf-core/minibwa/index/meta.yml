@@ -1,0 +1,67 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "minibwa_index"
+description: Create a minibwa index for a reference genome
+keywords:
+  - index
+  - fasta
+  - genome
+  - reference
+tools:
+  - "minibwa":
+      description: "Aligning short and accurate long reads to a reference genome, a
+        reimplementation of bwa-mem."
+      homepage: "https://github.com/lh3/minibwa"
+      documentation: "https://github.com/lh3/minibwa"
+      tool_dev_url: "https://github.com/lh3/minibwa"
+      licence: ["GPL-2.0-or-later"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Input genome fasta file
+        ontologies:
+          - edam: "http://edamontology.org/data_2044"
+          - edam: "http://edamontology.org/format_1929"
+output:
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - minibwa:
+          type: directory
+          description: minibwa genome index files
+          pattern: "*.{l2b,mbw}"
+          ontologies:
+            - edam: "http://edamontology.org/data_3210"
+  versions_minibwa:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - minibwa:
+          type: string
+          description: The name of the tool
+      - minibwa version | grep -o -E "[0-9]+(\.[0-9]+)+":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - minibwa:
+          type: string
+          description: The name of the tool
+      - minibwa version | grep -o -E "[0-9]+(\.[0-9]+)+":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@nh13"
+maintainers:
+  - "@nh13"

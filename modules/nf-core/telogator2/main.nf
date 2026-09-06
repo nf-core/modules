@@ -3,7 +3,7 @@ process TELOGATOR2 {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ab/ab4d9d463b2866006f8cbca9fbe6f978b1803e41f2a97d9f4d3c14ff6d97822f/data'
         : 'community.wave.seqera.io/library/telogator2:2.2.3--01b2748e09721f3b' }"
 

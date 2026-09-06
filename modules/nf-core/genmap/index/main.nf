@@ -3,16 +3,16 @@ process GENMAP_INDEX {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/genmap:1.3.0--h1b792b2_1' :
-        'biocontainers/genmap:1.3.0--h1b792b2_1' }"
+        'quay.io/biocontainers/genmap:1.3.0--h1b792b2_1' }"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
     tuple val(meta), path("${prefix}") , emit: index
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('genmap'), eval("genmap --version |& sed -n 's/GenMap version: //p'"), emit: versions_genmap, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,11 +27,6 @@ process GENMAP_INDEX {
         --fasta-file ${fasta} \\
         --index ${prefix} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        genmap: \$(genmap --version | sed 's/GenMap version: //; s/SeqAn.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -39,10 +34,5 @@ process GENMAP_INDEX {
 
     """
     touch ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        genmap: \$(genmap --version | sed 's/GenMap version: //; s/SeqAn.*\$//')
-    END_VERSIONS
     """
 }

@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "wipertools_fastqwiper"
-description: A tool of the wipertools suite that fixes or wipes out uncompliant reads
-  from FASTQ files
+description: A tool of the wipertools suite that fixes or wipes out uncompliant
+  reads from FASTQ files
 keywords:
   - fastq
   - malformed
@@ -15,10 +14,10 @@ tools:
       documentation: "https://github.com/mazzalab/fastqwiper"
       tool_dev_url: "https://github.com/mazzalab/fastqwiper"
       doi: "no DOI available"
-      licence: ["GPL v2-or-later"]
+      licence:
+        - "GPL v2-or-later"
       identifier: ""
       args_id: "$args"
-
 input:
   - - meta:
         type: map
@@ -58,13 +57,27 @@ output:
           pattern: "*.report"
           ontologies:
             - edam: "http://edamontology.org/format_2330"
+  versions_wipertools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - wipertools:
+          type: string
+          description: The name of the tool
+      - wipertools fastqwiper --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750"
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - wipertools:
+          type: string
+          description: The name of the tool
+      - wipertools fastqwiper --version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@tm4zza"
 maintainers:
