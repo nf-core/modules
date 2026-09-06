@@ -32,12 +32,13 @@ workflow ORFTABLE_FASTA_GTF_BUILDORFCATALOGUE {
 
     // 1. Normalise each caller's output. The same module is invoked once per
     //    input emission; dispatch happens inside the template based on the
-    //    `caller` val. Append the caller to meta.id so the normaliser's
-    //    default `${meta.id}` prefix yields caller-disambiguated filenames
+    //    `caller` val. Stash it in `meta.caller` too so this subworkflow's own
+    //    `ext.prefix` config can disambiguate output filenames per caller
     //    (the merger stages multiple BED12s into `beds/*` and needs unique
-    //    names per caller-sample combination).
+    //    names per caller-sample combination) while meta.id keeps carrying
+    //    the true sample id through to CUSTOM_ORFNORMALISE's sample_id column.
     ch_normalise_in = ch_orf_tables.map { meta, table, caller ->
-        [ meta + [ id: "${meta.id}.${caller}" ], table, caller ]
+        [ meta + [ caller: caller ], table, caller ]
     }
     CUSTOM_ORFNORMALISE ( ch_normalise_in, ch_gtf.first() )
 
