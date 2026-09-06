@@ -3,9 +3,9 @@ process FAMSA_ALIGN {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/famsa:2.4.1--h9ee0642_0':
-        'biocontainers/famsa:2.4.1--h9ee0642_0' }"
+        'quay.io/biocontainers/famsa:2.4.1--h9ee0642_0' }"
 
     input:
     tuple val(meta) , path(fasta)
@@ -14,7 +14,7 @@ process FAMSA_ALIGN {
 
     output:
     tuple val(meta), path("${prefix}.aln{.gz,}"), emit: alignment
-    tuple val("${task.process}"), val('famsa'), eval("famsa -help 2>&1 | sed '2!d;s/ (.*//; s/^.* //'"), topic: versions, emit: versions_famsa
+    tuple val("${task.process}"), val('famsa'), eval("famsa -help 2>&1 | sed '2!d;s/.*version //;s/ .*//'"), topic: versions, emit: versions_famsa
 
     when:
     task.ext.when == null || task.ext.when

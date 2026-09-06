@@ -1,6 +1,6 @@
 name: "vcflib_vcffixup"
-description: Generates a VCF stream where AC and NS have been generated for each record
-  using sample genotypes.
+description: Generates a VCF stream where AC and NS have been generated for each
+  record using sample genotypes.
 keywords:
   - vcf
   - vcflib
@@ -12,8 +12,25 @@ tools:
       homepage: https://github.com/vcflib/vcflib
       documentation: https://github.com/vcflib/vcflib#USAGE
       doi: "10.1101/2021.05.21.445151"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:vcflib
+  - bcftools:
+      description: BCFtools is a set of utilities that manipulate variant calls in
+        the Variant Call Format (VCF) and its binary counterpart BCF. All commands
+        work transparently with both VCFs and BCFs, both uncompressed and
+        BGZF-compressed.  Most commands accept VCF, bgzipped VCF and BCF with
+        filetype detected automatically even when streaming from a pipe. Indexed
+        VCF and BCF will work in all situations. Un-indexed VCF and BCF and
+        streams will work in most, but not all situations.
+      homepage: https://samtools.github.io/bcftools/
+      documentation: https://samtools.github.io/bcftools/howtos/index.html
+      tool_dev_url: https://github.com/samtools/bcftools
+      doi: "10.1093/gigascience/giab008"
+      licence:
+        - "MIT"
+        - "GPL-3.0-or-later"
+      identifier: biotools:bcftools
 input:
   - - meta:
         type: map
@@ -37,12 +54,23 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.vcf.gz":
+      - "*.{vcf,bcf}{,.gz}":
           type: file
-          description: Compressed VCF file
-          pattern: "*.vcf.gz"
+          description: Compressed or not VCF or BCF file
+          pattern: "*.{vcf,bcf}{,.gz}"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.{csi,tbi}":
+          type: file
+          description: Index file
+          pattern: "*.{csi,tbi}"
+          ontologies: []
   versions_vcflib:
     - - ${task.process}:
           type: string
@@ -53,6 +81,16 @@ output:
       - 1.0.14:
           type: string
           description: The expression to obtain the version of the tool
+  versions_bcftools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
+          type: eval
+          description: The command used to generate the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -64,6 +102,15 @@ topics:
       - 1.0.14:
           type: string
           description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
+          type: eval
+          description: The command used to generate the version of the tool
 authors:
   - "@atrigila"
 maintainers:

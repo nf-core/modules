@@ -3,9 +3,9 @@ process ARCASHLA_EXTRACT {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/arcas-hla:0.5.0--hdfd78af_0':
-        'biocontainers/arcas-hla:0.5.0--hdfd78af_0' }"
+        'quay.io/biocontainers/arcas-hla:0.5.0--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam)
@@ -16,7 +16,8 @@ process ARCASHLA_EXTRACT {
     tuple val(meta), path("temp_files/**.sam")       , emit: intermediate_sam       , optional: true
     tuple val(meta), path("temp_files/**.bam")       , emit: intermediate_bam       , optional: true
     tuple val(meta), path("temp_files/**.sorted.bam"), emit: intermediate_sorted_bam, optional: true
-    tuple val("${task.process}"), val('arcashla'), eval('echo 0.5.0'), emit: versions_arcashla, topic: versions
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
+    tuple val("${task.process}"), val('arcashla'), val('0.5.0'), emit: versions_arcashla, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

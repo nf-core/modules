@@ -3,9 +3,9 @@ process MOBSTER {
     label "process_high"
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c9/c9ef4992af6754a36358a4fc7a52bdc3928c012070f06140a44ddcf174da4e62/data':
-        'community.wave.seqera.io/library/r-cnaqc_r-mobster_r-cli_r-dplyr_r-ggplot2:5a94f700b38065ea' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/66/66c76b38ccd331b5e1178f680219c7091b7332e14089e611df949276be6afa1e/data' :
+        'community.wave.seqera.io/library/r-cnaqc_r-mobster_r-cli_r-dplyr_r-ggplot2:cc406f90216d5a33' }"
 
     input:
     tuple val(meta), path(rds_join)

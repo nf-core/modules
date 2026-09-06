@@ -1,0 +1,56 @@
+nextflow_process {
+
+    name "Test Process GRIDSS_ANNOTATE"
+    script "../main.nf"
+    process "GRIDSS_ANNOTATE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gridss"
+    tag "gridss/annotate"
+
+    test("human - vcf") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr22.vcf.gz', checkIfExists: true)
+                     ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("human - vcf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr22.vcf.gz', checkIfExists: true)
+                        ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

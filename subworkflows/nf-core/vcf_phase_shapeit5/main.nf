@@ -50,12 +50,19 @@ workflow VCF_PHASE_SHAPEIT5 {
             error "ERROR: ch_chunks channel is empty. Please provide a valid channel or set chunk parameter to true."
         }
 
+    ch_chunks_counts = ch_chunks
+        .groupTuple()
+        .map { metaPC, regionouts ->
+            [metaPC, regionouts.size()]
+        }
+
     // Make channel with all parameters
     ch_parameters = ch_vcf
         .combine(ch_map, by: 0)
         .combine(ch_ref, by: 0)
         .combine(ch_scaffold, by: 0)
         .combine(ch_chunks, by: 0)
+        .combine(ch_chunks_counts, by: 0)
 
     ch_parameters.ifEmpty{
         error "ERROR: join operation resulted in an empty channel. Please provide a valid ch_map, ch_ref, ch_scaffold and ch_chunks channel as input (same meta map)."
@@ -64,9 +71,22 @@ workflow VCF_PHASE_SHAPEIT5 {
     // Rearrange channel for phasing
     ch_phase_input = ch_parameters
         .map{
-            meta, vcf, index, pedigree, _region, gmap, ref_vcf, ref_index, scaffold_vcf, scaffold_index, regionbuf -> [
-                meta + ["regionout": regionbuf], vcf, index, pedigree, regionbuf,
-                ref_vcf, ref_index, scaffold_vcf, scaffold_index, gmap
+            meta, vcf, index, pedigree, _region, gmap, ref_vcf, ref_index, scaffold_vcf, scaffold_index, regionbuf, region_size ->
+            def chr = regionbuf.tokenize(':')[0]
+            def region = regionbuf.tokenize(':')[1]
+            def start = region.tokenize('-')[0]
+            def end = region.tokenize('-')[1]
+            def paddedStart = String.format('%010d', start as long)
+            def paddedEnd = String.format('%010d', end as long)
+            def regionoutPadded = "${chr}:${paddedStart}-${paddedEnd}"
+            [
+                meta + ["regionout": regionbuf, "regionoutPadded": regionoutPadded, "regionSize": region_size],
+                vcf, index,
+                pedigree,
+                regionbuf,
+                ref_vcf, ref_index,
+                scaffold_vcf, scaffold_index,
+                gmap
             ]
         }
 
@@ -76,14 +96,22 @@ workflow VCF_PHASE_SHAPEIT5 {
 
     ch_ligate_input = SHAPEIT5_PHASECOMMON.out.phased_variant
         .join(
-            BCFTOOLS_INDEX_PHASE.out.tbi.mix(BCFTOOLS_INDEX_PHASE.out.csi),
+            BCFTOOLS_INDEX_PHASE.out.index,
             failOnMismatch:true, failOnDuplicate:true
         )
-        .map{ meta, vcf, index ->
-            def keysToKeep = meta.keySet() - ['regionout']
-            [ meta.subMap(keysToKeep), vcf, index ]
+        .map { meta, vcf, index ->
+            def keysToKeep = meta.keySet() - ['regionout', 'regionoutPadded', 'regionSize']
+            [
+                groupKey(meta.subMap(keysToKeep), meta.regionSize),
+                vcf, index
+            ]
         }
         .groupTuple()
+        .map { groupKeyObj, vcf, index ->
+            // Extract the actual meta from the groupKey
+            def meta = groupKeyObj.getGroupTarget()
+            [meta, vcf, index]
+        }
 
     SHAPEIT5_LIGATE(ch_ligate_input,'')
 
@@ -91,11 +119,11 @@ workflow VCF_PHASE_SHAPEIT5 {
 
     ch_vcf_index = SHAPEIT5_LIGATE.out.merged_variants
         .join(
-            BCFTOOLS_INDEX_LIGATE.out.tbi.mix(BCFTOOLS_INDEX_LIGATE.out.csi),
+            BCFTOOLS_INDEX_LIGATE.out.index,
             failOnMismatch:true, failOnDuplicate:true
         )
 
     emit:
     chunks    = ch_chunks    // channel: [ [id, chr], regionout]
-    vcf_index = ch_vcf_index // channel: [ [id, chr], vcf, csi ]
+    vcf_index = ch_vcf_index // channel: [ [id, chr], vcf, index ]
 }

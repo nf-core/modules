@@ -76,14 +76,28 @@ output:
             applied
           pattern: "*.log"
           ontologies: []
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+  versions_plink2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - plink2:
+          type: string
+          description: The name of the tool
+      - plink2 --version 2>&1 | sed 's/^PLINK v//; s/ 64.*\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
 
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - plink2:
+          type: string
+          description: The name of the tool
+      - plink2 --version 2>&1 | sed 's/^PLINK v//; s/ 64.*\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@edg1983"
 maintainers:

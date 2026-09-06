@@ -3,7 +3,7 @@ process GATK4_CNNSCOREVARIANTS {
     label 'process_low'
 
     //Conda is not supported at the moment: https://github.com/broadinstitute/gatk/issues/7811
-    container "nf-core/gatk:4.5.0.0"
+    container "quay.io/nf-core/gatk:4.5.0.0"
 
     input:
     tuple val(meta), path(vcf), path(tbi), path(aligned_input), path(intervals)

@@ -3,9 +3,9 @@ process PBBAM_PBMERGE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pbbam:2.4.0--hdcf5f25_1' :
-        'biocontainers/pbbam:2.4.0--hdcf5f25_1' }"
+        'quay.io/biocontainers/pbbam:2.4.0--hdcf5f25_1' }"
 
     input:
     tuple val(meta), path(bam)

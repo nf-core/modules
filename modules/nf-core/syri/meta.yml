@@ -1,7 +1,5 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "syri"
-description: Syri compares alignments between two chromosome-level assemblies and
-  identifies synteny and structural rearrangements.
+description: Syri compares alignments between two chromosome-level assemblies and identifies synteny and structural rearrangements.
 keywords:
   - genomics
   - synteny
@@ -14,7 +12,8 @@ tools:
       documentation: "https://github.com/schneebergerlab/syri"
       tool_dev_url: "https://github.com/schneebergerlab/syri"
       doi: "10.1186/s13059-019-1911-0"
-      licence: ["MIT License"]
+      licence:
+        - "MIT License"
       identifier: biotools:SyRI
 input:
   - - meta:
@@ -58,10 +57,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*syri.out":
+      - "*.syri.out":
           type: file
           description: Syri output file
-          pattern: "*syri.{out}"
+          pattern: "*.syri.out"
           ontologies: []
   error:
     - - meta:
@@ -76,13 +75,29 @@ output:
             known limitations and pass the information to the user in a user-friendly manner such as a HTML report
           pattern: "*.error.{log}"
           ontologies: []
+  versions_syri:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - syri:
+          type: string
+          description: The name of the tool
+      - syri --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - syri:
+          type: string
+          description: The name of the tool
+      - syri --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@GallVp"
 maintainers:

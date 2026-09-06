@@ -16,7 +16,6 @@ workflow FASTA_EXPLORE_SEARCH_PLOT_TIDK {
                             // the same `id`
 
     main:
-    ch_versions = channel.empty()
 
     // MODULE: SEQKIT_SEQ as FILTER_BY_LENGTH
     FILTER_BY_LENGTH ( ch_fasta )
@@ -32,16 +31,18 @@ workflow FASTA_EXPLORE_SEARCH_PLOT_TIDK {
     TIDK_EXPLORE ( ch_filtered_fasta )
 
     ch_top_sequence         = TIDK_EXPLORE.out.top_sequence
-    ch_versions             = ch_versions.mix(TIDK_EXPLORE.out.versions.first())
 
     // TIDK_SEARCH as TIDK_SEARCH_APRIORI
     ch_apriori_inputs       = ch_sorted_fasta
                             | map { meta, fasta -> [ meta.id, meta, fasta ] }
-                            | join(
+                            | combine(
                                 ( ch_apriori_sequence ?: channel.empty() )
-                                | map { meta, seq -> [ meta.id, seq ] }
+                                | map { meta, seq -> [ meta.id, seq ] },
+                                by:0
                             )
                             | map { _id, meta, fasta, seq -> [ meta, fasta, seq ] }
+
+    ch_apriori_inputs.view()
 
     TIDK_SEARCH_APRIORI (
         ch_apriori_inputs.map { meta, fasta, _seq -> [ meta, fasta ] },
@@ -49,11 +50,10 @@ workflow FASTA_EXPLORE_SEARCH_PLOT_TIDK {
     )
 
     ch_apriori_tsv          = TIDK_SEARCH_APRIORI.out.tsv
-    ch_versions             = ch_versions.mix(TIDK_SEARCH_APRIORI.out.versions.first())
 
     // TIDK_SEARCH as TIDK_SEARCH_APOSTERIORI
     ch_aposteriori_inputs   = ch_sorted_fasta
-                            | join(ch_top_sequence)
+                            | combine(ch_top_sequence, by:0)
                             | map { meta, fasta, txt ->
                                 [ meta, fasta, txt.getText().strip() ]
                             }
@@ -64,19 +64,16 @@ workflow FASTA_EXPLORE_SEARCH_PLOT_TIDK {
     )
 
     ch_aposteriori_tsv      = TIDK_SEARCH_APOSTERIORI.out.tsv
-    ch_versions             = ch_versions.mix(TIDK_SEARCH_APOSTERIORI.out.versions.first())
 
     // TIDK_PLOT as TIDK_PLOT_APRIORI
     TIDK_PLOT_APRIORI ( ch_apriori_tsv )
 
     ch_apriori_svg          = TIDK_PLOT_APRIORI.out.svg
-    ch_versions             = ch_versions.mix(TIDK_PLOT_APRIORI.out.versions.first())
 
     // TIDK_PLOT as TIDK_PLOT_APOSTERIORI
     TIDK_PLOT_APOSTERIORI ( ch_aposteriori_tsv )
 
     ch_aposteriori_svg      = TIDK_PLOT_APOSTERIORI.out.svg
-    ch_versions             = ch_versions.mix(TIDK_PLOT_APOSTERIORI.out.versions.first())
 
     emit:
     apriori_tsv             = ch_apriori_tsv        // channel: [ val(meta), tsv ]
@@ -84,5 +81,4 @@ workflow FASTA_EXPLORE_SEARCH_PLOT_TIDK {
     aposteriori_sequence    = ch_top_sequence       // channel: [ val(meta), txt ]
     aposteriori_tsv         = ch_aposteriori_tsv    // channel: [ val(meta), tsv ]
     aposteriori_svg         = ch_aposteriori_svg    // channel: [ val(meta), svg ]
-    versions                = ch_versions           // channel: [ versions.yml ]
 }

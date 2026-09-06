@@ -3,7 +3,7 @@ process EMU_ABUNDANCE {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/66/66a9b54eaa307623ad2900c87069a5731bf3c3e91f855303aa70476f9535640f/data'
         : 'community.wave.seqera.io/library/emu:3.6.2--0adcfa4809f061f6'}"
 

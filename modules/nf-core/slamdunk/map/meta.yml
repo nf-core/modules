@@ -52,13 +52,27 @@ output:
           pattern: "*.bam"
           ontologies:
             - edam: "http://edamontology.org/format_2572" # BAM
+  versions_slamdunk:
+    - - ${task.process}:
+          type: string
+          description: The Nextflow task process name
+      - slamdunk:
+          type: string
+          description: The tool name
+      - "slamdunk --version | sed 's/^slamdunk //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The Nextflow task process name
+      - slamdunk:
+          type: string
+          description: The tool name
+      - "slamdunk --version | sed 's/^slamdunk //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 
 authors:
   - "@haidyi"

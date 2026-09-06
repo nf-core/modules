@@ -21,9 +21,7 @@ input:
           e.g. [ id:'test' ]
     - input:
         type: file
-        description: A single .bam/.cram file - OR - one or more .snf files - OR -
-          a single .tsv file containing a list of .snf files and optional sample
-          ids as input
+        description: A single .bam/.cram file - OR - one or more .snf files - OR - a single .tsv file containing a list of .snf files and optional sample ids as input
         pattern: "*.{bam,cram,snf,tsv}"
         ontologies:
           - edam: http://edamontology.org/format_3475
@@ -125,3 +123,27 @@ maintainers:
   - "@christopher-hakkaart"
   - "@yuukiiwa"
   - "@fellen31"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/sniffles:2.8.0--c25a97c10afa095a
+      build_id: bd-c25a97c10afa095a_1
+      scan_id: sc-1ed8ecc96bfef818_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/sniffles:2.8.0--5574c3aedf697468
+      build_id: bd-5574c3aedf697468_1
+      scan_id: sc-991b8341772825a8_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/sniffles:2.8.0--2f9e9de84854e212
+      build_id: bd-2f9e9de84854e212_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/54/5442fefaf2312352bfc30a28db3189f6065bdaff622e235305cd7e4142323f0a/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/sniffles:2.8.0--78237e804565135a
+      build_id: bd-78237e804565135a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a3/a392a64ae046bd1b8679f2ae590f88d84fed26d569ab70810df969741722dbcc/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/sniffles/.conda-lock/linux_amd64-bd-c25a97c10afa095a_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/sniffles/.conda-lock/linux_arm64-bd-5574c3aedf697468_1.txt

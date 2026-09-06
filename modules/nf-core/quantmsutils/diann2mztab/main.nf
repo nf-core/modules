@@ -3,9 +3,9 @@ process QUANTMSUTILS_DIANN2MZTAB {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/quantms-utils:0.0.23--pyh7e72e81_0' :
-        'biocontainers/quantms-utils:0.0.23--pyh7e72e81_0' }"
+        'quay.io/biocontainers/quantms-utils:0.0.23--pyh7e72e81_0' }"
 
     input:
     tuple val(meta), path(report), path(report_pg), path(report_pr), val(diann_version), path(exp_design), path(ms_information), path(fasta)
@@ -15,7 +15,7 @@ process QUANTMSUTILS_DIANN2MZTAB {
     tuple val(meta), path("*triqler_in.tsv"), emit: out_triqler
     tuple val(meta), path("*.mzTab"), optional: true, emit: out_mztab
     tuple val(meta), path("*.log"), emit: log
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('quantms-utils'), eval("quantmsutilsc --version 2>&1 | sed -n 's/quantmsutils //p'"), emit: versions_quantmsutils, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,11 +36,6 @@ process QUANTMSUTILS_DIANN2MZTAB {
         --diann_version ./version/versions.yml \\
         ${args} \\
         2>&1 | tee convert_report.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        quantms-utils: \$(pip show quantms-utils | grep "Version" | awk -F ': ' '{print \$2}')
-    END_VERSIONS
     """
 
     stub:
@@ -49,10 +44,5 @@ process QUANTMSUTILS_DIANN2MZTAB {
     touch test_sample_triqler_in.tsv
     touch test_sample.mzTab
     touch convert_report.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        quantms-utils: \$(pip show quantms-utils | grep "Version" | awk -F ': ' '{print \$2}')
-    END_VERSIONS
     """
 }

@@ -3,7 +3,7 @@ process SCDS {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0f/0f34b3007ea36d52c6cb43692226ab05e79e837b8400693e665214c8f4e2708c/data' :
         'community.wave.seqera.io/library/bioconductor-scds_xgboost:ededce7b92e37374' }"
 
@@ -13,7 +13,7 @@ process SCDS {
     output:
     tuple val(meta), path("*.rds"), emit: rds
     tuple val(meta), path("*.csv"), emit: predictions
-    path "versions.yml"           , emit: versions
+    path "versions.yml"           , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

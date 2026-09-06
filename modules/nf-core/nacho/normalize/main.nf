@@ -3,58 +3,52 @@ process NACHO_NORMALIZE {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2d/2d6b5e106e91070f16613d1950461b1587652d8003abae68637f51593b7457c3/data' :
-        'community.wave.seqera.io/library/r-dplyr_r-fs_r-ggplot2_r-nacho_pruned:92aef6fc5eff932b' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ad/ad421367a5d71eb73738675a68b5677e283686a8b0a6d5e5530f9ec203aadb30/data' :
+        'community.wave.seqera.io/library/r-base_r-dplyr_r-fs_r-ggplot2_pruned:bcd6d91c836e9200' }"
 
     input:
     tuple val(meta) , path(rcc_files, stageAs: "input/*")
     tuple val(meta2), path(sample_sheet)
 
     output:
-    tuple val(meta), path("normalized_counts.tsv")          , emit: normalized_counts
-    tuple val(meta), path("normalized_counts_wo_HKnorm.tsv"), emit: normalized_counts_wo_HK
-    path "versions.yml"                                     , emit: versions
+    tuple val(meta), path("${prefix}.tsv")          , emit: normalized_counts
+    tuple val(meta), path("${prefix}_wo_HKnorm.tsv"), emit: normalized_counts_wo_HK
+    path "versions.yml", emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    """
-    nacho_norm.R \\
-        --input_rcc_path input \\
-        $args \\
-        --input_samplesheet ${sample_sheet}
+    args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        r-base: \$(echo \$(R --version 2>&1) | sed 's/^.*R version //; s/ .*\$//')
-        r-nacho: \$(Rscript -e "library(NACHO); cat(as.character(packageVersion('NACHO')))")
-        r-dplyr: \$(Rscript -e "library(dplyr); cat(as.character(packageVersion('dplyr')))")
-        r-ggplot2: \$(Rscript -e "library(ggplot2); cat(as.character(packageVersion('ggplot2')))")
-        r-tidyr: \$(Rscript -e "library(tidyr); cat(as.character(packageVersion('tidyr')))")
-        r-readr: \$(Rscript -e "library(readr); cat(as.character(packageVersion('readr')))")
-        r-fs: \$(Rscript -e "library(fs); cat(as.character(packageVersion('fs')))")
-        r-optparse: \$(Rscript -e "library(optparse); cat(as.character(packageVersion('optparse')))")
-    END_VERSIONS
     """
+    echo ${args}
+    """
+
+    template 'nacho_norm.R'
 
     stub:
-    """
-    touch normalized_counts.tsv
-    touch normalized_counts_wo_HKnorm.tsv
+    prefix = task.ext.prefix ?: "${meta.id}"
+    args = task.ext.args ?: ''
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        r-base: \$(echo \$(R --version 2>&1) | sed 's/^.*R version //; s/ .*\$//')
-        r-nacho: \$(Rscript -e "library(NACHO); cat(as.character(packageVersion('NACHO')))")
-        r-dplyr: \$(Rscript -e "library(dplyr); cat(as.character(packageVersion('dplyr')))")
-        r-ggplot2: \$(Rscript -e "library(ggplot2); cat(as.character(packageVersion('ggplot2')))")
-        r-tidyr: \$(Rscript -e "library(tidyr); cat(as.character(packageVersion('tidyr')))")
-        r-readr: \$(Rscript -e "library(readr); cat(as.character(packageVersion('readr')))")
-        r-fs: \$(Rscript -e "library(fs); cat(as.character(packageVersion('fs')))")
-        r-optparse: \$(Rscript -e "library(optparse); cat(as.character(packageVersion('optparse')))")
-    END_VERSIONS
+    """
+    touch ${prefix}.tsv
+    touch ${prefix}_wo_HKnorm.tsv
+
+    Rscript -e "nfcore.utils::process_end(
+        packages = list(
+            'r-nacho' = 'NACHO',
+            'r-dplyr' = 'dplyr',
+            'r-ggplot2' = 'ggplot2',
+            'r-tidyr' = 'tidyr',
+            'r-readr' = 'readr',
+            'r-fs' = 'fs'
+        ),
+        task_name = '${task.process}',
+        versions_path = 'versions.yml',
+        log_path = '${prefix}.R_sessionInfo.log'
+    )"
     """
 }

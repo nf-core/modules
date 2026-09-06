@@ -3,9 +3,9 @@ process BEDTOOLS_COMPLEMENT {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/bedtools:2.31.1--hf5e1c6e_0'
-        : 'biocontainers/bedtools:2.31.1--hf5e1c6e_0'}"
+        : 'quay.io/biocontainers/bedtools:2.31.1--hf5e1c6e_0'}"
 
     input:
     tuple val(meta), path(bed)
@@ -35,7 +35,10 @@ process BEDTOOLS_COMPLEMENT {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    if ("${bed}" == "${prefix}.bed") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
-    touch ${prefix.bed}
+    touch ${prefix}.bed
     """
 }

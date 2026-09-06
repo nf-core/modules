@@ -3,9 +3,9 @@ process GLIMPSE_LIGATE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/glimpse-bio:1.1.1--hce55b13_1'
-        : 'biocontainers/glimpse-bio:1.1.1--hce55b13_1'}"
+        : 'quay.io/biocontainers/glimpse-bio:1.1.1--hce55b13_1'}"
 
     input:
     tuple val(meta), path(input_list), path(input_index)

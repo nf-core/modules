@@ -2,18 +2,6 @@
     "test-snpsift-annotate-uncompressed-stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "tester",
-                            "single_end": false
-                        },
-                        "tester.vcf:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,b3f5c3c832c7bcff29f70732a018938c"
-                ],
                 "vcf": [
                     [
                         {
@@ -23,41 +11,49 @@
                         "tester.vcf:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,b3f5c3c832c7bcff29f70732a018938c"
+                "versions_snpsift": [
+                    [
+                        "SNPSIFT_ANNOTATE",
+                        "snpsift",
+                        "5.4c"
+                    ]
                 ]
             }
         ],
-        "timestamp": "2026-03-04T17:22:52.434166965",
+        "timestamp": "2026-07-14T14:21:40.523573314",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
         }
     },
     "test-snpsift-annotate": {
         "content": [
             "8b321ff870c45ff7e28e6c5bae83da8c",
-            [
-                "versions.yml:md5,b3f5c3c832c7bcff29f70732a018938c"
-            ]
+            null
         ],
-        "timestamp": "2026-03-04T17:22:29.759920328",
+        "timestamp": "2026-07-14T14:21:27.427294727",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
         }
     },
     "test-snpsift-annotate-uncompressed": {
         "content": [
             "8b321ff870c45ff7e28e6c5bae83da8c",
-            [
-                "versions.yml:md5,b3f5c3c832c7bcff29f70732a018938c"
-            ]
+            {
+                "versions_snpsift": [
+                    [
+                        "SNPSIFT_ANNOTATE",
+                        "snpsift",
+                        "5.4c"
+                    ]
+                ]
+            }
         ],
-        "timestamp": "2026-03-04T17:22:40.855522184",
+        "timestamp": "2026-07-14T14:21:34.664952068",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
         }
     }
 }

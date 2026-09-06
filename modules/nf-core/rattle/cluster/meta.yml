@@ -1,19 +1,18 @@
 name: "rattle_cluster"
-description: Reference-free reconstruction and quantification of transcriptomes from
-  long-read sequencing
+description: Reference-free reconstruction and quantification of transcriptomes from long-read sequencing
 keywords:
   - transcriptomes
   - cluster
   - nanopore
 tools:
   - "rattle":
-      description: "Reference-free reconstruction and quantification of transcriptomes
-        from long-read sequencing"
+      description: "Reference-free reconstruction and quantification of transcriptomes from long-read sequencing"
       homepage: "https://github.com/comprna/RATTLE"
       documentation: "https://github.com/comprna/RATTLE"
       tool_dev_url: "https://github.com/comprna/RATTLE"
       doi: "10.1186/s13059-022-02715-w"
-      licence: ["GPL-3.0"]
+      licence:
+        - "GPL-3.0"
       identifier: biotools:rattle
 input:
   - - meta:
@@ -25,6 +24,8 @@ input:
         type: file
         description: Input file in FASTA/FASTQ format.
         pattern: "*.{fasta,fastq,fasta.gz,fastq.gz,fa,fq,fa.gz,fq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
 output:
   clusters:
     - - meta:
@@ -32,15 +33,34 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', suffix:'bacteria' ]`
-      - "clusters.out":
+      - clusters.out:
           type: file
           description: Output clusters in binary format.
           pattern: "clusters.out"
+          ontologies: []
+  versions_rattle:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rattle:
+          type: string
+          description: The name of the tool
+      - "1.0":
+          type: string
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rattle:
+          type: string
+          description: The name of the tool
+      - "1.0":
+          type: string
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@chriswyatt1"
   - "@srisarya"

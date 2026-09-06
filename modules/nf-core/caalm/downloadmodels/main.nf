@@ -2,7 +2,7 @@ process CAALM_DOWNLOADMODELS {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/81/81726ed58923a02e2e947be826509e0f34c3e762183e0bd5b6b109769b67ac84/data':
         'community.wave.seqera.io/library/huggingface_hub_python:91b414233adf3eb1' }"
 

@@ -3,7 +3,7 @@ process METHBAT_PROFILE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1e/1e9081b928a80e8e37f48d53558d39d44ba3b7b05a29055abb3a8e80ca749736/data':
         'community.wave.seqera.io/library/methbat:0.17.0--b493e12136cee7f4' }"
 

@@ -3,7 +3,7 @@ process VIBER {
     label "process_single"
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/21/21e21fc0c84576a262f02779cb091dbe2734a12e3b9a2c41e08cb8393bd3953f/data':
         'community.wave.seqera.io/library/r-cnaqc_r-viber_r-cli_r-dplyr_pruned:f00a3b14d68a7bac'}"
 

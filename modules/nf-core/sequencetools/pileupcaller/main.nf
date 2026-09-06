@@ -3,9 +3,9 @@ process SEQUENCETOOLS_PILEUPCALLER {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sequencetools:1.6.0.0--hebebf5b_0':
-        'biocontainers/sequencetools:1.6.0.0--hebebf5b_0' }"
+        'quay.io/biocontainers/sequencetools:1.6.0.0--hebebf5b_0' }"
 
     input:
     tuple val(meta), path(mpileup)
@@ -16,7 +16,7 @@ process SEQUENCETOOLS_PILEUPCALLER {
     tuple val(meta), path("*.geno"), path("*.snp"), path("*.ind"), emit: eigenstrat, optional:true
     tuple val(meta), path("*.bed") , path("*.bim"), path("*.fam"), emit: plink     , optional:true
     tuple val(meta), path("*.freqsum.gz")                        , emit: freqsum   , optional:true
-    path "versions.yml"                                          , emit: versions
+    tuple val("${task.process}"), val("sequencetools"), eval("pileupCaller --version 2>&1"), topic: versions, emit: versions_pileupcaller
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,11 +36,6 @@ process SEQUENCETOOLS_PILEUPCALLER {
         ${sample_names} \\
         ${args} \\
         ${freqsum_output}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sequencetools: \$(echo \$(pileupCaller --version 2>&1) )
-    END_VERSIONS
     """
 
     stub:
@@ -55,10 +50,5 @@ process SEQUENCETOOLS_PILEUPCALLER {
     ${freqsum_output}
     ${plink_output}
     ${eigenstrat_output}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sequencetools: \$(echo \$(pileupCaller --version 2>&1) )
-    END_VERSIONS
     """
 }

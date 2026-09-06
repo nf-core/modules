@@ -3,9 +3,9 @@ process GOAT_TAXONSEARCH {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/goat:0.2.5--h9d3141d_2':
-        'biocontainers/goat:0.2.5--h9d3141d_2' }"
+        'quay.io/biocontainers/goat:0.2.5--h9d3141d_2' }"
 
     input:
     tuple val(meta), val(taxon), path(taxa_file)

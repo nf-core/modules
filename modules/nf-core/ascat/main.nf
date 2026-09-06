@@ -3,7 +3,7 @@ process ASCAT {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4c/4cf02c7911ee5e974ce7db978810770efbd8d872ff5ab3462d2a11bcf022fab5/data'
         : 'community.wave.seqera.io/library/ascat_cancerit-allelecount:c3e8749fa4af0e99'}"
 

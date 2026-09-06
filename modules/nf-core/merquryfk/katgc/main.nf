@@ -3,7 +3,7 @@ process MERQURYFK_KATGC {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/56/56641ad3d1130e668134edc752fdf0bed1cc31da3b3d74730aa6edf40527493a/data' :
         'community.wave.seqera.io/library/merquryfk:1.2--f21b6c1cbbbbfe64' }"
 

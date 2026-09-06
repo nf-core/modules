@@ -144,9 +144,15 @@ output:
   versions:
     - versions.yml:
         type: file
-        description: File containing software versions
+        description: YAML file containing versions of tools used in the module
         pattern: "versions.yml"
         ontologies:
           - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: file
+        description: YAML file containing versions of tools used in the module
+        ontologies: []
 authors:
   - "@WackerO"

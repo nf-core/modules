@@ -3,9 +3,9 @@ process TRUVARI_BENCH {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/truvari:5.4.0--pyhdfd78af_0':
-        'biocontainers/truvari:5.4.0--pyhdfd78af_0' }"
+        'quay.io/biocontainers/truvari:5.4.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(vcf), path(tbi), path(truth_vcf), path(truth_tbi), path(bed)

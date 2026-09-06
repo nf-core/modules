@@ -3,7 +3,7 @@ process GATK_UNIFIEDGENOTYPER {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/19/194eeac04775f5e88453dcc831c6de7b36839fe17d0bbd8e1bca6d9ab41cdba2/data'
         : 'community.wave.seqera.io/library/gatk_tabix:efe73d760b0a026c'}"
 

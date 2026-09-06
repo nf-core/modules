@@ -56,7 +56,7 @@ output:
           description: TSV with embeddings of BCR or TCR amino acid sequences.
           pattern: "*.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   embedding_metadata:
     - - meta:
           type: map
@@ -79,6 +79,36 @@ output:
       - amulety --help 2>&1 | grep -o 'version [0-9\.]\+' | grep -o '[0-9\.]\+':
           type: eval
           description: The command used to generate the version of the tool
+  versions_python:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - python:
+          type: string
+          description: The name of the tool
+      - python --version 2>&1 | grep -o 'Python [0-9\.]\+' | grep -o '[0-9\.]\+':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_pytorch:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - pytorch:
+          type: string
+          description: The name of the tool
+      - python -c 'import torch; print(torch.__version__)':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_transformers:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - transformers:
+          type: string
+          description: The name of the tool
+      - python -c 'import transformers; print(transformers.__version__)':
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -90,6 +120,33 @@ topics:
       - amulety --help 2>&1 | grep -o 'version [0-9\.]\+' | grep -o '[0-9\.]\+':
           type: eval
           description: The command used to generate the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - python:
+          type: string
+          description: The name of the tool
+      - python --version 2>&1 | grep -o 'Python [0-9\.]\+' | grep -o '[0-9\.]\+':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - pytorch:
+          type: string
+          description: The name of the tool
+      - python -c 'import torch; print(torch.__version__)':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - transformers:
+          type: string
+          description: The name of the tool
+      - python -c 'import transformers; print(transformers.__version__)':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ggabernet"
 maintainers:

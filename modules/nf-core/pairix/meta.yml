@@ -8,11 +8,13 @@ keywords:
   - pairs
 tools:
   - pairix:
-      description: 2D indexing on bgzipped text files of paired genomic coordinates
+      description: 2D indexing on bgzipped text files of paired genomic
+        coordinates
       homepage: "https://github.com/4dn-dcic/pairix"
       documentation: "https://github.com/4dn-dcic/pairix"
       tool_dev_url: "https://github.com/4dn-dcic/pairix"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:pairix
 input:
   - - meta:
@@ -41,13 +43,27 @@ output:
           description: pair index file
           pattern: "*.px2"
           ontologies: []
+  versions_pairix:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pairix:
+          type: string
+          description: The name of the tool
+      - "pairix --help 2>&1 | sed -n 's/^Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pairix:
+          type: string
+          description: The name of the tool
+      - "pairix --help 2>&1 | sed -n 's/^Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jianhong"
 maintainers:

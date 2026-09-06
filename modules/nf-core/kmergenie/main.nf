@@ -3,7 +3,7 @@ process KMERGENIE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5f/5f4197eec51307131e6cb0170a7969eda60995b23942d050f7495dc4a530b118/data':
         'community.wave.seqera.io/library/kmergenie:1.7051--675dfe5a4c7ea92b' }"
 

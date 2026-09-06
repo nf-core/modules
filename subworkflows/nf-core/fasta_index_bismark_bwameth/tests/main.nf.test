@@ -47,8 +47,12 @@ nextflow_workflow {
     }
 
     test("Params: bismark | generate bismark index (bowtie2)") {
+        tag "test"
 
         when {
+            params {
+                bismark_genomepreparation_aligner = "bowtie2"
+            }
             workflow {
                 """
                 input[0] = channel.value([
