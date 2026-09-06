@@ -1,5 +1,9 @@
 process DORADO_BASECALLER {
     tag "$meta.id"
+    // process_gpu only requests the accelerator; process_low/process_long set the
+    // CPU, memory and time budget for the surrounding task.
+    label 'process_low'
+    label 'process_long'
     label 'process_gpu'
 
     // dorado is not on bioconda (ONTPL licence). Using
@@ -15,9 +19,9 @@ process DORADO_BASECALLER {
     tuple val(meta3), path(reference), path(fai)        // optional reference FASTA for alignment; pass [[],[],[]] to skip
 
     output:
-    tuple val(meta), path("*.bam")      , emit: bam
-    tuple val(meta), path("*_summary.tsv"), emit: summary , optional: true
-    tuple val("${task.process}"), val('dorado'), eval("dorado --version 2>&1 | head -1 | sed 's/^//'"), emit: versions_dorado, topic: versions
+    tuple val(meta), path("*.bam")                   , emit: bam
+    tuple val(meta), path("*.sequencing_summary.txt"), emit: summary, optional: true
+    tuple val("${task.process}"), val('dorado'), eval("dorado --version 2>&1 | head -1"), emit: versions_dorado, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,17 +42,20 @@ process DORADO_BASECALLER {
         ${model} \\
         ${pod5} \\
         > ${prefix}.bam
+
+    # --emit-summary writes a fixed-name `sequencing_summary.txt` into the working
+    # directory; prefix it so outputs stay per-sample.
+    if [ -f sequencing_summary.txt ]; then
+        mv sequencing_summary.txt ${prefix}.sequencing_summary.txt
+    fi
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args    = task.ext.args ?: ''
+    def prefix  = task.ext.prefix ?: "${meta.id}"
+    def summary = args.contains('--emit-summary') ? "touch ${prefix}.sequencing_summary.txt" : ''
     """
     touch ${prefix}.bam
-    touch ${prefix}_summary.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        dorado: 1.4.0
-    END_VERSIONS
+    ${summary}
     """
 }

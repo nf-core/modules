@@ -69,7 +69,8 @@ input:
           aligns basecalled reads and outputs a mapped BAM. Pass [[],[],[]] to
           produce an unmapped BAM.
         pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1929
     - fai:
         type: file
         description: |
@@ -92,18 +93,22 @@ output:
             Pipe to SAMTOOLS_SORT + SAMTOOLS_INDEX for coordinate-sorted, indexed BAMs.
             Unmapped if no reference provided; mapped (unsorted) if reference provided.
           pattern: "*.bam"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_2572
   summary:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:false ]`
-      - "*_summary.tsv":
+      - "*.sequencing_summary.txt":
           type: file
-          description: Per-read summary TSV with alignment statistics. Present when
-            --emit-summary is set in task.ext.args.
-          pattern: "*_summary.tsv"
+          description: |
+            Per-read summary, present only when `--emit-summary` is set in
+            `ext.args`. dorado writes this as a fixed-name
+            `sequencing_summary.txt`; the module renames it to
+            `<prefix>.sequencing_summary.txt` so outputs stay per-sample.
+          pattern: "*.sequencing_summary.txt"
           ontologies:
             - edam: http://edamontology.org/format_3475
   versions_dorado:
@@ -113,7 +118,7 @@ output:
       - dorado:
           type: string
           description: The name of the tool
-      - dorado --version 2>&1 | head -1 | sed 's/^//':
+      - dorado --version 2>&1 | head -1:
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -124,7 +129,7 @@ topics:
       - dorado:
           type: string
           description: The name of the tool
-      - dorado --version 2>&1 | head -1 | sed 's/^//':
+      - dorado --version 2>&1 | head -1:
           type: eval
           description: The expression to obtain the version of the tool
 authors:
