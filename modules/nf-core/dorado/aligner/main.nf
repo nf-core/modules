@@ -9,7 +9,7 @@ process DORADO_ALIGNER {
     container "docker.io/nanoporetech/dorado:shac8f356489fa8b44b31beba841b84d2879de2088e"
 
     input:
-    tuple val(meta), path(bam)                          // unaligned BAM from dorado basecaller
+    tuple val(meta), path(bam)                          // unaligned BAM produced by dorado basecaller
     tuple val(meta2), path(reference), path(fai)        // reference FASTA (or .mmi index) and .fai
 
     output:
