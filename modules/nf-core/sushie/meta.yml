@@ -75,17 +75,6 @@ output:
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
             - edam: http://edamontology.org/format_3989 # GZIP format
-  versions_sushie:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - sushie:
-          type: string
-          description: The name of the tool
-      - sushie --version:
-          type: eval
-          description: The expression to obtain the version of the tool
-
   log:
     - - meta:
           type: map
@@ -97,6 +86,17 @@ output:
           description: Log file
           pattern: "*.log"
           ontologies: []
+  versions_sushie:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sushie:
+          type: string
+          description: The name of the tool
+      - sushie --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 topics:
   versions:
     - - ${task.process}:

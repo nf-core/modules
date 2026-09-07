@@ -83,12 +83,6 @@ output:
         Channel containing files for MultiQC input (metrics, stats, flagstat).
         Structure: [ path(files) ]
       pattern: "*.{txt,stats,flagstat}"
-  - versions:
-      type: file
-      description: |
-        File containing software versions
-        Structure: [ path(versions.yml) ]
-      pattern: "versions.yml"
 authors:
   - "@sateeshperi"
 maintainers:
