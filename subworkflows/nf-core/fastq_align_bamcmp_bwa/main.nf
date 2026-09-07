@@ -45,13 +45,13 @@ workflow FASTQ_ALIGN_BAMCMP_BWA {
     // Sort, index primary unfiltered BAM file and run samtools stats, flagstat and idxstats
     //
 
-    BAM_SORT_STATS_SAMTOOLS_UNFILTERED(BWA_MEM_PRIMARY.out.bam, ch_fasta_fai)
+    BAM_SORT_STATS_SAMTOOLS_UNFILTERED(BWA_MEM_PRIMARY.out.bam, ch_fasta_fai, 'bai')
 
     //
     // Sort, index filtered BAM file and run samtools stats, flagstat and idxstats
     //
 
-    BAM_SORT_STATS_SAMTOOLS_FILTERED(BAMCMP.out.primary_filtered_bam, ch_fasta_fai)
+    BAM_SORT_STATS_SAMTOOLS_FILTERED(BAMCMP.out.primary_filtered_bam, ch_fasta_fai, 'bai')
 
     emit:
     bam                 = BAM_SORT_STATS_SAMTOOLS_FILTERED.out.bam // channel: [ val(meta), path(bam) ]
