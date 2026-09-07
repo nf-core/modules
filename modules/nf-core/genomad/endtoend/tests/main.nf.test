@@ -8,16 +8,24 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "genomad"
-    tag "genomad/download"
     tag "genomad/endtoend"
+    tag "untar"
+
+    setup {
+        run("UNTAR") {
+            script "../../../untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id: "genomad_db"],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/mag/databases/genomad/genomad_db_subset_v1.9.tar.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
 
     test("sarscov2 - genome - fasta") {
-        setup {
-            run("GENOMAD_DOWNLOAD") {
-                script "../../download/main.nf"
-                }
-            }
-
         when {
             process {
                 """
@@ -25,7 +33,7 @@ nextflow_process {
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     ]
-                input[1] = GENOMAD_DOWNLOAD.out.genomad_db
+                input[1] = UNTAR.out.untar
                 """
             }
         }
@@ -34,33 +42,19 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.aggregated_classification,
-                    process.out.marker_classification,
-                    process.out.taxonomy,
-                    process.out.provirus,
-                    process.out.compositions,
-                    process.out.calibrated_classification,
-                    process.out.plasmid_genes,
-                    process.out.virus_fasta,
-                    process.out.virus_genes,
-                    process.out.virus_proteins,
-                    process.out.virus_summary,
-                    process.out.versions_genomad,
-                    ).match()
-                },
-                { assert file(process.out.virus_fasta.get(0).get(1)).exists() },
-                { assert file(process.out.virus_proteins.get(0).get(1)).exists() }
+                    sanitizeOutput(
+                        process.out,
+                        unstableKeys: ["virus_fasta", "virus_proteins", "plasmid_fasta", "plasmid_proteins"],
+                        ignoreKeys: ["genomad_results"]
+                    )).match()
+                }
             )
         }
     }
 
     test("sarscov2 - genome - fasta - stub") {
 
-        setup {
-            run("GENOMAD_DOWNLOAD") {
-                script "../../download/main.nf"
-                }
-            }
+        options '-stub'
 
         when {
             process {
@@ -69,7 +63,7 @@ nextflow_process {
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[1] = GENOMAD_DOWNLOAD.out.genomad_db
+                input[1] = UNTAR.out.untar
                 """
             }
         }
@@ -77,7 +71,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(sanitizeOutput(process.out, ignoreKeys: ["genomad_results"])).match() }
             )
         }
     }
