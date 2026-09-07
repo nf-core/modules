@@ -1,3 +1,4 @@
+// Temporary change to exercise CPU module detection.
 process SAMTOOLS_SORT {
     tag "${meta.id}"
     label 'process_medium'
