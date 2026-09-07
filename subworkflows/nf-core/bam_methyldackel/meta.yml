@@ -44,6 +44,13 @@ output:
         Text file containing methylation bias
         Structure: [ val(meta), path(mbias) ]
       pattern: "*.{txt}"
+  - multiqc:
+      type: file
+      description: |
+        Collected MethylDackel files for use as MultiQC input
+
+        Structure: [ path(files) ]
+      pattern: "*.{html,txt}"
 authors:
   - "@eduard-watchmaker"
 maintainers:
