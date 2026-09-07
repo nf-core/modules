@@ -32,14 +32,17 @@ input:
           e.g. `[ id:'sample1' ]`. The output inherits this meta.
     - bam:
         type: file
-        description: Input modBAM with MM/ML tags.
+        description: |
+          Input modBAM/modCRAM with MM/ML tags. A CRAM input also requires
+          `fasta` to be supplied.
         pattern: "*.{bam,cram}"
         ontologies:
           - edam: http://edamontology.org/format_2572
     - bai:
         type: file
-        description: BAM index (`.bai` or `.csi`).
-        pattern: "*.{bai,csi}"
+        description: |
+          Index for `bam` — `.bai`/`.csi` for a BAM, `.crai` for a CRAM.
+        pattern: "*.{bai,csi,crai}"
         ontologies: []
   - - meta2:
         type: map
