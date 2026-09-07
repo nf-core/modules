@@ -32,12 +32,12 @@ nextflow_process {
                 ])
                 .combine( UNTAR.out.untar.collect{it[1]} )
                 .map { meta, sample_sheet, fastq_folder ->
-                    def fastqs = "out_L001_I1_001.fastq.gz out_L001_I2_001.fastq.gz out_L001_R1_001.fastq.gz out_L001_R2_001.fastq.gz".split("\\s+")
-                    def read_structures = "8B 8B 150T 150T".split("\\s+")
-                    def paired = []
-                    for (int i = 0; i < fastqs.size(); i++) {
-                        paired.add([fastqs[i], read_structures[i]])
-                    }
+                    def paired = [
+                        ["out_L001_I1_001.fastq.gz", "8B"],
+                        ["out_L001_I2_001.fastq.gz", "8B"],
+                        ["out_L001_R1_001.fastq.gz", "150T"],
+                        ["out_L001_R2_001.fastq.gz", "150T"]
+                    ]
                     [meta, sample_sheet, fastq_folder, paired]
                 }
                 input[0] = ch_input
