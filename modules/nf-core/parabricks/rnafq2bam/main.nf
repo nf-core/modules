@@ -45,7 +45,7 @@ process PARABRICKS_RNAFQ2BAM {
         error("Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
     def in_fq_command = meta.single_end ? "--in-se-fq ${reads}" : "--in-fq ${reads}"
     def num_gpus = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
