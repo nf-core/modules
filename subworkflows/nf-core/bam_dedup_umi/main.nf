@@ -63,6 +63,7 @@ workflow BAM_DEDUP_UMI {
     BAM_SORT_STATS_SAMTOOLS(
         ch_transcriptome_bam,
         ch_transcript_fasta_fai,
+        'bai',
     )
     ch_sorted_transcriptome_bam = BAM_SORT_STATS_SAMTOOLS.out.bam.join(BAM_SORT_STATS_SAMTOOLS.out.index)
 

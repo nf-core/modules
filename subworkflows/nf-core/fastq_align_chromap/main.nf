@@ -45,7 +45,7 @@ workflow FASTQ_ALIGN_CHROMAP {
     //
     // Sort, index BAM file and run samtools stats, flagstat and idxstats
     //
-    BAM_SORT_STATS_SAMTOOLS(ch_bam, ch_fasta_fai)
+    BAM_SORT_STATS_SAMTOOLS(ch_bam, ch_fasta_fai, 'bai')
 
     emit:
     bam      = BAM_SORT_STATS_SAMTOOLS.out.bam // channel: [ val(meta), [ bam ] ]

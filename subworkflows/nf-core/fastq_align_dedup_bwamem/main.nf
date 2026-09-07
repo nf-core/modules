@@ -41,6 +41,7 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
         BAM_SORT_STATS_SAMTOOLS(
             ch_alignment,
             ch_fasta_fai,
+            'bai',
         )
         ch_alignment = BAM_SORT_STATS_SAMTOOLS.out.bam
         ch_alignment_index = BAM_SORT_STATS_SAMTOOLS.out.index
