@@ -214,16 +214,6 @@ output:
           pattern: "*.hybcap-per-target.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
-  isize_metrics:
-    - - meta:
-          type: map
-          description: Groovy Map containing sample information
-      - "*.isize-metrics.txt":
-          type: file
-          description: Insert size summary metrics (isize tool)
-          pattern: "*.isize-metrics.txt"
-          ontologies:
-            - edam: "http://edamontology.org/format_3475" # TSV
   isize_histogram:
     - - meta:
           type: map
@@ -232,6 +222,16 @@ output:
           type: file
           description: Insert size histogram (isize tool)
           pattern: "*.isize-histogram.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  isize_metrics:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.isize-metrics.txt":
+          type: file
+          description: Insert size summary metrics (isize tool)
+          pattern: "*.isize-metrics.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
   mean_qual:
@@ -274,16 +274,6 @@ output:
           pattern: "*.rna-biotype.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
-  rna_insert_size:
-    - - meta:
-          type: map
-          description: Groovy Map containing sample information
-      - "*.rna-insert-size.txt":
-          type: file
-          description: RNA insert size metrics (rna tool)
-          pattern: "*.rna-insert-size.txt"
-          ontologies:
-            - edam: "http://edamontology.org/format_3475" # TSV
   rna_insert_size_histogram:
     - - meta:
           type: map
@@ -292,6 +282,16 @@ output:
           type: file
           description: RNA insert size histogram (rna tool)
           pattern: "*.rna-insert-size-histogram.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  rna_insert_size:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.rna-insert-size.txt":
+          type: file
+          description: RNA insert size metrics (rna tool)
+          pattern: "*.rna-insert-size.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
   rna_metrics:
@@ -304,16 +304,6 @@ output:
           pattern: "*.rna-metrics.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
-  wgs_metrics:
-    - - meta:
-          type: map
-          description: Groovy Map containing sample information
-      - "*.wgs-metrics.txt":
-          type: file
-          description: Whole-genome coverage summary metrics (wgs tool)
-          pattern: "*.wgs-metrics.txt"
-          ontologies:
-            - edam: "http://edamontology.org/format_3475" # TSV
   wgs_coverage:
     - - meta:
           type: map
@@ -322,6 +312,16 @@ output:
           type: file
           description: Per-depth coverage histogram (wgs tool)
           pattern: "*.wgs-coverage.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  wgs_metrics:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.wgs-metrics.txt":
+          type: file
+          description: Whole-genome coverage summary metrics (wgs tool)
+          pattern: "*.wgs-metrics.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
   versions_riker:
