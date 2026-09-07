@@ -30,7 +30,7 @@ nextflow_process {
                     [ id:'sim-data'], // meta map
                     file("https://github.com/nf-core/test-datasets/raw/demultiplex/testdata/sim-data/fqtk_sample_metadata_subset.tsv", checkIfExists: true),
                 ])
-                .combine( UNTAR.out.untar.collect{it[1]} )
+                .join(UNTAR.out.untar)
                 .map { meta, sample_sheet, fastq_folder ->
                     def paired = [
                         ["out_L001_I1_001.fastq.gz", "8B"],
