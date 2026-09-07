@@ -52,7 +52,7 @@ process SAMTOOLS_MULTICOMMAND {
 
     def n_commands = pipeline.size()
     def is_cram_input = fasta && input.collect { f -> f.getExtension() == "cram" }.any()
-    def is_cram_output = fasta && (get_output_extension(get_args(task, n_commands - 1)) == "cram")
+    def is_cram_output = fasta && (get_output_extension(get_args(task.ext, n_commands - 1)) == "cram")
 
     // Build the pipeline command
     //
@@ -69,7 +69,7 @@ process SAMTOOLS_MULTICOMMAND {
             def is_last_command = (idx == n_commands - 1)
 
             def cmd_args = get_args(task.ext, idx)
-            def cmd_threads = get_threads(subcommand, task.cpus, args)
+            def cmd_threads = get_threads(subcommand, task.cpus, cmd_args)
             def cmd_input = is_first_command ? "${input}" : get_stdin()
             def cmd_output = is_last_command ? get_file_output(subcommand, cmd_args, prefix, meta?.single_end ?: false) : get_stdout(subcommand)
             def uncompressed = !is_last_command ? get_uncompressed_flag(subcommand) : ""
