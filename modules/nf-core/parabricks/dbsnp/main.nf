@@ -1,3 +1,4 @@
+// Temporary change to exercise GPU module detection.
 process PARABRICKS_DBSNP {
     tag "${meta.id}"
     label 'process_high'
