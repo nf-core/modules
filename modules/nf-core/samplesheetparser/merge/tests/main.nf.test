@@ -1,0 +1,175 @@
+nextflow_process {
+
+    name "Test Process SAMPLESHEETPARSER_MERGE"
+    script "../main.nf"
+    process "SAMPLESHEETPARSER_MERGE"
+
+    tag "samplesheetparser"
+    tag "samplesheetparser/merge"
+    tag "modules"
+    tag "modules_nfcore"
+
+    test("Merge two V1 sheets into V1") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test_merge_v1' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.v1.csv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet_b.v1.csv', checkIfExists: true)
+                    ]
+                ]
+                input[1] = 'v1'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("Merge two V1 sheets into V2") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test_merge_v2' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.v1.csv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet_b.v1.csv', checkIfExists: true)
+                    ]
+                ]
+                input[1] = 'v2'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("Merge two V2 sheets into V2") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test_merge_v2_v2' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.v2.csv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet_b.v2.csv', checkIfExists: true)
+                    ]
+                ]
+                input[1] = 'v2'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("Merge two V1 sheets into V2 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test_stub' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.v1.csv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet_b.v1.csv', checkIfExists: true)
+                    ]
+                ]
+                input[1] = 'v2'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("Merge two identically-named sheets - no staging collision") {
+
+        when {
+            process {
+                """
+                // Real per-project sheets are usually all named 'SampleSheet.csv'.
+                // Restage the two non-colliding V1 sheets under that shared basename
+                // (in separate dirs) to exercise the stageAs "input*/*" handling.
+                def sheet_a  = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.v1.csv', checkIfExists: true)
+                def sheet_b  = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet_b.v1.csv', checkIfExists: true)
+                def staged_a = file("\${workDir}/samesheet/a/SampleSheet.csv")
+                def staged_b = file("\${workDir}/samesheet/b/SampleSheet.csv")
+                staged_a.parent.mkdirs()
+                staged_b.parent.mkdirs()
+                sheet_a.copyTo(staged_a)
+                sheet_b.copyTo(staged_b)
+
+                input[0] = [
+                    [ id:'test_samename' ],
+                    [ staged_a, staged_b ]
+                ]
+                input[1] = 'v1'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("Merge with warnings does not fail the task") {
+
+        when {
+            process {
+                """
+                // Mixed V1 + V2 inputs on different lanes merge cleanly but emit
+                // warnings (e.g. MIXED_FORMAT). Warnings are advisory in
+                // samplesheet-parser >=2.5.2 (exit 0), so the task must succeed.
+                input[0] = [
+                    [ id:'test_warn' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.v1.csv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet_b.v2.csv', checkIfExists: true)
+                    ]
+                ]
+                input[1] = 'v1'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

@@ -49,7 +49,7 @@ nextflow_workflow {
             assertAll(
                 { assert snapshot(
                     bam(workflow.out.bam[0][1]).getReadsMD5(),
-                    file(workflow.out.bai[0][1]).name
+                    file(workflow.out.index[0][1]).name
                     ).match() }
             )
         }
@@ -88,7 +88,7 @@ nextflow_workflow {
             assertAll(
                 { assert snapshot(
                     bam(workflow.out.bam[0][1]).getReadsMD5(),
-                    file(workflow.out.bai[0][1]).name
+                    file(workflow.out.index[0][1]).name
                     ).match() }
             )
         }
@@ -137,7 +137,7 @@ nextflow_workflow {
             assertAll(
                 { assert snapshot(
                     bam(workflow.out.bam[0][1]).getReadsMD5(),
-                    file(workflow.out.bai[0][1]).name
+                    file(workflow.out.index[0][1]).name
                     ).match() }
             )
         }
@@ -191,7 +191,7 @@ nextflow_workflow {
             assertAll(
                 { assert snapshot(
                     bam(workflow.out.bam[0][1]).getReadsMD5(),
-                    file(workflow.out.bai[0][1]).name
+                    file(workflow.out.index[0][1]).name
                     ).match() }
             )
         }

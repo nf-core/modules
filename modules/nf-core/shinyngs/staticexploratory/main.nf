@@ -3,9 +3,9 @@ process SHINYNGS_STATICEXPLORATORY {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d0/d0937af0a2b5efe1c18565ef320956e630a03c00c6d75ea5df92ec9f9ff2d14e/data' :
-        'community.wave.seqera.io/library/r-shinyngs:2.3.0--140cda6231347fbb' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d5/d5f79ef0afe3e3831496c61c81aeda56312f49ac324dc378d3312af7acae2ec6/data'
+        : 'community.wave.seqera.io/library/r-shinyngs:3.2.1--d43071e62bc500d3'}"
 
     input:
     tuple val(meta), path(sample), path(feature_meta), path(assay_files), val(variable)
@@ -22,7 +22,7 @@ process SHINYNGS_STATICEXPLORATORY {
     tuple val(meta), path("*/png/mad_correlation.png")          , emit: mad_png, optional: true
     tuple val(meta), path("*/html/mad_correlation.html")        , emit: mad_html, optional: true
     tuple val(meta), path("*/png/sample_dendrogram.png")        , emit: dendro
-    path "versions.yml"                                         , emit: versions
+    tuple val("${task.process}"), val('shinyngs'), eval('Rscript -e "library(shinyngs); cat(as.character(packageVersion(\'shinyngs\')))"'), emit: versions_shinyngs, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,11 +40,6 @@ process SHINYNGS_STATICEXPLORATORY {
         --contrast_variable "$variable" \\
         --outdir "$prefix" \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        r-shinyngs: \$(Rscript -e "library(shinyngs); cat(as.character(packageVersion('shinyngs')))")
-    END_VERSIONS
     """
 
     stub:
@@ -62,10 +57,5 @@ process SHINYNGS_STATICEXPLORATORY {
     touch ${prefix}/png/mad_correlation.png
     touch ${prefix}/html/mad_correlation.html
     touch ${prefix}/png/sample_dendrogram.png
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        r-shinyngs: \$(Rscript -e "library(shinyngs); cat(as.character(packageVersion('shinyngs')))")
-    END_VERSIONS
     """
 }

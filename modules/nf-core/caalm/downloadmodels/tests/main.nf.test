@@ -1,0 +1,32 @@
+nextflow_process {
+
+    name "Test Process CAALM_DOWNLOADMODELS"
+    script "../main.nf"
+    process "CAALM_DOWNLOADMODELS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "caalm"
+    tag "caalm/downloadmodels"
+
+    test("stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

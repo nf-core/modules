@@ -15,7 +15,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     file('https://raw.githubusercontent.com/Gaius-Augustus/BRAKER/f58479fe5bb13a9e51c3ca09cb9e137cab3b8471/example/genome.fa', checkIfExists: true)
                 ]
                 input[1] = file('http://topaz.gatech.edu/GeneMark/Braker/RNAseq.bam', checkIfExists: true)
@@ -30,6 +30,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert file(process.out.log[0][1]).text.contains('BRAKER RUN FINISHED') },
                 { assert snapshot(
                     process.out.aa,
                     process.out.cds,
@@ -37,9 +38,8 @@ nextflow_process {
                     process.out.gff3,
                     process.out.gtf,
                     process.out.hintsfile,
-                    process.out.versions,
-                    ).match() },
-                { assert file(process.out.log[0][1]).text.contains('BRAKER RUN FINISHED') }
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
 
@@ -53,7 +53,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                 ]
                 input[1] = []
@@ -68,7 +68,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

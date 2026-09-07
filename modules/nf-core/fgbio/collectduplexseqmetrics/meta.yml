@@ -37,13 +37,13 @@ input:
           and has been sorted with SortBam into TemplateCoordinate order.
         pattern: "*.bam"
         ontologies: []
-  - interval_list:
-      type: file
-      description: Calculation of metrics may be restricted to a set of regions
-        using the --intervals parameter. The file format is descripted here
-        https://samtools.github.io/htsjdk/javadoc/htsjdk/index.html?htsjdk/samtools/util/Interval.html
-      pattern: "*.{tsv|txt|interval_list}"
-      ontologies: []
+    - interval_list:
+        type: file
+        description: Calculation of metrics may be restricted to a set of regions
+          using the --intervals parameter. The file format is descripted here
+          https://samtools.github.io/htsjdk/javadoc/htsjdk/index.html?htsjdk/samtools/util/Interval.html
+        pattern: "*.{tsv|txt|interval_list}"
+        ontologies: []
 output:
   family_sizes:
     - - meta:

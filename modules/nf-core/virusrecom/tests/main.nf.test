@@ -1,0 +1,75 @@
+nextflow_process {
+    name "Test Process VIRUSRECOM"
+    script "../main.nf"
+    process "VIRUSRECOM"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "virusrecom"
+
+    test("sarscov2 - alignment [fasta] mapping [tsv]") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/delete_me/virus_recom/alignment.fasta', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/delete_me/virus_recom/mapping.txt', checkIfExists: true),
+                    []
+                ]
+                input[1] = 'query_recombinant'
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - iwic [csv]") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    [],
+                    [],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/delete_me/virus_recom/WIC.csv', checkIfExists: true)
+                ]
+                input[1] = 'query_recombinant'
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - alignment [fasta] mapping [tsv] - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/delete_me/virus_recom/alignment.fasta', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/delete_me/virus_recom/mapping.txt', checkIfExists: true),
+                    []
+                ]
+                input[1] = 'query_recombinant'
+                """
+            }
+        }
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

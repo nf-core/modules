@@ -11,9 +11,9 @@ tools:
       homepage: "https://github.com/ViriatoII/MindaGap/blob/main/README.md"
       documentation: "https://github.com/ViriatoII/MindaGap/blob/main/README.md"
       tool_dev_url: "https://github.com/ViriatoII/MindaGap"
-      licence: ["BSD 3-clause License"]
+      licence:
+        - "BSD 3-clause License"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -22,8 +22,8 @@ input:
           e.g. [ id:'test' ]
     - spot_table:
         type: file
-        description: tsv file containing one spot per row with order x,y,z,gene without
-          column header.
+        description: tsv file containing one spot per row with order x,y,z,gene
+          without column header.
         pattern: "*.{tsv,txt}"
         ontologies:
           - edam: http://edamontology.org/format_3475 # TSV
@@ -36,17 +36,32 @@ output:
             e.g. [ id:'test' ]
       - "*markedDups.txt":
           type: file
-          description: tsv file containing one spot per row, with duplicated spots labeled
-            with "Duplicated" in their gene column.
+          description: tab-separated text file containing one spot per row, with duplicated spots
+            labeled with "Duplicated" in their gene column.
           pattern: "*.{markedDups.txt}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_1964 # TXT
+  versions_mindagap:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mindagap:
+          type: string
+          description: The name of the tool
+      - mindagap.py test -v:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mindagap:
+          type: string
+          description: The name of the tool
+      - mindagap.py test -v:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@FloWuenne"
 maintainers:

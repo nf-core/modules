@@ -2,17 +2,6 @@
     "test-circexplorer2-parse-stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "fust1_3"
-                        },
-                        "fust1_3.bed:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,6490a204cc08154871418e5fbb3aff17"
-                ],
                 "junction": [
                     [
                         {
@@ -21,28 +10,38 @@
                         "fust1_3.bed:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,6490a204cc08154871418e5fbb3aff17"
+                "versions_circexplorer2": [
+                    [
+                        "CIRCEXPLORER2_PARSE",
+                        "circexplorer2",
+                        "2.3.8"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-03-12T19:13:42.915148085",
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-09-05T21:58:38.034614"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     },
     "test-circexplorer2-parse": {
         "content": [
             "fust1_3.bed",
-            [
-                "versions.yml:md5,6490a204cc08154871418e5fbb3aff17"
-            ]
+            {
+                "versions_circexplorer2": [
+                    [
+                        "CIRCEXPLORER2_PARSE",
+                        "circexplorer2",
+                        "2.3.8"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-03-12T19:13:34.9330119",
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-09-06T14:53:55.470118"
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.4"
+        }
     }
 }

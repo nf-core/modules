@@ -3,7 +3,7 @@ process ABRITAMR_RUN {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b6/b6078836553c48db86c8a1d126ca764bc812b11aaeb7222299fe7be3a06ed68e/data'
         : 'community.wave.seqera.io/library/abritamr:6aee07e42fbc9d88' }"
 

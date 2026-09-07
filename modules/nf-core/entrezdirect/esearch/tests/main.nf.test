@@ -29,7 +29,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
                     process.out.xml.collect{ [it[0], file(it[1]).name] }
                 ).match() }
             )
@@ -79,7 +79,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
                     process.out.xml.collect{ [it[0], file(it[1]).name] }
                 ).match() }
             )
@@ -109,7 +109,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }

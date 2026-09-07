@@ -1,0 +1,66 @@
+nextflow_process {
+
+    name "Test Process HOLODECK_SIMULATE"
+    script "../main.nf"
+    process "HOLODECK_SIMULATE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "holodeck"
+    tag "holodeck/simulate"
+
+    test("sarscov2 - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true),
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.reads_1.collect { meta, reads -> file(reads).name },
+                    process.out.reads_2.collect { meta, reads -> file(reads).name },
+                    sanitizeOutput(process.out, unstableKeys: ["reads_1", "reads_2"])
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true),
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

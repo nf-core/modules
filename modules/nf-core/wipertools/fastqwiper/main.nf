@@ -3,9 +3,9 @@ process WIPERTOOLS_FASTQWIPER {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/wipertools:1.1.5--pyhdfd78af_0':
-        'biocontainers/wipertools:1.1.5--pyhdfd78af_0' }"
+        'quay.io/biocontainers/wipertools:1.1.5--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fastq)
@@ -13,7 +13,7 @@ process WIPERTOOLS_FASTQWIPER {
     output:
     tuple val(meta), path("${prefix}.fastq.gz"), emit: wiped_fastq
     tuple val(meta), path("*.report")          , emit: report
-    path "versions.yml"                        , emit: versions
+    tuple val("${task.process}"), val('wipertools'), eval("wipertools fastqwiper --version"), topic: versions, emit: versions_wipertools
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,11 +29,6 @@ process WIPERTOOLS_FASTQWIPER {
         -o ${prefix}.fastq.gz \\
         -r ${prefix}.report \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        wipertools fastqwiper: \$(wipertools fastqwiper --version)
-    END_VERSIONS
     """
 
     stub:
@@ -42,10 +37,5 @@ process WIPERTOOLS_FASTQWIPER {
     """
     echo "" | gzip > ${prefix}.fastq.gz
     touch ${prefix}.report
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        wipertools fastqwiper: \$(wipertools fastqwiper --version)
-    END_VERSIONS
     """
 }

@@ -1,0 +1,119 @@
+nextflow_process {
+
+    name "Test Process MACSYFINDER_SEARCH"
+    script "../main.nf"
+    process "MACSYFINDER_SEARCH"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "macsyfinder"
+    tag "macsyfinder/search"
+    tag "macsyfinder/download"
+    tag "pigz"
+    tag "pigz/compress"
+
+    setup {
+        run("MACSYFINDER_DOWNLOAD") {
+            script "../../download/main.nf"
+            process {
+                """
+                input[0] = 'TXSScan'
+                """
+            }
+        }
+    }
+
+    test("macsyfinder_search - proteins - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true)
+                ]
+                input[1] = MACSYFINDER_DOWNLOAD.out.models
+                input[2] = 'TXSScan'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.best_solutions.collect { meta, filepath -> [ meta, file(filepath).name ] },
+                    process.out.stderr.collect { meta, filepath -> [ meta, file(filepath).name ] },
+                    process.out.stdout.collect { meta, filepath -> [ meta, file(filepath).name ] },
+                    process.out.summary.collect { meta, filepath -> [ meta, file(filepath).name ] },
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+
+    test("macsyfinder_search - proteins - fasta.gz") {
+
+        setup {
+            run("PIGZ_COMPRESS") {
+                script "../../../pigz/compress/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = PIGZ_COMPRESS.out.archive
+                input[1] = MACSYFINDER_DOWNLOAD.out.models
+                input[2] = 'TXSScan'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.best_solutions.collect { meta, filepath -> [ meta, file(filepath).name ] },
+                    process.out.stderr.collect { meta, filepath -> [ meta, file(filepath).name ] },
+                    process.out.stdout.collect { meta, filepath -> [ meta, file(filepath).name ] },
+                    process.out.summary.collect { meta, filepath -> [ meta, file(filepath).name ] },
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+
+    test("macsyfinder_search - proteins - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true)
+                ]
+                input[1] = MACSYFINDER_DOWNLOAD.out.models
+                input[2] = 'TXSScan'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

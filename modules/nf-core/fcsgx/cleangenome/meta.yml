@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "fcsgx_cleangenome"
-description: Runs FCS-GX (Foreign Contamination Screen - Genome eXtractor) to remove
-  foreign contamination from genome assemblies
+description: Runs FCS-GX (Foreign Contamination Screen - Genome eXtractor) to
+  remove foreign contamination from genome assemblies
 keywords:
   - genome
   - assembly
@@ -17,9 +16,9 @@ tools:
       documentation: "https://github.com/ncbi/fcs/wiki/"
       tool_dev_url: "https://github.com/ncbi/fcs-gx"
       doi: "10.1186/s13059-024-03198-7"
-      licence: ["NCBI-PD"]
+      licence:
+        - "NCBI-PD"
       identifier: "biotools:ncbi_fcs"
-
 input:
   - - meta:
         type: map
@@ -33,8 +32,8 @@ input:
         ontologies: []
     - fcsgx_report:
         type: file
-        description: Final contamination report with contaminant cleaning actions. Generated
-          using FCSGX_RUNGX
+        description: Final contamination report with contaminant cleaning actions.
+          Generated using FCSGX_RUNGX
         ontologies: []
 output:
   cleaned:
@@ -45,8 +44,8 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.cleaned.fasta":
           type: file
-          description: The fasta file after cleaning, where sequences annotated as ACTION_EXCLUDE
-            or ACTION_TRIM are excluded
+          description: The fasta file after cleaning, where sequences annotated as
+            ACTION_EXCLUDE or ACTION_TRIM are excluded
           ontologies: []
   contaminants:
     - - meta:
@@ -56,15 +55,30 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.contaminants.fasta":
           type: file
-          description: Sequences annotated as ACTION_EXCLUDE which are marked as contaminants.
+          description: Sequences annotated as ACTION_EXCLUDE which are marked as
+            contaminants.
           ontologies: []
+  versions_fcsgx:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fcsgx:
+          type: string
+          description: The name of the tool
+      - gx --help | sed '/build/!d; s/.*:v//; s/-.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fcsgx:
+          type: string
+          description: The name of the tool
+      - gx --help | sed '/build/!d; s/.*:v//; s/-.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@mahesh-panchal"
   - "@LaurenHuet"

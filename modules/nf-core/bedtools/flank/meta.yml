@@ -1,0 +1,65 @@
+name: bedtools_flank
+description: Creates two new flanking intervals for each interval in a BED/GFF/VCF file.
+keywords:
+  - bed
+  - flankBed
+  - bedtools
+tools:
+  - bedtools:
+      description: |
+        A set of tools for genomic analysis tasks, specifically enabling genome arithmetic (merge, count, complement) on various file types.
+      documentation: https://bedtools.readthedocs.io/en/latest/content/tools/slop.html
+      licence: ["MIT"]
+      identifier: biotools:bedtools
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bed:
+        type: file
+        description: Input BED file
+        pattern: "*.{bed}"
+        ontologies: []
+  - sizes:
+      type: file
+      description: Chromosome sizes file
+      ontologies: []
+output:
+  bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bed":
+          type: file
+          description: Flanked BED file
+          pattern: "*.{bed}"
+          ontologies: []
+  versions_bedtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bedtools:
+          type: string
+          description: The name of the tool
+      - "bedtools --version | sed -e 's/bedtools v//g'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bedtools:
+          type: string
+          description: The name of the tool
+      - "bedtools --version | sed -e 's/bedtools v//g'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@itrujnara"
+maintainers:
+  - "@itrujnara"

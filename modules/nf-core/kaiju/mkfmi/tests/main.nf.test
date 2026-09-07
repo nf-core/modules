@@ -18,7 +18,9 @@ nextflow_process {
                         [ id:'test', single_end:true ],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
                         ]
-                input[1] = false
+                input[1] = file(params.modules_testdata_base_path + 'delete_me/kaiju/nodes.dmp', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'delete_me/kaiju/names.dmp', checkIfExists: true)
+                input[3] = false
                 """
             }
         }
@@ -41,7 +43,9 @@ nextflow_process {
                         [ id:'test', single_end:true ],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
                         ]
-                input[1] = true
+                input[1] = file(params.modules_testdata_base_path + 'delete_me/kaiju/nodes.dmp', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'delete_me/kaiju/names.dmp', checkIfExists: true)
+                input[3] = true
                 """
             }
         }
@@ -66,7 +70,9 @@ nextflow_process {
                         [ id:'test', single_end:true ],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
                         ]
-                input[1] = true
+                input[1] = file(params.modules_testdata_base_path + 'delete_me/kaiju/nodes.dmp', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'delete_me/kaiju/names.dmp', checkIfExists: true)
+                input[3] = true
                 """
             }
         }
@@ -74,7 +80,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(file(process.out.fmi[0][1]).name).match() }
+                { assert snapshot(process.out).match() }
             )
         }
 

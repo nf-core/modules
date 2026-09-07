@@ -39,6 +39,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     ])
                     input[6] = []
+                    input[7] = [[], []]
                     """
                 }
             }
@@ -49,6 +50,7 @@ nextflow_process {
                 """
                 input[0] = ENSEMBLVEP_VEP.out.vcf
                 input[1] = []
+                input[2] = "vcf"
                 """
             }
         }
@@ -90,6 +92,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                     ])
                     input[6] = []
+                    input[7] = [[], []]
                     """
                 }
             }
@@ -100,6 +103,7 @@ nextflow_process {
                 """
                 input[0] = ENSEMBLVEP_VEP.out.tab
                 input[1] = []
+                input[2] = "tab.gz"
                 """
             }
         }
@@ -108,7 +112,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions") }).match() },
-                { assert path(process.out.output.get(0).get(1)).readLines().first().contains("## ENSEMBL VARIANT EFFECT PREDICTOR v115.2") }
+                { assert path(process.out.output.get(0).get(1)).readLines().first().contains("## ENSEMBL VARIANT EFFECT PREDICTOR v116.1") }
             )
         }
     }

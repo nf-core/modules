@@ -1,7 +1,7 @@
 name: "basicpy"
-description: BaSiCPy is a python package for background and shading correction of
-  optical microscopy images. It is developed based on the Matlab version of BaSiC
-  tool with major improvements in the algorithm.
+description: BaSiCPy is a python package for background and shading correction
+  of optical microscopy images. It is developed based on the Matlab version of
+  BaSiC tool with major improvements in the algorithm.
 keywords:
   - illumiation_correction
   - background_correction
@@ -16,7 +16,8 @@ tools:
       documentation: "https://basicpy.readthedocs.io/en/latest/index.html"
       tool_dev_url: "https://github.com/peng-lab/BaSiCPy"
       doi: 10.1038/ncomms14836
-      license: ["MIT License"]
+      license:
+        - "MIT License"
       identifier: ""
 input:
   - - meta:
@@ -26,7 +27,8 @@ input:
           e.g. [ id:'test' ]
     - image:
         type: file
-        description: BioFormats-compatible image file to be used for dark and flat field illumination correction
+        description: BioFormats-compatible image file to be used for dark and flat
+          field illumination correction
         pattern: "*.{ome.tiff,ome.tif,rcpnl,btf,nd2,tiff,tif,czi}"
         ontologies: []
 output:
@@ -46,13 +48,27 @@ output:
           description: OME-TIFF fields for flat field illumination correction
           pattern: "*.{ome.tif}"
           ontologies: []
+  versions_basicpy:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - basicpy:
+          type: string
+          description: The name of the tool
+      - 1.2.0:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - basicpy:
+          type: string
+          description: The name of the tool
+      - 1.2.0:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@FloWuenne"
 maintainers:

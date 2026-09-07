@@ -1,4 +1,4 @@
-FROM ghcr.io/qbic-pipelines/matlabruntime-base:1.0.0
+FROM ghcr.io/qbic-pipelines/matlabruntime-base:1.0.0@sha256:b1bacc5939d75034a1e9d01f3a294668f5f5b726977d15a7a4beca3e60b7ad0b
 
 ARG MAT2JSON_VERSION="1.0.0"
 ARG MAT2JSON_URL="https://github.com/qbic-pipelines/mat2json/releases/download/v1.0.0/mat2json"

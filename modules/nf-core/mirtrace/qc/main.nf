@@ -3,21 +3,21 @@ process MIRTRACE_QC {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mirtrace:1.0.1--0':
-        'biocontainers/mirtrace:1.0.1--0' }"
+        'quay.io/biocontainers/mirtrace:1.0.1--0' }"
 
     input:
     tuple val(meta), path(reads), path(mirtrace_config)
     val(mirtrace_species)
 
     output:
-    tuple val(meta), path ("*.html")                                                 , emit: html
-    tuple val(meta), path ("*.json")                                                 , emit: json
-    tuple val(meta), path ("*.tsv")                                                  , emit: tsv
-    tuple val(meta), path ("qc_passed_reads.all.collapsed/*.{fa,fasta}")             , emit: all_fa
-    tuple val(meta), path ("qc_passed_reads.rnatype_unknown.collapsed/*.{fa,fasta}") , emit: rnatype_unknown_fa
-    path "versions.yml"                                                              , emit: versions
+    tuple val(meta), path ("*.html")                                                , emit: html
+    tuple val(meta), path ("*.json")                                                , emit: json
+    tuple val(meta), path ("*.tsv")                                                 , emit: tsv
+    tuple val(meta), path ("qc_passed_reads.all.collapsed/*.{fa,fasta}")            , emit: all_fa
+    tuple val(meta), path ("qc_passed_reads.rnatype_unknown.collapsed/*.{fa,fasta}"), emit: rnatype_unknown_fa
+    tuple val("${task.process}"), val('mirtrace'), eval("mirtrace -v"), emit: versions_mirtrace, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,11 +32,6 @@ process MIRTRACE_QC {
         --output-dir . \\
         --force \\
         ${mirtrace_mode}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mirtrace: \$(echo \$(mirtrace -v))
-    END_VERSIONS
     """
 
     stub:
@@ -52,10 +47,5 @@ process MIRTRACE_QC {
 
     touch qc_passed_reads.all.collapsed/${prefix}.fa
     touch qc_passed_reads.rnatype_unknown.collapsed/${prefix}.fa
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mirtrace: \$(echo \$(mirtrace -v))
-    END_VERSIONS
     """
 }

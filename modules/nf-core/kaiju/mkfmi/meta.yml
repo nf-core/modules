@@ -14,7 +14,8 @@ tools:
       documentation: "https://github.com/bioinformatics-centre/kaiju/blob/master/README.md"
       tool_dev_url: "https://github.com/bioinformatics-centre/kaiju"
       doi: "10.1038/ncomms11257"
-      licence: ["GNU GPL v3"]
+      licence:
+        - "GNU GPL v3"
       identifier: biotools:kaiju
 input:
   - - meta:
@@ -26,7 +27,20 @@ input:
         type: file
         description: Uncompressed Protein FASTA file (mandatory)
         pattern: "*.{fa,faa,fasta}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1929
+  - nodes_dmp:
+      type: file
+      description: NCBI nodes.dmp file (mandatory)
+      pattern: "nodes.dmp"
+      ontologies:
+        - edam: http://edamontology.org/format_3751
+  - names_dmp:
+      type: file
+      description: NCBI names.dmp file (mandatory)
+      pattern: "names.dmp"
+      ontologies:
+        - edam: http://edamontology.org/format_3751
   - keep_intermediate:
       type: boolean
       description: "Keep intermediate files"
@@ -38,10 +52,11 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:false ]`
-      - "*.fmi":
+      - "*.{fmi,dmp}":
           type: file
-          description: Kaiju FM-index file
-          pattern: "*.{fmi}"
+          description: Kaiju FM-index file, and input {names,nodes}.dmp NCBI taxonomy
+            files required for downstream Kaiju commands
+          pattern: "*.{fmi,dmp}"
           ontologies: []
   bwt:
     - - meta:
@@ -65,13 +80,27 @@ output:
           description: Kaiju intermedite bwt-index file (not needed for classification)
           pattern: "*.{sa}"
           ontologies: []
+  versions_kaiju:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kaiju:
+          type: string
+          description: The name of the tool
+      - kaiju -h 2>&1 | sed -n 1p | sed 's/^.*Kaiju //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kaiju:
+          type: string
+          description: The name of the tool
+      - kaiju -h 2>&1 | sed -n 1p | sed 's/^.*Kaiju //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@alxndrdiaz"
   - "@jfy133"

@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: deeptmhmm
 description: A Deep Learning Model for Transmembrane Topology Prediction and Classification
 keywords:
@@ -12,7 +11,8 @@ tools:
       homepage: https://dtu.biolib.com/DeepTMHMM
       documentation: https://dtu.biolib.com/DeepTMHMM
       doi: 10.1101/2022.04.08.487609
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -87,13 +87,46 @@ output:
             against genomic fasta)
           pattern: "biolib_results/plot.png"
           ontologies: []
+  versions_biolib:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - biolib:
+          type: string
+          description: The name of the tool
+      - biolib --version 2>&1 | sed 's/.*version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_python:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python --version | sed 's/Python //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - biolib:
+          type: string
+          description: The name of the tool
+      - biolib --version 2>&1 | sed 's/.*version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python --version | sed 's/Python //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@vagkaratzas"
 maintainers:

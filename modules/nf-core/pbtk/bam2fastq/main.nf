@@ -3,16 +3,16 @@ process PBTK_BAM2FASTQ {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pbtk:3.1.1--h9ee0642_0':
-        'biocontainers/pbtk:3.1.1--h9ee0642_0' }"
+        'quay.io/biocontainers/pbtk:3.1.1--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(bam), path(pbi)
 
     output:
     tuple val(meta), path("*.$extension")   , emit: fastq
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('pbtk'), eval("bam2fastq --version 2>&1 | sed -n 's/.*bam2fastq //p' | cut -d' ' -f1"), emit: versions_bam2fastq, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,11 +27,6 @@ process PBTK_BAM2FASTQ {
         -j $task.cpus \\
         -o ${prefix} \\
         $bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bam2fastq: \$(bam2fastq --version 2>&1 | sed -n 's/.*bam2fastq \\([0-9]\\+\\.[0-9]\\+\\.[0-9]\\+\\).*/\\1/p')
-    END_VERSIONS
     """
 
     stub:
@@ -42,10 +37,5 @@ process PBTK_BAM2FASTQ {
     """
     touch ${prefix}.fastq
     $gzip
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bam2fastq: \$(bam2fastq --version 2>&1 | sed -n 's/.*bam2fastq \\([0-9]\\+\\.[0-9]\\+\\.[0-9]\\+\\).*/\\1/p')
-    END_VERSIONS
     """
 }

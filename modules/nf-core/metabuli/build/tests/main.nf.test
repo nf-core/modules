@@ -1,0 +1,171 @@
+nextflow_process {
+
+    name "Test Process METABULI_BUILD"
+    script "../main.nf"
+    process "METABULI_BUILD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "metabuli"
+    tag "metabuli/build"
+
+    test("sarscov2 - sarscov2 DNA - no cds info") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                        [
+                            file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true),
+                        ]
+                    ]
+                input[1] = file(params.modules_testdata_base_path +'genomics/prokaryotes/metagenome/taxonomy/taxdmp/names.dmp', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path +'genomics/prokaryotes/metagenome/taxonomy/taxdmp/nodes.dmp', checkIfExists: true)
+                input[3] = []
+                input[4] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/accession2taxid/nucl_gb.accession2taxid', checkIfExists: true)
+                input[5] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        path("${process.out.db[0][1]}/acc2taxid.map"),
+                        path("${process.out.db[0][1]}/diffIdx"),
+                        path("${process.out.db[0][1]}/info"),
+                        file("${process.out.db[0][1]}/split").name,
+                        path("${process.out.db[0][1]}/taxID_list"),
+                        file("${process.out.db[0][1]}/db.parameters").name,
+                        process.out.findAll { key, val -> key.startsWith("versions")}
+                        ).match()
+                }
+            )
+        }
+    }
+
+    test("sarscov2 - sarscov2 DNA - two input fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                        [
+                            file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true),
+                            file(params.modules_testdata_base_path + "genomics/prokaryotes/haemophilus_influenzae/genome/genome.fna.gz", checkIfExists: true),
+                        ]
+                    ]
+                input[1] = file(params.modules_testdata_base_path +'genomics/prokaryotes/metagenome/taxonomy/taxdmp/names.dmp', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path +'genomics/prokaryotes/metagenome/taxonomy/taxdmp/nodes.dmp', checkIfExists: true)
+                input[3] = []
+                input[4] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/accession2taxid/nucl_gb.accession2taxid', checkIfExists: true)
+                input[5] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        path("${process.out.db[0][1]}/acc2taxid.map"),
+                        path("${process.out.db[0][1]}/diffIdx"),
+                        path("${process.out.db[0][1]}/info"),
+                        file("${process.out.db[0][1]}/split").name,
+                        path("${process.out.db[0][1]}/taxID_list"),
+                        file("${process.out.db[0][1]}/db.parameters").name,
+                        process.out.findAll { key, val -> key.startsWith("versions")}
+                        ).match()
+                }
+            )
+        }
+
+    }
+
+    test("sarscov2 - sarscov2 DNA - with cds info") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                        [
+                            file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true),
+                        ]
+                    ]
+                input[1] = file(params.modules_testdata_base_path +'genomics/prokaryotes/metagenome/taxonomy/taxdmp/names.dmp', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path +'genomics/prokaryotes/metagenome/taxonomy/taxdmp/nodes.dmp', checkIfExists: true)
+                input[3] = []
+                input[4] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/accession2taxid/nucl_gb.accession2taxid', checkIfExists: true)
+                input[5] = [
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        path("${process.out.db[0][1]}/acc2taxid.map"),
+                        path("${process.out.db[0][1]}/diffIdx"),
+                        path("${process.out.db[0][1]}/info"),
+                        file("${process.out.db[0][1]}/split").name,
+                        path("${process.out.db[0][1]}/taxID_list"),
+                        file("${process.out.db[0][1]}/db.parameters").name,
+                        process.out.findAll { key, val -> key.startsWith("versions")}
+                        ).match()
+                }
+            )
+        }
+
+    }
+
+    test("sarscov2 - sarscov2 DNA - with cds info - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                        [
+                            file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true),
+                        ]
+                    ]
+                input[1] = file(params.modules_testdata_base_path +'genomics/prokaryotes/metagenome/taxonomy/taxdmp/names.dmp', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path +'genomics/prokaryotes/metagenome/taxonomy/taxdmp/nodes.dmp', checkIfExists: true)
+                input[3] = []
+                input[4] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/accession2taxid/nucl_gb.accession2taxid', checkIfExists: true)
+                input[5] = [
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                        path("${process.out.db[0][1]}/acc2taxid.map"),
+                        path("${process.out.db[0][1]}/diffIdx"),
+                        path("${process.out.db[0][1]}/info"),
+                        file("${process.out.db[0][1]}/split").name,
+                        path("${process.out.db[0][1]}/taxID_list"),
+                        file("${process.out.db[0][1]}/db.parameters").name,
+                        process.out.versions_metabuli
+                        ).match()
+                }
+            )
+        }
+
+    }
+
+
+}

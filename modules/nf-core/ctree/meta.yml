@@ -31,7 +31,7 @@ input:
           Either a .rds object of class `vb_bmm` or `dbpmm`, or a `.tsv` mutations table obtained after running the `pyclonevi` module
         pattern: "*.{rds,tsv}"
         ontologies:
-          - edam: "http://edamontology.org/format_3475" # tsv
+          - edam: "http://edamontology.org/format_3475" # TSV
 output:
   ctree_rds:
     - - meta:
@@ -85,7 +85,7 @@ output:
             Final report plots as a pdf object. The module outputs one file for each ctree object
           pattern: "**ctree_{mobster,VIBER,pyclonevi}_report.pdf"
           ontologies:
-            - edam: "http://edamontology.org/format_3508" # pdf
+            - edam: "http://edamontology.org/format_3508" # PDF
   ctree_report_png:
     - - meta:
           type: map
@@ -98,8 +98,8 @@ output:
             Final report plots as a png object. The module outputs one file for each ctree object
           pattern: "**ctree_{mobster,VIBER,pyclonevi}_report.png"
           ontologies:
-            - edam: "http://edamontology.org/format_3603" # png
-  versions_ctree:
+            - edam: "http://edamontology.org/format_3603" # PNG
+  versions:
     - "versions.yml":
         type: file
         description: File containing software versions

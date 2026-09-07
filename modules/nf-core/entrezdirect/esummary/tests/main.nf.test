@@ -31,7 +31,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.xml[0][1]).readLines()[0..2],
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -59,7 +59,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.xml[0][1]).readLines()[0..2],
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -87,7 +87,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.xml[0][1]).readLines()[0..2],
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )

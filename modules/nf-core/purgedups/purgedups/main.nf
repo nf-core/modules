@@ -3,9 +3,9 @@ process PURGEDUPS_PURGEDUPS {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/purge_dups:1.2.6--py39h7132678_1':
-        'biocontainers/purge_dups:1.2.6--py39h7132678_1' }"
+        'quay.io/biocontainers/purge_dups:1.2.6--py39h7132678_1' }"
 
     input:
     tuple val(meta), path(basecov), path(cutoff), path(paf)
@@ -27,8 +27,8 @@ process PURGEDUPS_PURGEDUPS {
         ${args} \\
         -T ${cutoff} \\
         -c ${basecov} \\
-        ${paf} 2> >(tee test.purge_dups.log >&2) | gzip \
-        > test.dups.bed.gz
+        ${paf} 2> >(tee ${prefix}.purge_dups.log >&2) | gzip \
+        > ${prefix}.dups.bed.gz
     """
 
     stub:

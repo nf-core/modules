@@ -25,8 +25,8 @@ workflow UTILS_REFERENCES {
     references_value = get_references_value(references, param_value, attribute_value)
 
     emit:
-    references_file
-    references_value
+    references_file = references_file
+    references_value = references_value
 }
 // You can delete everything before this line (including this line)
 

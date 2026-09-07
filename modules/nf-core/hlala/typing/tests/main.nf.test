@@ -55,7 +55,7 @@ nextflow_process {
                     [ id: 'test'],
                     file("https://dl.dropboxusercontent.com/s/xr99u3vqaimk4vo/NA12878.mini.cram", checkIfExists: true)
                 ]).combine(
-                    SAMTOOLS_INDEX.out.bai.map{ it[1] }
+                    SAMTOOLS_INDEX.out.index.map{ it[1] }
                 ).combine(
                     HLALA_PREPAREGRAPH.out.graph.map{ it[1] }
                 )
@@ -99,10 +99,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                ).match() }
+                { assert snapshot(process.out).match() }
             )
         }
     }

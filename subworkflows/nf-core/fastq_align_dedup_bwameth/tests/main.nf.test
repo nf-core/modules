@@ -44,15 +44,12 @@ nextflow_workflow {
                 ])
                 input[1] = Channel.of([
                             [:],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
-                ])
-                input[2] = Channel.of([
-                            [:],
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
-                input[3] = UNTAR.out.untar
-                input[4] = false // skip_deduplication
-                input[5] = false // use_gpu
+                input[2] = UNTAR.out.untar
+                input[3] = false // skip_deduplication
+                input[4] = false // use_gpu
                 """
             }
         }
@@ -62,13 +59,12 @@ nextflow_workflow {
                 { assert workflow.success},
                 { assert snapshot(
                     workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
-                    workflow.out.bai.collect { meta, bai -> file(bai).name },
+                    workflow.out.bai.collect { meta, index -> file(index).name },
                     workflow.out.samtools_flagstat,
                     workflow.out.samtools_stats,
                     workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
-                    workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions
-                    ).match() }
+                    workflow.out.multiqc.flatten().collect { path -> file(path).name }
+                ).match() }
             )
         }
     }
@@ -81,20 +77,17 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                             [ id:'test', single_end:false ],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true)
+                            [file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true)]
                 ])
                 input[1] = Channel.of([
                             [:],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
-                ])
-                input[2] = Channel.of([
-                            [:],
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
-                input[3] = UNTAR.out.untar
-                input[4] = false // skip_deduplication
-                input[5] = false // use_gpu
+                input[2] = UNTAR.out.untar
+                input[3] = false // skip_deduplication
+                input[4] = false // use_gpu
                 """
             }
         }
@@ -104,13 +97,12 @@ nextflow_workflow {
                 { assert workflow.success},
                 { assert snapshot(
                     workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
-                    workflow.out.bai.collect { meta, bai -> file(bai).name },
+                    workflow.out.bai.collect { meta, index -> file(index).name },
                     workflow.out.samtools_flagstat,
                     workflow.out.samtools_stats,
                     workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
-                    workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions
-                    ).match() }
+                    workflow.out.multiqc.flatten().collect { path -> file(path).name }
+                ).match() }
             )
         }
     }
@@ -123,20 +115,17 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                             [ id:'test', single_end:false ],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true)
+                            [file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R1.fastq.gz', checkIfExists: true),
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/testdata/Ecoli_10K_methylated_R2.fastq.gz', checkIfExists: true)]
                 ])
                 input[1] = Channel.of([
                             [:],
-                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
-                ])
-                input[2] = Channel.of([
-                            [:],
+                            file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true),
                             file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa.fai', checkIfExists: true)
                 ])
-                input[3] = UNTAR.out.untar
-                input[4] = true // skip_deduplication
-                input[5] = false // use_gpu
+                input[2] = UNTAR.out.untar
+                input[3] = true // skip_deduplication
+                input[4] = false // use_gpu
                 """
             }
         }
@@ -146,13 +135,12 @@ nextflow_workflow {
                 { assert workflow.success},
                 { assert snapshot(
                     workflow.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5() },
-                    workflow.out.bai.collect { meta, bai -> file(bai).name },
+                    workflow.out.bai.collect { meta, index -> file(index).name },
                     workflow.out.samtools_flagstat,
                     workflow.out.samtools_stats,
                     workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
-                    workflow.out.multiqc.flatten().collect { path -> file(path).name },
-                    workflow.out.versions
-                    ).match() }
+                    workflow.out.multiqc.flatten().collect { path -> file(path).name }
+                ).match() }
             )
         }
     }

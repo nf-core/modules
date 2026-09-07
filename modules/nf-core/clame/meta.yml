@@ -14,7 +14,8 @@ tools:
       documentation: "https://github.com/andvides/CLAME"
       tool_dev_url: "https://github.com/andvides/CLAME"
       doi: "10.1186/s12864-018-5191-y"
-      licence: ["GPLv3"]
+      licence:
+        - "GPLv3"
       identifier: ""
 input:
   - - meta:
@@ -36,8 +37,8 @@ output:
             e.g. `[ id:'test', single_end:false ]`
       - "*.fasta":
           type: file
-          description: Output fasta file for all the bins reported, optional since it
-            will be created when bins can be found
+          description: Output fasta file for all the bins reported, optional since
+            it will be created when bins can be found
           pattern: "*.{fasta}"
           ontologies: []
   bins:
@@ -70,8 +71,8 @@ output:
             e.g. `[ id:'test', single_end:false ]`
       - "*.index":
           type: file
-          description: 1st column contains the original name for each read, 2nd column
-            the index used by CLAME
+          description: 1st column contains the original name for each read, 2nd
+            column the index used by CLAME
           pattern: "*.{index}"
           ontologies: []
   links:
@@ -96,12 +97,26 @@ output:
           description: Adjacency list for the overlap detected by each read
           pattern: "*.{result}"
           ontologies: []
+  versions_clame:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - clame:
+          type: string
+          description: The name of the tool
+      - clame -h 2>&1 | sed '2!d;s/version //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - clame:
+          type: string
+          description: The name of the tool
+      - clame -h 2>&1 | sed '2!d;s/version //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@alxndrdiaz"

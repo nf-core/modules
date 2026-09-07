@@ -1,0 +1,93 @@
+nextflow_process {
+
+    name "Test Process PERCOLATOR"
+    script "../main.nf"
+    process "PERCOLATOR"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "percolator"
+    tag "comet"
+    tag "openms/decoydatabase"
+
+    setup {
+        run("OPENMS_DECOYDATABASE") {
+            script "../../openms/decoydatabase/main.nf"
+            process {
+                """
+                input[0] = channel.of([
+                    [ id:'test_db' ],
+                    file(params.modules_testdata_base_path + 'proteomics/database/yeast_UPS.fasta', checkIfExists: true),
+                ])
+                """
+            }
+        }
+
+        run("COMET") {
+            script "../../comet/main.nf"
+
+            process {
+                """
+                def originalParams = file(params.modules_testdata_base_path + 'proteomics/parameter/OVEMB150205.comet.params', checkIfExists: true)
+                def modifiedParams = new File('./modified.comet.params')
+                modifiedParams.text = originalParams.text
+                    .replaceAll('(?m)^output_percolatorfile =.*', 'output_percolatorfile = 1')
+                    .replaceAll('(?m)^output_txtfile =.*', 'output_txtfile = 0')
+                    .replaceAll('(?m)^output_mzidentmlfile =.*', 'output_mzidentmlfile = 0')
+
+                input[0] = OPENMS_DECOYDATABASE.out.decoy_fasta.map { meta, fasta ->
+                    [
+                        [ id:'test'],
+                        file(params.modules_testdata_base_path + 'proteomics/msspectra/OVEMB150205_12.mzML', checkIfExists: true),
+                        fasta,
+                        file(modifiedParams),
+                    ]
+                }
+                """
+            }
+        }
+    }
+
+    test("percolator - OVEMB150205_12") {
+        when {
+            params {
+                module_args = '--post-processing-tdc --search-input concatenated --write_tabout --write_weights --write_peptide_results'
+            }
+            process {
+                """
+                input[0] = COMET.out.pin
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("percolator - OVEMB150205_12 - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--post-processing-tdc --search-input concatenated --write_tabout --write_weights --write_peptide_results'
+            }
+            process {
+                """
+                input[0] = COMET.out.pin
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

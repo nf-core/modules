@@ -2,25 +2,6 @@
     "[ bam, bai, snps, [], [] ], fasta, fai - log & cram -stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.cram:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.log:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
-                    "versions.yml:md5,2dfda84762159ad14ca71803b3139183"
-                ],
                 "bam": [
                     [
                         {
@@ -37,55 +18,51 @@
                         "test.log:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,2dfda84762159ad14ca71803b3139183"
+                "versions_longphase": [
+                    [
+                        "LONGPHASE_HAPLOTAG",
+                        "longphase",
+                        "2.0.1 "
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.4"
         },
-        "timestamp": "2025-10-22T11:47:07.246878607"
+        "timestamp": "2026-03-20T10:13:11.968590854"
     },
     "[ bam, bai, snps, [], [] ], fasta, fai": {
         "content": [
-            [
-                "versions.yml:md5,2dfda84762159ad14ca71803b3139183"
-            ],
+            {
+                "versions_longphase": [
+                    [
+                        "LONGPHASE_HAPLOTAG",
+                        "longphase",
+                        "2.0.1 "
+                    ]
+                ]
+            },
             [
                 "@HD\tVN:1.6\tSO:coordinate",
                 "@SQ\tSN:chr22\tLN:40001",
                 "@RG\tID:test\tSM:test",
                 "@PG\tID:minimap2\tPN:minimap2\tVN:2.28-r1209\tCL:minimap2 -y -x map-ont --secondary=no -R @RG\\tID:test\\tSM:test -t 30 -a genome.mmi test.bam_other.fastq.gz",
                 "@PG\tID:samtools\tPN:samtools\tPP:minimap2\tVN:1.19.2\tCL:samtools sort -@ 29 -o test.bam_other.fastq.gz.bam --write-index",
-                "@PG\tID:longphase\tPN:longphase\tPP:samtools\tVN:2.0\tCL:longphase haplotag --threads 2 -o test --reference genome.fasta --snp-file test.genome.vcf.gz --bam test.sorted.bam "
+                "@PG\tID:longphase\tPN:longphase\tPP:samtools\tVN:2.0.1\tCL:longphase haplotag --threads 2 -o test --reference genome.fasta --snp-file test.genome.vcf.gz --bam test.sorted.bam "
             ],
             "721264eb2824a3146b331f2532d10180"
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.4"
         },
-        "timestamp": "2025-10-22T11:46:50.605854269"
+        "timestamp": "2026-03-20T10:12:40.584213389"
     },
     "[ bam, bai, snps, [], [] ], fasta, fai -stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    
-                ],
-                "2": [
-                    "versions.yml:md5,2dfda84762159ad14ca71803b3139183"
-                ],
                 "bam": [
                     [
                         {
@@ -97,43 +74,59 @@
                 "log": [
                     
                 ],
-                "versions": [
-                    "versions.yml:md5,2dfda84762159ad14ca71803b3139183"
+                "versions_longphase": [
+                    [
+                        "LONGPHASE_HAPLOTAG",
+                        "longphase",
+                        "2.0.1 "
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.4"
         },
-        "timestamp": "2025-10-22T11:47:03.645623933"
+        "timestamp": "2026-03-20T10:13:04.628910585"
     },
     "[ bam, bai, snps, svs, [] ], fasta, fai": {
         "content": [
-            [
-                "versions.yml:md5,2dfda84762159ad14ca71803b3139183"
-            ],
+            {
+                "versions_longphase": [
+                    [
+                        "LONGPHASE_HAPLOTAG",
+                        "longphase",
+                        "2.0.1 "
+                    ]
+                ]
+            },
             [
                 "@HD\tVN:1.6\tSO:coordinate",
                 "@SQ\tSN:chr22\tLN:40001",
                 "@RG\tID:test\tSM:test",
                 "@PG\tID:minimap2\tPN:minimap2\tVN:2.28-r1209\tCL:minimap2 -y -x map-ont --secondary=no -R @RG\\tID:test\\tSM:test -t 30 -a genome.mmi test.bam_other.fastq.gz",
                 "@PG\tID:samtools\tPN:samtools\tPP:minimap2\tVN:1.19.2\tCL:samtools sort -@ 29 -o test.bam_other.fastq.gz.bam --write-index",
-                "@PG\tID:longphase\tPN:longphase\tPP:samtools\tVN:2.0\tCL:longphase haplotag --threads 2 -o test --reference genome.fasta --snp-file test.genome.vcf.gz --bam test.sorted.bam --sv-file NA24385_sv.vcf.gz "
+                "@PG\tID:longphase\tPN:longphase\tPP:samtools\tVN:2.0.1\tCL:longphase haplotag --threads 2 -o test --reference genome.fasta --snp-file test.genome.vcf.gz --bam test.sorted.bam --sv-file NA24385_sv.vcf.gz "
             ],
             "721264eb2824a3146b331f2532d10180"
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.4"
         },
-        "timestamp": "2025-10-22T11:47:00.022853298"
+        "timestamp": "2026-03-20T10:12:57.997252428"
     },
     "[ bam, bai, snps, [], [] ], fasta, fai - log & cram": {
         "content": [
-            [
-                "versions.yml:md5,2dfda84762159ad14ca71803b3139183"
-            ],
+            {
+                "versions_longphase": [
+                    [
+                        "LONGPHASE_HAPLOTAG",
+                        "longphase",
+                        "2.0.1 "
+                    ]
+                ]
+            },
             [
                 [
                     {
@@ -146,14 +139,14 @@
                 "@RG\tID:test\tSM:test",
                 "@PG\tID:minimap2\tPN:minimap2\tVN:2.28-r1209\tCL:minimap2 -y -x map-ont --secondary=no -R @RG\\tID:test\\tSM:test -t 30 -a genome.mmi test.bam_other.fastq.gz",
                 "@PG\tID:samtools\tPN:samtools\tPP:minimap2\tVN:1.19.2\tCL:samtools sort -@ 29 -o test.bam_other.fastq.gz.bam --write-index",
-                "@PG\tID:longphase\tPN:longphase\tPP:samtools\tVN:2.0\tCL:longphase haplotag --log --cram --threads 2 -o test --reference genome.fasta --snp-file test.genome.vcf.gz --bam test.sorted.bam "
+                "@PG\tID:longphase\tPN:longphase\tPP:samtools\tVN:2.0.1\tCL:longphase haplotag --log --cram --threads 2 -o test --reference genome.fasta --snp-file test.genome.vcf.gz --bam test.sorted.bam "
             ],
             "721264eb2824a3146b331f2532d10180"
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.4"
         },
-        "timestamp": "2025-10-22T11:46:55.93374635"
+        "timestamp": "2026-03-20T10:12:49.73950987"
     }
 }

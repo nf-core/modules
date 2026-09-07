@@ -1,0 +1,69 @@
+name: "openms_textexporter"
+description: Exports various OpenMS XML formats (featureXML, consensusXML, idXML, mzML) to a human-readable text format.
+keywords:
+  - export
+  - openms
+  - proteomics
+  - text
+  - tsv
+tools:
+  - "openms":
+      description: "OpenMS is an open-source software C++ library for LC-MS data management and analyses"
+      homepage: "https://openms.de"
+      documentation: "https://openms.readthedocs.io/en/latest/index.html"
+      tool_dev_url: "https://github.com/OpenMS/OpenMS"
+      doi: "10.1038/s41592-024-02197-7"
+      licence: ["BSD"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - input_file:
+        type: file
+        description: OpenMS data file to export to text format.
+        pattern: "*.{featureXML,consensusXML,idXML,mzML}"
+        ontologies: []
+
+output:
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "${prefix}.tsv":
+          type: file
+          description: Tab-separated text export of the input data.
+          pattern: "*.tsv"
+          ontologies: []
+  versions_openms:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - openms:
+          type: string
+          description: The name of the tool
+      - "FileInfo --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - openms:
+          type: string
+          description: The name of the tool
+      - "FileInfo --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@jonasscheid"
+maintainers:
+  - "@jonasscheid"

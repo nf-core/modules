@@ -1,9 +1,8 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "cellsnp_modea"
-description: Cellsnp-lite is a C/C++ tool for efficient genotyping bi-allelic SNPs
-  on single cells. You can use the mode A of cellsnp-lite after read alignment to
-  obtain the snp x cell pileup UMI or read count matrices for each alleles of given
-  or detected SNPs for droplet based single cell data.
+description: Cellsnp-lite is a C/C++ tool for efficient genotyping bi-allelic
+  SNPs on single cells. You can use the mode A of cellsnp-lite after read
+  alignment to obtain the snp x cell pileup UMI or read count matrices for each
+  alleles of given or detected SNPs for droplet based single cell data.
 keywords:
   - genotyping
   - single cell
@@ -16,9 +15,9 @@ tools:
       documentation: "https://cellsnp-lite.readthedocs.io"
       tool_dev_url: "https://github.com/single-cell-genetics/cellsnp-lite"
       doi: "10.1093/bioinformatics/btab358"
-      licence: ["Apache-2.0"]
+      licence:
+        - "Apache-2.0"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -37,7 +36,8 @@ input:
         ontologies: []
     - region_vcf:
         type: file
-        description: A optional vcf file listing all candidate SNPs for genotyping.
+        description: A optional vcf file listing all candidate SNPs for
+          genotyping.
         pattern: "*.{vcf, vcf.gz}"
         ontologies: []
     - barcode:
@@ -55,8 +55,8 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.base.vcf.gz":
           type: file
-          description: A VCF file listing genotyped SNPs and aggregated AD & DP information
-            (without GT).
+          description: A VCF file listing genotyped SNPs and aggregated AD & DP
+            information (without GT).
           pattern: "*.base.vcf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -68,8 +68,8 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.cells.vcf.gz":
           type: file
-          description: A VCF file listing genotyped SNPs and aggregated AD & DP information
-            & genotype (GT) information for each cell or sample.
+          description: A VCF file listing genotyped SNPs and aggregated AD & DP
+            information & genotype (GT) information for each cell or sample.
           pattern: "*.cells.vcf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -93,8 +93,8 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.tag.AD.mtx":
           type: file
-          description: A file in “Matrix Market exchange formats”, containing the allele
-            depths of the alternative (ALT) alleles.
+          description: A file in “Matrix Market exchange formats”, containing the
+            allele depths of the alternative (ALT) alleles.
           pattern: "*.tag.AD.mtx"
           ontologies:
             - edam: http://edamontology.org/format_3916 # MTX
@@ -106,8 +106,9 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.tag.DP.mtx":
           type: file
-          description: A file in “Matrix Market exchange formats”, containing the sum
-            of allele depths of the reference and alternative alleles (REF + ALT).
+          description: A file in “Matrix Market exchange formats”, containing the
+            sum of allele depths of the reference and alternative alleles (REF +
+            ALT).
           pattern: "*.tag.DP.mtx"
           ontologies:
             - edam: http://edamontology.org/format_3916 # MTX
@@ -119,18 +120,32 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.tag.OTH.mtx":
           type: file
-          description: A file in “Matrix Market exchange formats”, containing the sum
-            of allele depths of all the alleles other than REF and ALT.
+          description: A file in “Matrix Market exchange formats”, containing the
+            sum of allele depths of all the alleles other than REF and ALT.
           pattern: "*.tag.OTH.mtx"
           ontologies:
             - edam: http://edamontology.org/format_3916 # MTX
+  versions_cellsnp:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cellsnp:
+          type: string
+          description: The name of the tool
+      - cellsnp-lite --v | cut -f2 -d ' ':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cellsnp:
+          type: string
+          description: The name of the tool
+      - cellsnp-lite --v | cut -f2 -d ' ':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@wxicu"
 maintainers:

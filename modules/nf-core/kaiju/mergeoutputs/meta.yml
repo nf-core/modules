@@ -13,7 +13,8 @@ tools:
       documentation: https://github.com/bioinformatics-centre/kaiju/blob/master/README.md
       tool_dev_url: https://github.com/bioinformatics-centre/kaiju
       doi: "10.1038/ncomms11257"
-      licence: ["GNU GPL v3"]
+      licence:
+        - "GNU GPL v3"
       identifier: biotools:kaiju
 input:
   - - meta:
@@ -32,7 +33,7 @@ input:
           Results with taxonomic classification of each read from Kraken
         pattern: "*.{tsv}"
         ontologies:
-          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3475
   - db:
       type: directory
       description: |
@@ -51,14 +52,28 @@ output:
             on the given strategy '1', '2', 'lca' [default] or 'lowest'
           pattern: "*.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
+  versions_kaiju:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kaiju:
+          type: string
+          description: The name of the tool
+      - kaiju -h 2>&1 | sed -n 1p | sed 's/^.*Kaiju //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kaiju:
+          type: string
+          description: The name of the tool
+      - kaiju -h 2>&1 | sed -n 1p | sed 's/^.*Kaiju //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@Joon-Klaps"
 maintainers:

@@ -15,7 +15,8 @@ tools:
       documentation: "https://github.com/shenwei356/kmcp#documents"
       tool_dev_url: "https://github.com/shenwei356/kmcp"
       doi: "10.1093/bioinformatics/btac845"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -44,14 +45,28 @@ output:
           description: Output file in tab-delimited format with 15 columns
           pattern: "*.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
+  versions_kmcp:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kmcp:
+          type: string
+          description: The name of the tool
+      - kmcp version 2>&1 | sed 's/^.*kmcp v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kmcp:
+          type: string
+          description: The name of the tool
+      - kmcp version 2>&1 | sed 's/^.*kmcp v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@sofstam"
 maintainers:

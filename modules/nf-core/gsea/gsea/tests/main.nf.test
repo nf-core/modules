@@ -52,7 +52,7 @@ nextflow_process {
                     process.out.gene_set_enplot[0][1].collect{ file(it).name }, // unstable file and unstable name
                     process.out.gene_set_dist[0][1].collect{ file(it).name }, //assert unstable file
                     process.out.archive,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )

@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "metacache_build"
 description: Taxonomic profiling database building with MetaCache
 keywords:
@@ -20,21 +19,19 @@ tools:
         For an independent comparison to other tools in terms of classification accuracy see the LEMMI benchmarking site.
 
         The latest version of MetaCache classifies around 60 Million reads (of length 100) per minute against all complete bacterial, viral and archaea genomes from NCBI RefSeq Release 97 running with 88 threads on a workstation with 2 Intel(R) Xeon(R) Gold 6238 CPUs.
-      homepage: "https://muellan.github.io/metacache"
+      homepage: "https://github.com/muellan/metacache"
       documentation: "https://github.com/muellan/metacache/tree/master/docs"
       tool_dev_url: "https://github.com/muellan/metacache"
-      licence: ["GPL v3-or-later"]
+      licence:
+        - "GPL v3-or-later"
       identifier: ""
-
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-
     - genome_files:
-        # Mandatory
         type: file
         description: "(possibly gzipped) fasta or fastq files of full genomes, for example
           from an NCBI assembly"
@@ -45,14 +42,12 @@ input:
           - edam: "http://edamontology.org/format_1954"
           - edam: "http://edamontology.org/data_2044"
   - taxonomy:
-      # Optional
       type: file
       description: "NCBI taxonomy formatted files nodes.dmp and names.dmp"
       pattern: "{names,nodes,merged}.dmp"
       ontologies:
         - edam: "http://edamontology.org/data_3028"
   - seq2taxid:
-      # Optional
       type: file
       description: >
         NCBI-style 'accession2taxid' tab-separated file with 3 or 4 columns:
@@ -71,21 +66,34 @@ output:
           description: "sequence signature database binary file"
           pattern: "*.meta"
           ontologies:
-            - edam: "http://edamontology.org/format_2333" # Binary format
+            - edam: "http://edamontology.org/format_2333"
       - "*.cache*":
           type: file
           description: "sequence signature database binary files"
           pattern: "*.cache+([0-9])"
           ontologies:
-            - edam: "http://edamontology.org/format_2333" # Binary format
+            - edam: "http://edamontology.org/format_2333"
+  versions_metacache:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metacache:
+          type: string
+          description: The name of the tool
+      - metacache info |& sed -n 's/^MetaCache version \+\([0-9.]\+\).*\$/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metacache:
+          type: string
+          description: The name of the tool
+      - metacache info |& sed -n 's/^MetaCache version \+\([0-9.]\+\).*\$/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@Gullumluvl"
 maintainers:

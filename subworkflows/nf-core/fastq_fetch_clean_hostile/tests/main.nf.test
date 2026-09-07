@@ -44,10 +44,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    workflow.out.fastq,
-                    workflow.out.versions.collect{ path(it).yaml }.unique()
-                ).match() }
+                { assert snapshot(sanitizeOutput(workflow.out, unstableKeys: ["json"])).match() }
             )
         }
     }
@@ -72,10 +69,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    workflow.out.fastq,
-                    workflow.out.versions.collect{ path(it).yaml }.unique()
-                ).match() }
+                { assert snapshot(sanitizeOutput(workflow.out, unstableKeys: ["json"])).match() }
             )
         }
     }
@@ -100,10 +94,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    workflow.out.fastq,
-                    workflow.out.versions.collect{ path(it).yaml }.unique()
-                ).match() }
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
             )
         }
     }

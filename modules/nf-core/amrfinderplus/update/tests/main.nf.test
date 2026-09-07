@@ -23,7 +23,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.db.collect { file(it).getName() } +
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )

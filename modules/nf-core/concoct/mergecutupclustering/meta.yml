@@ -1,5 +1,6 @@
 name: "concoct_mergecutupclustering"
-description: Merge consecutive parts of the original contigs original cut up by cut_up_fasta.py
+description: Merge consecutive parts of the original contigs original cut up by
+  cut_up_fasta.py
 keywords:
   - contigs
   - fragment
@@ -16,7 +17,8 @@ tools:
       documentation: "https://concoct.readthedocs.io/en/latest/index.html"
       tool_dev_url: "https://github.com/BinPro/CONCOCT"
       doi: "10.1038/nmeth.3103"
-      licence: ["FreeBSD"]
+      licence:
+        - "FreeBSD"
       identifier: biotools:concoct
 input:
   - - meta:
@@ -26,10 +28,11 @@ input:
           e.g. [ id:'test', single_end:false ]
     - clustering_csv:
         type: file
-        description: Input cutup clustering result. Typically *_gt1000.csv from concoct
+        description: Input cutup clustering result. Typically *_gt1000.csv from
+          concoct
         pattern: "*.csv"
         ontologies:
-          - edam: http://edamontology.org/format_3752 # CSV
+          - edam: http://edamontology.org/format_3752
 output:
   csv:
     - - meta:
@@ -42,14 +45,28 @@ output:
           description: Cluster assignments per contig part with consensus cluster
           pattern: "*.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3752
+  versions_concoct:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - concoct:
+          type: string
+          description: The name of the tool
+      - concoct --version | cut -d " " -f2:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - concoct:
+          type: string
+          description: The name of the tool
+      - concoct --version | cut -d " " -f2:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:

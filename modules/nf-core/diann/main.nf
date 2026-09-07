@@ -2,7 +2,7 @@ process DIANN {
     tag "$meta.id"
     label 'process_high'
 
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://containers.biocontainers.pro/s3/SingImgsRepo/diann/v1.8.1_cv1/diann_v1.8.1_cv1.img' :
         'docker.io/biocontainers/diann:v1.8.1_cv1' }"
 
@@ -31,7 +31,7 @@ process DIANN {
 
     // Common outputs
     tuple val(meta), path("*.log.txt"), emit: log
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('diann'), eval('diann | grep "DIA-NN" | grep -oP "\\d+\\.\\d+(\\.\\w+)*(\\.[\\d]+)?"'), emit: versions_diann, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -72,11 +72,6 @@ process DIANN {
         --out ${prefix}.tsv \\
         ${quant_args} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        DIA-NN: \$(diann 2>&1 | grep "DIA-NN" | grep -oP "\\d+\\.\\d+(\\.\\w+)*(\\.[\\d]+)?")
-    END_VERSIONS
     """
 
     stub:
@@ -109,10 +104,5 @@ process DIANN {
 
     # Common outputs
     touch ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        DIA-NN: 1.8.1
-    END_VERSIONS
     """
 }

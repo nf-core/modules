@@ -1,0 +1,142 @@
+name: "portello"
+description: Transfer HiFi read mappings from their own assembly contigs to a
+  standard reference
+keywords:
+  - assembly
+  - transfer
+  - pacbio
+  - genomics
+tools:
+  - "portello":
+      description: "Method to transfer HiFi read mappings from de novo assembly to reference"
+      homepage: "https://github.com/PacificBiosciences/portello"
+      documentation: "https://github.com/PacificBiosciences/portello"
+      tool_dev_url: "https://github.com/PacificBiosciences/portello"
+      licence:
+        - "Pacific Biosciences Software License (https://github.com/PacificBiosciences/portello/blob/main/LICENSE.md)"
+      identifier: biotools:portello
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - asm_to_ref_bam:
+        type: file
+        description: Assembly contig to reference genome alignment file in
+          BAM/CRAM format
+        pattern: "*.{bam,cram}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+          - edam: "http://edamontology.org/format_2573"
+    - asm_to_ref_bai:
+        type: file
+        description: BAM/CRAM index file
+        pattern: "*.{bam.bai,cram.crai}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+          - edam: "http://edamontology.org/format_2573"
+    - read_to_asm_bam:
+        type: file
+        description: Read to assembly alignment file in BAM/CRAM format
+        pattern: "*.{bam,cram}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+          - edam: "http://edamontology.org/format_2573"
+    - read_to_asm_bai:
+        type: file
+        description: BAM/CRAM/SAM index file
+        pattern: "*.{bam,cram}.bai"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+          - edam: "http://edamontology.org/format_2573"
+    - ref_fasta:
+        type: file
+        description: Reference genome FASTA file
+        pattern: "*.fa*"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+    - assembly_mode:
+        type: string
+        description: The assembly mode used for the input BAM files
+        enum:
+          - fully-phased
+          - partially-phased
+    - output_vcf:
+        type: boolean
+        description: Whether to output phased variant calls in VCF format
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_remapped.bam":
+          type: file
+          description: Remapped BAM file
+          pattern: "*_remapped.{bam}"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572"
+  unassembled_bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_unassembled.bam":
+          type: file
+          description: Unassembled BAM file
+          pattern: "*_unassembled.{bam}"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572"
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.vcf.gz":
+          type: file
+          description: VCF file with phased heterozygous small variant calls from
+            the input assembly contigs
+          pattern: "*.{vcf.gz}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3989"
+  tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.vcf.gz.tbi":
+          type: file
+          description: VCF index file
+          pattern: "*.{vcf.gz.tbi}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3616"
+  versions_portello:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - portello:
+          type: string
+          description: The name of the tool
+      - portello --version | sed -e 's/portello //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - portello:
+          type: string
+          description: The name of the tool
+      - portello --version | sed -e 's/portello //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@sofiademmou"
+maintainers:
+  - "@sofiademmou"
