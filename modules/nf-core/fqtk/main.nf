@@ -4,8 +4,8 @@ process FQTK {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fqtk:0.3.1--ha6fb395_2' :
-        'quay.io/biocontainers/fqtk:0.3.1--ha6fb395_2' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e1/e1d9e2fdddb99bace220b11ff768d3922872306547ee721577f145f4abb06f5f/data' :
+        'community.wave.seqera.io/library/fqtk:0.4.0--857fc697c395cdf6' }"
 
     input:
     tuple val(meta), path(sample_sheet), path(fastq_folder, stageAs: "input"), val(fastq_readstructure_pairs)
