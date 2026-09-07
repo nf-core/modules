@@ -41,3 +41,5 @@ The new 'embed' command now covers the embedding functionality for all embedding
 """
     assert false: deprecation_message
 }
+
+// CI check: temporary, reverted before merge
