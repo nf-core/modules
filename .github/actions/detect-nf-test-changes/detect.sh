@@ -8,6 +8,7 @@ include_tags="${2:-}"
 exclude_tags="${3:-}"
 
 base=$(git merge-base "$base_ref" HEAD)
+echo "TEMP: simulated detector failure for the fail-closed CI check" >&2 && exit 3
 csv=$(mktemp)
 rm -f "$csv"
 
