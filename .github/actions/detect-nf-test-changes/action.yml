@@ -1,5 +1,5 @@
 name: "Detect nf-test changes"
-description: "List nf-core components whose nf-tests are related to the changes since the merge base with a base ref"
+description: "List nf-test files of nf-core components related to the changes since the merge base with a base ref"
 inputs:
   base:
     description: "Base ref or SHA; the merge base with HEAD is used as diff start"
@@ -14,7 +14,7 @@ inputs:
     default: ""
 outputs:
   components:
-    description: "JSON array of component directories"
+    description: "JSON array of nf-test file paths"
     value: ${{ steps.detect.outputs.components }}
 runs:
   using: "composite"

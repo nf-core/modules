@@ -177,9 +177,13 @@ jobs:
       - runs-on=${{ github.run_id }}-confirm-pass-nf-test
       - runner=4cpu-linux-x64
       - image=ubuntu22-full-x64
-    needs: [nf-test]
+    needs: [nf-test-changes, nf-test]
     if: always()
     steps:
+      - name: Change detection did not succeed
+        if: ${{ needs.nf-test-changes.result != 'success' }}
+        run: exit 1
+
       - name: One or more tests failed
         if: ${{ contains(needs.*.result, 'failure') }}
         run: exit 1
