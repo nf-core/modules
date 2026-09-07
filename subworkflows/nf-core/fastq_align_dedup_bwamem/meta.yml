@@ -25,15 +25,12 @@ input:
         respectively.
         Structure: [ val(meta), [ path(reads) ] ]
       pattern: "*.{fastq,fastq.gz}"
-  - ch_fasta:
+  - ch_fasta_fai:
       type: file
       description: |
-        Structure: [ val(meta), path(fasta) ]
+        Reference genome fasta file and its index
+        Structure: [ val(meta), path(fasta), path(fai) ]
       pattern: "*.{fa,fa.gz}"
-  - ch_fasta_index:
-      type: file
-      description: |
-        Structure: [ val(meta), path(fasta index) ]
   - ch_bwamem_index:
       type: directory
       description: |
@@ -69,11 +66,11 @@ output:
         Channel containing BAM files
         Structure: [ val(meta), path(bam) ]
       pattern: "*.bam"
-  - bai:
+  - index:
       type: file
       description: |
-        Channel containing indexed BAM (BAI) files
-        Structure: [ val(meta), path(bai) ]
+        Channel containing the index of the aligned BAM (BAI) files
+        Structure: [ val(meta), path(index) ]
       pattern: "*.bai"
   - samtools_flagstat:
       type: file
@@ -81,18 +78,18 @@ output:
         File containing samtools flagstat output
         Structure: [ val(meta), path(flagstat) ]
       pattern: "*.flagstat"
-  - samtools_idxstats:
-      type: file
-      description: |
-        File containing samtools idxstats output
-        Structure: [ val(meta), path(idxstats) ]
-      pattern: "*.idxstats"
   - samtools_stats:
       type: file
       description: |
         File containing samtools stats output
         Structure: [ val(meta), path(stats) ]
       pattern: "*.{stats}"
+  - samtools_idxstats:
+      type: file
+      description: |
+        File containing samtools idxstats output
+        Structure: [ val(meta), path(idxstats) ]
+      pattern: "*.idxstats"
   - picard_metrics:
       type: file
       description: |

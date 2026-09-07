@@ -1,11 +1,16 @@
 process VAMB_BIN {
     tag "$meta.id"
     label 'process_high'
+    label 'process_gpu'
 
-    conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vamb:5.0.4--pyhdfd78af_0':
-        'quay.io/biocontainers/vamb:5.0.4--pyhdfd78af_0' }"
+    conda "${task.accelerator ? "${moduleDir}/environment.gpu.yml" : "${moduleDir}/environment.yml"}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? (task.accelerator
+            ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f9/f98e65a913123ddbfdb2259e67efc1f8f2c8c23b0ee86a3bc2cc80f80447b76d/data'
+            : 'https://depot.galaxyproject.org/singularity/vamb:5.0.4--pyhdfd78af_0')
+        : (task.accelerator
+            ? 'community.wave.seqera.io/library/vamb_gzip_pytorch-gpu_cuda-version:0858dbff3db380e6'
+            : 'quay.io/biocontainers/vamb:5.0.4--pyhdfd78af_0')}"
 
     input:
     tuple val(meta), path(assembly), path(abundance_tsv), path(bams, stageAs: "bams/*"), path(taxonomy)
@@ -21,6 +26,7 @@ process VAMB_BIN {
     tuple val(meta), path("${prefix}/composition.npz")           , emit: composition
     tuple val(meta), path("${prefix}/log.txt")                   , emit: log
     tuple val("${task.process}"), val('vamb'), eval("vamb --version | sed 's/Vamb //'"), emit: versions_vamb, topic: versions
+    tuple val("${task.process}"), val('cuda'), eval('python -c "import torch; print(torch.version.cuda or \'no CUDA available\')"'), emit: versions_cuda, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,6 +40,7 @@ process VAMB_BIN {
     def mode    = taxonomy ? "taxvamb" : "default"
     depth_input = abundance_tsv ? "--abundance_tsv ${abundance_tsv}" : "--bamdir bams/"
     tax_input   = taxonomy ? "--taxonomy ${taxonomy}" : ""
+    def device  = task.accelerator ? '--cuda' : ''
     """
     vamb bin \\
         ${mode} \\
@@ -42,9 +49,12 @@ process VAMB_BIN {
         --fasta ${assembly} \\
         ${depth_input} \\
         ${tax_input} \\
+        ${device} \\
         ${args}
 
-    find ${prefix}/bins -maxdepth 1 -name "*.fna" -type f | while read file; do
+    # bins are optional, and the wave images have no `find`, so a null glob does the walking
+    shopt -s nullglob
+    for file in ${prefix}/bins/*.fna; do
         newname="${prefix}/bins/${prefix}.\$(basename "\$file")"
         mv "\$file" "\$newname"
         gzip "\$newname"
