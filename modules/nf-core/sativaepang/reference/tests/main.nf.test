@@ -1,0 +1,101 @@
+nextflow_process {
+
+    name "Test Process SATIVAEPANG_REFERENCE"
+    script "../main.nf"
+    process "SATIVAEPANG_REFERENCE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "sativaepang"
+    tag "sativaepang/reference"
+
+    test("sativa-epang tiny example - given RAxML-NG tree") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/sativaepang/sativaepang_tiny.phy', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/sativaepang/sativaepang_tiny.tax', checkIfExists: true),
+                    'bac'
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'delete_me/sativaepang/sativaepang_tiny.raxml.bestTree', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'delete_me/sativaepang/sativaepang_tiny.raxml.bestModel', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            // The refjson embeds the exact invocation command it was built with
+            // (working-directory-relative paths and all), so it isn't byte-reproducible
+            // across engines/environments -- check structure and the one thing this
+            // module actually guarantees (using the given tree, not building one) rather
+            // than a strict content snapshot.
+            def refjson = new groovy.json.JsonSlurper().parse(file(process.out.refjson[0][1]))
+            assertAll(
+                { assert process.success },
+                { assert refjson.taxcode == "bac" },
+                { assert refjson.tree },
+                { assert refjson.branch_tax_map },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["refjson"])).match() }
+            )
+        }
+    }
+
+    test("gtdb archaea 16S - given RAxML-NG tree") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/sativaepang/gtdb_archaea_16s_aligned.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/sativaepang/gtdb_archaea_16s.tax', checkIfExists: true),
+                    'bac'
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'delete_me/sativaepang/gtdb_archaea_16s.raxml.bestTree', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'delete_me/sativaepang/gtdb_archaea_16s.raxml.bestModel', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            def refjson = new groovy.json.JsonSlurper().parse(file(process.out.refjson[0][1]))
+            assertAll(
+                { assert process.success },
+                { assert refjson.taxcode == "bac" },
+                { assert refjson.tree },
+                { assert refjson.branch_tax_map },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["refjson"])).match() }
+            )
+        }
+    }
+
+    test("sativa-epang tiny example - given RAxML-NG tree - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/sativaepang/sativaepang_tiny.phy', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/sativaepang/sativaepang_tiny.tax', checkIfExists: true),
+                    'bac'
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'delete_me/sativaepang/sativaepang_tiny.raxml.bestTree', checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + 'delete_me/sativaepang/sativaepang_tiny.raxml.bestModel', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

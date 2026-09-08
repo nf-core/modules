@@ -1,0 +1,108 @@
+name: "sativaepang_reference"
+description: Build a SATIVA reference (refjson) from an alignment and taxonomy, optionally from a tree built elsewhere instead of running RAxML
+keywords:
+  - phylogenetics
+  - taxonomy
+  - mislabelling
+  - placement
+tools:
+  - "sativaepang":
+      description: "SATIVA with EPA-ng as the placement engine"
+      homepage: "https://github.com/Aaramis/sativa-epang"
+      documentation: "https://github.com/Aaramis/sativa-epang/blob/main/CHANGES-epa-ng.md"
+      tool_dev_url: "https://github.com/Aaramis/sativa-epang"
+      doi: "10.1093/nar/gkw396"
+      licence:
+        - "GPL-3.0-or-later"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+    - alignment:
+        type: file
+        description: Reference multiple sequence alignment (PHYLIP or FASTA)
+        pattern: "*.{phy,phylip,fa,fasta,fna}"
+        ontologies:
+          - edam: http://edamontology.org/format_1656
+    - taxonomy:
+        type: file
+        description: |
+          Reference taxonomy, one sequence ID per line followed by its taxonomic path,
+          matching the alignment's sequence IDs.
+        pattern: "*.{tsv,tax,txt}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+    - taxcode:
+        type: string
+        description: "Taxonomic code: bac(teriological), bot(anical), zoo(logical) or vir(ological)"
+        pattern: "^(?i)(bac|bot|zoo|vir)$"
+  - reftree:
+      type: file
+      description: |
+        Reference tree topology built elsewhere (e.g. RAxML-NG), with the alignment's
+        leaf names. Skips sativa-epang's own constrained RAxML search: EPA-ng numbers
+        the branches and the taxonomy map/node heights are computed from the given
+        tree. Pass an empty list to build the tree with sativa-epang's own RAxML
+        search instead.
+      pattern: "*.{nwk,newick,treefile}"
+      ontologies:
+        - edam: http://edamontology.org/format_1919
+  - refmodel:
+      type: file
+      description: |
+        Substitution model matching `reftree`, as a RAxML-NG model string or file (EPA-ng
+        reads either). Required alongside `reftree`; ignored otherwise.
+      pattern: "*.{bestModel,txt}"
+      ontologies: []
+output:
+  refjson:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - "*.refjson":
+          type: file
+          description: |
+            The reference tree, taxonomy map, node heights and speciation rate, in
+            sativa-epang's own JSON format. Input to the loo-tasks and loo-score stages.
+          pattern: "*.refjson"
+          ontologies: []
+  model:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - "*.model":
+          type: file
+          description: |
+            The substitution model the reference tree was built/scored under. Needed by
+            the leave-one-out stages, since it otherwise lives only in a temp directory
+            that gets deleted.
+          pattern: "*.model"
+          ontologies: []
+  versions_sativaepang:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sativaepang:
+          type: string
+          description: The name of the tool
+      - sed -n 's#.*share/sativa-epang-\([0-9.]*\)-.*#\1#p' \$(command -v sativa-epang):
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sativaepang:
+          type: string
+          description: The name of the tool
+      - sed -n 's#.*share/sativa-epang-\([0-9.]*\)-.*#\1#p' \$(command -v sativa-epang):
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@erikrikarddaniel"
+maintainers:
+  - "@erikrikarddaniel"
