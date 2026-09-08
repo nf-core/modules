@@ -27,8 +27,7 @@ def load_features(path):
     df = pd.read_csv(path, sep=r"\\s+", engine="python", dtype=str)
     if df.empty or df.shape[1] < 2:
         raise ValueError(
-            "features file must have an ID column and at least one feature column. "
-            f"Found columns: {list(df.columns)}"
+            f"features file must have an ID column and at least one feature column. Found columns: {list(df.columns)}"
         )
 
     df.columns = [str(col).lstrip("#") for col in df.columns]
@@ -46,8 +45,7 @@ def load_features(path):
 
     if not feature_cols:
         raise ValueError(
-            "no numeric feature columns left after dropping ID columns. "
-            f"Found columns: {list(df.columns)}"
+            f"no numeric feature columns left after dropping ID columns. Found columns: {list(df.columns)}"
         )
 
     features = df[feature_cols].apply(pd.to_numeric, errors="raise").to_numpy(dtype=float)
