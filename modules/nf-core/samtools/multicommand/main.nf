@@ -39,18 +39,27 @@ process SAMTOOLS_MULTICOMMAND {
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    if (pipeline.size() <= 1) {
+    // Only allow pipelines with at least two commands
+    def n_commands = pipeline.size()
+    if (n_commands <= 1) {
         error("Error: SAMTOOLS_MULTICOMMAND requires at least two commands!")
     }
 
+    // Validate pipeline commands
+    // Check that all tools requested are allowed and that fasta/fastq fall at the end of the pipeline only
     def valid_options = ['view', 'sort', 'markdup', 'fixmate', 'merge', 'cat', 'collate', 'fastq', 'fasta']
-    pipeline.collect { tool ->
-        if (!(tool in valid_options)) {
-            error("Error: ${tool} not a valid pipeline argument for SAMTOOLS_MULTICOMMAND! Valid options are: ${valid_options.join(", ")}")
+    pipeline
+        .withIndex()
+        .collect { subcommand, idx ->
+            if (!(subcommand in valid_options)) {
+                error("Error: ${subcommand} not a valid pipeline argument for SAMTOOLS_MULTICOMMAND! Valid options are: ${valid_options.join(", ")}")
+            }
+            if (subcommand in ["fastq", "fasta"] && idx != pipeline.size() - 1) {
+                error("Error: ${subcommand} must be the last command for SAMTOOLS_MULTICOMMAND!")
+            }
         }
-    }
 
-    def n_commands = pipeline.size()
+    // Input/output flags
     def is_cram_input = fasta && input.collect { f -> f.getExtension() == "cram" }.any()
     def is_cram_output = fasta && (get_output_extension(get_args(task.ext, n_commands - 1)) == "cram")
 
