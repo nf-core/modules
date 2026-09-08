@@ -37,6 +37,34 @@ nextflow_process {
         }
     }
 
+    test("clustermetrics - features from eigenvec") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/clustering/test.eigenvec", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/clustering/test_clusters.csv", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.metrics,
+                    process.out.k_sweep,
+                    process.out.selected,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+
     test("clustermetrics - features and clusters - stub") {
 
         options "-stub"
