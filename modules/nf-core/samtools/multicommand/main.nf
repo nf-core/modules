@@ -96,49 +96,23 @@ process SAMTOOLS_MULTICOMMAND {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-
-    def valid_options = ['view', 'sort', 'markdup', 'fixmate', 'merge', 'cat', 'collate', 'fastq', 'fasta']
-    pipeline.collect { tool ->
-        if (!(tool in valid_options)) {
-            error("Error: ${tool} not a valid pipeline argument for SAMTOOLS_PIPELINE! Valid options are: ${valid_options.join(", ")}")
-        }
-    }
-
-    def n_commands = pipeline.size()
-    def final_command = pipeline[n_commands - 1]
-    def final_args = get_args(task.ext, n_commands - 1)
+    def final_command = pipeline[-1]
+    def final_args = get_args(task.ext, pipeline.size() - 1)
 
     def stub_outputs = []
 
     if (final_command in ['view', 'sort', 'merge', 'cat', 'markdup', 'fixmate', 'collate']) {
-        def extension = get_output_extension(final_args)
-        stub_outputs << "touch ${prefix}.${extension}"
+        stub_outputs << "touch ${prefix}.${get_output_extension(final_args)}"
     }
-    else if (final_command == "fasta") {
-        if (meta.single_end) {
-            stub_outputs << "echo | bgzip > ${prefix}_1.fasta.gz"
-            stub_outputs << "echo | bgzip > ${prefix}_singleton.fasta.gz"
+    else if (final_command in ['fasta', 'fastq']) {
+        def ext = final_command == 'fasta' ? 'fasta.gz' : 'fastq.gz'
+        stub_outputs << "echo | bgzip > ${prefix}_1.${ext}"
+        if (!meta.single_end) {
+            stub_outputs << "echo | bgzip > ${prefix}_2.${ext}"
         }
-        else {
-            stub_outputs << "echo | bgzip > ${prefix}_1.fasta.gz"
-            stub_outputs << "echo | bgzip > ${prefix}_2.fasta.gz"
-            stub_outputs << "echo | bgzip > ${prefix}_singleton.fasta.gz"
-        }
-        stub_outputs << "echo | bgzip > ${prefix}_other.fasta.gz"
+        stub_outputs << "echo | bgzip > ${prefix}_singleton.${ext}"
+        stub_outputs << "echo | bgzip > ${prefix}_other.${ext}"
     }
-    else if (final_command == "fastq") {
-        if (meta.single_end) {
-            stub_outputs << "echo | bgzip > ${prefix}_1.fastq.gz"
-            stub_outputs << "echo | bgzip > ${prefix}_singleton.fastq.gz"
-        }
-        else {
-            stub_outputs << "echo | bgzip > ${prefix}_1.fastq.gz"
-            stub_outputs << "echo | bgzip > ${prefix}_2.fastq.gz"
-            stub_outputs << "echo | bgzip > ${prefix}_singleton.fastq.gz"
-        }
-        stub_outputs << "echo | bgzip > ${prefix}_other.fastq.gz"
-    }
-
     """
     ${stub_outputs.join("\n")}
     """
