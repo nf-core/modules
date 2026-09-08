@@ -1,0 +1,77 @@
+name: "sativaepang_lootasks"
+description: Deal a SATIVA reference into leave-one-out folds, one self-contained task directory per fold, ready for independent EPA-ng placement
+keywords:
+  - phylogenetics
+  - taxonomy
+  - mislabelling
+  - placement
+  - leave-one-out
+tools:
+  - "sativaepang":
+      description: "SATIVA with EPA-ng as the placement engine"
+      homepage: "https://github.com/Aaramis/sativa-epang"
+      documentation: "https://github.com/Aaramis/sativa-epang/blob/main/CHANGES-epa-ng.md"
+      tool_dev_url: "https://github.com/Aaramis/sativa-epang"
+      doi: "10.1093/nar/gkw396"
+      licence:
+        - "GPL-3.0-or-later"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+    - refjson:
+        type: file
+        description: Reference produced by `sativaepang/reference`'s `-stage reference`
+        pattern: "*.refjson"
+        ontologies: []
+    - model:
+        type: file
+        description: |
+          The substitution model file produced alongside `refjson` by
+          `sativaepang/reference`. Its content (minus any trailing RAxML-NG partition
+          clause) is exported as `SATIVA_EPANG_MODEL`, since a refjson built from an
+          externally-supplied tree leaves no `RAxML_info` file for sativa-epang to
+          recover the model from on its own.
+        pattern: "*.model"
+        ontologies: []
+output:
+  taskdir:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - "*.l1o_tasks":
+          type: directory
+          description: |
+            One self-contained subdirectory per leave-one-out fold (`ref.nwk`,
+            `ref.fasta`, `query.fasta`), plus a `manifest.json` describing every fold,
+            its model, and the EPA-ng command to run in it. Input to
+            `sativaepang/looplace` and, later, `sativaepang/looscore`.
+          pattern: "*.l1o_tasks"
+  versions_sativaepang:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sativaepang:
+          type: string
+          description: The name of the tool
+      - sed -n 's#.*share/sativa-epang-\([0-9.]*\)-.*#\1#p' \$(command -v sativa-epang):
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sativaepang:
+          type: string
+          description: The name of the tool
+      - sed -n 's#.*share/sativa-epang-\([0-9.]*\)-.*#\1#p' \$(command -v sativa-epang):
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@erikrikarddaniel"
+maintainers:
+  - "@erikrikarddaniel"
