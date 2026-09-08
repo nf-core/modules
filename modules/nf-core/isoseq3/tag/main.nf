@@ -14,40 +14,30 @@ process ISOSEQ3_TAG {
     output:
     tuple val(meta), path("*.flt.bam")                  , emit: bam
     tuple val(meta), path("*.flt.bam.pbi")              , emit: pbi
-    path "versions.yml"                                 , emit: versions
+    tuple val("${task.process}"), val('isoseq3'), eval("isoseq tag --version | sed -n '1s/isoseq tag \\([0-9.]*\\).*/\\1/p'"), topic: versions, emit: versions_isoseq3
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def valid_design = ~/^(?:\d{1,2}[UBGX]-)+T$|^(?:\d{1,2}[UBGX]-)+T(?:-\d{1,2}[UBGX])+$|^T(?:-\d{1,2}[UBGX])+$/
-    if ( !(design ==~ valid_design) )  { error "Invalid UMI/barcode design. Check https://isoseq.how/umi/umi-barcode-design.html for how to specify the design" }
-    """
-    isoseq \\
-        tag \\
-        -j $task.cpus \\
-        --design $design \\
-        ${prefix}.5p--3p.bam \\
-        ${prefix}.flt.bam \\
-        $args
+    def deprecation_message = """
+    WARNING: This module has been deprecated. Please use nf-core/modules/isoseq/tag
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        isoseq3: \$(isoseq tag --version | head -n 1 | sed 's/isoseq tag //g' | sed 's/ (.*//g' )
-    END_VERSIONS
+    Reason:
+    The isoseq3 conda package is frozen at 4.0.0 and now only wraps the actively
+    maintained isoseq package. isoseq/tag provides the same functionality under
+    the current isoseq release.
     """
+    assert false: deprecation_message
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    """
-    touch ${prefix}.flt.bam
-    touch ${prefix}.flt.bam.pbi
+    def deprecation_message = """
+    WARNING: This module has been deprecated. Please use nf-core/modules/isoseq/tag
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        isoseq3: \$(isoseq tag --version | head -n 1 | sed 's/isoseq tag //g' | sed 's/ (.*//g' )
-    END_VERSIONS
+    Reason:
+    The isoseq3 conda package is frozen at 4.0.0 and now only wraps the actively
+    maintained isoseq package. isoseq/tag provides the same functionality under
+    the current isoseq release.
     """
+    assert false: deprecation_message
 }

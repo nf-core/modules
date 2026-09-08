@@ -73,6 +73,13 @@ output:
           description: kb count output folder
           pattern: "*.{count}"
           ontologies: []
+  matrix:
+    - "*.count/*/*.mtx":
+        type: file
+        description: file containing the count matrix
+        pattern: "*.mtx"
+        ontologies:
+          - edam: http://edamontology.org/format_3916 # MTX
   versions_kallistobustools:
     - - ${task.process}:
           type: string
@@ -83,13 +90,6 @@ output:
       - kb --version 2>&1 | sed -n 's/kb_python //p':
           type: eval
           description: The expression to obtain the version of the tool
-  matrix:
-    - "*.count/*/*.mtx":
-        type: file
-        description: file containing the count matrix
-        pattern: "*.mtx"
-        ontologies:
-          - edam: http://edamontology.org/format_3916 # MTX
 topics:
   versions:
     - - ${task.process}:

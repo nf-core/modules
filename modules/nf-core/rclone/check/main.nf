@@ -29,8 +29,30 @@ process RCLONE_CHECK {
     prefix = task.ext.prefix ?: "${meta.id}"
     def configArg = rclone_config ? "--config ${rclone_config}" : ''
 
+    def sourceString = source.toString()
+    def normalizedSource = sourceString.replaceFirst('^([a-zA-Z][a-zA-Z0-9+.-]*)://', '$1:')
+    def sourceHttpUrlArg = ''
+
+    if (sourceString ==~ /^https?:\/\/.*/) {
+        def sourceMatcher = (sourceString =~ /^(https?:\/\/[^\/]+)(\/.*)?$/)
+        if (!sourceMatcher.matches()) {
+            throw new IllegalArgumentException("Invalid HTTP(S) source '${sourceString}' for sample '${meta.id}'.")
+        }
+        sourceHttpUrlArg = "--http-url '${sourceMatcher[0][1]}'"
+        normalizedSource = ":http:${(sourceMatcher[0][2] ?: '/').replaceFirst('^/', '')}"
+    }
+
     """
+    touch \\
+        ${prefix}.combined.txt \\
+        ${prefix}.differ.txt \\
+        ${prefix}.missing_on_dst.txt \\
+        ${prefix}.missing_on_src.txt \\
+        ${prefix}.match.txt \\
+        ${prefix}.error.txt
+
     rclone check ${configArg} \\
+        ${sourceHttpUrlArg} \\
         $args \\
         --combined ${prefix}.combined.txt \\
         --differ ${prefix}.differ.txt \\
@@ -39,8 +61,10 @@ process RCLONE_CHECK {
         --match ${prefix}.match.txt \\
         --error ${prefix}.error.txt \\
         --checkers $task.cpus \\
-        ${source} \\
-        ${destination} || echo \$? > ${prefix}.exit_code.txt
+        "${normalizedSource}" \\
+        ${destination} \\
+        && echo 0 > ${prefix}.exit_code.txt \\
+        || echo \$? > ${prefix}.exit_code.txt
 
     sort -k2 ${prefix}.combined.txt -o ${prefix}.combined.txt
     sort ${prefix}.differ.txt -o ${prefix}.differ.txt
