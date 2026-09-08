@@ -13,6 +13,7 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import sklearn
 import yaml
@@ -22,16 +23,32 @@ from sklearn.metrics import (
     davies_bouldin_score,
     silhouette_score,
 )
+from sklearn.neighbors import NearestNeighbors
 
 
 def load_features(path):
-    """Read a TSV of `sample_id` + numeric feature columns, indexed by sample_id."""
-    df = pd.read_csv(path, sep="\\t")
+    """Read sample-by-feature matrix, indexed by sample_id.
+
+    Accepts a TSV with a sample_id column, or a PLINK2 .eigenvec file
+    (`#FID IID PC1 ...` or `#IID PC1 ...`). FID/SID are dropped.
+    """
+    df = pd.read_csv(path, sep="\\t", dtype=str)
+    df.columns = [str(col).lstrip("#") for col in df.columns]
+
+    if "IID" in df.columns:
+        df = df.rename(columns={"IID": "sample_id"})
+    elif "sample_id" not in df.columns:
+        df = df.rename(columns={df.columns[0]: "sample_id"})
+
+    drop = [col for col in ("FID", "SID") if col in df.columns]
+    if drop:
+        df = df.drop(columns=drop)
+
     if "sample_id" not in df.columns:
         raise ValueError(f"features file must have a 'sample_id' column. Found: {list(df.columns)}")
+
     df["sample_id"] = df["sample_id"].astype(str)
     return df.set_index("sample_id").apply(pd.to_numeric, errors="coerce").fillna(0.0)
-
 
 def load_clusters(path):
     """Read a CSV of `sample_id` + `cluster`, returning a Series of int labels."""
@@ -73,6 +90,28 @@ def plot_curve(sweep_df, metric, title, ylabel, out_png):
     plt.close()
 
 
+def plot_k_distance(x, k, out_png, eps=None):
+    """k-distance plot used to choose DBSCAN eps."""
+    k = int(min(max(k, 1), len(x) - 1))
+    nn = NearestNeighbors(n_neighbors=k + 1)
+    nn.fit(x)
+    distances, _ = nn.kneighbors(x)
+    k_distances = np.sort(distances[:, -1])
+
+    plt.figure(figsize=(8, 4))
+    plt.plot(k_distances)
+    if eps is not None:
+        plt.axhline(y=eps, linestyle="--", label=f"eps = {eps}")
+        plt.legend()
+    plt.ylabel(f"Distance to {k}-th nearest neighbour")
+    plt.xlabel("Points sorted by distance")
+    plt.title("k-distance plot")
+    plt.grid(True)
+    plt.tight_layout()
+    plt.savefig(out_png, dpi=200)
+    plt.close()
+
+
 def main():
     features = "$features"
     clusters_path = "$clusters"
@@ -83,6 +122,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--k-min", type=int, default=2)
     parser.add_argument("--k-max", type=int, default=12)
+    parser.add_argument("--k-neighbors", type=int, default=None)
+    parser.add_argument("--eps", type=float, default=None)
     opts = parser.parse_args(shlex.split(raw_args) if raw_args and raw_args != "null" else [])
 
     joined = load_features(features).join(load_clusters(clusters_path), how="inner")
@@ -126,6 +167,9 @@ def main():
             "calinski_harabasz",
             f"{prefix}.calinski_harabasz.png",
         )
+
+    k_neighbors = opts.k_neighbors if opts.k_neighbors is not None else x.shape[1]
+    plot_k_distance(x, k_neighbors, f"{prefix}.k_distance.png", eps=opts.eps)
 
     versions = {
         "${task.process}": {
