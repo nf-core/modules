@@ -52,6 +52,7 @@ def load_features(path):
     df["sample_id"] = df["sample_id"].astype(str)
     return df.set_index("sample_id").apply(pd.to_numeric, errors="coerce").fillna(0.0)
 
+
 def load_clusters(path):
     """Read a CSV of `sample_id` + `cluster`, returning a Series of int labels."""
     df = pd.read_csv(path)
