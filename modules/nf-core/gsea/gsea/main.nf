@@ -61,11 +61,7 @@ process GSEA_GSEA {
         $args
 
     # Un-timestamp the outputs for path consistency
-    # Only rmdir actual directories: the .rpt file's name also matches "${rpt_label}.Gsea.*".
     mv "$rpt_label".Gsea.*/* .
-    for gsea_dir in "$rpt_label".Gsea.*/; do
-        [ -d "\$gsea_dir" ] && rmdir "\$gsea_dir"
-    done
     timestamp=\$(cat *.rpt | grep producer_timestamp | awk '{print \$2}')
 
     for pattern in _\${timestamp} .\${timestamp}; do
