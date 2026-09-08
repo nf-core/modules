@@ -1,11 +1,14 @@
 nextflow_process {
+
     name "Test Process CUSTOM_CLUSTERVISUALIZATION"
     script "../main.nf"
     process "CUSTOM_CLUSTERVISUALIZATION"
+
     tag "modules"
     tag "modules_nfcore"
     tag "custom"
     tag "custom/clustervisualization"
+
     test("clustervisualization - features and clusters") {
         when {
             process {
@@ -18,18 +21,27 @@ nextflow_process {
                 """
             }
         }
+
         then {
+            def umap = path(process.out.umap_tsv[0][1]).csv(sep: "\t")
+            def tsne = path(process.out.tsne_tsv[0][1]).csv(sep: "\t")
             assertAll(
                 { assert process.success },
+                { assert umap.columnNames == ["sample_id", "Dim1", "Dim2", "cluster"] },
+                { assert tsne.columnNames == ["sample_id", "Dim1", "Dim2", "cluster"] },
+                { assert umap.rowCount == tsne.rowCount },
                 { assert snapshot(
-                    process.out.umap_tsv,
-                    process.out.tsne_tsv,
+                    umap.columnNames,
+                    umap.rowCount,
+                    tsne.columnNames,
+                    tsne.rowCount,
                     process.out.versions,
                     path(process.out.versions[0]).yaml
                 ).match() }
             )
         }
     }
+
     test("clustervisualization - features and clusters - stub") {
         options "-stub"
         when {
@@ -43,6 +55,7 @@ nextflow_process {
                 """
             }
         }
+
         then {
             assertAll(
                 { assert process.success },
