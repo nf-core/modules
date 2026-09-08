@@ -1,0 +1,96 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "vcf2circos"
+description: A python package based on Plotly to help generate Circos plots from
+  a VCF file or a JSON configuration file.
+keywords:
+  - genomics
+  - circos plot
+  - structural variants
+  - annotsv
+tools:
+  - "vcf2circos":
+      description: "A python package based on Plotly to help generate Circos plots from
+        a VCF file or a JSON configuration file."
+      homepage: "https://github.com/bioinfo-chru-strasbourg/vcf2circos"
+      documentation: "https://github.com/bioinfo-chru-strasbourg/vcf2circos?tab=readme-ov-file"
+      tool_dev_url: "https://github.com/bioinfo-chru-strasbourg/vcf2circos"
+      licence: ["AGPL v3-or-later"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - vcf:
+        type: file
+        description: A VCF file containing variants to be represented
+        pattern: "*.{vcf,vcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+    - vcf_index:
+        type: file
+        description: OPTIONAL - The index for gzipped VCF files
+        pattern: "*.tbi"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
+    - output_extension:
+        type: string
+        description: Extension to use for output file
+        pattern: "{html,png,jpg,jpeg,webp,svg,pdf,eps,json}"
+
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - annotations_dir:
+        type: string
+        description: Path to vcf2circos annotations dir
+
+output:
+  circos:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.{html,png,jpg,jpeg,webp,svg,pdf,eps,json}":
+          type: file
+          description: "Output circos plot"
+          pattern: "*.{html,png,jpg,jpeg,webp,svg,pdf,eps,json}"
+          ontologies:
+            - edam: "http://edamontology.org/format_2331"
+            - edam: "http://edamontology.org/format_3603"
+            - edam: "http://edamontology.org/format_3579"
+            - edam: "http://edamontology.org/format_3547"
+            - edam: "http://edamontology.org/format_3604"
+            - edam: "http://edamontology.org/format_3508"
+            - edam: "http://edamontology.org/format_3466"
+            - edam: "http://edamontology.org/format_3464"
+  versions_vcf2circos:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "vcf2circos":
+          type: string
+          description: The name of the tool
+      - "vcf2circos --help | sed -n 's/^Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vcf2circos:
+          type: string
+          description: The name of the tool
+      - "vcf2circos --help | sed -n 's/^Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@bioinfo-chru-strasbourg"
+maintainers:
+  - "@JbaptisteLam"
