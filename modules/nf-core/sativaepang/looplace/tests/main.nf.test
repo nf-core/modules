@@ -1,0 +1,127 @@
+nextflow_process {
+
+    name "Test Process SATIVAEPANG_LOOPLACE"
+    script "../main.nf"
+    process "SATIVAEPANG_LOOPLACE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "sativaepang"
+    tag "sativaepang/lootasks"
+    tag "sativaepang/looplace"
+
+    test("sativa-epang tiny example") {
+
+        setup {
+            run("SATIVAEPANG_LOOTASKS") {
+                script "../../lootasks/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'delete_me/sativaepang/sativaepang_tiny.refjson', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'delete_me/sativaepang/sativaepang_tiny.model', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = SATIVAEPANG_LOOTASKS.out.taskdir
+                """
+            }
+        }
+
+        then {
+            // Every fold in the returned taskdir must have a jplace, not just process.success.
+            // (Separately verified by hand, not expressible cleanly here: the upstream
+            // SATIVAEPANG_LOOTASKS task's own directory on disk is left untouched -- this
+            // module stages a private, writable copy rather than mutating the upstream
+            // task's output in place, the same class of -resume-breaking bug fixed in
+            // nf-core/modules#12799.)
+            def taskdir = file(process.out.taskdir[0][1])
+            def foldDirs = taskdir.listFiles().findAll { it.isDirectory() && it.name.startsWith("fold_") }
+            assertAll(
+                { assert process.success },
+                { assert foldDirs.size() > 0 },
+                { assert foldDirs.every { new File(it.toString(), "epa_result.jplace").exists() } },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("gtdb archaea 16S") {
+
+        setup {
+            run("SATIVAEPANG_LOOTASKS") {
+                script "../../lootasks/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'delete_me/sativaepang/gtdb_archaea_16s.refjson', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'delete_me/sativaepang/gtdb_archaea_16s.model', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = SATIVAEPANG_LOOTASKS.out.taskdir
+                """
+            }
+        }
+
+        then {
+            def taskdir = file(process.out.taskdir[0][1])
+            def foldDirs = taskdir.listFiles().findAll { it.isDirectory() && it.name.startsWith("fold_") }
+            assertAll(
+                { assert process.success },
+                { assert foldDirs.size() > 0 },
+                { assert foldDirs.every { new File(it.toString(), "epa_result.jplace").exists() } },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("sativa-epang tiny example - stub") {
+
+        options "-stub"
+
+        setup {
+            run("SATIVAEPANG_LOOTASKS") {
+                script "../../lootasks/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'delete_me/sativaepang/sativaepang_tiny.refjson', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'delete_me/sativaepang/sativaepang_tiny.model', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = SATIVAEPANG_LOOTASKS.out.taskdir
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

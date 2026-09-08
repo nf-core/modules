@@ -1,0 +1,68 @@
+name: "sativaepang_looplace"
+description: Place every leave-one-out fold with EPA-ng via -stage loo-place, writing a jplace into each fold directory
+keywords:
+  - phylogenetics
+  - taxonomy
+  - mislabelling
+  - placement
+  - leave-one-out
+tools:
+  - "sativaepang":
+      description: "SATIVA with EPA-ng as the placement engine"
+      homepage: "https://github.com/Aaramis/sativa-epang"
+      documentation: "https://github.com/Aaramis/sativa-epang/blob/main/CHANGES-epa-ng.md"
+      tool_dev_url: "https://github.com/Aaramis/sativa-epang"
+      doi: "10.1093/nar/gkw396"
+      licence:
+        - "GPL-3.0-or-later"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+    - taskdir:
+        type: directory
+        description: |
+          The `*.l1o_tasks` directory produced by `sativaepang/lootasks`: one
+          subdirectory per fold (`ref.nwk`, `ref.fasta`, `query.fasta`) plus a
+          `manifest.json`.
+        pattern: "*.l1o_tasks"
+output:
+  taskdir:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - taskdir:
+          type: directory
+          description: |
+            The same taskdir, with an `epa_result.jplace` (plus `epang.log` and
+            `epa_info.log`) added to every fold subdirectory. Input to
+            `sativaepang/looscore`.
+          pattern: "*.l1o_tasks"
+  versions_sativaepang:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sativaepang:
+          type: string
+          description: The name of the tool
+      - sed -n 's#.*share/sativa-epang-\([0-9.]*\)-.*#\1#p' \$(command -v sativa-epang):
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sativaepang:
+          type: string
+          description: The name of the tool
+      - sed -n 's#.*share/sativa-epang-\([0-9.]*\)-.*#\1#p' \$(command -v sativa-epang):
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@erikrikarddaniel"
+maintainers:
+  - "@erikrikarddaniel"
