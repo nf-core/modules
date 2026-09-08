@@ -35,7 +35,7 @@ def load_features(path):
 ignore_cols = {"FID", "IID", "SID", "sample_id"}
     if "IID" in df.columns:
         sample_ids = df["IID"]
-        feature_cols = [col for col in df.columns if col not in plink_id_cols]
+        feature_cols = [col for col in df.columns if col not in ignore_cols]
     elif "sample_id" in df.columns:
         sample_ids = df["sample_id"]
       feature_cols = [col for col in df.columns if col not in ignore_cols]
