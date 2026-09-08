@@ -42,6 +42,39 @@ nextflow_process {
         }
     }
 
+    test("clustervisualization - features from eigenvec") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/clustering/test.eigenvec", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/clustering/test_clusters.csv", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            def umap = path(process.out.umap_tsv[0][1]).csv(sep: "\t")
+            def tsne = path(process.out.tsne_tsv[0][1]).csv(sep: "\t")
+            assertAll(
+                { assert process.success },
+                { assert umap.columnNames == ["sample_id", "Dim1", "Dim2", "cluster"] },
+                { assert tsne.columnNames == ["sample_id", "Dim1", "Dim2", "cluster"] },
+                { assert umap.rowCount == tsne.rowCount },
+                { assert snapshot(
+                    umap.columnNames,
+                    umap.rowCount,
+                    tsne.columnNames,
+                    tsne.rowCount,
+                    process.out.versions,
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+
     test("clustervisualization - features and clusters - stub") {
         options "-stub"
         when {

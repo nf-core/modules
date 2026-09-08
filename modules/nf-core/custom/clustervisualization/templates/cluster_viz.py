@@ -39,8 +39,6 @@ def load_features(path):
 
     if "IID" in df.columns:
         df = df.rename(columns={"IID": "sample_id"})
-    elif "sample_id" not in df.columns:
-        df = df.rename(columns={df.columns[0]: "sample_id"})
 
     drop = [col for col in ("FID", "SID") if col in df.columns]
     if drop:
