@@ -32,13 +32,13 @@ def load_features(path):
 
     df.columns = [str(col).lstrip("#") for col in df.columns]
 
-ignore_cols = {"FID", "IID", "SID", "sample_id"}
+    ignore_cols = {"FID", "IID", "SID", "sample_id"}
     if "IID" in df.columns:
         sample_ids = df["IID"]
         feature_cols = [col for col in df.columns if col not in ignore_cols]
     elif "sample_id" in df.columns:
         sample_ids = df["sample_id"]
-      feature_cols = [col for col in df.columns if col not in ignore_cols]
+        feature_cols = [col for col in df.columns if col not in ignore_cols]
     else:
         sample_ids = df.iloc[:, 0]
         feature_cols = list(df.columns[1:])
