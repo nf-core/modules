@@ -1,0 +1,73 @@
+name: "sativaepang_looscore"
+description: Read the placed leave-one-out folds and report mislabelled sequences via -stage loo-score
+keywords:
+  - phylogenetics
+  - taxonomy
+  - mislabelling
+  - placement
+  - leave-one-out
+tools:
+  - "sativaepang":
+      description: "SATIVA with EPA-ng as the placement engine"
+      homepage: "https://github.com/Aaramis/sativa-epang"
+      documentation: "https://github.com/Aaramis/sativa-epang/blob/main/CHANGES-epa-ng.md"
+      tool_dev_url: "https://github.com/Aaramis/sativa-epang"
+      doi: "10.1093/nar/gkw396"
+      licence:
+        - "GPL-3.0-or-later"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+    - refjson:
+        type: file
+        description: Reference produced by `sativaepang/reference`'s `-stage reference`
+        pattern: "*.refjson"
+        ontologies: []
+    - taskdir:
+        type: directory
+        description: |
+          The `*.l1o_tasks` directory produced by `sativaepang/looplace`, with a jplace
+          in every fold subdirectory.
+        pattern: "*.l1o_tasks"
+output:
+  mis:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - "*.mis":
+          type: file
+          description: |
+            Mislabelled sequences, one per line: sequence ID, the rank at which the
+            mislabelling was detected, original and proposed taxonomy paths, confidence,
+            and per-rank confidence.
+          pattern: "*.mis"
+          ontologies: []
+  versions_sativaepang:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sativaepang:
+          type: string
+          description: The name of the tool
+      - sed -n 's#.*share/sativa-epang-\([0-9.]*\)-.*#\1#p' \$(command -v sativa-epang):
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sativaepang:
+          type: string
+          description: The name of the tool
+      - sed -n 's#.*share/sativa-epang-\([0-9.]*\)-.*#\1#p' \$(command -v sativa-epang):
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@erikrikarddaniel"
+maintainers:
+  - "@erikrikarddaniel"

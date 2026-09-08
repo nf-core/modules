@@ -1,0 +1,158 @@
+nextflow_process {
+
+    name "Test Process SATIVAEPANG_LOOSCORE"
+    script "../main.nf"
+    process "SATIVAEPANG_LOOSCORE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "sativaepang"
+    tag "sativaepang/lootasks"
+    tag "sativaepang/looplace"
+    tag "sativaepang/looscore"
+
+    test("sativa-epang tiny example") {
+
+        setup {
+            run("SATIVAEPANG_LOOTASKS") {
+                script "../../lootasks/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'delete_me/sativaepang/sativaepang_tiny.refjson', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'delete_me/sativaepang/sativaepang_tiny.model', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+            run("SATIVAEPANG_LOOPLACE") {
+                script "../../looplace/main.nf"
+                process {
+                    """
+                    input[0] = SATIVAEPANG_LOOTASKS.out.taskdir
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = SATIVAEPANG_LOOPLACE.out.taskdir.map { meta, dir -> [
+                    meta,
+                    file(params.modules_testdata_base_path + 'delete_me/sativaepang/sativaepang_tiny.refjson', checkIfExists: true),
+                    dir
+                ] }
+                """
+            }
+        }
+
+        then {
+            // The tool's own bundled example is a clean smoke-test set with no injected
+            // mislabels -- see the gtdb test below for a real detection assertion.
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("gtdb archaea 16S") {
+
+        setup {
+            run("SATIVAEPANG_LOOTASKS") {
+                script "../../lootasks/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'delete_me/sativaepang/gtdb_archaea_16s.refjson', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'delete_me/sativaepang/gtdb_archaea_16s.model', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+            run("SATIVAEPANG_LOOPLACE") {
+                script "../../looplace/main.nf"
+                process {
+                    """
+                    input[0] = SATIVAEPANG_LOOTASKS.out.taskdir
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = SATIVAEPANG_LOOPLACE.out.taskdir.map { meta, dir -> [
+                    meta,
+                    file(params.modules_testdata_base_path + 'delete_me/sativaepang/gtdb_archaea_16s.refjson', checkIfExists: true),
+                    dir
+                ] }
+                """
+            }
+        }
+
+        then {
+            // This dataset carries a deliberate positive control: DupHaloA/DupSulfoA, a
+            // swapped-label pair (see the test-datasets README). A real mislabel-detection
+            // assertion, not just "the process completed".
+            def mis = path(process.out.mis[0][1]).text
+            assertAll(
+                { assert process.success },
+                { assert mis.contains("DupHaloA") },
+                { assert mis.contains("DupSulfoA") },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("sativa-epang tiny example - stub") {
+
+        options "-stub"
+
+        setup {
+            run("SATIVAEPANG_LOOTASKS") {
+                script "../../lootasks/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'delete_me/sativaepang/sativaepang_tiny.refjson', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'delete_me/sativaepang/sativaepang_tiny.model', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+            run("SATIVAEPANG_LOOPLACE") {
+                script "../../looplace/main.nf"
+                process {
+                    """
+                    input[0] = SATIVAEPANG_LOOTASKS.out.taskdir
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = SATIVAEPANG_LOOPLACE.out.taskdir.map { meta, dir -> [
+                    meta,
+                    file(params.modules_testdata_base_path + 'delete_me/sativaepang/sativaepang_tiny.refjson', checkIfExists: true),
+                    dir
+                ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
