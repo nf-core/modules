@@ -4,7 +4,7 @@ process BIOFORMATS2RAW {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7d/7d1466c4737fc34f9f3b63117bffda79092a7a59c795b14f4d49bdc9ebf8512d/data' :
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e8/e8fbb37ff998b40a62b21207ac52f00ca379cea1ad9e96040e7a461f5b5ac1e9/data' :
         'community.wave.seqera.io/library/bioformats2raw:0.12.1--503439f3c2940fe1'}"
 
     input:
