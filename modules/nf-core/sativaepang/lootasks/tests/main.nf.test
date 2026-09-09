@@ -24,12 +24,8 @@ nextflow_process {
         }
 
         then {
-            // manifest.json's model must be the bare model expression, with no trailing
-            // RAxML-NG partition clause (", name = range") -- that clause is what a
-            // refjson built via -reftree/-refmodel carries in its own .model file, and
-            // embedding it verbatim here is exactly the sativa-epang bug this module's
-            // SATIVA_EPANG_MODEL export works around (loo-place would otherwise reject
-            // every fold with "Wrong model specification").
+            // manifest.json's model must be the bare model expression, not RAxML-NG's
+            // partition clause -- see the SATIVA_EPANG_MODEL workaround in main.nf.
             def taskdir = file(process.out.taskdir[0][1])
             def manifest = new groovy.json.JsonSlurper().parse(new File(taskdir.toString(), "manifest.json"))
             assertAll(

@@ -53,7 +53,7 @@ nextflow_process {
             // mislabels -- see the gtdb test below for a real detection assertion.
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -104,7 +104,7 @@ nextflow_process {
                 { assert process.success },
                 { assert mis.contains("DupHaloA") },
                 { assert mis.contains("DupSulfoA") },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

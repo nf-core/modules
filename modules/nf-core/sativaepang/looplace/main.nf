@@ -12,7 +12,7 @@ process SATIVAEPANG_LOOPLACE {
 
     output:
     tuple val(meta), path(taskdir), emit: taskdir
-    tuple val("${task.process}"), val('sativaepang'), eval("sed -n 's#.*share/sativa-epang-\\([0-9.]*\\)-.*#\\1#p' \$(command -v sativa-epang)"), topic: versions, emit: versions_sativaepang
+    tuple val("${task.process}"), val('sativaepang'), eval("grep -m1 -oE '[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+' \$(command -v sativa-epang)"), topic: versions, emit: versions_sativaepang
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,28 +20,18 @@ process SATIVAEPANG_LOOPLACE {
     script:
     def args = task.ext.args ?: ''
     """
-    # \$taskdir is staged from sativaepang/lootasks's own output -- a symlink under
-    # local/shared-filesystem staging, but a real copy under stageInMode 'copy' (the
-    # default for cloud storage without Fusion). loo-place writes a jplace (and logs)
-    # inside every fold directory, which would mutate that other task's output in place
-    # and make this task uncacheable across -resume (same class of bug as
-    # nf-core/modules#12799). Give it a private, writable directory tree instead: fold
-    # subdirectories are real (new) directories here, their read-only contents
-    # (ref.nwk/ref.fasta/query.fasta) stay symlinks to avoid copying large alignments,
-    # and manifest.json at the top level is a plain symlink since loo-place never writes
-    # there. mv handles both staging modes: it moves a symlink as a symlink, and renames
-    # a real directory in place, so nothing is deleted either way.
-    mv "$taskdir" "${taskdir}.staged"
-    real_taskdir=\$(readlink -f "${taskdir}.staged")
+    # Private writable taskdir: loo-place writes a jplace/logs into every fold, which
+    # would otherwise mutate lootasks' own output in place (nf-core/modules#12799-style
+    # -resume bug). fold_*/{ref.nwk,ref.fasta,query.fasta} stay symlinks -- at GTDB scale
+    # these are already near-full-alignment copies per fold, so duplicating them again
+    # here isn't affordable.
+    mv "$taskdir" "${taskdir}.orig"
     mkdir "$taskdir"
-    find "\$real_taskdir" -mindepth 1 -maxdepth 1 | while read -r entry; do
-        name=\$(basename "\$entry")
-        if [ -d "\$entry" ]; then
-            mkdir "$taskdir/\$name"
-            find "\$entry" -mindepth 1 -maxdepth 1 -exec ln -s {} "$taskdir/\$name"/ \\;
-        else
-            ln -s "\$entry" "$taskdir/\$name"
-        fi
+    ln -s "\$(readlink -f "${taskdir}.orig/manifest.json")" "$taskdir/manifest.json"
+    for fold in "${taskdir}.orig"/fold_*; do
+        d="$taskdir/\$(basename "\$fold")"
+        mkdir "\$d"
+        ln -s "\$(readlink -f "\$fold")"/* "\$d/"
     done
 
     sativa-epang \\
@@ -53,17 +43,13 @@ process SATIVAEPANG_LOOPLACE {
 
     stub:
     """
-    mv "$taskdir" "${taskdir}.staged"
-    real_taskdir=\$(readlink -f "${taskdir}.staged")
+    mv "$taskdir" "${taskdir}.orig"
     mkdir "$taskdir"
-    find "\$real_taskdir" -mindepth 1 -maxdepth 1 | while read -r entry; do
-        name=\$(basename "\$entry")
-        if [ -d "\$entry" ]; then
-            mkdir "$taskdir/\$name"
-            touch "$taskdir/\$name/epa_result.jplace"
-        else
-            ln -s "\$entry" "$taskdir/\$name"
-        fi
+    ln -s "\$(readlink -f "${taskdir}.orig/manifest.json")" "$taskdir/manifest.json"
+    for fold in "${taskdir}.orig"/fold_*; do
+        d="$taskdir/\$(basename "\$fold")"
+        mkdir "\$d"
+        touch "\$d/epa_result.jplace"
     done
     """
 }

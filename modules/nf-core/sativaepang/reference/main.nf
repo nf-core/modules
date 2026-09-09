@@ -15,7 +15,7 @@ process SATIVAEPANG_REFERENCE {
     output:
     tuple val(meta), path("*.refjson"), emit: refjson
     tuple val(meta), path("*.model")  , emit: model
-    tuple val("${task.process}"), val('sativaepang'), eval("sed -n 's#.*share/sativa-epang-\\([0-9.]*\\)-.*#\\1#p' \$(command -v sativa-epang)"), topic: versions, emit: versions_sativaepang
+    tuple val("${task.process}"), val('sativaepang'), eval("grep -m1 -oE '[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+' \$(command -v sativa-epang)"), topic: versions, emit: versions_sativaepang
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,10 +23,8 @@ process SATIVAEPANG_REFERENCE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // -reftree/-refmodel hand off a tree built elsewhere (e.g. RAxML-NG): EPA-ng then
-    // numbers the branches and the taxonomy map/node heights are computed in pure Python,
-    // so no RAxML runs at all. Without them this stage falls back to sativa-epang's own
-    // constrained RAxML search.
+    // -reftree/-refmodel hand off a tree built elsewhere (e.g. RAxML-NG) instead of
+    // running sativa-epang's own constrained RAxML search.
     def reftree_arg  = reftree  ? "-reftree ${reftree}"   : ''
     def refmodel_arg = refmodel ? "-refmodel ${refmodel}" : ''
     """

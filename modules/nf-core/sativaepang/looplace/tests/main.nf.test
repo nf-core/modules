@@ -36,19 +36,9 @@ nextflow_process {
         }
 
         then {
-            // Every fold in the returned taskdir must have a jplace, not just process.success.
-            // (Separately verified by hand, not expressible cleanly here: the upstream
-            // SATIVAEPANG_LOOTASKS task's own directory on disk is left untouched -- this
-            // module stages a private, writable copy rather than mutating the upstream
-            // task's output in place, the same class of -resume-breaking bug fixed in
-            // nf-core/modules#12799.)
-            // EPA-ng's placement likelihoods aren't byte-reproducible between the conda
-            // environment and the container builds (confirmed: identical logs/inputs,
-            // differing epa_result.jplace content). epa_info.log/epang.log also embed a
-            // wall-clock "Elapsed Time: Ns" line that flips between runs under load, on any
-            // engine. Mask all three in the snapshot -- same precedent as
-            // sigprofiler/snapaligner's unstablePatterns usage -- and rely on the structural
-            // asserts below for the guarantee this module actually makes.
+            // epa_result.jplace/epa_info.log/epang.log aren't byte-reproducible across
+            // engines (conda vs. container placement likelihoods, wall-clock timing) --
+            // masked below, same precedent as sigprofiler/snapaligner.
             def taskdir = file(process.out.taskdir[0][1])
             def foldDirs = taskdir.listFiles().findAll { it.isDirectory() && it.name.startsWith("fold_") }
             assertAll(

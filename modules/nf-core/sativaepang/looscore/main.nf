@@ -12,7 +12,7 @@ process SATIVAEPANG_LOOSCORE {
 
     output:
     tuple val(meta), path("*.mis"), emit: mis
-    tuple val("${task.process}"), val('sativaepang'), eval("sed -n 's#.*share/sativa-epang-\\([0-9.]*\\)-.*#\\1#p' \$(command -v sativa-epang)"), topic: versions, emit: versions_sativaepang
+    tuple val("${task.process}"), val('sativaepang'), eval("grep -m1 -oE '[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+' \$(command -v sativa-epang)"), topic: versions, emit: versions_sativaepang
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,9 +20,7 @@ process SATIVAEPANG_LOOSCORE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // loo-score only ever reads taskdir (the placed jplace files, manifest.json) -- it
-    // writes its own outputs into -o instead, so unlike sativaepang/looplace this can
-    // take taskdir as a plain read-only input.
+    // Unlike looplace, loo-score only reads taskdir -- writes its own output via -o.
     """
     sativa-epang \\
         -r ${refjson} \\

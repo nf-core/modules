@@ -27,11 +27,8 @@ nextflow_process {
         }
 
         then {
-            // The refjson embeds the exact invocation command it was built with
-            // (working-directory-relative paths and all), so it isn't byte-reproducible
-            // across engines/environments -- check structure and the one thing this
-            // module actually guarantees (using the given tree, not building one) rather
-            // than a strict content snapshot.
+            // refjson embeds its own build invocation (paths and all), so it isn't
+            // byte-reproducible across engines -- check structure instead.
             def refjson = new groovy.json.JsonSlurper().parse(file(process.out.refjson[0][1]))
             assertAll(
                 { assert process.success },
