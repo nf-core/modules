@@ -14,7 +14,8 @@ tools:
       documentation: https://bitbucket.org/berkeleylab/metabat/src/master/
       tool_dev_url: https://bitbucket.org/berkeleylab/metabat/src/master/
       doi: "10.7717/peerj.7359"
-      licence: ["BSD-3-clause-LBNL"]
+      licence:
+        - "BSD-3-clause-LBNL"
       identifier: ""
 input:
   - - meta:
@@ -45,13 +46,29 @@ output:
           pattern: ".txt.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_metabat2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metabat2:
+          type: string
+          description: The name of the tool
+      - metabat2 --help 2>&1 | sed -n "2s/.*:\([0-9]*\.[0-9]*\).*/\1/p":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metabat2:
+          type: string
+          description: The name of the tool
+      - metabat2 --help 2>&1 | sed -n "2s/.*:\([0-9]*\.[0-9]*\).*/\1/p":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@maxibor"
 maintainers:

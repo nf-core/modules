@@ -21,7 +21,7 @@ process SLAMDUNK_ALL {
     tuple val(meta), path("outputs/count/*.tsv")          , emit: tsv
     tuple val(meta), path("outputs/count/*_plus.bedgraph"), emit: plus_bedgraph
     tuple val(meta), path("outputs/count/*_mins.bedgraph"), emit: mins_bedgraph
-    path "versions.yml"                                   , emit: versions
+    tuple val("${task.process}"), val('slamdunk'), eval("slamdunk --version | sed 's/^slamdunk //'"), topic: versions, emit: versions_slamdunk
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,11 +39,6 @@ process SLAMDUNK_ALL {
         $args \\
         $filterbed \\
         $input
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        slamdunk: \$(echo \$(slamdunk --version) | sed 's/^slamdunk //')
-    END_VERSIONS
     """
 
     stub:
@@ -61,10 +56,5 @@ process SLAMDUNK_ALL {
     touch outputs/count/${prefix}.tsv
     touch outputs/count/${prefix}_plus.bedgraph
     touch outputs/count/${prefix}_mins.bedgraph
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        slamdunk: \$(echo \$(slamdunk --version) | sed 's/^slamdunk //')
-    END_VERSIONS
     """
 }

@@ -43,9 +43,10 @@ output:
       - slimfastq:
           type: string
           description: The name of the tool
-      - echo 2.04:
-          type: eval
-          description: The expression to obtain the version of the tool
+      - "2.04":
+          type: string
+          description: The version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -54,9 +55,10 @@ topics:
       - slimfastq:
           type: string
           description: The name of the tool
-      - echo 2.04:
-          type: eval
-          description: The expression to obtain the version of the tool
+      - "2.04":
+          type: string
+          description: The version of the tool
+
 authors:
   - "@Midnighter"
 maintainers:

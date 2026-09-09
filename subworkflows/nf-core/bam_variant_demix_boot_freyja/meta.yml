@@ -21,6 +21,9 @@ input:
       description: |
         Structure: [ val(meta), path(fasta) ]
         Groovy Map containing sample information e.g. [ id:'test', single_end:false ] and the fasta reference used for the sorted BAM file
+  - val_skip_boot:
+      type: boolean
+      description: Whether to skip the bootstrapping step
   - val_repeats:
       type: integer
       description: Number of bootstrap repeats to perform
@@ -43,21 +46,11 @@ input:
         Structure: path(lineages_topology)
         File containing lineage topology information that correspond to barcodes
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - variants:
       type: file
       description: |
-        Structure: [ val(meta), path(variants) ]
-        File containing identified variants in a gff-like format
-  - depths:
-      type: file
-      description: |
-        Structure: [ val(meta), path(variants) ]
-        File containing depth of the variants
+        Structure: [ val(meta), path(variants), path(depths) ]
+        File containing identified variants in a gff-like format, and the file containing the depth of the variants
   - demix:
       type: file
       description: |
@@ -71,17 +64,23 @@ output:
   - summarized:
       type: file
       description: |
-        Structure: [ val(meta), path(lineages) ]
+        Structure: [ val(meta), path(summarized) ]
         a csv file that includes the lineages present but summarized by constellation and their corresponding abundances
   - barcodes:
       type: file
-      description: File containing lineage defining barcodes
+      description: |
+        Structure: path(barcodes)
+        File containing lineage defining barcodes
   - lineages_meta:
       type: file
-      description: File containing lineage topology information that correspond to barcodes
+      description: |
+        Structure: path(lineages_meta)
+        File containing lineage metadata that correspond to barcodes
   - lineages_topology:
       type: file
-      description: File containing lineage metadata that correspond to barcodes
+      description: |
+        Structure: path(lineages_topology)
+        File containing lineage topology information that correspond to barcodes
 
 authors:
   - "@Joon-Klaps"

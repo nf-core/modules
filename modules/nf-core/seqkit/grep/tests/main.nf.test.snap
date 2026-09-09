@@ -26,6 +26,33 @@
             "nextflow": "26.04.3"
         }
     },
+    "with_file - gzipped input - stub": {
+        "content": [
+            {
+                "filter": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.fa.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions_seqkit": [
+                    [
+                        "SEQKIT_GREP",
+                        "seqkit",
+                        "2.13.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-08-26T08:42:47.44205795",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
     "with_pattern": {
         "content": [
             {
@@ -62,7 +89,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test.fa.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "test.fa:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "versions_seqkit": [
@@ -74,10 +101,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-06-15T10:19:55.658854642",
+        "timestamp": "2026-08-26T08:42:38.938100201",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.3"
+            "nextflow": "26.04.6"
         }
     },
     "with_file - ungzipped input": {

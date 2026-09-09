@@ -12,7 +12,7 @@ process PBTK_PBINDEX {
 
     output:
     tuple val(meta), path("*.pbi"), emit: pbi
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('pbtk'), eval("pbindex --version | head -n1 | cut -d' ' -f2"), emit: versions_pbindex, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,20 +22,10 @@ process PBTK_PBINDEX {
     pbindex \\
         -j $task.cpus \\
         $bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pbindex: \$(pbindex --version | sed -n 's/pbindex \\(.*\\)/\\1/p')
-    END_VERSIONS
     """
 
     stub:
     """
     touch ${bam}.pbi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pbindex: \$(pbindex --version | sed -n 's/pbindex \\(.*\\)/\\1/p')
-    END_VERSIONS
     """
 }

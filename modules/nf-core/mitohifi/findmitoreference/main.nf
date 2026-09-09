@@ -19,7 +19,7 @@ process MITOHIFI_FINDMITOREFERENCE {
     tuple val(meta), path("*.fasta"), path("*.gb"), emit: reference
     // WARN: Incorrect version information is provided by tool on CLI. Please update this string when bumping container versions.
     // old version command: \$(mitohifi.py -v | sed 's/.* //')
-    tuple val("${task.process}"), val('mitohifi'), eval('echo 3.2.3'), emit: versions_mitohifi, topic: versions
+    tuple val("${task.process}"), val('mitohifi'), val('3.2.3'), emit: versions_mitohifi, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

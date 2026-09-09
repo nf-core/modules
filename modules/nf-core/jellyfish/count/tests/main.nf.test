@@ -33,6 +33,30 @@ nextflow_process {
 
     }
 
+    test("sarscov2 - fasta - gzipped") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                ]
+                input[1] = 7
+                input[2] = '100M'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["jf"])).match() }
+            )
+        }
+
+    }
+
     test("sarscov2 - fasta - stub") {
 
         options "-stub"

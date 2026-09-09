@@ -13,7 +13,7 @@ process NGSBITS_UPDHUNTER {
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
     tuple val(meta), path("*.igv"), emit: igv
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('ngsbits'), eval("UpdHunter --version 2>&1 | sed 's/UpdHunter //'"), topic: versions, emit: versions_ngsbits
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,10 +33,6 @@ process NGSBITS_UPDHUNTER {
         -out ${prefix}.tsv
 
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ngs-bits: \$(echo \$(UpdHunter --version 2>&1) | sed 's/UpdHunter //' )
-    END_VERSIONS
     """
 
     stub:
@@ -49,9 +45,5 @@ process NGSBITS_UPDHUNTER {
     touch ${prefix}.tsv
     touch ${prefix}.igv
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ngs-bits: \$(echo \$(UpdHunter --version 2>&1) | sed 's/UpdHunter //' )
-    END_VERSIONS
     """
 }

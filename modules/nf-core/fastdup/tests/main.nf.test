@@ -24,16 +24,7 @@ nextflow_process {
 
         then {
             assert process.success
-            assertAll(
-                { assert snapshot(
-                    bam(process.out.bam[0][1]).getReadsMD5(),
-                    file(process.out.metrics[0][1]).readLines()[0..2],
-                    process.out.bai,
-                    process.out.csi,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-
-                ).match() }
-            )
+            assertAll({ assert snapshot(sanitizeOutput(process.out, readsMD5Keys:["bam"], unstableKeys:["metrics"])).match() })
         }
 
     }
@@ -87,14 +78,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    bam(process.out.bam[0][1]).getReadsMD5(),
-                    file(process.out.metrics[0][1]).name,
-                    process.out.bai,
-                    process.out.csi,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys:["bam"], unstableKeys:["metrics"])).match() }
             )
         }
 
@@ -122,14 +106,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    bam(process.out.bam[0][1]).getReadsMD5(),
-                    file(process.out.metrics[0][1]).name,
-                    process.out.bai,
-                    process.out.csi,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys:["bam"], unstableKeys:["metrics"])).match() }
             )
         }
 

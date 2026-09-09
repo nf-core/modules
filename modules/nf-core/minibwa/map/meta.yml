@@ -1,0 +1,137 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "minibwa_map"
+description: Align fastq reads to a fasta reference using minibwa
+keywords:
+  - map
+  - mem
+  - alignment
+  - fastq
+  - bam
+  - sam
+tools:
+  - "minibwa":
+      description: "Aligning short and accurate long reads to a reference genome, a
+        reimplementation of bwa-mem."
+      homepage: "https://github.com/lh3/minibwa"
+      documentation: "https://github.com/lh3/minibwa"
+      tool_dev_url: "https://github.com/lh3/minibwa"
+      licence: ["GPL-2.0-or-later"]
+      identifier: ""
+  - "samtools":
+      description: "Tools for dealing with SAM, BAM and CRAM files"
+      homepage: "http://www.htslib.org"
+      documentation: "http://www.htslib.org/doc/samtools.html"
+      doi: "10.1093/bioinformatics/btp352"
+      licence: ["MIT"]
+      identifier: "biotools:samtools"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+          respectively.
+        ontologies:
+          - edam: "http://edamontology.org/data_2044"
+          - edam: "http://edamontology.org/format_1930"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference/index information
+          e.g. [ id:'test' ]
+    - index:
+        type: file
+        description: minibwa genome index files
+        pattern: "Directory containing minibwa index *.{l2b,mbw}"
+        ontologies:
+          - edam: "http://edamontology.org/data_3210"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: Reference genome in FASTA format
+        pattern: "*.{fa,fasta,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/data_2044"
+          - edam: "http://edamontology.org/format_1929"
+  - sort_bam:
+      type: boolean
+      description: use samtools sort (true) or samtools view (false)
+      pattern: "true or false"
+output:
+  aligned:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.{sam,bam,cram}":
+          type: file
+          description: Output SAM/BAM/CRAM file containing read alignments
+          pattern: "*.{sam,bam,cram}"
+          ontologies:
+            - edam: "http://edamontology.org/format_2573"
+            - edam: "http://edamontology.org/format_2572"
+            - edam: "http://edamontology.org/format_3462"
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.{bai,csi,crai}":
+          type: file
+          description: Index file for the aligned BAM/CRAM file
+          pattern: "*.{bai,csi,crai}"
+          ontologies: []
+  versions_minibwa:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - minibwa:
+          type: string
+          description: The name of the tool
+      - minibwa version | grep -o -E "[0-9]+(\.[0-9]+)+":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - minibwa:
+          type: string
+          description: The name of the tool
+      - minibwa version | grep -o -E "[0-9]+(\.[0-9]+)+":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@nh13"
+maintainers:
+  - "@nh13"

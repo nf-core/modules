@@ -14,7 +14,7 @@ process PROOVFRAME_MAP {
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('proovframe'), eval("proovframe 2>&1 | sed '/proovframe-v/!d;s/proovframe-v//;s/ .*//'"), topic: versions, emit: versions_proovframe
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,21 +32,11 @@ process PROOVFRAME_MAP {
         ${db_type} \\
         -o ${prefix}.tsv \\
         ${fasta}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        proovframe: \$(proovframe 2>&1 | grep -o 'proovframe-v[0-9]*\\.[0-9]*\\.[0-9]*' | grep -o '[0-9]*\\.[0-9]*\\.[0-9]*')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        proovframe: \$(proovframe 2>&1 | grep -o 'proovframe-v[0-9]*\\.[0-9]*\\.[0-9]*' | grep -o '[0-9]*\\.[0-9]*\\.[0-9]*')
-    END_VERSIONS
     """
 }

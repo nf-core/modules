@@ -14,6 +14,7 @@ process RPBP_PREPAREGENOME {
     tuple val(meta), path("${prefix}.annotated.bed.gz")             , emit: transcript_bed
     tuple val(meta), path("${prefix}.orfs-genomic.annotated.bed.gz"), emit: orfs_genomic_bed
     tuple val(meta), path("${prefix}.orfs-exons.annotated.bed.gz")  , emit: orfs_exons_bed
+    tuple val(meta), path("${prefix}.orfs-labels.annotated.tab.gz"), emit: orfs_labels
     path "versions.yml"                                             , emit: versions_rpbp, topic: versions
 
     when:
@@ -30,6 +31,7 @@ process RPBP_PREPAREGENOME {
     echo "" | gzip > ${prefix}.annotated.bed.gz
     echo "" | gzip > ${prefix}.orfs-genomic.annotated.bed.gz
     echo "" | gzip > ${prefix}.orfs-exons.annotated.bed.gz
+    echo "" | gzip > ${prefix}.orfs-labels.annotated.tab.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

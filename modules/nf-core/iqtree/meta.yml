@@ -219,6 +219,17 @@ output:
             File containing consensus network (-net/-bb)
           pattern: "*.{nex}"
           ontologies: []
+  best_scheme:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.best_scheme":
+          type: file
+          description: |
+            File containing the best-fit partitioning scheme selected by
+            ModelFinder partition merging (-m MFP+MERGE/TESTMERGE)
+          pattern: "*.{best_scheme}"
+          ontologies: []
   splits:
     - - meta:
           type: map
@@ -294,7 +305,7 @@ output:
     - - meta:
           type: map
           description: Groovy Map containing sample information
-      - "*.rate  ":
+      - "*.rate":
           type: file
           description: |
             File containing inferred site-specific
@@ -338,7 +349,7 @@ output:
       - iqtree:
           type: string
           description: The name of the tool
-      - iqtree -version 2>&1 | head -n1 | sed 's/^IQ-TREE multicore version //;s/ .*//':
+      - iqtree -version 2>&1 | grep -oE '[0-9]+[.][0-9]+[.][0-9]+' | head -n1:
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -349,7 +360,7 @@ topics:
       - iqtree:
           type: string
           description: The name of the tool
-      - iqtree -version 2>&1 | head -n1 | sed 's/^IQ-TREE multicore version //;s/ .*//':
+      - iqtree -version 2>&1 | grep -oE '[0-9]+[.][0-9]+[.][0-9]+' | head -n1:
           type: eval
           description: The expression to obtain the version of the tool
 authors:
@@ -358,3 +369,4 @@ authors:
 maintainers:
   - "@avantonder"
   - "@aunderwo"
+  - "@chriswyatt1"

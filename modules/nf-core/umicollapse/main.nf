@@ -36,16 +36,13 @@ process UMICOLLAPSE {
     }
     extension = mode.contains("fastq") ? "fastq.gz" : "bam"
     """
-    # Getting the umicollapse jar file like this because `umicollapse` is a Python wrapper script generated
-    # by conda that allows to set the heap size (Xmx), but not the stack size (Xss).
-    # `which` allows us to get the directory that contains `umicollapse`, independent of whether we
-    # are in a container or conda environment.
-    # WARN: Please update this string when bumping container versions.
-    UMICOLLAPSE_JAR=\$(dirname \$(which umicollapse))/../share/umicollapse-1.1.0-0/umicollapse.jar
+    # The generated launcher allows configuring heap size, but not stack size.
+    UMICOLLAPSE_JAR=\$(find "\$(dirname "\$(command -v umicollapse)")/../share" -maxdepth 2 -name umicollapse.jar -print -quit)
+
     java \\
         -Xmx${max_heap_size_mega}M \\
         -Xss${max_stack_size_mega}M \\
-        -jar \$UMICOLLAPSE_JAR \\
+        -jar "\$UMICOLLAPSE_JAR" \\
         ${mode} \\
         -i ${input} \\
         -o ${prefix}.${extension} \\

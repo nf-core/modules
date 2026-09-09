@@ -19,7 +19,8 @@ tools:
 input:
   - ds_id:
       type: string
-      description: METASPACE dataset identifier to retrieve and convert to AnnData and SpatialData formats.
+      description: METASPACE dataset identifier to retrieve and convert to AnnData
+        and SpatialData formats.
   - database_name_:
       type: string
       description: Name of the metabolite annotation database to use (e.g., HMDB)
@@ -28,7 +29,8 @@ input:
       description: Version of the annotation database to use (e.g., v4)
   - fdr_:
       type: string
-      description: False Discovery Rate threshold for filtering metabolite annotations.
+      description: False Discovery Rate threshold for filtering metabolite
+        annotations.
       pattern: "^(0(\\.[0-9]+)?|1(\\.0+)?)$"
   - use_tic_:
       type: string
@@ -57,7 +59,15 @@ output:
         description: File containing software versions
         pattern: "versions.yml"
         ontologies:
-          - edam: http://edamontology.org/format_3750
+          - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@bisho2122"
 maintainers:

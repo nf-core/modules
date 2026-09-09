@@ -12,7 +12,7 @@ process MAGUS_GUIDETREE {
 
     output:
     tuple val(meta), path("*.tree"), emit: tree
-    path "versions.yml"            , emit: versions
+    tuple val("${task.process}"), val('magus'), eval('magus --version'), emit: versions_magus, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,26 +22,16 @@ process MAGUS_GUIDETREE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     magus \\
-        -np $task.cpus \\
-        -i $fasta \\
+        -np ${task.cpus} \\
+        -i ${fasta} \\
         -o ${prefix}.tree \\
         --onlyguidetree TRUE \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        MAGUS: \$(magus --version)
-    END_VERSIONS
+        ${args}
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.tree
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        MAGUS: \$(magus --version)
-    END_VERSIONS
     """
 }

@@ -22,9 +22,12 @@ process RASTAIR_CALL {
     task.ext.when == null || task.ext.when
 
     script:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+
     """
     rastair call \\
+        ${args} \\
         --threads ${task.cpus} \\
         --nOT ${parsed_trim_OT} \\
         --nOB ${parsed_trim_OB} \\

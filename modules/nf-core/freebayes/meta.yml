@@ -28,28 +28,37 @@ input:
         type: file
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_2572 # BAM
+          - edam: http://edamontology.org/format_3462 # CRAM
+          - edam: http://edamontology.org/format_2573 # SAM
     - input_1_index:
         type: file
         description: BAM/CRAM/SAM index file
         pattern: "*.{bai,crai}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3327 # BAI/CRAI index
     - input_2:
         type: file
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_2572 # BAM
+          - edam: http://edamontology.org/format_3462 # CRAM
+          - edam: http://edamontology.org/format_2573 # SAM
     - input_2_index:
         type: file
         description: BAM/CRAM/SAM index file
         pattern: "*.{bai,crai}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3327 # BAI/CRAI index
     - target_bed:
         type: file
         description: Optional - Limit analysis to targets listed in this
           BED-format FILE.
         pattern: "*.bed"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3003 # BED
   - - meta2:
         type: map
         description: |
@@ -59,7 +68,8 @@ input:
         type: file
         description: reference fasta file
         pattern: ".{fa,fa.gz,fasta,fasta.gz}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - meta3:
         type: map
         description: |
@@ -69,7 +79,8 @@ input:
         type: file
         description: reference fasta file index
         pattern: "*.{fa,fasta}.fai"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3327 # FASTA index
   - - meta4:
         type: map
         description: |
@@ -80,7 +91,8 @@ input:
         description: Optional - Limit analysis to samples listed (one per line) in
           the FILE.
         pattern: "*.txt"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_2330 # Textual format
   - - meta5:
         type: map
         description: |
@@ -91,7 +103,8 @@ input:
         description: Optional - Each line of FILE should list a sample and a
           population which it is part of.
         pattern: "*.txt"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_2330 # Textual format
   - - meta6:
         type: map
         description: |
@@ -105,7 +118,8 @@ input:
           or a region-specific format:
           seq_name start end sample_name copy_number
         pattern: "*.bed"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3003 # BED
 output:
   vcf:
     - - meta:

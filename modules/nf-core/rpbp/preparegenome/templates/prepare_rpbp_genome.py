@@ -77,6 +77,7 @@ for src in [
     os.path.join(base_path, f"{prefix}.annotated.bed.gz"),
     os.path.join(base_path, "transcript-index", f"{prefix}.orfs-genomic.annotated.bed.gz"),
     os.path.join(base_path, "transcript-index", f"{prefix}.orfs-exons.annotated.bed.gz"),
+    os.path.join(base_path, "transcript-index", f"{prefix}.orfs-labels.annotated.tab.gz"),
 ]:
     shutil.move(src, os.path.basename(src))
 shutil.rmtree(base_path)

@@ -4,8 +4,8 @@ process IQTREE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/iqtree:2.4.0--h503566f_0' :
-        'quay.io/biocontainers/iqtree:2.4.0--h503566f_0' }"
+        'https://depot.galaxyproject.org/singularity/iqtree:3.1.3--h8471819_0' :
+        'quay.io/biocontainers/iqtree:3.1.3--h8471819_0' }"
 
     input:
     tuple val(meta), path(alignment), path(tree)
@@ -34,6 +34,7 @@ process IQTREE {
     tuple val(meta), path("*.state")         , emit: state         , optional: true
     tuple val(meta), path("*.contree")       , emit: contree       , optional: true
     tuple val(meta), path("*.nex")           , emit: nex           , optional: true
+    tuple val(meta), path("*.best_scheme")   , emit: best_scheme   , optional: true
     tuple val(meta), path("*.splits")        , emit: splits        , optional: true
     tuple val(meta), path("*.suptree")       , emit: suptree       , optional: true
     tuple val(meta), path("*.alninfo")       , emit: alninfo       , optional: true
@@ -41,11 +42,11 @@ process IQTREE {
     tuple val(meta), path("*.siteprob")      , emit: siteprob      , optional: true
     tuple val(meta), path("*.sitelh")        , emit: sitelh        , optional: true
     tuple val(meta), path("*.treels")        , emit: treels        , optional: true
-    tuple val(meta), path("*.rate  ")        , emit: rate          , optional: true
+    tuple val(meta), path("*.rate")          , emit: rate          , optional: true
     tuple val(meta), path("*.mlrate")        , emit: mlrate        , optional: true
     tuple val(meta), path("GTRPMIX.nex")     , emit: exch_matrix   , optional: true
     tuple val(meta), path("*.log")           , emit: log
-    tuple val("${task.process}"), val('iqtree'), eval("iqtree -version 2>&1 | head -n1 | sed 's/^IQ-TREE multicore version //;s/ .*//'"), emit: versions_iqtree, topic: versions
+    tuple val("${task.process}"), val('iqtree'), eval("iqtree -version 2>&1 | grep -oE '[0-9]+[.][0-9]+[.][0-9]+' | head -n1"), emit: versions_iqtree, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -68,6 +69,10 @@ process IQTREE {
     def trees_rf_arg                = trees_rf                ? "-rf $trees_rf"                 : ''
     def prefix                      = task.ext.prefix         ?: meta.id
     def memory                      = task.memory.toString().replaceAll(' ', '')
+    // IQ-TREE rejects -mem when a partition model is in use:
+    // "-mem option does not work with partition models yet".
+    def partitioned                 = partitions_equal || partitions_proportional || partitions_unlinked
+    def memory_arg                  = partitioned             ? ''                              : "-mem $memory"
     """
     iqtree \\
         $args \\
@@ -88,7 +93,7 @@ process IQTREE {
         -pre $prefix \\
         -nt AUTO \\
         -ntmax $task.cpus \\
-        -mem $memory
+        $memory_arg
     """
 
     stub:
@@ -105,6 +110,7 @@ process IQTREE {
     touch "${prefix}.state"
     touch "${prefix}.contree"
     touch "${prefix}.nex"
+    touch "${prefix}.best_scheme"
     touch "${prefix}.splits"
     touch "${prefix}.suptree"
     touch "${prefix}.alninfo"

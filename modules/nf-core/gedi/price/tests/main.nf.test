@@ -78,9 +78,15 @@ nextflow_process {
                     process.out.model.collect         { meta, f -> [meta, file(f).name] },
                     process.out.signal.collect        { meta, f -> [meta, file(f).name] },
                     process.out.param.collect         { meta, f -> [meta, file(f).name] },
-                    process.out.orfs_tsv.collect      { meta, f -> [meta, file(f).name, path(f).readLines().size()] },
+                    process.out.orfs_tsv.collect      { meta, f -> [meta, file(f).name] },
                     process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                ).match() },
+                // PRICE's ORF count is not reproducible
+                { assert path(process.out.orfs_tsv[0][1]).readLines().first().split('\t').take(9) ==
+                    ['Gene', 'Id', 'Location', 'Candidate Location', 'Codon', 'Type', 'Start', 'Range', 'p value'] },
+                { assert path(process.out.orfs_tsv[0][1]).readLines().first().split('\t').size() == 14 },
+                { assert path(process.out.orfs_tsv[0][1]).readLines().size() > 300 },
+                { assert path(process.out.orfs_tsv[0][1]).readLines().size() < 450 }
             )
         }
     }

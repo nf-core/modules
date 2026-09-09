@@ -31,7 +31,7 @@ process BBMAP_REPAIR {
         -Xmx\$maxmem \\
         $in_reads \\
         $out_reads \\
-        threads=${task.cpus}
+        threads=${task.cpus} \\
         ${args} \\
         &> ${prefix}.repair.sh.log
     """

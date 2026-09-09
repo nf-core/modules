@@ -27,12 +27,13 @@ workflow VCF_GATHER_BCFTOOLS {
             [groupKey(newMeta, count), meta, vcf, index]
         }
         .groupTuple()
-        .branch { key, meta, vcf, index ->
-            def cleanedMetas = meta.collect { m ->
-                m.findAll { k, _v -> !(k in arr_common_meta) }
-            }
-            def newMeta = arr_common_meta ? key.target + [metas: cleanedMetas] : meta[0]
-            def out_tuple = [newMeta, vcf, index]
+        .branch { key, metas, vcf, index ->
+            def cleanedMetas = metas.collect { meta -> meta
+                .findAll { k, _v -> !(k in arr_common_meta) }
+                .toSorted() // sort inside each meta map
+            }.sort { a, b -> a.toString() <=> b.toString() } // sort across meta maps
+            def newMeta = arr_common_meta ? key.target + [metas: cleanedMetas] : metas[0]
+            def out_tuple = [newMeta, vcf.sort(), index.sort()]
 
             one: vcf.size() == 1
                 return out_tuple

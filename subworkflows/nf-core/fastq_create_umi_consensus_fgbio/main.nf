@@ -4,22 +4,23 @@
 // use the mapped information to group UMIs and generate consensus reads
 //
 
-include { BWA_INDEX as BWAMEM1_INDEX                            } from '../../../modules/nf-core/bwa/index/main.nf'
-include { BWA_MEM as BWAMEM1_MEM_PRE                            } from '../../../modules/nf-core/bwa/mem/main.nf'
-include { BWA_MEM as BWAMEM1_MEM_POST                           } from '../../../modules/nf-core/bwa/mem/main.nf'
-include { BWAMEM2_INDEX                                         } from '../../../modules/nf-core/bwamem2/index/main.nf'
-include { BWAMEM2_MEM as BWAMEM2_MEM_PRE                        } from '../../../modules/nf-core/bwamem2/mem/main.nf'
-include { BWAMEM2_MEM as BWAMEM2_MEM_POST                       } from '../../../modules/nf-core/bwamem2/mem/main.nf'
-include { FGBIO_CALLMOLECULARCONSENSUSREADS as CALLUMICONSENSUS } from '../../../modules/nf-core/fgbio/callmolecularconsensusreads/main.nf'
-include { FGBIO_CALLDUPLEXCONSENSUSREADS as CALLDUPLEXCONSENSUS } from '../../../modules/nf-core/fgbio/callduplexconsensusreads/main.nf'
-include { FGBIO_FASTQTOBAM as FASTQTOBAM                        } from '../../../modules/nf-core/fgbio/fastqtobam/main.nf'
-include { FGBIO_FILTERCONSENSUSREADS as FILTERCONSENSUS         } from '../../../modules/nf-core/fgbio/filterconsensusreads/main.nf'
-include { FGBIO_GROUPREADSBYUMI as GROUPREADSBYUMI              } from '../../../modules/nf-core/fgbio/groupreadsbyumi/main.nf'
-include { FGBIO_ZIPPERBAMS as ZIPPERBAMS_PRE                    } from '../../../modules/nf-core/fgbio/zipperbams/main.nf'
-include { FGBIO_ZIPPERBAMS as ZIPPERBAMS_POST                   } from '../../../modules/nf-core/fgbio/zipperbams/main.nf'
-include { SAMTOOLS_FASTQ as BAM2FASTQ_PRE                       } from '../../../modules/nf-core/samtools/fastq/main.nf'
-include { SAMTOOLS_FASTQ as BAM2FASTQ_POST                      } from '../../../modules/nf-core/samtools/fastq/main.nf'
-include { SAMTOOLS_SORT as SORTBAM                              } from '../../../modules/nf-core/samtools/sort/main.nf'
+include { BWAMEM2_INDEX                                         } from '../../../modules/nf-core/bwamem2/index'
+include { BWAMEM2_MEM as BWAMEM2_MEM_POST                       } from '../../../modules/nf-core/bwamem2/mem'
+include { BWAMEM2_MEM as BWAMEM2_MEM_PRE                        } from '../../../modules/nf-core/bwamem2/mem'
+include { BWA_INDEX as BWAMEM1_INDEX                            } from '../../../modules/nf-core/bwa/index'
+include { BWA_MEM as BWAMEM1_MEM_POST                           } from '../../../modules/nf-core/bwa/mem'
+include { BWA_MEM as BWAMEM1_MEM_PRE                            } from '../../../modules/nf-core/bwa/mem'
+include { FGBIO_CALLDUPLEXCONSENSUSREADS as CALLDUPLEXCONSENSUS } from '../../../modules/nf-core/fgbio/callduplexconsensusreads'
+include { FGBIO_CALLMOLECULARCONSENSUSREADS as CALLUMICONSENSUS } from '../../../modules/nf-core/fgbio/callmolecularconsensusreads'
+include { FGBIO_FASTQTOBAM as FASTQTOBAM                        } from '../../../modules/nf-core/fgbio/fastqtobam'
+include { FGBIO_FILTERCONSENSUSREADS as FILTERCONSENSUS         } from '../../../modules/nf-core/fgbio/filterconsensusreads'
+include { FGBIO_GROUPREADSBYUMI as GROUPREADSBYUMI              } from '../../../modules/nf-core/fgbio/groupreadsbyumi'
+include { FGBIO_ZIPPERBAMS as ZIPPERBAMS_POST                   } from '../../../modules/nf-core/fgbio/zipperbams'
+include { FGBIO_ZIPPERBAMS as ZIPPERBAMS_PRE                    } from '../../../modules/nf-core/fgbio/zipperbams'
+include { SAMTOOLS_FASTQ as BAM2FASTQ_POST                      } from '../../../modules/nf-core/samtools/fastq'
+include { SAMTOOLS_FASTQ as BAM2FASTQ_PRE                       } from '../../../modules/nf-core/samtools/fastq'
+include { SAMTOOLS_SORT as SORTBAM                              } from '../../../modules/nf-core/samtools/sort'
+
 workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
     take:
     reads // channel: [mandatory] [ val(meta), [ reads ] ]

@@ -84,12 +84,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    bam(process.out.bam[0][1]).getReadsMD5(),
-                    process.out.tsv,
-                    file(process.out.log[0][1]).readLines()[0..1],
-                    process.out.versions
-                    ).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["log"])).match() }
             )
         }
 
@@ -110,11 +105,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    bam(process.out.bam[0][1]).getReadsMD5(),
-                    file(process.out.log[0][1]).readLines()[0..1],
-                    process.out.versions
-                    ).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["log"])).match() }
             )
         }
 
@@ -135,12 +126,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.tsv,
-                    bam(process.out.bam[0][1]).getReadsMD5(),
-                    file(process.out.log[0][1]).readLines()[0..1],
-                    process.out.versions
-                    ).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["log"])).match() }
             )
         }
 
@@ -161,7 +147,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

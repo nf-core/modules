@@ -51,7 +51,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.meis_tab,
                     path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    path(process.out.versions[0]).yaml
+                    process.out.versions_scramble
                     ).match() }
             )
         }
@@ -97,8 +97,7 @@ nextflow_process {
                     process.out.meis_tab,
                     process.out.dels_tab,
                     path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    process.out.versions_scramble
                     ).match() }
             )
         }
@@ -140,9 +139,8 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                    ).match() }
+                    sanitizeOutput(process.out)
+                ).match() }
             )
         }
     }
@@ -181,9 +179,8 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                    ).match() }
+                    sanitizeOutput(process.out)
+                ).match() }
             )
         }
     }

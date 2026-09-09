@@ -37,6 +37,23 @@ input:
           - edam: http://edamontology.org/format_2572 # BAM
           - edam: http://edamontology.org/format_3462 # CRAM
           - edam: http://edamontology.org/format_2573 # SAM
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: Reference genome FASTA file
+        pattern: "*.{fa,fasta,fna}"
+        optional: true
+        ontologies: []
+    - fai:
+        type: file
+        description: Reference genome FASTA index file
+        pattern: "*.{fai}"
+        optional: true
+        ontologies: []
 output:
   bam:
     - - meta:

@@ -47,14 +47,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.bam.collect { file(it[1]).getName() },
-                    process.out.filtered_bam.collect { file(it[1]).getName() },
-                    process.out.filtered_bai.collect { file(it[1]).getName() },
-                    process.out.vcf,
-                    process.out.tsv,
-                    process.out.plus_bedgraph,
-                    process.out.mins_bedgraph,
-                    process.out.versions
+                    sanitizeOutput(process.out, unstableKeys: ["bam", "filtered_bam","filtered_bai"])
                 ).match() }
             )
         }
@@ -88,16 +81,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.bam,
-                    process.out.filtered_bam,
-                    process.out.filtered_bai,
-                    process.out.vcf,
-                    process.out.tsv,
-                    process.out.plus_bedgraph,
-                    process.out.mins_bedgraph,
-                    process.out.versions
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

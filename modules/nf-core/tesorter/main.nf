@@ -12,14 +12,14 @@ process TESORTER {
     tuple val(meta2), path(db_hmm)
 
     output:
-    tuple val(meta), path("*.domtbl")  , emit: domtbl
-    tuple val(meta), path("*.dom.faa") , emit: dom_faa
-    tuple val(meta), path("*.dom.tsv") , emit: dom_tsv
+    tuple val(meta), path("*.domtbl"), emit: domtbl
+    tuple val(meta), path("*.dom.faa"), emit: dom_faa
+    tuple val(meta), path("*.dom.tsv"), emit: dom_tsv
     tuple val(meta), path("*.dom.gff3"), emit: dom_gff3
-    tuple val(meta), path("*.cls.tsv") , emit: cls_tsv , optional: true
-    tuple val(meta), path("*.cls.lib") , emit: cls_lib , optional: true
-    tuple val(meta), path("*.cls.pep") , emit: cls_pep , optional: true
-    path "versions.yml"                , emit: versions
+    tuple val(meta), path("*.cls.tsv"), emit: cls_tsv, optional: true
+    tuple val(meta), path("*.cls.lib"), emit: cls_lib, optional: true
+    tuple val(meta), path("*.cls.pep"), emit: cls_pep, optional: true
+    tuple val("${task.process}"), val('TEsorter'), eval('TEsorter -v'), emit: versions_tesorter, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,11 +35,6 @@ process TESORTER {
         -pre $prefix \\
         $args \\
         $fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        TEsorter: \$(TEsorter -v | tr -d 'TEsorter ')
-    END_VERSIONS
     """
 
     stub:
@@ -57,10 +52,5 @@ process TESORTER {
         touch ${prefix}.cls.lib
         touch ${prefix}.cls.pep
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        TEsorter: \$(TEsorter -v | tr -d 'TEsorter ')
-    END_VERSIONS
     """
 }

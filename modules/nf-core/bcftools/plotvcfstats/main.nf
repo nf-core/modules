@@ -11,8 +11,10 @@ process BCFTOOLS_PLOTVCFSTATS {
     tuple val(meta), path(stats)
 
     output:
-    tuple val(meta), path("*plots*"), emit: plot_dir
-    tuple val(meta), path("*.pdf")  , emit: plot_pdf
+    tuple val(meta), path("${prefix}_plots"),             emit: plot_dir
+    tuple val(meta), path("${prefix}.plot-vcfstats.pdf"), optional:true, emit: plot_pdf
+    tuple val(meta), path("${prefix}_plots/*.pdf"),       optional:true, emit: images_pdf
+    tuple val(meta), path("${prefix}_plots/*.png"),       optional:true, emit: images_png
     tuple val("${task.process}"), val('bcftools'), eval("bcftools --version | sed '1!d; s/^.*bcftools //'"), topic: versions, emit: versions_bcftools
 
     when:
@@ -20,7 +22,7 @@ process BCFTOOLS_PLOTVCFSTATS {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     // plot-vcfstats requires an output directory, so create one with the prefix
     // The PDF output is also copied to the results directory with a standard name
@@ -36,11 +38,14 @@ process BCFTOOLS_PLOTVCFSTATS {
         $args \\
         $stats
 
-    ln -s ${prefix}_plots/*.pdf ${prefix}.plot-vcfstats.pdf
+    if [ -e ${prefix}_plots/summary.pdf ]
+    then
+      mv ${prefix}_plots/summary.pdf ${prefix}.plot-vcfstats.pdf
+    fi
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     mkdir ${prefix}_plots
