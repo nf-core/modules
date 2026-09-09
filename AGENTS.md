@@ -176,6 +176,11 @@ nf-core provides a CLI toolkit for working with the nf-core template. The core c
 - Run tests with `nf-test test {modules|subworkflows}/{path}/tests --profile=+{docker|singularity|conda} --stop-on-first-failure`
 - If you expect the output to change (e.g. after a tool update), you **SHOULD** update the snapshot with `nf-test test {modules|subworkflows}/{path}/tests --profile=+{docker|singularity|conda} --update-snapshot`. You **MUST** regenerate snapshots on the same CPU architecture as CI.
 
+## Before starting work
+
+- Before adding or updating a module or subworkflow, you **MUST** check for existing open issues and pull requests in nf-core/modules that cover the same component.
+- If an open issue or PR already covers the same work, you **MUST** inform the user before proceeding. If the issue is assigned or the PR is stale, the user **MUST** decide how to proceed (e.g. take over, coordinate with them, or wait).
+
 ## git and branch policy
 
 - You **MUST** create a new branch with a meaningful name for each feature, whether you are working directly in the nf-core repository or on a fork.

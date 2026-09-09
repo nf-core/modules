@@ -6,6 +6,8 @@ keywords:
   - dbscan
   - pca
   - embeddings
+  - plink2
+  - eigenvec
 tools:
   - "scikit-learn":
       description: "Machine learning library for clustering"
@@ -23,10 +25,12 @@ input:
     - features:
         type: file
         description: |
-          Tab-separated file whose first column is sample IDs (any column
-          name) and remaining columns are numeric features (e.g. PLINK2 PCA
-          components with `FID` dropped, scikit-learn embeddings, etc.).
-        pattern: "*.{tsv,txt}"
+          Sample-by-feature matrix. Either a TSV/TXT whose first column is
+          sample IDs (any column name) and remaining columns are numeric
+          features, or a PLINK2 PCA `.eigenvec` file (`#FID IID PC1 ...`).
+          For PLINK input, `FID`/`SID` are dropped and `IID` is used as
+          `sample_id`.
+        pattern: "*.{tsv,txt,eigenvec}"
         ontologies:
           - edam: http://edamontology.org/format_3475 # TSV
   - algorithm:

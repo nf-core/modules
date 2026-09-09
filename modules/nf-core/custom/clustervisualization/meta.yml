@@ -29,9 +29,11 @@ input:
     - features:
         type: file
         description: |
-          Tab-separated feature matrix with a `sample_id` column and one
-          column per numeric feature (e.g. PCA scores).
-        pattern: "*.tsv"
+          Sample-by-feature matrix: TSV with a `sample_id` column, or a
+          PLINK2 `.eigenvec` file (`#FID IID PC1 ...` or `#IID PC1 ...`).
+          Family/source ID columns are dropped; remaining columns are
+          numeric features (e.g. PCA scores).
+        pattern: "*.{tsv,txt,eigenvec}"
         ontologies:
           - edam: http://edamontology.org/format_3475 # TSV
     - clusters:
