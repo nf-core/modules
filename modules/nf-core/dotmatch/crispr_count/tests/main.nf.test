@@ -1,0 +1,107 @@
+nextflow_process {
+
+    name "Test Process DOTMATCH_CRISPR_COUNT"
+    script "../main.nf"
+    process "DOTMATCH_CRISPR_COUNT"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "dotmatch"
+    tag "dotmatch/crispr_count"
+
+    test("mus_musculus - fastq - hamming") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'plasmid' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/ERR376998.small.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/yusa_library.csv', checkIfExists: true)
+                input[2] = 23
+                input[3] = 19
+                input[4] = 0
+                input[5] = 'hamming'
+                """
+            }
+        }
+
+        then {
+            def summary_data = new groovy.json.JsonSlurper().parse(file(process.out.summary[0][1]))
+            summary_data.remove("phase_seconds")
+
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["summary"]),
+                    summary_data
+                ).match() }
+            )
+        }
+
+    }
+
+    test("mus_musculus - fastq - levenshtein") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'esc1' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/ERR376999.small.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/yusa_library.csv', checkIfExists: true)
+                input[2] = 23
+                input[3] = 19
+                input[4] = 1
+                input[5] = 'levenshtein'
+                """
+            }
+        }
+
+        then {
+            def summary_data = new groovy.json.JsonSlurper().parse(file(process.out.summary[0][1]))
+            summary_data.remove("phase_seconds")
+
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["summary"]),
+                    summary_data
+                ).match() }
+            )
+        }
+
+    }
+
+    test("mus_musculus - fastq - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'sample_stub' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/ERR376998.small.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/yusa_library.csv', checkIfExists: true)
+                input[2] = 23
+                input[3] = 19
+                input[4] = 1
+                input[5] = 'hamming'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+}
