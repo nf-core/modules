@@ -42,13 +42,20 @@ nextflow_process {
             // module stages a private, writable copy rather than mutating the upstream
             // task's output in place, the same class of -resume-breaking bug fixed in
             // nf-core/modules#12799.)
+            // EPA-ng's placement likelihoods aren't byte-reproducible between the conda
+            // environment and the container builds (confirmed: identical logs/inputs,
+            // differing epa_result.jplace content). epa_info.log/epang.log also embed a
+            // wall-clock "Elapsed Time: Ns" line that flips between runs under load, on any
+            // engine. Mask all three in the snapshot -- same precedent as
+            // sigprofiler/snapaligner's unstablePatterns usage -- and rely on the structural
+            // asserts below for the guarantee this module actually makes.
             def taskdir = file(process.out.taskdir[0][1])
             def foldDirs = taskdir.listFiles().findAll { it.isDirectory() && it.name.startsWith("fold_") }
             assertAll(
                 { assert process.success },
                 { assert foldDirs.size() > 0 },
                 { assert foldDirs.every { new File(it.toString(), "epa_result.jplace").exists() } },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstablePatterns: ["**/epa_result.jplace", "**/epa_info.log", "**/epang.log"])).match() }
             )
         }
     }
@@ -85,7 +92,7 @@ nextflow_process {
                 { assert process.success },
                 { assert foldDirs.size() > 0 },
                 { assert foldDirs.every { new File(it.toString(), "epa_result.jplace").exists() } },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstablePatterns: ["**/epa_result.jplace", "**/epa_info.log", "**/epang.log"])).match() }
             )
         }
     }
