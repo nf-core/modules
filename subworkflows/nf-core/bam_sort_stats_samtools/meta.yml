@@ -8,7 +8,6 @@ keywords:
   - cram
 components:
   - samtools/sort
-  - samtools/index
   - samtools/stats
   - samtools/idxstats
   - samtools/flagstat
@@ -29,6 +28,13 @@ input:
 
         Structure: [ val(meta), path(fasta), path(fai) ]
       pattern: "*.{fasta,fa}"
+
+  - index_format:
+      type: string
+      description: |
+        Index format written by samtools sort alongside the sorted file.
+        Use 'csi' for genomes with contigs longer than 2^29 bp; 'crai' requires CRAM output.
+      pattern: "bai|csi|crai"
 
 output:
   - bam:
