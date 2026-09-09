@@ -1,0 +1,68 @@
+nextflow_process {
+
+    name "Test Process PRIORCONS_BUILDPRIORS"
+    script "../main.nf"
+    process "PRIORCONS_BUILDPRIORS"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "priorcons"
+    tag "priorcons/build_priors"
+
+    test("build_priors_testfiles") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'sample1' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/all_sites.fas', checkIfExists: true)
+                ]
+                input[1] = 'sample1'
+                """
+            }
+        }
+
+        then {
+                    assertAll(
+                        { assert process.success },
+                        {
+                            assert snapshot(
+                                process.out.versions,
+                                process.out.priors
+                            ).match()
+                        }
+                    )
+
+
+        }
+    }
+
+    test("build_priors_testfiles - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'sample1' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/all_sites.fas', checkIfExists: true)
+                ]
+                input[1] = 'sample1'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    assert snapshot(
+                        process.out.versions,
+                        process.out.priors
+                    ).match()
+                }
+            )
+        }
+    }
+}
