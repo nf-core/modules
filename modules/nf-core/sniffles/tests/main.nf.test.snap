@@ -30,16 +30,16 @@
                     [
                         "SNIFFLES",
                         "sniffles",
-                        "2.7.3"
+                        "2.8.0"
                     ]
                 ]
             }
         ],
+        "timestamp": "2026-08-23T19:30:26.36794",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.4"
-        },
-        "timestamp": "2026-03-20T09:49:13.462734483"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
     },
     "homo_sapiens - [bam, bai], fasta, [], true, false": {
         "content": [
@@ -48,14 +48,14 @@
                     [
                         "SNIFFLES",
                         "sniffles",
-                        "2.7.3"
+                        "2.8.0"
                     ]
                 ]
             },
             "test.vcf.gz.tbi",
             [
                 "##fileformat=VCFv4.2",
-                "##source=Sniffles2_2.7.3"
+                "##source=Sniffles2_2.8.0"
             ],
             [
                 "##ALT=<ID=INS,Description=\"Insertion\">",
@@ -94,6 +94,9 @@
                 "##FILTER=<ID=SVLEN_MIN_MOSAIC,Description=\"SV length filter for mosaic SVs (min)\">",
                 "##FILTER=<ID=SVLEN_MAX_MOSAIC,Description=\"SV length filter for mosaic SVs (max)\">",
                 "##FILTER=<ID=SINGLE_BREAK,Description=\"A single break point was detected but not classified as an SV.\">",
+                "##FILTER=<ID=INLINE_SA,Description=\"INLINE/CIGAR-based SV is mostly supported by SA reads\">",
+                "##FILTER=<ID=MOSAIC_SV_CLOSE_EDGE,Description=\"For mosaic SVs, the location is close to the end of the read (either end)\">",
+                "##FILTER=<ID=GT_FAILED,Description=\"Sniffles was unable to genotype this call.\">",
                 "##INFO=<ID=PRECISE,Number=0,Type=Flag,Description=\"Structural variation with precise breakpoints\">",
                 "##INFO=<ID=IMPRECISE,Number=0,Type=Flag,Description=\"Structural variation with imprecise breakpoints\">",
                 "##INFO=<ID=MOSAIC,Number=0,Type=Flag,Description=\"Structural variation classified as putative mosaic\">",
@@ -113,17 +116,14 @@
                 "##INFO=<ID=SUPP_VEC,Number=1,Type=String,Description=\"List of read support for all samples\">",
                 "##INFO=<ID=CONSENSUS_SUPPORT,Number=1,Type=Integer,Description=\"Number of reads that support the generated insertion (INS) consensus sequence\">",
                 "##INFO=<ID=RNAMES,Number=.,Type=String,Description=\"Names of supporting reads (if enabled with --output-rnames)\">",
-                "##INFO=<ID=VAF,Number=1,Type=Float,Description=\"Variant Allele Fraction\">",
-                "##INFO=<ID=COVERAGE_VAR,Number=1,Type=Float,Description=\"Variance of coverage across large events\">",
-                "##INFO=<ID=NM,Number=.,Type=Float,Description=\"Mean number of query alignment length adjusted mismatches of supporting reads\">",
-                "##INFO=<ID=PHASE,Number=.,Type=String,Description=\"Phasing information derived from supporting reads, represented as list of: HAPLOTYPE,PHASESET,HAPLOTYPE_SUPPORT,PHASESET_SUPPORT,HAPLOTYPE_FILTER,PHASESET_FILTER\">"
+                "##INFO=<ID=VAF,Number=1,Type=Float,Description=\"Variant Allele Fraction\">"
             ]
         ],
+        "timestamp": "2026-08-23T19:29:24.376423",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.4"
-        },
-        "timestamp": "2026-03-20T09:48:10.355303818"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
     },
     "homo_sapiens - [bam, bai], fasta, [], false, true -stub": {
         "content": [
@@ -146,16 +146,16 @@
                     [
                         "SNIFFLES",
                         "sniffles",
-                        "2.7.3"
+                        "2.8.0"
                     ]
                 ]
             }
         ],
+        "timestamp": "2026-08-23T19:30:12.10492",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.4"
-        },
-        "timestamp": "2026-03-20T09:48:56.815803593"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
     },
     "homo_sapiens - [bam, bai], fasta, bed, true, true": {
         "content": [
@@ -164,7 +164,7 @@
                     [
                         "SNIFFLES",
                         "sniffles",
-                        "2.7.3"
+                        "2.8.0"
                     ]
                 ]
             },
@@ -172,7 +172,7 @@
             "test.vcf.gz.tbi",
             [
                 "##fileformat=VCFv4.2",
-                "##source=Sniffles2_2.7.3"
+                "##source=Sniffles2_2.8.0"
             ],
             [
                 "##ALT=<ID=INS,Description=\"Insertion\">",
@@ -211,6 +211,9 @@
                 "##FILTER=<ID=SVLEN_MIN_MOSAIC,Description=\"SV length filter for mosaic SVs (min)\">",
                 "##FILTER=<ID=SVLEN_MAX_MOSAIC,Description=\"SV length filter for mosaic SVs (max)\">",
                 "##FILTER=<ID=SINGLE_BREAK,Description=\"A single break point was detected but not classified as an SV.\">",
+                "##FILTER=<ID=INLINE_SA,Description=\"INLINE/CIGAR-based SV is mostly supported by SA reads\">",
+                "##FILTER=<ID=MOSAIC_SV_CLOSE_EDGE,Description=\"For mosaic SVs, the location is close to the end of the read (either end)\">",
+                "##FILTER=<ID=GT_FAILED,Description=\"Sniffles was unable to genotype this call.\">",
                 "##INFO=<ID=PRECISE,Number=0,Type=Flag,Description=\"Structural variation with precise breakpoints\">",
                 "##INFO=<ID=IMPRECISE,Number=0,Type=Flag,Description=\"Structural variation with imprecise breakpoints\">",
                 "##INFO=<ID=MOSAIC,Number=0,Type=Flag,Description=\"Structural variation classified as putative mosaic\">",
@@ -230,17 +233,14 @@
                 "##INFO=<ID=SUPP_VEC,Number=1,Type=String,Description=\"List of read support for all samples\">",
                 "##INFO=<ID=CONSENSUS_SUPPORT,Number=1,Type=Integer,Description=\"Number of reads that support the generated insertion (INS) consensus sequence\">",
                 "##INFO=<ID=RNAMES,Number=.,Type=String,Description=\"Names of supporting reads (if enabled with --output-rnames)\">",
-                "##INFO=<ID=VAF,Number=1,Type=Float,Description=\"Variant Allele Fraction\">",
-                "##INFO=<ID=COVERAGE_VAR,Number=1,Type=Float,Description=\"Variance of coverage across large events\">",
-                "##INFO=<ID=NM,Number=.,Type=Float,Description=\"Mean number of query alignment length adjusted mismatches of supporting reads\">",
-                "##INFO=<ID=PHASE,Number=.,Type=String,Description=\"Phasing information derived from supporting reads, represented as list of: HAPLOTYPE,PHASESET,HAPLOTYPE_SUPPORT,PHASESET_SUPPORT,HAPLOTYPE_FILTER,PHASESET_FILTER\">"
+                "##INFO=<ID=VAF,Number=1,Type=Float,Description=\"Variant Allele Fraction\">"
             ]
         ],
+        "timestamp": "2026-08-23T19:29:56.486401",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.4"
-        },
-        "timestamp": "2026-03-20T09:48:39.352200695"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
     },
     "homo_sapiens - [bam, bai], fasta, [], true, false -stub": {
         "content": [
@@ -268,16 +268,16 @@
                     [
                         "SNIFFLES",
                         "sniffles",
-                        "2.7.3"
+                        "2.8.0"
                     ]
                 ]
             }
         ],
+        "timestamp": "2026-08-23T19:30:03.342205",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.4"
-        },
-        "timestamp": "2026-03-20T09:48:48.221342424"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
     },
     "homo_sapiens - [bam, bai], fasta, [], true, true -stub": {
         "content": [
@@ -310,16 +310,16 @@
                     [
                         "SNIFFLES",
                         "sniffles",
-                        "2.7.3"
+                        "2.8.0"
                     ]
                 ]
             }
         ],
+        "timestamp": "2026-08-23T19:30:19.184308",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.4"
-        },
-        "timestamp": "2026-03-20T09:49:06.162346127"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
     },
     "homo_sapiens - [bam, bai], fasta, [], false, true": {
         "content": [
@@ -328,17 +328,17 @@
                     [
                         "SNIFFLES",
                         "sniffles",
-                        "2.7.3"
+                        "2.8.0"
                     ]
                 ]
             },
             "test.snf"
         ],
+        "timestamp": "2026-08-23T19:29:34.678862",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.4"
-        },
-        "timestamp": "2026-03-20T09:48:21.571097723"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
     },
     "homo_sapiens - [bam, bai], fasta, [], true, true": {
         "content": [
@@ -347,7 +347,7 @@
                     [
                         "SNIFFLES",
                         "sniffles",
-                        "2.7.3"
+                        "2.8.0"
                     ]
                 ]
             },
@@ -355,7 +355,7 @@
             "test.vcf.gz.tbi",
             [
                 "##fileformat=VCFv4.2",
-                "##source=Sniffles2_2.7.3"
+                "##source=Sniffles2_2.8.0"
             ],
             [
                 "##ALT=<ID=INS,Description=\"Insertion\">",
@@ -394,6 +394,9 @@
                 "##FILTER=<ID=SVLEN_MIN_MOSAIC,Description=\"SV length filter for mosaic SVs (min)\">",
                 "##FILTER=<ID=SVLEN_MAX_MOSAIC,Description=\"SV length filter for mosaic SVs (max)\">",
                 "##FILTER=<ID=SINGLE_BREAK,Description=\"A single break point was detected but not classified as an SV.\">",
+                "##FILTER=<ID=INLINE_SA,Description=\"INLINE/CIGAR-based SV is mostly supported by SA reads\">",
+                "##FILTER=<ID=MOSAIC_SV_CLOSE_EDGE,Description=\"For mosaic SVs, the location is close to the end of the read (either end)\">",
+                "##FILTER=<ID=GT_FAILED,Description=\"Sniffles was unable to genotype this call.\">",
                 "##INFO=<ID=PRECISE,Number=0,Type=Flag,Description=\"Structural variation with precise breakpoints\">",
                 "##INFO=<ID=IMPRECISE,Number=0,Type=Flag,Description=\"Structural variation with imprecise breakpoints\">",
                 "##INFO=<ID=MOSAIC,Number=0,Type=Flag,Description=\"Structural variation classified as putative mosaic\">",
@@ -413,16 +416,13 @@
                 "##INFO=<ID=SUPP_VEC,Number=1,Type=String,Description=\"List of read support for all samples\">",
                 "##INFO=<ID=CONSENSUS_SUPPORT,Number=1,Type=Integer,Description=\"Number of reads that support the generated insertion (INS) consensus sequence\">",
                 "##INFO=<ID=RNAMES,Number=.,Type=String,Description=\"Names of supporting reads (if enabled with --output-rnames)\">",
-                "##INFO=<ID=VAF,Number=1,Type=Float,Description=\"Variant Allele Fraction\">",
-                "##INFO=<ID=COVERAGE_VAR,Number=1,Type=Float,Description=\"Variance of coverage across large events\">",
-                "##INFO=<ID=NM,Number=.,Type=Float,Description=\"Mean number of query alignment length adjusted mismatches of supporting reads\">",
-                "##INFO=<ID=PHASE,Number=.,Type=String,Description=\"Phasing information derived from supporting reads, represented as list of: HAPLOTYPE,PHASESET,HAPLOTYPE_SUPPORT,PHASESET_SUPPORT,HAPLOTYPE_FILTER,PHASESET_FILTER\">"
+                "##INFO=<ID=VAF,Number=1,Type=Float,Description=\"Variant Allele Fraction\">"
             ]
         ],
+        "timestamp": "2026-08-23T19:29:45.050345",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.4"
-        },
-        "timestamp": "2026-03-20T09:48:30.406264548"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.4"
+        }
     }
 }

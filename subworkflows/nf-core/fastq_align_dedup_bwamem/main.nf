@@ -23,12 +23,15 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
     ch_idxstats = channel.empty()
     ch_picard_metrics = channel.empty()
     ch_multiqc_files = channel.empty()
+    // PARABRICKS_FQ2BAM does not use fai
+    ch_fasta = ch_fasta_fai.map { meta, fasta, _fai -> [ meta, fasta ] }
     /*
-        Align with parabricks GPU enabled fq2bam implementation of bwa-mem
-        */    if (use_gpu) {
+    Align with parabricks GPU enabled fq2bam implementation of bwa-mem
+    */
+    if (use_gpu) {
         PARABRICKS_FQ2BAM(
             ch_reads,
-            ch_fasta_fai,
+            ch_fasta,
             ch_bwamem_index,
             interval_file,
             known_sites,
@@ -50,7 +53,7 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
             ch_reads,
             ch_bwamem_index,
             true,
-            ch_fasta_fai,
+            ch_fasta_fai
         )
         ch_alignment = FASTQ_ALIGN_BWA.out.bam
     }

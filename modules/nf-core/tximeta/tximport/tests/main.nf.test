@@ -65,6 +65,7 @@ nextflow_process {
                     process.out.lengths_transcript,
                     process.out.tpm_gene,
                     process.out.tpm_transcript,
+                    process.out.tx2gene_augmented,
                     process.out.versions).match()
                 }
             )
@@ -124,6 +125,7 @@ nextflow_process {
                     process.out.lengths_transcript,
                     process.out.tpm_gene,
                     process.out.tpm_transcript,
+                    process.out.tx2gene_augmented,
                     process.out.versions).match()
                 }
             )
@@ -207,6 +209,7 @@ nextflow_process {
                     process.out.lengths_transcript,
                     process.out.tpm_gene,
                     process.out.tpm_transcript,
+                    process.out.tx2gene_augmented,
                     process.out.versions).match()
                 }
             )
@@ -253,7 +256,7 @@ nextflow_process {
                 input[1] = CUSTOM_TX2GENE.out.tx2gene.map { meta, tx2gene ->
                     def lines = tx2gene.readLines()
                     def header = lines[0]
-                    def kept = lines[1..Math.max(1, (int)(lines.size() / 2))]
+                    def kept = lines[1..Math.max(1, lines.size().intdiv(2))]
                     def modified = file("\${workDir}/truncated_tx2gene.tsv")
                     modified.text = ([header] + kept).join('\\n') + '\\n'
                     [meta, modified]
@@ -272,8 +275,10 @@ nextflow_process {
             def gene_counts = path(process.out.counts_gene[0][1])
             def gene_lines = gene_counts.readLines()
             def tx_lines = path(process.out.counts_transcript[0][1]).readLines()
+            def aug_lines = path(process.out.tx2gene_augmented[0][1]).readLines()
             def n_genes = gene_lines.size() - 1        // subtract header
             def n_transcripts = tx_lines.size() - 1
+            def n_aug = aug_lines.size() - 1
 
             // Read .command.err from the work directory to check for warning
             def commandErr = gene_counts.parent.resolve('.command.err').text
@@ -283,6 +288,8 @@ nextflow_process {
                 { assert n_genes > 0 },
                 { assert n_genes < n_transcripts :
                     "Gene count rows ($n_genes) should be fewer than transcript rows ($n_transcripts) after filtering unmapped transcripts" },
+                { assert n_aug == n_transcripts :
+                    "Augmented tx2gene rows ($n_aug) should equal transcript count ($n_transcripts) - one mapping per quantified transcript" },
                 { assert commandErr.contains("transcripts found in quantification output but missing from") :
                     "Expected warning about unmapped transcripts in .command.err" }
             )
@@ -405,6 +412,7 @@ nextflow_process {
                     process.out.lengths_transcript,
                     process.out.tpm_gene,
                     process.out.tpm_transcript,
+                    process.out.tx2gene_augmented,
                     process.out.versions).match()
                 }
             )
@@ -491,6 +499,7 @@ nextflow_process {
                     process.out.lengths_transcript,
                     process.out.tpm_gene,
                     process.out.tpm_transcript,
+                    process.out.tx2gene_augmented,
                     process.out.versions).match()
                 }
             )

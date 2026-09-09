@@ -10,8 +10,8 @@ process FASTTREE {
     path alignment
 
     output:
-    path "*.tre",         emit: phylogeny
-    path "versions.yml" , emit: versions
+    path "*.tre"                                                                                                                     , emit: phylogeny
+    tuple val("${task.process}"), val('fasttree'), eval('fasttree -help 2>&1 | head -1 | sed \'s/^FastTree \\([0-9.]*\\) .*$/\\1/\''), topic: versions, emit: versions_fasttree
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,10 +24,10 @@ process FASTTREE {
         -log fasttree_phylogeny.tre.log \\
         -nt $alignment \\
         > fasttree_phylogeny.tre
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fasttree: \$(fasttree -help 2>&1 | head -1  | sed 's/^FastTree \\([0-9\\.]*\\) .*\$/\\1/')
-    END_VERSIONS
+    stub:
+    """
+    touch fasttree_phylogeny.tre
     """
 }

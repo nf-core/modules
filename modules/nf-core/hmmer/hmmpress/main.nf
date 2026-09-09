@@ -12,7 +12,7 @@ process HMMER_HMMPRESS {
 
     output:
     tuple val(meta), path("*.h3?"), emit: compressed_db
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('hmmer'), eval("hmmsearch -h | sed '2!d;s/^# HMMER *//;s/ .*//'"), emit: versions_hmmer, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,11 +24,6 @@ process HMMER_HMMPRESS {
     hmmpress \\
         $args \\
         ${hmmfile}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hmmer: \$(echo \$(hmmpress -h | grep HMMER | sed 's/# HMMER //' | sed 's/ .*//' 2>&1))
-    END_VERSIONS
     """
 
     stub:
@@ -39,10 +34,5 @@ process HMMER_HMMPRESS {
     touch ${prefix}.h3i
     touch ${prefix}.h3f
     touch ${prefix}.h3p
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hmmer: \$(echo \$(hmmpress -h | grep HMMER | sed 's/# HMMER //' | sed 's/ .*//' 2>&1))
-    END_VERSIONS
     """
 }

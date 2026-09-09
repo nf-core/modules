@@ -1,0 +1,383 @@
+// nf-core modules test suppa/generateevents
+nextflow_process {
+
+    name "Test Process SUPPA_GENERATEEVENTS"
+    script "../main.nf"
+    process "SUPPA_GENERATEEVENTS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "suppa"
+    tag "suppa/generateevents"
+
+    test("human - ioe strict - gtf") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
+                input[1] = 'ioe'
+                input[2] = false
+                input[3] = 'SE SS MX RI FL'
+                input[4] = 'S'
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            def eventNames = [process.out.events.get(0).get(1)].flatten().collect {
+                f -> file(f).name.toString()
+            }
+
+            assertAll(
+                {
+                    assert snapshot(
+                        eventNames,
+                        process.out.gtf.get(0).get(1),
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("human - ioe variable - gtf") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
+                input[1] = 'ioe'
+                input[2] = false
+                input[3] = 'SE SS MX RI FL'
+                input[4] = 'V'
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            def eventNames = [process.out.events.get(0).get(1)].flatten().collect {
+                f -> file(f).name.toString()
+            }
+
+            assertAll(
+                { assert snapshot(
+                    eventNames,
+                    process.out.gtf.get(0).get(1),
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("human - ioi - gtf") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
+                input[1] = 'ioi'
+                input[2] = false
+                input[3] = []
+                input[4] = []
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            def eventNames = [process.out.events.get(0).get(1)].flatten().collect {
+                f -> file(f).name.toString()
+            }
+
+            assertAll(
+                { assert snapshot(
+                    eventNames,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("human - ioe strict poolgenes - gtf") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
+                input[1] = 'ioe'
+                input[2] = false
+                input[3] = 'SE SS MX RI FL'
+                input[4] = 'S'
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            def eventNames = [process.out.events.get(0).get(1)].flatten().collect {
+                f -> file(f).name.toString()
+            }
+
+            assertAll(
+                { assert snapshot(
+                    eventNames,
+                    process.out.gtf.get(0).get(1),
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("human - ioe variable poolgenes - gtf") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
+                input[1] = 'ioe'
+                input[2] = false
+                input[3] = 'SE SS MX RI FL'
+                input[4] = 'V'
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            def eventNames = [process.out.events.get(0).get(1)].flatten().collect {
+                f -> file(f).name.toString()
+            }
+
+            assertAll(
+                { assert snapshot(
+                    eventNames,
+                    process.out.gtf.get(0).get(1),
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("human - ioi poolgenes - gtf") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
+                input[1] = 'ioi'
+                input[2] = false
+                input[3] = []
+                input[4] = []
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            def eventNames = [process.out.events.get(0).get(1)].flatten().collect {
+                f -> file(f).name.toString()
+            }
+
+            assertAll(
+                { assert snapshot(
+                    eventNames,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    //
+    // Stub tests
+    //
+
+    test("human - ioe strict - gtf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
+                input[1] = 'ioe'
+                input[2] = false
+                input[3] = 'SE SS MX RI FL'
+                input[4] = 'S'
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                ).match() }
+            )
+        }
+    }
+
+    test("human - ioe variable - gtf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
+                input[1] = 'ioe'
+                input[2] = false
+                input[3] = 'SE SS MX RI FL'
+                input[4] = 'V'
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                ).match() }
+            )
+        }
+    }
+
+    test("human - ioi - gtf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
+                input[1] = 'ioi'
+                input[2] = false
+                input[3] = []
+                input[4] = []
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                ).match() }
+            )
+        }
+    }
+
+    test("human - ioe strict poolgenes - gtf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
+                input[1] = 'ioe'
+                input[2] = false
+                input[3] = 'SE SS MX RI FL'
+                input[4] = 'S'
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                ).match() }
+            )
+        }
+    }
+
+    test("human - ioe variable poolgenes - gtf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
+                input[1] = 'ioe'
+                input[2] = false
+                input[3] = 'SE SS MX RI FL'
+                input[4] = 'V'
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                ).match() }
+            )
+        }
+    }
+
+    test("human - ioi poolgenes - gtf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id: 'human' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true) ]
+                input[1] = 'ioi'
+                input[2] = false
+                input[3] = []
+                input[4] = []
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                ).match() }
+            )
+        }
+    }
+
+}

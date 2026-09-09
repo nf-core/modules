@@ -14,7 +14,7 @@ process MAGECK_TEST {
     tuple val(meta), path("*.gene_summary.txt")  , emit: gene_summary
     tuple val(meta), path("*.sgrna_summary.txt") , emit: sgrna_summary
     tuple val(meta), path("*.R")                 , emit: r_script, optional: true
-    path "versions.yml"                          , emit: versions
+    tuple val("${task.process}"), val("mageck"), eval("mageck -v"), emit: versions_mageck, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,11 +29,6 @@ process MAGECK_TEST {
         $args \\
         -k $count_table \\
         -n $prefix
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mageck: \$(mageck -v)
-    END_VERSIONS
     """
 
     stub:
@@ -42,10 +37,5 @@ process MAGECK_TEST {
     touch ${prefix}.gene_summary.txt
     touch ${prefix}.sgrna_summary.txt
     touch ${prefix}.R
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mageck: \$(mageck -v)
-    END_VERSIONS
     """
 }

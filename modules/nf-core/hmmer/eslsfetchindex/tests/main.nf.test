@@ -1,0 +1,58 @@
+nextflow_process {
+
+    name "Test Process HMMER_ESLSFETCHINDEX"
+    script "../main.nf"
+    process "HMMER_ESLSFETCHINDEX"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hmmer"
+    tag "hmmer/eslsfetchindex"
+
+    test("sarscov2 - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/scaffolds.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/scaffolds.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

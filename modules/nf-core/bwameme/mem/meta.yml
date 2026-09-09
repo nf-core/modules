@@ -17,9 +17,9 @@ tools:
       homepage: https://github.com/kaist-ina/BWA-MEME
       documentation: https://github.com/kaist-ina/BWA-MEME#getting-started
       doi: "10.1093/bioinformatics/btac137"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -56,67 +56,28 @@ input:
       type: boolean
       description: use samtools sort (true) or samtools view (false)
       pattern: "true or false"
-  - mbuffer:
-      type: integer
-      description: memory for mbuffer in megabytes (default 3072)
-  - samtools_threads:
-      type: integer
-      description: number of threads for samtools (default 2)
 output:
-  sam:
+  output:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.sam":
+      - ${prefix}.{sam,bam,cram}:
           type: file
-          description: Output SAM file containing read alignments
-          pattern: "*.{sam}"
+          description: Output alignment file (SAM, BAM, or CRAM)
+          pattern: "*.{sam,bam,cram}"
           ontologies: []
-  bam:
+  index:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.bam":
+      - ${prefix}.{csi,crai}:
           type: file
-          description: Output BAM file containing read alignments
-          pattern: "*.{bam}"
-          ontologies: []
-  cram:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.cram":
-          type: file
-          description: Output CRAM file containing read alignments
-          pattern: "*.{cram}"
-          ontologies: []
-  crai:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.crai":
-          type: file
-          description: Index file for CRAM file
-          pattern: "*.{crai}"
-          ontologies: []
-  csi:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.csi":
-          type: file
-          description: Index file for BAM file
-          pattern: "*.{csi}"
+          description: Index file for BAM (.csi) or CRAM (.crai) output
+          pattern: "*.{csi,crai}"
           ontologies: []
   versions_bwameme:
     - - ${task.process}:
@@ -131,11 +92,21 @@ output:
   versions_samtools:
     - - ${task.process}:
           type: string
-          description: Name of the process
+          description: The name of the process
       - samtools:
           type: string
           description: Name of the tool
       - samtools version | sed "1!d;s/.* //":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_mbuffer:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mbuffer:
+          type: string
+          description: The name of the tool
+      - mbuffer --version 2>&1 | sed -n 's/mbuffer version //p':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -151,11 +122,20 @@ topics:
           description: The expression to obtain the version of the tool
     - - ${task.process}:
           type: string
-          description: Name of the process
+          description: The name of the process
       - samtools:
           type: string
           description: Name of the tool
       - samtools version | sed "1!d;s/.* //":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mbuffer:
+          type: string
+          description: The name of the tool
+      - mbuffer --version 2>&1 | sed -n 's/mbuffer version //p':
           type: eval
           description: The expression to obtain the version of the tool
 authors:

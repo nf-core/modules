@@ -35,6 +35,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/NA03697B2_new.pbmm2.repeats.vcf.gz.csi', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true),
+                    [],
                 ]
 
                 input[1] = Channel.of([

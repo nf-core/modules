@@ -1,8 +1,7 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "goleft_indexcov"
-description: Quickly estimate coverage from a whole-genome bam or cram index. A bam
-  index has 16KB resolution so that's what this gives, but it provides what appears
-  to be a high-quality coverage estimate in seconds per genome.
+description: Quickly estimate coverage from a whole-genome bam or cram index. A
+  bam index has 16KB resolution so that's what this gives, but it provides what
+  appears to be a high-quality coverage estimate in seconds per genome.
 keywords:
   - coverage
   - cnv
@@ -16,7 +15,8 @@ tools:
       documentation: "https://github.com/brentp/goleft"
       tool_dev_url: "https://github.com/brentp/goleft"
       doi: "10.1093/gigascience/gix090"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -122,13 +122,46 @@ output:
           description: png files
           pattern: "*png"
           ontologies: []
+  versions_goleft:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - goleft:
+          type: string
+          description: The name of the tool
+      - "goleft --version |& sed '1!d;s/^.*goleft Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_tabix:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tabix:
+          type: string
+          description: The name of the tool
+      - "tabix -h |& sed -n 's/^.*Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - goleft:
+          type: string
+          description: The name of the tool
+      - "goleft --version |& sed '1!d;s/^.*goleft Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tabix:
+          type: string
+          description: The name of the tool
+      - "tabix -h |& sed -n 's/^.*Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@lindenb"
 maintainers:

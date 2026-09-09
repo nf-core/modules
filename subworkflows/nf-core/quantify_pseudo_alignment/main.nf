@@ -70,6 +70,7 @@ workflow QUANTIFY_PSEUDO_ALIGNMENT {
     results                       = ch_pseudo_results                                              // channel: [ val(meta), results_dir ]
     multiqc                       = ch_pseudo_multiqc                                              // channel: [ val(meta), files_for_multiqc ]
     tx2gene                       = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.tx2gene                // channel: [ val(meta), tx2gene.tsv ]
+    tx2gene_augmented             = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.tx2gene_augmented      // channel: [ val(meta), tx2gene_augmented.tsv ]
 
     tpm_gene                      = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.tpm_gene               //    path: *gene_tpm.tsv
     counts_gene                   = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.counts_gene            //    path: *gene_counts.tsv

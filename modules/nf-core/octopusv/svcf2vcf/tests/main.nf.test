@@ -1,0 +1,62 @@
+nextflow_process {
+
+    name "Test Process OCTOPUSV_SVCF2VCF"
+    script "../main.nf"
+    process "OCTOPUSV_SVCF2VCF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "octopusv"
+    tag "octopusv/svcf2vcf"
+
+    test("homo_sapiens - svcf") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/octopusv/sk-n-as-severus-ont.svcf', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.vcf.get(0).get(1)).vcf.summary,
+                    path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - svcf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/octopusv/sk-n-as-severus-ont.svcf', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

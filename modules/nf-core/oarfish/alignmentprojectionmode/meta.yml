@@ -1,0 +1,139 @@
+name: "oarfish_alignmentprojectionmode"
+description: oarfish is a program for quantifying transcript-level expression
+  from long-read sequencing technologies. Project an existing spliced genome BAM
+  (e.g. from minimap2 -ax splice) onto the annotated transcripts, then quantify.
+keywords:
+  - fastq
+  - transcript
+  - quantification
+  - read-mode
+tools:
+  - "oarfish":
+      description: "oarfish is a tool for fast, accurate and versatile transcript quantification
+        from long-read RNA-seq data"
+      homepage: "https://github.com/COMBINE-lab/oarfish"
+      documentation: "https://github.com/COMBINE-lab/oarfish"
+      tool_dev_url: "https://github.com/COMBINE-lab/oarfish"
+      doi: "10.1101/2024.02.28.582591v1"
+      licence:
+        - "BSD-3-clause"
+      identifier: biotools:oarfish
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Sequencing reads in BAM format
+        pattern: "*.{bam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - annotation:
+        type: file
+        description: Annotation file in GTF format
+        pattern: "*.{gtf,gff,gff3}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3603"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: Reference genome in FASTA format
+        pattern: "*.{fasta,fa}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+output:
+  quant:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.quant:
+          type: file
+          description: Quantification results in TSV format
+          pattern: "${prefix}.quant"
+          ontologies: []
+  meta_info:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.meta_info.json:
+          type: file
+          description: Meta information in JSON format
+          pattern: "${prefix}.meta_info.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464"
+  ambig_info:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.ambig_info.tsv:
+          type: file
+          description: Ambiguity information in TSV format
+          pattern: "${prefix}.ambig_info.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
+  infreps:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.infreps.pq:
+          type: file
+          description: Estimated counts in Parquet format
+          pattern: "${prefix}.infreps.pq"
+          ontologies:
+            - edam: "http://edamontology.org/format_3940"
+  prob:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.prob.lz4:
+          type: file
+          description: Assignment probabilities in LZ4-compressed format
+          pattern: "${prefix}.prob.lz4"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
+  versions_oarfish:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - oarfish:
+          type: string
+          description: The name of the tool
+      - oarfish --version | sed 's/oarfish //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - oarfish:
+          type: string
+          description: The name of the tool
+      - oarfish --version | sed 's/oarfish //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@khersameesh24"
+maintainers:
+  - "@khersameesh24"

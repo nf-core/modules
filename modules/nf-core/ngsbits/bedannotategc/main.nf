@@ -14,7 +14,7 @@ process NGSBITS_BEDANNOTATEGC {
 
     output:
     tuple val(meta), path("*.bed"), emit: output
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('ngsbits'), eval("BedAnnotateGC --version 2>&1 | sed 's/BedAnnotateGC //'"), topic: versions, emit: versions_ngsbits
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,10 +31,6 @@ process NGSBITS_BEDANNOTATEGC {
         -out ${prefix}.bed \\
         -ref ${fasta}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ngs-bits: \$(echo \$(BedAnnotateGC --version 2>&1) | sed 's/BedAnnotateGC //' )
-    END_VERSIONS
     """
 
     stub:
@@ -44,9 +40,5 @@ process NGSBITS_BEDANNOTATEGC {
     """
     touch ${prefix}.bed
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ngs-bits: \$(echo \$(BedAnnotateGC --version 2>&1) | sed 's/BedAnnotateGC //' )
-    END_VERSIONS
     """
 }

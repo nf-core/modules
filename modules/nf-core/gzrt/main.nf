@@ -12,7 +12,7 @@ process GZRT {
 
     output:
     tuple val(meta), path("${prefix}*.fastq.gz"), emit: recovered
-    path "versions.yml"                         , emit: versions
+    tuple val("${task.process}"), val('gzrt'), eval("gzrecover -V |& sed '1!d ; s/gzrecover //'"), topic: versions, emit: versions_gzrt
 
     when:
     task.ext.when == null || task.ext.when
@@ -50,13 +50,6 @@ process GZRT {
             echo "" | gzip > ${prefix}_2.fastq.gz
         fi
     fi
-
-    soft_line="${task.process}"
-    ver_line="gzrt: \$(gzrecover -V |& sed '1!d ; s/gzrecover //')"
-    cat <<-END_VERSIONS > versions.yml
-    "\${soft_line}":
-        \${ver_line}
-    END_VERSIONS
     """
 
     stub:
@@ -78,12 +71,5 @@ process GZRT {
         echo "" | gzip > ${prefix}_1.fastq.gz
         echo "" | gzip > ${prefix}_2.fastq.gz
     fi
-
-    soft_line="${task.process}"
-    ver_line="gzrt: \$(gzrecover -V |& sed '1!d ; s/gzrecover //')"
-    cat <<-END_VERSIONS > versions.yml
-    "\${soft_line}":
-        \${ver_line}
-    END_VERSIONS
     """
 }

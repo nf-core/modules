@@ -12,7 +12,7 @@ process JELLYFISH_DUMP {
 
     output:
     tuple val(meta), path("${prefix}.${extension}"), emit: output
-    path "versions.yml"                            , emit: versions
+    tuple val("${task.process}"), val("jellyfish"), eval("jellyfish --version |& sed '1!d;s/jellyfish //'"), topic: versions, emit: versions_jellyfish
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,13 +24,8 @@ process JELLYFISH_DUMP {
     """
     jellyfish \\
         dump \\
-        $args \\
+        ${args} \\
         ${jf} > ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        jellyfish: \$(jellyfish --version |& sed '1!d ; s/jellyfish //')
-    END_VERSIONS
     """
 
     stub:
@@ -39,10 +34,5 @@ process JELLYFISH_DUMP {
     extension = args.contains("-c") ? "txt" : "fa"
     """
     touch ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        jellyfish: \$(jellyfish --version |& sed '1!d ; s/jellyfish //')
-    END_VERSIONS
     """
 }

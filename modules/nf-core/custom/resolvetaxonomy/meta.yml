@@ -1,0 +1,107 @@
+name: "custom_resolvetaxonomy"
+description: |
+  Resolve the taxonomy for a set of sequences: use an explicit taxonomy file if one
+  is given (warning, not silently ignoring, if the sequences also carry embedded
+  taxonomy text); otherwise derive taxonomy from each sequence's own FASTA header,
+  GTDB-style (`>id taxonomy;string`). Headers are always stripped down to a bare id
+  in the output sequences, regardless of which taxonomy source was used. When
+  taxonomy_required is false, records with neither source are dropped from the
+  resolved taxonomy (with a warning) instead of failing the run.
+keywords:
+  - taxonomy
+  - fasta
+  - phylogenetics
+tools:
+  - "biopython":
+      description: "Freely available tools for computational molecular biology."
+      homepage: "https://biopython.org/"
+      documentation: "https://biopython.org/wiki/Documentation"
+      tool_dev_url: "https://github.com/biopython/biopython"
+      doi: "10.1093/bioinformatics/btp163"
+      licence:
+        - "Biopython License Agreement"
+      identifier: biotools:biopython
+
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+    - taxonomy:
+        type: file
+        description: |
+          Optional tab-separated taxonomy labels (seq_name<TAB>rank1;rank2;...).
+          Pass `[]` if not available -- taxonomy is then derived from the
+          sequences' own FASTA headers instead.
+        pattern: "*.{tax,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+    - sequences:
+        type: file
+        description: Sequences, aligned or not, in FASTA, Clustal or PHYLIP format.
+        pattern: "*.{fa,fasta,fna,aln,phy}"
+        ontologies: []
+    - taxonomy_required:
+        type: boolean
+        description: |
+          Whether every record must end up with a resolved taxonomy. When true, a
+          record with neither an explicit-file entry nor embedded header text fails
+          the run. When false, such records are silently dropped from the resolved
+          taxonomy output instead (a warning is still written).
+output:
+  taxonomy:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - "*.resolved.tax":
+          type: file
+          description: |
+            The resolved taxonomy, either passed through from the input file or
+            derived from sequence headers. May have fewer records than the input
+            sequences when taxonomy_required is false.
+          pattern: "*.resolved.tax"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  sequences:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - "*.resolved.${sequences.extension ?: 'fasta'}":
+          type: file
+          description: The input sequences (same format as the input), headers stripped down to a bare id.
+          pattern: "*.resolved.*"
+          ontologies: []
+  warnings:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - "*.warnings.txt":
+          type: file
+          description: One line per warning (e.g. embedded taxonomy text ignored, or records dropped); empty if none.
+          pattern: "*.warnings.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Textual format
+  versions_biopython:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - biopython:
+          type: string
+          description: The name of the tool
+      - python3 -c 'import Bio; print(Bio.__version__)':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - biopython:
+          type: string
+          description: The name of the tool
+      - python3 -c 'import Bio; print(Bio.__version__)':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@erikrikarddaniel"
+maintainers:
+  - "@erikrikarddaniel"

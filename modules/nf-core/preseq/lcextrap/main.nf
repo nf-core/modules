@@ -14,7 +14,7 @@ process PRESEQ_LCEXTRAP {
     output:
     tuple val(meta), path("*.lc_extrap.txt"), emit: lc_extrap
     tuple val(meta), path("*.log")          , emit: log
-    tuple val("${task.process}"), val('preseq'), eval("preseq 2>&1 | sed -n 's/.*Version: \\(.*\\)/\\1/p'"), emit: versions_preseq, topic: versions
+    tuple val("${task.process}"), val('preseq'), eval("preseq 2>&1 | sed -n 's/Version: //p'"), emit: versions_preseq, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,10 +27,10 @@ process PRESEQ_LCEXTRAP {
     """
     preseq \\
         lc_extrap \\
-        $args \\
-        $paired_end \\
+        ${args} \\
+        ${paired_end} \\
         -output ${prefix}.lc_extrap.txt \\
-        $bam
+        ${bam}
     cp .command.err ${prefix}.command.log
     """
 

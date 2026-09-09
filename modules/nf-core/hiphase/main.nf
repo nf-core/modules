@@ -66,7 +66,7 @@ process HIPHASE {
         ${snv_args} \\
         ${sv_args} \\
         ${summary_file_arg} \\
-        ${blocks_file_arg} \ \
+        ${blocks_file_arg} \\
         ${stats_file_arg} \\
         ${haplotag_file_arg}
     """

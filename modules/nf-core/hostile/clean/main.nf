@@ -14,7 +14,7 @@ process HOSTILE_CLEAN {
     output:
     tuple val(meta), path('*.fastq.gz'), emit: fastq
     tuple val(meta), path('*.json')    , emit: json
-    path 'versions.yml'                , emit: versions
+    tuple val("${task.process}"), val('hostile'), eval("hostile --version"), emit: versions_hostile, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,42 +39,16 @@ process HOSTILE_CLEAN {
         --reorder \\
         --airplane \\
         | tee > ${prefix}.json
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hostile: \$(hostile --version)
-    END_VERSIONS
     """
 
     stub:
-    def args         = task.ext.args ?: ''
     def prefix       = task.ext.prefix ?: "${meta.id}"
-    def sorted_reads = meta.single_end ? [reads].flatten() : reads.sort { read -> read.simpleName }
-    def reads_cmd    = meta.single_end ? "--fastq1 ${sorted_reads[0]}" : "--fastq1 ${sorted_reads[0]} --fastq2 ${sorted_reads[1]}"
-    def fake_read2   = !meta.single_end ? "echo '' | gzip -c > ${prefix}.clean_2.fastq.gz" : ""
+    def fake_read2   = !meta.single_end ? "echo '' | gzip > ${prefix}.clean_2.fastq.gz" : ""
     """
     export HOSTILE_CACHE_DIR=${reference_dir}
-
-    echo "hostile \\
-        clean \\
-        ${args} \\
-        --threads ${task.cpus} \\
-        ${reads_cmd} \\
-        --index ${reference_name} \\
-        --output . \\
-        --reorder \\
-        --airplane \\
-        | tee > ${prefix}.json"
-
-    export HOSTILE_CACHE_DIR=${reference_dir}
-    echo "" | gzip -c > ${prefix}.clean_1.fastq.gz
+    echo "" | gzip > ${prefix}.clean_1.fastq.gz
     ${fake_read2}
 
     touch ${prefix}.json
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hostile: \$(hostile --version)
-    END_VERSIONS
     """
 }

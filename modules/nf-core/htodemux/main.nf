@@ -15,7 +15,7 @@ process HTODEMUX {
     tuple val(meta), path("*_assignment_htodemux.csv")    , emit: assignment
     tuple val(meta), path("*_classification_htodemux.csv"), emit: classification
     tuple val(meta), path("*_htodemux.rds")               , emit: rds
-    path "versions.yml"                                   , emit: versions
+    path "versions.yml", emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,7 +33,8 @@ process HTODEMUX {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        htodemux: \$(htodemux --version)
+        r-base: \$(Rscript -e "cat(strsplit(R.version[['version.string']], ' ')[[1]][3])")
+        r-seurat: \$(Rscript -e "cat(as.character(packageVersion('Seurat')))")
     END_VERSIONS
     """
 }

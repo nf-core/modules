@@ -9,7 +9,8 @@ tools:
       description: "FastK based version of Merqury"
       homepage: "https://github.com/thegenemyers/MERQURY.FK"
       tool_dev_url: "https://github.com/thegenemyers/MERQURY.FK"
-      licence: ["https://github.com/thegenemyers/MERQURY.FK/blob/main/LICENSE"]
+      licence:
+        - "https://github.com/thegenemyers/MERQURY.FK/blob/main/LICENSE"
       identifier: ""
 input:
   - - meta:
@@ -46,9 +47,10 @@ output:
       - merquryfk:
           type: string
           description: The name of the tool
-      - echo 1.1.1:
-          type: eval
-          description: The expression to obtain the version of the tool
+      - 1.1.1:
+          type: string
+          description: The version of the tool
+
   versions_fastk:
     - - ${task.process}:
           type: string
@@ -56,9 +58,10 @@ output:
       - fastk:
           type: string
           description: The name of the tool
-      - echo 1.1:
-          type: eval
-          description: The expression to obtain the version of the tool
+      - "1.1":
+          type: string
+          description: The version of the tool
+
   versions_r:
     - - ${task.process}:
           type: string
@@ -77,18 +80,20 @@ topics:
       - merquryfk:
           type: string
           description: The name of the tool
-      - echo 1.1.1:
-          type: eval
-          description: The expression to obtain the version of the tool
+      - 1.1.1:
+          type: string
+          description: The version of the tool
+
     - - ${task.process}:
           type: string
           description: The name of the process
       - fastk:
           type: string
           description: The name of the tool
-      - echo 1.1:
-          type: eval
-          description: The expression to obtain the version of the tool
+      - "1.1":
+          type: string
+          description: The version of the tool
+
     - - ${task.process}:
           type: string
           description: The name of the process

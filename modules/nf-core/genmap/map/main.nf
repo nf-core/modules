@@ -16,7 +16,7 @@ process GENMAP_MAP {
     tuple val(meta), path("*.bedgraph") , optional:true, emit: bedgraph
     tuple val(meta), path("*.txt")      , optional:true, emit: txt
     tuple val(meta), path("*.csv")      , optional:true, emit: csv
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('genmap'), eval("genmap --version |& sed -n 's/GenMap version: //p'"), emit: versions_genmap, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,11 +35,6 @@ process GENMAP_MAP {
         --threads ${task.cpus} \\
         --index ${index} \\
         --output ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        genmap: \$(genmap --version | sed 's/GenMap version: //; s/SeqAn.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -57,10 +52,5 @@ process GENMAP_MAP {
     ${bg}
     ${txt}
     ${csv}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        genmap: \$(genmap --version | sed 's/GenMap version: //; s/SeqAn.*\$//')
-    END_VERSIONS
     """
 }

@@ -18,7 +18,7 @@ workflow FAA_SEQFU_SEQKIT {
     if (!skip_preprocessing) {
         SEQKIT_SEQ(ch_fasta)
 
-        SEQKIT_REPLACE(SEQKIT_SEQ.out.fastx)
+        SEQKIT_REPLACE(SEQKIT_SEQ.out.fastx, 'fasta')
 
         SEQKIT_RMDUP(SEQKIT_REPLACE.out.fastx)
         ch_fasta = SEQKIT_RMDUP.out.fastx

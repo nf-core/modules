@@ -4,8 +4,8 @@ process SAMBAMBA_MARKDUP {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sambamba:1.0.1--h6f6fda4_0':
-        'quay.io/biocontainers/sambamba:1.0.1--h6f6fda4_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d9/d92b95f4b1fcff268d632d73b9adc861b0e2db41d4ac5ec1ae598f72f194b8fe/data':
+        'community.wave.seqera.io/library/sambamba:1.0.1--f6f871dbcf29d001' }"
 
     input:
     tuple val(meta), path(bam)
@@ -13,7 +13,7 @@ process SAMBAMBA_MARKDUP {
     output:
     tuple val(meta), path("*.bam"), emit: bam
     tuple val(meta), path("*.bai"), emit: bai, optional: true
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('sambamba'), eval("sambamba --version 2>&1 | grep -oPm1 'sambamba \\\\K[0-9.]+'"), topic: versions, emit: versions_sambamba
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,10 +30,11 @@ process SAMBAMBA_MARKDUP {
         --tmpdir ./ \\
         $bam \\
         ${prefix}.bam
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sambamba: \$(echo \$(sambamba --version 2>&1) | awk '{print \$2}' )
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bam
     """
 }

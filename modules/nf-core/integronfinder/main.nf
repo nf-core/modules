@@ -19,7 +19,7 @@ process INTEGRONFINDER {
     tuple val(meta), path("*/*.integrons")        , emit: integrons
     tuple val(meta), path("*/*.summary")          , emit: summary
     tuple val(meta), path("*/integron_finder.out"), emit: out
-    path "versions.yml"                           , emit: versions
+    tuple val("${task.process}"), val('integronfinder'), eval("integron_finder --version 2>&1 | sed '1!d;s/^integron_finder version //;s/ .*//'"), emit: versions_integronfinder, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,11 +38,6 @@ process INTEGRONFINDER {
         $args \\
         --cpu $task.cpus \\
         $fasta_name
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        integronfinder: \$(integron_finder --version 2>&1 | head -n1 | sed 's/^integron_finder version //' | cut -d ' ' -f1)
-    END_VERSIONS
     """
 
     stub:
@@ -56,10 +51,5 @@ process INTEGRONFINDER {
     touch "Results_Integron_Finder_${prefix}/${prefix}.integrons"
     touch "Results_Integron_Finder_${prefix}/${prefix}.summary"
     touch "Results_Integron_Finder_${prefix}/integron_finder.out"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        integronfinder: \$(integron_finder --version 2>&1 | head -n1 | sed 's/^integron_finder version //' | cut -d ' ' -f1)
-    END_VERSIONS
     """
 }

@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "popscle_dscpileup"
-description: Software to pileup reads and corresponding base quality for each overlapping
-  SNPs and each barcode.
+description: Software to pileup reads and corresponding base quality for each
+  overlapping SNPs and each barcode.
 keywords:
   - popscle
   - demultiplexing
@@ -17,9 +16,9 @@ tools:
       documentation: "https://github.com/statgen/popscle"
       tool_dev_url: "https://github.com/statgen/popscle"
       doi: "10.1038/nbt.4042"
-      licence: ["Apache-2.0"]
+      licence:
+        - "Apache-2.0"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -28,14 +27,14 @@ input:
           e.g. `[ id:'sample1' ]`
     - bam:
         type: file
-        description: Input SAM/BAM/CRAM file produced by the standard 10x sequencing
-          platform, or any other barcoded single cell RNA-seq.
+        description: Input SAM/BAM/CRAM file produced by the standard 10x
+          sequencing platform, or any other barcoded single cell RNA-seq.
         pattern: "*.{bam,cram,sam}"
         ontologies: []
     - vcf:
         type: file
-        description: Input VCF/BCF file files containing (AC) and (AN) from referenced
-          population (e.g. 1000g).
+        description: Input VCF/BCF file files containing (AC) and (AN) from
+          referenced population (e.g. 1000g).
         pattern: "*.{vcf,bcf}"
         ontologies: []
 output:
@@ -47,11 +46,12 @@ output:
             e.g. `[ id:'sample1']`
       - "*.cel.gz":
           type: file
-          description: Contains the relation between numerated barcode ID and barcode
-            and the number of SNP and number of UMI for each barcoded droplet.
+          description: Contains the relation between numerated barcode ID and
+            barcode and the number of SNP and number of UMI for each barcoded
+            droplet.
           pattern: "*.cel.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   plp:
     - - meta:
           type: map
@@ -60,11 +60,11 @@ output:
             e.g. `[ id:'sample1']`
       - "*.plp.gz":
           type: file
-          description: Contains the overlapping SNP and the corresponding read and base
-            quality for each barcode ID.
+          description: Contains the overlapping SNP and the corresponding read and
+            base quality for each barcode ID.
           pattern: "*.plp.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   var:
     - - meta:
           type: map
@@ -73,11 +73,11 @@ output:
             e.g. `[ id:'sample1']`
       - "*.var.gz":
           type: file
-          description: Contains the position, reference allele and allele frequency
-            for each SNP.
+          description: Contains the position, reference allele and allele
+            frequency for each SNP.
           pattern: "*.var.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   umi:
     - - meta:
           type: map
@@ -89,20 +89,33 @@ output:
           description: Contains the position covered by each umi.
           pattern: "*.umi.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
+  versions_popscle:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - popscle:
+          type: string
+          description: The name of the tool
+      - "0.1":
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - popscle:
+          type: string
+          description: The name of the tool
+      - "0.1":
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@mari-ga"
   - "@maxozo"
   - "@wxicu"
   - "@Zethson"
-
 maintainers:
   - "@mari-ga"
   - "@maxozo"

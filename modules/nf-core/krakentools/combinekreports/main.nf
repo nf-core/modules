@@ -11,7 +11,8 @@ process KRAKENTOOLS_COMBINEKREPORTS {
 
     output:
     tuple val(meta), path("*.txt"), emit: txt
-    path "versions.yml", emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('krakentools'), val('1.2.1'), topic: versions, emit: versions_krakentools
 
     when:
     task.ext.when == null || task.ext.when
@@ -19,28 +20,16 @@ process KRAKENTOOLS_COMBINEKREPORTS {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.2.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     combine_kreports.py \\
         -r ${kreports} \\
         -o ${prefix}.txt \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        combine_kreports.py: ${VERSION}
-    END_VERSIONS
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.2.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        combine_kreports.py: ${VERSION}
-    END_VERSIONS
     """
 }

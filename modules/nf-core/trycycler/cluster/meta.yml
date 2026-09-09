@@ -8,12 +8,13 @@ keywords:
   - genomics
 tools:
   - "trycycler":
-      description: Trycycler is a tool for generating consensus long-read assemblies
-        for bacterial genomes
+      description: Trycycler is a tool for generating consensus long-read
+        assemblies for bacterial genomes
       homepage: https://github.com/rrwick/Trycycler
       documentation: https://github.com/rrwick/Trycycler/wiki
       doi: 10.1186/s13059-021-02483-z
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:trycycler
 
 input:
@@ -40,13 +41,29 @@ output:
       - "*":
           type: directory
           description: Output directory containing clustering results
+  versions_trycycler:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - trycycler:
+          type: string
+          description: The name of the tool
+      - trycycler --version | sed 's/Trycycler v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - trycycler:
+          type: string
+          description: The name of the tool
+      - trycycler --version | sed 's/Trycycler v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@watsonar"
 maintainers:

@@ -1,0 +1,68 @@
+name: "octopusv_svcf2vcf"
+description: "Converts octopusv SVCF files to the standard VCF format"
+keywords:
+  - structural variants
+  - svcf2vcf
+  - genomics
+  - vcf
+tools:
+  - "octopusv":
+      description: "End-to-end structural variant post-processing: standardize, merge,
+        compare, and export SVs."
+      homepage: "https://github.com/ylab-hi/OctopuSV"
+      documentation: "https://github.com/ylab-hi/OctopuSV"
+      tool_dev_url: "https://github.com/ylab-hi/octopusV"
+      doi: "10.1093/bioinformatics/btaf599"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - svcf:
+        type: file
+        description: SVCF file to convert to a standard VCF file
+        pattern: "*.svcf"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.vcf":
+          type: file
+          description: Sorted VCF file
+          pattern: "*.vcf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016"
+  versions_octopusv:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - octopusv:
+          type: string
+          description: The name of the tool
+      - python -c "import importlib.metadata as m; print(m.version('octopusv'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - octopusv:
+          type: string
+          description: The name of the tool
+      - python -c "import importlib.metadata as m; print(m.version('octopusv'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@manascripts"
+maintainers:
+  - "@manascripts"

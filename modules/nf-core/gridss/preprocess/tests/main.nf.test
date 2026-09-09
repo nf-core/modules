@@ -1,0 +1,89 @@
+nextflow_process {
+
+    name "Test Process GRIDSS_PREPROCESS"
+    script "../main.nf"
+    process "GRIDSS_PREPROCESS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gridss"
+    tag "gridss/preprocess"
+    tag "bwa/index"
+
+    setup {
+
+        run("BWA_INDEX") {
+            script "../../../bwa/index/main.nf"
+            process {
+                """
+                input[0] = [ [id:'fasta'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("human - bam - bwa") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                ]
+                input[1] = channel.of([
+                    [id:'fasta'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]).join(BWA_INDEX.out.index)
+                """
+            }
+        }
+
+        then {
+            def prefix = "test.paired_end.sorted.bam"
+            // Skip md5 checksums: Picard `# Started on:` and R's PDF `/CreationDate` add per-run
+            // timestamps, and `sv.bam`/`sv.bam.csi` BGZF blocks differ across conda/docker.
+            // Snapshot the directory listing to verify the expected outputs are produced.
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.preprocess_dir.collect { meta, dir -> [meta, file(dir).list().findAll { it.startsWith(prefix) }.sort()] },
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+
+    test("human - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                ]
+                input[1] = [ [id:'fasta'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

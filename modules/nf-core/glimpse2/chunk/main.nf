@@ -1,6 +1,6 @@
 process GLIMPSE2_CHUNK {
     tag "${meta.id}"
-    label 'process_low'
+    label 'process_single'
 
     beforeScript """
         if cat /proc/cpuinfo | grep avx2 -q

@@ -1,6 +1,6 @@
 name: "leviosam2_lift"
-description: Converting aligned short and long reads records from one reference to
-  another
+description: Converting aligned short and long reads records from one reference
+  to another
 keywords:
   - leviosam2
   - index
@@ -10,7 +10,8 @@ tools:
       description: "Fast and accurate coordinate conversion between assemblies"
       homepage: "https://github.com/milkschen/leviosam2/blob/main/workflow/README.md"
       documentation: "https://github.com/milkschen/leviosam2/blob/main/workflow/README.md"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -23,7 +24,7 @@ input:
         description: SAM/BAM/CRAM file to be lifted
         pattern: "*.{bam}"
         ontologies: []
-  - - meta_ref:
+  - - meta2:
         type: map
         description: |
           Groovy Map containing reference information
@@ -45,13 +46,27 @@ output:
           description: Lifted bam file
           pattern: "*.{bam}"
           ontologies: []
+  versions_leviosam2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - "leviosam2":
+          type: string
+          description: The name of the tool
+      - leviosam2 --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - "leviosam2":
+          type: string
+          description: The name of the tool
+      - leviosam2 --version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@lgrochowalski"
 maintainers:
