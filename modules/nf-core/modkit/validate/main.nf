@@ -4,8 +4,8 @@ process MODKIT_VALIDATE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ont-modkit:0.6.1--hcdda2d0_0':
-        'quay.io/biocontainers/ont-modkit:0.6.1--hcdda2d0_0' }"
+        'https://depot.galaxyproject.org/singularity/ont-modkit:0.6.4--h7f49ad2_0':
+        'quay.io/biocontainers/ont-modkit:0.6.4--h7f49ad2_0' }"
 
     input:
     // Multiple sample pairs can be supplied as list inputs; BAMs and BEDs are
