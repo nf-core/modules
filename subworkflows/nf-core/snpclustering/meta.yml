@@ -2,8 +2,7 @@
 name: "snpclustering"
 description: >
   Subworkflow for SNP clustering. Takes genotyped VCF files, imputes missing
-  genotypes with BEAGLE5, converts to PLINK2 pgen format, performs PCA,
-  converts eigenvec to TSV with awk, then runs PCA-based clustering,
+  genotypes with BEAGLE5, converts to PLINK2 pgen format, performs PCA,then runs PCA-based clustering,
   cluster metrics, and cluster visualization.
 keywords:
   - snp
@@ -17,7 +16,6 @@ components:
   - beagle5/beagle
   - plink2/vcf
   - plink2/pca
-  - gawk
   - custom/pcaclustering
   - custom/clustermetrics
   - custom/clustervisualization
@@ -142,16 +140,6 @@ output:
             type: file
             description: PLINK2 PCA log file
             pattern: "*.log"
-  - tsv:
-      description: TSV converted from eigenvec by gawk
-      structure:
-        - meta:
-            type: map
-            description: Groovy map containing sample metadata
-        - tsv:
-            type: file
-            description: TSV converted from eigenvec by gawk
-            pattern: "*.eigenvec"
   - clusters:
       description: Cluster assignments
       structure:

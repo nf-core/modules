@@ -1,5 +1,6 @@
 name: "CUSTOM_PCACLUSTERING"
-description: "Performs KMeans or DBSCAN clustering on a sample-by-feature numeric matrix (e.g. principal components, embeddings)"
+description: "Performs KMeans or DBSCAN clustering on a sample-by-feature numeric
+  matrix (e.g. principal components, embeddings)"
 keywords:
   - clustering
   - kmeans
@@ -32,7 +33,7 @@ input:
           `sample_id`.
         pattern: "*.{tsv,txt,eigenvec}"
         ontologies:
-          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3475
   - algorithm:
       type: string
       description: Clustering algorithm to use (kmeans or dbscan)
@@ -55,7 +56,7 @@ output:
           description: CSV file with sample_id and assigned cluster
           pattern: "*.clusters.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3752
   info:
     - - meta:
           type: map
@@ -65,14 +66,14 @@ output:
           description: JSON file with clustering parameters and statistics
           pattern: "*.clustering_info.json"
           ontologies:
-            - edam: http://edamontology.org/format_3464 # JSON
+            - edam: http://edamontology.org/format_3464
   versions:
     - "versions.yml":
         type: file
         description: File containing software versions
         pattern: "versions.yml"
         ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+          - edam: http://edamontology.org/format_3750
 topics:
   versions:
     - versions.yml:
