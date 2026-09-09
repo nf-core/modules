@@ -53,7 +53,7 @@ nextflow_process {
                     "chr22:16580000-16600000",
                 ]).combine(
                     SHAPEIT5_PHASECOMMON.out.phased_variant
-                        .join(BCFTOOLS_INDEX.out.csi)
+                        .join(BCFTOOLS_INDEX.out.index)
                         .map{ meta, vcf, index ->  [vcf, index] }
                 )
                 .combine(channel.of([

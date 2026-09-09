@@ -31,13 +31,12 @@ process BIOAWK {
 
     if ("${input}" == "${prefix}.${output_file_extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate."
 
-    def compress_output = output_file_extension.endsWith(".gz") ? " | gzip " : ""
     """
     bioawk \\
-            ${args} \\
-            ${program} \\
-            ${input} \\
-            ${output}
+        ${args} \\
+        ${program} \\
+        ${input} \\
+        ${output}
     """
 
     stub:

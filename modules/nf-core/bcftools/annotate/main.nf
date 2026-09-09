@@ -12,8 +12,7 @@ process BCFTOOLS_ANNOTATE {
 
     output:
     tuple val(meta), path("${prefix}.${extension}"), emit: vcf
-    tuple val(meta), path("${prefix}.${extension}.tbi"), emit: tbi, optional: true
-    tuple val(meta), path("${prefix}.${extension}.csi"), emit: csi, optional: true
+    tuple val(meta), path("${prefix}.${extension}.{tbi,csi}"), emit: index, optional: true
     tuple val("${task.process}"), val('bcftools'), eval("bcftools --version | sed '1!d; s/^.*bcftools //'"), topic: versions, emit: versions_bcftools
 
     when:

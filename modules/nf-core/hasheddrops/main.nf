@@ -19,7 +19,7 @@ process HASHEDDROPS {
     tuple val(meta), path("*_hasheddrops.rds")        , emit: rds
     tuple val(meta), path("*_plot_hasheddrops.png")   , emit: plot
     tuple val(meta), path("*_params_hasheddrops.csv") , emit: params
-    path "versions.yml"                               , emit: versions
+    path "versions.yml"                               , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -42,8 +42,8 @@ process HASHEDDROPS {
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
         r-base: \$(Rscript -e "cat(strsplit(R.version[['version.string']], ' ')[[1]][3])")
-        r-seurat: \$(Rscript -e "library(Seurat); cat(as.character(packageVersion('Seurat')))")
-        dropletutils: \$(Rscript -e "library(DropletUtils); cat(as.character(packageVersion('DropletUtils')))")
+        r-seurat: \$(Rscript -e "cat(as.character(packageVersion('Seurat')))")
+        dropletutils: \$(Rscript -e "cat(as.character(packageVersion('DropletUtils')))")
     END_VERSIONS
     """
 }

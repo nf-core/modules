@@ -16,7 +16,8 @@ tools:
       documentation: "https://github.com/bluenote-1577/skani/wiki"
       tool_dev_url: "https://github.com/bluenote-1577/skani"
       doi: "10.1038/s41592-023-02018-3"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 
 input:
@@ -27,8 +28,8 @@ input:
           e.g. `[ id:'sample1' ]`
     - queries:
         type: file
-        description: Space-separated list of FASTA(s)/skani sketch(es) to be used as
-          query.
+        description: Space-separated list of FASTA(s)/skani sketch(es) to be used
+          as query.
         pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,sketch}"
 
         ontologies: []
@@ -41,16 +42,32 @@ output:
             e.g. `[ id:'sample1' ]`
       - ${prefix}.tsv:
           type: file
-          description: TSV file containing ANIs and AFs calculated between queries.
+          description: TSV file containing ANIs and AFs calculated between
+            queries.
           ontologies: []
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+  versions_skani:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - skani:
+          type: string
+          description: The name of the tool
+      - skani --version 2>&1 | sed "s/^.*skani //":
+          type: eval
+          description: The expression to obtain the version of the tool
 
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - skani:
+          type: string
+          description: The name of the tool
+      - skani --version 2>&1 | sed "s/^.*skani //":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@CarsonJM"
 maintainers:

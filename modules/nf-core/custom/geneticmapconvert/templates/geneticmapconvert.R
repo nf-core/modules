@@ -1,68 +1,21 @@
 #!/usr/bin/env Rscript
 
+# Needed to avoid the error from lubridate in janitor
+# Error: (converted from warning)
+# Your system is mis-configured: ‘/etc/localtime’ is not a symlink
+Sys.setenv(TZ = "UTC")
+
 # Load necessary libraries
 library(data.table)
 library(stringr)
 library(janitor)
+library(nfcore.utils)
 
 ################################################
 ################################################
 ## Functions                                  ##
 ################################################
 ################################################
-
-#' Check for Non-Empty, Non-Whitespace String
-#'
-#' This function checks if the input is non-NULL and contains more than
-#' just whitespace.
-#' It returns TRUE if the input is a non-empty, non-whitespace string,
-#' and FALSE otherwise.
-#'
-#' @param input A variable to check.
-#' @return A logical value: TRUE if the input is a valid, non-empty,
-#' non-whitespace string; FALSE otherwise.
-#' @examples
-#' is_valid_string("Hello World") # Returns TRUE
-#' is_valid_string("   ")         # Returns FALSE
-#' is_valid_string(NULL)          # Returns FALSE
-is_valid_string <- function(input) {
-  !is.null(input) && nzchar(trimws(input))
-}
-
-#' Parse out options from a string without recourse to optparse
-#'
-#' @param x Long-form argument list like --opt1 val1 --opt2 val2
-#'
-#' @return named list of options and values similar to optparse
-parse_args <- function(x) {
-  args_list <- unlist(strsplit(x, " ?--")[[1]])[-1]
-  args_vals <- lapply(
-    args_list,
-    function(x) scan(text = x, what = "character", quiet = TRUE)
-  )
-
-  # Ensure the option vectors are length 2 (key/ value) to catch empty ones
-  args_vals <- lapply(args_vals, function(z) {
-    length(z) <- 2
-    z
-  })
-
-  parsed_args <- structure(
-    lapply(args_vals, function(x) x[2]),
-    names = lapply(args_vals, function(x) x[1])
-  )
-  parsed_args[! is.na(parsed_args)]
-}
-
-#' Turn “null” or empty strings into actual NULL
-#'
-#' @param x Input option
-#'
-#' @return NULL or x
-#'
-nullify <- function(x) {
-  if (is.character(x) && (tolower(x) == "null" || x == "")) NULL else x
-}
 
 #' Parse tolerance value
 #'
@@ -118,9 +71,14 @@ convert_colnames <- function(x) {
 #' @param chr Chromosome name
 #' @param prefix Prefix name for the output files
 #' @param tolerance Difference
+#' @param digits Number of decimal to round cm and rate
+#' @param remove_duplicated_cm Should duplicated genetic distance be removed
+#' @param remove_null_rate Should zeros rate values be removed
 process_map_file <- function(
   file_path, chr = NULL, prefix = "output",
-  tolerance = NULL
+  tolerance = NULL, digits = NULL,
+  remove_duplicated_cm = FALSE,
+  remove_null_rate = FALSE
 ) {
   # Read the map file into a data.table
   options(warn = 2) # all warnings will be set to error
@@ -210,18 +168,42 @@ process_map_file <- function(
     stop("First cM value must be 0 after normalization")
   }
 
+  compute_rate <- FALSE
+  # Remove duplicated cm values
+  if (any(duplicated(map_df[["cm"]])) && remove_duplicated_cm) {
+    message("Duplicated cm values found in map file. Removing them.")
+    map_df <- map_df[!duplicated(map_df[["cm"]]), ]
+    compute_rate <- TRUE
+  }
+
+  # Remove null rate values
+  if ("rate" %in% colnames(map_df)) {
+    zero_rows <- which(
+      map_df[["rate"]] == 0 & seq_len(nrow(map_df)) != nrow(map_df)
+    )
+    if (length(zero_rows) > 0 && remove_null_rate) {
+      message("Zero rate values found in map file. Removing them.")
+      print(map_df[zero_rows, ])
+      map_df <- map_df[-zero_rows, ]
+      compute_rate <- TRUE
+    }
+  }
+
   # Compute forward rate for previous row (interval prev -> current)
   delta_bp <- c(diff(map_df[["pos"]]))
   delta_cm <- c(diff(map_df[["cm"]]))
   rate <- c(delta_cm / delta_bp * 1e6, 0)
 
-  if (!"rate" %in% colnames(map_df)) {
+  if (!"rate" %in% colnames(map_df) || compute_rate) {
     map_df[["rate"]] <- rate
   } else {
     map_df[["diff"]] <- abs(map_df[["rate"]] - rate)
     if (any(map_df[["diff"]] > tolerance)) {
       print(map_df[map_df[["diff"]] > tolerance, ])
-      stop("cm[n] must equal cm[n-1] + ( (pos[n] - pos[n-1]) / 1e6 * rate[n-1])")
+      stop(
+        "cm[n] must equal cm[n-1]",
+        " + ( (pos[n] - pos[n-1]) / 1e6 * rate[n-1])"
+      )
     }
   }
 
@@ -229,8 +211,8 @@ process_map_file <- function(
     stop("rate column should be numeric")
   }
 
-  map_df[["rate"]] <- signif(map_df[["rate"]], digits = 8)
-  map_df[["cm"]] <- signif(map_df[["cm"]], digits = 8)
+  map_df[["rate"]] <- round(map_df[["rate"]], digits = digits)
+  map_df[["cm"]] <- round(map_df[["cm"]], digits = digits)
 
   # Process the data
   glimpse_file <- paste0(prefix, ".glimpse.map")
@@ -269,65 +251,43 @@ process_map_file <- function(
 ################################################
 ################################################
 
-# I've defined these in a single array like this so that we could go back to an
-# optparse-driven method in future with module bin/ directories, rather than
-# the template
-
-# Set defaults and classes
-
 opt <- list(
   output_prefix = "${prefix}",
   map_file = "${map_file}",
   chr = "${meta.chr}",
-  tolerance = NULL
+  tolerance = NULL,
+  digits = 8,
+  remove_duplicated_cm = FALSE,
+  remove_null_rate = FALSE
 )
 
-opt_types <- lapply(opt, class)
-
-# Apply parameter overrides
-args_opt <- parse_args("${args}")
-for (ao in names(args_opt)) {
-  if (! ao %in% names(opt)) {
-    stop(paste("Invalid option:", ao))
-  } else {
-    # Preserve classes from defaults where possible
-    if (! is.null(opt[[ao]])) {
-      args_opt[[ao]] <- as(args_opt[[ao]], opt_types[[ao]])
-    }
-    opt[[ao]] <- args_opt[[ao]]
-  }
-}
-
-keys <- c("tolerance", "chr")
-opt[keys] <- lapply(opt[keys], nullify)
-
-for (file_input in c("map_file")) {
-  if (! is_valid_string(opt[[file_input]])) {
-    stop(paste("Please provide", file_input), call. = FALSE)
-  }
-
-  if (! file.exists(opt[[file_input]])) {
-    stop(paste0(
-      "Value of ", file_input, ": ",
-      opt[[file_input]], " is not a valid file"
-    ))
-  }
-}
+opt_valid <- process_inputs(
+  opt,
+  args = "${args}",
+  keys_to_nullify = c("output_prefix", "chr", "tolerance"),
+  expected_files = c("map_file"),
+  expected_double = c("tolerance"),
+  expected_integer = c("digits"),
+  expected_boolean = c("remove_duplicated_cm", "remove_null_rate"),
+  required_opts = c("map_file", "output_prefix")
+)
 
 process_map_file(
-  file_path = opt[["map_file"]],
-  chr =  opt[["chr"]],
-  prefix =  opt[["output_prefix"]],
-  tolerance =  parse_tolerance(opt[["tolerance"]])
+  file_path = opt_valid[["map_file"]],
+  chr =  opt_valid[["chr"]],
+  prefix =  opt_valid[["output_prefix"]],
+  tolerance =  parse_tolerance(opt_valid[["tolerance"]]),
+  digits = opt_valid[["digits"]],
+  remove_duplicated_cm = opt_valid[["remove_duplicated_cm"]],
+  remove_null_rate = opt_valid[["remove_null_rate"]]
 )
 
-version_rbase <- paste(R.version[["major"]], R.version[["minor"]], sep = ".")
-version_datatable <- packageVersion("data.table")
-version_janitor <- packageVersion("janitor")
-
-writeLines(c(
-  '"${task.process}":',
-  paste("    r-base:", version_rbase),
-  paste("    r-data.table:", version_datatable),
-  paste("    r-janitor:", version_janitor)
-), "versions.yml")
+process_end(
+  packages = list(
+    "r-data.table" = "data.table",
+    "r-janitor" = "janitor"
+  ),
+  task_name = "${task.process}",
+  versions_path = "versions.yml",
+  log_path = "${prefix}.R_sessionInfo.log"
+)

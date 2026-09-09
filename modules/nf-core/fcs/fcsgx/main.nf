@@ -7,13 +7,15 @@ process FCS_FCSGX {
         'docker.io/ncbi/fcs-gx:0.4.0' }"
 
     input:
-    tuple val(meta), path(assembly)
+    tuple val(meta), path(assembly), val(taxid)
     path gxdb
 
     output:
     tuple val(meta), path("out/*.fcs_gx_report.txt"), emit: fcs_gx_report
     tuple val(meta), path("out/*.taxonomy.rpt")     , emit: taxonomy_report
-    path "versions.yml"                             , emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('fcsadaptor'), val("0.4.0"), emit: versions_fcsadaptor, topic: versions
+    tuple val("${task.process}"), val('python'), eval("python3 --version |& sed 's/Python //'"), emit: versions_python, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,21 +35,13 @@ This module is now renamed as FCSGX_RUNGX and as been updated to the latest vers
         error "FCS_FCSGX module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
-    def FCSGX_VERSION = '0.4.0'
-
     """
     python3 /app/bin/run_gx \\
         --fasta $assembly \\
         --out-dir ./out \\
         --gx-db ./${gxdb[0].baseName} \\
-        --tax-id ${meta.taxid} \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        python: \$(python3 --version 2>&1 | sed -e "s/Python //g")
-        FCS-GX: $FCSGX_VERSION
-    END_VERSIONS
+        --tax-id ${taxid} \\
+        ${args}
     """
 
     stub:
@@ -65,17 +59,9 @@ This module is now renamed as FCSGX_RUNGX and as been updated to the latest vers
         error "FCS_FCSGX module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def FCSGX_VERSION = '0.4.0'
-
     """
     mkdir -p out
     touch out/${prefix}.fcs_gx_report.txt
     touch out/${prefix}.taxonomy.rpt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        python: \$(python3 --version 2>&1 | sed -e "s/Python //g")
-        FCS-GX: $FCSGX_VERSION
-    END_VERSIONS
     """
 }

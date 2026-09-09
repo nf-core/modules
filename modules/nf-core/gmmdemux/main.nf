@@ -21,8 +21,9 @@ process GMMDEMUX {
     tuple val(meta), path("features.tsv.gz"     ), emit: features
     tuple val(meta), path("GMM_*.csv"           ), emit: classification_report
     tuple val(meta), path("GMM_*.config"        ), emit: config_report
-    tuple val(meta), path("summary_report_*.txt"), emit: summary_report, optional: true
-    path "versions.yml"                          , emit: versions
+    tuple val(meta), path("summary_report_*.txt")                                                                                     , emit: summary_report, optional: true
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
+    tuple val("${task.process}"), val('GMM-Demux'), val("0.2.2.3")                                                                 , emit: versions_gmmdemux, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,7 +33,6 @@ process GMMDEMUX {
     def prefix          = task.ext.prefix ?: "${meta.id}"
     def skip_opt        = skip ? "--skip $skip" : ""
     def examine_cells   = examine ? "--examine $examine" : ""
-    def VERSION         = '0.2.2.3' // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     def type_report_opt = type_report ? "-f ." : "-s ."
     def summary_rep     = summary_report ? "-r ${prefix}_summary_report.txt" : ""
     """
@@ -48,15 +48,9 @@ process GMMDEMUX {
         $hto_matrix \\
         $hto_names \\
         -o .
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        GMM-Demux: $VERSION
-    END_VERSIONS
     """
 
     stub:
-    def VERSION = '0.2.2.3'
     def prefix   = task.ext.prefix ?: "${meta.id}"
     """
     if [[ ${summary_report} == true ]]; then
@@ -68,10 +62,5 @@ process GMMDEMUX {
     echo "" | gzip > matrix.mtx.gz
     touch GMM_full.config
     touch GMM_full.csv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        GMM-Demux: $VERSION
-    END_VERSIONS
     """
 }

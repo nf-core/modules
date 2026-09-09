@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+import os
+
+os.environ.setdefault("TORCHINDUCTOR_CACHE_DIR", os.path.join(os.getcwd(), "torch_cache"))
+
 import anndata as ad
 import scvi
 import yaml
@@ -10,7 +14,6 @@ from threadpoolctl import threadpool_limits
 threadpool_limits(int("${task.cpus}"))
 
 scvi.settings.seed = 0
-
 
 adata = ad.read_h5ad("${filtered}")
 adata_unfiltered = ad.read_h5ad("${unfiltered}")

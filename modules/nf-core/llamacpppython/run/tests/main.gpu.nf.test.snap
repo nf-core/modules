@@ -1,0 +1,53 @@
+{
+    "llamacpppython/run - GPU stub run inference with json prompt": {
+        "content": [
+            1,
+            {
+                "id": "test_run"
+            },
+            "test_run.txt",
+            {
+                "versions_llama_cpp_python": [
+                    "versions.yml:md5,e1da69d545e098db89cc40b726cb4627"
+                ]
+            },
+            [
+                {
+                    "llama-cpp-python": "0.3.28",
+                    "cuda": "no CUDA available"
+                }
+            ]
+        ],
+        "timestamp": "2026-06-12T18:48:36.516586462",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
+    },
+    "llamacpppython/run - GPU run inference with downloaded gguf model": {
+        "content": [
+            1,
+            {
+                "id": "test_run"
+            },
+            "test_run.txt",
+            true,
+            {
+                "versions_llama_cpp_python": [
+                    "versions.yml:md5,addfc2cdc4f4ad37323d3bbd8b0f443f"
+                ]
+            },
+            [
+                {
+                    "llama-cpp-python": "0.3.28",
+                    "cuda": 13.0
+                }
+            ]
+        ],
+        "timestamp": "2026-06-12T18:48:25.857178068",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
+    }
+}

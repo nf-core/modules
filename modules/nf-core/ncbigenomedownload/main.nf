@@ -47,4 +47,21 @@ process NCBIGENOMEDOWNLOAD {
         $groups
 
     """
+
+    stub:
+    """
+    echo "" | gzip > test_genomic.gbff.gz
+    echo "" | gzip > test_genomic.fna.gz
+    echo "" | gzip > test_rm.out.gz
+    echo "" | gzip > test_feature_table.txt.gz
+    echo "" | gzip > test_genomic.gff.gz
+    echo "" | gzip > test_protein.faa.gz
+    echo "" | gzip > test_protein.gpff.gz
+    echo "" | gzip > test_wgsmaster.gbff.gz
+    echo "" | gzip > test_cds_from_genomic.fna.gz
+    echo "" | gzip > test_rna.fna.gz
+    echo "" | gzip > test_rna_from_genomic.fna.gz
+    touch test_assembly_report.txt
+    touch test_assembly_stats.txt
+    """
 }

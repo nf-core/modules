@@ -156,7 +156,24 @@ output:
           description: |
             Length values derived from tximport output without summarizeToGene(),
             without a 'countsFromAbundance' specification
-          pattern: "*gene_lengths.tsv"
+          pattern: "*transcript_lengths.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  tx2gene_augmented:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing information related to the experiment as a whole
+            e.g. `[ id:'SRP123456' ]`
+      - "*tx2gene_augmented.tsv":
+          type: file
+          description: |
+            tx2gene mapping table actually used by tximport, equal to the input
+            tx2gene with self-mappings appended for any transcripts present in
+            the quantification output but missing from the input. Use this file
+            (not the input tx2gene) to reproduce the published gene-level
+            outputs from the per-sample quantification files.
+          pattern: "*tx2gene_augmented.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
   versions:

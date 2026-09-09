@@ -15,7 +15,7 @@ process VELOCYTO {
 
     output:
     tuple val(meta), path("*.loom"), path("*.velocyto.log"), emit: loom
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('velocyto'), eval("velocyto --version | sed 's/^.*version //'"), topic: versions, emit: versions_velocyto
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,12 +24,12 @@ process VELOCYTO {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    velocyto run ${args} -e ${meta.id} -b ${barcodes} -o . ${bam} ${gtf} > ${prefix}.velocyto.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        velocyto: \$(echo \$(velocyto --version) | sed 's/^.*version //')
-    END_VERSIONS
+    velocyto run \\
+        ${args} \\
+        -e ${meta.id} \\
+        -b ${barcodes} \\
+        -o . \\
+        ${bam} ${gtf} > ${prefix}.velocyto.log
     """
 
     stub:
@@ -37,10 +37,5 @@ process VELOCYTO {
     """
     touch ${prefix}.loom
     touch ${prefix}.velocyto.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        velocyto: \$(echo \$(velocyto --version) | sed 's/^.*version //')
-    END_VERSIONS
     """
 }

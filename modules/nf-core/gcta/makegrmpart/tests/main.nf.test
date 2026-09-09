@@ -1,0 +1,190 @@
+nextflow_process {
+
+    name "Test Process GCTA_MAKEGRMPART"
+    script "../main.nf"
+    process "GCTA_MAKEGRMPART"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gcta"
+    tag "gcta/makegrmpart"
+
+    test("homo_sapiens popgen - plink2") {
+        when {
+            process {
+                """
+                file('gcta_grm.mpfile').text = 'plink_simulated plink_simulated.pgen plink_simulated.psam plink_simulated.pvar\\n'
+
+                input[0] = [
+                    [ id:'gcta_grm' ],
+                    2,
+                    1,
+                    file('gcta_grm.mpfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pgen', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pvar', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.psam', checkIfExists: true)
+                    ]
+                ]
+                input[1] = [[ id:'snp_group0' ], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - plink1") {
+        when {
+            process {
+                """
+                file('gcta_grm.mbfile').text = 'plink_simulated\\n'
+
+                input[0] = [
+                    [ id:'gcta_grm_bed' ],
+                    2,
+                    1,
+                    file('gcta_grm.mbfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ]
+                ]
+                input[1] = [[ id:'snp_group0' ], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - plink1 - extract snp group") {
+        when {
+            process {
+                """
+                file('gcta_grm_extract.mbfile').text = 'plink_simulated\\n'
+
+                def bimFile = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                def extractSnps = bimFile.readLines()
+                    .take(10)
+                    .collect { row -> row.trim().split(/\\s+/)[1] }
+                    .join('\\n') + '\\n'
+                file('snp_group_extract.txt').text = extractSnps
+
+                input[0] = [
+                    [ id:'gcta_grm_bed_extract' ],
+                    2,
+                    1,
+                    file('gcta_grm_extract.mbfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        bimFile
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ]
+                ]
+                input[1] = [[ id:'snp_group_extract' ], file('snp_group_extract.txt')]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - plink1 - default partition values") {
+        when {
+            process {
+                """
+                file('gcta_grm_default.mbfile').text = 'plink_simulated\\n'
+
+                input[0] = [
+                    [ id:'gcta_grm_bed_default' ],
+                    null,
+                    null,
+                    file('gcta_grm_default.mbfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ]
+                ]
+                input[1] = [[ id:'snp_group0' ], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - plink1 - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                file('gcta_grm.mbfile').text = 'plink_simulated\\n'
+
+                input[0] = [
+                    [ id:'gcta_grm_bed' ],
+                    2,
+                    1,
+                    file('gcta_grm.mbfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ]
+                ]
+                input[1] = [[ id:'snp_group0' ], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

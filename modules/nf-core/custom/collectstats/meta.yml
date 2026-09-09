@@ -1,0 +1,123 @@
+name: "custom_collectstats"
+description: |
+  Collects per-sample read-processing statistics (trimming, decontamination, alignment,
+  feature counting, and optionally taxonomy/function summaries) from a set of
+  heterogeneous log/table files into a single overall-stats table per run.
+keywords:
+  - stats
+  - collect
+  - summary
+  - qc
+tools:
+  - "collectstats":
+      description: |
+        In-house R script that joins per-sample read-processing statistics from
+        several upstream tools into a single wide table.
+      tool_dev_url: "https://github.com/nf-core/modules/blob/master/modules/nf-core/custom/collectstats/main.nf"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing run-level information
+          e.g. `[ id:'run' ]`
+    - samples_meta:
+        type: list
+        description: |
+          List of per-sample meta maps for every sample included in the run, each with
+          at least `id` and `single_end`
+          e.g. `[ [ id:'sample1', single_end:false ], [ id:'sample2', single_end:true ] ]`
+    - trimlogs:
+        type: file
+        description: |
+          Trim Galore trimming report(s), one (single-end) or two (paired-end, only the
+          R1 report is read) per sample. Pass an empty list to skip trimming stats.
+        pattern: "*_trimming_report.txt"
+        ontologies: []
+    - bblogs:
+        type: file
+        description: |
+          BBDuk log file(s), one per decontaminated sample. Pass an empty list to skip
+          decontamination stats.
+        pattern: "*.bbduk.log"
+        ontologies: []
+    - idxstats:
+        type: file
+        description: One samtools idxstats output file per sample.
+        pattern: "*.idxstats"
+        ontologies: []
+    - fcs:
+        type: file
+        description: |
+          One or more featureCounts-derived long-format count tables (as produced e.g.
+          by a "collect featurecounts"-style step), each with at minimum `sample` and
+          `count` columns. Aggregated per input file, keyed by a feature-type label
+          parsed from each file's name (the text between the first and second `.`).
+        pattern: "*.tsv"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+    - mergetab:
+        type: file
+        description: |
+          Optional wide-format per-sample summary table (e.g. taxonomy/function
+          classification counts) to left-join into the output alongside the other
+          statistics. Pass an empty list to skip.
+        pattern: "*.tsv"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+output:
+  overall_stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing run-level information
+            e.g. `[ id:'run' ]`
+      - "${outfile}":
+          type: file
+          description: One row per sample, columns from every input source left-joined together.
+          pattern: "*.overall_stats.tsv.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+authors:
+  - "@erikrikarddaniel"
+maintainers:
+  - "@erikrikarddaniel"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/custom_collectstats:c1f477e6251c36bb
+      build_id: bd-c1f477e6251c36bb_1
+      scan_id: sc-b838afdb854a848f_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/custom_collectstats:a98d93b78fdd37b9
+      build_id: bd-a98d93b78fdd37b9_1
+      scan_id: sc-c0f8f9b47818500b_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/custom_collectstats:45b9f247facbfda0
+      build_id: bd-45b9f247facbfda0_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9d/9d1a8065dcebe35c513db5eb4a5237795aa4bae4756086f3c4319a820a8a647c/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/custom_collectstats:8fc2c1667001d110
+      build_id: bd-8fc2c1667001d110_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e3/e34aa7be0b16814f54d24c73317d6755a15fa039bbe99e44bd469a753f46a287/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/custom/collectstats/.conda-lock/linux_amd64-bd-c1f477e6251c36bb_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/custom/collectstats/.conda-lock/linux_arm64-bd-a98d93b78fdd37b9_1.txt

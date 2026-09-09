@@ -19,7 +19,8 @@ process GOLEFT_INDEXCOV {
     tuple val(meta), path("${prefix}/*roc"),        emit: roc,       optional: true
     tuple val(meta), path("${prefix}/*html"),       emit: html,      optional: true
     tuple val(meta), path("${prefix}/*png"),        emit: png,       optional: true
-    path "versions.yml",                            emit: versions
+    tuple val("${task.process}"), val('goleft'), eval("goleft --version |& sed '1!d;s/^.*goleft Version: //'"), topic: versions, emit: versions_goleft
+    tuple val("${task.process}"), val('tabix'), eval("tabix -h |& sed -n 's/^.*Version: //p'"), topic: versions, emit: versions_tabix
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,27 +40,15 @@ process GOLEFT_INDEXCOV {
         ${input_files.join(" ")}
 
     if [ -f "${prefix}/${prefix}-indexcov.bed.gz" ] ; then
-        tabix -p bed "${prefix}/${prefix}-indexcov.bed.gz"
+        tabix -p bed ${prefix}/${prefix}-indexcov.bed.gz
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        goleft: \$(goleft --version 2>&1 | head -n 1 | sed 's/^.*goleft Version: //')
-        tabix: \$(echo \$(tabix -h 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir "${prefix}"
-    echo "" | gzip > "${prefix}/${prefix}-indexcov.bed.gz"
-    touch "${prefix}/${prefix}-indexcov.bed.gz.tbi"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        goleft: \$(goleft --version 2>&1 | head -n 1 | sed 's/^.*goleft Version: //')
-        tabix: \$(echo \$(tabix -h 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
-    END_VERSIONS
+    mkdir ${prefix}
+    echo "" | gzip > ${prefix}/${prefix}-indexcov.bed.gz
+    touch ${prefix}/${prefix}-indexcov.bed.gz.tbi
     """
 }

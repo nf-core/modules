@@ -12,7 +12,7 @@ process GVCFTOOLS_EXTRACTVARIANTS {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('gvcftools'), eval("extract_variants --help 2>&1 | sed -n 's/version: //p'"), topic: versions, emit: versions_gvcftools
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,22 +28,12 @@ process GVCFTOOLS_EXTRACTVARIANTS {
         $args \\
         $gvcf |
     gzip -c > ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gvcftools: \$(extract_variants --help 2>&1 | grep version | sed 's/version: //')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    echo | gzip > ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gvcftools: \$(extract_variants --help 2>&1 | grep version | sed 's/version: //')
-    END_VERSIONS
+    echo "" | gzip > ${prefix}.vcf.gz
     """
 }

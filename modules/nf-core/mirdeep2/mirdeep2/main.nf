@@ -14,7 +14,8 @@ process MIRDEEP2_MIRDEEP2 {
 
     output:
     tuple val(meta), path("result*.{bed,csv,html}")    , emit: outputs
-    path "versions.yml"                                , emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('mirdeep2'), val("2.0.1"), emit: versions_mirdeep2, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,42 +23,30 @@ process MIRDEEP2_MIRDEEP2 {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '2.0.1'
     def mature_species  = mature                ? "${mature}"              : "none"
     def mature_other    = mature_other_species  ? "${mature_other_species}": "none"
     def precursors      = hairpin               ? "${hairpin}"             : "none"
 
     """
     miRDeep2.pl \\
-        $processed_reads \\
-        $fasta \\
-        $genome_mappings \\
-        $mature_species \\
-        $mature_other \\
-        $precursors \\
-        $args
+        ${processed_reads} \\
+        ${fasta} \\
+        ${genome_mappings} \\
+        ${mature_species} \\
+        ${mature_other} \\
+        ${precursors} \\
+        ${args}
 
     mv result_*.bed result_${prefix}.bed
     mv result_*.csv result_${prefix}.csv
     mv result_*.html result_${prefix}.html
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mirdeep2: \$(echo "$VERSION")
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '2.0.1'
     """
     touch result_${prefix}.html
     touch result_${prefix}.bed
     touch result_${prefix}.csv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mirdeep2: \$(echo "$VERSION")
-    END_VERSIONS
     """
 }

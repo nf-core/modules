@@ -64,9 +64,7 @@ nextflow_process {
         then {
             assert process.success
             assert snapshot(
-                process.out.fusions,
-                process.out.abridged,
-                process.out.versions,
+                sanitizeOutput(process.out, unstableKeys: ["coding_effect"]),
                 process.out.coding_effect.collect { meta, tsv ->
                     [meta, path(tsv).readLines().collect { line ->
                         line.split('\t')[0] // Get first column (tab-separated)
@@ -100,9 +98,7 @@ nextflow_process {
         then {
             assert process.success
             assert snapshot(
-                process.out.fusions,
-                process.out.abridged,
-                process.out.versions,
+                sanitizeOutput(process.out, unstableKeys: ["coding_effect"]),
                 process.out.coding_effect.collect { meta, tsv ->
                     [meta, path(tsv).readLines().collect { line ->
                         line.split('\t')[0] // Get first column (tab-separated)
@@ -139,7 +135,7 @@ nextflow_process {
         then {
             assert process.success
             assert snapshot(
-                process.out
+                sanitizeOutput(process.out)
             ).match()
         }
 

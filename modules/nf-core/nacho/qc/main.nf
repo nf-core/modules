@@ -4,8 +4,8 @@ process NACHO_QC {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2d/2d6b5e106e91070f16613d1950461b1587652d8003abae68637f51593b7457c3/data' :
-        'community.wave.seqera.io/library/r-dplyr_r-fs_r-ggplot2_r-nacho_pruned:92aef6fc5eff932b' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ad/ad421367a5d71eb73738675a68b5677e283686a8b0a6d5e5530f9ec203aadb30/data' :
+        'community.wave.seqera.io/library/r-base_r-dplyr_r-fs_r-ggplot2_pruned:bcd6d91c836e9200' }"
 
     input:
     tuple val(meta) , path(rcc_files, stageAs: "input/*")
@@ -15,32 +15,14 @@ process NACHO_QC {
     tuple val(meta), path("*.html")   , emit: nacho_qc_reports
     tuple val(meta), path("*_mqc.png"), emit: nacho_qc_png
     tuple val(meta), path("*_mqc.txt"), emit: nacho_qc_txt
-    path "versions.yml"             , emit: versions
+    path "versions.yml", emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
 
-    """
-    nacho_qc.R \\
-        --input_rcc_path input \\
-        --input_samplesheet ${sample_sheet} \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        r-base: \$(echo \$(R --version 2>&1) | sed 's/^.*R version //; s/ .*\$//')
-        r-nacho: \$(Rscript -e "library(NACHO); cat(as.character(packageVersion('NACHO')))")
-        r-dplyr: \$(Rscript -e "library(dplyr); cat(as.character(packageVersion('dplyr')))")
-        r-ggplot2: \$(Rscript -e "library(ggplot2); cat(as.character(packageVersion('ggplot2')))")
-        r-tidyr: \$(Rscript -e "library(tidyr); cat(as.character(packageVersion('tidyr')))")
-        r-readr: \$(Rscript -e "library(readr); cat(as.character(packageVersion('readr')))")
-        r-fs: \$(Rscript -e "library(fs); cat(as.character(packageVersion('fs')))")
-        r-optparse: \$(Rscript -e "library(optparse); cat(as.character(packageVersion('optparse')))")
-    END_VERSIONS
-    """
+    template 'nacho_qc.R'
 
     stub:
     """
@@ -65,16 +47,18 @@ process NACHO_QC {
     touch normalized_qc_mqc.txt
     touch hk_detected_mqc.txt
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        r-base: \$(echo \$(R --version 2>&1) | sed 's/^.*R version //; s/ .*\$//')
-        r-nacho: \$(Rscript -e "library(NACHO); cat(as.character(packageVersion('NACHO')))")
-        r-dplyr: \$(Rscript -e "library(dplyr); cat(as.character(packageVersion('dplyr')))")
-        r-ggplot2: \$(Rscript -e "library(ggplot2); cat(as.character(packageVersion('ggplot2')))")
-        r-tidyr: \$(Rscript -e "library(tidyr); cat(as.character(packageVersion('tidyr')))")
-        r-readr: \$(Rscript -e "library(readr); cat(as.character(packageVersion('readr')))")
-        r-fs: \$(Rscript -e "library(fs); cat(as.character(packageVersion('fs')))")
-        r-optparse: \$(Rscript -e "library(optparse); cat(as.character(packageVersion('optparse')))")
-    END_VERSIONS
+    Rscript -e "nfcore.utils::process_end(
+        packages = list(
+            'r-nacho' = 'NACHO',
+            'r-dplyr' = 'dplyr',
+            'r-ggplot2' = 'ggplot2',
+            'r-tidyr' = 'tidyr',
+            'r-readr' = 'readr',
+            'r-fs' = 'fs'
+        ),
+        task_name = '${task.process}',
+        versions_path = 'versions.yml',
+        log_path = 'R_sessionInfo.log'
+    )"
     """
 }

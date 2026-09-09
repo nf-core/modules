@@ -1,0 +1,85 @@
+name: "fmhfunprofiler"
+description: Functionally profile metagenomic samples using FracMinHash sketches
+  against KEGG database references.
+keywords:
+  - metagenomics
+  - functional profiling
+  - FracMinHash
+  - sourmash
+  - kegg
+tools:
+  - "fmhfunprofiler":
+      description: "fmh-funprofiler is a pipeline that leverages FracMinHash (implemented
+        in sourmash) to functionally profile metagenomic samples, offering a faster
+        and more memory-efficient alternative to alignment-based methods."
+      homepage: "https://github.com/KoslickiLab/fmh-funprofiler"
+      documentation: "https://github.com/KoslickiLab/fmh-funprofiler"
+      tool_dev_url: "https://github.com/KoslickiLab/fmh-funprofiler"
+      doi: "10.1093/bioinformatics/btae397"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - reads:
+        type: file
+        description: Input metagenomic sequences in FASTA or FASTQ format (can be
+          compressed)
+        pattern: "*.{fasta,fastq,fa,fq,fasta.gz,fastq.gz,fa.gz,fq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930
+  - ko_sketch:
+      type: file
+      description: Sourmash signature reference sketch or Sequence Bloom Tree
+        (SBT) of KEGG KOs
+      pattern: "*.{sig,sig.zip,sbt.zip}"
+      ontologies: []
+  - ksize:
+      type: integer
+      description: The k-mer size to use for the sketch (typically 7, 11, or 15)
+  - scaled:
+      type: integer
+      description: The FracMinHash scale factor (e.g., 1000)
+output:
+  csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.csv":
+          type: file
+          description: The main functional abundance profile matrix detailing KEGG
+            Orthology (KO) counts
+          pattern: "*.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
+  versions_fmhfunprofiler:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fmh-funprofiler:
+          type: string
+          description: The name of the tool
+      - 'python -c "import importlib.metadata; print(importlib.metadata.version(''fmh-funprofiler''))"':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fmh-funprofiler:
+          type: string
+          description: The name of the tool
+      - 'python -c "import importlib.metadata; print(importlib.metadata.version(''fmh-funprofiler''))"':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@miraep8"
+maintainers:
+  - "@miraep8"

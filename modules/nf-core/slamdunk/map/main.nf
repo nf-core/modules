@@ -13,7 +13,7 @@ process SLAMDUNK_MAP {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('slamdunk'), eval("slamdunk --version | sed 's/^slamdunk //'"), topic: versions, emit: versions_slamdunk
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,11 +35,6 @@ process SLAMDUNK_MAP {
         ${input}
 
     mv outputs/*.bam ${prefix}.bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        slamdunk: \$(echo \$(slamdunk --version) | sed 's/^slamdunk //')
-    END_VERSIONS
     """
 
     stub:
@@ -50,10 +45,5 @@ process SLAMDUNK_MAP {
     }
     """
     touch ${prefix}.bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        slamdunk: \$(echo \$(slamdunk --version) | sed 's/^slamdunk //')
-    END_VERSIONS
     """
 }

@@ -29,10 +29,32 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
 					path(process.out.pairsam[0][1]).linesGzip[3..7],
-					process.out.stat,
-					process.out.findAll { key, val -> key.startsWith('versions') }
+					sanitizeOutput(process.out, unstableKeys: ["pairsam"])
 					).match()
 				}
+            )
+        }
+    }
+
+    test("test-pairtools-parse - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+				file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pairtools/mock.sam', checkIfExists: true) ]
+				input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pairtools/mock.chrom.sizes', checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

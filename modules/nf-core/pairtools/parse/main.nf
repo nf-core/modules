@@ -31,4 +31,11 @@ process PAIRTOOLS_PARSE {
         -o ${prefix}.pairsam.gz \\
         $bam
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.pairsam.gz
+    touch ${prefix}.pairsam.stat
+    """
 }

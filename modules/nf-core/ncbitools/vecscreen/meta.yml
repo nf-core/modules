@@ -1,7 +1,7 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "NCBITOOLS_VECSCREEN"
-description: NCBI tool for detecting vector contamination in nucleic acid sequences.
-  This tool is older than NCBI's FCS-adaptor, which is for the same purpose
+description: NCBI tool for detecting vector contamination in nucleic acid
+  sequences. This tool is older than NCBI's FCS-adaptor, which is for the same
+  purpose
 keywords:
   - assembly
   - genomics
@@ -16,7 +16,8 @@ tools:
       homepage: "https://www.ncbi.nlm.nih.gov/tools/vecscreen/"
       documentation: "https://www.ncbi.nlm.nih.gov/tools/vecscreen/interpretation/"
       tool_dev_url: "https://www.ncbi.nlm.nih.gov/tools/vecscreen/"
-      licence: ["The Open Database License"]
+      licence:
+        - "The Open Database License"
       identifier: ""
 
 input:
@@ -46,18 +47,34 @@ output:
             e.g. [ id:'test', taxid:'9606' ]
       - ${prefix}.vecscreen.out:
           type: file
-          description: VecScreen report file. This can be in different formats depending
-            on the value of the optional -f  parameter. 0 = HTML format, with alignments.
-            1 = HTML format, no alignments. 2 = Text list, with alignments. 3 = Text
-            list, no alignments. default = 0
+          description: VecScreen report file. This can be in different formats
+            depending on the value of the optional -f  parameter. 0 = HTML format,
+            with alignments. 1 = HTML format, no alignments. 2 = Text list, with
+            alignments. 3 = Text list, no alignments. default = 0
           pattern: "*.vecscreen.out"
           ontologies: []
+  versions_vecscreen:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vecscreen:
+          type: string
+          description: The name of the tool
+      - "1.0":
+          type: string
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vecscreen:
+          type: string
+          description: The name of the tool
+      - "1.0":
+          type: string
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@eeaunin"

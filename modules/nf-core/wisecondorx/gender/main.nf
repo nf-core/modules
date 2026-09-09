@@ -4,8 +4,8 @@ process WISECONDORX_GENDER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/13/13af39819608398807612090d4b8af7dedb8db403967e71af22dbbeeb502ead1/data':
-        'community.wave.seqera.io/library/wisecondorx:1.3.0--835c946afbce9082' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/10/10a1cb134d692ea5d26cb7b4a5a2e83fe28eacac5b637a8eb6ca4d9532602222/data':
+        'community.wave.seqera.io/library/wisecondorx:1.3.2--7ece9fb804446823' }"
 
     input:
     tuple val(meta), path(npz)
@@ -13,7 +13,7 @@ process WISECONDORX_GENDER {
 
     output:
     tuple val(meta), stdout, emit: gender
-    tuple val("${task.process}"), val('wisecondorx'), eval("pip list |& sed -n 's/wisecondorx *//p'"), emit: versions_wisecondorx, topic: versions
+    tuple val("${task.process}"), val('wisecondorx'), eval("python -c \"import wisecondorx; print(wisecondorx.__version__)\""), emit: versions_wisecondorx, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

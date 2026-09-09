@@ -4,8 +4,8 @@ process PYRODIGAL {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-2fe9a8ce513c91df34b43a6610df94c3a2eb3bd0:da1134ad604a59a6f439bdcc3f6df690eba47e9a-0':
-        'quay.io/biocontainers/mulled-v2-2fe9a8ce513c91df34b43a6610df94c3a2eb3bd0:da1134ad604a59a6f439bdcc3f6df690eba47e9a-0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/84/84cfe1298be8ed1a95ce41684798172a5eb47c3aa172b80f778dd39494cc65e9/data':
+        'community.wave.seqera.io/library/pyrodigal_pigz:35ca0f5a299e74f1' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -16,7 +16,7 @@ process PYRODIGAL {
     tuple val(meta), path("*.fna.gz")                   , emit: fna
     tuple val(meta), path("*.faa.gz")                   , emit: faa
     tuple val(meta), path("*.score.gz")                 , emit: score
-    path "versions.yml"                                 , emit: versions
+    tuple val("${task.process}"), val('pyrodigal'), eval("pyrodigal --version |& sed 's/pyrodigal v//'"), emit: versions_pyrodigal, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,12 +38,8 @@ process PYRODIGAL {
         -s ${prefix}.score
 
     pigz -nmf ${prefix}*
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pyrodigal: \$(echo \$(pyrodigal --version 2>&1 | sed 's/pyrodigal v//'))
-    END_VERSIONS
     """
+
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
@@ -51,11 +47,5 @@ process PYRODIGAL {
     echo "" | gzip > ${prefix}.fna.gz
     echo "" | gzip > ${prefix}.faa.gz
     echo "" | gzip > ${prefix}.score.gz
-    touch versions.yml
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pyrodigal: \$(echo \$(pyrodigal --version 2>&1 | sed 's/pyrodigal v//'))
-    END_VERSIONS
     """
 }

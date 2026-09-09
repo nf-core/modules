@@ -1,0 +1,130 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "arcane_filter"
+description: Filter GTF annotations and genome sequence for alignment-free single-cell RNA-seq quantification with Arcane
+keywords:
+  - single-cell
+  - rnaseq
+  - filter
+  - gtf
+  - fasta
+  - transcriptomics
+tools:
+  - "arcane":
+      description: "Arcane: Alignment-free single cell RNA-seq gene expression estimation"
+      homepage: "https://gitlab.com/rahmannlab/arcane"
+      documentation: "https://gitlab.com/rahmannlab/arcane"
+      tool_dev_url: "https://gitlab.com/rahmannlab/arcane"
+      licence: ["MIT"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing reference genome metadata
+          e.g. `[ id:'human' ]`
+    - fasta:
+        type: file
+        description: Reference genome FASTA file
+        pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+        ontology:
+          - edam: "http://edamontology.org/format_1929"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing annotation metadata
+          e.g. `[ id:'human_annotation' ]`
+    - gtf:
+        type: file
+        description: Genome annotation GTF file
+        pattern: "*.{gtf,gtf.gz}"
+        ontology:
+          - edam: "http://edamontology.org/format_2306"
+
+output:
+  genes:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*/*_genes.txt":
+          type: file
+          description: Gene IDs, one per line, in gene_number order
+          pattern: "*/*_genes.txt"
+          ontology:
+            - edam: "http://edamontology.org/format_2330"
+  pickle:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*/*_mapping_gene_ids.pickle":
+          type: file
+          description: Python pickle object mapping gene_number to gene_id
+          pattern: "*/*_mapping_gene_ids.pickle"
+  csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*/*_new_id_to_original.csv":
+          type: file
+          description: CSV file mapping internal gene numbers to original annotation gene IDs and coordinates
+          pattern: "*/*_new_id_to_original.csv"
+          ontology:
+            - edam: "http://edamontology.org/format_3752"
+  reference:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*/*_ref.fa.gz":
+          type: file
+          description: Filtered sequence reference FASTA file ready for indexing
+          pattern: "*/*_ref.fa.gz"
+          ontology:
+            - edam: "http://edamontology.org/format_1929"
+  extracted_genes:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*/*_extracted_genes.fa.gz":
+          type: file
+          description: |
+            FASTA file containing each gene from start to end including introns.
+            Only produced when `--extract_genes` is provided in `task.ext.args`.
+          pattern: "*/*_extracted_genes.fa.gz"
+          ontology:
+            - edam: "http://edamontology.org/format_1929"
+  versions_arcane:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "arcane":
+          type: string
+          description: The name of the tool
+      - "arcane --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - arcane:
+          type: string
+          description: The name of the tool
+      - arcane --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@LeonHornich"
+maintainers:
+  - "@LeonHornich"
