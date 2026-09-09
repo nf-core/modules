@@ -34,13 +34,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out.bam.collect{meta, bam_ ->  file(bam_).name + ':readsMD5,' + bam(bam_).getReadsMD5()},
-                    process.out.index,
-                    process.out.cram,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ['bam', 'cram'], unstableKeys: ['index'])).match() }
             )
         }
     }
@@ -69,13 +63,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out.bam.collect{meta, bam_ ->  file(bam_).name + ':readsMD5,' + bam(bam_).getReadsMD5()},
-                    file(process.out.index[0][1]).name,
-                    process.out.cram,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ['bam', 'cram'], unstableKeys: ['index'])).match() }
             )
         }
     }
@@ -110,13 +98,7 @@ nextflow_process {
             def fasta = 'https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/homo_sapiens/genome/genome.fasta'
             assert process.success
             assertAll(
-                { assert snapshot(
-                    cram(process.out.cram[0][1], fasta).getReadsMD5(),
-                    process.out.bam.collect{meta, bam_ ->  file(bam_).name + ':readsMD5,' + bam(bam_).getReadsMD5()},
-                    process.out.index,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ['bam', 'cram'], referenceFasta: fasta, unstableKeys: ['index'])).match() }
             )
         }
     }
@@ -151,13 +133,7 @@ nextflow_process {
             def fasta = 'https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/homo_sapiens/genome/genome.fasta'
             assert process.success
             assertAll(
-                { assert snapshot(
-                    cram(process.out.cram[0][1], fasta).getReadsMD5(),
-                    process.out.bam.collect{meta, bam_ ->  file(bam_).name + ':readsMD5,' + bam(bam_).getReadsMD5()},
-                    file(process.out.index[0][1]).name,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ['bam', 'cram'], referenceFasta: fasta, unstableKeys: ['index'])).match() }
             )
         }
     }
@@ -191,14 +167,8 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    //nft-bam doesn't like the fasta.gz
-                    file(process.out.cram[0][1]).name,
-                    process.out.bam.collect{meta, bam_ ->  file(bam_).name + ':readsMD5,' + bam(bam_).getReadsMD5()},
-                    process.out.index,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match()
-                }
+                // nft-bam doesn't like the fasta.gz
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ['cram', 'index'])).match() }
             )
         }
     }
@@ -225,13 +195,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out.bam.collect{meta, bam_ ->  file(bam_).name + ':readsMD5,' + bam(bam_).getReadsMD5()},
-                    process.out.index,
-                    process.out.cram,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ['bam', 'cram'], unstableKeys: ['index'])).match() }
             )
         }
     }
