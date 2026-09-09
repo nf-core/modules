@@ -46,7 +46,7 @@ output:
       - sativaepang:
           type: string
           description: The name of the tool
-      - sed -n 's#.*share/sativa-epang-\([0-9.]*\)-.*#\1#p' \$(command -v sativa-epang):
+      - grep -m1 -oE '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' \$(command -v sativa-epang):
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -58,7 +58,7 @@ topics:
       - sativaepang:
           type: string
           description: The name of the tool
-      - sed -n 's#.*share/sativa-epang-\([0-9.]*\)-.*#\1#p' \$(command -v sativa-epang):
+      - grep -m1 -oE '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' \$(command -v sativa-epang):
           type: eval
           description: The expression to obtain the version of the tool
 
