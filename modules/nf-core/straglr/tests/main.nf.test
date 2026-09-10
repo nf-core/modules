@@ -1,0 +1,202 @@
+nextflow_process {
+
+    name "Test Process STRAGLR"
+    script "../main.nf"
+    process "STRAGLR"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "straglr"
+
+    test("homo_sapiens - [bam, bai], fasta, fai, [], [], []") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam.bai', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[2] = [[],[]]
+                input[3] = [[],[]]
+                input[4] = [[],[]]
+                """
+            }
+        }
+
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.tsv },
+                { assert snapshot(
+                    process.out.vcf,
+                    process.out.bed,
+                    process.out.versions_straglr
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - [bam, bai], fasta, fai, loci, [], []") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam.bai', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'loci' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)
+                ]
+                input[3] = [[],[]]
+                input[4] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.tsv },
+                { assert snapshot(
+                    process.out.vcf,
+                    process.out.bed,
+                    process.out.versions_straglr
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - [bam, bai], fasta, fai, [], exclude, []") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam.bai', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[2] = [[],[]]
+                input[3] = [
+                    [ id:'exclude' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)
+                ]
+                input[4] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.tsv },
+                { assert snapshot(
+                    process.out.vcf,
+                    process.out.bed,
+                    process.out.versions_straglr
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - [bam, bai], fasta, fai, [], [], regions") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam.bai', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[2] = [[],[]]
+                input[3] = [[],[]]
+                input[4] = [
+                    [ id:'regions' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.tsv },
+                { assert snapshot(
+                    process.out.vcf,
+                    process.out.bed,
+                    process.out.versions_straglr
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - [bam, bai], fasta, fai, [], [], [] -stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam.bai', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[2] = [[],[]]
+                input[3] = [[],[]]
+                input[4] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.tsv },
+                { assert snapshot(
+                    process.out.vcf,
+                    process.out.bed,
+                    process.out.versions_straglr
+                ).match() }
+            )
+        }
+
+    }
+
+}
