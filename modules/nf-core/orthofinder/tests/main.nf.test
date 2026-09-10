@@ -155,6 +155,9 @@ nextflow_process {
                 { assert snapshot(
                     process.out.orthofinder,
                     process.out.working,
+                    process.out.single_copy_seqs,
+                    process.out.orthogroups,
+                    process.out.sptree,
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )

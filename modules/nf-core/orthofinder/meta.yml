@@ -58,6 +58,39 @@ output:
       - $results_dir/WorkingDirectory:
           type: directory
           description: OrthoFinder WorkingDirectory (used for the resume function)
+  single_copy_seqs:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - $results_dir/Single_Copy_Orthologue_Sequences/:
+          type: directory
+          description: |
+            Directory of FASTA files, one per orthogroup that contains exactly one gene
+            per species. May be empty if no single-copy orthologues were found.
+  orthogroups:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - $results_dir/Orthogroups/Orthogroups.tsv:
+          type: file
+          description: |
+            Tab-separated file listing the genes belonging to each orthogroup, one row
+            per orthogroup and one column per species.
+          pattern: "*.tsv"
+  sptree:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - $results_dir/Species_Tree/SpeciesTree_rooted_node_labels.txt:
+          type: file
+          description: Rooted species tree, with internal nodes labelled, in Newick format.
+          pattern: "*.txt"
   versions_orthofinder:
     - - ${task.process}:
           type: string

@@ -15,7 +15,7 @@ process ORTHOFINDER {
     tuple val(meta), path("$results_dir")                                                , emit: orthofinder
     tuple val(meta), path("$results_dir/WorkingDirectory")                               , emit: working
     tuple val(meta), path("$results_dir/Single_Copy_Orthologue_Sequences/")              , emit: single_copy_seqs, optional: true
-    tuple val(meta), path("$results_dir/Orthogroups/Orthogroups.tsv")                    , emit: orthogorups
+    tuple val(meta), path("$results_dir/Orthogroups/Orthogroups.tsv")                    , emit: orthogroups
     tuple val(meta), path("$results_dir/Species_Tree/SpeciesTree_rooted_node_labels.txt"), emit: sptree
     tuple val("${task.process}"), val('orthofinder'), eval("NO_COLOR=1 orthofinder --version | cut -d 'v' -f2 | perl -pe 's/\\e\\[[0-9;]*m//g'"), emit: versions_orthofinder, topic: versions
 
