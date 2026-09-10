@@ -30,7 +30,7 @@ input:
           Trans-Proteomic Pipeline; PSMs without PeptideProphet/iProphet probabilities are ignored) or an OpenMS idXML
           file (`*.idXML`, any score type; a q-value or PEP score is used when present). The idXML route is used by
           nf-core/mhcquant with Comet/Percolator results.
-        pattern: "*.{pep.xml,idXML}"
+        pattern: "*.{pep.xml,pepxml,idXML}"
         ontologies:
           - edam: "http://edamontology.org/format_3655" # pepXML
           - edam: "http://edamontology.org/format_3764" # idXML
