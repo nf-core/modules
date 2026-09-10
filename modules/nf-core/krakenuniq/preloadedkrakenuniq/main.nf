@@ -20,7 +20,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     tuple val(meta), path("*.classified.${sequence_type}.gz"), optional: true, emit: classified_reads
     tuple val(meta), path("*.unclassified.${sequence_type}.gz"), optional: true, emit: unclassified_reads
     tuple val(meta), path('*.krakenuniq.classified.txt'), optional: true, emit: classified_assignment
-    tuple val(meta), path('*.krakenuniq.report.txt'), emit: report
+    tuple val(meta), path('*.krakenuniq.report.txt'), optional: true, emit: report
     tuple val("${task.process}"), val('krakenuniq'), eval("krakenuniq --version | sed '1!d;s/KrakenUniq version //'"), emit: versions_krakenuniq, topic: versions
 
     when:
