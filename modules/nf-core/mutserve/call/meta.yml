@@ -12,7 +12,9 @@ tools:
       documentation: "https://github.com/seppinho/mutserve#readme"
       tool_dev_url: "https://github.com/seppinho/mutserve"
       doi: "10.1101/gr.256545.119"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
+      identifier: ""
 
 input:
   - - meta:
@@ -35,7 +37,7 @@ input:
           - edam: "http://edamontology.org/format_2572" # BAI
           - edam: "http://edamontology.org/format_3663" # CSI
           - edam: "http://edamontology.org/format_3664" # CRAI
-    - meta2:
+  - - meta2:
         type: map
         description: |
           Groovy Map containing reference information
@@ -60,7 +62,8 @@ output:
           pattern: "*.vcf.gz"
           ontologies:
             - edam: "http://edamontology.org/format_3017" # VCF.gz
-  txt:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  raw:
     - - meta:
           type: map
           description: |
@@ -72,6 +75,7 @@ output:
           pattern: "*.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
+  fasta:
     - - meta:
           type: map
           description: |
@@ -84,13 +88,13 @@ output:
           ontologies:
             - edam: "http://edamontology.org/format_1929" # FASTA
   versions_mutserve:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "mutserve":
+      - mutserve:
           type: string
           description: The name of the tool
-      - "mutserve --version 2>&1 | grep -o -E 'v[0-9.]+' | tr -d 'v'":
+      - mutserve --version 2>&1 | grep -o -E 'v[0-9.]+' | tr -d 'v':
           type: eval
           description: The expression to obtain the version of the tool
 
