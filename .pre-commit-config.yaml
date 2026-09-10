@@ -7,10 +7,11 @@ repos:
         entry: prettier --experimental-cli --write --ignore-unknown --no-cache
         exclude: |
           (?x)^(
-              .*\.snap$
+              .*\.snap$|
+              (.*/)?\.conda/.*
           )$
         additional_dependencies:
-          - prettier@3.8.3
+          - prettier@3.9.3
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
@@ -20,17 +21,19 @@ repos:
         args: [--markdown-linebreak-ext=md]
         exclude: |
           (?x)^(
-              .*\.snap$
+              .*\.snap$|
+              (.*/)?\.conda/.*
           )$
       - id: end-of-file-fixer
         priority: 10
         exclude: |
           (?x)^(
-              .*\.snap$
+              .*\.snap$|
+              (.*/)?\.conda/.*
           )$
 
   - repo: https://github.com/python-jsonschema/check-jsonschema
-    rev: 0.37.2
+    rev: 0.37.4
     hooks:
       - id: check-jsonschema
         priority: 20
@@ -55,7 +58,7 @@ repos:
 
   # use ruff for python files
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.13
+    rev: v0.16.1
     hooks:
       - id: ruff-check
         priority: 10
@@ -65,7 +68,7 @@ repos:
         priority: 0
   # NOTE This runs with Docker instead of the binary. Hoping anyone messing with Dockerfiles has Docker installed
   - repo: https://github.com/hadolint/hadolint
-    rev: v2.14.0
+    rev: v2.15.1
     hooks:
       - id: hadolint-docker
         priority: 0

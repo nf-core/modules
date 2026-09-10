@@ -12,7 +12,7 @@ process WGSIM {
 
     output:
     tuple val(meta), path("*.fastq"), emit: fastq
-    path "versions.yml",              emit: versions
+    tuple val("${task.process}"), val('wgsim'), eval("wgsim 2>&1 | sed -n 's/Version: //p'"), topic: versions, emit: versions_wgsim
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,15 +22,10 @@ process WGSIM {
     def prefix  = task.ext.prefix ?: "${meta.id}"
     """
     wgsim \\
-        $args \\
-        $fasta \\
+        ${args} \\
+        ${fasta} \\
         ${prefix}_R1.fastq \\
         ${prefix}_R2.fastq
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        wgsim: \$(wgsim 2>&1 | grep "Version" | sed 's/Version: //')
-    END_VERSIONS
     """
 
     stub:
@@ -38,10 +33,5 @@ process WGSIM {
     """
     touch ${prefix}_R1.fastq
     touch ${prefix}_R2.fastq
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        wgsim: \$(wgsim 2>&1 | grep "Version" | sed 's/Version: //')
-    END_VERSIONS
     """
 }

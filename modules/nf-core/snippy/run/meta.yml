@@ -10,7 +10,8 @@ tools:
       homepage: "https://github.com/tseemann/snippy"
       documentation: "https://github.com/tseemann/snippy"
       tool_dev_url: "https://github.com/tseemann/snippy"
-      licence: ["GPL v2"]
+      licence:
+        - "GPL v2"
       identifier: biotools:snippy
 input:
   - - meta:
@@ -108,8 +109,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - ${prefix}/${prefix}.bam:
           type: file
-          description: The alignments in BAM format. Includes unmapped, multimapping
-            reads. Excludes duplicates.
+          description: The alignments in BAM format. Includes unmapped,
+            multimapping reads. Excludes duplicates.
           pattern: "*.bam"
           ontologies: []
   bai:
@@ -142,8 +143,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - ${prefix}/${prefix}.aligned.fa:
           type: file
-          description: A version of the reference but with - at position with depth=0
-            and N for 0 < depth < --mincov (does not have variants)
+          description: A version of the reference but with - at position with
+            depth=0 and N for 0 < depth < --mincov (does not have variants)
           pattern: "*.aligned.fa"
           ontologies: []
   consensus_fa:
@@ -154,7 +155,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - ${prefix}/${prefix}.consensus.fa:
           type: file
-          description: A version of the reference genome with all variants instantiated
+          description: A version of the reference genome with all variants
+            instantiated
           pattern: "*.consensus.fa"
           ontologies: []
   consensus_subs_fa:
@@ -165,8 +167,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - ${prefix}/${prefix}.consensus.subs.fa:
           type: file
-          description: A version of the reference genome with only substitution variants
-            instantiated
+          description: A version of the reference genome with only substitution
+            variants instantiated
           pattern: "*.consensus.subs.fa"
           ontologies: []
   raw_vcf:
@@ -225,13 +227,29 @@ output:
           description: Tab-separated columnar list of statistics
           pattern: "*.txt"
           ontologies: []
+  versions_snippy:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - snippy:
+          type: string
+          description: The name of the tool
+      - snippy --version 2>&1 | sed 's/snippy //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - snippy:
+          type: string
+          description: The name of the tool
+      - snippy --version 2>&1 | sed 's/snippy //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@rpetit3"
   - "@delfiterradas"

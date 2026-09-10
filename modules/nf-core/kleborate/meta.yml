@@ -38,13 +38,27 @@ output:
           description: Result file generated after screening
           pattern: "*.txt"
           ontologies: []
+  versions_kleborate:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kleborate:
+          type: string
+          description: The name of the tool
+      - kleborate --version | sed 's/Kleborate v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kleborate:
+          type: string
+          description: The name of the tool
+      - kleborate --version | sed 's/Kleborate v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@abhi18av"
   - "@rpetit3"

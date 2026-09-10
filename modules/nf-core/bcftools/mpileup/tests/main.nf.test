@@ -38,7 +38,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
-                    file(process.out.tbi[0][1]).name,
+                    file(process.out.index[0][1]).name,
                     process.out.stats,
                     process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match() }
@@ -103,7 +103,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
-                    file(process.out.tbi[0][1]).name,
+                    file(process.out.index[0][1]).name,
                     process.out.stats,
                     process.out.mpileup,
                     process.out.findAll { key, val -> key.startsWith("versions") }
@@ -170,7 +170,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
-                    file(process.out.tbi[0][1]).name,
+                    file(process.out.index[0][1]).name,
                     process.out.stats,
                     process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match() }
@@ -221,7 +221,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
-                    file(process.out.tbi[0][1]).name,
+                    file(process.out.index[0][1]).name,
                     process.out.stats,
                     process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match() }
@@ -272,7 +272,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
-                    file(process.out.tbi[0][1]).name,
+                    file(process.out.index[0][1]).name,
                     process.out.stats,
                     process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match() }

@@ -8,7 +8,7 @@ process IPHOP_DOWNLOAD {
 
     output:
     path "iphop_db/"        , emit: iphop_db
-    path "versions.yml"     , emit: versions
+    tuple val("${task.process}"), val('iphop'), eval("iphop --version 2>&1 | sed '1!d;s/iPHoP v//;s/:.*//'"), emit: versions_iphop, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,7 +23,7 @@ process IPHOP_DOWNLOAD {
         download \\
         --db_dir download_dir \\
         --no_prompt \\
-        $args
+        ${args}
 
     rm download_dir/*.tar.*
     mv download_dir/*/* iphop_db
@@ -33,12 +33,7 @@ process IPHOP_DOWNLOAD {
         --db_dir iphop_db \\
         --no_prompt \\
         --full_verify \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        iphop: \$(echo \$(iphop --version 2>&1) | head -n 1 | sed 's/^.*iPHoP v//; s/: integrating.*\$//' )
-    END_VERSIONS
+        ${args}
     """
 
     stub:
@@ -91,10 +86,5 @@ process IPHOP_DOWNLOAD {
     touch iphop_db/db_infos/gtdbtk.bac120.decorated.tree
 
     touch iphop_db/md5checkfile.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        iphop: \$(echo \$(iphop --version 2>&1) | head -n 1 | sed 's/^.*iPHoP v//; s/: integrating.*\$//' )
-    END_VERSIONS
     """
 }

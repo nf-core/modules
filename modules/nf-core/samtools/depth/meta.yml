@@ -17,7 +17,7 @@ tools:
         - "MIT"
       identifier: biotools:samtools
 input:
-  - - meta1:
+  - - meta:
         type: map
         description: |
           Groovy Map containing sample information
@@ -32,11 +32,6 @@ input:
         description: BAM/CRAM index file
         pattern: "*.{bai,crai}"
         ontologies: []
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test' ]
     - intervals:
         type: file
         description: list of positions or regions in specified bed file
@@ -44,7 +39,7 @@ input:
         ontologies: []
 output:
   tsv:
-    - - meta1:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information

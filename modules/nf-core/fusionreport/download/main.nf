@@ -4,8 +4,8 @@ process FUSIONREPORT_DOWNLOAD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ed/ed32f46746a5b33a1b5d597cfe2f62d3b1cfa54638f57cadc5d5158d6a4959d2/data' :
-        'community.wave.seqera.io/library/fusion-report_beautifulsoup4_click_colorlog_pruned:78488bd99166aa9a'}"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/32/3240b594c095a3682b14e92571b2bc721c7925990a74f9df3b54ce82d4e05daa/data' :
+        'community.wave.seqera.io/library/fusion-report_beautifulsoup4_click_colorlog_pruned:15d1184d4eac76b8'}"
 
     input:
     val(meta)
@@ -21,6 +21,7 @@ process FUSIONREPORT_DOWNLOAD {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    mkdir -p ${prefix}
     fusion_report download ${args} ${prefix}
     """
 

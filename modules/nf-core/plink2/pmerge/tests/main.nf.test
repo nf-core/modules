@@ -1,0 +1,110 @@
+nextflow_process {
+
+    name "Test Process PLINK2_PMERGE"
+    script "../main.nf"
+    process "PLINK2_PMERGE"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "plink2"
+    tag "plink2/pmerge"
+    tag "plink2/filter"
+
+    // The pipeline's real ancestry ref-merge use is a concatenating merge:
+    // filesets that share the same samples but hold disjoint, non-overlapping
+    // variants (e.g. per-chromosome chunks). Build two such filesets here by
+    // splitting plink_simulated's single chromosome into two disjoint
+    // position ranges with PLINK2_FILTER, then merge them back together;
+    // plink2 2.00a5.10 supports this concatenating path.
+    setup {
+        run("PLINK2_FILTER", alias: "PLINK2_FILTER_PART1") {
+            script "../../filter/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'part1' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pgen', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pvar', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.psam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        run("PLINK2_FILTER", alias: "PLINK2_FILTER_PART2") {
+            script "../../filter/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'part2' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pgen', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pvar', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.psam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("plink2 - pmerge - binary") {
+
+        when {
+            process {
+                """
+                input[0] = PLINK2_FILTER_PART1.out.pgen
+                    .join(PLINK2_FILTER_PART1.out.pvar)
+                    .join(PLINK2_FILTER_PART1.out.psam)
+                    .map { meta, pgen, pvar, psam -> [ [ id:'test' ], pgen, pvar, psam ] }
+                input[1] = PLINK2_FILTER_PART2.out.pgen
+                    .join(PLINK2_FILTER_PART2.out.pvar)
+                    .join(PLINK2_FILTER_PART2.out.psam)
+                    .map { meta, pgen, pvar, psam -> [ [ id:'test' ], pgen, pvar, psam ] }
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    // Guard against a silently vacuous merge (e.g. if the setup
+                    // filesets were empty): the concatenated pvar must carry all
+                    // 220 variants from the two disjoint 110-variant halves.
+                    def pvarFiles = process.out.pvar[0][1]
+                    def finalPvar = (pvarFiles instanceof List ? pvarFiles : [pvarFiles]).find { !it.toString().contains('-merge') }
+                    assert path(finalPvar).readLines().findAll { !it.startsWith('#') }.size() == 220
+                },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("plink2 - pmerge - binary - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pgen', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pvar', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.psam', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pgen', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pvar', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.psam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

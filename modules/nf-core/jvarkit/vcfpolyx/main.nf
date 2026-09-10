@@ -17,13 +17,14 @@ process JVARKIT_VCFPOLYX {
     tuple val(meta), path("*.${extension}"), emit: vcf
     tuple val(meta), path("*.tbi")         , emit: tbi, optional: true
     tuple val(meta), path("*.csi")         , emit: csi, optional: true
-    path "versions.yml"                    , emit: versions
+    tuple val("${task.process}"), val('jvarkit'), eval("jvarkit -v"), emit: versions_jvarkit, topic: versions
+    tuple val("${task.process}"), val('bcftools'), eval("bcftools --version |& sed '1!d;s/bcftools //'"), emit: versions_bcftools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args1         = task.ext.args1 ?: ''
+    def args1         = task.ext.args ?: ''
     def args2         = task.ext.args2 ?: ''
     def args3         = task.ext.args3 ?: ''
     def prefix        = task.ext.prefix ?: "${meta.id}"
@@ -47,12 +48,6 @@ process JVARKIT_VCFPOLYX {
             ${args3}
 
     rm -rf TMP
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bcftools: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')
-        jvarkit: \$(jvarkit -v)
-    END_VERSIONS
     """
 
     stub:
@@ -61,12 +56,6 @@ process JVARKIT_VCFPOLYX {
     extension  = getVcfExtension(args3); /* custom function, see below */
     """
     touch "${prefix}.${extension}"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bcftools: \$(bcftools --version 2>&1 | head -n1 | sed 's/^.*bcftools //; s/ .*\$//')
-        jvarkit: \$(jvarkit -v)
-    END_VERSIONS
     """
 }
 

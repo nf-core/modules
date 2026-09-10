@@ -13,7 +13,7 @@ process SKANI_DIST {
 
     output:
     tuple val(meta), path("${prefix}.tsv") , emit: dist
-    path "versions.yml"                    , emit: versions
+    tuple val("${task.process}"), val('skani'), eval('skani --version 2>&1 | sed "s/^.*skani //"'), emit: versions_skani, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,21 +29,11 @@ process SKANI_DIST {
             -o ${prefix}.tsv \\
             -t ${task.cpus} \\
             ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        skani: \$(skani --version 2>&1 | sed 's/^.*skani //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        skani: \$(skani --version 2>&1 | sed 's/^.*skani //; s/ .*\$//')
-    END_VERSIONS
     """
 }

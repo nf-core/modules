@@ -14,7 +14,7 @@ process NGSBITS_BEDCOVERAGE {
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('ngsbits'), eval("BedCoverage --version 2>&1 | sed 's/BedCoverage //'"), topic: versions, emit: versions_ngsbits
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,10 +35,6 @@ process NGSBITS_BEDCOVERAGE {
         -out ${prefix}.bed \\
         ${reference}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ngs-bits: \$(echo \$(BedCoverage --version 2>&1) | sed 's/BedCoverage //' )
-    END_VERSIONS
     """
 
     stub:
@@ -47,9 +43,5 @@ process NGSBITS_BEDCOVERAGE {
     """
     touch ${prefix}.bed
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ngs-bits: \$(echo \$(BedCoverage --version 2>&1) | sed 's/BedCoverage //' )
-    END_VERSIONS
     """
 }

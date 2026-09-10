@@ -11,8 +11,8 @@ process KMA_INDEX {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("kmaindex"),  emit: index
-    path "versions.yml",                emit: versions
+    tuple val(meta), path("kmaindex"), emit: index
+    tuple val("${task.process}"), val('kma'), eval('kma_index -v 2>&1 | sed "s/^KMA_index-//"'), emit: versions_kma, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,10 +28,6 @@ process KMA_INDEX {
         -o kmaindex/${prefix} \\
         $args
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        kma: \$(echo \$(kma_index -v 2>&1) | sed 's/^KMA_index-\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -43,10 +39,5 @@ process KMA_INDEX {
     touch kmaindex/${prefix}.length.b
     touch kmaindex/${prefix}.name
     touch kmaindex/${prefix}.seq.b
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        kma: \$(echo \$(kma_index -v 2>&1) | sed 's/^KMA_index-\$//')
-    END_VERSIONS
     """
 }

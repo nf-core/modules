@@ -52,13 +52,27 @@ output:
           description: Text file containing number of kmers
           pattern: "*.kmers.txt"
           ontologies: []
+  versions_khmer:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - khmer:
+          type: string
+          description: The name of the tool
+      - unique-kmers.py --version 2>&1 | grep ^khmer | sed "s/^khmer //;s/ .*$//":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - khmer:
+          type: string
+          description: The name of the tool
+      - unique-kmers.py --version 2>&1 | grep ^khmer | sed "s/^khmer //;s/ .*$//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@JoseEspinosa"
 maintainers:

@@ -17,7 +17,8 @@ process HUMID {
     tuple val(meta), path("*_dedup*.fastq.gz")     , emit: dedup    , optional: true
     tuple val(meta), path("*_annotated*.fastq.gz") , emit: annotated, optional: true
     tuple val(meta), path("${prefix}")             , emit: stats    , optional: true
-    path "versions.yml"                            , emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('humid'), val("1.0.4"), emit: versions_humid, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,27 +27,20 @@ process HUMID {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def umis = umi_file ?: ''
-    def VERSION = '1.0.4' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
     humid \\
-        $args \\
+        ${args} \\
         -d ${prefix} \\
         -l ${prefix}.log \\
-        $reads \\
-        $umis \\
+        ${reads} \\
+        ${umis} \\
 
     mv ${prefix}/*.fastq* .
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        humid: ${VERSION}
-    END_VERSIONS
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.0.4' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     mkdir -p ${prefix}
     echo "" | gzip > ${prefix}_1_dedup.fastq.gz
@@ -58,10 +52,5 @@ process HUMID {
     touch ${prefix}/counts.dat
     touch ${prefix}/clusters.dat
     touch ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        humid: ${VERSION}
-    END_VERSIONS
     """
 }

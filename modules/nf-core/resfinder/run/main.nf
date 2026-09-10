@@ -28,7 +28,7 @@ process RESFINDER_RUN {
     tuple val(meta), path("ResFinder_results_table.txt")      , optional: true, emit: resfinder_results_table
     tuple val(meta), path("ResFinder_results_tab.txt")        , optional: true, emit: resfinder_results_tab
     tuple val(meta), path("ResFinder_results.txt")            , optional: true, emit: resfinder_results
-    path "versions.yml"                                       , emit: versions
+    tuple val("${task.process}"), val('resfinder'), eval('run_resfinder.py -v'), emit: versions_resfinder, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -52,14 +52,9 @@ process RESFINDER_RUN {
     }
     """
     run_resfinder.py \\
-        $args \\
-        $input \\
-        $db
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        resfinder: \$(run_resfinder.py -v)
-    END_VERSIONS
+        ${args} \\
+        ${input} \\
+        ${db}
     """
 
     stub:
@@ -73,10 +68,5 @@ process RESFINDER_RUN {
         ResFinder_results_table.txt \\
         ResFinder_results_tab.txt \\
         ResFinder_results.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        resfinder: \$(run_resfinder.py -v)
-    END_VERSIONS
     """
 }

@@ -28,7 +28,7 @@ process PURECN_RUN {
     tuple val(meta), path("*_segmentation.pdf")                , emit: segmentation_pdf            , optional: true
     tuple val(meta), path("*_multisample.seg")                 , emit: multisample_seg             , optional: true
     tuple val(meta), path("*.log")                             , emit: log, optional: true
-    path "versions.yml"                                        , emit: versions
+    tuple val("${task.process}"), val('purecn'), val('2.12.0'), emit: versions_purecn, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,8 +39,6 @@ process PURECN_RUN {
     def vcf_opt = vcf ? "--vcf ${vcf}": ''
     def mapping_bias_opt = mapping_bias ? "--mapping-bias-file ${mapping_bias}": ''
     def normaldb_opt = normal_db ? "--normaldb ${normal_db}": ''
-    def VERSION = '2.12.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
     """
     library_path=\$(Rscript -e 'cat(.libPaths(), sep = "\\n")')
     Rscript "\$library_path"/PureCN/extdata/PureCN.R \\
@@ -56,26 +54,16 @@ process PURECN_RUN {
         ${vcf_opt} \\
         ${args}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        purecn: ${VERSION}
-    END_VERSIONS
     """
 
     stub:
     def _args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '2.12.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
     """
     touch ${prefix}.pdf
     touch ${prefix}_local_optima.pdf
     touch ${prefix}_dnacopy.seg
     touch ${prefix}.csv
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        purecn: ${VERSION}
-    END_VERSIONS
     """
 }

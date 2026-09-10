@@ -55,19 +55,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    bam(workflow.out.bam[0][1]).getReadsMD5(),
-                    file(workflow.out.index[0][1]).name,
-                    workflow.out.stats,
-                    workflow.out.flagstat,
-                    workflow.out.idxstats,
-                    bam(workflow.out.contaminant_bam[0][1]).getReadsMD5(),
-                    bam(workflow.out.unfiltered_bam[0][1]).getReadsMD5(),
-                    file(workflow.out.unfiltered_index[0][1]).name,
-                    workflow.out.unfiltered_stats,
-                    workflow.out.unfiltered_flagstat,
-                    workflow.out.unfiltered_idxstats,
-                ).match() }
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam","contaminant_bam", "unfiltered_bam"], unstableKeys:["index", "unfiltered_index"])).match() }
             )
         }
     }

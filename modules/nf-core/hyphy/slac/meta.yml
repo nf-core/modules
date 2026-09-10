@@ -1,0 +1,91 @@
+name: "hyphy_slac"
+description: The Single-Likelihood Ancestor Counting (SLAC) method is used to identify individual codon sites subject to pervasive diversifying or purifying selection.
+keywords:
+  - pervasive selection
+  - site selection
+  - gene evolution
+tools:
+  - "hyphy":
+      description: "An open-source software package for comparative sequence analysis using stochastic evolutionary models."
+      homepage: "https://hyphy.org"
+      documentation: "https://hyphy.org"
+      tool_dev_url: "https://github.com/veg/hyphy"
+      doi: "10.1093/molbev/msz197"
+      licence:
+        - "MIT"
+      identifier: biotools:HyPhy
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - alignment:
+        type: file
+        description: Codon aligned sequences in FASTA format.
+        pattern: "*.{fa,fas,fasta,aln}"
+        ontologies:
+          - edam: http://edamontology.org/format_2554
+          - edam: http://edamontology.org/format_1921
+          - edam: http://edamontology.org/format_1984
+    - tree:
+        type: file
+        description: Phylogenetic gene tree in text or xml format
+        pattern: "*.{tree,txt,nwk,newick,nhx,phyloxml,xml}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1910"
+          - edam: "http://edamontology.org/format_3159"
+
+output:
+  json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.json":
+          type: file
+          description: SLAC results in JSON format.
+          pattern: "*.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464" # JSON
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_output.txt":
+          type: file
+          description: SLAC results in human-readable format.
+          pattern: "*.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # text
+  versions_hyphy:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hyphy:
+          type: string
+          description: The name of the tool
+      - hyphy --version | sed -E 's/.*HYPHY ([0-9]+\.[0-9]+\.[0-9]+).*/\1/':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hyphy:
+          type: string
+          description: The name of the tool
+      - hyphy --version | sed -E 's/.*HYPHY ([0-9]+\.[0-9]+\.[0-9]+).*/\1/':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@leapicard"
+maintainers:
+  - "@leapicard"

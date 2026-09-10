@@ -21,12 +21,16 @@ process HMMER_HMMSEARCH {
     task.ext.when == null || task.ext.when
 
     script:
-    def args       = task.ext.args   ?: ''
-    def prefix     = task.ext.prefix ?: "${meta.id}"
-    output         = "${prefix}.txt"
-    alignment      = write_align     ? "-A ${prefix}.sto" : ''
-    target_summary = write_target    ? "--tblout ${prefix}.tbl" : ''
-    domain_summary = write_domain    ? "--domtblout ${prefix}.domtbl" : ''
+    def args   = task.ext.args   ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def output         = "${prefix}.txt"
+    def alignment      = write_align  ? "-A ${prefix}.sto" : ''
+    def target_summary = write_target ? "--tblout ${prefix}.tbl" : ''
+    def domain_summary = write_domain ? "--domtblout ${prefix}.domtbl" : ''
+    def to_gzip = ["${prefix}.txt"]
+    if (write_align)  to_gzip << "${prefix}.sto"
+    if (write_target) to_gzip << "${prefix}.tbl"
+    if (write_domain) to_gzip << "${prefix}.domtbl"
     """
     hmmsearch \\
         $args \\
@@ -38,23 +42,18 @@ process HMMER_HMMSEARCH {
         $hmmfile \\
         $seqdb
 
-    gzip --no-name *.txt \\
-        ${write_align ? '*.sto' : ''} \\
-        ${write_target ? '*.tbl' : ''} \\
-        ${write_domain ? '*.domtbl' : ''}
+    ${to_gzip ? "gzip --no-name ${to_gzip.join(' ')}" : ''}
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def to_gzip = ["${prefix}.txt"]
+    if (write_align)  to_gzip << "${prefix}.sto"
+    if (write_target) to_gzip << "${prefix}.tbl"
+    if (write_domain) to_gzip << "${prefix}.domtbl"
     """
-    touch "${prefix}.txt"
-    ${write_align ? "touch ${prefix}.sto" : ''} \\
-    ${write_target ? "touch ${prefix}.tbl" : ''} \\
-    ${write_domain ? "touch ${prefix}.domtbl" : ''}
+    ${to_gzip ? "touch ${to_gzip.join(' ')}" : ''}
 
-    gzip --no-name *.txt \\
-        ${write_align ? '*.sto' : ''} \\
-        ${write_target ? '*.tbl' : ''} \\
-        ${write_domain ? '*.domtbl' : ''}
+    ${to_gzip ? "gzip --no-name ${to_gzip.join(' ')}" : ''}
     """
 }

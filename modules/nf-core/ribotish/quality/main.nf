@@ -4,8 +4,8 @@ process RIBOTISH_QUALITY {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ribotish:0.2.7--pyhdfd78af_0':
-        'quay.io/biocontainers/ribotish:0.2.7--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/ribotish:0.2.8--pyhdfd78af_0':
+        'quay.io/biocontainers/ribotish:0.2.8--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -15,7 +15,7 @@ process RIBOTISH_QUALITY {
     tuple val(meta), path("*.txt")    , emit: distribution
     tuple val(meta), path("*.pdf")    , emit: pdf
     tuple val(meta), path("*.para.py"), emit: offset
-    path "versions.yml"               , emit: versions
+    tuple val("${task.process}"), val('ribotish'), eval("ribotish --version | sed 's/ribotish //'"), topic: versions, emit: versions_ribotish
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,21 +32,11 @@ process RIBOTISH_QUALITY {
         -r ${prefix}.para.py \\
         -p $task.cpus \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ribotish: \$(ribotish --version | sed 's/ribotish //')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_qual.txt ${prefix}_qual.pdf ${prefix}.para.py
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ribotish: \$(ribotish --version | sed 's/ribotish //')
-    END_VERSIONS
     """
 }

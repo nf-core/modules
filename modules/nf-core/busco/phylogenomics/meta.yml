@@ -52,9 +52,10 @@ output:
       - busco_phylogenomics:
           type: string
           description: The name of the tool
-      - echo 20240919:
-          type: eval
-          description: The expression to obtain the version of the tool
+      - "20240919":
+          type: string
+          description: The version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -63,9 +64,10 @@ topics:
       - busco_phylogenomics:
           type: string
           description: The name of the tool
-      - echo 20240919:
-          type: eval
-          description: The expression to obtain the version of the tool
+      - "20240919":
+          type: string
+          description: The version of the tool
+
 authors:
   - "@vagkaratzas"
 maintainers:

@@ -9,7 +9,7 @@ process METAPHLAN_METAPHLAN {
 
     input:
     tuple val(meta), path(input)
-    path metaphlan_db_latest
+    path db_metaphlan_latest
     val save_samfile
 
     output:
@@ -17,7 +17,7 @@ process METAPHLAN_METAPHLAN {
     tuple val(meta), path("*.biom"), emit: biom
     tuple val(meta), path('*.bowtie2out.txt'), optional: true, emit: bt2out
     tuple val(meta), path("*.sam"), optional: true, emit: sam
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('metaphlan'), eval("metaphlan --version 2>&1 | cut -d ' ' -f 3"), emit: versions_metaphlan, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,8 +30,8 @@ process METAPHLAN_METAPHLAN {
     def bowtie2_out = "${input_type}" == "--input_type bowtie2out" || "${input_type}" == "--input_type sam" ? '' : "--bowtie2out ${prefix}.bowtie2out.txt"
     def samfile_out = save_samfile ? "-s ${prefix}.sam" : ''
     """
-    BT2_DB=`find -L "${metaphlan_db_latest}" -name "*rev.1.bt2*" -exec dirname {} \\;`
-    BT2_DB_INDEX=`find -L ${metaphlan_db_latest} -name "*.rev.1.bt2*" | sed 's/\\.rev.1.bt2.*\$//' | sed 's/.*\\///'`
+    BT2_DB=`find -L "${db_metaphlan_latest}" -name "*rev.1.bt2*" -exec dirname {} \\;`
+    BT2_DB_INDEX=`find -L ${db_metaphlan_latest} -name "*.rev.1.bt2*" | sed 's/\\.rev.1.bt2.*\$//' | sed 's/.*\\///'`
 
     metaphlan \\
         --nproc ${task.cpus} \\
@@ -45,10 +45,6 @@ process METAPHLAN_METAPHLAN {
         --biom ${prefix}.biom \\
         --output_file ${prefix}_profile.txt
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        metaphlan: \$(metaphlan --version 2>&1 | awk '{print \$3}')
-    END_VERSIONS
     """
 
     stub:
@@ -66,9 +62,5 @@ process METAPHLAN_METAPHLAN {
     ${samfile_cmd}
     ${bowtie2_cmd}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        metaphlan: \$(metaphlan --version 2>&1 | awk '{print \$3}')
-    END_VERSIONS
     """
 }

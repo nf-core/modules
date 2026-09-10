@@ -13,11 +13,11 @@ process TINC {
     tuple val(meta), path(cna_rds), path(vcf_rds)
 
     output:
-    tuple val(meta), path("*_fit.rds"),     emit: rds
-    tuple val(meta), path("*_plot.rds"),    emit: plot_rds
-    tuple val(meta), path("*.pdf"),         emit: plot_pdf
-    tuple val(meta), path("*_qc.csv"),      emit: tinc_csv
-    path "versions.yml",                    emit: versions
+    tuple val(meta), path("*_fit.rds"),  emit: rds
+    tuple val(meta), path("*_plot.rds"), emit: plot_rds
+    tuple val(meta), path("*.pdf"),      emit: plot_pdf
+    tuple val(meta), path("*_qc.csv"),   emit: tinc_csv
+    path "versions.yml",                 emit: versions_tinc, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,7 +36,9 @@ process TINC {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        bioconductor-rtinc: \$(Rscript -e "library(TINC); cat(as.character(packageVersion('TINC')))")
+        TINC: \$(Rscript -e "library(TINC); cat(as.character(packageVersion('TINC')))")
+        tidyverse: \$(Rscript -e "cat(as.character(packageVersion('tidyverse')))")
+        CNAqc: \$(Rscript -e "cat(as.character(packageVersion('CNAqc')))")
     END_VERSIONS
     """
 }

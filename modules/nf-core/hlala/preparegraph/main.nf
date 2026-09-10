@@ -12,8 +12,9 @@ process HLALA_PREPAREGRAPH {
     tuple val(meta), path(graph)
 
     output:
-    tuple val(meta), path("${graph}")        , emit: graph
-    tuple val("${task.process}"), val('hla-la'), eval('echo 1.0.4'), emit: versions_hlala, topic: versions
+    tuple val(meta), path("${graph}"), emit: graph
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
+    tuple val("${task.process}"), val('hla-la'), val('1.0.4'), emit: versions_hlala, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

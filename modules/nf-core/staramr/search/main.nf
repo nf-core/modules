@@ -19,7 +19,7 @@ process STARAMR_SEARCH {
     tuple val(meta), path("*_results/mlst.tsv")            , emit: mlst_tsv
     tuple val(meta), path("*_results/settings.txt")        , emit: settings_txt
     tuple val(meta), path("*_results/pointfinder.tsv")     , emit: pointfinder_tsv, optional: true
-    path "versions.yml"                                    , emit: versions
+    tuple val("${task.process}"), val('staramr'), eval("staramr --version 2>&1 | sed 's/^.*staramr //'"), emit: versions_staramr, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,11 +40,6 @@ process STARAMR_SEARCH {
         --nprocs $task.cpus \\
         -o ${prefix}_results \\
         $genome_uncompressed_name
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        staramr : \$(echo \$(staramr --version 2>&1) | sed 's/^.*staramr //' )
-    END_VERSIONS
     """
 
     stub:
@@ -52,12 +47,7 @@ process STARAMR_SEARCH {
     """
     mkdir ${prefix}_results
     touch ${prefix}_results/results.xlsx
-    echo | gzip > ${prefix}_results/{summary,detailed_summary,resfinder,pointfinder,plasmidfinder,mlst}.tsv.gz
-    echo | gzip > ${prefix}_results/settings.txt.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        staramr : \$(echo \$(staramr --version 2>&1) | sed 's/^.*staramr //' )
-    END_VERSIONS
+    echo "" | gzip > ${prefix}_results/{summary,detailed_summary,resfinder,pointfinder,plasmidfinder,mlst}.tsv.gz
+    echo "" | gzip > ${prefix}_results/settings.txt.gz
     """
 }
