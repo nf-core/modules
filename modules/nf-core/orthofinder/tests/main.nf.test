@@ -112,8 +112,7 @@ nextflow_process {
                 'Statistics_PerSpecies.tsv',
                 'OrthologuesStats_Totals.tsv',
                 'Duplications_per_Species_Tree_Node.tsv',
-                'Orthogroups.tsv',
-                'SpeciesTree_rooted_node_labels.txt'
+                'Orthogroups.tsv'
             ]
 
             def stable_files = all_files.findAll { it.name in stable_file_names }
