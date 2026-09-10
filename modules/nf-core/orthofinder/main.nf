@@ -12,8 +12,11 @@ process ORTHOFINDER {
     tuple val(meta2), path(prior_run)
 
     output:
-    tuple val(meta), path("$results_dir")                     , emit: orthofinder
-    tuple val(meta), path("$results_dir/WorkingDirectory")    , emit: working
+    tuple val(meta), path("$results_dir")                                                , emit: orthofinder
+    tuple val(meta), path("$results_dir/WorkingDirectory")                               , emit: working
+    tuple val(meta), path("$results_dir/Single_Copy_Orthologue_Sequences/")              , emit: single_copy_seqs, optional: true
+    tuple val(meta), path("$results_dir/Orthogroups/Orthogroups.tsv")                    , emit: orthogorups
+    tuple val(meta), path("$results_dir/Species_Tree/SpeciesTree_rooted_node_labels.txt"), emit: sptree
     tuple val("${task.process}"), val('orthofinder'), eval("NO_COLOR=1 orthofinder --version | cut -d 'v' -f2 | perl -pe 's/\\e\\[[0-9;]*m//g'"), emit: versions_orthofinder, topic: versions
 
 
@@ -47,6 +50,7 @@ process ORTHOFINDER {
     mkdir       $results_dir/Gene_Trees
     mkdir       $results_dir/Orthogroup_Sequences
     mkdir       $results_dir/Orthogroups
+    touch       $results_dir/Orthogroups/Orthogroups.tsv
     mkdir       $results_dir/Orthologues
     mkdir       $results_dir/Phylogenetic_Hierarchical_Orthogroups
     mkdir       $results_dir/Phylogenetically_Misplaced_Genes
@@ -54,6 +58,7 @@ process ORTHOFINDER {
     mkdir       $results_dir/Resolved_Gene_Trees
     mkdir       $results_dir/Single_Copy_Orthologue_Sequences
     mkdir       $results_dir/Species_Tree
+    touch       $results_dir/Species_Tree/SpeciesTree_rooted_node_labels.txt
     mkdir       $results_dir/WorkingDirectory
     touch       $results_dir/Log.txt
     """
