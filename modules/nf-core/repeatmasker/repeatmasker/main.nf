@@ -12,11 +12,11 @@ process REPEATMASKER_REPEATMASKER {
     path(lib)
 
     output:
-    tuple val(meta), path("${prefix}.masked")   , emit: masked
-    tuple val(meta), path("${prefix}.out")      , emit: out
-    tuple val(meta), path("${prefix}.tbl")      , emit: tbl
-    tuple val(meta), path("${prefix}.gff")      , emit: gff         , optional: true
-    path "versions.yml"                         , emit: versions
+    tuple val(meta), path("${prefix}.masked"), emit: masked
+    tuple val(meta), path("${prefix}.out")   , emit: out
+    tuple val(meta), path("${prefix}.tbl")   , emit: tbl
+    tuple val(meta), path("${prefix}.gff")   , emit: gff, optional: true
+    tuple val("${task.process}"), val('repeatmasker'), eval("RepeatMasker -v | sed 's/RepeatMasker version //1'"), topic: versions, emit: versions_repeatmasker
 
     when:
     task.ext.when == null || task.ext.when
@@ -42,11 +42,6 @@ process REPEATMASKER_REPEATMASKER {
     mv $prefix/${out_fasta}.out     ${prefix}.out
     mv $prefix/${out_fasta}.tbl     ${prefix}.tbl
     mv $prefix/${out_fasta}.out.gff ${prefix}.gff       || echo "GFF is not produced"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        repeatmasker: \$(RepeatMasker -v | sed 's/RepeatMasker version //1')
-    END_VERSIONS
     """
 
     stub:
@@ -59,10 +54,5 @@ process REPEATMASKER_REPEATMASKER {
     touch ${prefix}.out
     touch ${prefix}.tbl
     $touch_gff
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        repeatmasker: \$(RepeatMasker -v | sed 's/RepeatMasker version //1')
-    END_VERSIONS
     """
 }
