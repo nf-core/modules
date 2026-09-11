@@ -1,0 +1,154 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "mgatk_call"
+description: Call mitochondrial variants and generate mitochondrial coverage profiles from an indexed BAM file
+keywords:
+  - mitochondria
+  - mtDNA
+  - variants
+  - ATAC-seq
+tools:
+  - mgatk:
+      description: "Mitochondrial genome analysis toolkit"
+      homepage: "https://github.com/caleblareau/mgatk"
+      documentation: "https://github.com/caleblareau/mgatk/wiki"
+      tool_dev_url: "https://github.com/caleblareau/mgatk"
+      doi: "10.1038/s41587-020-0645-6"
+      licence: ["MIT"]
+      identifier: "biotools:mgatk"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam:
+        type: file
+        description: Coordinate-sorted BAM file
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+    - bai:
+        type: file
+        description: BAM index file
+        pattern: "*.{bai,csi}"
+        ontologies: []
+    - mito_fasta:
+        type: file
+        description: Mitochondrial reference genome FASTA passed to mgatk as a custom mitochondrial genome configuration
+        pattern: "*.{fa,fasta,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+output:
+  outdir:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.mgatk":
+          type: directory
+          description: Complete mgatk output directory
+          pattern: "*.mgatk"
+          ontologies: []
+  rds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.mgatk/final/*.rds":
+          type: file
+          description: R serialized objects for downstream mitochondrial variant analysis
+          pattern: "*.rds"
+          ontologies: []
+  coverage:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.mgatk/final/*.coverage.txt.gz":
+          type: file
+          description: Per-base mitochondrial coverage table
+          pattern: "*.coverage.txt.gz"
+          ontologies: []
+  depth_table:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.mgatk/final/*.depthTable.txt":
+          type: file
+          description: Mitochondrial sequencing-depth summary table
+          pattern: "*.depthTable.txt"
+          ontologies: []
+  counts_a:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.mgatk/final/*.A.txt.gz":
+          type: file
+          description: Per-position adenine base-count table
+          pattern: "*.A.txt.gz"
+          ontologies: []
+  counts_c:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.mgatk/final/*.C.txt.gz":
+          type: file
+          description: Per-position cytosine base-count table
+          pattern: "*.C.txt.gz"
+          ontologies: []
+  counts_g:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.mgatk/final/*.G.txt.gz":
+          type: file
+          description: Per-position guanine base-count table
+          pattern: "*.G.txt.gz"
+          ontologies: []
+  counts_t:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.mgatk/final/*.T.txt.gz":
+          type: file
+          description: Per-position thymine base-count table
+          pattern: "*.T.txt.gz"
+          ontologies: []
+  versions_mgatk:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mgatk:
+          type: string
+          description: The name of the tool
+      - mgatk --version 2>&1 | sed -E 's/.*version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mgatk:
+          type: string
+          description: The name of the tool
+      - mgatk --version 2>&1 | sed -E 's/.*version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@PFRoux"
+maintainers:
+  - "@PFRoux"
