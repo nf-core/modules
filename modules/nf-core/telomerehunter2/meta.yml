@@ -1,0 +1,121 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "telomerehunter2"
+description: Estimate telomere content and telomeric variant repeats from aligned sequencing data
+keywords:
+  - telomere
+  - repeats
+  - bam
+  - cram
+  - single-cell
+tools:
+  - telomerehunter2:
+      description: "Python 3 implementation of TelomereHunter for telomere content and telomeric variant repeat analysis"
+      homepage: "https://ferdinand-popp.github.io/telomerehunter2/"
+      documentation: "https://ferdinand-popp.github.io/telomerehunter2/"
+      tool_dev_url: "https://github.com/ferdinand-popp/telomerehunter2"
+      doi: "10.1093/bioadv/vbag187"
+      licence: ["GPL-3.0-or-later"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam:
+        type: file
+        description: Coordinate-sorted BAM file
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+    - bai:
+        type: file
+        description: BAM index file
+        pattern: "*.{bai,csi}"
+        ontologies: []
+    - banding_file:
+        type: file
+        description: Optional chromosome banding file or empty list
+        pattern: "*"
+        ontologies: []
+output:
+  summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.telomerehunter2_summary.tsv":
+          type: file
+          description: TelomereHunter2 summary table
+          pattern: "*.telomerehunter2_summary.tsv"
+          ontologies: []
+  tvr_top_contexts:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.telomerehunter2_TVR_top_contexts.tsv":
+          type: file
+          description: Telomeric variant repeat top contexts table
+          pattern: "*.telomerehunter2_TVR_top_contexts.tsv"
+          ontologies: []
+  singletons:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.telomerehunter2_singletons.tsv":
+          type: file
+          description: Telomeric variant repeat singleton table
+          pattern: "*.telomerehunter2_singletons.tsv"
+          ontologies: []
+  file_index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.telomerehunter2_files.txt":
+          type: file
+          description: Index of files generated in the TelomereHunter2 output directory
+          pattern: "*.telomerehunter2_files.txt"
+          ontologies: []
+  outdir:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.telomerehunter2":
+          type: directory
+          description: Complete TelomereHunter2 output directory
+          pattern: "*.telomerehunter2"
+          ontologies: []
+  versions_telomerehunter2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - telomerehunter2:
+          type: string
+          description: The name of the tool
+      - python -c 'import importlib.metadata; print(importlib.metadata.version("telomerehunter2"))':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - telomerehunter2:
+          type: string
+          description: The name of the tool
+      - python -c 'import importlib.metadata; print(importlib.metadata.version("telomerehunter2"))':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@PFRoux"
+maintainers:
+  - "@PFRoux"
