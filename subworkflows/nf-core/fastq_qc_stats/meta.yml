@@ -15,11 +15,13 @@ components:
   - seqkit/stats
   - seqtk/comp
 input:
-  - reads:
+  - ch_reads:
       type: file
       description: |
         List of input FastQ files of size 1 and 2 for single-end and paired-end data,
         respectively.
+
+        Structure: [ val(meta), path(fastq) ]
   - skip_fastqc:
       type: boolean
       description: |
@@ -65,10 +67,11 @@ output:
       type: file
       description: seqkit stats report
       pattern: "*.tsv"
-  - versions:
+  - seqtk_stats:
       type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      description: |
+        seqtk comp TSV report summarising per-sequence length, base counts and GC content
+      pattern: "*.seqtk_stats.tsv"
 authors:
   - "@pablo-scd"
 maintainers:
