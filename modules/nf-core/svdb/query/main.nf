@@ -4,8 +4,8 @@ process SVDB_QUERY {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4b/4bdd270b5d1a26bb75be2ebc228b34a57147b37a764bb00553e251a53461ad7b/data':
-        'community.wave.seqera.io/library/bcftools_svdb:1a0ee6fa8401f210' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/53/53f20c301f8684a97e434538ab6601f7752c3a357d8e562f4ae30aaa8aab2e46/data':
+        'community.wave.seqera.io/library/bcftools_svdb_gzip_tar:ab081ac34581829c' }"
 
     input:
     tuple val(meta), path(vcf)
