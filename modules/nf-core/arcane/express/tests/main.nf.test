@@ -1,0 +1,103 @@
+nextflow_process {
+
+    name "Test Process ARCANE_EXPRESS"
+    script "../main.nf"
+    process "ARCANE_EXPRESS"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "arcane"
+    tag "arcane/express"
+    tag "arcane/index"
+    tag "arcane/filter"
+
+    setup {
+        params {
+            filter_args = '--kmersize 12'
+            index_args  = '--kmersize 12'
+        }
+        
+        run("ARCANE_FILTER") {
+            script "../../filter/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test_index' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'test_index' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        run("ARCANE_INDEX") {
+            script "../../index/main.nf"
+            process {
+                """
+                input[0] = ARCANE_FILTER.out.reference.join(ARCANE_FILTER.out.genes)
+                input[1] = 1000000
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens - sc3_v3_5k_gex - single_file") {
+        
+        when {
+            params {
+                express_args = '--kneemethod distance'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/sc3_v3_5k_a549_gex_crispr/fastqs/gex/subsampled_SC3_v3_NextGem_DI_CRISPR_A549_5K_gex_S5_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/sc3_v3_5k_a549_gex_crispr/fastqs/gex/subsampled_SC3_v3_NextGem_DI_CRISPR_A549_5K_gex_S5_L001_R2_001.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = ARCANE_INDEX.out.index.join(ARCANE_INDEX.out.info)
+                input[2] = 'v3'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - sc3_v3_5k_gex - stub") {
+        
+        options "-stub"
+
+        when {
+            params {
+                express_args = '--kneemethod distance'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/sc3_v3_5k_a549_gex_crispr/fastqs/gex/subsampled_SC3_v3_NextGem_DI_CRISPR_A549_5K_gex_S5_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/sc3_v3_5k_a549_gex_crispr/fastqs/gex/subsampled_SC3_v3_NextGem_DI_CRISPR_A549_5K_gex_S5_L001_R2_001.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = ARCANE_INDEX.out.index.join(ARCANE_INDEX.out.info)
+                input[2] = 'v3'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}
