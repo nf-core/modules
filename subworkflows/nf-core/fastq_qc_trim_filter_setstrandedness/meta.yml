@@ -171,6 +171,15 @@ output:
         Number of reads remaining after trimming for all input samples.
 
         Structure: [ val(meta), val(count) ]
+  - trim_reads_merged:
+      type: file
+      description: |
+        fastp's merged overlapping read pairs, produced only when `trimmer == 'fastp'` and
+        `fastp_merge == true`. Empty otherwise. These reads are excluded from `reads`;
+        callers that want to use them downstream must consume this channel separately.
+
+        Structure: [ val(meta), path(reads) ]
+      pattern: "*.merged.fastq.gz"
   - multiqc_files:
       type: file
       description: |
