@@ -3,8 +3,8 @@ process MOTIFMATCHR_MATCHMOTIFS {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bioconductor-motifmatchr:1.32.0--r45ha27e39d_0':
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] ?
+        'docker://quay.io/biocontainers/bioconductor-motifmatchr:1.32.0--r45ha27e39d_0':
         'quay.io/biocontainers/bioconductor-motifmatchr:1.32.0--r45ha27e39d_0' }"
 
     input:
