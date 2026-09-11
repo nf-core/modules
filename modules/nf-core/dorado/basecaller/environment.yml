@@ -1,0 +1,11 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
+# NOTE: dorado is not available on bioconda or conda-forge (ONTPL licence).
+# This environment.yml is a placeholder. The module uses the Docker/Singularity
+# container specified in main.nf (nanoporetech/dorado:shac8f..., v1.4.0).
+# Track 2 TODO: submit dorado to bioconda to enable conda-based deployment.
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - samtools=1.21
