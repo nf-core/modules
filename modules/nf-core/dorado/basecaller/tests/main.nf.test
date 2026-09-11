@@ -83,6 +83,12 @@ nextflow_process {
     // -------------------------------------------------------------------------
     // Real GPU tests — require --tag "gpu" and a GPU node
     // Run via SLURM: nf-test test ... --profile singularity,gpu --tag gpu
+    //
+    // dorado's basecalled BAM is not byte-reproducible: the docker and singularity
+    // shards of one CI run, on the same g4dn.xlarge, emit different md5s for the
+    // same output. These tests therefore assert on structure (output name, read
+    // count, presence of @SQ when a reference is given) and snapshot only the
+    // versions topic.
     // -------------------------------------------------------------------------
 
     test("homo sapiens - GIAB HG002 pod5, sup,5mCG_5hmCG@latest, no models_dir, no reference") {
@@ -110,7 +116,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert file(process.out.bam[0][1]).name == 'HG002.bam' },
+                { assert bam(process.out.bam[0][1]).getStatistics(include:["readCount"]).readCount > 0 },
+                { assert snapshot([versions: process.out.versions_dorado]).match() }
             )
         }
     }
@@ -146,7 +154,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert file(process.out.bam[0][1]).name == 'HG002_aligned.bam' },
+                { assert bam(process.out.bam[0][1]).getStatistics(include:["readCount"]).readCount > 0 },
+                // with a reference supplied the output is aligned, so the header
+                // carries the reference contigs
+                { assert bam(process.out.bam[0][1]).getHeader().any { it.startsWith('@SQ') } },
+                { assert snapshot([versions: process.out.versions_dorado]).match() }
             )
         }
     }
