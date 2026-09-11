@@ -1,0 +1,417 @@
+nextflow_workflow {
+
+    name "Test Workflow PLINK_GWAS_REGENIE"
+    script "../main.nf"
+    workflow "PLINK_GWAS_REGENIE"
+    config "./nextflow.config"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/plink_gwas_regenie"
+    tag "plink_gwas_regenie"
+    tag "subworkflows/plink_fit_regenie"
+    tag "plink_fit_regenie"
+    tag "regenie"
+    tag "regenie/step1"
+    tag "regenie/splitl0"
+    tag "regenie/runl0"
+    tag "regenie/runl1"
+    tag "regenie/step2"
+
+    test("homo_sapiens popgen - standard quantitative plink1 with covariates and two step2 shards") {
+
+        when {
+            params {
+                module_args = "--phenoColList QuantitativeTrait"
+            }
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ])
+
+                input[1] = Channel.of(
+                    [
+                        [ id:'plink_simulated', shard:'a' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ],
+                    [
+                        [ id:'plink_simulated', shard:'b' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ]
+                )
+
+                input[2] = Channel.of([
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                ])
+
+                input[3] = Channel.of([
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                ])
+
+                input[4] = []
+                input[5] = 400
+                input[6] = 'standard'
+                input[7] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.results.size() == 2 },
+                { assert workflow.out.predictions.size() == 1 },
+                { assert workflow.out.loco.size() == 1 },
+                { assert workflow.out.logs.size() == 3 },
+                { assert workflow.out.versions.size() == 0 },
+                { assert workflow.out.results.collect { it[0].shard }.sort() == ['a', 'b'] },
+                {
+                    workflow.out.results.each { result ->
+                        def workDir = path(result[1]).parent
+                        def command = workDir.resolve('.command.sh').text.replaceAll(/\s+/, ' ')
+                        assert path(result[1]).fileName.toString() == 'plink_simulated_QuantitativeTrait.regenie.gz'
+                        assert command.contains('--bed plink_simulated')
+                        assert command.contains('--pred plink_simulated_pred.list')
+                        assert command.contains('--covarFile plink_simulated_covariates.txt')
+                        assert command.contains('--bsize 400')
+                        assert command.contains('--phenoColList QuantitativeTrait')
+                        assert !command.contains('--pgen plink_simulated')
+                    }
+                },
+                {
+                    assert snapshot([
+                        results: workflow.out.results.collect { [it[0], path(it[1]).fileName.toString()] }.sort { a, b -> a[0].shard <=> b[0].shard },
+                        predictions: workflow.out.predictions.collect { [it[0], path(it[1]).fileName.toString()] },
+                        loco: workflow.out.loco.collect { [it[0], path(it[1]).fileName.toString()] },
+                        logs: workflow.out.logs.collect { [it[0], path(it[1]).fileName.toString()] }.sort { a, b -> a[1] <=> b[1] },
+                        versions: workflow.out.versions
+                    ]).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - chunked quantitative plink1 with covariates") {
+
+        when {
+            params {
+                module_args = "--phenoColList QuantitativeTrait"
+            }
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ])
+
+                input[1] = Channel.of([
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ])
+
+                input[2] = Channel.of([
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                ])
+
+                input[3] = Channel.of([
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                ])
+
+                input[4] = 100
+                input[5] = 400
+                input[6] = 'chunked'
+                input[7] = 2
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.results.size() == 1 },
+                { assert workflow.out.logs.size() == 5 },
+                {
+                    def command = path(workflow.out.results.get(0).get(1)).parent.resolve('.command.sh').text.replaceAll(/\s+/, ' ')
+                    assert command.contains('--bed plink_simulated')
+                    assert command.contains('--pred plink_simulated_pred.list')
+                    assert command.contains('--covarFile plink_simulated_covariates.txt')
+                    assert command.contains('--bsize 400')
+                    assert command.contains('--phenoColList QuantitativeTrait')
+                },
+                {
+                    assert snapshot([
+                        results: workflow.out.results.collect { [it[0], path(it[1]).fileName.toString()] },
+                        predictions: workflow.out.predictions.collect { [it[0], path(it[1]).fileName.toString()] },
+                        loco: workflow.out.loco.collect { [it[0], path(it[1]).fileName.toString()] },
+                        logs: workflow.out.logs.collect { [it[0], path(it[1]).fileName.toString()] }.sort { a, b -> a[1] <=> b[1] },
+                        versions: workflow.out.versions
+                    ]).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - binary plink1 with covariates") {
+
+        when {
+            params {
+                module_args = "--phenoColList BinaryTrait --bt"
+            }
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ])
+
+                input[1] = Channel.of([
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ])
+
+                input[2] = Channel.of([
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_binary_phenoname.phe', checkIfExists: true)
+                ])
+
+                input[3] = Channel.of([
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                ])
+
+                input[4] = []
+                input[5] = 400
+                input[6] = 'standard'
+                input[7] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.results.size() == 1 },
+                { assert path(workflow.out.results.get(0).get(1)).fileName.toString() == 'plink_simulated_BinaryTrait.regenie.gz' },
+                {
+                    def command = path(workflow.out.results.get(0).get(1)).parent.resolve('.command.sh').text.replaceAll(/\s+/, ' ')
+                    assert command.contains('--bed plink_simulated')
+                    assert command.contains('--pred plink_simulated_pred.list')
+                    assert command.contains('--covarFile plink_simulated_covariates.txt')
+                    assert command.contains('--phenoColList BinaryTrait')
+                    assert command.contains('--bt')
+                },
+                {
+                    assert snapshot([
+                        results: workflow.out.results.collect { [it[0], path(it[1]).fileName.toString()] },
+                        predictions: workflow.out.predictions.collect { [it[0], path(it[1]).fileName.toString()] },
+                        loco: workflow.out.loco.collect { [it[0], path(it[1]).fileName.toString()] },
+                        logs: workflow.out.logs.collect { [it[0], path(it[1]).fileName.toString()] },
+                        versions: workflow.out.versions
+                    ]).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - standard quantitative plink2 without covariates") {
+
+        when {
+            params {
+                module_args = "--phenoColList QuantitativeTrait"
+            }
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pgen', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pvar', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.psam', checkIfExists: true)
+                ])
+
+                input[1] = Channel.of([
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pgen', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pvar', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.psam', checkIfExists: true)
+                ])
+
+                input[2] = Channel.of([
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                ])
+
+                input[3] = Channel.of([
+                    [ id:'plink_simulated' ],
+                    []
+                ])
+
+                input[4] = 256
+                input[5] = 400
+                input[6] = 'standard'
+                input[7] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.results.size() == 1 },
+                {
+                    def command = path(workflow.out.results.get(0).get(1)).parent.resolve('.command.sh').text.replaceAll(/\s+/, ' ')
+                    assert command.contains('--pgen plink_simulated')
+                    assert command.contains('--pred plink_simulated_pred.list')
+                    assert command.contains('--bsize 400')
+                    assert command.contains('--phenoColList QuantitativeTrait')
+                    assert !command.contains('--bed plink_simulated')
+                    assert !command.contains('--covarFile')
+                },
+                {
+                    assert snapshot([
+                        results: workflow.out.results.collect { [it[0], path(it[1]).fileName.toString()] },
+                        predictions: workflow.out.predictions.collect { [it[0], path(it[1]).fileName.toString()] },
+                        loco: workflow.out.loco.collect { [it[0], path(it[1]).fileName.toString()] },
+                        logs: workflow.out.logs.collect { [it[0], path(it[1]).fileName.toString()] },
+                        versions: workflow.out.versions
+                    ]).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - standard plink1 - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = "--phenoColList QuantitativeTrait"
+            }
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ])
+
+                input[1] = Channel.of([
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ])
+
+                input[2] = Channel.of([
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                ])
+
+                input[3] = Channel.of([
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                ])
+
+                input[4] = []
+                input[5] = 400
+                input[6] = 'standard'
+                input[7] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                {
+                    assert snapshot([
+                        results: workflow.out.results.collect { [it[0], path(it[1]).fileName.toString()] },
+                        predictions: workflow.out.predictions.collect { [it[0], path(it[1]).fileName.toString()] },
+                        loco: workflow.out.loco.collect { [it[0], path(it[1]).fileName.toString()] },
+                        logs: workflow.out.logs.collect { [it[0], path(it[1]).fileName.toString()] },
+                        versions: workflow.out.versions
+                    ]).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - chunked plink1 - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = "--phenoColList QuantitativeTrait"
+            }
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ])
+
+                input[1] = Channel.of([
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                ])
+
+                input[2] = Channel.of([
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                ])
+
+                input[3] = Channel.of([
+                    [ id:'plink_simulated' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                ])
+
+                input[4] = 100
+                input[5] = 400
+                input[6] = 'chunked'
+                input[7] = 2
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                {
+                    assert snapshot([
+                        results: workflow.out.results.collect { [it[0], path(it[1]).fileName.toString()] },
+                        predictions: workflow.out.predictions.collect { [it[0], path(it[1]).fileName.toString()] },
+                        loco: workflow.out.loco.collect { [it[0], path(it[1]).fileName.toString()] },
+                        logs: workflow.out.logs.collect { [it[0], path(it[1]).fileName.toString()] }.sort { a, b -> a[1] <=> b[1] },
+                        versions: workflow.out.versions
+                    ]).match()
+                }
+            )
+        }
+    }
+}
