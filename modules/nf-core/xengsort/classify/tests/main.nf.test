@@ -1,0 +1,113 @@
+nextflow_process {
+
+    name "Test Process XENGSORT_CLASSIFY"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "xengsort"
+    tag "xengsort/index"
+    tag "xengsort/classify"
+
+    script "../main.nf"
+    process "XENGSORT_CLASSIFY"
+
+    config "./nextflow.config"
+
+    setup {
+        run("XENGSORT_INDEX") {
+            script "../../index/main.nf"
+            params {
+                module_args = '-k 25'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'host' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'graft' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = 1000000
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens - sarscov2 - [fastq.gz] - single_end") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = XENGSORT_INDEX.out.hash.join(XENGSORT_INDEX.out.info)
+                input[2] = 'count'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["host", "graft", "both", "neither", "ambiguous"])).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - sarscov2 - [fastq.gz, fastq.gz] - paired_end") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = XENGSORT_INDEX.out.hash.join(XENGSORT_INDEX.out.info)
+                input[2] = 'count'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["host", "graft", "both", "neither", "ambiguous"])).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - sarscov2 - [fastq.gz, fastq.gz] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = XENGSORT_INDEX.out.hash.join(XENGSORT_INDEX.out.info)
+                input[2] = 'count'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}
