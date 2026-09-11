@@ -103,34 +103,42 @@ def generateReadgroupBCLCONVERT(ch_fastq_list_csv, ch_fastq) {
     return ch_fastq_list_csv
         .join(ch_fastq, by: [0])
         .map { meta, csv_file, fastq_list ->
-            def fastq_files = fastq_list instanceof List ? fastq_list : [fastq_list]
-            def meta_fastq = []
-            csv_file
-                .splitCsv(header: true)
-                .each { row ->
-                    // Create the readgroup tuple
-                    // RGID,RGSM,RGLB,Lane,Read1File,Read2File
-                    def rg = [:]
-                    // row.RGID is index1.index2.lane
-                    rg.ID = row.RGID
-                    // RGPU is a custom column in the samplesheet containing the flowcell ID
-                    rg.PU = row.RGPU ? row.RGPU : meta.id + "." + row.Lane
-                    rg.SM = row.RGSM
-                    rg.LB = row.RGLB ? row.RGLB : ""
-                    rg.PL = "ILLUMINA"
-
-                    // dereference the fastq files in the csv
-                    def fastq1 = fastq_files.find { fq -> file(fq).name == file(row.Read1File).name }
-                    def fastq2 = row.Read2File ? fastq_files.find { fq -> file(fq).name == file(row.Read2File).name } : null
-
-                    // set fastq metadata
-                    def new_meta = meta + [id: fastq1.getSimpleName().toString() - ~/_R[0-9]_001.*$/, readgroup: rg, single_end: !fastq2]
-
-                    meta_fastq << [new_meta, fastq2 ? [fastq1, fastq2] : [fastq1]]
-                }
-            return meta_fastq
+            return createReadgroupBCLCONVERT(meta, csv_file, fastq_list)
         }
         .flatMap()
+}
+
+def createReadgroupBCLCONVERT(meta, csv_file, fastq_list) {
+    def fastq_files = fastq_list instanceof List ? fastq_list : [fastq_list]
+    def emitted_fastq = [] as Set
+    def meta_fastq = []
+    csv_file
+        .splitCsv(header: true)
+        .each { row ->
+            // dereference the fastq files in the csv
+            def fastq1 = fastq_files.find { fq -> file(fq).name == file(row.Read1File).name }
+            def fastq2 = row.Read2File ? fastq_files.find { fq -> file(fq).name == file(row.Read2File).name } : null
+            def fastq_key = [fastq1, fastq2].findAll().collect { fq -> file(fq).name }.join("|")
+
+            if (emitted_fastq.add(fastq_key)) {
+                // Create the readgroup tuple
+                // RGID,RGSM,RGLB,Lane,Read1File,Read2File
+                def rg = [:]
+                // row.RGID is index1.index2.lane
+                rg.ID = row.RGID
+                // RGPU is a custom column in the samplesheet containing the flowcell ID
+                rg.PU = row.RGPU ? row.RGPU : meta.id + "." + row.Lane
+                rg.SM = row.RGSM
+                rg.LB = row.RGLB ? row.RGLB : ""
+                rg.PL = "ILLUMINA"
+
+                // set fastq metadata
+                def new_meta = meta + [id: fastq1.getSimpleName().toString() - ~/_R[0-9]_001.*$/, readgroup: rg, single_end: !fastq2]
+
+                meta_fastq << [new_meta, fastq2 ? [fastq1, fastq2] : [fastq1]]
+            }
+        }
+    return meta_fastq
 }
 
 def generateReadgroupBCL2FASTQ(ch_fastq) {
