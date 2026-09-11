@@ -3,16 +3,16 @@ process KHMER_TRIMLOWABUND {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/khmer:3.0.0a3--py37haa7609a_2' :
-        'biocontainers/khmer:3.0.0a3--py37haa7609a_2' }"
+        'quay.io/biocontainers/khmer:3.0.0a3--py37haa7609a_2' }"
 
     input:
     tuple val(meta), path(seq_file)
 
     output:
     tuple val(meta), path("${output_path}"), emit: trimmed
-    path "versions.yml"                    , emit: versions
+    tuple val("${task.process}"), val('khmer'), eval('trim-low-abund.py --version 2>&1 | grep ^khmer | sed "s/^khmer //"'), emit: versions_khmer, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,11 +40,6 @@ process KHMER_TRIMLOWABUND {
         -M ${avail_mem}e9 \\
         --output ${output_path} \\
         $seq_file
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        khmer: \$( trim-low-abund.py --version 2>&1 | grep ^khmer | sed 's/^khmer //' )
-    END_VERSIONS
     """
 
     stub:
@@ -60,10 +55,5 @@ process KHMER_TRIMLOWABUND {
     }
     """
     echo "" | gzip > ${output_path}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        khmer: \$( trim-low-abund.py --version 2>&1 | grep ^khmer | sed 's/^khmer //' )
-    END_VERSIONS
     """
 }

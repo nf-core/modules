@@ -1,0 +1,101 @@
+nextflow_process {
+
+    name "Test Process NGSBITS_ROHHUNTER"
+    script "../main.nf"
+    process "NGSBITS_ROHHUNTER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ngsbits"
+    tag "ngsbits/rohhunter"
+
+    test("homo_sapiens - vcf") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotc.vcf.gz', checkIfExists: true),
+                    []
+                ]
+                input[1] = [
+                    [ id: 'annotate_beds'],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out)
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - vcf & beds") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotc.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id: 'annotate_beds'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bins_10kb_annotated.bed', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out)
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - vcf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotc.vcf.gz', checkIfExists: true),
+                    []
+                ]
+                input[1] = [
+                    [ id: 'annotate_beds'],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out)
+                ).match() }
+            )
+        }
+
+    }
+
+}

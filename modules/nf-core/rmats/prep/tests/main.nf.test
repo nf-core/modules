@@ -1,0 +1,237 @@
+nextflow_process {
+
+    name "Test Process RMATS_PREP"
+    script "../main.nf"
+    process "RMATS_PREP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "rmats"
+    tag "rmats/prep"
+
+    test("homo_sapiens - paired unstranded rmats prep") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false, strandness:"unstranded" ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.bam', checkIfExists: true),
+                ]
+                input[1] = [
+                    [id: 'hg38'], // meta2 map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
+                input[2] = 150
+                """
+            }
+        }
+
+        then {
+                def lines = path(process.out.read_outcomes[0][1]).readLines()
+                def reads_used = lines[1] =~ /USED: (\d+)/
+                def reads_clipped = lines[9] =~ /CLIPPED: (\d+)/
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() },
+                { assert reads_used[0][1] as Integer  > 0 },
+                { assert reads_clipped[0][1] as Integer  == 0 }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - single-end unstranded rmats prep") {
+
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true, strandness:"unstranded" ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.bam', checkIfExists: true),
+                ]
+                input[1] = [
+                    [id: 'hg38'], // meta2 map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
+                input[2] = 150
+                """
+            }
+        }
+
+        then {
+                def lines = path(process.out.read_outcomes[0][1]).readLines()
+                def reads_used = lines[1] =~ /USED: (\d+)/
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() },
+                { assert reads_used[0][1] as Integer  > 0 }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - paired forward rmats prep") {
+
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false, strandness:"forward" ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.bam', checkIfExists: true),
+                ]
+                input[1] = [
+                    [id: 'hg38'], // meta2 map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
+                input[2] = 150
+                """
+            }
+        }
+
+        then {
+                def lines = path(process.out.read_outcomes[0][1]).readLines()
+                def reads_used = lines[1] =~ /USED: (\d+)/
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() },
+                { assert reads_used[0][1] as Integer  > 0 }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - paired reverse rmats prep") {
+
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false, strandness:"reverse" ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.bam', checkIfExists: true),
+                ]
+                input[1] = [
+                    [id: 'hg38'], // meta2 map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
+                input[2] = 150
+                """
+            }
+        }
+
+        then {
+                def lines = path(process.out.read_outcomes[0][1]).readLines()
+                def reads_used = lines[1] =~ /USED: (\d+)/
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() },
+                { assert reads_used[0][1] as Integer  > 0 }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - paired unstranded novel splice rmats prep") {
+
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false, strandness:"unstranded" ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.bam', checkIfExists: true),
+                ]
+                input[1] = [
+                    [id: 'hg38'], // meta2 map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
+                input[2] = 150
+                """
+            }
+            params {
+                novel_splice_site = true
+                minimum_intron_length = 48
+                max_exon_length = 488
+            }
+        }
+
+        then {
+                def lines = path(process.out.read_outcomes[0][1]).readLines()
+                def reads_used = lines[1] =~ /USED: (\d+)/
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() },
+                { assert reads_used[0][1] as Integer  > 0 }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - paired unstranded no clipping rmats prep") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false, strandness:"unstranded" ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.bam', checkIfExists: true),
+                ]
+                input[1] = [
+                    [id: 'hg38'], // meta2 map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
+                input[2] = 150
+                """
+            }
+        }
+
+        then {
+                def lines = path(process.out.read_outcomes[0][1]).readLines()
+                def reads_used = lines[1] =~ /USED: (\d+)/
+                def reads_clipped = lines[9] =~ /CLIPPED: (\d+)/
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() },
+                { assert reads_used[0][1] as Integer  > 0 },
+                { assert reads_clipped[0][1] as Integer > 0},
+                { assert reads_clipped[0][1] as Integer  > reads_used[0][1] as Integer }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - prep - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false, strandness:"unstranded" ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.bam', checkIfExists: true),
+                ]
+                input[1] = [
+                    [id: 'hg38'], // meta2 map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
+                input[2] = 150
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

@@ -116,13 +116,27 @@ output:
           description: Log file containing statistics of the assembly output
           pattern: "*.log"
           ontologies: []
+  versions_megahit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - megahit:
+          type: string
+          description: The name of the tool
+      - "megahit -v | sed 's/MEGAHIT v//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - megahit:
+          type: string
+          description: The name of the tool
+      - "megahit -v | sed 's/MEGAHIT v//'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:

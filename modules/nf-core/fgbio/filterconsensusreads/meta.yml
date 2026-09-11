@@ -35,7 +35,17 @@ input:
     - fasta:
         type: file
         description: Fasta file containing genomic sequence information
-        pattern: "*.bam"
+        pattern: "*.{fa,fasta,fna}"
+        ontologies: []
+    - index:
+        type: file
+        description: Fasta index file
+        pattern: "*.fai"
+        ontologies: []
+    - dict:
+        type: file
+        description: Fasta dictionary file
+        pattern: "*.dict"
         ontologies: []
   - min_reads:
       type: integer

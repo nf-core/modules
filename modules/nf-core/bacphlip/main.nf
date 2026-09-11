@@ -3,9 +3,9 @@ process BACPHLIP {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-e16bfb0f667f2f3c236b32087aaf8c76a0cd2864:c64689d7d5c51670ff5841ec4af982edbe7aa406-0':
-        'biocontainers/mulled-v2-e16bfb0f667f2f3c236b32087aaf8c76a0cd2864:c64689d7d5c51670ff5841ec4af982edbe7aa406-0' }"
+        'quay.io/biocontainers/mulled-v2-e16bfb0f667f2f3c236b32087aaf8c76a0cd2864:c64689d7d5c51670ff5841ec4af982edbe7aa406-0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -13,34 +13,23 @@ process BACPHLIP {
     output:
     tuple val(meta), path("*.bacphlip")         , emit: bacphlip_results
     tuple val(meta), path("*.hmmsearch.tsv")    , emit: hmmsearch_results
-    path "versions.yml"                         , emit: versions
+    tuple val("${task.process}"), val('bacphlip'), val('0.9.6'), emit: versions_bacphlip, topic: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def VERSION = '0.9.6' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     bacphlip \\
         -i $fasta \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bacphlip: $VERSION
-    END_VERSIONS
     """
 
     stub:
-    def VERSION = '0.9.6' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${fasta}.bacphlip
     touch ${fasta}.hmmsearch.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bacphlip: $VERSION
-    END_VERSIONS
     """
 }

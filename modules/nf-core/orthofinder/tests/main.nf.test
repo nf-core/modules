@@ -49,14 +49,17 @@ nextflow_process {
             def stable_file_names = [
                 'Statistics_PerSpecies.tsv',
                 'SpeciesTree_Gene_Duplications_0.5_Support.txt',
-                'SpeciesTree_rooted.txt'
+                'SpeciesTree_rooted.txt',
+                'Orthogroups.tsv',
+                'SpeciesTree_rooted_node_labels.txt'
             ]
 
             def stable_files = all_files.findAll { it.name in stable_file_names }
 
             assert snapshot(
                 stable_files.toSorted(),
-                process.out.versions[0]
+                process.out.single_copy_seqs,
+                process.out.findAll { key, val -> key.startsWith("versions") }
             ).match()
         }
 
@@ -108,14 +111,16 @@ nextflow_process {
             def stable_file_names = [
                 'Statistics_PerSpecies.tsv',
                 'OrthologuesStats_Totals.tsv',
-                'Duplications_per_Species_Tree_Node.tsv'
+                'Duplications_per_Species_Tree_Node.tsv',
+                'Orthogroups.tsv'
             ]
 
             def stable_files = all_files.findAll { it.name in stable_file_names }
 
             assert snapshot(
                 stable_files.toSorted(),
-                process.out.versions[0]
+                process.out.single_copy_seqs,
+                process.out.findAll { key, val -> key.startsWith("versions") }
             ).match()
         }
 
@@ -152,10 +157,16 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out.orthofinder,
+                    process.out.working,
+                    process.out.single_copy_seqs,
+                    process.out.orthogroups,
+                    process.out.sptree,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
 }

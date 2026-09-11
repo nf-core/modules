@@ -31,7 +31,7 @@ def ch_params = """Channel.of([
     ${pathgenome}dbsnp_138.hg38.first_10_biallelic_sites.tsv', checkIfExists: true),
     [],
     ${pathgenome}genome.GRCh38.stitch.chr21.txt.gz', checkIfExists: true),
-    [], 'chr21', 8522360, 8522670, 2, 1
+    [], 'chr21', 8522360, 8522670, 0, 2, 1
 ])"""
 
 // reference genome
@@ -170,8 +170,8 @@ nextflow_process {
                     .join ( STITCH_GENERATE_INPUTS.out.rdata )
                     .combine( $ch_params )
                     .map {
-                        meta, target, rdata, positions, _emptytarget, genetic_map, _emptyrdata, chr, start, end, k, nGen  ->
-                        [ meta, [], [], [], [], positions, target, genetic_map, rdata, chr, start, end, k, nGen ]
+                        meta, target, rdata, positions, _emptytarget, genetic_map, _emptyrdata, chr, start, end, buffer, k, nGen  ->
+                        [ meta, [], [], [], [], positions, target, genetic_map, rdata, chr, start, end, buffer, k, nGen ]
                     }
                 input[1] = [[id: null], [], []]
                 input[2] = $seed

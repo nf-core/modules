@@ -9,8 +9,8 @@ process BASICPY {
 
     output:
     tuple val(meta), path("*-dfp.ome.tif"), path("*-ffp.ome.tif"), emit: profiles
-    path "versions.yml"                                          , emit: versions
-
+    tuple val("${task.process}"), val('basicpy'), val("1.2.0"), emit: versions_basicpy, topic: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping
     when:
     task.ext.when == null || task.ext.when
 
@@ -21,14 +21,8 @@ process BASICPY {
     }
     def args    = task.ext.args   ?: ''
     def prefix  = task.ext.prefix ?: "${meta.id}"
-    def VERSION = "1.2.0" // WARN: Version information not provided by tool on CLI. Please update this string when bumping
     """
     /opt/main.py -i $image -o . --output-flatfield $prefix --output-darkfield $prefix $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        basicpy: $VERSION
-    END_VERSIONS
     """
 
     stub:
@@ -37,14 +31,8 @@ process BASICPY {
         error "Basicpy module does not support Conda. Please use Docker / Singularity instead."
     }
     def prefix  = task.ext.prefix ?: "${meta.id}"
-    def VERSION = "1.2.0" // WARN: Version information not provided by tool on CLI. Please update this string when bumping
     """
     touch ${prefix}-dfp.ome.tif
     touch ${prefix}-ffp.ome.tif
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        basicpy: $VERSION
-    END_VERSIONS
     """
 }

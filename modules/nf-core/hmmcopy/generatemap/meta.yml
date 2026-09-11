@@ -44,10 +44,9 @@ output:
       - hmmcopy:
           type: string
           description: The name of the tool
-      - echo 0.1.1:
-          type: eval
+      - 0.1.1:
+          type: string
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -56,10 +55,9 @@ topics:
       - hmmcopy:
           type: string
           description: The name of the tool
-      - echo 0.1.1:
-          type: eval
+      - 0.1.1:
+          type: string
           description: The expression to obtain the version of the tool
-
 authors:
   - "@sppearce"
   - "@adamrtalbot"

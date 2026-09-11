@@ -3,9 +3,9 @@ process MOTUS_PREPLONG {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/motus:3.1.0--pyhdfd78af_0':
-        'biocontainers/motus:3.1.0--pyhdfd78af_0' }"
+        'quay.io/biocontainers/motus:3.1.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -13,7 +13,8 @@ process MOTUS_PREPLONG {
 
     output:
     tuple val(meta), path("*.gz"), emit: out
-    path "versions.yml"          , emit: versions
+    // WARN: Version information not provided by tool on CLI.  Please update version string below when bumping container versions.
+    tuple val("${task.process}"), val('motus'), val("3.1.0"), topic: versions, emit: versions_motus
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,37 +27,17 @@ process MOTUS_PREPLONG {
     """
     motus \\
         prep_long \\
-        $args \\
-        -i $reads \\
-        $refdb \\
-        -t $task.cpus \\
+        ${args} \\
+        -i ${reads} \\
+        ${refdb} \\
+        -t ${task.cpus} \\
         -o ${prefix}.gz \\
         2>| >(tee ${prefix}.log >&2)
-
-    if [ "$db" == "" ]; then
-        VERSION=\$(echo \$(motus -h 2>&1) | sed 's/^.*Version: //; s/References.*\$//')
-    else
-        VERSION=\$(grep motus $db/db_mOTU_versions | sed 's/motus\\t//g')
-    fi
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        motus: \$VERSION
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo '' | gzip > ${prefix}.gz
-
-    if [ "$db" == "" ]; then
-        VERSION=\$(echo \$(motus -h 2>&1) | sed 's/^.*Version: //; s/References.*\$//')
-    else
-        VERSION=\$(grep motus $db/db_mOTU_versions | sed 's/motus\\t//g')
-    fi
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        motus: \$VERSION
-    END_VERSIONS
+    echo "" | gzip > ${prefix}.gz
     """
 }

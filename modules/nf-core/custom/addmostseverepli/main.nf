@@ -3,7 +3,7 @@ process CUSTOM_ADDMOSTSEVEREPLI {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cb/cbeb20c898a76bec809629320ece9e1f84a3e355e96568bfbe14b9f411bdf3e7/data':
         'community.wave.seqera.io/library/htslib_python:9c6265e98ef06930' }"
 
@@ -12,7 +12,7 @@ process CUSTOM_ADDMOSTSEVEREPLI {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    tuple val("${task.process}"), val('addmostseverepli'), val("1.1"), topic: versions, emit: versions_addmostseverepli
+    tuple val("${task.process}"), val('addmostseverepli'), val("1.2.0"), topic: versions, emit: versions_addmostseverepli
     tuple val("${task.process}"), val('bgzip'), eval("bgzip --version | sed '1!d;s/.* //'"), topic: versions, emit: versions_bgzip
 
     when:

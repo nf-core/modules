@@ -10,7 +10,8 @@ tools:
       description: The AdapterRemoval v2 tool for merging and clipping reads.
       homepage: https://github.com/MikkelSchubert/adapterremoval
       documentation: https://adapterremoval.readthedocs.io
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:adapterremoval
 input:
   - - meta:
@@ -25,14 +26,15 @@ input:
           respectively.
         pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
         ontologies:
-          - edam: "http://edamontology.org/format_1930" # FASTQ
+          - edam: "http://edamontology.org/format_1930"
   - adapterlist:
       type: file
-      description: Optional text file containing list of adapters to look for for removal
-        with one adapter per line. Otherwise will look for default adapters (see AdapterRemoval
-        man page), or can be modified to remove user-specified adapters via ext.args.
+      description: Optional text file containing list of adapters to look for for
+        removal with one adapter per line. Otherwise will look for default
+        adapters (see AdapterRemoval man page), or can be modified to remove
+        user-specified adapters via ext.args.
       ontologies:
-        - edam: "http://edamontology.org/format_2330" # Textual format
+        - edam: "http://edamontology.org/format_2330"
 output:
   singles_truncated:
     - - meta:
@@ -46,8 +48,8 @@ output:
             was lost due to filtering thresholds).
           pattern: "*.truncated.fastq.gz"
           ontologies:
-            - edam: "http://edamontology.org/format_1930" # FASTQ
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: "http://edamontology.org/format_1930"
+            - edam: http://edamontology.org/format_3989
   discarded:
     - - meta:
           type: map
@@ -59,8 +61,8 @@ output:
             thresholds.
           pattern: "*.discarded.fastq.gz"
           ontologies:
-            - edam: "http://edamontology.org/format_1930" # FASTQ
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: "http://edamontology.org/format_1930"
+            - edam: http://edamontology.org/format_3989
   paired_truncated:
     - - meta:
           type: map
@@ -73,7 +75,7 @@ output:
             is stored in 'pair{1,2}_truncated'.
           pattern: "*.pair{1,2}.truncated.fastq.gz"
           ontologies:
-            - edam: "http://edamontology.org/format_1930" # FASTQ
+            - edam: "http://edamontology.org/format_1930"
   collapsed:
     - - meta:
           type: map
@@ -85,8 +87,8 @@ output:
             respective R1 pair but were not trimmed.
           pattern: "*.collapsed.fastq.gz"
           ontologies:
-            - edam: "http://edamontology.org/format_1930" # FASTQ
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: "http://edamontology.org/format_1930"
+            - edam: http://edamontology.org/format_3989
   collapsed_truncated:
     - - meta:
           type: map
@@ -98,8 +100,8 @@ output:
             respective R1 pair and were trimmed of adapter due to sufficient overlap.
           pattern: "*.collapsed.truncated.fastq.gz"
           ontologies:
-            - edam: "http://edamontology.org/format_1930" # FASTQ
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: "http://edamontology.org/format_1930"
+            - edam: http://edamontology.org/format_3989
   paired_interleaved:
     - - meta:
           type: map
@@ -110,8 +112,8 @@ output:
             Write paired-end reads to a single file, interleaving mate 1 and mate 2 reads
           pattern: "*.paired.fastq.gz"
           ontologies:
-            - edam: "http://edamontology.org/format_1930" # FASTQ
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: "http://edamontology.org/format_1930"
+            - edam: http://edamontology.org/format_3989
   settings:
     - - meta:
           type: map
@@ -121,14 +123,28 @@ output:
           description: AdapterRemoval log file
           pattern: "*.settings"
           ontologies:
-            - edam: "http://edamontology.org/format_2330" # Textual format
+            - edam: "http://edamontology.org/format_2330"
+  versions_adapterremoval:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - AdapterRemoval:
+          type: string
+          description: The name of the tool
+      - AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - AdapterRemoval:
+          type: string
+          description: The name of the tool
+      - AdapterRemoval --version 2>&1 | sed -e "s/AdapterRemoval ver. //g":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@maxibor"
   - "@jfy133"

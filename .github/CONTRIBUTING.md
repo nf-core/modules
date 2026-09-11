@@ -38,6 +38,19 @@ Each `nf-core/module` should be set up with a minimal set of test-data.
 If there are any failures then the automated tests fail.
 These tests are run both with the latest available version of `Nextflow` and also the minimum required version that is stated in the pipeline code.
 
+## Use of AI and LLMs
+
+The nf-core stance on the use of AI and LLMs is that humans are still ultimately responsible for their submitted code, regardless of the tools they use.
+
+If you’re using AI tools, try to stick by these guidelines:
+
+- Keep PRs as small and focussed as possible
+- Avoid any unnecessary changes, such as moving or refactoring code (unless that is the explicit intention of the PR)
+- Review all generated code yourself before opening a PR, and ensure that you understand it
+- Engage with the community review process and expect to make revisions
+
+For more detail, see the the [blog post](https://nf-co.re/blog/2026/statement-on-ai) for a statement from the nf-core/core team.
+
 ## Getting help
 
 For further information/help, please consult the [nf-core/modules README](https://github.com/nf-core/modules) and don't hesitate to get in touch on the nf-core Slack [#modules](https://nfcore.slack.com/channels/modules) channel ([join our Slack here](https://nf-co.re/join/slack)).

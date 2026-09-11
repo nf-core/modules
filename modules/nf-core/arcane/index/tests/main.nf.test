@@ -1,0 +1,103 @@
+nextflow_process {
+
+    name "Test Process ARCANE_INDEX"
+    script "../main.nf"
+    process "ARCANE_INDEX"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "arcane"
+    tag "arcane/index"
+    tag "arcane/filter"
+
+    setup {
+        params {
+            module_args = '--kmersize 12'
+        }
+        run("ARCANE_FILTER") {
+            script "../../filter/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - fasta - kmersize") {
+
+        when {
+            params {
+                module_args = '--kmersize 12'
+            }
+            process {
+                """
+                input[0] = ARCANE_FILTER.out.reference.join(ARCANE_FILTER.out.genes)
+                input[1] = 1000000
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["index", "info"])).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - fasta - mask") {
+
+        when {
+            params {
+                module_args = "--mask '###_##_###'"
+            }
+            process {
+                """
+                input[0] = ARCANE_FILTER.out.reference.join(ARCANE_FILTER.out.genes)
+                input[1] = 1000000
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["index", "info"])).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - fasta - kmersize - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--kmersize 12'
+            }
+            process {
+                """
+                input[0] = ARCANE_FILTER.out.reference.join(ARCANE_FILTER.out.genes)
+                input[1] = 1000000
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

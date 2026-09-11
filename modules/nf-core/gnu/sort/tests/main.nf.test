@@ -10,14 +10,17 @@ nextflow_process {
     tag "gnu/sort"
 
     test("unsorted_genome_sort") {
-        config "./sort_simple_bed.config"
 
         when {
+            params {
+                gnu_sort_args = "-k1,1 -k2,2n"
+            }
             process {
                 """
                 input[0] = [
                     [id:'genome_test'],
-                    file(params.modules_testdata_base_path + 'generic/unsorted_data/unsorted_text/test.genome', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'generic/unsorted_data/unsorted_text/test.genome', checkIfExists: true),
+                    "genome.sorted"
                 ]
                 """
             }
@@ -33,13 +36,17 @@ nextflow_process {
     }
 
     test("unsorted_intervals_sort") {
-        config "./sort_simple_bed.config"
+
         when {
+            params {
+                gnu_sort_args = "-k1,1 -k2,2n"
+            }
             process {
                 """
                 input[0] = [
                     [id:'test'],
-                    file(params.modules_testdata_base_path + 'generic/unsorted_data/unsorted_text/test.bed', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'generic/unsorted_data/unsorted_text/test.bed', checkIfExists: true),
+                    "bed.sorted"
                 ]
                 """
             }
@@ -55,14 +62,17 @@ nextflow_process {
     }
 
     test("unsorted_csv_sort") {
-        config "./sort_complex.config"
 
         when {
+            params {
+                gnu_sort_args = "-t ';' -g -k 1,1 -k 2,2"
+            }
             process {
                 """
                 input[0] = [
                     [id:'test'],
-                    file(params.modules_testdata_base_path + 'generic/unsorted_data/unsorted_text/test.csv', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'generic/unsorted_data/unsorted_text/test.csv', checkIfExists: true),
+                    "csv.sorted"
                 ]
                 """
             }
@@ -78,15 +88,19 @@ nextflow_process {
     }
 
     test("unsorted_csv_sort_stub") {
-        config "./sort_complex.config"
+
         options "-stub"
 
         when {
+            params {
+                gnu_sort_args = "-t ';' -g -k 1,1 -k 2,2"
+            }
             process {
                 """
                 input[0] = [
                     [id:'test'],
-                    file(params.modules_testdata_base_path + 'generic/unsorted_data/unsorted_text/test.csv', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'generic/unsorted_data/unsorted_text/test.csv', checkIfExists: true),
+                    "csv.sorted"
                 ]
                 """
             }

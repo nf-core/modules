@@ -54,8 +54,8 @@ nextflow_workflow {
         }
 
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success },
                 { assert snapshot(
                     file(workflow.out.artifact_priors[0][1]).name,
                     workflow.out.contamination_table,
@@ -113,8 +113,8 @@ nextflow_workflow {
         }
 
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success },
                 { assert snapshot(workflow.out).match() }
             )
         }

@@ -23,7 +23,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() },
+                { assert snapshot(process.out.versions_mobster).match() },
                 { assert file(process.out.mobster_rds[0][1]).exists() },
                 { assert file(process.out.mobster_best_rds[0][1]).exists() },
                 { assert file(process.out.mobster_best_plots_rds[0][1]).exists() },
@@ -69,7 +69,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() },
+                { assert snapshot(process.out.versions_mobster).match() },
                 { assert file(process.out.mobster_rds[0][1]).exists() },
                 { assert file(process.out.mobster_best_rds[0][1]).exists() },
                 { assert file(process.out.mobster_best_plots_rds[0][1]).exists() },

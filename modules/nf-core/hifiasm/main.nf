@@ -3,18 +3,18 @@ process HIFIASM {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hifiasm:0.25.0--h5ca1c30_0' :
-        'biocontainers/hifiasm:0.25.0--h5ca1c30_0' }"
+        'quay.io/biocontainers/hifiasm:0.25.0--h5ca1c30_0' }"
 
     input:
     tuple val(meta) , path(long_reads)        , path(ul_reads)
-    tuple val(meta1), path(paternal_kmer_dump), path(maternal_kmer_dump)
-    tuple val(meta2), path(hic_read1)         , path(hic_read2)
-    tuple val(meta3), path(bin_files)
+    tuple val(meta2), path(paternal_kmer_dump), path(maternal_kmer_dump)
+    tuple val(meta3), path(hic_read1)         , path(hic_read2)
+    tuple val(meta4), path(bin_files)
 
     output:
-    tuple val(meta), path("*.r_utg.gfa")                             , emit: raw_unitigs
+    tuple val(meta), path("*.r_utg.gfa")                             , emit: raw_unitigs      , optional: true
     tuple val(meta), path("*.bin")                                   , emit: bin_files        , optional: true
     tuple val(meta), path("*.p_utg.gfa")                             , emit: processed_unitigs, optional: true
     tuple val(meta), path("${prefix}.{p_ctg,bp.p_ctg,hic.p_ctg}.gfa"), emit: primary_contigs  , optional: true
@@ -24,8 +24,7 @@ process HIFIASM {
     tuple val(meta), path("*.ec.fa.gz")                              , emit: corrected_reads  , optional: true
     tuple val(meta), path("*.ovlp.paf.gz")                           , emit: read_overlaps    , optional: true
     tuple val(meta), path("${prefix}.stderr.log")                    , emit: log
-    tuple val("${task.process}"), val('hifasm'), eval('hifiasm --version 2>&1'), emit: versions_hifiasm, topic: versions
-
+    tuple val("${task.process}"), val('hifiasm'), eval('hifiasm --version 2>&1'), emit: versions_hifiasm, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

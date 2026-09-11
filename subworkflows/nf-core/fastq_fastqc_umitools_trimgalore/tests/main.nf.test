@@ -115,6 +115,42 @@ nextflow_workflow {
         }
     }
 
+    test("test paired end read without UMI - hardtrim5 (no trim log)") {
+
+        config './nextflow-hardtrim.config'
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = true  // skip_fastqc
+                input[2] = false // with_umi
+                input[3] = true  // skip_umi_extract
+                input[4] = false // skip_trimming
+                input[5] = 0     // umi_discard_read
+                input[6] = 1     // min_trimmed_reads
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.reads,
+                    workflow.out.trim_read_count,
+                    workflow.out.trim_unpaired,
+                ).match() }
+            )
+        }
+    }
+
     test("test skip all steps") {
 
         when {

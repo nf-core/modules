@@ -12,7 +12,8 @@ tools:
       documentation: "https://github.com/kensung-lab/hypo/blob/master/README.md"
       tool_dev_url: "https://github.com/kensung-lab/hypo"
       doi: "10.1101/2019.12.19.882506"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:hypo
 input:
   - - meta:
@@ -32,7 +33,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - reads:
         type: file
-        description: Short reads file(s). In fastq or fasta, compressed or uncompressed
+        description: Short reads file(s). In fastq or fasta, compressed or
+          uncompressed
         ontologies: []
   - draft:
       type: file
@@ -40,8 +42,8 @@ input:
       ontologies: []
   - genome_size:
       type: string
-      description: Estimated size of the genome. Number or nts or use suffixes k/m/g,
-        e.g. 5m, 3.2g
+      description: Estimated size of the genome. Number or nts or use suffixes
+        k/m/g, e.g. 5m, 3.2g
   - reads_coverage:
       type: integer
       description: Appprimate depth of coverage of short reads.
@@ -57,13 +59,27 @@ output:
           description: Polished assembly fasta file
           pattern: "*.fasta"
           ontologies: []
+  versions_hypo:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hypo:
+          type: string
+          description: The name of the tool
+      - 1.0.3:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hypo:
+          type: string
+          description: The name of the tool
+      - 1.0.3:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@remiolsen"
 maintainers:

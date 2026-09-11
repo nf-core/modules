@@ -1,6 +1,6 @@
 name: "mageck_test"
-description: Mageck test performs a robust ranking aggregation (RRA) to identify positively
-  or negatively selected genes in functional genomics screens.
+description: Mageck test performs a robust ranking aggregation (RRA) to identify
+  positively or negatively selected genes in functional genomics screens.
 keywords:
   - sort
   - rra
@@ -13,7 +13,8 @@ tools:
       documentation: "https://sourceforge.net/p/mageck/wiki/Home/"
       tool_dev_url: "https://bitbucket.org/liulab/mageck/src"
       doi: "10.1186/s13059-015-0843-6"
-      licence: ["BSD License"]
+      licence:
+        - "BSD License"
       identifier: biotools:mageck
 input:
   - - meta:
@@ -72,13 +73,29 @@ output:
           pattern: "*.R"
           ontologies:
             - edam: http://edamontology.org/format_3999 # R script
+  versions_mageck:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mageck:
+          type: string
+          description: The name of the tool
+      - mageck -v:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mageck:
+          type: string
+          description: The name of the tool
+      - mageck -v:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@LaurenceKuhl"
 maintainers:

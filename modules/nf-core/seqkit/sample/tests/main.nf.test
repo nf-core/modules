@@ -1,0 +1,106 @@
+nextflow_process {
+
+    name "Test Process SEQKIT_SAMPLE"
+    script "../main.nf"
+    process "SEQKIT_SAMPLE"
+    config './nextflow.config'
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "seqkit"
+    tag "seqkit/sample"
+
+    test("sarscov2 - fastq_gz - proportion") {
+        when {
+            params {
+                modules_args = '--proportion 0.5 --rand-seed 11'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - genome_fasta - proportion") {
+        when {
+            params {
+                modules_args = '--proportion 0.5 --rand-seed 11'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("file_name_conflict - fail_with_error") {
+        when {
+            params {
+                modules_args = '--proportion 0.5 --rand-seed 11'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test_1' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.failed
+            assertAll(
+                { assert process.errorReport.contains("Input and output names are the same") }
+            )
+        }
+    }
+
+    test("sarscov2 - fastq_gz - proportion - stub") {
+        options '-stub'
+
+        when {
+            params {
+                modules_args = '--proportion 0.5 --rand-seed 11'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

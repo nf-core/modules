@@ -3,9 +3,9 @@ process VCLUST_CLUSTER {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/vclust:1.3.1--py313h9ee0642_0':
-        'biocontainers/vclust:1.3.1--py313h9ee0642_0' }"
+        'quay.io/biocontainers/vclust:1.3.1--py313h9ee0642_0' }"
 
     input:
     tuple val(meta), path(tsv)
@@ -18,7 +18,7 @@ process VCLUST_CLUSTER {
     output:
     tuple val(meta), path("*.tsv"), emit: clusters
     tuple val(meta), path("*.log"), emit: log
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('vclust'), eval("vclust --version | sed 's/v//'"), topic: versions, emit: versions_vclust
 
     when:
     task.ext.when == null || task.ext.when
@@ -46,11 +46,6 @@ process VCLUST_CLUSTER {
         -i ${tsv} \\
         --ids ${ids} \\
         -o ${prefix}.cluster.tsv 2>&1 | tee ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vclust: \$(vclust --version)
-    END_VERSIONS
     """
 
     stub:
@@ -68,10 +63,5 @@ process VCLUST_CLUSTER {
     """
     touch ${prefix}.clusters.tsv
     echo "${metric_command} ${tgani_command}" > ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vclust: \$(vclust --version)
-    END_VERSIONS
     """
 }

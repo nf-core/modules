@@ -14,27 +14,22 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
-                input[2] = "standard"
+                input[0] = [
+                    [id: 'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = [
+                    [id: 'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
+                input[2] = 'standard'
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.versions,
-                    process.out.t2g,
-                    process.out.cdna,
-                    process.out.intron,
-                    process.out.cdna_t2c,
-                    process.out.intron_t2c,
-                    ).match()
-                },
-                { assert file(process.out.index.get(0)).exists() }
-            )
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out, unstableKeys: ["index"])).match()
         }
     }
 
@@ -43,27 +38,22 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
-                input[2] = "nac"
+                input[0] = [
+                    [id: 'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = [
+                    [id: 'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
+                input[2] = 'nac'
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.versions,
-                    process.out.t2g,
-                    process.out.cdna,
-                    process.out.intron,
-                    process.out.cdna_t2c,
-                    process.out.intron_t2c,
-                    ).match()
-                },
-                { assert file(process.out.index.get(0)).exists() }
-            )
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out, unstableKeys: ["index"])).match()
         }
     }
 
@@ -74,47 +64,48 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
-                input[2] = "standard"
+                input[0] = [
+                    [id: 'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = [
+                    [id: 'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
+                input[2] = 'standard'
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out, unstableKeys: ["index"])).match()
         }
     }
 
     test("genome.fasta + genome.gtf + 'nac' - stub") {
 
+        options "-stub"
+
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
-                input[2] = "nac"
+                input[0] = [
+                    [id: 'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = [
+                    [id: 'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
+                input[2] = 'nac'
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.versions,
-                    process.out.t2g,
-                    process.out.cdna,
-                    process.out.intron,
-                    process.out.cdna_t2c,
-                    process.out.intron_t2c,
-                    ).match()
-                },
-                { assert file(process.out.index.get(0)).exists() }
-            )
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out, unstableKeys: ["index"])).match()
         }
     }
 }

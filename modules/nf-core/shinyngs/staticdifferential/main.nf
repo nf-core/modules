@@ -3,9 +3,9 @@ process SHINYNGS_STATICDIFFERENTIAL {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d0/d0937af0a2b5efe1c18565ef320956e630a03c00c6d75ea5df92ec9f9ff2d14e/data' :
-        'community.wave.seqera.io/library/r-shinyngs:2.3.0--140cda6231347fbb' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d5/d5f79ef0afe3e3831496c61c81aeda56312f49ac324dc378d3312af7acae2ec6/data'
+        : 'community.wave.seqera.io/library/r-shinyngs:3.2.1--d43071e62bc500d3'}"
 
     input:
     tuple val(meta), path(differential_result)                              // Differential info: contrast and differential stats
@@ -14,7 +14,7 @@ process SHINYNGS_STATICDIFFERENTIAL {
     output:
     tuple val(meta), path("*/png/volcano.png")      , emit: volcanos_png
     tuple val(meta), path("*/html/volcano.html")    , emit: volcanos_html, optional: true
-    path "versions.yml"                             , emit: versions
+    tuple val("${task.process}"), val('shinyngs'), eval('Rscript -e "library(shinyngs); cat(as.character(packageVersion(\'shinyngs\')))"'), emit: versions_shinyngs, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,11 +30,6 @@ process SHINYNGS_STATICDIFFERENTIAL {
         --feature_metadata "$feature_meta" \\
         --outdir "$prefix" \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        r-shinyngs: \$(Rscript -e "library(shinyngs); cat(as.character(packageVersion('shinyngs')))")
-    END_VERSIONS
     """
 
     stub:
@@ -43,10 +38,5 @@ process SHINYNGS_STATICDIFFERENTIAL {
     mkdir -p $prefix/png && mkdir $prefix/html
     touch $prefix/png/volcano.png
     touch $prefix/html/volcano.html
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        r-shinyngs: \$(Rscript -e "library(shinyngs); cat(as.character(packageVersion('shinyngs')))")
-    END_VERSIONS
     """
 }

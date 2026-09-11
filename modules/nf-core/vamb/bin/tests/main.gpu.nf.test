@@ -1,0 +1,55 @@
+nextflow_process {
+
+    name "Test Process VAMB_BIN (GPU)"
+    script "../main.nf"
+    process "VAMB_BIN"
+    config "./nextflow.gpu.config"
+
+    tag "gpu"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "vamb"
+    tag "vamb/bin"
+
+    test("metagenome - binning - gpu") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: "test"],
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/contigs.fasta.gz", checkIfExists: true),
+                    [],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s1.sorted.bam", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s2.sorted.bam", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s3.sorted.bam", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s4.sorted.bam", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s5.sorted.bam", checkIfExists: true)
+                    ],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            def binned = process.out.bins.get(0).get(1).collectMany { path(it).fasta.keySet().toList() }
+            def clustered = path(process.out.clusters_unsplit.get(0).get(1)).readLines().drop(1).collect { it.split('\t')[1] }
+            def log = path(process.out.log.get(0).get(1)).readLines()
+            assertAll(
+                // Vamb falls back to CPU without complaining, so the log is what proves the device
+                { assert log.any { it.contains('CUDA: True') } },
+                { assert log.any { it.contains('Completed Vamb') } },
+                // the clustering is stochastic, so only the partition is asserted
+                { assert clustered && binned.sort() == clustered.sort() },
+                { assert snapshot(
+                    // every file Vamb writes differs between machines, the npz archives included
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+
+}

@@ -4,7 +4,7 @@ process AMULETY_BALMPAIRED {
     label 'process_gpu'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'oras://community.wave.seqera.io/library/amulety_wget:d69a2bc09a42a8b2':
         'community.wave.seqera.io/library/amulety_wget:2ecd2554d8d6f58e' }"
 

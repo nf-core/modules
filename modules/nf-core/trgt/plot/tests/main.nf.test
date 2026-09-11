@@ -62,7 +62,7 @@ nextflow_process {
             process {
                 """
                 input[0] = TRGT_GENOTYPE.out.bam
-                input[1] = [[],[]]
+                input[1] = [[],[],[]]
                 input[2] = ''
                 """
             }
@@ -90,9 +90,9 @@ nextflow_process {
             process {
                 """
                 input[0] = SAMTOOLS_SORT.out.bam
-                            .join(SAMTOOLS_INDEX.out.bai)
+                            .join(SAMTOOLS_INDEX.out.index)
                             .join(BCFTOOLS_SORT.out.vcf)
-                            .join(BCFTOOLS_SORT.out.tbi)
+                            .join(BCFTOOLS_SORT.out.index)
                             .map { tuple -> tuple + 'TEST' }
                 input[1] = GUNZIP.out.gunzip
                 input[2] = SAMTOOLS_FAIDX.out.fai
@@ -119,9 +119,9 @@ nextflow_process {
             process {
                 """
                 input[0] = SAMTOOLS_SORT.out.bam
-                            .join(SAMTOOLS_INDEX.out.bai)
+                            .join(SAMTOOLS_INDEX.out.index)
                             .join(BCFTOOLS_SORT.out.vcf)
-                            .join(BCFTOOLS_SORT.out.tbi)
+                            .join(BCFTOOLS_SORT.out.index)
                             .map { tuple -> tuple + 'TEST' }
                 input[1] = GUNZIP.out.gunzip
                 input[2] = SAMTOOLS_FAIDX.out.fai
@@ -134,10 +134,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    file(process.out.plot.get(0).get(1)).name, //unstable
-                    process.out.findAll { key, val -> key.startsWith("versions")}
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

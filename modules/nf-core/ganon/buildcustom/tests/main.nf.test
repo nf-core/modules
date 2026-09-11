@@ -35,7 +35,7 @@ nextflow_process {
                 { assert file(process.out.db.get(0).get(1).find { file(it).name == "test.tax" }).text.contains("MT192765.1") },
                 { assert snapshot(
                         process.out.db.get(0).get(1).findAll { file(it).name != "test.tax" },
-                        process.out.versions
+                        process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 },
             )
@@ -77,7 +77,7 @@ test("sarscov2 - genome - tsv") {
                 { assert process.success },
                 { assert snapshot(
                         process.out.db.get(0).get(1),
-                        process.out.versions
+                        process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )

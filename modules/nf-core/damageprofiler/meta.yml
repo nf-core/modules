@@ -1,6 +1,6 @@
 name: damageprofiler
-description: A Java based tool to determine damage patterns on ancient DNA as a replacement
-  for mapDamage
+description: A Java based tool to determine damage patterns on ancient DNA as a
+  replacement for mapDamage
 keywords:
   - damage
   - deamination
@@ -14,13 +14,14 @@ keywords:
   - archaeogenetics
 tools:
   - damageprofiler:
-      description: A Java based tool to determine damage patterns on ancient DNA as
-        a replacement for mapDamage
+      description: A Java based tool to determine damage patterns on ancient DNA
+        as a replacement for mapDamage
       homepage: https://github.com/Integrative-Transcriptomics/DamageProfiler
       documentation: https://damageprofiler.readthedocs.io/
       tool_dev_url: https://github.com/Integrative-Transcriptomics/DamageProfiler
       doi: "10.1093/bioinformatics/btab190"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:damageprofiler
 input:
   - - meta:
@@ -63,13 +64,27 @@ output:
           type: directory
           description: DamageProfiler results directory
           pattern: "*/*"
+  versions_damageprofiler:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - damageprofiler:
+          type: string
+          description: The name of the tool
+      - damageprofiler -v | sed 's/^DamageProfiler v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - damageprofiler:
+          type: string
+          description: The name of the tool
+      - damageprofiler -v | sed 's/^DamageProfiler v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:

@@ -19,7 +19,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'proteomics/database/yeast_UPS.fasta', checkIfExists:true),
                     file(params.modules_testdata_base_path + 'proteomics/parameter/mqpar.xml', checkIfExists:true)
                 ]
-                input[1] = Channel.of([
+                input[1] = channel.of([
                     file(params.modules_testdata_base_path + 'proteomics/msspectra/OVEMB150205_12.raw'),
                     file(params.modules_testdata_base_path + 'proteomics/msspectra/OVEMB150205_14.raw')
                 ]).collect()
@@ -29,18 +29,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot( // Need to check only the file names as empty files are created
-                    process.out.maxquant_txt.collect{
-                        it[1].collect{ file(it).getName() }
-                    },
-                    process.out.versions,
-                ).match() }
+                // Need to check only the file names as empty files are created
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["maxquant_txt"])).match() }
             )
         }
     }
 
     test("yeast_UPS - msspectra raw -- stub") {
-        tag "stub"
         options "-stub"
         when {
             process {
@@ -50,7 +45,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'proteomics/database/yeast_UPS.fasta', checkIfExists:true),
                     file(params.modules_testdata_base_path + 'proteomics/parameter/mqpar.xml', checkIfExists:true)
                 ]
-                input[1] = Channel.of([
+                input[1] = channel.of([
                     file(params.modules_testdata_base_path + 'proteomics/msspectra/OVEMB150205_12.raw'),
                     file(params.modules_testdata_base_path + 'proteomics/msspectra/OVEMB150205_14.raw')
                 ]).collect()
@@ -60,10 +55,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

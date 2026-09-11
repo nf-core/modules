@@ -1,19 +1,34 @@
 {
-    "test-bioawk": {
+    "fasta bioawk tsv - no redirect": {
         "content": [
             {
-                "0": [
+                "output": [
                     [
                         {
                             "id": "test",
                             "single_end": false
                         },
-                        "sample_1.fa.gz:md5,b558dd15d8940373a032a827d490e693"
+                        "output.tsv:md5,45a26fc19df7fafe489fb66ee057b069"
                     ]
                 ],
-                "1": [
-                    "versions.yml:md5,5fe88e58a71f10551df56518c35ba91a"
-                ],
+                "versions_bioawk": [
+                    [
+                        "BIOAWK",
+                        "bioawk",
+                        "1.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-04-28T16:11:05.906416466",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.03.2"
+        }
+    },
+    "fasta bioawk fasta.gz": {
+        "content": [
+            {
                 "output": [
                     [
                         {
@@ -23,15 +38,73 @@
                         "sample_1.fa.gz:md5,b558dd15d8940373a032a827d490e693"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,5fe88e58a71f10551df56518c35ba91a"
+                "versions_bioawk": [
+                    [
+                        "BIOAWK",
+                        "bioawk",
+                        "1.0"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-04-28T16:10:51.865939613",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-08-28T10:24:46.397249"
+            "nf-test": "0.9.5",
+            "nextflow": "26.03.2"
+        }
+    },
+    "fasta bioawk tsv - program file": {
+        "content": [
+            {
+                "output": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "telomere_summary.tsv:md5,45a26fc19df7fafe489fb66ee057b069"
+                    ]
+                ],
+                "versions_bioawk": [
+                    [
+                        "BIOAWK",
+                        "bioawk",
+                        "1.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-04-28T16:11:13.097345957",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.03.2"
+        }
+    },
+    "fasta bioawk tsv": {
+        "content": [
+            {
+                "output": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "telomere_summary.tsv:md5,45a26fc19df7fafe489fb66ee057b069"
+                    ]
+                ],
+                "versions_bioawk": [
+                    [
+                        "BIOAWK",
+                        "bioawk",
+                        "1.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-04-28T16:10:58.851230521",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.03.2"
+        }
     }
 }

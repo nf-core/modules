@@ -3,9 +3,9 @@ process TRGT_GENOTYPE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/trgt:5.0.0--h9ee0642_0':
-        'biocontainers/trgt:5.0.0--h9ee0642_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b9/b94772fdcba7aa8027797b0d092a77b272cebc8d566fec3c960a1470e20223cf/data':
+        'community.wave.seqera.io/library/trgt:5.1.0--66e3b26326e566e7' }"
 
     input:
     tuple val(meta) , path(bam), path(bai), val(karyotype)
@@ -34,11 +34,6 @@ process TRGT_GENOTYPE {
         ${karyo} \\
         --threads ${task.cpus} \\
         --output-prefix ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        trgt: \$(trgt --version |& sed '1!d ; s/trgt //')
-    END_VERSIONS
     """
 
     stub:
@@ -46,10 +41,5 @@ process TRGT_GENOTYPE {
     """
     touch ${prefix}.spanning.bam
     echo "" | gzip > ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        trgt: \$(trgt --version |& sed '1!d ; s/trgt //')
-    END_VERSIONS
     """
 }

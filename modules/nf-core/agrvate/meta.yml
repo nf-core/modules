@@ -1,18 +1,19 @@
 name: agrvate
-description: Rapid identification of Staphylococcus aureus agr locus type and agr
-  operon variants
+description: Rapid identification of Staphylococcus aureus agr locus type and
+  agr operon variants
 keywords:
   - fasta
   - virulence
   - Staphylococcus aureus
 tools:
   - agrvate:
-      description: Rapid identification of Staphylococcus aureus agr locus type and
-        agr operon variants.
+      description: Rapid identification of Staphylococcus aureus agr locus type
+        and agr operon variants.
       homepage: https://github.com/VishnuRaghuram94/AgrVATE
       documentation: https://github.com/VishnuRaghuram94/AgrVATE
       tool_dev_url: https://github.com/VishnuRaghuram94/AgrVATE
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:agrvate
 input:
   - - meta:
@@ -44,13 +45,27 @@ output:
         type: directory
         description: Results of the agrvate assessment
         pattern: "*-results"
+  versions_agrvate:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - agrvate:
+          type: string
+          description: The name of the tool
+      - agrvate --version | sed 's/[^0-9.]//g':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - agrvate:
+          type: string
+          description: The name of the tool
+      - agrvate --version | sed 's/[^0-9.]//g':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@abhi18av"
 maintainers:

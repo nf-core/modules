@@ -10,23 +10,12 @@ tools:
       homepage: "https://github.com/gbouras13/pypolca"
       documentation: "https://github.com/gbouras13/pypolca?tab=readme-ov-file#usage"
       doi: "10.1099/mgen.0.001254"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 
 input:
   - - meta:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
-    - reads:
-        type: file
-        description: List of short reads for assembly polishing. Length 1 for
-          single-end and 2 for paired-end
-        pattern: "*.{fastq,fq}.gz"
-        ontologies:
-          - edam: "http://edamontology.org/format_1930" # FASTQ
-  - - meta2:
         type: map
         description: |
           Groovy Map containing sample information
@@ -38,6 +27,13 @@ input:
         ontologies:
           - edam: "http://edamontology.org/format_1929" # FASTA
 
+    - reads:
+        type: file
+        description: List of short reads for assembly polishing. Length 1 for
+          single-end and 2 for paired-end
+        pattern: "*.{fastq,fq}.gz"
+        ontologies:
+          - edam: "http://edamontology.org/format_1930" # FASTQ
 output:
   polished:
     - - meta:
@@ -83,7 +79,7 @@ output:
       - pypolca:
           type: string
           description: The name of the tool
-      - pypolca --version:
+      - pypolca --version | sed 's/^pypolca, version //':
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -95,7 +91,7 @@ topics:
       - pypolca:
           type: string
           description: The name of the tool
-      - pypolca --version:
+      - pypolca --version | sed 's/^pypolca, version //':
           type: eval
           description: The expression to obtain the version of the tool
 

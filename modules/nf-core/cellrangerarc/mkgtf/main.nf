@@ -1,15 +1,15 @@
 process CELLRANGERARC_MKGTF {
-    tag "$gtf"
+    tag "$meta.id"
     label 'process_low'
 
-    container "nf-core/cellranger-arc:2.0.2"
+    container "quay.io/nf-core/cellranger-arc:2.0.2"
 
     input:
-    path gtf
+    tuple val(meta), path(gtf)
 
     output:
-    path "*.filtered.gtf", emit: gtf
-    path "versions.yml"  , emit: versions
+    tuple val(meta), path("${prefix}.gtf"), emit: gtf
+    tuple val("${task.process}"), val('cellrangerarc'), eval("cellranger-arc --version 2>&1 | sed 's/cellranger-arc cellranger-arc-//'"), emit: versions_cellrangerarc, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,17 +20,13 @@ process CELLRANGERARC_MKGTF {
         exit 1, "CELLRANGERARC_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def args = task.ext.args ?: ''
+    prefix   = task.ext.prefix ?: "${meta.id}.filtered"
     """
     cellranger-arc \\
         mkgtf \\
-        $gtf \\
-        ${gtf.baseName}.filtered.gtf \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellrangerarc: \$(echo \$( cellranger-arc --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
-    END_VERSIONS
+        ${gtf} \\
+        ${prefix}.gtf \\
+        ${args}
     """
 
     stub:
@@ -38,12 +34,8 @@ process CELLRANGERARC_MKGTF {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         exit 1, "CELLRANGERARC_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
+    prefix = task.ext.prefix ?: "${meta.id}.filtered"
     """
-    touch ${gtf.baseName}.filtered.gtf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellrangerarc: \$(echo \$( cellranger-arc --version 2>&1) | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/' )
-    END_VERSIONS
+    touch ${prefix}.gtf
     """
 }

@@ -10,9 +10,9 @@ tools:
       homepage: "https://github.com/jeffbuttars/cowpy"
       documentation: "https://github.com/jeffbuttars/cowpy"
       tool_dev_url: "https://github.com/jeffbuttars/cowpy"
-      licence: ["Apache-2.0"]
+      licence:
+        - "Apache-2.0"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -36,13 +36,28 @@ output:
           type: file
           description: test file
           pattern: "*.txt"
+          ontologies: []
+  versions_cowpy:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cowpy:
+          type: string
+          description: The name of the tool
+      - 1.1.5:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cowpy:
+          type: string
+          description: The name of the tool
+      - 1.1.5:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@maxulysse"
 maintainers:

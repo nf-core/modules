@@ -24,8 +24,7 @@ nextflow_process {
                 // Some output files are too large to calculate MD5sums, so we just list the files in the output directory.
                 { assert snapshot(
                         file(process.out.database.get(0)).list().sort(),
-                        process.out.versions,
-                        path(process.out.versions[0]).yaml
+                        process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -50,7 +49,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }

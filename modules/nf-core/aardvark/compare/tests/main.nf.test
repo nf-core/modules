@@ -1,0 +1,139 @@
+nextflow_process {
+
+    name "Test Process AARDVARK_COMPARE"
+    script "../main.nf"
+    process "AARDVARK_COMPARE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "aardvark"
+    tag "aardvark/compare"
+
+    test("homo_sapiens - chr21 - vcf.gz") {
+
+
+        when {
+            process {
+                """
+                input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz.tbi', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz.tbi', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true),
+                        ]
+                input[1] = [
+                        [ id:'test2' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                        ]
+                input[2] = [[],[]]
+                input[3] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    path(process.out.labelled_truth[0][1]).vcf.summary,
+                    file(process.out.labelled_truth[0][1]).name,
+                    path(process.out.labelled_query[0][1]).vcf.summary,
+                    file(process.out.labelled_query[0][1]).name,
+                    process.out.region_sequences,
+                    process.out.region_summary,
+                    process.out.summary,
+                    process.out.runinfo,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - stratification - vcf.gz") {
+
+
+        when {
+            process {
+                """
+                // generate stratification tsv file
+                stratification_tsv = Channel.of("multi_intervals\\tmulti_intervals.bed.gz")
+                    .collectFile(name:"stratification.tsv", newLine:true)
+                    .map { [[id:'test'], it] }
+
+                input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz.tbi', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz.tbi', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true)
+                        ]
+                input[1] = [
+                        [ id:'test2' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                        ]
+                input[2] = stratification_tsv
+                input[3] = [[id: 'stratification'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed.gz', checkIfExists:true)]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    path(process.out.labelled_truth[0][1]).vcf.summary,
+                    file(process.out.labelled_truth[0][1]).name,
+                    path(process.out.labelled_query[0][1]).vcf.summary,
+                    file(process.out.labelled_query[0][1]).name,
+                    process.out.region_sequences,
+                    process.out.region_summary,
+                    process.out.summary,
+                    process.out.runinfo,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - chr21 -vcf.gz - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz.tbi', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test2_haplotc.vcf.gz.tbi', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true),
+                        ]
+                input[1] = [
+                        [ id:'test2' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                        ]
+                input[2] = [[],[]]
+                input[3] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

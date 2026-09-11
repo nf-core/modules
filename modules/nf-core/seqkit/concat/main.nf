@@ -3,16 +3,16 @@ process SEQKIT_CONCAT {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/seqkit:2.9.0--h9ee0642_0'
-        : 'biocontainers/seqkit:2.9.0--h9ee0642_0'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4f/4fe272ab9a519cf418160471a485b5ef50ea3f571a8e4555a826f70a4d8243ae/data'
+        : 'community.wave.seqera.io/library/seqkit:2.13.0--05c0a96bf9fb2751'}"
 
     input:
     tuple val(meta), path(input, stageAs: 'in/*')
 
     output:
     tuple val(meta), path("*.{fasta,fastq,fa,fq,fas,fna,faa}"), emit: fastx
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('seqkit'), eval("seqkit version | sed 's/^.*v//'"), emit: versions_seqkit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,21 +27,14 @@ process SEQKIT_CONCAT {
         --threads ${task.cpus} \\
         ${args} \\
         in/* > ${prefix}.${file_type}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqkit: \$(seqkit version | cut -d' ' -f2)
-    END_VERSIONS
     """
 
     stub:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.fasta
+    echo ${args}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqkit: \$(seqkit version | cut -d' ' -f2)
-    END_VERSIONS
+    touch ${prefix}.fasta
     """
 }

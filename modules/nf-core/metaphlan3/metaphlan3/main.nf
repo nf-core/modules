@@ -3,19 +3,19 @@ process METAPHLAN3_METAPHLAN3 {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/metaphlan:3.0.12--pyhb7b1952_0' :
-        'biocontainers/metaphlan:3.0.12--pyhb7b1952_0' }"
+        'quay.io/biocontainers/metaphlan:3.0.12--pyhb7b1952_0' }"
 
     input:
     tuple val(meta), path(input)
-    path metaphlan_db
+    path db_metaphlan
 
     output:
     tuple val(meta), path("*_profile.txt")   ,                emit: profile
     tuple val(meta), path("*.biom")          ,                emit: biom
     tuple val(meta), path('*.bowtie2out.txt'), optional:true, emit: bt2out
-    path "versions.yml"                      ,                emit: versions
+    tuple val("${task.process}"), val('metaphlan3'), eval("metaphlan --version 2>&1 | cut -d ' ' -f 3"), emit: versions_metaphlan3, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,7 +28,7 @@ process METAPHLAN3_METAPHLAN3 {
     def bowtie2_out = "$input_type" == "--input_type bowtie2out" || "$input_type" == "--input_type sam" ? '' : "--bowtie2out ${prefix}.bowtie2out.txt"
 
     """
-    BT2_DB=`find -L "${metaphlan_db}" -name "*rev.1.bt2" -exec dirname {} \\;`
+    BT2_DB=`find -L "${db_metaphlan}" -name "*rev.1.bt2" -exec dirname {} \\;`
 
     metaphlan \\
         --nproc $task.cpus \\
@@ -40,10 +40,6 @@ process METAPHLAN3_METAPHLAN3 {
         --biom ${prefix}.biom \\
         --output_file ${prefix}_profile.txt
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        metaphlan3: \$(metaphlan --version 2>&1 | awk '{print \$3}')
-    END_VERSIONS
     """
 
     stub:
@@ -56,10 +52,6 @@ process METAPHLAN3_METAPHLAN3 {
     touch ${prefix}.biom
     touch ${prefix}_profile.txt
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        metaphlan3: \$(metaphlan --version 2>&1 | awk '{print \$3}')
-    END_VERSIONS
     """
 
 }

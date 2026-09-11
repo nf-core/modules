@@ -1,11 +1,11 @@
 process FGBIO_SORTBAM {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fe/fe9479adc5e6e0a1c125d346fdfa0dd313834249e9c55c40e8d44ec3a48c6559/data' :
-        'community.wave.seqera.io/library/fgbio:3.1.1--6c9a88faf1d62b6c' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4d/4d1150a2e123f49f8c268f0ab429847afae642376fa52af713b846b084df4a9f/data'
+        : 'community.wave.seqera.io/library/fgbio:3.1.2--6e9400d507a9dc55'}"
 
     input:
     tuple val(meta), path(bam)
@@ -22,30 +22,36 @@ process FGBIO_SORTBAM {
     def prefix = task.ext.prefix ?: "${meta.id}_sorted"
     def mem_gb = 8
     if (!task.memory) {
-        log.info '[fgbio SortBam] Available memory not known - defaulting to 8GB. Specify process memory requirements to change this.'
-    } else if (mem_gb > task.memory.giga) {
+        log.info('[fgbio SortBam] Available memory not known - defaulting to 8GB. Specify process memory requirements to change this.')
+    }
+    else if (mem_gb > task.memory.giga) {
         if (task.memory.giga < 2) {
             mem_gb = 1
-        } else {
+        }
+        else {
             mem_gb = task.memory.giga - 1
         }
     }
 
-    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("${bam}" == "${prefix}.bam") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
 
     """
     fgbio -Xmx${mem_gb}g \\
         --async-io=true \\
         --tmp-dir=. \\
         SortBam \\
-        -i $bam \\
-        $args \\
+        -i ${bam} \\
+        ${args} \\
         -o ${prefix}.bam
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}_sorted"
-    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("${bam}" == "${prefix}.bam") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
     touch ${prefix}.bam
     """

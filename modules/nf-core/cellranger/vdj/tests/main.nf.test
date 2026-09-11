@@ -42,9 +42,9 @@ nextflow_process {
                     process.out.outs[0][1].findAll {  file(it).name.contains('.pb')  },
                     process.out.outs[0][1].findAll {  file(it).name.contains('metrics_summary.csv') },
                     process.out.outs[0][1].findAll {  file(it).name.contains('reference.json') },
-                    process.out.outs[0][1].findAll {  file(it).name.contains('web_summary.html') }
-                ).match() },
-                { assert snapshot(process.out.versions).match("versions") }
+                    process.out.outs[0][1].findAll {  file(it).name.contains('web_summary.html') },
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
             )
         }
 
@@ -80,7 +80,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                    ).match() },
+
             )
         }
 

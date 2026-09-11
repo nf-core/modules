@@ -30,16 +30,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.versions,
-                    process.out.report.collect{path(it[1]).readLines()},
-                    process.out.contigs,
-                    process.out.corrected_reads,
-                    process.out.corrected_trimmed_reads,
-                    process.out.metadata,
-                    process.out.contig_position,
-                    process.out.contig_info
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -66,7 +57,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

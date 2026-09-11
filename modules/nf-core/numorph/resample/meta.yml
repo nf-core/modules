@@ -1,0 +1,72 @@
+name: "numorph_resample"
+description: performs resampling of light-sheet microscopy images
+keywords:
+  - resampling
+  - light-sheet microscopy
+  - numorph
+  - lsmquant
+tools:
+  - "numorph":
+      description: "A toolkit for processing and analysis of light-sheet microscopy
+        images"
+      homepage: "https://github.com/qbic-pipelines/Numorph-toolkit"
+      documentation: "https://github.com/qbic-pipelines/Numorph-toolkit"
+      tool_dev_url: "https://github.com/qbic-pipelines/Numorph-toolkit"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - stitch_directory:
+        type: directory
+        description: Directory containing stitched images format
+        pattern: "*.{tif,tiff}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3591"
+          - edam: "http://edamontology.org/format_3727"
+    - parameter_file:
+        type: file
+        description: File containing parameters for numorph tools
+        pattern: "*.{csv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3752"
+output:
+  resampled:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - results/resampled/:
+          type: directory
+          description: Directory containing resampled images
+          pattern: "/{results}/resampled/*"
+  versions_numorph_analyze:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - numorph_resample:
+          type: string
+          description: The name of the tool
+      - 1.0.0:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - numorph_resample:
+          type: string
+          description: The name of the tool
+      - 1.0.0:
+          type: string
+          description: The expression to obtain the version of the tool
+authors:
+  - "@CaroAMN"
+maintainers:
+  - "@CaroAMN"

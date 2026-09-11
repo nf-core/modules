@@ -10,7 +10,6 @@ nextflow_process {
     tag "cramino"
 
     test("pacbio - bam - arrow") {
-
         when {
             params{
                 module_args = "--arrow test.arrow"
@@ -29,28 +28,20 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                {
-                    assert snapshot(
-                        process.out.versions,
-                        process.out.arrow,
-                        process.out.stats.collect {
-                            it.collect {
-                                it instanceof String && file(it).exists() ? file(it).name : it
-                            } // stats filename
-                        },
-                        process.out.stats.collect {
-                            it.collect {
-                                it instanceof String && file(it).exists() ? file(it).text.split("\n")[0..-2] : it
-                            } // stats content, without last timestamp line
-                        }
-                    ).match()
-                }
+                { assert snapshot(
+                    process.out.arrow,
+                    process.out.stats.collect { meta, stats -> [
+                        meta, file(stats).name,
+                        file(stats).text.split("\n")[0..-2] // Timestamps at the end
+                    ]},
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
 
     }
 
-        test("pacbio - bam") {
+    test("pacbio - bam") {
 
         when {
             params{
@@ -70,22 +61,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                {
-                    assert snapshot(
-                        process.out.versions,
-                        process.out.arrow,
-                        process.out.stats.collect {
-                            it.collect {
-                                it instanceof String && file(it).exists() ? file(it).name : it
-                            } // stats filename
-                        },
-                        process.out.stats.collect {
-                            it.collect {
-                                it instanceof String && file(it).exists() ? file(it).text.split("\n")[0..-2] : it
-                            } // stats content, without last timestamp line
-                        }
-                    ).match()
-                }
+                { assert snapshot(
+                    process.out.arrow,
+                    process.out.stats.collect { meta, stats -> [
+                        meta, file(stats).name,
+                        file(stats).text.split("\n")[0..-2]
+                    ]},
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
 
@@ -113,10 +96,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.versions,
-                    process.out.arrow,
-                    process.out.stats).match() })
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
         }
 
     }
@@ -143,10 +124,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.versions,
-                    process.out.arrow,
-                    process.out.stats).match() })
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
         }
     }
 }

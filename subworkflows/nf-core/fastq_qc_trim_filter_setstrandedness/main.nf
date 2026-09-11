@@ -132,6 +132,7 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
 
     ch_filtered_reads = channel.empty()
     ch_trim_read_count = channel.empty()
+    ch_trim_reads_merged = channel.empty()
     ch_multiqc_files = channel.empty()
     ch_lint_log_raw = channel.empty()
     ch_lint_log_trimmed = channel.empty()
@@ -155,7 +156,6 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     ch_ribodetector_log   = channel.empty()
     ch_seqkit_stats       = channel.empty()
     ch_bowtie2_log        = channel.empty()
-    ch_bowtie2_index      = channel.empty()
     ch_seqkit_prefixed    = channel.empty()
     ch_seqkit_converted   = channel.empty()
     ch_fastqc_filtered_html = channel.empty()
@@ -188,6 +188,8 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
         ch_lint_log_raw = FQ_LINT.out.lint
         ch_filtered_reads = ch_filtered_reads.join(FQ_LINT.out.lint.map { meta, _lint -> meta })
     }
+
+    ch_reads_cat = ch_filtered_reads
 
     //
     // SUBWORKFLOW: Read QC, extract UMI and trim adapters with TrimGalore!
@@ -239,6 +241,7 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
         )
         ch_filtered_reads = FASTQ_FASTQC_UMITOOLS_FASTP.out.reads
         ch_trim_read_count = FASTQ_FASTQC_UMITOOLS_FASTP.out.trim_read_count
+        ch_trim_reads_merged = FASTQ_FASTQC_UMITOOLS_FASTP.out.trim_reads_merged
 
         // Capture individual outputs for workflow outputs
         ch_fastqc_raw_html  = FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_raw_html
@@ -290,6 +293,8 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
         ch_lint_log_trimmed = FQ_LINT_AFTER_TRIMMING.out.lint
         ch_filtered_reads = ch_filtered_reads.join(FQ_LINT_AFTER_TRIMMING.out.lint.map { meta, _lint -> meta })
     }
+
+    ch_reads_trimmed = ch_filtered_reads
 
     //
     // MODULE: Remove genome contaminant reads
@@ -376,10 +381,10 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     // SUBWORKFLOW: Sub-sample FastQ files and pseudoalign with Salmon to auto-infer strandedness
     //
     // Return empty channel if ch_strand_fastq.auto_strand is empty so salmon index isn't created
-
     ch_fasta
+        .map { fasta -> [fasta] }
         .combine(ch_strand_fastq.auto_strand)
-        .map { items -> items.first() }
+        .map { items -> items[0] }
         .first()
         .set { ch_genome_fasta }
 
@@ -410,10 +415,28 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
         .mix(ch_strand_fastq.known_strand)
         .set { ch_strand_inferred_fastq }
 
+    // `remainder: true` needed because every contributor is gated behind
+    // a `skip_*` / `filter_*` option.
+    ch_per_sample_mqc_bundle = ch_fastqc_raw_zip
+        .join(ch_fastqc_trim_zip,      remainder: true)
+        .join(ch_trim_log,             remainder: true)
+        .join(ch_trim_json,            remainder: true)
+        .join(ch_umi_log,              remainder: true)
+        .join(ch_bbsplit_stats,        remainder: true)
+        .join(ch_sortmerna_log,        remainder: true)
+        .join(ch_ribodetector_log,     remainder: true)
+        .join(ch_seqkit_stats,         remainder: true)
+        .join(ch_bowtie2_log,          remainder: true)
+        .join(ch_fastqc_filtered_zip,  remainder: true)
+        .map { row -> [row[0], row.drop(1).findAll { f -> f != null }.collectMany { e -> (e instanceof List) ? e : [e] }] }
+
     emit:
-    reads            = ch_strand_inferred_fastq
-    trim_read_count  = ch_trim_read_count
-    multiqc_files    = ch_multiqc_files.transpose().map { _meta, file -> file }
+    reads             = ch_strand_inferred_fastq
+    reads_cat         = ch_reads_cat
+    reads_trimmed     = ch_reads_trimmed
+    trim_read_count   = ch_trim_read_count
+    trim_reads_merged = ch_trim_reads_merged
+    multiqc_files     = ch_multiqc_files.transpose()
 
     // Individual outputs for workflow outputs
     lint_log_raw     = ch_lint_log_raw
@@ -441,4 +464,5 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     fastqc_filtered_zip  = ch_fastqc_filtered_zip
     seqkit_prefixed  = ch_seqkit_prefixed
     seqkit_converted = ch_seqkit_converted
+    per_sample_mqc_bundle = ch_per_sample_mqc_bundle // channel: [ val(meta), list(files) ]
 }

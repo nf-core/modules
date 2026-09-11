@@ -48,7 +48,7 @@ nextflow_process {
                     assert snapshot(
                         process.out.vcf.collect { file(it[1]).getName() },
                         process.out.tbi.collect { file(it[1]).getName() },
-                        process.out.versions,
+                        process.out.findAll { key, val -> key.startsWith('versions') },
                     ).match()
                 }
             )

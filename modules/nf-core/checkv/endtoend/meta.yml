@@ -17,7 +17,8 @@ tools:
       documentation: https://bitbucket.org/berkeleylab/checkv/src/master/
       tool_dev_url: https://bitbucket.org/berkeleylab/checkv/src/master/
       doi: "10.1038/s41587-020-00774-7"
-      licence: ["BSD License"]
+      licence:
+        - "BSD License"
       identifier: biotools:checkv
 input:
   - - meta:
@@ -42,9 +43,9 @@ output:
             e.g. [ id:'sample', bin:'1' ]
       - ${prefix}/quality_summary.tsv:
           type: file
-          description: CheckV's main output containing integrated results from the three
-            main modules (contamination, completeness, complete genomes) with overall
-            quality of contigs
+          description: CheckV's main output containing integrated results from the
+            three main modules (contamination, completeness, complete genomes)
+            with overall quality of contigs
           pattern: "${prefix}/quality_summary.tsv"
           ontologies: []
   completeness:
@@ -66,7 +67,8 @@ output:
             e.g. [ id:'sample', bin:'1' ]
       - ${prefix}/contamination.tsv:
           type: file
-          description: CheckV's detailed overview table on estimating contamination
+          description: CheckV's detailed overview table on estimating
+            contamination
           pattern: "${prefix}/contamination.tsv"
           ontologies: []
   complete_genomes:
@@ -77,8 +79,8 @@ output:
             e.g. [ id:'sample', bin:'1' ]
       - ${prefix}/complete_genomes.tsv:
           type: file
-          description: CheckV's detailed overview table on the identified putative complete
-            genomes
+          description: CheckV's detailed overview table on the identified putative
+            complete genomes
           pattern: "${prefix}/complete_genomes.tsv"
           ontologies: []
   proviruses:
@@ -103,13 +105,27 @@ output:
           description: CheckV's extracted virus contigs
           pattern: "${prefix}/viruses.fna"
           ontologies: []
+  versions_checkv:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - checkv:
+          type: string
+          description: The name of the tool
+      - checkv -h 2>&1 | sed '1!d;s/^.*CheckV v//;s/:.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - checkv:
+          type: string
+          description: The name of the tool
+      - checkv -h 2>&1 | sed '1!d;s/^.*CheckV v//;s/:.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@Joon-Klaps"
 maintainers:
