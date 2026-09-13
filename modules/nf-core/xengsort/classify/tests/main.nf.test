@@ -16,7 +16,7 @@ nextflow_process {
         run("XENGSORT_INDEX") {
             script "../../index/main.nf"
             params {
-                module_args = '-k 25'
+                index_args = '-k 25'
             }
             process {
                 """
