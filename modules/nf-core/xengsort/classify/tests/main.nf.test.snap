@@ -138,7 +138,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-09-13T20:33:08.701844498",
+        "timestamp": "2026-09-13T20:56:56.971648741",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
@@ -147,7 +147,67 @@
     "homo_sapiens - sarscov2 - [fastq.gz, fastq.gz] - paired_end": {
         "content": [
             {
-                "versions": [
+                "ambiguous": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test-ambiguous.1.fq.gz:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test-ambiguous.2.fq.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "both": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test-both.1.fq.gz:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test-both.2.fq.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "graft": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test-graft.1.fq.gz:md5,4161df271f9bfcd25d5845a1e220dbec",
+                            "test-graft.2.fq.gz:md5,2ebae722295ea66d84075a3b042e2b42"
+                        ]
+                    ]
+                ],
+                "host": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test-host.1.fq.gz:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test-host.2.fq.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "neither": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test-neither.1.fq.gz:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test-neither.2.fq.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "versions_xengsort": [
                     [
                         "XENGSORT_CLASSIFY",
                         "xengsort",
@@ -156,7 +216,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-09-13T20:32:46.486202265",
+        "timestamp": "2026-09-13T20:56:33.517349535",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
@@ -165,7 +225,52 @@
     "homo_sapiens - sarscov2 - [fastq.gz] - single_end": {
         "content": [
             {
-                "versions": [
+                "ambiguous": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test-ambiguous.fq.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "both": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test-both.fq.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "graft": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test-graft.fq.gz:md5,4161df271f9bfcd25d5845a1e220dbec"
+                    ]
+                ],
+                "host": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test-host.fq.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "neither": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test-neither.fq.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_xengsort": [
                     [
                         "XENGSORT_CLASSIFY",
                         "xengsort",
@@ -174,7 +279,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-09-13T20:32:11.846848401",
+        "timestamp": "2026-09-13T20:55:54.225410871",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
