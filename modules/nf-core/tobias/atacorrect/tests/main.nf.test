@@ -32,12 +32,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert process.out.corrected },
-                { assert process.out.expected },
-                { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ["report"]),
-                    process.out.report.collect { meta, report -> file(report).name },
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
