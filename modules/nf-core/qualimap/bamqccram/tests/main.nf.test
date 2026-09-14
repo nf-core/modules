@@ -2,6 +2,7 @@ nextflow_process {
 
     name "Test Process QUALIMAP_BAMQCCRAM"
     script "../main.nf"
+    config "./nextflow.config"
     process "QUALIMAP_BAMQCCRAM"
     tag "modules"
     tag "modules_nfcore"
