@@ -273,6 +273,81 @@ seq1          -         model_A      -             1     100       1     100    
         }
     }
 
+    test("real hmmsearch footer -- trailing # Program:/# Date:/# [ok] lines don't leak into the table") {
+
+        when {
+            process {
+                """
+                // Uncurated hmmsearch --tblout always ends with a run of "#"-prefixed
+                // run-metadata lines, the last being "# [ok]" -- unlike the curated test
+                // fixtures used above, which have this footer trimmed off. All of it is
+                // "#"-prefixed, same as the header, so it should be skipped the same way.
+                def tblout1 = File.createTempFile('profileA', '.tbl')
+                tblout1.text = '''#                                                                           --- full sequence ---- --- best 1 domain ---- --- domain number estimation ----
+# target name                    accession  query name           accession    E-value  score  bias   E-value  score  bias   exp reg clu  ov env dom rep inc description of target
+#            ------------------- ---------- -------------------- ---------- --------- ------ ----- --------- ------ -----   --- --- --- --- --- --- --- --- ---------------------
+seq1                               -          model_A               PF00001       1e-10   50.0   0.1      2e-10   49.0   0.1   1.0   1   0   0   1   1   1   1 a multi word description
+#
+# Program:         hmmsearch
+# Version:         3.4 (Aug 2023)
+# Pipeline mode:   SEARCH
+# Query file:      model_A.hmm
+# Target file:     all.faa.gz
+# Date:            Sun Sep 13 14:01:33 2026
+# [ok]
+'''
+
+                input[0] = [
+                    [ id:'test' ],
+                    [ 'profileA' ],
+                    [ file(tblout1.toString()) ],
+                ]
+                input[1] = 'tblout'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                // header line + exactly the one real hit -- no stray row from the footer
+                { assert path(process.out.tsv[0][1]).linesGzip.size() == 2 },
+                { assert path(process.out.tsv[0][1]).linesGzip.any { it.startsWith('profileA\t') && it.contains('a multi word description') } }
+            )
+        }
+    }
+
+    test("zero-hit tblout -- header with no data rows succeeds, not treated as a missing header") {
+
+        when {
+            process {
+                """
+                def tblout1 = File.createTempFile('profileA', '.tbl')
+                tblout1.text = '''#                                                                           --- full sequence ---- --- best 1 domain ---- --- domain number estimation ----
+# target name                    accession  query name           accession    E-value  score  bias   E-value  score  bias   exp reg clu  ov env dom rep inc description of target
+#            ------------------- ---------- -------------------- ---------- --------- ------ ----- --------- ------ -----   --- --- --- --- --- --- --- --- ---------------------
+# [ok]
+'''
+
+                input[0] = [
+                    [ id:'test' ],
+                    [ 'profileA' ],
+                    [ file(tblout1.toString()) ],
+                ]
+                input[1] = 'tblout'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                // header line only -- a real, valid "no hits" result, not an error
+                { assert path(process.out.tsv[0][1]).linesGzip.size() == 1 }
+            )
+        }
+    }
+
     test("2 tblout files -- stub") {
 
         options "-stub"
