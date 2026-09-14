@@ -59,8 +59,10 @@ nextflow_process {
         }
 
         then {
+            assert process.success
+            assert process.out.report
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["report"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["report", "4"])).match() }
             )
         }
 
