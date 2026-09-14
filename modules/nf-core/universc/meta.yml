@@ -54,13 +54,6 @@ output:
           description: Files containing the outputs of Cell Ranger
           pattern: "${prefix}/outs/*"
           ontologies: []
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software version
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@kbattenb"
   - "@tomkellygenetics"
