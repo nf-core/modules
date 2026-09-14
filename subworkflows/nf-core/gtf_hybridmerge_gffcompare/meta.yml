@@ -118,12 +118,6 @@ output:
         reference transcripts.
         Structure: [ val(meta), path(loci) ]
       pattern: "*.loci"
-  - versions:
-      type: file
-      description: |
-        Software versions are emitted via the `versions` topic channel by the
-        upstream gffcompare, gawk, and bedtools modules; no separate output is
-        emitted from this subworkflow.
 authors:
   - "@pinin4fjords"
 maintainers:

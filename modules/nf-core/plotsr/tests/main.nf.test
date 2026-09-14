@@ -84,8 +84,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out, unstableKeys:["png"])).match() }
             )
         }
@@ -121,8 +121,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }

@@ -11,8 +11,8 @@ process RRNATRANSCRIPTS {
     tuple val(meta), path(gtf)
 
     output:
-    tuple val(meta), path('*_rrna_intervals.gtf')    , emit: rrna_gtf
-    path "versions.yml"                              , emit: versions
+    tuple val(meta), path('*_rrna_intervals.gtf'), emit: rrna_gtf
+    path "versions.yml"                          , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

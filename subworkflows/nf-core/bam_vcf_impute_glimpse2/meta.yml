@@ -64,12 +64,12 @@ input:
       description: Whether to split the reference panel and convert it to binary files before imputation.
 
 output:
-  - ch_chunks:
+  - chunks:
       type: string
       description: |
         Channel containing the chunking regions for each chromosome.
         Structure: [ meta, region with buffer, region without buffer ]
-  - ch_vcf_index:
+  - vcf_index:
       type: file
       description: |
         Output VCF/BCF file for the merged regions.

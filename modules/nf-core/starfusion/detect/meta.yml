@@ -12,7 +12,8 @@ tools:
       documentation: https://github.com/STAR-Fusion/STAR-Fusion/wiki
       tool_dev_url: https://github.com/STAR-Fusion/STAR-Fusion/releases
       doi: "10.1101/120295v1"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 
 input:
@@ -48,6 +49,7 @@ output:
           type: file
           description: Fusion events from STAR-fusion
           pattern: "*.{fusion_predictions.tsv}"
+          ontologies: []
   abridged:
     - - meta:
           type: map
@@ -58,6 +60,7 @@ output:
           type: file
           description: Abridged version of fusion events from STAR-fusion
           pattern: "*.{fusion.abridged.tsv}"
+          ontologies: []
   coding_effect:
     - - meta:
           type: map
@@ -68,13 +71,30 @@ output:
           type: file
           description: Fusion events with their coding effect from STAR-fusion
           pattern: "*.{coding_effect.tsv}"
+
+          ontologies: []
+  versions_starfusion:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - star-fusion:
+          type: string
+          description: The name of the tool
+      - echo 1.15.1:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - star-fusion:
+          type: string
+          description: The name of the tool
+      - echo 1.15.1:
+          type: eval
+          description: The expression to obtain the version of the tool
 
 authors:
   - "@praveenraj2018"

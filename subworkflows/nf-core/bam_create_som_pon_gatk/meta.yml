@@ -19,25 +19,32 @@ input:
   - ch_input:
       type: list
       description: |
-        An input channel containing the following files:
-        - input: One or more BAM/CRAM files
-        - input_index: The index/indices from the BAM/CRAM file(s)
-        Structure: [ meta, path(input), path(input_index) ]
+        One or more BAM/CRAM files with their index/indices.
+
+        Structure: [ val(meta), path(input), path(input_index) ]
   - ch_fasta:
       type: list
       description: |
-        Reference fasta file
-        Structure: [ meta, path(fasta) ]
+        Reference fasta file.
+
+        Structure: [ val(meta), path(fasta) ]
   - ch_fai:
       type: list
       description: |
-        Reference fasta file index
-        Structure: [ meta, path(fai) ]
+        Reference fasta file index, and the gzip index when the reference is compressed.
+
+        Structure: [ val(meta), path(fai), path(gzi) ]
   - ch_dict:
       type: list
       description: |
-        GATK sequence dictionary
-        Structure: [ meta, path(dict) ]
+        GATK sequence dictionary.
+
+        Structure: [ val(meta), path(dict) ]
+  - val_pon_norm:
+      type: string
+      description: |
+        Name given to the panel of normals, used as the sample id of the genomicsdb
+        workspace and of the resulting panel of normals.
   - ch_intervals_gendb:
       type: file
       description: Interval file used for GenomicsDBImport
@@ -47,32 +54,51 @@ input:
       description: |
         Intervals channel for scatter and gather strategy. Each item is a tuple of
         an interval file and the total number of intervals. Use [ [], 0 ] if no intervals.
+
         Structure: [ path(intervals), val(num_intervals) ]
 output:
-  - mutect2_vcf:
-      type: list
-      description: List of compressed vcf files to be used to make the gendb workspace
-      pattern: "[ *.vcf.gz ]"
-  - mutect2_index:
-      type: list
-      description: List of indexes of mutect2_vcf files
-      pattern: "[ *vcf.gz.tbi ]"
-  - mutect2_stats:
-      type: list
-      description: List of stats files that pair with mutect2_vcf files
-      pattern: "[ *vcf.gz.stats ]"
   - genomicsdb:
       type: directory
-      description: Directory containing the files that compose the genomicsdb workspace.
+      description: |
+        Directory containing the files that compose the genomicsdb workspace.
+
+        Structure: [ val(meta), path(genomicsdb) ]
       pattern: "path/name_of_workspace"
-  - pon_vcf:
+  - mutect2_index:
       type: file
-      description: Panel of normal as compressed vcf file
+      description: |
+        Index of the mutect2 vcf file.
+
+        Structure: [ val(meta), path(tbi) ]
+      pattern: "*.vcf.gz.tbi"
+  - mutect2_stats:
+      type: file
+      description: |
+        Stats file that pairs with the mutect2 vcf file.
+
+        Structure: [ val(meta), path(stats) ]
+      pattern: "*.vcf.gz.stats"
+  - mutect2_vcf:
+      type: file
+      description: |
+        Compressed vcf file used to make the gendb workspace.
+
+        Structure: [ val(meta), path(vcf) ]
       pattern: "*.vcf.gz"
   - pon_index:
       type: file
-      description: Index of pon_vcf file
-      pattern: "*vcf.gz.tbi"
+      description: |
+        Index of the panel of normals vcf file.
+
+        Structure: [ val(meta), path(tbi) ]
+      pattern: "*.vcf.gz.tbi"
+  - pon_vcf:
+      type: file
+      description: |
+        Panel of normals as a compressed vcf file.
+
+        Structure: [ val(meta), path(vcf) ]
+      pattern: "*.vcf.gz"
 authors:
   - "@GCJMackenzie"
 maintainers:
