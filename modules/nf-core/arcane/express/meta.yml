@@ -25,7 +25,7 @@ input:
     - reads:
         type: file
         description: |
-          List containing two FASTQ files: Barcode + UMI sequence (R1) and cDNA sequence (R2). 
+          List containing two FASTQ files: Barcode + UMI sequence (R1) and cDNA sequence (R2).
           Accepts lists of multiple lanes.
         pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
         ontology:
@@ -46,7 +46,7 @@ input:
   - chemistry:
       type: string
       description: |
-        The chemistry the sample was generated with (e.g., 'v2', 'v3', 'v4', 'v3-5p'). 
+        The chemistry the sample was generated with (e.g., 'v2', 'v3', 'v4', 'v3-5p').
         Must match the 10x Genomics chemistry. Passed to `--chemistry`.
 
 output:
