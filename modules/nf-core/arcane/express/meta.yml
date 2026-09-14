@@ -21,16 +21,12 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1' ]`
-    - r1:
+          e.g. `[ id:'sample1', single_end:false ]`
+    - reads:
         type: file
-        description: Barcode + UMI FASTQ file(s) (CellRanger naming R1). Accepts single files or lists of multiple lanes.
-        pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
-        ontology:
-          - edam: "http://edamontology.org/format_1930"
-    - r2:
-        type: file
-        description: cDNA sequence FASTQ file(s) (CellRanger naming R2). Accepts single files or lists of multiple lanes.
+        description: |
+          List containing two FASTQ files: Barcode + UMI sequence (R1) and cDNA sequence (R2). 
+          Accepts lists of multiple lanes.
         pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
         ontology:
           - edam: "http://edamontology.org/format_1930"

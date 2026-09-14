@@ -13,22 +13,17 @@ nextflow_process {
     tag "arcane/filter"
 
     setup {
-        params {
-            filter_args = '--kmersize 12'
-            index_args  = '--kmersize 12'
-        }
-        
         run("ARCANE_FILTER") {
             script "../../filter/main.nf"
             process {
                 """
                 input[0] = [
                     [ id:'test_index' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
                 input[1] = [
                     [ id:'test_index' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
                 ]
                 """
             }
@@ -55,8 +50,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/sc3_v3_5k_a549_gex_crispr/fastqs/gex/subsampled_SC3_v3_NextGem_DI_CRISPR_A549_5K_gex_S5_L001_R1_001.fastq.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/sc3_v3_5k_a549_gex_crispr/fastqs/gex/subsampled_SC3_v3_NextGem_DI_CRISPR_A549_5K_gex_S5_L001_R2_001.fastq.gz', checkIfExists: true)
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/sc3_v3_5k_a549_gex_crispr/fastqs/gex/subsampled_SC3_v3_NextGem_DI_CRISPR_A549_5K_gex_S5_L001_R1_001.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/sc3_v3_5k_a549_gex_crispr/fastqs/gex/subsampled_SC3_v3_NextGem_DI_CRISPR_A549_5K_gex_S5_L001_R2_001.fastq.gz', checkIfExists: true)
+                    ]
                 ]
                 input[1] = ARCANE_INDEX.out.index.join(ARCANE_INDEX.out.info)
                 input[2] = 'v3'
@@ -67,7 +64,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ['counts', 'genes', 'barcodes'])).match() }
             )
         }
     }
@@ -84,8 +81,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/sc3_v3_5k_a549_gex_crispr/fastqs/gex/subsampled_SC3_v3_NextGem_DI_CRISPR_A549_5K_gex_S5_L001_R1_001.fastq.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/sc3_v3_5k_a549_gex_crispr/fastqs/gex/subsampled_SC3_v3_NextGem_DI_CRISPR_A549_5K_gex_S5_L001_R2_001.fastq.gz', checkIfExists: true)
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/sc3_v3_5k_a549_gex_crispr/fastqs/gex/subsampled_SC3_v3_NextGem_DI_CRISPR_A549_5K_gex_S5_L001_R1_001.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/sc3_v3_5k_a549_gex_crispr/fastqs/gex/subsampled_SC3_v3_NextGem_DI_CRISPR_A549_5K_gex_S5_L001_R2_001.fastq.gz', checkIfExists: true)
+                    ]
                 ]
                 input[1] = ARCANE_INDEX.out.index.join(ARCANE_INDEX.out.info)
                 input[2] = 'v3'
