@@ -11,9 +11,9 @@ nextflow_process {
     tag "hmmer/formattsv"
 
     // Real hmmsearch output (curated NrdJ/NrdJm1 excerpts, also used by hmmer/hmmrank's own
-    // test). The two files differ in the case that matters: NrdJ.tbl.gz's dash/alignment
-    // header row has no gap after "#" (HMMER glues it onto the first column's dashes);
-    // NrdJm1.tbl.gz's does.
+    // test). Both fixtures' dash/alignment header rows have no gap after "#" (HMMER glues it
+    // onto the first column's dashes); the gapped form is exercised by the synthetic tests
+    // below instead, since no gapped real fixture is available.
     test("real HMMER output -- NrdJ + NrdJm1 tblout, concatenated") {
 
         when {
@@ -175,6 +175,100 @@ seq4_with_a_much_longer_identifier   -           620 model_D               PF000
                 // profileD's row must still have exactly 24 tab-separated fields despite the
                 // much wider header -- confirms width variation doesn't shift the field count.
                 { assert path(process.out.tsv[0][1]).linesGzip.find { it.startsWith('profileD\t') }.tokenize('\t').size() == 24 }
+            )
+        }
+    }
+
+    test("label containing a space -- quoted, doesn't misalign the label/file pairing") {
+
+        when {
+            process {
+                """
+                def tblout1 = File.createTempFile('profileA', '.tbl')
+                tblout1.text = '''#                                                                           --- full sequence ---- --- best 1 domain ---- --- domain number estimation ----
+# target name                    accession  query name           accession    E-value  score  bias   E-value  score  bias   exp reg clu  ov env dom rep inc description of target
+#            ------------------- ---------- -------------------- ---------- --------- ------ ----- --------- ------ -----   --- --- --- --- --- --- --- --- ---------------------
+seq1                               -          model_A               PF00001       1e-10   50.0   0.1      2e-10   49.0   0.1   1.0   1   0   0   1   1   1   1 a multi word description
+'''
+
+                def tblout2 = File.createTempFile('profileB', '.tbl')
+                tblout2.text = '''#                                                                           --- full sequence ---- --- best 1 domain ---- --- domain number estimation ----
+# target name                    accession  query name           accession    E-value  score  bias   E-value  score  bias   exp reg clu  ov env dom rep inc description of target
+#            ------------------- ---------- -------------------- ---------- --------- ------ ----- --------- ------ -----   --- --- --- --- --- --- --- --- ---------------------
+seq2                               -          model_B               PF00002       3e-08   40.2   0.0      4e-08   39.9   0.0   1.0   1   0   0   1   1   1   1 another one
+'''
+
+                input[0] = [
+                    [ id:'test' ],
+                    [ 'profile A', 'profileB' ],
+                    [ file(tblout1.toString()), file(tblout2.toString()) ],
+                ]
+                input[1] = 'tblout'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert path(process.out.tsv[0][1]).linesGzip.any { it.startsWith('profile A\t') && it.contains('a multi word description') } },
+                { assert path(process.out.tsv[0][1]).linesGzip.any { it.startsWith('profileB\t') && it.contains('another one') } }
+            )
+        }
+    }
+
+    test("no header row in input -- fails rather than silently emitting an empty table") {
+
+        when {
+            process {
+                """
+                def tblout1 = File.createTempFile('profileA', '.tbl')
+                tblout1.text = '''seq1                               -          model_A               PF00001       1e-10   50.0   0.1      2e-10   49.0   0.1   1.0   1   0   0   1   1   1   1 a multi word description
+'''
+
+                input[0] = [
+                    [ id:'test' ],
+                    [ 'profileA' ],
+                    [ file(tblout1.toString()) ],
+                ]
+                input[1] = 'tblout'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains('column-count header') }
+            )
+        }
+    }
+
+    test("tblout with a different column count (e.g. nhmmer) -- fails rather than mislabeling columns") {
+
+        when {
+            process {
+                """
+                def tblout1 = File.createTempFile('profileA', '.tbl')
+                tblout1.text = '''#target name  accession query name  accession   hmmfrom  hmm to alifrom ali to envfrom  env to  modlen strand   E-value  score  bias description of target
+#------------ --------- ------------ --------- ------- ------- ------- ------- ------- ------- ------- ------ --------- ------ ----- ---------------------
+seq1          -         model_A      -             1     100       1     100       1     100     100      +     1e-10   50.0   0.1 a description
+'''
+
+                input[0] = [
+                    [ id:'test' ],
+                    [ 'profileA' ],
+                    [ file(tblout1.toString()) ],
+                ]
+                input[1] = 'tblout'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains('expected 19 tblout columns') }
             )
         }
     }

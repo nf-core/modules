@@ -30,6 +30,7 @@ process HMMER_FORMATTSV {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
+    assert format in ['tblout', 'domtblout'] : "HMMER_FORMATTSV: format must be 'tblout' or 'domtblout', got '${format}'"
     """
     echo "" | gzip > ${prefix}.${format}.tsv.gz
     """

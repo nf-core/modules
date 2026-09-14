@@ -42,7 +42,13 @@ input:
           naming convention.
     - files:
         type: file
-        description: One or more HMMER --tblout or --domtblout files (gzipped or not), all of the same kind as given in `format`
+        description: |
+          One or more HMMER --tblout or --domtblout files (gzipped or not), all
+          of the same kind as given in `format`. Column names are hardcoded to
+          the hmmsearch/hmmscan/phmmer layout (19 tblout / 23 domtblout
+          columns); other tools with a different column count for the same
+          format, e.g. nhmmer's 16-column tblout, are rejected with an error
+          rather than silently mislabeled.
         pattern: "*.{tbl,domtbl}{,.gz}"
         ontologies: []
   - format:
