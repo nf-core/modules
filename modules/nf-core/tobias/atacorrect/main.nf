@@ -28,15 +28,8 @@ process TOBIAS_ATACORRECT {
     mkdir -p .matplotlib
     export MPLCONFIGDIR="\${PWD}/.matplotlib"
 
-    ln -s $bam ${prefix}.bam
-    if [[ "$bai" == *.csi ]]; then
-        ln -s $bai ${prefix}.bam.csi
-    else
-        ln -s $bai ${prefix}.bam.bai
-    fi
-
     TOBIAS ATACorrect \\
-        --bam ${prefix}.bam \\
+        --bam $bam \\
         --genome $fasta \\
         --peaks $peaks \\
         --prefix $prefix \\
