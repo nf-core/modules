@@ -104,6 +104,16 @@ output:
       - SemiBin2 --version:
           type: eval
           description: The expression to obtain the version of the tool
+  versions_cuda:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cuda:
+          type: string
+          description: The name of the runtime
+      - 'python -c "import torch; print(torch.version.cuda or ''no CUDA available'')"':
+          type: eval
+          description: CUDA version bundled with the task's pytorch build, or `no CUDA available` on the non-GPU path
 topics:
   versions:
     - - ${task.process}:
@@ -115,6 +125,15 @@ topics:
       - SemiBin2 --version:
           type: eval
           description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cuda:
+          type: string
+          description: The name of the runtime
+      - 'python -c "import torch; print(torch.version.cuda or ''no CUDA available'')"':
+          type: eval
+          description: CUDA version bundled with the task's pytorch build, or `no CUDA available` on the non-GPU path
 authors:
   - "@prototaxites"
 maintainers:
