@@ -34,7 +34,10 @@ nextflow_process {
             assertAll(
                 { assert process.out.corrected },
                 { assert process.out.expected },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["report"]),
+                    process.out.report.collect { meta, report -> file(report).name },
+                ).match() }
             )
         }
 
@@ -65,7 +68,10 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.corrected },
                 { assert process.out.expected },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["report"]),
+                    process.out.report.collect { meta, report -> file(report).name },
+                ).match() }
             )
         }
 
