@@ -11,6 +11,11 @@ set -euo pipefail
 # Labels/files are quoted per element rather than bare-joined: an unquoted
 # join word-splits any label or path containing whitespace and misaligns the
 # label/file pairing for every entry after it.
+#
+# Once a header is found, a data row is only ever treated as a trailing
+# comment (hmmsearch's "# Program:"/"# Date:"/"# [ok]" run-metadata footer)
+# once the exact sentinel line "#" (nothing else) has been seen -- a target
+# name that happens to start with "#" is otherwise valid data, not a comment.
 
 labels=(${labels.collect { "'" + it.toString().replace("'", "'\\''") + "'" }.join(' ')})
 files=(${files.collect { "'" + it.toString().replace("'", "'\\''") + "'" }.join(' ')})
@@ -22,31 +27,32 @@ files=(${files.collect { "'" + it.toString().replace("'", "'\\''") + "'" }.join(
         label="\${labels[i]}"
         file="\${files[i]}"
         zcat -f "\$file" | awk -v label="\$label" -v expected=23 '
-            /^#/ {
-                if (N == 0) {
-                    n = 0
-                    ok = 1
-                    first = \$1
-                    sub(/^#/, "", first)
-                    if (length(first) > 0) {
-                        if (first ~ /^-+\$/) { n++ } else { ok = 0 }
+            { sub(/\\r\$/, "") }
+            N == 0 && /^#/ {
+                n = 0
+                ok = 1
+                first = \$1
+                sub(/^#/, "", first)
+                if (length(first) > 0) {
+                    if (first ~ /^-+\$/) { n++ } else { ok = 0 }
+                }
+                if (ok) {
+                    for (i = 2; i <= NF; i++) {
+                        if (\$i !~ /^-+\$/) { ok = 0; break }
+                        n++
                     }
-                    if (ok) {
-                        for (i = 2; i <= NF; i++) {
-                            if (\$i !~ /^-+\$/) { ok = 0; break }
-                            n++
-                        }
+                }
+                if (ok && n > 0) {
+                    if (n != expected) {
+                        print "hmmer/formattsv: expected " expected " domtblout columns, found " n " -- unsupported layout" > "/dev/stderr"
+                        exit 1
                     }
-                    if (ok && n > 0) {
-                        if (n != expected) {
-                            print "hmmer/formattsv: expected " expected " domtblout columns, found " n " -- unsupported layout" > "/dev/stderr"
-                            exit 1
-                        }
-                        N = n
-                    }
+                    N = n
                 }
                 next
             }
+            N > 0 && \$0 == "#" { intrailer = 1 }
+            intrailer { next }
             {
                 if (N == 0) {
                     print "hmmer/formattsv: data row seen before a column-count header was found" > "/dev/stderr"
