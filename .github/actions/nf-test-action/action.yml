@@ -58,7 +58,9 @@ runs:
       if: ${{contains(inputs.profile, 'conda')}}
       uses: conda-incubator/setup-miniconda@8ee1f361103df19b6f8c8655fd3967a8ecb162d5 # v4
       with:
-        auto-update-conda: true
+        with:
+        auto-update-conda: false
+        miniforge-version: latest
         conda-solver: libmamba
         conda-remove-defaults: true
 
