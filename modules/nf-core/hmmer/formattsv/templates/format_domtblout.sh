@@ -57,7 +57,7 @@ files=(${files.collect { "'" + it.toString().replace("'", "'\\''") + "'" }.join(
             }
             N > 0 && \$0 == "#" { intrailer = 1; next }
             intrailer {
-                if (\$0 !~ /^#/) {
+                if (\$0 != "" && \$0 !~ /^#/) {
                     print "hmmer/formattsv: data row seen after the run-metadata footer -- looks like more than one HMMER run concatenated into one file" > "/dev/stderr"
                     exit 1
                 }
