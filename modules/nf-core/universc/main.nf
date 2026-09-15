@@ -15,8 +15,8 @@ process UNIVERSC {
 
     output:
     tuple val(meta), path("${prefix}/outs/*"), emit: outs
-    tuple val("${task.process}"), val('cellranger'), eval("cellranger --version 2>&1 | sed 's/^.*[^0-9]\\([0-9]*\\.[0-9]*\\.[0-9]*\\).*\$/\\1/'"), emit: versions_cellranger, topic: versions
-    tuple val("${task.process}"), val('universc'), eval("bash /universc/launch_universc.sh --version | grep version | grep universc  | sed 's/^.* //g'"), emit: versions_universc, topic: versions
+    tuple val("${task.process}"), val('cellranger'), eval("cellranger 2>&1 | sed '/^cellranger/!d;s/cellranger  (//;s/)//'"), emit: versions_cellranger, topic: versions
+    tuple val("${task.process}"), val('universc'), eval("universc --version | sed -n 's/launch_universc.sh version //p'"), emit: versions_universc, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
