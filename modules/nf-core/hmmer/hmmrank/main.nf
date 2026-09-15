@@ -19,6 +19,17 @@ process HMMER_HMMRANK {
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    // A single quote inside a SQL string literal is escaped by doubling it, not by a backslash
+    // (that's shell/awk's convention, not SQL's) -- meta.id/task.ext.prefix and file paths are
+    // not under this module's control, so any embedded "'" (e.g. an apostrophe in a sample id)
+    // would otherwise prematurely close the literal and corrupt the generated SQL.
+    // .call(), not a bare sqlLit(...): Nextflow's `script:` block fails to resolve a
+    // def-bound closure invoked with direct call syntax ("`sqlLit` is not defined"), even
+    // though the exact same closure works fine passed by reference, e.g. to `.collect()`.
+    def sqlLit = { s -> s.toString().replace("'", "''") }
+    def tbloutSql = sqlLit.call(tblout)
+    def domtbloutSql = domtblout ? sqlLit.call(domtblout) : null
+    def prefixSql = sqlLit.call(prefix)
     // Reduces one coordinate set's (hmm/ali/env) domain rows to one row per (target, profile,
     // query): the outer bounds of the hit, plus the size and count of the union of its domains.
     // This is the SQL form of a classic "merge overlapping intervals" scan: sorted by each row's
@@ -33,12 +44,12 @@ process HMMER_HMMRANK {
     // in one go, putting several models' domains in the same table.
     def islands_sql = { set -> """
 CREATE TEMP TABLE ${set}_prev AS
-SELECT target_name AS accno, profile, query_name AS query, ${set}_from AS f, ${set}_to AS t,
+SELECT accno, profile, query, ${set}_from AS f, ${set}_to AS t,
     MAX(${set}_to) OVER (
-        PARTITION BY target_name, profile, query_name ORDER BY ${set}_from
+        PARTITION BY accno, profile, query ORDER BY ${set}_from
         ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING
     ) AS prev_cummax
-FROM read_parquet('${domtblout}');
+FROM dom_raw;
 
 CREATE TEMP TABLE ${set}_isl AS
 SELECT accno, profile, query, f, t,
@@ -61,10 +72,17 @@ FROM ${set}_isl_agg
 GROUP BY accno, profile, query;
 """
     }
-    def domtbl_sql = domtblout ? ['hmm', 'ali', 'env'].collect(islands_sql).join('') + """
+    // dom_raw is read once and reused by every *_prev table and dom_base below, rather than each
+    // issuing its own read_parquet() of the same file (4 scans of one input down to 1).
+    def domtbl_sql = domtblout ? """
+CREATE TEMP TABLE dom_raw AS
+SELECT target_name AS accno, profile, query_name AS query, target_length AS tlen, query_length AS qlen,
+    hmm_from, hmm_to, ali_from, ali_to, env_from, env_to
+FROM read_parquet('${domtbloutSql}');
+""" + ['hmm', 'ali', 'env'].collect(islands_sql).join('') + """
 CREATE TEMP TABLE dom_base AS
-SELECT DISTINCT target_name AS accno, profile, query_name AS query, target_length AS tlen, query_length AS qlen
-FROM read_parquet('${domtblout}');
+SELECT DISTINCT accno, profile, query, tlen, qlen
+FROM dom_raw;
 
 CREATE TEMP TABLE domain_coords AS
 SELECT dom_base.accno, dom_base.profile, dom_base.query, dom_base.tlen, dom_base.qlen,
@@ -108,9 +126,9 @@ ORDER BY ranked.accno, ranked.rank
             PARTITION BY target_name
             ORDER BY full_score DESC, full_evalue ASC, profile ASC, query_name ASC
         ) AS rank
-    FROM read_parquet('${tblout}');
+    FROM read_parquet('${tbloutSql}');
     ${domtbl_sql}
-    COPY (${output_select}) TO '${prefix}.hmmrank.tsv.gz' (FORMAT CSV, DELIMITER '\\t', HEADER, COMPRESSION 'gzip');
+    COPY (${output_select}) TO '${prefixSql}.hmmrank.tsv.gz' (FORMAT CSV, DELIMITER '\\t', HEADER, COMPRESSION 'gzip', NULLSTR 'NA');
     "
     """
 

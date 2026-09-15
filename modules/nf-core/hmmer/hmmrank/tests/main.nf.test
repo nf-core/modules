@@ -161,11 +161,45 @@ nextflow_process {
                 """
             }
         }
+        // seq2 has a tblout hit but deliberately no matching domtblout row, to exercise the
+        // "no domain records behind this hit" case: hmmsearch's per-sequence and per-domain
+        // thresholds are independent, so this is a real, expected shape, not corrupted input.
+        run("HMMER_FORMATTSV", alias: "FORMATTSV_NA_TBLOUT") {
+            script "../../formattsv/main.nf"
+            process {
+                """
+                def tblout1 = File.createTempFile('profileNA', '.tbl')
+                tblout1.text = '''#                                                                           --- full sequence ---- --- best 1 domain ---- --- domain number estimation ----
+# target name                    accession  query name           accession    E-value  score  bias   E-value  score  bias   exp reg clu  ov env dom rep inc description of target
+#            ------------------- ---------- -------------------- ---------- --------- ------ ----- --------- ------ -----   --- --- --- --- --- --- --- --- ---------------------
+seq1                               -          model_A               PF00001       1e-10   50.0   0.1      2e-10   49.0   0.1   1.0   1   0   0   1   1   1   1 has a domain match
+seq2                               -          model_A               PF00001       2e-10   49.0   0.1      3e-10   48.0   0.1   1.0   1   0   0   1   1   1   1 no domain match
+'''
+                input[0] = [ [ id: 'na-test' ], [ 'P' ], [ file(tblout1.toString()) ] ]
+                input[1] = 'tblout'
+                """
+            }
+        }
+        run("HMMER_FORMATTSV", alias: "FORMATTSV_NA_DOMTBLOUT") {
+            script "../../formattsv/main.nf"
+            process {
+                """
+                def domtblout1 = File.createTempFile('profileNA', '.domtbl')
+                domtblout1.text = '''#                                                                            --- full sequence --- -------------- this domain -------------   hmm coord   ali coord   env coord
+# target name        accession   tlen query name           accession   qlen  E-value  score  bias   #  of  c-Evalue  i-Evalue  score  bias  from    to  from    to  from    to  acc description of target
+#------------------- ---------- ----- -------------------- ---------- ----- --------- ------ ----- --- --- --------- --------- ------ ----- ----- ----- ----- ----- ----- ----- ---- ---------------------
+seq1                               -   100 model_A               PF00001   100      1e-10   50.0   0.1   1   1     1e-10      1e-10   50.0   0.1     1    50     1    50     1    50 0.95 has a domain match
+'''
+                input[0] = [ [ id: 'na-test' ], [ 'P' ], [ file(domtblout1.toString()) ] ]
+                input[1] = 'domtblout'
+                """
+            }
+        }
         run("DUCKDB_TABLE2PARQUET", alias: "PARQUET_TBLOUT") {
             script "../../../duckdb/table2parquet/main.nf"
             process {
                 """
-                input[0] = FORMATTSV_16S_TBLOUT.out.tsv.mix(FORMATTSV_NRDJ_TBLOUT.out.tsv, FORMATTSV_MULTIMODEL_TBLOUT.out.tsv)
+                input[0] = FORMATTSV_16S_TBLOUT.out.tsv.mix(FORMATTSV_NRDJ_TBLOUT.out.tsv, FORMATTSV_MULTIMODEL_TBLOUT.out.tsv, FORMATTSV_NA_TBLOUT.out.tsv)
                 """
             }
         }
@@ -173,7 +207,7 @@ nextflow_process {
             script "../../../duckdb/table2parquet/main.nf"
             process {
                 """
-                input[0] = FORMATTSV_16S_DOMTBLOUT.out.tsv.mix(FORMATTSV_NRDJ_DOMTBLOUT.out.tsv, FORMATTSV_MULTIMODEL_DOMTBLOUT.out.tsv)
+                input[0] = FORMATTSV_16S_DOMTBLOUT.out.tsv.mix(FORMATTSV_NRDJ_DOMTBLOUT.out.tsv, FORMATTSV_MULTIMODEL_DOMTBLOUT.out.tsv, FORMATTSV_NA_DOMTBLOUT.out.tsv)
                 """
             }
         }
@@ -326,6 +360,58 @@ nextflow_process {
                       def f = line.split('\t')
                       cols.collect { f[header.indexOf(it)] }.join(' ')
                   }.sort() == expected }
+            )
+        }
+    }
+
+    // A hit with no matching domtblout row is a real, expected shape (hmmsearch's per-sequence
+    // and per-domain thresholds are independent), not corrupted input -- its coordinate columns
+    // must come out as the literal string "NA" (matching readr::write_tsv's own NA rendering, so
+    // downstream consumers that compare against/filter on that literal token keep working),
+    // never a silently-empty field, which is indistinguishable from a genuinely empty string
+    // value and is what DuckDB's COPY writes for a SQL NULL without an explicit NULLSTR.
+    test("hmmrank - domain coordinates - a hit with no domain match renders as NA, not empty") {
+        when {
+            process {
+                """
+                input[0] = PARQUET_TBLOUT.out.parquet
+                    .filter { meta, parquet -> meta.id == 'na-test' }
+                    .join(PARQUET_DOMTBLOUT.out.parquet.filter { meta, parquet -> meta.id == 'na-test' })
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { def rows = path(process.out.hmmrank[0][1]).linesGzip
+                  def header = rows[0].split('\t') as List
+                  def byAccno = rows[1..-1].collectEntries { line -> def f = line.split('\t'); [ (f[header.indexOf('accno')]): f ] }
+                  assert byAccno['seq1'][header.indexOf('hmm_len')] == '50'
+                  assert byAccno['seq2'][header.indexOf('hmm_len')] == 'NA' }
+            )
+        }
+    }
+
+    // meta.id/task.ext.prefix are not under this module's control -- a sample id containing an
+    // apostrophe (not an unreasonable real id) must not corrupt the generated SQL, since a single
+    // quote is SQL's own string-literal delimiter.
+    test("hmmrank - meta.id containing an apostrophe doesn't break the generated SQL") {
+        when {
+            process {
+                """
+                input[0] = PARQUET_TBLOUT.out.parquet
+                    .filter { meta, parquet -> meta.id == 'nrdj' }
+                    .map { meta, parquet -> [ [ id: "O'Brien" ], parquet, [] ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.hmmrank[0][1].toString().tokenize('/').last() == "O'Brien.hmmrank.tsv.gz" },
+                { assert path(process.out.hmmrank[0][1]).linesGzip.size() > 1 }
             )
         }
     }
