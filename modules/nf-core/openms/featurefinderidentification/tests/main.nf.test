@@ -67,12 +67,14 @@ nextflow_process {
             def featureContent = file(process.out.features[0][1]).text
             // featureXML byte content is not reproducible run-to-run; the feature counts below
             // were observed stable across runs at a fixed thread count (cpus pinned in nextflow.config).
+            // Fallback: if these counts drift after an OpenMS or runner change, regenerate the snapshot and confirm the counts are still stable across two runs.
             def countMatch = featureContent =~ /<featureList count="(\d+)"/
             assertAll(
                 { assert process.success },
                 { assert process.out.features[0][0] == [id:'test'] },
                 { assert file(process.out.features[0][1]).name == 'test.featureXML' },
                 { assert countMatch.find() },
+                { assert (featureContent =~ /<feature id="/).count > 0 },
                 { assert snapshot(
                     countMatch[0][1],
                     (featureContent =~ /<feature id="/).count,
