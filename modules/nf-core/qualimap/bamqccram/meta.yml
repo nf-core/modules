@@ -22,7 +22,9 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          e.g. [ id:'test', single_end:false, strandedness:'forward' ]
+          meta.strandedness can be use in ext.args to set `-p` argument
+          (see ./tests/nextflow.config)
     - cram:
         type: file
         description: Input cram file
