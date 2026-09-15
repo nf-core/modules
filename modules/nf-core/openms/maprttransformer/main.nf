@@ -32,6 +32,7 @@ process OPENMS_MAPRTTRANSFORMER {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}_aligned"
+    if ("$in_file" == "${prefix}.${in_file.extension}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     touch ${prefix}.${in_file.extension}
     """

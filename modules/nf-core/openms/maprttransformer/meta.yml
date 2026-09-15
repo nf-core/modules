@@ -9,14 +9,13 @@ keywords:
   - proteomics
 tools:
   - "openms":
-      description: "OpenMS is an open-source software C++ library for LC-MS data management
-        and analyses"
+      description: "OpenMS is an open-source software C++ library for LC-MS data management and analyses"
       homepage: "https://openms.de"
       documentation: "https://openms.readthedocs.io/en/latest/index.html"
       tool_dev_url: "https://github.com/OpenMS/OpenMS"
       doi: "10.1038/s41592-024-02197-7"
       licence: ["BSD"]
-      identifier: ""
+      identifier: "biotools:openms"
 
 input:
   - - meta:
@@ -28,12 +27,14 @@ input:
         type: file
         description: Spectra or identification/feature map to transform.
         pattern: "*.{mzML,idXML,featureXML,consensusXML}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/data_2536 # Mass spectrometry data
     - trafoxml:
         type: file
         description: Retention time transformation to apply.
         pattern: "*.trafoXML"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/data_2536 # Mass spectrometry data
 output:
   aligned:
     - - meta:
@@ -46,7 +47,8 @@ output:
           description: Input map with transformed retention times, same format as
             the input.
           pattern: "*.{mzML,idXML,featureXML,consensusXML}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/data_2536 # Mass spectrometry data
   versions_openms:
     - - ${task.process}:
           type: string
