@@ -210,11 +210,6 @@ output:
       description: |
         SeqFu statistics for pre-processing reads
         Structure: [ val(meta), path(stats) ]
-  - pre_stats_seqfu_multiqc:
-      type: file
-      description: |
-        SeqFu MultiQC-compatible stats for pre-processing reads
-        Structure: [ val(meta), path(multiqc) ]
   - pre_stats_seqkit_stats:
       type: file
       description: |
@@ -247,11 +242,6 @@ output:
       description: |
         SeqFu statistics for post-processing reads
         Structure: [ val(meta), path(stats) ]
-  - post_stats_seqfu_multiqc:
-      type: file
-      description: |
-        SeqFu MultiQC-compatible stats for post-processing reads
-        Structure: [ val(meta), path(multiqc) ]
   - post_stats_seqkit_stats:
       type: file
       description: |

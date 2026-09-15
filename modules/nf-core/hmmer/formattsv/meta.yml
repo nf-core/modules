@@ -1,0 +1,124 @@
+name: "hmmer_formattsv"
+description: Convert HMMER's --tblout/--domtblout output to a clean, properly-delimited TSV
+keywords:
+  - hmmer
+  - hmmsearch
+  - tblout
+  - domtblout
+  - tsv
+tools:
+  - "hmmer":
+      description: "Biosequence analysis using profile hidden Markov models"
+      homepage: "http://hmmer.org/"
+      documentation: "http://hmmer.org/documentation.html"
+      tool_dev_url: "https://github.com/EddyRivasLab/hmmer"
+      doi: "10.1371/journal.pcbi.1002195"
+      licence:
+        - "BSD"
+      identifier: ""
+  - "gawk":
+      description: "GNU awk"
+      homepage: "https://www.gnu.org/software/gawk/"
+      documentation: "https://www.gnu.org/software/gawk/manual/"
+      tool_dev_url: "https://www.gnu.org/prep/ftp.html"
+      licence:
+        - "GPL v3"
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - labels:
+        type: list
+        description: |
+          A list of strings, one per entry in `files`, in the same order. Each
+          becomes the value of the `profile` column for every row taken from
+          the corresponding file -- e.g. the name of the HMM profile that
+          particular tblout/domtblout came from. Not derived from the input
+          filenames, so the module doesn't depend on any particular producer's
+          naming convention.
+    - files:
+        type: file
+        description: |
+          One or more HMMER --tblout or --domtblout files (gzipped or not), all
+          of the same kind as given in `format`. Column names are hardcoded to
+          the hmmsearch/hmmscan/phmmer layout (19 tblout / 23 domtblout
+          columns); other tools with a different column count for the same
+          format, e.g. nhmmer's 16-column tblout, are rejected with an error
+          rather than silently mislabeled.
+        pattern: "*.{tbl,domtbl}{,.gz}"
+        ontologies: []
+  - format:
+      type: string
+      description: Which HMMER output format `files` contains -- either `tblout` or `domtblout`
+      pattern: "^(tblout|domtblout)$"
+
+output:
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.tsv.gz":
+          type: file
+          description: |
+            All rows from every input file, concatenated, as a single gzipped
+            TSV with a `profile` column (from `labels`) first. Column names
+            and count depend on `format`: 20 columns (profile + HMMER's 19)
+            for tblout, 24 (profile + HMMER's 23) for domtblout.
+          pattern: "*.{tblout,domtblout}.tsv.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  versions_gawk:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "gawk":
+          type: string
+          description: The name of the tool
+      - "awk -Wversion | sed '1!d; s/.*Awk //; s/,.*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "gawk":
+          type: string
+          description: The name of the tool
+      - "awk -Wversion | sed '1!d; s/.*Awk //; s/,.*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@erikrikarddaniel"
+maintainers:
+  - "@erikrikarddaniel"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/gawk_gzip:34c193f8cae8819b
+      build_id: bd-34c193f8cae8819b_1
+      scan_id: sc-b38f66f613abdf58_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/gawk_gzip:f957caaf8edc98ce
+      build_id: bd-f957caaf8edc98ce_1
+      scan_id: sc-3c8becad9601497f_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/gawk_gzip:88d638f9e3f9deb5
+      build_id: bd-88d638f9e3f9deb5_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b1/b18bce5d444a24376f0ee2afe5237f65cc62d14ff4cc1b7b1ed4f9a23f38e483/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/gawk_gzip:9f1bcf81dc06adb6
+      build_id: bd-9f1bcf81dc06adb6_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/06/0600fdb9287986d3d684b95d6e94f597c41b24a746608532d7c0836bd7b44c15/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/hmmer/formattsv/.conda-lock/linux_amd64-bd-34c193f8cae8819b_1.txt

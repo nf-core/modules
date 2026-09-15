@@ -3,9 +3,9 @@ process T1K_BUILD {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c6/c64676623c43855d3a9dd8a5b02a03b13216e454a8bd1e9a7d9d5695daf5030b/data'
-        : 'community.wave.seqera.io/library/t1k:1.0.9--793c68c25d680b97'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/db/db0ceb6240d9a8827941a8c914a60cc4199bd4f5f9cc472d7d9f43c334680f34/data'
+:         'community.wave.seqera.io/library/t1k:1.0.10--35c476de36986302' }"
 
     input:
     tuple val(meta), path(ena), path(fasta), path(annotation)

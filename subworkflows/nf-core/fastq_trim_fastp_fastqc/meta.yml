@@ -14,16 +14,12 @@ input:
   - ch_reads:
       type: file
       description: |
-        Structure: [ val(meta), path (reads) ]
+        Structure: [ val(meta), path(reads), path(adapter_fasta) ]
         Groovy Map containing sample information
         e.g. [ id:'test', single_end:false ], List of input FastQ files of size 1 and 2 for single-end and paired-end data,
         respectively. If you wish to run interleaved paired-end data,  supply as single-end data
         but with `--interleaved_in` in your `modules.conf`'s `ext.args` for the module.
-  - ch_adapter_fasta:
-      type: file
-      description: |
-        Structure: path(adapter_fasta)
-        File in FASTA format containing possible adapters to remove.
+        The optional adapter_fasta is a file in FASTA format containing possible adapters to remove.
   - val_save_trimmed_fail:
       type: boolean
       description: |
@@ -40,20 +36,17 @@ input:
       description: |
         Structure: val(save_merged)
         Specify true to save all merged reads to the a file ending in `*.merged.fastq.gz`
-  - val_skip_fastqc:
-      type: boolean
-      description: |
-        Structure: val(skip_fastqc)
-        skip the fastqc process if true
   - val_skip_fastp:
       type: boolean
       description: |
         Structure: val(skip_fastp)
         skip the fastp process if true
+  - val_skip_fastqc:
+      type: boolean
+      description: |
+        Structure: val(skip_fastqc)
+        skip the fastqc process if true
 output:
-  - meta:
-      type: string
-      description: Groovy Map containing sample information e.g. [ id:'test', single_end:false ]
   - reads:
       type: file
       description: |
