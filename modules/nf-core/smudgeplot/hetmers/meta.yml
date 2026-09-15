@@ -1,0 +1,84 @@
+name: "smudgeplot_hetmers"
+description: Generating smudgeplot kmer counts
+keywords:
+  - Smudgeplot
+  - reference-free
+  - kmer
+tools:
+  - "smudgeplot":
+      description: "Generating smudgeplot kmer counts"
+      homepage: "https://github.com/KamilSJaron/smudgeplot"
+      tool_dev_url: "https://github.com/KamilSJaron/smudgeplot"
+      licence: ["https://github.com/KamilSJaron/smudgeplot/blob/master/LICENSE.md"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fastk_table:
+        type: file
+        description: A kmer table from the program FastK
+        pattern: "*.ktab*"
+        ontologies: []
+
+output:
+  kmer_cov:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.smu":
+          type: file
+          description: Smudgeplot Kmer coverage file
+          pattern: "*.smu"
+          ontologies: []
+
+  versions_smudgeplot:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - smudgeplot:
+          type: string
+          description: The name of the tool
+      - smudgeplot -v |& sed "s/.*v//":
+          type: string
+          description: The expression to obtain the version of the tool
+  versions_fastk:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - fastk:
+          type: string
+          description: Name of the tool
+      - "1.2":
+          type: string
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - smudgeplot:
+          type: string
+          description: The name of the tool
+      - smudgeplot -v |& sed "s/.*v//":
+          type: string
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - fastk:
+          type: string
+          description: Name of the tool
+      - "1.2":
+          type: string
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@DLBPointon"
+maintainers:
+  - "@DLBPointon"

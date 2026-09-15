@@ -1,0 +1,45 @@
+nextflow_process {
+
+    name "Test Process SMUDGEPLOT_HETMERS"
+    script "../main.nf"
+    process "SMUDGEPLOT_HETMERS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "smudgeplot"
+    tag "smudgeplot/hetmers"
+    tag "fastk/fastk"
+
+    setup {
+        run("FASTK_FASTK") {
+            script "modules/nf-core/fastk/fastk/main.nf"
+            config "./nextflow.config"
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file("https://tolit.cog.sanger.ac.uk/test-data/Acropora_cervicornis/genomic_data/m84093_241116_151316_s2.hifi_reads.bc2028.subset.fasta.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("homo sapiens - reads") {
+
+        when {
+            process {
+                """
+                input[0] = FASTK_FASTK.out.ktab
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}
