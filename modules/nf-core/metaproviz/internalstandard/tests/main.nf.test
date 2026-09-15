@@ -1,0 +1,155 @@
+// nf-test file: tests one Nextflow process in isolation (feed it a known
+// input, run it, check the output). Two independent test("...") cases live
+// below: a real run and a fast stub run.
+nextflow_process {
+
+    name "Test Process METAPROVIZ_INTERNALSTANDARD"
+    script "../main.nf"                    // the file that defines the process, relative to this test file
+    process "METAPROVIZ_INTERNALSTANDARD"  // which process inside that file to run
+    config "./nextflow.config"             // enables moduleBinaries so internal_standard.R is found on PATH
+
+    // Tags let you run whole groups of tests at once, e.g.
+    // `nf-test test --tag metaproviz` runs every MetaProViz module's tests.
+    tag "modules"
+    tag "modules_nfcore"
+    tag "metaproviz"
+    tag "metaproviz/internalstandard"
+
+    test("internal standard - cellular se rds") {
+
+        // "when" = the setup: what input the process receives.
+        // input[0] fills the process's first declared input in main.nf
+        // (tuple val(meta), path(se_rds), path(data_matrix),
+        // path(feature_matrix), path(sample_matrix)) — the two shapes are
+        // mutually exclusive, so unused slots get []. Here a real SE .rds,
+        // so this actually runs internal_standard.R for real (no Docker
+        // needed locally; uses whatever R/MetaProViz is on this machine).
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file("\${projectDir}/input/cellline/intracell/SE.RData", checkIfExists: true),
+                    [], [], []
+                ]
+                """
+            }
+        }
+
+        // "then" = the checks, run after the process finishes.
+        // assertAll runs every check and reports all failures, not just
+        // the first one it hits.
+        then {
+            assertAll(
+                { assert process.success },                // did it exit without error?
+                { assert process.out.versions != null },   // process.out.<name> matches the "emit:" names in main.nf
+                // snapshot(...).match(): first run records these outputs into
+                // main.nf.test.snap. Every run after that fails if the output
+                // changes at all — catches silent regressions automatically.
+                { assert snapshot(
+                    process.out.cv_table,
+                    process.out.high_var,
+                    process.out.versions
+                  ).match() }
+            )
+        }
+    }
+
+    test("internal standard - cellular csv matrices") {
+
+        // Same underlying data as the .rds test above, but via the other
+        // acceptable input shape: the 3 flat TSV files instead of an SE.
+        // Confirms both shapes produce equivalent results (verified by hand
+        // to be byte-identical CV values before this test was written).
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [],
+                    file("\${projectDir}/input/cellline/intracell/csv/data_matrix.csv", checkIfExists: true),
+                    file("\${projectDir}/input/cellline/intracell/csv/feature_matrix.csv", checkIfExists: true),
+                    file("\${projectDir}/input/cellline/intracell/csv/sample_matrix.csv", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.versions != null },
+                { assert snapshot(
+                    process.out.cv_table,
+                    process.out.high_var,
+                    process.out.versions
+                  ).match() }
+            )
+        }
+    }
+
+    test("internal standard - no IS features found (tissue)") {
+
+        // Edge case: patient/tissue's feature names don't match any IS
+        // detection strategy (no explicit list/pattern given here, and
+        // none of tissue's ~570 features look like deuterated/13C/ISTD
+        // internal standards) — triggers placeholder_outputs() in
+        // internal_standard.R. Regression test for a real bug: that
+        // function used to skip writing condition_cv.tsv, a non-optional
+        // declared output, so this specific input would fail the whole
+        // Nextflow process even though the R script itself exited 0.
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file("\${projectDir}/input/patient/tissue/SE.RData", checkIfExists: true),
+                    [], [], []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.cv_table != null },
+                { assert process.out.high_var != null },
+                { assert process.out.condition_cv != null },
+                { assert process.out.plots != null },
+                { assert process.out.report != null },
+                { assert process.out.log != null },
+                { assert process.out.versions != null }
+            )
+        }
+    }
+
+    test("internal standard - cellular se rds - stub") {
+
+        // -stub makes Nextflow run the process's "stub:" block instead of
+        // its real "script:" block. The stub just touches empty placeholder
+        // files — no R, no MetaProViz, no real computation. This proves the
+        // wiring is correct (inputs connected right, every declared output
+        // actually gets created) fast, without paying for a real run.
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file("\${projectDir}/input/cellline/intracell/SE.RData", checkIfExists: true),
+                    [], [], []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
