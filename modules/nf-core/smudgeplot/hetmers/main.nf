@@ -12,7 +12,7 @@ process SMUDGEPLOT_HETMERS {
 
     output:
     tuple val(meta), path("*.smu"), emit: kmer_cov
-    tuple val("${task.process}"), val('smudgeplot'), eval('smudgeplot -v |& sed "s/.*v//"'), emit: versions_smudgeplot, topic: versions
+    tuple val("${task.process}"), val('smudgeplot'), eval('smudgeplot -v |& grep "smudgeplot" | sed "s/.*v//"'), emit: versions_smudgeplot, topic: versions
     // FASTK does not report version to cli
     tuple val("${task.process}"), val('fastk'), val('1.2'), emit: versions_fastk, topic: versions
 
@@ -23,16 +23,11 @@ process SMUDGEPLOT_HETMERS {
     def args    = task.ext.args     ?: ''
     def prefix  = task.ext.prefix   ?: "${meta.id}"
 
-    // Export HOME to avoid issues with MATPLOTLIB needing a
-    // writable config directory
     """
-    export HOME=\$PWD/nxf_home
-
     smudgeplot hetmers \\
         ${args} \\
         -o ${prefix} \\
         ${fastk_table.find { path -> path.toString().endsWith(".ktab") }}
-
     """
 
     stub:
