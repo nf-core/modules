@@ -1,0 +1,132 @@
+nextflow_process {
+
+    name "Test Process OPENMS_IDCONFLICTRESOLVER"
+    script "../main.nf"
+    process "OPENMS_IDCONFLICTRESOLVER"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "openms"
+    tag "openms/idconflictresolver"
+    tag "openms/featurefinderidentification"
+    tag "openms/fileconverter"
+    tag "openmsthirdparty/cometadapter"
+    tag "openms/decoydatabase"
+    tag "thermorawfileparser"
+
+    setup {
+        run("THERMORAWFILEPARSER") {
+            script "../../../thermorawfileparser/main.nf"
+            process {
+                """
+                input[0] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/msspectra/PXD012083_e005640_II.raw', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        run("OPENMS_DECOYDATABASE") {
+            script "../../../openms/decoydatabase/main.nf"
+            process {
+                """
+                input[0] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/database/UP000005640_9606.fasta', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        run("OPENMSTHIRDPARTY_COMETADAPTER") {
+            script "../../../openmsthirdparty/cometadapter/main.nf"
+            process {
+                """
+                input[0] =
+                    THERMORAWFILEPARSER.out.spectra.join(
+                    OPENMS_DECOYDATABASE.out.decoy_fasta
+                    )
+                """
+            }
+        }
+
+        run("OPENMS_FEATUREFINDERIDENTIFICATION") {
+            script "../../featurefinderidentification/main.nf"
+            process {
+                """
+                input[0] = THERMORAWFILEPARSER.out.spectra
+                    .join(OPENMSTHIRDPARTY_COMETADAPTER.out.idxml)
+                    .map { meta, mzml, idxml -> [ meta, mzml, idxml, [], "featureXML" ] }
+                """
+            }
+        }
+
+        run("OPENMS_FILECONVERTER") {
+            script "../../fileconverter/main.nf"
+            process {
+                """
+                input[0] = OPENMS_FEATUREFINDERIDENTIFICATION.out.features.map { meta, features -> [ meta, features, "consensusXML" ] }
+                """
+            }
+        }
+    }
+
+    test("proteomics - consensusxml") {
+
+        when {
+            process {
+                """
+                input[0] = OPENMS_FILECONVERTER.out.converted
+                """
+            }
+        }
+
+        then {
+            def content = file(process.out.resolved[0][1]).text
+            // consensusXML byte content is not reproducible run-to-run because the upstream
+            // FeatureFinderIdentification output it derives from is not reproducible; counts
+            // below were observed stable across runs with the upstream step pinned to cpus=2.
+            // Counts are restricted to the <consensusElementList> section: the file also carries
+            // a top-level <IdentificationRun> with the raw, unresolved search hits, which
+            // IDConflictResolver does not touch and would otherwise mask the effect of the tool.
+            def consensusSection = content.substring(content.indexOf('<consensusElementList>'))
+            def peptideIds = (consensusSection =~ /<PeptideIdentification /).count
+            def peptideHits = (consensusSection =~ /<PeptideHit /).count
+            assertAll(
+                { assert process.success },
+                { assert content.contains('<consensusElementList>') },
+                { assert process.out.resolved[0][0] == [id:'test'] },
+                { assert file(process.out.resolved[0][1]).name == 'test_resolved.consensusXML' },
+                { assert peptideHits > 0 },
+                { assert peptideHits <= peptideIds },
+                { assert snapshot(
+                    peptideIds,
+                    peptideHits,
+                    process.out.findAll { key, val -> !(key in ['0', 'resolved']) }
+                ).match() }
+            )
+        }
+    }
+
+    test("proteomics - consensusxml - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = OPENMS_FILECONVERTER.out.converted
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
