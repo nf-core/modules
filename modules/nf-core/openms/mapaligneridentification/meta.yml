@@ -14,7 +14,7 @@ tools:
       tool_dev_url: "https://github.com/OpenMS/OpenMS"
       doi: "10.1038/s41592-024-02197-7"
       licence: ["BSD"]
-      identifier: ""
+      identifier: "biotools:openms"
 
 input:
   - - meta:
@@ -26,7 +26,8 @@ input:
         type: file
         description: Two or more identification or feature maps (same format) to align.
         pattern: "*.{idXML,featureXML,consensusXML}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/data_2536 # Mass spectrometry data
 output:
   trafoxml:
     - - meta:
@@ -36,9 +37,10 @@ output:
             e.g. `[ id:'test', single_end:false ]`
       - "*.trafoXML":
           type: file
-          description: One retention time transformation per input file, named after the input basename.
+          description: One retention time transformation per input file, named after the input basename. `task.ext.prefix` is not used; each output is named after its input basename.
           pattern: "*.trafoXML"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/data_2536 # Mass spectrometry data
   versions_openms:
     - - ${task.process}:
           type: string
