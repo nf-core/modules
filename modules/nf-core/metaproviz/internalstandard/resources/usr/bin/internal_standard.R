@@ -17,8 +17,8 @@
 #         IS_ prefix / _IS suffix / bare 'IS'
 #
 # Pool/QC samples are always excluded before the CV is computed when any are
-# found (pool detection mirrors the POOL_ESTIMATION module). 
-# Pools are homogeneous mixtures whose tight IS values would mask drift seen only 
+# found (pool detection mirrors the POOL_ESTIMATION module).
+# Pools are homogeneous mixtures whose tight IS values would mask drift seen only
 # in the real samples. If no pools are found, all samples are used.
 # =============================================================================
 

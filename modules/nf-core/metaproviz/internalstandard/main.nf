@@ -24,7 +24,7 @@ process METAPROVIZ_INTERNALSTANDARD {
     tuple val(meta), path("*.plots.rds")         , emit: plots
     tuple val(meta), path("*.report.html")       , emit: report
     tuple val(meta), path("*.log")               , emit: log
-    path "versions.yml"                                            , emit: versions
+    path "versions.yml"                                            , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
