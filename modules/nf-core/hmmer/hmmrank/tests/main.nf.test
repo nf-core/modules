@@ -11,6 +11,8 @@ nextflow_process {
     tag "hmmer"
     tag "hmmer/hmmfetch"
     tag "hmmer/hmmsearch"
+    tag "hmmer/formattsv"
+    tag "duckdb/table2parquet"
     tag "hmmer/hmmrank"
 
     setup {
@@ -38,15 +40,152 @@ nextflow_process {
                 """
             }
         }
+        run("HMMER_FORMATTSV", alias: "FORMATTSV_16S_TBLOUT") {
+            script "../../formattsv/main.nf"
+            process {
+                """
+                input[0] = HMMER_HMMSEARCH.out.target_summary
+                    .map { meta, tbl -> [ meta.id, tbl ] }
+                    .collect(flat: false)
+                    .map { pairs -> [ [ id: '16S-test' ], pairs.collect { it[0] }, pairs.collect { it[1] } ] }
+                input[1] = 'tblout'
+                """
+            }
+        }
+        run("HMMER_FORMATTSV", alias: "FORMATTSV_16S_DOMTBLOUT") {
+            script "../../formattsv/main.nf"
+            process {
+                """
+                input[0] = HMMER_HMMSEARCH.out.domain_summary
+                    .map { meta, domtbl -> [ meta.id, domtbl ] }
+                    .collect(flat: false)
+                    .map { pairs -> [ [ id: '16S-test' ], pairs.collect { it[0] }, pairs.collect { it[1] } ] }
+                input[1] = 'domtblout'
+                """
+            }
+        }
+        // Curated excerpts of a real search of the NrdJ and NrdJm1 profiles against GTDB r226
+        // representatives, used by the two tests below. Five targets, nine (target, profile)
+        // pairs, chosen to cover the domain layouts the coordinate arithmetic has to handle: a
+        // single domain, several overlapping domains, several disjoint domains, and domains that
+        // overlap in profile coordinates while lying far apart on the target sequence.
+        run("HMMER_FORMATTSV", alias: "FORMATTSV_NRDJ_TBLOUT") {
+            script "../../formattsv/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id: 'nrdj' ],
+                    [ 'NrdJ', 'NrdJm1' ],
+                    [
+                        file(params.phyloplace_testdata_base_path + 'hmmrank/NrdJ.tbl.gz', checkIfExists: true),
+                        file(params.phyloplace_testdata_base_path + 'hmmrank/NrdJm1.tbl.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = 'tblout'
+                """
+            }
+        }
+        run("HMMER_FORMATTSV", alias: "FORMATTSV_NRDJ_DOMTBLOUT") {
+            script "../../formattsv/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id: 'nrdj' ],
+                    [ 'NrdJ', 'NrdJm1' ],
+                    [
+                        file(params.phyloplace_testdata_base_path + 'hmmrank/NrdJ.domtbl.gz', checkIfExists: true),
+                        file(params.phyloplace_testdata_base_path + 'hmmrank/NrdJm1.domtbl.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = 'domtblout'
+                """
+            }
+        }
+        // One HMM file may hold several models, in which case the whole file is searched in one
+        // go and both tables carry rows for several query names under one file-derived profile:
+        // one header, then every model's data rows, then one footer -- not two runs' worth of
+        // output (each with its own header and footer) simply concatenated, which is a different
+        // and stranger shape hmmsearch itself never actually produces. Built here by keeping the
+        // first fixture's header and both fixtures' data rows only (comment lines, i.e. anything
+        // starting with '#', dropped from both), so the expected table (in the test below that
+        // uses this) is the same as the NrdJ/NrdJm1 test, keyed on the query name rather than the
+        // profile. An immediately-invoked closure, not a `def`-bound one: `setup { run(...) {
+        // process { ... } } }` blocks don't share a script scope the way a plain test's `when {
+        // process { ... } }` does, so a `def` here would not be visible by the time it's called on
+        // a later line.
+        run("HMMER_FORMATTSV", alias: "FORMATTSV_MULTIMODEL_TBLOUT") {
+            script "../../formattsv/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id: 'nrdjboth' ],
+                    [ 'nrdj' ],
+                    [ { name, srcs ->
+                          def lines = srcs.collect { src -> new java.util.zip.GZIPInputStream(file(src, checkIfExists: true).newInputStream()).withStream { it.text.readLines() } }
+                          def header = lines[0].findAll { it.startsWith('#') }
+                          def data = lines.collect { ls -> ls.findAll { !it.startsWith('#') } }.flatten()
+                          def out = file("\${workDir}/multimodel/\${name}")
+                          out.parent.mkdirs()
+                          new java.util.zip.GZIPOutputStream(out.newOutputStream()).withStream { os -> os.write((header + data).join('\\n').getBytes('UTF-8')) }
+                          out
+                      }('NrdJboth.tbl.gz', [
+                          params.phyloplace_testdata_base_path + 'hmmrank/NrdJ.tbl.gz',
+                          params.phyloplace_testdata_base_path + 'hmmrank/NrdJm1.tbl.gz'
+                      ]) ]
+                ]
+                input[1] = 'tblout'
+                """
+            }
+        }
+        run("HMMER_FORMATTSV", alias: "FORMATTSV_MULTIMODEL_DOMTBLOUT") {
+            script "../../formattsv/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id: 'nrdjboth' ],
+                    [ 'nrdj' ],
+                    [ { name, srcs ->
+                          def lines = srcs.collect { src -> new java.util.zip.GZIPInputStream(file(src, checkIfExists: true).newInputStream()).withStream { it.text.readLines() } }
+                          def header = lines[0].findAll { it.startsWith('#') }
+                          def data = lines.collect { ls -> ls.findAll { !it.startsWith('#') } }.flatten()
+                          def out = file("\${workDir}/multimodel/\${name}")
+                          out.parent.mkdirs()
+                          new java.util.zip.GZIPOutputStream(out.newOutputStream()).withStream { os -> os.write((header + data).join('\\n').getBytes('UTF-8')) }
+                          out
+                      }('NrdJboth.domtbl.gz', [
+                          params.phyloplace_testdata_base_path + 'hmmrank/NrdJ.domtbl.gz',
+                          params.phyloplace_testdata_base_path + 'hmmrank/NrdJm1.domtbl.gz'
+                      ]) ]
+                ]
+                input[1] = 'domtblout'
+                """
+            }
+        }
+        run("DUCKDB_TABLE2PARQUET", alias: "PARQUET_TBLOUT") {
+            script "../../../duckdb/table2parquet/main.nf"
+            process {
+                """
+                input[0] = FORMATTSV_16S_TBLOUT.out.tsv.mix(FORMATTSV_NRDJ_TBLOUT.out.tsv, FORMATTSV_MULTIMODEL_TBLOUT.out.tsv)
+                """
+            }
+        }
+        run("DUCKDB_TABLE2PARQUET", alias: "PARQUET_DOMTBLOUT") {
+            script "../../../duckdb/table2parquet/main.nf"
+            process {
+                """
+                input[0] = FORMATTSV_16S_DOMTBLOUT.out.tsv.mix(FORMATTSV_NRDJ_DOMTBLOUT.out.tsv, FORMATTSV_MULTIMODEL_DOMTBLOUT.out.tsv)
+                """
+            }
+        }
     }
 
     test("hmmrank - 16S") {
         when {
             process {
                 """
-                input[0] = HMMER_HMMSEARCH.out.target_summary
-                    .collect { it[1] }
-                    .map { [ [ id: '16S-test' ], it, [] ] }
+                input[0] = PARQUET_TBLOUT.out.parquet
+                    .filter { meta, parquet -> meta.id == '16S-test' }
+                    .map { meta, parquet -> [ meta, parquet, [] ] }
                 """
             }
         }
@@ -55,8 +194,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out),
-                    path(process.out.versions[0]).yaml
+                    sanitizeOutput(process.out)
                 ).match() }
             )
         }
@@ -66,10 +204,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = HMMER_HMMSEARCH.out.target_summary
-                    .collect { it[1] }
-                    .map { [ [ id: '16S-test' ], it ] }
-                    .combine(HMMER_HMMSEARCH.out.domain_summary.collect { it[1] }.map { [ it ] })
+                input[0] = PARQUET_TBLOUT.out.parquet
+                    .filter { meta, parquet -> meta.id == '16S-test' }
+                    .join(PARQUET_DOMTBLOUT.out.parquet.filter { meta, parquet -> meta.id == '16S-test' })
                 """
             }
         }
@@ -96,33 +233,19 @@ nextflow_process {
                   assert hmmLens.every { it.isInteger() || it == 'NA' }
                   assert hmmLens.any { it.isInteger() } },
                 { assert snapshot(
-                    sanitizeOutput(process.out),
-                    path(process.out.versions[0]).yaml
+                    sanitizeOutput(process.out)
                 ).match() }
             )
         }
     }
 
-    // Curated excerpts of a real search of the NrdJ and NrdJm1 profiles against GTDB r226
-    // representatives. Five targets, nine (target, profile) pairs, chosen to cover the domain
-    // layouts the coordinate arithmetic has to handle: a single domain, several overlapping
-    // domains, several disjoint domains, and domains that overlap in profile coordinates while
-    // lying far apart on the target sequence.
     test("hmmrank - domain coordinates against a known table") {
         when {
             process {
                 """
-                input[0] = [
-                    [ id: 'nrdj' ],
-                    [
-                        file(params.phyloplace_testdata_base_path + 'hmmrank/NrdJ.tbl.gz', checkIfExists: true),
-                        file(params.phyloplace_testdata_base_path + 'hmmrank/NrdJm1.tbl.gz', checkIfExists: true)
-                    ],
-                    [
-                        file(params.phyloplace_testdata_base_path + 'hmmrank/NrdJ.domtbl.gz', checkIfExists: true),
-                        file(params.phyloplace_testdata_base_path + 'hmmrank/NrdJm1.domtbl.gz', checkIfExists: true)
-                    ]
-                ]
+                input[0] = PARQUET_TBLOUT.out.parquet
+                    .filter { meta, parquet -> meta.id == 'nrdj' }
+                    .join(PARQUET_DOMTBLOUT.out.parquet.filter { meta, parquet -> meta.id == 'nrdj' })
                 """
             }
         }
@@ -162,33 +285,13 @@ nextflow_process {
         }
     }
 
-    // One HMM file may hold several models, in which case the whole file is searched in one go
-    // and both tables carry rows for several query names under one file-derived profile. The
-    // two fixtures above are concatenated here to make exactly that, so the expected table is
-    // the same as above, keyed on the query name rather than the file.
     test("hmmrank - several models in one table") {
         when {
             process {
                 """
-                // gunzip, concatenate and re-gzip, rather than carrying a near-duplicate fixture
-                def combine = { name, srcs ->
-                    def out = file("\${workDir}/multimodel/\${name}")
-                    out.parent.mkdirs()
-                    new java.util.zip.GZIPOutputStream(out.newOutputStream()).withStream { os ->
-                        srcs.each { src ->
-                            new java.util.zip.GZIPInputStream(file(src, checkIfExists: true).newInputStream()).withStream { gz ->
-                                os.write(gz.bytes)
-                            }
-                        }
-                    }
-                    out
-                }
-                def base = params.phyloplace_testdata_base_path + 'hmmrank/'
-                input[0] = [
-                    [ id: 'nrdj' ],
-                    [ combine('NrdJboth.tbl.gz',    [ base + 'NrdJ.tbl.gz',    base + 'NrdJm1.tbl.gz' ]) ],
-                    [ combine('NrdJboth.domtbl.gz', [ base + 'NrdJ.domtbl.gz', base + 'NrdJm1.domtbl.gz' ]) ]
-                ]
+                input[0] = PARQUET_TBLOUT.out.parquet
+                    .filter { meta, parquet -> meta.id == 'nrdjboth' }
+                    .join(PARQUET_DOMTBLOUT.out.parquet.filter { meta, parquet -> meta.id == 'nrdjboth' })
                 """
             }
         }
@@ -233,9 +336,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = HMMER_HMMSEARCH.out.target_summary
-                    .collect { it[1] }
-                    .map { [ [ id: '16S-test' ], it, [] ] }
+                input[0] = PARQUET_TBLOUT.out.parquet
+                    .filter { meta, parquet -> meta.id == '16S-test' }
+                    .map { meta, parquet -> [ meta, parquet, [] ] }
                 """
             }
         }
@@ -244,8 +347,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out),
-                    path(process.out.versions[0]).yaml
+                    sanitizeOutput(process.out)
                 ).match() }
             )
         }
