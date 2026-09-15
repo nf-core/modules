@@ -1,6 +1,5 @@
 name: "universc"
-description: Module to run UniverSC an open-source pipeline to demultiplex and process
-  single-cell RNA-Seq data
+description: Module to run UniverSC an open-source pipeline to demultiplex and process single-cell RNA-Seq data
 keywords:
   - demultiplex
   - align
@@ -10,13 +9,13 @@ keywords:
   - umi
 tools:
   - "universc":
-      description: "UniverSC: a flexible cross-platform single-cell data processing
-        pipeline"
+      description: "UniverSC: a flexible cross-platform single-cell data processing pipeline"
       homepage: "https://hub.docker.com/r/tomkellygenetics/universc"
       documentation: "https://raw.githubusercontent.com/minoda-lab/universc/master/man/launch_universc.sh"
       tool_dev_url: "https://github.com/minoda-lab/universc"
       doi: "10.1101/2021.01.19.427209"
-      licence: ["GPL-3.0-or-later"]
+      licence:
+        - "GPL-3.0-or-later"
       identifier: biotools:universc
 input:
   - - meta:
@@ -54,6 +53,50 @@ output:
           description: Files containing the outputs of Cell Ranger
           pattern: "${prefix}/outs/*"
           ontologies: []
+  versions_cellranger:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cellranger:
+          type: string
+          description: The name of the tool
+      - cellranger 2>&1 | sed '/^cellranger/!d;s/cellranger  (//;s/)//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+  versions_universc:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - universc:
+          type: string
+          description: The name of the tool
+      - universc --version | sed -n 's/launch_universc.sh version //p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cellranger:
+          type: string
+          description: The name of the tool
+      - cellranger 2>&1 | sed '/^cellranger/!d;s/cellranger  (//;s/)//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - universc:
+          type: string
+          description: The name of the tool
+      - universc --version | sed -n 's/launch_universc.sh version //p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@kbattenb"
   - "@tomkellygenetics"
