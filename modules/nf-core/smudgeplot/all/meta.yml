@@ -18,47 +18,23 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - fastk_table:
+    - smu:
         type: file
         description: Smudgeplot kmer coverage flat file
         pattern: "*.smu"
         ontologies: []
 
 output:
-  centrality_png:
+  png:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_centralities.png":
+      - "*.png":
           type: file
-          description: Smudgeplot centrality plot png
-          pattern: "*_centralities.png"
-          ontologies:
-            - edam: http://edamontology.org/format_3603 # PNG
-  smudgeplot_png:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*_smudgeplot.png":
-          type: file
-          description: Smudgeplot Kmer coverage file
-          pattern: "*_smudgeplot.png"
-          ontologies:
-            - edam: http://edamontology.org/format_3603 # PNG
-  log10_png:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*_smudgeplot.png":
-          type: file
-          description: Smudgeplot Kmer coverage file
-          pattern: "*_smudgeplot.png"
+          description: Collection of output PNG files
+          pattern: "*.png"
           ontologies:
             - edam: http://edamontology.org/format_3603 # PNG
   centrality_txt:
