@@ -137,6 +137,16 @@ output:
       - mgatk --version 2>&1 | sed -E 's/.*version //':
           type: eval
           description: The expression to obtain the version of the tool
+  versions_python:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the interpreter
+      - python --version 2>&1 | sed 's/Python //' | cut -d. -f1,2:
+          type: eval
+          description: The expression to obtain the version of the interpreter
 topics:
   versions:
     - - ${task.process}:
@@ -148,6 +158,15 @@ topics:
       - mgatk --version 2>&1 | sed -E 's/.*version //':
           type: eval
           description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the interpreter
+      - python --version 2>&1 | sed 's/Python //' | cut -d. -f1,2:
+          type: eval
+          description: The expression to obtain the version of the interpreter
 authors:
   - "@PFRoux"
 maintainers:

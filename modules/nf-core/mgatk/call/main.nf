@@ -20,6 +20,7 @@ process MGATK_CALL {
     tuple val(meta), path("*.mgatk/final/*.G.txt.gz")        , emit: counts_g, optional: true
     tuple val(meta), path("*.mgatk/final/*.T.txt.gz")        , emit: counts_t, optional: true
     tuple val("${task.process}"), val('mgatk'), eval("mgatk --version 2>&1 | sed -E 's/.*version //'"), topic: versions, emit: versions_mgatk
+    tuple val("${task.process}"), val('python'), eval("python --version 2>&1 | sed 's/Python //' | cut -d. -f1,2"), topic: versions, emit: versions_python
 
     when:
     task.ext.when == null || task.ext.when
