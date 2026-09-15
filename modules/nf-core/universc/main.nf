@@ -3,9 +3,7 @@ process UNIVERSC {
     label 'process_medium'
 
     container "quay.io/nf-core/universc:1.2.5.1"
-    containerOptions "${ ['singularity', 'apptainer'].contains(workflow.containerEngine) ?
-        "-B /var/tmp --writable-tmpfs" : workflow.containerEngine == 'docker' ?
-        "--privileged" : workflow.containerEngine == 'podman' ?
+    containerOptions "${ workflow.containerEngine == 'podman' ?
         "--runtime crun --userns=keep-id --systemd=always" : '' }"
 
     input:
@@ -32,6 +30,20 @@ process UNIVERSC {
 
     def reference_name = reference.name
     """
+    mkdir -p "\$PWD/.local-cellranger" "\$PWD/.local-universc"
+
+    cp -a /cellranger-3.0.2.9001 "\$PWD/.local-cellranger/"
+    cp -a /universc "\$PWD/.local-universc/"
+
+    local_cr="\$PWD/.local-cellranger/cellranger-3.0.2.9001"
+    local_universc="\$PWD/.local-universc/universc"
+
+    # Replace the absolute symlink with one pointing to the local copy
+    rm "\$local_universc/universc"
+    ln -s "\$local_universc/launch_universc.sh" "\$local_universc/universc"
+
+    export PATH="\$local_cr:\$local_universc:\$PATH"
+
     export PYTHON_EGG_CACHE=\$(pwd)/.cache
     universc \\
         --id ${prefix} \\
@@ -60,6 +72,20 @@ process UNIVERSC {
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
+    mkdir -p "\$PWD/.local-cellranger" "\$PWD/.local-universc"
+
+    cp -a /cellranger-3.0.2.9001 "\$PWD/.local-cellranger/"
+    cp -a /universc "\$PWD/.local-universc/"
+
+    local_cr="\$PWD/.local-cellranger/cellranger-3.0.2.9001"
+    local_universc="\$PWD/.local-universc/universc"
+
+    # Replace the absolute symlink with one pointing to the local copy
+    rm "\$local_universc/universc"
+    ln -s "\$local_universc/launch_universc.sh" "\$local_universc/universc"
+
+    export PATH="\$local_cr:\$local_universc:\$PATH"
+
     mkdir -p ${prefix}/outs/
     cd ${prefix}/outs/
 
