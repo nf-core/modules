@@ -26,15 +26,8 @@ process TELOMEREHUNTER2 {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def banding = banding_file ? "-b $banding_file" : ''
     """
-    ln -s $bam ${prefix}.bam
-    if [[ "$bai" == *.csi ]]; then
-        ln -s $bai ${prefix}.bam.csi
-    else
-        ln -s $bai ${prefix}.bam.bai
-    fi
-
     telomerehunter2 \\
-        -ibt ${prefix}.bam \\
+        -ibt $bam \\
         -o ${prefix}.telomerehunter2 \\
         -p ${prefix} \\
         -c ${task.cpus} \\

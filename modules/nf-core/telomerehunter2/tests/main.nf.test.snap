@@ -2,65 +2,6 @@
     "sarscov2 - bam - stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.telomerehunter2_summary.tsv:md5,3d011b935e50aeb0be8457dd81e05a37"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.telomerehunter2_TVR_top_contexts.tsv:md5,eba3bf37e006f8597ecf10a717000c45"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.telomerehunter2_singletons.tsv:md5,eba3bf37e006f8597ecf10a717000c45"
-                    ]
-                ],
-                "3": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.telomerehunter2_files.txt:md5,b7862284bc45b96263284bbb1bdf3a62"
-                    ]
-                ],
-                "4": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        [
-                            "TVR_top_contexts.tsv:md5,eba3bf37e006f8597ecf10a717000c45",
-                            [
-                                
-                            ],
-                            "singletons.tsv:md5,eba3bf37e006f8597ecf10a717000c45",
-                            "summary.tsv:md5,3d011b935e50aeb0be8457dd81e05a37"
-                        ]
-                    ]
-                ],
-                "5": [
-                    [
-                        "TELOMEREHUNTER2",
-                        "telomerehunter2",
-                        "1.0.11"
-                    ]
-                ],
                 "file_index": [
                     [
                         {
@@ -122,10 +63,142 @@
                 ]
             }
         ],
-        "timestamp": "2026-09-10T14:42:17.037613",
         "meta": {
-            "nf-test": "0.9.5",
+            "nf-test": "0.9.2",
             "nextflow": "25.04.6"
-        }
+        },
+        "timestamp": "2026-09-15T13:08:40.849021"
+    },
+    "sarscov2 - bam": {
+        "content": [
+            {
+                "file_index": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.telomerehunter2_files.txt:md5,4c25793671af106eac964c434cde9889"
+                    ]
+                ],
+                "outdir": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            [
+                                "all_reports.html",
+                                [
+                                    "test_gc_content.html",
+                                    "test_hist_telomere_repeats_per_intratelomeric_read.html",
+                                    "test_telomere_content.html",
+                                    "tumor_read_length_histogram.html"
+                                ],
+                                [
+                                    
+                                ],
+                                "test_TVR_top_contexts.tsv",
+                                "test_all_plots_merged.pdf",
+                                "test_normalized_TVR_counts.tsv",
+                                "test_singletons.tsv",
+                                "test_summary.tsv",
+                                [
+                                    [
+                                        "test_tumor_ATAGGG_18bp_18bp_neighborhood.tsv",
+                                        "test_tumor_ATAGGG_18bp_neighborhood_after.tsv",
+                                        "test_tumor_ATAGGG_18bp_neighborhood_before.tsv",
+                                        "test_tumor_CATGGG_18bp_18bp_neighborhood.tsv",
+                                        "test_tumor_CATGGG_18bp_neighborhood_after.tsv",
+                                        "test_tumor_CATGGG_18bp_neighborhood_before.tsv",
+                                        "test_tumor_CTAGGG_18bp_18bp_neighborhood.tsv",
+                                        "test_tumor_CTAGGG_18bp_neighborhood_after.tsv",
+                                        "test_tumor_CTAGGG_18bp_neighborhood_before.tsv",
+                                        "test_tumor_GTAGGG_18bp_18bp_neighborhood.tsv",
+                                        "test_tumor_GTAGGG_18bp_neighborhood_after.tsv",
+                                        "test_tumor_GTAGGG_18bp_neighborhood_before.tsv",
+                                        "test_tumor_TAAGGG_18bp_18bp_neighborhood.tsv",
+                                        "test_tumor_TAAGGG_18bp_neighborhood_after.tsv",
+                                        "test_tumor_TAAGGG_18bp_neighborhood_before.tsv",
+                                        "test_tumor_TCAGGG_18bp_18bp_neighborhood.tsv",
+                                        "test_tumor_TCAGGG_18bp_neighborhood_after.tsv",
+                                        "test_tumor_TCAGGG_18bp_neighborhood_before.tsv",
+                                        "test_tumor_TGAGGG_18bp_18bp_neighborhood.tsv",
+                                        "test_tumor_TGAGGG_18bp_neighborhood_after.tsv",
+                                        "test_tumor_TGAGGG_18bp_neighborhood_before.tsv",
+                                        "test_tumor_TTCGGG_18bp_18bp_neighborhood.tsv",
+                                        "test_tumor_TTCGGG_18bp_neighborhood_after.tsv",
+                                        "test_tumor_TTCGGG_18bp_neighborhood_before.tsv",
+                                        "test_tumor_TTGGGG_18bp_18bp_neighborhood.tsv",
+                                        "test_tumor_TTGGGG_18bp_neighborhood_after.tsv",
+                                        "test_tumor_TTGGGG_18bp_neighborhood_before.tsv",
+                                        "test_tumor_TTTGGG_18bp_18bp_neighborhood.tsv",
+                                        "test_tumor_TTTGGG_18bp_neighborhood_after.tsv",
+                                        "test_tumor_TTTGGG_18bp_neighborhood_before.tsv"
+                                    ],
+                                    [
+                                        "test_tumor_TVRs.txt",
+                                        "test_tumor_summed_read_length.tsv"
+                                    ],
+                                    "test_filtered.bam",
+                                    "test_filtered.bam.bai",
+                                    "test_filtered_intrachromosomal.bam",
+                                    "test_filtered_intratelomeric.bam",
+                                    "test_filtered_junctionspanning.bam",
+                                    "test_filtered_name_sorted.bam",
+                                    "test_filtered_subtelomeric.bam",
+                                    "test_intratelomeric_tumor_gc_content.tsv",
+                                    "test_readcount.tsv",
+                                    "test_repeat_frequency_per_intratelomeric_read.tsv",
+                                    "test_spectrum.tsv",
+                                    "test_tumor_gc_content.tsv",
+                                    "test_tumor_summary.tsv"
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                "singletons": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.telomerehunter2_singletons.tsv:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "summary": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.telomerehunter2_summary.tsv:md5,82f6b01666282b5e5934fe428e85f12e"
+                    ]
+                ],
+                "tvr_top_contexts": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.telomerehunter2_TVR_top_contexts.tsv:md5,c23750c5d83add433e558ffffef06f43"
+                    ]
+                ],
+                "versions_telomerehunter2": [
+                    [
+                        "TELOMEREHUNTER2",
+                        "telomerehunter2",
+                        "1.0.11"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "25.04.6"
+        },
+        "timestamp": "2026-09-15T13:08:32.949958"
     }
 }
