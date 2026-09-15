@@ -31,6 +31,7 @@ process OPENMS_IDCONFLICTRESOLVER {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}_resolved"
+    if ("$consensus_file" == "${prefix}.${consensus_file.extension}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     touch ${prefix}.${consensus_file.extension}
     """

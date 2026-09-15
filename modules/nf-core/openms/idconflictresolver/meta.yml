@@ -13,7 +13,7 @@ tools:
       tool_dev_url: "https://github.com/OpenMS/OpenMS"
       doi: "10.1038/s41592-024-02197-7"
       licence: ["BSD"]
-      identifier: ""
+      identifier: "biotools:openms"
 
 input:
   - - meta:
@@ -25,7 +25,8 @@ input:
         type: file
         description: Feature map with conflicting identifications.
         pattern: "*.{consensusXML,featureXML}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/data_2536 # Mass spectrometry data
 output:
   resolved:
     - - meta:
@@ -37,7 +38,8 @@ output:
           type: file
           description: Feature map with conflicting identifications resolved, same format as the input.
           pattern: "*.{consensusXML,featureXML}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/data_2536 # Mass spectrometry data
   versions_openms:
     - - ${task.process}:
           type: string
