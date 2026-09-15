@@ -16,6 +16,10 @@ set -euo pipefail
 # comment (hmmsearch's "# Program:"/"# Date:"/"# [ok]" run-metadata footer)
 # once the exact sentinel line "#" (nothing else) has been seen -- a target
 # name that happens to start with "#" is otherwise valid data, not a comment.
+# A real HMMER run never has anything but more comment lines after that
+# sentinel; a genuine data-shaped line there means this file is not one
+# HMMER run's output (e.g. more than one run's output concatenated together),
+# and it fails rather than silently discarding whatever follows.
 
 labels=(${labels.collect { "'" + it.toString().replace("'", "'\\''") + "'" }.join(' ')})
 files=(${files.collect { "'" + it.toString().replace("'", "'\\''") + "'" }.join(' ')})
@@ -51,8 +55,14 @@ files=(${files.collect { "'" + it.toString().replace("'", "'\\''") + "'" }.join(
                 }
                 next
             }
-            N > 0 && \$0 == "#" { intrailer = 1 }
-            intrailer { next }
+            N > 0 && \$0 == "#" { intrailer = 1; next }
+            intrailer {
+                if (\$0 !~ /^#/) {
+                    print "hmmer/formattsv: data row seen after the run-metadata footer -- looks like more than one HMMER run concatenated into one file" > "/dev/stderr"
+                    exit 1
+                }
+                next
+            }
             {
                 if (N == 0) {
                     print "hmmer/formattsv: data row seen before a column-count header was found" > "/dev/stderr"
