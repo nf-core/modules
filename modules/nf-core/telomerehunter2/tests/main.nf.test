@@ -26,9 +26,11 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert process.out.file_index },
-                { assert process.out.outdir },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["outdir"])).match() }
+                { assert path(process.out.summary[0][1]).exists() },
+                { assert path(process.out.summary[0][1]).text.contains("tel_content") },
+                { assert path(process.out.file_index[0][1]).exists() },
+                { assert path(process.out.outdir[0][1]).exists() },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["summary", "tvr_top_contexts", "singletons", "file_index", "outdir", "0", "1", "2", "3", "4"])).match() }
             )
         }
 
