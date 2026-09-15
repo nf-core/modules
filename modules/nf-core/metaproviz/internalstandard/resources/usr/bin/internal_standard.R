@@ -56,6 +56,10 @@ pool_metadata_col   <- get_arg("--pool_metadata_col",   "")
 pool_metadata_value <- get_arg("--pool_metadata_value", "Pool")
 pool_pattern        <- get_arg("--pool_pattern",        "pool")
 
+# Name of the colData column holding experimental condition, used to break
+# the IS CV out per condition (condition_cv output). Defaults to "Conditions".
+conditions_col      <- get_arg("--conditions_col",      "Conditions")
+
 # All output filenames are `<prefix>.<suffix>`, per nf-core naming
 # convention (https://nf-co.re/docs/specifications/components/modules/naming-conventions):
 # "output file names SHOULD consist of only ${prefix} and the file-format
@@ -322,9 +326,9 @@ assay_df       <- t(assay(se_is, 1)) %>% as.data.frame(check.names = FALSE)
 sample_info_df <- as.data.frame(colData(se_is), check.names = FALSE)
 
 # For pool_estimation: all samples are "pools" (we want CV across everything).
-# Preserve any original Conditions column.
-if ("Conditions" %in% colnames(sample_info_df)) {
-  sample_info_df$Conditions_original <- sample_info_df$Conditions
+# Preserve the original condition column (name set via --conditions_col).
+if (conditions_col %in% colnames(sample_info_df)) {
+  sample_info_df$Conditions_original <- sample_info_df[[conditions_col]]
 }
 sample_info_df$Conditions <- "Pool"
 
@@ -665,6 +669,23 @@ esc(log_out))
 
 writeLines(html, report_out)
 log_msg("INFO", "Written: ", report_out)
+
+# MetaProViz::pool_estimation() (release 4.0.0):
+# it only skips writing its own result files when both save_plot and
+# save_table are NULL, but a later code path unconditionally uses a
+# variable only defined when at least one is non-NULL, so passing both
+# NULL crashes. We pass save_plot = NULL only, so our call above
+# doesn't crash, but it still writes its own date-stamped CSVs/logs that
+# aren't part of this module's declared outputs. Cleaned up here, at the
+# very end, rather than right after that call: metaproviz/omnipathr's own
+# logging expects metaproviz-log/omnipathr-log to keep existing across
+# the whole run, so deleting them mid-script broke the later
+# viz_superplot() call's internal logging (confirmed — deleting them
+# there made viz_superplot() fail with "cannot open the connection").
+unlink("MetaProViz_Results", recursive = TRUE)
+unlink("metaproviz-log", recursive = TRUE)
+unlink("omnipathr-log", recursive = TRUE)
+unlink("Rplots.pdf")
 
 flush_log(log_out)
 message(sprintf(
