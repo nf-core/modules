@@ -7,3 +7,6 @@ dependencies:
   # renovate: datasource=conda depName=bioconda/gatk4
   - bioconda::gatk4-main=4.7.0.0
   - bioconda::gcnvkernel=0.9
+  - conda-forge::pip=26.1.1
+  - pip:
+      - git+https://github.com/broadinstitute/gatk.git@4.6.2.0#subdirectory=src/main/python/org/broadinstitute/hellbender
