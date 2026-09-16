@@ -162,8 +162,6 @@ process UNIVERSC {
     cd ${prefix}/outs/
 
     touch _invocation
-    touch _log
-    touch _err
 
     touch basic_stats.txt
     touch metrics_summary.csv
