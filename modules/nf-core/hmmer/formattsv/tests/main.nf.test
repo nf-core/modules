@@ -322,11 +322,8 @@ seq1                               -          model_A               PF00001     
         when {
             process {
                 """
-                // A real single hmmsearch run has exactly one header and one footer. This file
-                // has two of each -- as if someone had `cat`-ed two separate runs' tblout files
-                // together -- which used to be silently swallowed: once the sentinel "#" line of
-                // the first footer was seen, every later line (including the second run's real
-                // header and hits) was treated as more of that same trailing comment and dropped.
+                // Two runs' tblout concatenated together -- used to be silently swallowed after
+                // the first run's footer "#" sentinel line.
                 def tblout1 = File.createTempFile('profileA', '.tbl')
                 tblout1.text = '''#                                                                           --- full sequence ---- --- best 1 domain ---- --- domain number estimation ----
 # target name                    accession  query name           accession    E-value  score  bias   E-value  score  bias   exp reg clu  ov env dom rep inc description of target
@@ -372,10 +369,8 @@ seq2                               -          model_B               PF00002     
         when {
             process {
                 """
-                // A text editor's or `cat`'s "always end with a newline" habit can leave a
-                // trailing empty line after the real "# [ok]" footer. That line is neither "#"
-                // (the footer sentinel already seen) nor genuine data -- it must stay a no-op,
-                // not trip the "more than one HMMER run" guard above.
+                // A trailing blank line after the footer must stay a no-op, not trip the guard
+                // above.
                 def tblout1 = File.createTempFile('profileA', '.tbl')
                 tblout1.text = '''#                                                                           --- full sequence ---- --- best 1 domain ---- --- domain number estimation ----
 # target name                    accession  query name           accession    E-value  score  bias   E-value  score  bias   exp reg clu  ov env dom rep inc description of target
