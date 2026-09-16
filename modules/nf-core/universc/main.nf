@@ -2,7 +2,7 @@ process UNIVERSC {
     tag "$meta.id"
     label 'process_medium'
 
-    container "docker.io/tomkellygenetics/universc:1.2.7"
+    container "quay.io/nf-core/universc:1.2.5.1"
 
     input:
     tuple val(meta), path(reads)
@@ -28,17 +28,55 @@ process UNIVERSC {
 
     def reference_name = reference.name
     """
-    mkdir -p "\$PWD/.local-cellranger" "\$PWD/.local-universc"
+    cr_version=$(cellranger 2>&1 | sed '/^cellranger/!d;s/cellranger  (//;s/)//')
+    img_cr="/cellranger-\$cr_version"
+    img_cs="\$img_cr/cellranger-cs/\$cr_version"
 
-    ln -s /cellranger-3.0.2.9001 "\$PWD/.local-cellranger/cellranger-3.0.2.9001"
+    local_cr="\$PWD/.local-cellranger/cellranger-\$cr_version"
+    local_cs="\$local_cr/cellranger-cs/\$cr_version"
+
+    # Create local Cell Ranger directory structure
+    mkdir -p "\$local_cs/lib/python" "\$local_cs/mro"
+
+    # Top-level Cell Ranger files/directories
+    ln -s \$img_cr/cellranger-tiny-fastq "\$local_cr/cellranger-tiny-fastq"
+    ln -s \$img_cr/cellranger-tiny-ref  "\$local_cr/cellranger-tiny-ref"
+
+    # Cell Ranger CS: everything except lib and mro is symlinked
+    for item in \$img_cs/*; do
+        name=\$(basename "\$item")
+        if [[ "\$name" != "lib" && "\$name" != "mro"  ]]; then
+            ln -s "\$item" "\$local_cs/\$name"
+        fi
+    done
+
+    # lib: everything except python is symlinked
+    for item in \$img_cs/lib/*; do
+        name=\$(basename "\$item")
+        if [[ "\$name" != "python" ]]; then
+            ln -s "\$item" "\$local_cs/lib/\$name"
+        fi
+    done
+
+    # Copy python and mro folders (~191 MB, mostly barcodes) as modified by universc
+    cp -a \$img_cs/lib/python "\$local_cs/lib"
+    cp -a \$img_cs/mro \$local_cs
+
+    # Symlink cellranger bin
+    ln -s "\$local_cs/bin/cellranger" "\$local_cr/cellranger"
+
+    # UNIVERSC needs its installation directory to be writable
+    mkdir -p "\$PWD/.local-universc"
     cp -a /universc "\$PWD/.local-universc/"
 
-    local_cr="\$PWD/.local-cellranger/cellranger-3.0.2.9001"
     local_universc="\$PWD/.local-universc/universc"
 
-    # Replace the absolute symlink with one pointing to the local copy
+    # Fix UNIVERSC launcher symlink
     rm "\$local_universc/universc"
     ln -s "\$local_universc/launch_universc.sh" "\$local_universc/universc"
+
+    # Fix malformed [[ syntax in UNIVERSC
+    sed -i 's/"\$technology" == "vasa-drop"/ "\$technology" == "vasa-drop"/' "\$local_universc/universc"
 
     export PATH="\$local_cr:\$local_universc:\$PATH"
 
@@ -50,14 +88,12 @@ process UNIVERSC {
         --reference ${reference_name} \\
         --jobmode "local" \\
         --localcores ${task.cpus} \\
-        --localmem ${task.memory.toGiga()} \\
+        --localmem 8 \\
         --per-cell-data \\
-        ${args} 1> _log 2> _err
+        ${args}
 
     # save log files
     echo !! > ${prefix}/outs/_invocation
-    cp _log ${prefix}/outs/_log
-    cp _err ${prefix}/outs/_err
     """
 
 
@@ -70,17 +106,55 @@ process UNIVERSC {
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    mkdir -p "\$PWD/.local-cellranger" "\$PWD/.local-universc"
+    cr_version=$(cellranger 2>&1 | sed '/^cellranger/!d;s/cellranger  (//;s/)//')
+    img_cr="/cellranger-\$cr_version"
+    img_cs="\$img_cr/cellranger-cs/\$cr_version"
 
-    cp -a /cellranger-3.0.2.9001 "\$PWD/.local-cellranger/"
+    local_cr="\$PWD/.local-cellranger/cellranger-\$cr_version"
+    local_cs="\$local_cr/cellranger-cs/\$cr_version"
+
+    # Create local Cell Ranger directory structure
+    mkdir -p "\$local_cs/lib/python" "\$local_cs/mro"
+
+    # Top-level Cell Ranger files/directories
+    ln -s \$img_cr/cellranger-tiny-fastq "\$local_cr/cellranger-tiny-fastq"
+    ln -s \$img_cr/cellranger-tiny-ref  "\$local_cr/cellranger-tiny-ref"
+
+    # Cell Ranger CS: everything except lib and mro is symlinked
+    for item in \$img_cs/*; do
+        name=\$(basename "\$item")
+        if [[ "\$name" != "lib" && "\$name" != "mro"  ]]; then
+            ln -s "\$item" "\$local_cs/\$name"
+        fi
+    done
+
+    # lib: everything except python is symlinked
+    for item in \$img_cs/lib/*; do
+        name=\$(basename "\$item")
+        if [[ "\$name" != "python" ]]; then
+            ln -s "\$item" "\$local_cs/lib/\$name"
+        fi
+    done
+
+    # Copy python and mro folders (~191 MB, mostly barcodes) as modified by universc
+    cp -a \$img_cs/lib/python "\$local_cs/lib"
+    cp -a \$img_cs/mro \$local_cs
+
+    # Symlink cellranger bin
+    ln -s "\$local_cs/bin/cellranger" "\$local_cr/cellranger"
+
+    # UNIVERSC needs its installation directory to be writable
+    mkdir -p "\$PWD/.local-universc"
     cp -a /universc "\$PWD/.local-universc/"
 
-    local_cr="\$PWD/.local-cellranger/cellranger-3.0.2.9001"
     local_universc="\$PWD/.local-universc/universc"
 
-    # Replace the absolute symlink with one pointing to the local copy
+    # Fix UNIVERSC launcher symlink
     rm "\$local_universc/universc"
     ln -s "\$local_universc/launch_universc.sh" "\$local_universc/universc"
+
+    # Fix malformed [[ syntax in UNIVERSC
+    sed -i 's/"\$technology" == "vasa-drop"/ "\$technology" == "vasa-drop"/' "\$local_universc/universc"
 
     export PATH="\$local_cr:\$local_universc:\$PATH"
 
