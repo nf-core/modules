@@ -2,9 +2,7 @@ process UNIVERSC {
     tag "$meta.id"
     label 'process_medium'
 
-    container "quay.io/nf-core/universc:1.2.5.1"
-    containerOptions "${ workflow.containerEngine == 'podman' ?
-        "--runtime crun --userns=keep-id --systemd=always" : '' }"
+    container "docker.io/tomkellygenetics/universc:1.2.7"
 
     input:
     tuple val(meta), path(reads)
