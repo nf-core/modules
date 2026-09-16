@@ -25,8 +25,11 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/salmon/index/main.nf"
                 process {
                     """
-                    input[0] = Channel.of([file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true)])
-                    input[1] = Channel.of([file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/transcriptome.fasta", checkIfExists: true)])
+                    input[0] = Channel.of([
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/transcriptome.fasta", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true)
+                    ])
                     """
                 }
             }
@@ -52,11 +55,9 @@ nextflow_workflow {
                 input[5]  = 'gene_id'
                 input[6]  = 'gene_name'
                 input[7]  = 'salmon'
-                input[8]  = false
-                input[9]  = 'A'
-                input[10] = null
-                input[11] = null
-                input[12] = false
+                input[8]  = null
+                input[9]  = null
+                input[10] = false
                 """
             }
         }
@@ -117,11 +118,9 @@ nextflow_workflow {
                 input[5]  = 'gene_id'
                 input[6]  = 'gene_name'
                 input[7]  = 'kallisto'
-                input[8]  = null
-                input[9]  = null
-                input[10] = []
-                input[11] = []
-                input[12] = false
+                input[8]  = []
+                input[9]  = []
+                input[10] = false
                 """
             }
         }
@@ -154,8 +153,11 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/salmon/index/main.nf"
                 process {
                     """
-                    input[0] = Channel.of([file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true)])
-                    input[1] = Channel.of([file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/transcriptome.fasta", checkIfExists: true)])
+                    input[0] = Channel.of([
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/transcriptome.fasta", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true)
+                    ])
                     """
                 }
             }
@@ -181,11 +183,9 @@ nextflow_workflow {
                 input[5]  = 'gene_id'
                 input[6]  = 'gene_name'
                 input[7]  = 'salmon'
-                input[8]  = false
-                input[9]  = 'A'
-                input[10] = null
-                input[11] = null
-                input[12] = false
+                input[8]  = null
+                input[9]  = null
+                input[10] = false
                 """
             }
         }
@@ -236,11 +236,9 @@ nextflow_workflow {
                 input[5]  = 'gene_id'
                 input[6]  = 'gene_name'
                 input[7]  = 'kallisto'
-                input[8]  = null
-                input[9]  = null
-                input[10] = []
-                input[11] = []
-                input[12] = false
+                input[8]  = []
+                input[9]  = []
+                input[10] = false
                 """
             }
         }

@@ -1,5 +1,5 @@
 process SALMON_INDEX {
-    tag "$transcript_fasta"
+    tag "$meta.id"
     label "process_medium"
 
     conda "${moduleDir}/environment.yml"
@@ -8,11 +8,10 @@ process SALMON_INDEX {
         'community.wave.seqera.io/library/salmon:2.7.0--74784226202c61b9' }"
 
     input:
-    path genome_fasta
-    path transcript_fasta
+    tuple val(meta), path(transcript_fasta), path(genome_fasta)
 
     output:
-    path "salmon"      , emit: index
+    tuple val(meta), path("salmon"), emit: index
     tuple val("${task.process}"), val('salmon'), eval("salmon --version | sed 's/salmon //'"), emit: versions_salmon, topic: versions
 
     when:

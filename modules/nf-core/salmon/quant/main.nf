@@ -9,11 +9,9 @@ process SALMON_QUANT {
 
     input:
     tuple val(meta), path(reads)
-    path index
-    path gtf
-    path transcript_fasta
-    val alignment_mode
-    val lib_type
+    tuple val(meta2), path(index)
+    tuple val(meta3), path(gtf)
+    tuple val(meta4), path(transcript_fasta)
 
     output:
     tuple val(meta), path("${prefix}"), emit: results
@@ -28,57 +26,35 @@ process SALMON_QUANT {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
 
-    def reference = "--index ${index}"
-    def reads1 = []
-    def reads2 = []
-    meta.single_end ? [reads].flatten().each { r -> reads1 << r } : reads.eachWithIndex { v, ix -> (ix & 1 ? reads2 : reads1) << v }
-    def input_reads = meta.single_end ? "-r ${reads1.join(" ")}" : "-1 ${reads1.join(" ")} -2 ${reads2.join(" ")}"
+    // salmon's -a takes a BAM of reads already aligned to the transcriptome; anything else is reads mode
+    def alignment_mode = "${reads instanceof List ? reads[0] : reads}".endsWith('.bam')
+
+    def transcript_fasta_file = transcript_fasta instanceof List ? (transcript_fasta ? transcript_fasta[0] : null) : transcript_fasta
+    def index_dir = index instanceof List ? (index ? index[0] : null) : index
+
+    def reference
+    def input_reads
     if (alignment_mode) {
+        if (!transcript_fasta_file?.isFile()) {
+            error("[Salmon Quant] Alignment mode needs 'transcript_fasta' to be an existing fasta file as the reference (BAM input detected for sample '${meta.id}').")
+        }
         reference = "-t ${transcript_fasta}"
         input_reads = "-a ${reads}"
     }
-
-    def strandedness_opts = [
-        'A',
-        'U',
-        'SF',
-        'SR',
-        'IS',
-        'IU',
-        'ISF',
-        'ISR',
-        'OS',
-        'OU',
-        'OSF',
-        'OSR',
-        'MS',
-        'MU',
-        'MSF',
-        'MSR',
-    ]
-    def strandedness = 'A'
-    if (lib_type) {
-        if (strandedness_opts.contains(lib_type)) {
-            strandedness = lib_type
-        }
-        else {
-            log.info("[Salmon Quant] Invalid library type specified '--libType=${lib_type}', defaulting to auto-detection with '--libType=A'.")
-        }
-    }
     else {
-        strandedness = meta.single_end ? 'U' : 'IU'
-        if (meta.strandedness == 'forward') {
-            strandedness = meta.single_end ? 'SF' : 'ISF'
+        if (!index_dir?.isDirectory()) {
+            error("[Salmon Quant] Reads mode needs 'index' to be an existing salmon index directory (no BAM input detected for sample '${meta.id}').")
         }
-        else if (meta.strandedness == 'reverse') {
-            strandedness = meta.single_end ? 'SR' : 'ISR'
-        }
+        def reads1 = []
+        def reads2 = []
+        meta.single_end ? [reads].flatten().each { r -> reads1 << r } : reads.eachWithIndex { v, ix -> (ix & 1 ? reads2 : reads1) << v }
+        reference = "--index ${index}"
+        input_reads = meta.single_end ? "-r ${reads1.join(" ")}" : "-1 ${reads1.join(" ")} -2 ${reads2.join(" ")}"
     }
     """
     salmon quant \\
         --geneMap ${gtf} \\
         --threads ${task.cpus} \\
-        --libType=${strandedness} \\
         ${reference} \\
         ${input_reads} \\
         ${args} \\

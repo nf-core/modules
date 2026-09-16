@@ -19,8 +19,11 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/salmon/index/main.nf"
                 process {
                 """
-                input[0] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true))        // genome_fasta
-                input[1] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true)) // transcriptome_fasta
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
                 """
                 }
             }
@@ -39,7 +42,7 @@ nextflow_workflow {
                 input[1] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true))        // genome_fasta
                 input[2] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true)) // transcriptome_fasta
                 input[3] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true))          // genome_gtf
-                input[4] = SALMON_INDEX.out.index
+                input[4] = SALMON_INDEX.out.index.map { meta, idx -> idx } // ch_index take: param is a bare path
                 input[5] = make_index
                 """
             }
@@ -72,8 +75,11 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/salmon/index/main.nf"
                 process {
                 """
-                input[0] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true))        // genome_fasta
-                input[1] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true)) // transcriptome_fasta
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ])
                 """
                 }
             }
@@ -92,7 +98,7 @@ nextflow_workflow {
                 input[1] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true))        // genome_fasta
                 input[2] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/transcriptome.fasta', checkIfExists: true)) // transcriptome_fasta
                 input[3] = Channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true))          // genome_gtf
-                input[4] = SALMON_INDEX.out.index
+                input[4] = SALMON_INDEX.out.index.map { meta, idx -> idx } // ch_index take: param is a bare path
                 input[5] = make_index
                 """
             }
