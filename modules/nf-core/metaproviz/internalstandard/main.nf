@@ -2,7 +2,6 @@ process METAPROVIZ_INTERNALSTANDARD {
     tag "$meta.id"
     label 'process_single'
 
-    conda "${moduleDir}/environment.yml"
     // Shared MetaProViz image (built from modules/nf-core/metaproviz/Dockerfile).
     container "ghcr.io/saezlab/metaproviz:0.0.1"
 

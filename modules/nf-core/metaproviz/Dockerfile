@@ -36,7 +36,7 @@ FROM rocker/r-ver:4.6.1
 # compiled .so needs libglpk at runtime for CARNIVAL; fs's compiled .so needs
 # libuv at runtime for OmnipathR). Without these, BiocManager::install()
 # below reports errors per-package but still exits 0 overall, so a broken
-# image builds "successfully" 
+# image builds "successfully"
 RUN apt-get update && apt-get install -y --no-install-recommends \
         libcurl4-openssl-dev libssl-dev libxml2-dev \
         zlib1g-dev libglpk-dev libuv1-dev \
