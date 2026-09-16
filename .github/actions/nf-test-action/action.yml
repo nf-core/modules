@@ -62,6 +62,14 @@ runs:
         conda-solver: libmamba
         conda-remove-defaults: true
 
+    - name: Debug Conda setup
+      if: ${{contains(inputs.profile, 'conda')}}
+      shell: bash
+      run: |
+        conda info
+        conda config --show-sources
+        conda list --show-channel-urls
+
     # Set up secrets
     - name: Set up Nextflow secrets
       if: env.SENTIEON_ENCRYPTION_KEY != '' && env.SENTIEON_LICENSE_MESSAGE != ''
