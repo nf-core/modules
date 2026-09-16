@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process SALMON_QUANT"
     script "../main.nf"
     process "SALMON_QUANT"
+    config "./nextflow.config"
     tag "modules"
     tag "modules_nfcore"
     tag "salmon"
@@ -145,7 +146,6 @@ nextflow_process {
     }
 
     test("sarscov2 - pair_end libType override via ext.args") {
-        config "./nextflow_ext_args_libtype.config"
 
         when {
             params {

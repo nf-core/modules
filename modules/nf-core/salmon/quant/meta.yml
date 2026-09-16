@@ -60,18 +60,20 @@ input:
 output:
   results:
     - - meta:
-          type: directory
-          description: Folder containing the quantification results for a specific sample
-          pattern: "${prefix}"
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - ${prefix}:
           type: directory
           description: Folder containing the quantification results for a specific sample
           pattern: "${prefix}"
   json_info:
     - - meta:
-          type: directory
-          description: Folder containing the quantification results for a specific sample
-          pattern: "${prefix}"
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - "*info.json":
           type: file
           description: File containing meta information from Salmon quant
@@ -80,9 +82,10 @@ output:
             - edam: http://edamontology.org/format_3464 # JSON
   lib_format_counts:
     - - meta:
-          type: directory
-          description: Folder containing the quantification results for a specific sample
-          pattern: "${prefix}"
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - "*lib_format_counts.json":
           type: file
           description: File containing the library format counts
