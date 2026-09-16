@@ -53,13 +53,14 @@ runs:
         sudo apt install -y apptainer apptainer-suid
         mkdir -p $NXF_SINGULARITY_CACHEDIR
         mkdir -p $NXF_SINGULARITY_LIBRARYDIR
-        rm -rf ~/.apptainer/cache
-        rm -rf ~/.singularity/cache
-        df -h
-        du -sh ~/.apptainer/cache 2>/dev/null || true
-        du -sh ~/.singularity/cache 2>/dev/null || true
-        du -sh $NXF_SINGULARITY_CACHEDIR
-        du -sh $NXF_SINGULARITY_LIBRARYDIR
+
+        echo "APPTAINER_CACHEDIR=$NXF_SINGULARITY_CACHEDIR" >> "$GITHUB_ENV"
+
+        df -h /
+        echo "NXF_SINGULARITY_CACHEDIR=$NXF_SINGULARITY_CACHEDIR"
+        echo "NXF_SINGULARITY_LIBRARYDIR=$NXF_SINGULARITY_LIBRARYDIR"
+        df -h "$NXF_SINGULARITY_CACHEDIR"
+        df -h "$NXF_SINGULARITY_LIBRARYDIR"
 
     - name: Set up Conda
       if: ${{contains(inputs.profile, 'conda')}}
@@ -88,6 +89,20 @@ runs:
       run: |
         NFT_WORKDIR=~
         TAGS=$([ -n "${{ inputs.tags }}" ] && echo "--tag ${{ inputs.tags }}" || echo "")
+
+        echo "=== Disk ==="
+        df -h /
+
+        echo "=== Apptainer ==="
+        echo "APPTAINER_CACHEDIR=$APPTAINER_CACHEDIR"
+        echo "NXF_SINGULARITY_CACHEDIR=$NXF_SINGULARITY_CACHEDIR"
+        echo "NXF_SINGULARITY_LIBRARYDIR=$NXF_SINGULARITY_LIBRARYDIR"
+
+        apptainer cache list || true
+
+        echo "=== Large directories ==="
+        sudo du -xhd1 /home/runner 2>/dev/null | sort -h
+        sudo du -xhd1 / 2>/dev/null | sort -h
 
         nf-test test \
           --profile=${{ inputs.profile }} \
