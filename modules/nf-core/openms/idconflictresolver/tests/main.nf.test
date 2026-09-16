@@ -87,11 +87,13 @@ nextflow_process {
             def content = file(process.out.resolved[0][1]).text
             // consensusXML is not byte-reproducible (upstream FFID output varies), so snapshot PSM counts within <consensusElementList> instead; IDConflictResolver keeps one hit per identification
             def consensusSection = content.substring(content.indexOf('<consensusElementList>'))
+            def consensusElements = (consensusSection =~ /<consensusElement /).count
             def peptideIds = (consensusSection =~ /<PeptideIdentification /).count
             def peptideHits = (consensusSection =~ /<PeptideHit /).count
             assertAll(
                 { assert process.success },
                 { assert peptideHits == peptideIds },
+                { assert peptideIds <= consensusElements },
                 { assert snapshot(
                     file(process.out.resolved[0][1]).name,
                     peptideIds,
