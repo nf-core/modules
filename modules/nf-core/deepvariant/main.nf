@@ -16,7 +16,7 @@ process DEEPVARIANT {
     tuple val(meta), path("${prefix}.vcf.gz.tbi")  ,  emit: vcf_tbi
     tuple val(meta), path("${prefix}.g.vcf.gz")    ,  emit: gvcf
     tuple val(meta), path("${prefix}.g.vcf.gz.tbi"),  emit: gvcf_tbi
-    path "versions.yml"                            ,  emit: versions
+    tuple val("${task.process}"), val('deepvariant'), eval("/opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //'"), emit: versions_deepvariant, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

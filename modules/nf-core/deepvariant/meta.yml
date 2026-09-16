@@ -124,13 +124,27 @@ output:
           description: Tabix index of compressed GVCF file
           pattern: "*.g.vcf.gz.tbi"
           ontologies: []
+  versions_deepvariant:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deepvariant:
+          type: string
+          description: The name of the tool
+      - "/opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //'":
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deepvariant:
+          type: string
+          description: The name of the tool
+      - "/opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //'":
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@abhi18av"
   - "@ramprasadn"
