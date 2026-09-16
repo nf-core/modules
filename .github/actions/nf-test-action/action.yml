@@ -81,6 +81,8 @@ runs:
       run: |
         NFT_WORKDIR=~
         TAGS=$([ -n "${{ inputs.tags }}" ] && echo "--tag ${{ inputs.tags }}" || echo "")
+        sudo du -xhd1 / 2>/dev/null | sort -h
+        sudo du -xhd1 /usr 2>/dev/null | sort -h
 
         nf-test test \
           --profile=${{ inputs.profile }} \
