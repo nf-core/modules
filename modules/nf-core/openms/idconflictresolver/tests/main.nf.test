@@ -85,15 +85,7 @@ nextflow_process {
 
         then {
             def content = file(process.out.resolved[0][1]).text
-            // consensusXML byte content is not reproducible run-to-run because the upstream
-            // FeatureFinderIdentification output it derives from is not reproducible; counts
-            // below were observed stable across runs with the upstream step pinned to cpus=2.
-            // Counts are restricted to the <consensusElementList> section: the file also carries
-            // a top-level <IdentificationRun> with the raw, unresolved search hits, which
-            // IDConflictResolver does not touch and would otherwise mask the effect of the tool.
-            // The unresolved input carries 4334 PeptideHits for 3951 PeptideIdentifications; after
-            // resolution both are 3951, so equality is the tool's contract.
-            // Fallback: if these counts drift after an OpenMS or runner change, regenerate the snapshot and confirm the counts are still stable across two runs.
+            // consensusXML is not byte-reproducible (upstream FFID output varies), so snapshot PSM counts within <consensusElementList> instead; IDConflictResolver keeps one hit per identification
             def consensusSection = content.substring(content.indexOf('<consensusElementList>'))
             def peptideIds = (consensusSection =~ /<PeptideIdentification /).count
             def peptideHits = (consensusSection =~ /<PeptideHit /).count
