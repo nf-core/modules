@@ -53,6 +53,13 @@ runs:
         sudo apt install -y apptainer apptainer-suid
         mkdir -p $NXF_SINGULARITY_CACHEDIR
         mkdir -p $NXF_SINGULARITY_LIBRARYDIR
+        rm -rf ~/.apptainer/cache
+        rm -rf ~/.singularity/cache
+        df -h
+        du -sh ~/.apptainer/cache 2>/dev/null || true
+        du -sh ~/.singularity/cache 2>/dev/null || true
+        du -sh $NXF_SINGULARITY_CACHEDIR
+        du -sh $NXF_SINGULARITY_LIBRARYDIR
 
     - name: Set up Conda
       if: ${{contains(inputs.profile, 'conda')}}
