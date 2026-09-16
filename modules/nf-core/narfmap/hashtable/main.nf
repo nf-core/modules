@@ -11,8 +11,8 @@ process NARFMAP_HASHTABLE {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("narfmap")    , emit: hashmap
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("narfmap"), emit: hashmap
+    tuple val("${task.process}"), val('narfmap'), eval("dragen-os --version 2>&1"), emit: versions_narfmap, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,21 +27,11 @@ process NARFMAP_HASHTABLE {
         --output-directory narfmap \\
         $args \\
         --ht-num-threads $task.cpus
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        narfmap: \$(echo \$(dragen-os --version 2>&1))
-    END_VERSIONS
     """
 
     stub:
     """
     mkdir narfmap
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        narfmap: \$(echo \$(dragen-os --version 2>&1))
-    END_VERSIONS
     """
 
 }
