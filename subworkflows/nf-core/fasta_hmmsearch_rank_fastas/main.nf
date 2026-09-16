@@ -27,9 +27,15 @@ workflow FASTA_HMMSEARCH_RANK_FASTAS {
     // profile), and duckdb/table2parquet converts it. tblout and domtblout go through separate
     // calls with distinct meta ids so their Parquet filenames don't collide once both are
     // staged into the same HMMER_HMMRANK task.
+    // Sorted by label before splitting into labels/files: .collect() gathers parallel
+    // HMMER_HMMSEARCH tasks in whatever order they happen to finish, not submission order, so
+    // without this the combined table's profile block order (and therefore this task's output
+    // file) would vary run to run even though its content doesn't -- hmmrank's own final
+    // ORDER BY absorbs this for its own output, but this intermediate one is published as-is.
     HMMER_HMMSEARCH.out.target_summary
         .map { meta, tbl -> [ meta.id, tbl ] }
         .collect(flat: false)
+        .map { pairs -> pairs.sort { it[0] } }
         .map { pairs -> [ [ id: 'rank.tblout' ], pairs.collect { it[0] }, pairs.collect { it[1] } ] }
         .set { ch_formattsv_tblout }
 
@@ -42,9 +48,11 @@ workflow FASTA_HMMSEARCH_RANK_FASTAS {
     // branching a dataflow at runtime; ch_domtblout_parquet ends up either a single real path
     // or a single `[]`, matching what HMMER_HMMRANK treats as "no domtblout".
     if (save_domtblout) {
+        // Sorted for the same reason as the tblout branch above.
         HMMER_HMMSEARCH.out.domain_summary
             .map { meta, domtbl -> [ meta.id, domtbl ] }
             .collect(flat: false)
+            .map { pairs -> pairs.sort { it[0] } }
             .map { pairs -> [ [ id: 'rank.domtblout' ], pairs.collect { it[0] }, pairs.collect { it[1] } ] }
             .set { ch_formattsv_domtblout }
 
