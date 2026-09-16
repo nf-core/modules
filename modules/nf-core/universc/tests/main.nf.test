@@ -11,6 +11,7 @@ nextflow_process {
     tag "universc"
 
     test("universc_10x") {
+        tag "test1"
         setup {
             run("UNTAR") {
                 script "../../untar/main.nf"
