@@ -13,12 +13,12 @@ process TRIDENT_FETCH {
     output:
     // All outputs are optional as fetch will check if the package already exists in the provided archive directories, and skip download if so.
     path "output_archive/*/POSEIDON.yml", emit: poseidon_yml, optional: true
-    path "output_archive/*/*.{bed,bed.gz}", emit: geno_plink, optional: true
-    path "output_archive/*/*.{geno,geno.gz}", emit: geno_eigenstrat, optional: true
     path "output_archive/*/*.{vcf,vcf.gz}", emit: geno_vcf, optional: true
+    path "output_archive/*/*.{bed,bed.gz}", emit: geno_plink, optional: true
     path "output_archive/*/*.{bim,bim.gz}", emit: snp_plink, optional: true
-    path "output_archive/*/*.{snp,snp.gz}", emit: snp_eigenstrat, optional: true
     path "output_archive/*/*.{fam,fam.gz}", emit: ind_plink, optional: true
+    path "output_archive/*/*.{geno,geno.gz}", emit: geno_eigenstrat, optional: true
+    path "output_archive/*/*.{snp,snp.gz}", emit: snp_eigenstrat, optional: true
     path "output_archive/*/*.{ind,ind.gz}", emit: ind_eigenstrat, optional: true
     path "output_archive/*/*.janno", emit: janno, optional: true
     path "output_archive/*/*.ssf", emit: ssf, optional: true
