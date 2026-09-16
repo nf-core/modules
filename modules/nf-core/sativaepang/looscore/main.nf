@@ -12,7 +12,7 @@ process SATIVAEPANG_LOOSCORE {
 
     output:
     tuple val(meta), path("*.mis"), emit: mis
-    tuple val("${task.process}"), val('sativaepang'), eval("grep -m1 -oE '[0-9]+\\.[0-9]+\\.[0-9]+(\\.[0-9]+)?' \$(command -v sativa-epang)"), topic: versions, emit: versions_sativaepang
+    tuple val("${task.process}"), val('sativaepang'), eval("sativa-epang --version | cut -d' ' -f2"), topic: versions, emit: versions_sativaepang
 
     when:
     task.ext.when == null || task.ext.when

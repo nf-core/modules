@@ -51,7 +51,7 @@ output:
       - sativaepang:
           type: string
           description: The name of the tool
-      - grep -m1 -oE '[0-9]+\.[0-9]+\.[0-9]+(\.[0-9]+)?' \$(command -v sativa-epang):
+      - sativa-epang --version | cut -d' ' -f2:
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -63,7 +63,7 @@ topics:
       - sativaepang:
           type: string
           description: The name of the tool
-      - grep -m1 -oE '[0-9]+\.[0-9]+\.[0-9]+(\.[0-9]+)?' \$(command -v sativa-epang):
+      - sativa-epang --version | cut -d' ' -f2:
           type: eval
           description: The expression to obtain the version of the tool
 
