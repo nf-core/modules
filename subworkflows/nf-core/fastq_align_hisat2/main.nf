@@ -18,7 +18,7 @@ workflow FASTQ_ALIGN_HISAT2 {
     //
     // Sort, index BAM file and run samtools stats, flagstat and idxstats
     //
-    BAM_SORT_STATS_SAMTOOLS(HISAT2_ALIGN.out.bam, ch_fasta_fai)
+    BAM_SORT_STATS_SAMTOOLS(HISAT2_ALIGN.out.bam, ch_fasta_fai, 'bai')
 
     emit:
     orig_bam = HISAT2_ALIGN.out.bam // channel: [ val(meta), bam   ]
