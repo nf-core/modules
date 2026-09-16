@@ -13,11 +13,12 @@ nextflow_process {
     setup {
         run("SOURMASH_SKETCH") {
             script "../../sourmash/sketch/main.nf"
+	    config "./fmh-sourmash.config"
             process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
                 ]
                 """
             }
@@ -43,11 +44,65 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot([
+		    path(process.out.csv[0][1]).readLines(),
+		    process.out.findAll { key, val -> key.startsWith('versions') }
+		]
+		).match() }
             )
         }
     }
 
+    test("minigut - fastq - single_end - fulldb") {
+
+        tag "full"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:true ], ['https://github.com/nf-core/test-datasets/raw/refs/heads/mag/test_data/test_minigut_R1.fastq.gz'] ]
+                input[1] = "https://zenodo.org/records/10045253/files/KOs_sketched_scaled_1000.sig.zip"
+                input[2] = 11
+                input[3] = 1000
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot([
+		    process.out.findAll { key, val -> key.startsWith('versions') },
+		    path(process.out.csv[0][1]).readLines()[1..10]
+		]).match() }
+            )
+        }
+    }
+    test("minigut - fastq - single_end - testdb") {
+
+        tag "testdb"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:true ], ['https://github.com/nf-core/test-datasets/raw/refs/heads/mag/test_data/test_minigut_R1.fastq.gz'] ]
+                input[1] = "https://github.com/nickp60/test-datasets/raw/refs/heads/funcprofiler/data/database/fmhfunprofiler/KOs_sketched_scaled_1000_demo.sig.zip"
+                input[2] = 11
+                input[3] = 1000
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot([
+		    process.out.findAll { key, val -> key.startsWith('versions') },
+		    path(process.out.csv[0][1]).readLines(),
+		]).match() }
+            )
+        }
+    }
     test("sarscov2 - fastq - single_end - stub") {
 
         options "-stub"
@@ -60,14 +115,19 @@ nextflow_process {
                 input[2] = 11
                 input[3] = 1000
                 """
-            }
-        }
-
+	    }
+	}
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot([
+
+		    process.out.findAll { key, val -> key.startsWith('versions') },
+		    sanitizeOutput(process.out)
+		]).match()
+		}
             )
         }
     }
+
 }
