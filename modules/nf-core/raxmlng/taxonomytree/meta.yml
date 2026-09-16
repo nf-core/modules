@@ -1,4 +1,4 @@
-name: "custom_taxonomytree"
+name: "raxmlng_taxonomytree"
 description: |
   Build a multifurcating guide tree from a flat taxonomy: one polytomy per shared
   taxonomic rank, resolved only as far as the taxonomy itself resolves it. Intended
@@ -45,27 +45,20 @@ output:
           ontologies:
             - edam: http://edamontology.org/format_1910 # Newick
   versions_python:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - python:
-          type: string
-          description: The name of the tool
-      - python3 --version | sed 's/Python //':
-          type: eval
-          description: The expression to obtain the version of the tool
-
+    - versions.yml:
+        type: file
+        description: File containing software versions.
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
 topics:
   versions:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - python:
-          type: string
-          description: The name of the tool
-      - python3 --version | sed 's/Python //':
-          type: eval
-          description: The expression to obtain the version of the tool
+    - versions.yml:
+        type: file
+        description: File containing software versions.
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
 
 authors:
   - "@erikrikarddaniel"

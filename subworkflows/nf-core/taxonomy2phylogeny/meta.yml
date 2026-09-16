@@ -3,7 +3,7 @@ name: "taxonomy2phylogeny"
 description: |
   Build a bifurcating ML phylogeny from an alignment, constrained to be consistent
   with a taxonomy: a multifurcating guide tree built from the taxonomy strings
-  (custom/taxonomytree) feeds RAxML-NG (raxmlng/search) as a topology constraint,
+  (raxmlng/taxonomytree) feeds RAxML-NG (raxmlng/search) as a topology constraint,
   and RAxML-NG's own integrated automatic model testing (MOOSE) selects the
   substitution model.
 keywords:
@@ -13,7 +13,7 @@ keywords:
   - newick
   - guide tree
 components:
-  - custom/taxonomytree
+  - raxmlng/taxonomytree
   - raxmlng/search
 input:
   - ch_taxonomy_alignment:

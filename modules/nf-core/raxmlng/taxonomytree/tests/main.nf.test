@@ -1,13 +1,13 @@
 nextflow_process {
 
-    name "Test Process CUSTOM_TAXONOMYTREE"
+    name "Test Process RAXMLNG_TAXONOMYTREE"
     script "../main.nf"
-    process "CUSTOM_TAXONOMYTREE"
+    process "RAXMLNG_TAXONOMYTREE"
 
     tag "modules"
     tag "modules_nfcore"
-    tag "custom"
-    tag "custom/taxonomytree"
+    tag "raxmlng"
+    tag "raxmlng/taxonomytree"
 
     test("taxonomy tsv") {
 
