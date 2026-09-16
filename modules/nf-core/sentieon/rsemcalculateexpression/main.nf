@@ -4,13 +4,14 @@ process SENTIEON_RSEMCALCULATEEXPRESSION {
     label 'sentieon'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/39/39a3e1a85912520836ad054c8ac0497b463bb5170e0e907183dbd08509dad997/data' :
-        'community.wave.seqera.io/library/rsem_sentieon:3e4315fa0b636313' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f5/f52e1a930b14b356016b21691fc7590cb3522a3f138ee0eda84d8fdcfea2695d/data'
+        : 'community.wave.seqera.io/library/rsem_sentieon_findutils:4ebb5db0ff545302' }"
 
     input:
     tuple val(meta), path(reads)  // FASTQ files or BAM file for --alignments mode
     path  index
+    val   strandedness
 
     output:
     tuple val(meta), path("*.genes.results")   , emit: counts_gene
@@ -33,12 +34,7 @@ process SENTIEON_RSEMCALCULATEEXPRESSION {
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
 
-    def strandedness = ''
-    if (meta.strandedness == 'forward') {
-        strandedness = '--strandedness forward'
-    } else if (meta.strandedness == 'reverse') {
-        strandedness = '--strandedness reverse'
-    }
+    def strandedness_arg = strandedness == 'forward' ? '--strandedness forward' : (strandedness == 'reverse' ? '--strandedness reverse' : '')
 
     // Detect if input is BAM file(s)
     def is_bam = reads.toString().toLowerCase().endsWith('.bam')
@@ -50,7 +46,6 @@ process SENTIEON_RSEMCALCULATEEXPRESSION {
     def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64
         ? "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; "
         : ""
-
     """
     $sentieonLicense
 
@@ -75,7 +70,7 @@ process SENTIEON_RSEMCALCULATEEXPRESSION {
         --num-threads $task.cpus \\
         --temporary-folder ./tmp/ \\
         $alignment_mode \\
-        $strandedness \\
+        $strandedness_arg \\
         \$PAIRED_END_FLAG \\
         $args \\
         $reads \\

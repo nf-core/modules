@@ -31,10 +31,11 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of([
-                    [ id:'test', strandedness: 'forward' ], // meta map
+                    [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/rsem.transcript.bam', checkIfExists: true)
                 ])
                 input[1] = SENTIEON_RSEMPREPAREREFERENCE.out.index
+                input[2] = 'forward'
                 """
             }
         }
@@ -74,13 +75,14 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of([
-                    [ id:'test', strandedness: 'forward' ], // meta map
+                    [ id:'test' ], // meta map
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz', checkIfExists: true)
                     ]
                 ])
                 input[1] = SENTIEON_RSEMPREPAREREFERENCE.out.index
+                input[2] = 'forward'
                 """
             }
         }
@@ -120,13 +122,14 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of([
-                    [ id:'test', strandedness: 'forward' ], // meta map
+                    [ id:'test' ], // meta map
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz', checkIfExists: true)
                     ]
                 ])
                 input[1] = SENTIEON_RSEMPREPAREREFERENCE.out.index
+                input[2] = 'forward'
                 """
             }
         }
