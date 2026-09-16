@@ -30,6 +30,9 @@ nextflow_workflow {
         }
 
         when {
+            params {
+                outdir = "$outputDir"
+            }
             workflow {
                 """
                 make_index = false
@@ -86,6 +89,9 @@ nextflow_workflow {
         }
 
         when {
+            params {
+                outdir = "$outputDir"
+            }
             workflow {
                 """
                 make_index = false
