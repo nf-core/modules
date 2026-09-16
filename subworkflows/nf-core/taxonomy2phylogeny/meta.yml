@@ -1,0 +1,49 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "taxonomy2phylogeny"
+description: |
+  Build a bifurcating ML phylogeny from an alignment, constrained to be consistent
+  with a taxonomy: a multifurcating guide tree built from the taxonomy strings
+  (custom/taxonomytree) feeds RAxML-NG (raxmlng/search) as a topology constraint,
+  and RAxML-NG's own integrated automatic model testing (MOOSE) selects the
+  substitution model.
+keywords:
+  - phylogenetics
+  - taxonomy
+  - raxml-ng
+  - newick
+  - guide tree
+components:
+  - custom/taxonomytree
+  - raxmlng/search
+input:
+  - ch_taxonomy_alignment:
+      type: file
+      description: |
+        Taxonomy, alignment, and the RAxML-NG model (a fixed model string, or
+        "DNA"/"AA"/"auto" to trigger RAxML-NG's automatic model testing) to build
+        the phylogeny under.
+        Structure: [ val(meta), path(taxonomy), path(alignment), val(raxmlng_model) ]
+      pattern: "*.{fa,fasta,fna,mfa,phy}"
+output:
+  - tree:
+      type: file
+      description: |
+        ML phylogeny, topologically consistent with the taxonomy constraint.
+        Structure: [ val(meta), path(tree) ]
+      pattern: "*.raxml.bestTree"
+  - model:
+      type: file
+      description: |
+        RAxML-NG model file, consistent with tree + alignment.
+        Structure: [ val(meta), path(model) ]
+      pattern: "*.raxml.bestModel"
+  - guide_tree:
+      type: file
+      description: |
+        The multifurcating, taxonomy-only guide tree used as the topology constraint.
+        Structure: [ val(meta), path(guide_tree) ]
+      pattern: "*.guide.nwk"
+authors:
+  - "@erikrikarddaniel"
+maintainers:
+  - "@erikrikarddaniel"

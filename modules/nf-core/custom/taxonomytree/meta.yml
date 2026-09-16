@@ -1,0 +1,73 @@
+name: "custom_taxonomytree"
+description: |
+  Build a multifurcating guide tree from a flat taxonomy: one polytomy per shared
+  taxonomic rank, resolved only as far as the taxonomy itself resolves it. Intended
+  as a topology constraint for a downstream ML tree search (e.g. raxmlng/search),
+  so the resulting phylogeny stays consistent with the declared taxonomy.
+keywords:
+  - taxonomy
+  - phylogenetics
+  - newick
+  - guide tree
+tools:
+  - "custom":
+      description: |
+        Build a multifurcating guide (Newick) tree from a tab-separated taxonomy file.
+      homepage: "https://github.com/nf-core/modules"
+      documentation: "https://github.com/nf-core/modules"
+      licence:
+        - "MIT"
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+    - taxonomy:
+        type: file
+        description: |
+          Tab-separated taxonomy labels (seq_name<TAB>rank1;rank2;...), one record per
+          sequence.
+        pattern: "*.{tax,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+output:
+  guide_tree:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - "*.guide.nwk":
+          type: file
+          description: |
+            The multifurcating guide tree, one leaf per taxonomy record, grouped by
+            shared taxonomic rank.
+          pattern: "*.guide.nwk"
+          ontologies:
+            - edam: http://edamontology.org/format_1910 # Newick
+  versions_python:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python3 --version | sed 's/Python //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python3 --version | sed 's/Python //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@erikrikarddaniel"
+maintainers:
+  - "@erikrikarddaniel"
