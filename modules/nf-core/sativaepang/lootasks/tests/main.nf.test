@@ -17,15 +17,12 @@ nextflow_process {
                 input[0] = [
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'delete_me/sativaepang/sativaepang_tiny.refjson', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'delete_me/sativaepang/sativaepang_tiny.model', checkIfExists: true)
                 ]
                 """
             }
         }
 
         then {
-            // manifest.json's model must be the bare model expression, not RAxML-NG's
-            // partition clause -- see the SATIVA_EPANG_MODEL workaround in main.nf.
             def taskdir = file(process.out.taskdir[0][1])
             def manifest = new groovy.json.JsonSlurper().parse(new File(taskdir.toString(), "manifest.json"))
             assertAll(
@@ -45,7 +42,6 @@ nextflow_process {
                 input[0] = [
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'delete_me/sativaepang/gtdb_archaea_16s.refjson', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'delete_me/sativaepang/gtdb_archaea_16s.model', checkIfExists: true)
                 ]
                 """
             }
@@ -73,7 +69,6 @@ nextflow_process {
                 input[0] = [
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'delete_me/sativaepang/sativaepang_tiny.refjson', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'delete_me/sativaepang/sativaepang_tiny.model', checkIfExists: true)
                 ]
                 """
             }

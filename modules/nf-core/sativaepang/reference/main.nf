@@ -4,8 +4,8 @@ process SATIVAEPANG_REFERENCE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sativa-epang:0.9.3.4--py314hab16a5f_0' :
-        'quay.io/biocontainers/sativa-epang:0.9.3.4--py314hab16a5f_0' }"
+        'https://depot.galaxyproject.org/singularity/sativa-epang:0.10.0--py314hab16a5f_0' :
+        'quay.io/biocontainers/sativa-epang:0.10.0--py314hab16a5f_0' }"
 
     input:
     tuple val(meta), path(alignment), path(taxonomy), val(taxcode)
@@ -15,7 +15,7 @@ process SATIVAEPANG_REFERENCE {
     output:
     tuple val(meta), path("*.refjson"), emit: refjson
     tuple val(meta), path("*.model")  , emit: model
-    tuple val("${task.process}"), val('sativaepang'), eval("grep -m1 -oE '[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+' \$(command -v sativa-epang)"), topic: versions, emit: versions_sativaepang
+    tuple val("${task.process}"), val('sativaepang'), eval("grep -m1 -oE '[0-9]+\\.[0-9]+\\.[0-9]+(\\.[0-9]+)?' \$(command -v sativa-epang)"), topic: versions, emit: versions_sativaepang
 
     when:
     task.ext.when == null || task.ext.when
