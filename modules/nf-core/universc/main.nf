@@ -106,7 +106,7 @@ process UNIVERSC {
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    cr_version=$(cellranger 2>&1 | sed '/^cellranger/!d;s/cellranger  (//;s/)//')
+    cr_version=\$(cellranger 2>&1 | sed '/^cellranger/!d;s/cellranger  (//;s/)//')
     img_cr="/cellranger-\$cr_version"
     img_cs="\$img_cr/cellranger-cs/\$cr_version"
 
