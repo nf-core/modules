@@ -20,13 +20,14 @@ process DEEPMASED_PREDICT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args     = task.ext.args ?: ''
+    def prefix   = task.ext.prefix ?: "${meta.id}"
     """
     DeepMAsED predict \\
         ${feature_file_table} \\
         --n-procs ${task.cpus} \\
         --save-name ${prefix} \\
+        --cpu-only \\
         ${args}
     """
 

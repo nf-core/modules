@@ -187,12 +187,12 @@ output:
             e.g. [ id:'test', single_end:false ]
       - ${prefix}.json:
           type: file
-          description: |  
+          description: |
             Machine-readable genome annotation output in JSON format,
-            including genome metadata, annotated genomic features,          
+            including genome metadata, annotated genomic features,
           pattern: "*.json"
           ontologies:
-            - edam: http://edamontology.org/format_3475  
+            - edam: http://edamontology.org/format_3475
   versions_bakta:
     - - ${task.process}:
           type: string

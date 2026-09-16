@@ -1,0 +1,78 @@
+{
+    "two samples - optional inputs absent": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "run"
+                    },
+                    "run.overall_stats.tsv.gz:md5,d6557299fc03c8fc59045c5ef665379a"
+                ]
+            ],
+            [
+                "sample\tn_post_trimming\tidxs_n_mapped\tidxs_n_unmapped\tCDS\tUnassigned_Ambiguity\tUnassigned_MultiMapping\tUnassigned_NoFeatures\tUnassigned_Unmapped\trRNA",
+                "sample1\tNA\t550\t15\t200\t3\t7\t15\t20\t30",
+                "sample2\tNA\t180\t5\t40\t1\t2\t8\t5\t10"
+            ],
+            {
+                "versions": [
+                    "versions.yml:md5,a304032a876790b9ed28e8ac89682bae"
+                ]
+            }
+        ],
+        "timestamp": "2026-08-12T11:55:40.096271521",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "two samples - all optional inputs provided": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "run"
+                    },
+                    "run.overall_stats.tsv.gz:md5,cd5981bb0f52f78c799fd2168e6eef8b"
+                ]
+            ],
+            [
+                "sample\tn_post_trimming\tn_non_contaminated\tidxs_n_mapped\tidxs_n_unmapped\tCDS\tUnassigned_Ambiguity\tUnassigned_MultiMapping\tUnassigned_NoFeatures\tUnassigned_Unmapped\trRNA\tn_annotated_taxa\tn_annotated_functions",
+                "sample1\t600\t580\t550\t15\t200\t3\t7\t15\t20\t30\t42\t17",
+                "sample2\t150\t150\t180\t5\t40\t1\t2\t8\t5\t10\t30\t12"
+            ],
+            {
+                "versions": [
+                    "versions.yml:md5,a304032a876790b9ed28e8ac89682bae"
+                ]
+            }
+        ],
+        "timestamp": "2026-08-12T11:55:30.731242905",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "two samples - all optional inputs provided - stub": {
+        "content": [
+            {
+                "overall_stats": [
+                    [
+                        {
+                            "id": "run"
+                        },
+                        "run.overall_stats.tsv.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,001066e0d0280c54be5b59207f58c713"
+                ]
+            }
+        ],
+        "timestamp": "2026-08-12T10:31:53.939983288",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    }
+}

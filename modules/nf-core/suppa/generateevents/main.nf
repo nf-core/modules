@@ -17,7 +17,8 @@ process SUPPA_GENERATEEVENTS {
     val exon_length
 
     output:
-    tuple val(meta), path("*.{ioe,ioi,gtf}"), emit: events
+    tuple val(meta), path("*.{ioe,ioi}"), emit: events
+    tuple val(meta), path("*.gtf"), emit: gtf, optional: true
     tuple val("${task.process}"), val('suppa'), eval("suppa.py -v | sed '1!d;s/.* //'"), topic: versions, emit: versions_suppa
 
     when:
@@ -47,8 +48,10 @@ process SUPPA_GENERATEEVENTS {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: meta.id
+    def gtf_out = format == 'ioe' ? "touch ${prefix}.gtf" : ''
     """
     echo ${args}
     touch ${prefix}.${format}
+    ${gtf_out}
     """
 }

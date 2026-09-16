@@ -9,6 +9,8 @@ nextflow_process {
     tag "pbmm2"
     tag "pbmm2/align"
 
+    config "./nextflow.config"
+
     test("pbmm2 - bam") {
         when {
             process {

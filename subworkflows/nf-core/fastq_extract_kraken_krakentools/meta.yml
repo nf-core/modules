@@ -13,38 +13,38 @@ components:
   - kraken2/kraken2
   - krakentools/extractkrakenreads
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
   - ch_reads:
       type: file
       description: |
         List of input FastQ files of size 1 and 2 for single-end and paired-end data,
         respectively.
+        Structure: [ val(meta), [ path(reads) ] ]
   - ch_db:
       type: directory
-      description: Kraken2 database
+      description: |
+        Kraken2 database
+        Structure: [ path(db) ]
   - val_taxid:
       type: string
       description: A string of one or more of taxonomic IDs (e.g. from NCBI Taxonomy) separated by spaces
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - report:
+  - kraken2_report:
       type: file
       description: |
         Kraken2 report containing stats about classified
         and not classified reads.
+        Structure: [ val(meta), path(report) ]
   - extracted_kraken2_reads:
       type: file
       description: |
         FASTQ or FASTA file of just reads assigned to the requested taxonomic IDs.
+        Structure: [ val(meta), [ path(reads) ] ]
       pattern: "*.{fastq.gz,fasta.gz}"
+  - multiqc_files:
+      type: file
+      description: |
+        Kraken2 reports for MultiQC input.
+        Structure: [ path(report) ]
 authors:
   - "@MarieLataretu"
 maintainers:

@@ -39,7 +39,7 @@ output:
           pattern: "*.fastq.gz"
           ontologies:
             - edam: "http://edamontology.org/format_1930"
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   versions_fgumi:
     - - ${task.process}:
           type: string
@@ -50,6 +50,17 @@ output:
       - fgumi --version | sed "s/^fgumi //":
           type: eval
           description: The expression to obtain the version of the tool
+  versions_gzip:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gzip:
+          type: string
+          description: The name of the tool
+      - gzip --version 2>&1 | sed '1!d;s/gzip //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -61,7 +72,41 @@ topics:
       - fgumi --version | sed "s/^fgumi //":
           type: eval
           description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gzip:
+          type: string
+          description: The name of the tool
+      - gzip --version 2>&1 | sed '1!d;s/gzip //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@nh13"
 maintainers:
   - "@nh13"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/fgumi_gzip:c9ed369c64a58706
+      build_id: bd-c9ed369c64a58706_1
+      scan_id: sc-9c3a90095a24d54c_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/fgumi_gzip:60693e180762ecb0
+      build_id: bd-60693e180762ecb0_1
+      scan_id: sc-40faeb13999fca87_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/fgumi_gzip:9816f4046dc8b3eb
+      build_id: bd-9816f4046dc8b3eb_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1b/1bc8b529ca211068200eb632191845e5f3fc427505845bcb695d9a8f86bff406/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/fgumi_gzip:29dcd502bc6bf067
+      build_id: bd-29dcd502bc6bf067_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/94/941847649b53272f3c6d1b32617596f0e7320d87cbbb775a8431df8a2004ddb0/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/fgumi/fastq/.conda-lock/linux_amd64-bd-c9ed369c64a58706_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/fgumi/fastq/.conda-lock/linux_arm64-bd-60693e180762ecb0_1.txt

@@ -24,6 +24,7 @@ process SENTIEON_GVCFTYPER {
     task.ext.when == null || task.ext.when
 
     script:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_genotyped"
     def gvcfs_input = '-v ' + gvcfs.join(' -v ')
     def dbsnp_cmd = dbsnp ? "--dbsnp ${dbsnp}" : ""
@@ -38,6 +39,7 @@ process SENTIEON_GVCFTYPER {
         -r ${fasta} \\
         ${interval_command} \\
         --algo GVCFtyper \\
+        ${args} \\
         ${gvcfs_input} \\
         ${dbsnp_cmd} \\
         ${prefix}.vcf.gz

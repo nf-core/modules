@@ -16,8 +16,13 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [id:'test_td2_predict'],
+                    [id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = [[id: 'test'], 24, 24]
+                input[2] = [
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/gene2transcript_mapping.tsv', checkIfExists: true)
                 ]
                 """
             }
@@ -30,7 +35,7 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of([
-                    [id: 'test_td2_predict'],
+                    [id: 'test'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ]).combine(TD2_LONGORFS.out.orfs.map{ meta, orfs -> return [meta, file(orfs[0].getParent())] }, by: 0)
                 """
@@ -40,10 +45,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ['bed'])).match() }
             )
         }
 
@@ -57,7 +59,7 @@ nextflow_process {
             process {
                 """
                 input[0] = Channel.of([
-                    [id: 'test_td2_predict'],
+                    [id: 'test'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                 ]).combine(TD2_LONGORFS.out.orfs.map{ meta, orfs -> return [meta, file(orfs[0].getParent())] }, by: 0)
                 """
@@ -67,13 +69,9 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
 }

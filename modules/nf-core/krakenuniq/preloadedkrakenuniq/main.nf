@@ -20,7 +20,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     tuple val(meta), path("*.classified.${sequence_type}.gz"), optional: true, emit: classified_reads
     tuple val(meta), path("*.unclassified.${sequence_type}.gz"), optional: true, emit: unclassified_reads
     tuple val(meta), path('*.krakenuniq.classified.txt'), optional: true, emit: classified_assignment
-    tuple val(meta), path('*.krakenuniq.report.txt'), emit: report
+    tuple val(meta), path('*.krakenuniq.report.txt'), optional: true, emit: report
     tuple val("${task.process}"), val('krakenuniq'), eval("krakenuniq --version | sed '1!d;s/KrakenUniq version //'"), emit: versions_krakenuniq, topic: versions
 
     when:
@@ -32,7 +32,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
 
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
-    def preload_mode = !task.ext.args.toString().contains('--preload-size')
+    def preload_mode = !args2.contains('--preload-size')
     def preload_cmd = preload_mode ? "krakenuniq ${args} --db ${db} --preload --threads ${task.cpus}" : ''
 
     classified = meta.single_end ? "\${PREFIX}.classified.${sequence_type}" : "\${PREFIX}.merged.classified.${sequence_type}"
@@ -106,102 +106,17 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     stub:
     assert sequence_type in ['fasta', 'fastq']
     sequences = sequences instanceof List ? sequences : [sequences]
+    assert (meta.single_end ? sequences.size() : sequences.size() / 2) == prefixes.size()
 
-    def args = task.ext.args ?: ''
-    def args2 = task.ext.args ?: ''
-    def preload_mode = !task.ext.args.toString().contains('--preload-size')
-    def preload_cmd = preload_mode ? "echo krakenuniq ${args} --db ${db} --preload --threads ${task.cpus}" : ''
+    def merged_suffix = meta.single_end ? '' : '.merged'
+    def prefix_list = prefixes.collect { "'${it}'" }.join(' ')
 
-    classified = meta.single_end ? "\${PREFIX}.classified.${sequence_type}" : "\${PREFIX}.merged.classified.${sequence_type}"
-    unclassified = meta.single_end ? "\${PREFIX}.unclassified.${sequence_type}" : "\${PREFIX}.merged.unclassified.${sequence_type}"
-    classified_option = save_output_reads ? "--classified-out \"${classified}\"" : ''
-    unclassified_option = save_output_reads ? "--unclassified-out \"${unclassified}\"" : ''
-    def output_option = save_output ? '--output "\${PREFIX}.krakenuniq.classified.txt"' : ''
-    def report = report_file ? '--report-file "\${PREFIX}.krakenuniq.report.txt"' : ''
-    compress_reads_command = save_output_reads ? "find . -name '*.${sequence_type}' -print0 | xargs -0 -t -P ${task.cpus} -I % gzip --no-name %" : ''
-    def command_inputs_file = '.inputs.txt'
-
-    if (meta.single_end) {
-        assert sequences.size() == prefixes.size()
-        command_inputs = [sequences, prefixes].transpose().collect { seq, prefix -> "${seq}\t${prefix}" }
-
-        """
-        # Store the batch of samples for later command input.
-        cat <<-END_INPUTS > ${command_inputs_file}
-        ${command_inputs.join('\n        ')}
-        END_INPUTS
-
-        ${preload_cmd}
-
-        create_file() {
-            echo '<3 nf-core' > "\$1"
-        }
-
-        create_gzip_file() {
-            echo '<3 nf-core' | gzip -n > "\$1"
-        }
-
-        # Run the KrakenUniq classification on each sample in the batch.
-        while IFS='\t' read -r SEQ PREFIX; do
-            echo krakenuniq \\
-                --db ${db} \\
-                --threads ${task.cpus} \\
-                ${report} \\
-                ${output_option} \\
-                ${unclassified_option} \\
-                ${classified_option} \\
-                ${args2} \\
-                "\${SEQ}"
-
-            create_file "\${PREFIX}.krakenuniq.classified.txt"
-            create_file "\${PREFIX}.krakenuniq.report.txt"
-            create_gzip_file "\${PREFIX}.classified.${sequence_type}.gz"
-            create_gzip_file "\${PREFIX}.unclassified.${sequence_type}.gz"
-        done < ${command_inputs_file}
-
-        echo "${compress_reads_command}"
-        """
-    }
-    else {
-        assert sequences.size() / 2 == prefixes.size()
-        command_inputs = [sequences.collate(2), prefixes].transpose().collect { pair, prefix -> "${pair[0]}\t${pair[1]}\t${prefix}" }
-
-        """
-        # Store the batch of samples for later command input.
-        cat <<-END_INPUTS > ${command_inputs_file}
-        ${command_inputs.join('\n        ')}
-        END_INPUTS
-
-        ${preload_cmd}
-
-        create_file() {
-            echo '<3 nf-core' > "\$1"
-        }
-
-        create_gzip_file() {
-            echo '<3 nf-core' | gzip -n > "\$1"
-        }
-
-        # Run the KrakenUniq classification on each sample in the batch.
-        while IFS='\t' read -r FIRST_SEQ SECOND_SEQ PREFIX; do
-            echo krakenuniq \\
-                --db ${db} \\
-                --threads ${task.cpus} \\
-                ${report} \\
-                ${output_option} \\
-                ${unclassified_option} \\
-                ${classified_option} \\
-                --paired \\
-                ${args2} \\
-                "\${FIRST_SEQ}" "\${SECOND_SEQ}"
-
-            create_file "\${PREFIX}.krakenuniq.classified.txt"
-            create_file "\${PREFIX}.krakenuniq.report.txt"
-            create_gzip_file "\${PREFIX}.merged.classified.${sequence_type}.gz"
-            create_gzip_file "\${PREFIX}.merged.unclassified.${sequence_type}.gz"
-        done < ${command_inputs_file}
-
-        echo "${compress_reads_command}"
-        """
-    }
+    """
+    for PREFIX in ${prefix_list}; do
+        echo '<3 nf-core' > "\${PREFIX}.krakenuniq.classified.txt"
+        echo '<3 nf-core' > "\${PREFIX}.krakenuniq.report.txt"
+        echo '<3 nf-core' | gzip -n > "\${PREFIX}${merged_suffix}.classified.${sequence_type}.gz"
+        echo '<3 nf-core' | gzip -n > "\${PREFIX}${merged_suffix}.unclassified.${sequence_type}.gz"
+    done
+    """
 }

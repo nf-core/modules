@@ -17,7 +17,7 @@ process STARE {
 
     output:
     tuple val(meta), path("${meta.id}/Gene_TF_matrices/${meta.id}_TF_Gene_Affinities.txt") , emit: affinities
-    path "versions.yml"                                                                    , emit: versions
+    tuple val("${task.process}"), val('stare'), eval('STARE.sh --version | cut -f3 -d" "'), topic: versions, emit: versions_stare
 
     when:
     task.ext.when == null || task.ext.when
@@ -46,21 +46,11 @@ process STARE {
         ${path_existing_abc}
 
     gunzip -f ${meta.id}/Gene_TF_matrices/${meta.id}_TF_Gene_Affinities.txt.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        stare: \$(STARE.sh --version | cut -f3 -d" ")
-    END_VERSIONS
     """
 
     stub:
     """
     mkdir -p ${meta.id}/Gene_TF_matrices
     touch ${meta.id}/Gene_TF_matrices/${meta.id}_TF_Gene_Affinities.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        stare: \$(STARE.sh --version | cut -f3 -d" ")
-    END_VERSIONS
     """
 }

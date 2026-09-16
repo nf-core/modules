@@ -1,0 +1,132 @@
+name: "hmmer_eslsfetch"
+description: |
+  Retrieves one or more complete sequences or subsequences from a sequence
+  file using its pre-built SSI index. The esl-sfetch utility is an Easel
+  miniapp bundled with the HMMER package. This module only fetches: the SSI
+  index must be produced beforehand by the sibling module
+  `hmmer/eslsfetchindex`. The keyfile is used to fetch the named sequences
+  (-f), or, with ext.args = '-C', parsed as a subsequence coordinate file
+  (-Cf) to extract and rename subsequences.
+keywords:
+  - hmmer
+  - easel
+  - sequence retrieval
+  - subsequence extraction
+  - fasta
+tools:
+  - "hmmer":
+      description: |
+        Biosequence analysis using profile hidden Markov models. The
+        esl-sfetch utility is an Easel miniapp bundled with the HMMER
+        package, used here to retrieve sequences or subsequences from an
+        SSI-indexed sequence file.
+      homepage: "http://hmmer.org/"
+      documentation: "http://eddylab.org/software/hmmer/Userguide.pdf"
+      tool_dev_url: "https://github.com/EddyRivasLab/hmmer"
+      doi: "10.1371/journal.pcbi.1002195"
+      licence:
+        - "BSD-3-Clause"
+      identifier: "biotools:hmmer"
+      args_id: "$args"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - seqfile:
+        type: file
+        description: |
+          Sequence file, in any format supported by esl-sfetch (fasta, embl,
+          genbank, stockholm, a2m, afa, psiblast, clustal, phylip). Must NOT
+          be gzip-compressed.
+        pattern: "*"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_1927 # EMBL format
+          - edam: http://edamontology.org/format_1936 # GenBank format
+          - edam: http://edamontology.org/format_1961 # Stockholm format
+          - edam: http://edamontology.org/format_1982 # ClustalW format
+          - edam: http://edamontology.org/format_1997 # Phylip format
+          - edam: http://edamontology.org/format_1984 # FASTA-aln (a2m/afa)
+          - edam: http://edamontology.org/format_2554 # Alignment format (text) — covers PSI-BLAST and other Easel-readable formats without a dedicated EDAM term
+    - ssi:
+        type: file
+        description: |
+          SSI index of seqfile, as produced by the
+          `hmmer/eslsfetchindex` module. The index is
+          required in every fetch mode: without a correctly matched index,
+          esl-sfetch exits with "Failed to open SSI index".
+        pattern: "*.ssi"
+        ontologies: []
+    - keyfile:
+        type: file
+        description: |
+          A plain-text list of sequence names/accessions to
+          retrieve, one name/accession per line. With `ext.args = '-C'`
+          (i.e. -Cf), instead parsed as a subsequence coordinate file:
+          tab-separated columns `newname start end origname`, one
+          subsequence per line. Coordinates are 1-based and inclusive; a
+          start larger than the end (e.g. `myseq 200 100 chr1`) fetches the
+          reverse complement of that region.
+        pattern: "*"
+        ontologies:
+          - edam: http://edamontology.org/format_3671 # Plain text
+output:
+  sequences:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - ${prefix}.fasta:
+          type: file
+          description: |
+            Retrieved sequences or subsequences in FASTA format.
+          pattern: "*.fasta"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+  versions_hmmer:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hmmer:
+          type: string
+          description: The name of the tool
+      - hmmsearch -h | sed '2!d;s/^# HMMER *//;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_easel:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - easel:
+          type: string
+          description: The name of the tool
+      - esl-sfetch -h | sed '2!d;s/^# Easel *//;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hmmer:
+          type: string
+          description: The name of the tool
+      - hmmsearch -h | sed '2!d;s/^# HMMER *//;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - easel:
+          type: string
+          description: The name of the tool
+      - esl-sfetch -h | sed '2!d;s/^# Easel *//;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"

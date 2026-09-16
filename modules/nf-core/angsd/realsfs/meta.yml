@@ -1,0 +1,94 @@
+name: "angsd_realsfs"
+description: Estimate site frequency spectrum from site allele frequencies
+keywords:
+  - angsd
+  - genotype likelihood
+  - genomics
+  - site frequency spectrum
+tools:
+  - "angsd":
+      description: "ANGSD: Analysis of next generation Sequencing Data"
+      homepage: "http://www.popgen.dk/angsd/"
+      documentation: "http://www.popgen.dk/angsd/"
+      tool_dev_url: "https://github.com/ANGSD/angsd"
+      doi: "10.1186/s12859-014-0356-4"
+      licence:
+        - "GPL v3"
+        - "MIT"
+      identifier: biotools:angsd
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing population id for population 1
+          e.g. [ id:'population 1 ID']
+    - pop1_saf_idx:
+        type: file
+        description: ANGSD site allele frequency index file
+        pattern: "*.saf.idx"
+        ontologies: []
+    - pop1_saf_pos:
+        type: file
+        description: ANGSD site allele frequency position file
+        pattern: "*.saf.pos.gz"
+        ontologies: []
+    - pop1_saf:
+        type: file
+        description: ANGSD site allele frequency file
+        pattern: "*.saf.gz"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing population id for an optional population 2
+          e.g. [ id:'population 2 ID']
+    - pop2_saf_idx:
+        type: file
+        description: ANGSD site allele frequency index file
+        pattern: "*.saf.idx"
+        ontologies: []
+    - pop2_saf_pos:
+        type: file
+        description: ANGSD site allele frequency position file
+        pattern: "*.saf.pos.gz"
+        ontologies: []
+    - pop2_saf:
+        type: file
+        description: ANGSD site allele frequency file
+        pattern: "*.saf.gz"
+        ontologies: []
+output:
+  sfs:
+    - - meta3:
+          type: map
+          description: Groovy Map containing population ids for the output SFS
+      - "*.sfs":
+          type: file
+          description: Site frequency spectrum file
+          pattern: "*.sfs"
+          ontologies: []
+  versions_angsd:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - angsd:
+          type: string
+          description: The name of the tool
+      - "angsd 2>&1 | sed '1!d;s/.*version: //;s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - angsd:
+          type: string
+          description: The name of the tool
+      - "angsd 2>&1 | sed '1!d;s/.*version: //;s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@ASendellPrice"
+maintainers:
+  - "@ASendellPrice"

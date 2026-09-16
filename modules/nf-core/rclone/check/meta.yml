@@ -21,17 +21,29 @@ input:
           Groovy Map containing source information
           e.g. [ id:'test' ]
     - source:
-        type: file
-        description: File or directory containing source files to compare.
-        pattern: ""
-        ontologies:
-          - edam: "http://edamontology.org/data_0006"
+        type: string
+        description: |
+          File or directory containing source files to compare. This should be a path understood by Rclone,
+          such as a local path or a configured remote path.
+          Examples: `data/input`, `s3:bucket/path`, `gs:bucket/path`,
+          `remote:path/to/data`.
     - destination:
-        type: file
-        description: File or directory containing destination files to compare.
-        pattern: ""
-        ontologies:
-          - edam: "http://edamontology.org/data_0006"
+        type: string
+        description: |
+          Directory containing destination files to compare. This should be the fully resolved target
+          path understood by Rclone, such as a local path or a configured remote
+          path. The module does not append sample IDs, basenames, or modify this
+          path internally.
+          Examples: `results/output`, `s3:bucket/output`, `gs:bucket/output`,
+          `remote:path/to/output`.
+  - rclone_config:
+      type: file
+      description: |
+        Rclone configuration file defining the remotes used by source_path and/or
+        destination_path. Authentication and remote-specific options should be
+        configured in this file where possible.
+      pattern: "*.conf"
+      ontologies: []
 output:
   combined:
     - - meta:
@@ -103,6 +115,18 @@ output:
           type: file
           description: Report of paths with read or hash errors.
           pattern: "*.error.txt"
+          ontologies:
+            - edam: "http://edamontology.org/data_3671"
+  exit_code:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing checksum source information
+            e.g. [ id:'test' ]
+      - ${prefix}.exit_code.txt:
+          type: file
+          description: File with exit status.
+          pattern: "*.exit_code.txt"
           ontologies:
             - edam: "http://edamontology.org/data_3671"
   versions_rclone:

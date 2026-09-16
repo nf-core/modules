@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "aardvark_compare"
-description:  A tool to evaluate variant calling performance by comparing a query VCF against a truth VCF.
+description: A tool to evaluate variant calling performance by comparing a query VCF against a truth VCF.
 keywords:
   - variant calling
   - benchmarking
@@ -13,7 +13,7 @@ tools:
         A benchmarking tool that constructs haplotype sequences and it enables basepair-level
         comparisons that work across all variant types. The program evaluates genotypes using traditional,
         strict exact-match scoring, while also allowing for implicit partial credit when variant calls are an
-        inexact but close match.      
+        inexact but close match.
       homepage: "https://github.com/PacificBiosciences/aardvark"
       documentation: "https://github.com/PacificBiosciences/aardvark/blob/main/docs/methods.md#compare-command"
       tool_dev_url: "https://github.com/PacificBiosciences/aardvark"
@@ -70,7 +70,7 @@ input:
         description: Optional TSV file defining stratification regions for fine grained benchmarking
         pattern: "*.tsv"
         ontologies:
-            - edam: "http://edamontology.org/format_3475" # TSV
+          - edam: "http://edamontology.org/format_3475" # TSV
   - - meta4:
         type: map
         description: Groovy Map containing stratification BEDs information
@@ -101,7 +101,7 @@ output:
           description: Truth VCF file annotated with evaluation results
           pattern: "*.truth.vcf.gz"
           ontologies:
-          - edam: "http://edamontology.org/format_3016"
+            - edam: "http://edamontology.org/format_3016"
   labelled_query:
     - - meta:
           type: map
@@ -111,7 +111,7 @@ output:
           description: Query VCF file annotated with evaluation results
           pattern: "*.query.vcf.gz"
           ontologies:
-          - edam: "http://edamontology.org/format_3016"
+            - edam: "http://edamontology.org/format_3016"
   runinfo:
     - - meta:
           type: map

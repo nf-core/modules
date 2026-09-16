@@ -30,7 +30,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["bam"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys:["bam", "rejects_bam"])).match() }
             )
         }
     }
@@ -56,7 +56,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["bam"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys:["bam"], ignoreKeys: ["rejects_bam"])).match() }
             )
         }
     }
@@ -82,7 +82,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["bam"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys:["bam"], ignoreKeys: ["rejects_bam"])).match() }
             )
         }
     }

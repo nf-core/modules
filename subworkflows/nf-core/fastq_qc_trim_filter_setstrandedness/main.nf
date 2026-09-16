@@ -132,6 +132,7 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
 
     ch_filtered_reads = channel.empty()
     ch_trim_read_count = channel.empty()
+    ch_trim_reads_merged = channel.empty()
     ch_multiqc_files = channel.empty()
     ch_lint_log_raw = channel.empty()
     ch_lint_log_trimmed = channel.empty()
@@ -155,7 +156,6 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     ch_ribodetector_log   = channel.empty()
     ch_seqkit_stats       = channel.empty()
     ch_bowtie2_log        = channel.empty()
-    ch_bowtie2_index      = channel.empty()
     ch_seqkit_prefixed    = channel.empty()
     ch_seqkit_converted   = channel.empty()
     ch_fastqc_filtered_html = channel.empty()
@@ -241,6 +241,7 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
         )
         ch_filtered_reads = FASTQ_FASTQC_UMITOOLS_FASTP.out.reads
         ch_trim_read_count = FASTQ_FASTQC_UMITOOLS_FASTP.out.trim_read_count
+        ch_trim_reads_merged = FASTQ_FASTQC_UMITOOLS_FASTP.out.trim_reads_merged
 
         // Capture individual outputs for workflow outputs
         ch_fastqc_raw_html  = FASTQ_FASTQC_UMITOOLS_FASTP.out.fastqc_raw_html
@@ -380,10 +381,10 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     // SUBWORKFLOW: Sub-sample FastQ files and pseudoalign with Salmon to auto-infer strandedness
     //
     // Return empty channel if ch_strand_fastq.auto_strand is empty so salmon index isn't created
-
     ch_fasta
+        .map { fasta -> [fasta] }
         .combine(ch_strand_fastq.auto_strand)
-        .map { items -> items.first() }
+        .map { items -> items[0] }
         .first()
         .set { ch_genome_fasta }
 
@@ -434,6 +435,7 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     reads_cat         = ch_reads_cat
     reads_trimmed     = ch_reads_trimmed
     trim_read_count   = ch_trim_read_count
+    trim_reads_merged = ch_trim_reads_merged
     multiqc_files     = ch_multiqc_files.transpose()
 
     // Individual outputs for workflow outputs

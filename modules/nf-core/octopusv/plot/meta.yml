@@ -24,11 +24,12 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - txt:
+    - stats:
         type: file
-        description: OctopuSV stats text input
-        pattern: "*.txt"
+        description: OctopuSV stats text input; JSON is preferred and legacy TXT is supported
+        pattern: "*.{json,txt}"
         ontologies:
+          - edam: "http://edamontology.org/format_3464"
           - edam: "http://edamontology.org/format_2330" # TXT
 
 output:

@@ -1,7 +1,5 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "tesorter"
-description: An accurate and fast method to classify LTR-retrotransposons in plant
-  genomes
+description: An accurate and fast method to classify LTR-retrotransposons in plant genomes
 keywords:
   - genomics
   - classify
@@ -10,14 +8,15 @@ keywords:
   - plant
 tools:
   - "tesorter":
-      description: "Lineage-level classification of transposable elements using conserved
-        protein domains."
+      description: "Lineage-level classification of transposable elements using conserved protein domains."
       homepage: "https://github.com/zhangrengang/TEsorter"
       documentation: "https://github.com/zhangrengang/TEsorter"
       tool_dev_url: "https://github.com/zhangrengang/TEsorter"
       doi: "10.1093/hr/uhac017"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:TEsorter
+
 input:
   - - meta:
         type: map
@@ -60,8 +59,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*.dom.faa":
           type: file
-          description: Protein sequences of domain, which can be used for phylogenetic
-            analysis
+          description: Protein sequences of domain, which can be used for phylogenetic analysis
           pattern: "*.dom.{faa}"
           ontologies: []
   dom_tsv:
@@ -72,8 +70,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*.dom.tsv":
           type: file
-          description: Inner domains of TEs/LTR-RTs, which might be used to filter domains
-            based on their scores and coverages
+          description: Inner domains of TEs/LTR-RTs, which might be used to filter domains based on their scores and coverages
           pattern: "*.dom.{tsv}"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -123,13 +120,29 @@ output:
           description: The same sequences as '*.dom.faa', but id is changed with classifications
           pattern: "*.cls.{pep}"
           ontologies: []
+  versions_tesorter:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - TEsorter:
+          type: string
+          description: The tool name
+      - TEsorter -v:
+          type: eval
+          description: The version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - TEsorter:
+          type: string
+          description: The tool name
+      - TEsorter -v:
+          type: eval
+          description: The version of the tool
+
 authors:
   - "@GallVp"
 maintainers:

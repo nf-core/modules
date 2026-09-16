@@ -27,8 +27,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.bam.collect { bam(it[1]).getHeaderMD5() },
-                    process.out.bam.collect { bam(it[1]).getReadsMD5() },
+                    process.out.bam.collect{meta, bam_ ->  file(bam_).name + ':headerMD5,' + bam(bam_).getHeaderMD5()},
+                    process.out.bam.collect{meta, bam_ ->  file(bam_).name + ':readsMD5,' + bam(bam_).getReadsMD5()},
                     process.out.bai,
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }

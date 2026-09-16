@@ -15,12 +15,14 @@ input:
       type: file
       description: |
         The input channel containing the VCF files
+
         Structure: [ val(meta), path(vcf) ]
-      pattern: "*.{vcf/vcf.gz}"
-  - ch_filter_vep_file:
+      pattern: "*.{vcf,vcf.gz}"
+  - ch_filter_vep_feature_file:
       type: file
       description: |
         File to pass to filter_vep, containing e.g. HGNC IDs to filter on
+
         Structure: [ val(meta), path(txt) ]
   - filter_with_bcftools:
       type: boolean
@@ -34,21 +36,17 @@ output:
   - vcf:
       type: file
       description: |
-        Channel containing VCF files
-        Structure: [ val(meta), path(bam) ]
+        Channel containing the filtered VCF files
+
+        Structure: [ val(meta), path(vcf) ]
       pattern: "*.vcf.gz"
-  - bai:
+  - tbi:
       type: file
       description: |
-        Channel containing indexed VCF (TBI) files
-        Structure: [ val(meta), path(bai) ]
+        Channel containing the index of the filtered VCF files
+
+        Structure: [ val(meta), path(tbi) ]
       pattern: "*.tbi"
-  - versions:
-      type: file
-      description: |
-        File containing software versions
-        Structure: [ path(versions.yml) ]
-      pattern: "versions.yml"
 authors:
   - "@fellen31"
 maintainers:

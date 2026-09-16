@@ -1,0 +1,147 @@
+nextflow_process {
+
+    name "Test Process DUCKDB_TABLE2PARQUET"
+    script "../main.nf"
+    process "DUCKDB_TABLE2PARQUET"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "duckdb"
+    tag "duckdb/table2parquet"
+    tag "pigz/compress"
+
+    test("csv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/generic/csv/test.csv', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("csv - gzipped") {
+
+        setup {
+            run("PIGZ_COMPRESS") {
+                script "../../../pigz/compress/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/generic/csv/test.csv', checkIfExists: true),
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = PIGZ_COMPRESS.out.archive
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("tsv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/generic/tsv/test.tsv', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("tsv - gzipped") {
+
+        setup {
+            run("PIGZ_COMPRESS") {
+                script "../../../pigz/compress/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/generic/tsv/test.tsv', checkIfExists: true),
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = PIGZ_COMPRESS.out.archive
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("csv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/generic/csv/test.csv', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

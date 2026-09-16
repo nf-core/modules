@@ -1,0 +1,87 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/sanger-tol/nf-core-modules/main/subworkflows/yaml-schema.json
+name: "fasta_clean_faidx"
+description: Ensure input fasta assemblies are unzipped and indexed, optionally generating a chromosome sizes file.
+keywords:
+  - index
+  - faidx
+  - dict
+  - gunzip
+  - fasta
+components:
+  - gunzip
+  - seqkit/seq
+  - seqkit/replace
+  - samtools/faidx
+  - samtools/dict
+
+input:
+  - ch_reference:
+      type: file
+      description: |
+        Input fasta reference assembly.
+
+        Structure: [ val(meta), path(fasta) ]
+      pattern: "*.{(fasta,fa,fna)(.gz)}"
+
+  - val_replace_dots:
+      type: boolean
+      description: |
+        Whether to replace dots in the fasta reference name with underscores.
+
+        Some tools can't handle dots in the fasta name, however,
+        sometimes the ID must remain unchanged.
+
+  - val_get_chromsizes:
+      type: boolean
+      description: |
+        Whether to generate a chromosome sizes file from the fasta reference.
+
+  - val_get_dict:
+      type: boolean
+      description: |
+        Whether to generate a SAMTOOLS dictionary file from the fasta reference.
+
+output:
+  - reference:
+      type: file
+      description: |
+        Input fasta reference assembly.
+
+        Structure: [ val(meta), path(fasta) ]
+      pattern: "*.{fasta,fa,fna}"
+
+  - fai:
+      type: file
+      description: |
+        SAMTOOLS FASTA index file.
+
+        Structure: [ val(meta), path(fai) ]
+      pattern: "*.fai"
+
+  - sizes:
+      type: file
+      description: |
+        Chromosome sizes file - a TSV with two columns (name and size) and no header line.
+
+        Structure: [ val(meta), path(sizes) ]
+      pattern: "*.{sizes,tsv}"
+
+  - dict:
+      type: file
+      description: |
+        SAMTOOLS dictionary file.
+
+        Structure: [ val(meta), path(dict) ]
+      pattern: "*.dict"
+
+  - sequence_description:
+      type: file
+      description: |
+        JSON file containing number of sequences, total sequence length and max_length.
+
+        Structure: [ val(meta), path(sequence_description) ]
+      pattern: "*.json"
+authors:
+  - "@DLBPointon"
+maintainers:
+  - "@DLBPointon"

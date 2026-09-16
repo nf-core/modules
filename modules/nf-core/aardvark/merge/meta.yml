@@ -10,9 +10,9 @@ keywords:
 tools:
   - aardvark:
       description: |
-        The aardvark merge command provides a method to merge variant calls. This functionality is helpful when multiple 
-        variant callers or technologies are used for the same sample. Merging variant sets can be complex and Aardvark 
-        simplifies this process by modeling the variants as haplotypes. This allows for different merge strategies for 
+        The aardvark merge command provides a method to merge variant calls. This functionality is helpful when multiple
+        variant callers or technologies are used for the same sample. Merging variant sets can be complex and Aardvark
+        simplifies this process by modeling the variants as haplotypes. This allows for different merge strategies for
         resolving conflicting variant sets.
       homepage: "https://github.com/PacificBiosciences/aardvark"
       documentation: "https://github.com/PacificBiosciences/aardvark/blob/main/docs/methods.md#merge-strategies"
@@ -76,7 +76,7 @@ output:
           description: Merged VCF file containing passing variants
           pattern: "*.passing.vcf.gz"
           ontologies:
-          - edam: "http://edamontology.org/format_3016"
+            - edam: "http://edamontology.org/format_3016"
   passing_vcf_index:
     - - meta:
           type: map
@@ -94,7 +94,7 @@ output:
           description: BED file of regions containing passing variants
           pattern: "*.regions.bed.gz"
           ontologies:
-          - edam: "http://edamontology.org/format_3586"
+            - edam: "http://edamontology.org/format_3586"
   passing_regions_index:
     - - meta:
           type: map
@@ -112,7 +112,7 @@ output:
           description: BED file of regions that failed merging criteria
           pattern: "*.failed_regions.bed.gz"
           ontologies:
-          - edam: "http://edamontology.org/format_3586"
+            - edam: "http://edamontology.org/format_3586"
   failed_regions_index:
     - - meta:
           type: map
