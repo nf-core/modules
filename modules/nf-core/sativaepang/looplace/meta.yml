@@ -32,7 +32,7 @@ output:
     - - meta:
           type: map
           description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
-      - taskdir:
+      - "*.l1o_tasks":
           type: directory
           description: |
             The same taskdir, with an `epa_result.jplace` (plus `epang.log` and

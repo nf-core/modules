@@ -20,14 +20,13 @@ process SATIVAEPANG_LOOSCORE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // Unlike looplace, loo-score only reads taskdir -- writes its own output via -o.
     """
     sativa-epang \\
+        -stage loo-score \\
         -r ${refjson} \\
         -n ${prefix} \\
         -o . \\
         -taskdir ${taskdir} \\
-        -stage loo-score \\
         ${args}
     """
 

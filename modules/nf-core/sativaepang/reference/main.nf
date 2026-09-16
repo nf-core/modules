@@ -29,6 +29,7 @@ process SATIVAEPANG_REFERENCE {
     def refmodel_arg = refmodel ? "-refmodel ${refmodel}" : ''
     """
     sativa-epang \\
+        -stage reference \\
         -s ${alignment} \\
         -t ${taxonomy} \\
         -x ${taxcode} \\
@@ -37,7 +38,6 @@ process SATIVAEPANG_REFERENCE {
         -n ${prefix} \\
         -o . \\
         -T ${task.cpus} \\
-        -stage reference \\
         ${args}
     """
 

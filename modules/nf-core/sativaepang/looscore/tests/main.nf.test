@@ -50,8 +50,8 @@ nextflow_process {
         then {
             // The tool's own bundled example is a clean smoke-test set with no injected
             // mislabels -- see the gtdb test below for a real detection assertion.
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
@@ -98,8 +98,8 @@ nextflow_process {
             // swapped-label pair (see the test-datasets README). A real mislabel-detection
             // assertion, not just "the process completed".
             def mis = path(process.out.mis[0][1]).text
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert mis.contains("DupHaloA") },
                 { assert mis.contains("DupSulfoA") },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
@@ -146,9 +146,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

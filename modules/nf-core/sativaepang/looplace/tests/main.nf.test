@@ -40,8 +40,8 @@ nextflow_process {
             // masked below, same precedent as sigprofiler/snapaligner.
             def taskdir = file(process.out.taskdir[0][1])
             def foldDirs = taskdir.listFiles().findAll { it.isDirectory() && it.name.startsWith("fold_") }
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert foldDirs.size() > 0 },
                 { assert foldDirs.every { new File(it.toString(), "epa_result.jplace").exists() } },
                 { assert snapshot(sanitizeOutput(process.out, unstablePatterns: ["**/epa_result.jplace", "**/epa_info.log", "**/epang.log"])).match() }
@@ -76,8 +76,8 @@ nextflow_process {
         then {
             def taskdir = file(process.out.taskdir[0][1])
             def foldDirs = taskdir.listFiles().findAll { it.isDirectory() && it.name.startsWith("fold_") }
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert foldDirs.size() > 0 },
                 { assert foldDirs.every { new File(it.toString(), "epa_result.jplace").exists() } },
                 { assert snapshot(sanitizeOutput(process.out, unstablePatterns: ["**/epa_result.jplace", "**/epa_info.log", "**/epang.log"])).match() }
@@ -112,9 +112,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

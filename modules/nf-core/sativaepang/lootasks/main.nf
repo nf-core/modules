@@ -22,10 +22,10 @@ process SATIVAEPANG_LOOTASKS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     sativa-epang \\
+        -stage loo-tasks \\
         -r ${refjson} \\
         -n ${prefix} \\
         -o . \\
-        -stage loo-tasks \\
         ${args}
     """
 
