@@ -1,0 +1,64 @@
+nextflow_process {
+
+    name "Test Process CUSTOM_COLLECTFEATURECOUNTS"
+    script "../main.nf"
+    process "CUSTOM_COLLECTFEATURECOUNTS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "custom"
+    tag "custom/collectfeaturecounts"
+
+    test("two samples") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample1.subread.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample2.subread.featureCounts.tsv', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.counts.get(0).get(1)).linesGzip,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("two samples - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample1.subread.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample2.subread.featureCounts.tsv', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

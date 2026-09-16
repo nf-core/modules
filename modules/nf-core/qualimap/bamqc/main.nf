@@ -24,37 +24,30 @@ process QUALIMAP_BAMQC {
 
     def collect_pairs = meta.single_end ? '' : '--collect-overlap-pairs'
     def memory = (task.memory.mega*0.8).intValue() + 'M'
-    def regions = gff ? "--gff $gff" : ''
+    def regions = gff ? "--gff ${gff}" : ''
 
-    def strandedness = 'non-strand-specific'
-    if (meta.strandedness == 'forward') {
-        strandedness = 'strand-specific-forward'
-    } else if (meta.strandedness == 'reverse') {
-        strandedness = 'strand-specific-reverse'
-    }
     """
     unset DISPLAY
     mkdir -p tmp
     export _JAVA_OPTIONS=-Djava.io.tmpdir=./tmp
     qualimap \\
-        --java-mem-size=$memory \\
+        --java-mem-size=${memory} \\
         bamqc \\
-        $args \\
-        -bam $bam \\
-        $regions \\
-        -p $strandedness \\
-        $collect_pairs \\
-        -outdir $prefix \\
-        -nt $task.cpus
+        ${args} \\
+        -bam ${bam} \\
+        ${regions} \\
+        ${collect_pairs} \\
+        -outdir ${prefix} \\
+        -nt ${task.cpus}
     """
 
     stub:
-    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p $prefix/css
-    mkdir $prefix/images_qualimapReport
-    mkdir $prefix/raw_data_qualimapReport
-    cd $prefix/css
+    mkdir -p ${prefix}/css
+    mkdir ${prefix}/images_qualimapReport
+    mkdir ${prefix}/raw_data_qualimapReport
+    cd ${prefix}/css
     touch agogo.css
     touch basic.css
     touch bgtop.png

@@ -52,3 +52,27 @@ authors:
 
 maintainers:
   - "@CarsonJM"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/genomad:1.12.0--faad3712d5d168cd
+      build_id: bd-faad3712d5d168cd_1
+      scan_id: sc-7a049ac1c8d6f0ed_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/genomad:1.12.0--27836e6e665e84b5
+      build_id: bd-27836e6e665e84b5_1
+      scan_id: sc-220af21a53dfb7d4_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/genomad:1.12.0--492a522b1d209f3b
+      build_id: bd-492a522b1d209f3b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fc/fcee21b42347c4de44ffe555e6a3e24c929856439a14f255576c94ee3b2ddccb/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/genomad:1.12.0--a6462035ff2ec6ae
+      build_id: bd-a6462035ff2ec6ae_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/83/83e31b082e82e714b01040adf90f865fdd229b6d9d926525b821d207271a3922/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/genomad/endtoend/.conda-lock/linux_amd64-bd-27836e6e665e84b5_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/genomad/endtoend/.conda-lock/linux_arm64-bd-faad3712d5d168cd_1.txt
