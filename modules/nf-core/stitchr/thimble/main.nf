@@ -31,7 +31,7 @@ process STITCHR_THIMBLE {
     export PYTHONPATH="\$PWD\${PYTHONPATH:+:\$PYTHONPATH}"
 
     thimble \\
-        ${args} \\
+        $args \\
         -in ${tcr_table} \\
         -o ${prefix}_stitchr.tsv \\
         ${codon_usage} \\

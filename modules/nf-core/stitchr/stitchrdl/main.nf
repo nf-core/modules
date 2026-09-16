@@ -30,7 +30,7 @@ process STITCHR_STITCHRDL {
     export PYTHONPATH="\$PWD\${PYTHONPATH:+:\$PYTHONPATH}"
 
     stitchrdl \\
-        ${args} \\
+        $args \\
         -s ${species}
 
     # drop .pyc caches so the emitted Data directory is reproducible across runs
