@@ -28,9 +28,9 @@ input:
         pattern: "*.mzML"
         ontologies:
           - edam: http://edamontology.org/data_2536 # Mass spectrometry data
-    - id_file:
+    - id_int:
         type: file
-        description: Peptide identifications from this run used as targets.
+        description: Peptide identifications from this run (internal IDs) used as targets for feature detection.
         pattern: "*.idXML"
         ontologies:
           - edam: http://edamontology.org/data_2536 # Mass spectrometry data

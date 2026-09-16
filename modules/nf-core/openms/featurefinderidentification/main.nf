@@ -8,7 +8,7 @@ process OPENMS_FEATUREFINDERIDENTIFICATION {
         'quay.io/biocontainers/openms:3.5.0--h78fb946_0' }"
 
     input:
-    tuple val(meta), path(mzml), path(id_file), path(id_ext), val(out_type)
+    tuple val(meta), path(mzml), path(id_int), path(id_ext), val(out_type)
 
     output:
     tuple val(meta), path("${prefix}.${out_type}"), emit: features
@@ -24,7 +24,7 @@ process OPENMS_FEATUREFINDERIDENTIFICATION {
     """
     FeatureFinderIdentification \\
         -in $mzml \\
-        -id $id_file \\
+        -id $id_int \\
         $id_ext_arg \\
         -out ${prefix}.${out_type} \\
         -threads $task.cpus \\
