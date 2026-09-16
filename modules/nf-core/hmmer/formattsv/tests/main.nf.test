@@ -393,10 +393,9 @@ seq1                               -          model_A               PF00001     
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert path(process.out.tsv[0][1]).linesGzip.size() == 2 },
-                { assert path(process.out.tsv[0][1]).linesGzip.any { it.startsWith('profileA\t') && it.contains('a description') } }
+                { assert snapshot(path(process.out.tsv[0][1]).linesGzip).match() }
             )
         }
     }
