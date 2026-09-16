@@ -195,11 +195,47 @@ seq1                               -   100 model_A               PF00001   100  
                 """
             }
         }
+        // Two domains sharing the same hmm_from (a tied start, e.g. repeat domains that all begin
+        // at profile position 1) exercises the *_prev/*_isl tie-break: both window steps must
+        // order ties the same way, or a tied row's prev_cummax and its running island count can
+        // end up computed against two different relative positions.
+        run("HMMER_FORMATTSV", alias: "FORMATTSV_TIE_TBLOUT") {
+            script "../../formattsv/main.nf"
+            process {
+                """
+                def tieTblout1 = File.createTempFile('profileTie', '.tbl')
+                tieTblout1.text = '''#                                                                           --- full sequence ---- --- best 1 domain ---- --- domain number estimation ----
+# target name                    accession  query name           accession    E-value  score  bias   E-value  score  bias   exp reg clu  ov env dom rep inc description of target
+#            ------------------- ---------- -------------------- ---------- --------- ------ ----- --------- ------ -----   --- --- --- --- --- --- --- --- ---------------------
+seq1                               -          model_A               PF00001       1e-10   50.0   0.1      2e-10   49.0   0.1   3.0   3   0   0   3   3   3   1 tied domain starts
+'''
+                input[0] = [ [ id: 'tie-test' ], [ 'P' ], [ file(tieTblout1.toString()) ] ]
+                input[1] = 'tblout'
+                """
+            }
+        }
+        run("HMMER_FORMATTSV", alias: "FORMATTSV_TIE_DOMTBLOUT") {
+            script "../../formattsv/main.nf"
+            process {
+                """
+                def tieDomtblout1 = File.createTempFile('profileTie', '.domtbl')
+                tieDomtblout1.text = '''#                                                                            --- full sequence --- -------------- this domain -------------   hmm coord   ali coord   env coord
+# target name        accession   tlen query name           accession   qlen  E-value  score  bias   #  of  c-Evalue  i-Evalue  score  bias  from    to  from    to  from    to  acc description of target
+#------------------- ---------- ----- -------------------- ---------- ----- --------- ------ ----- --- --- --------- --------- ------ ----- ----- ----- ----- ----- ----- ----- ---- ---------------------
+seq1                               -   200 model_A               PF00001   200      1e-10   50.0   0.1   1   3     1e-10      1e-10   50.0   0.1     1     3     1     3     1     3 0.95 first domain
+seq1                               -   200 model_A               PF00001   200      1e-10   50.0   0.1   2   3     1e-10      1e-10   50.0   0.1     5   100     5   100     5   100 0.95 tied start, far end
+seq1                               -   200 model_A               PF00001   200      1e-10   50.0   0.1   3   3     1e-10      1e-10   50.0   0.1     5     6     5     6     5     6 0.95 tied start, near end
+'''
+                input[0] = [ [ id: 'tie-test' ], [ 'P' ], [ file(tieDomtblout1.toString()) ] ]
+                input[1] = 'domtblout'
+                """
+            }
+        }
         run("DUCKDB_TABLE2PARQUET", alias: "PARQUET_TBLOUT") {
             script "../../../duckdb/table2parquet/main.nf"
             process {
                 """
-                input[0] = FORMATTSV_16S_TBLOUT.out.tsv.mix(FORMATTSV_NRDJ_TBLOUT.out.tsv, FORMATTSV_MULTIMODEL_TBLOUT.out.tsv, FORMATTSV_NA_TBLOUT.out.tsv)
+                input[0] = FORMATTSV_16S_TBLOUT.out.tsv.mix(FORMATTSV_NRDJ_TBLOUT.out.tsv, FORMATTSV_MULTIMODEL_TBLOUT.out.tsv, FORMATTSV_NA_TBLOUT.out.tsv, FORMATTSV_TIE_TBLOUT.out.tsv)
                 """
             }
         }
@@ -207,7 +243,7 @@ seq1                               -   100 model_A               PF00001   100  
             script "../../../duckdb/table2parquet/main.nf"
             process {
                 """
-                input[0] = FORMATTSV_16S_DOMTBLOUT.out.tsv.mix(FORMATTSV_NRDJ_DOMTBLOUT.out.tsv, FORMATTSV_MULTIMODEL_DOMTBLOUT.out.tsv, FORMATTSV_NA_DOMTBLOUT.out.tsv)
+                input[0] = FORMATTSV_16S_DOMTBLOUT.out.tsv.mix(FORMATTSV_NRDJ_DOMTBLOUT.out.tsv, FORMATTSV_MULTIMODEL_DOMTBLOUT.out.tsv, FORMATTSV_NA_DOMTBLOUT.out.tsv, FORMATTSV_TIE_DOMTBLOUT.out.tsv)
                 """
             }
         }
@@ -389,6 +425,36 @@ seq1                               -   100 model_A               PF00001   100  
                   def byAccno = rows[1..-1].collectEntries { line -> def f = line.split('\t'); [ (f[header.indexOf('accno')]): f ] }
                   assert byAccno['seq1'][header.indexOf('hmm_len')] == '50'
                   assert byAccno['seq2'][header.indexOf('hmm_len')] == 'NA' }
+            )
+        }
+    }
+
+    // Domains (1,3), (5,100) and (5,6) share a tied hmm_from of 5. The correct merge is two
+    // islands, [1,3] and [5,100] (the third domain nests inside the second), for hmm_len 99 --
+    // reproduced against a real database (duckdb 1.5.5) landing on hmm_len 102 instead, by
+    // reviewer @piplus2 on nf-core/modules#12966, before *_prev/*_isl ordered by (from, to)
+    // instead of from alone.
+    test("hmmrank - domain coordinates - tied domain starts merge into the correct islands") {
+        when {
+            process {
+                """
+                input[0] = PARQUET_TBLOUT.out.parquet
+                    .filter { meta, parquet -> meta.id == 'tie-test' }
+                    .join(PARQUET_DOMTBLOUT.out.parquet.filter { meta, parquet -> meta.id == 'tie-test' })
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { def rows = path(process.out.hmmrank[0][1]).linesGzip
+                  def header = rows[0].split('\t') as List
+                  def f = rows[1].split('\t')
+                  assert f[header.indexOf('hmm_from')] == '1'
+                  assert f[header.indexOf('hmm_to')] == '100'
+                  assert f[header.indexOf('hmm_len')] == '99'
+                  assert f[header.indexOf('hmm_n_islands')] == '2' }
             )
         }
     }

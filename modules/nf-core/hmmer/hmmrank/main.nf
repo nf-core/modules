@@ -42,11 +42,16 @@ process HMMER_HMMRANK {
     // hence the separate *_prev / *_isl statements below. A hit is keyed on the query name as well
     // as profile, since one HMM file may hold several models and the whole file is then searched
     // in one go, putting several models' domains in the same table.
+    // Both windows order by (from, to), not from alone: two domains can share the same start (e.g.
+    // repeat domains all starting at hmm position 1), and *_prev/*_isl are two separately
+    // materialised temp tables, each free to break that tie differently (parallel threads give no
+    // ordering guarantee) -- a total, identical order in both statements is what keeps a tied row's
+    // prev_cummax and its running island count referring to the same relative position.
     def islands_sql = { set -> """
 CREATE TEMP TABLE ${set}_prev AS
 SELECT accno, profile, query, ${set}_from AS f, ${set}_to AS t,
     MAX(${set}_to) OVER (
-        PARTITION BY accno, profile, query ORDER BY ${set}_from
+        PARTITION BY accno, profile, query ORDER BY ${set}_from, ${set}_to
         ROWS BETWEEN UNBOUNDED PRECEDING AND 1 PRECEDING
     ) AS prev_cummax
 FROM dom_raw;
@@ -54,7 +59,7 @@ FROM dom_raw;
 CREATE TEMP TABLE ${set}_isl AS
 SELECT accno, profile, query, f, t,
     SUM(CASE WHEN f > COALESCE(prev_cummax, 0) + 1 THEN 1 ELSE 0 END) OVER (
-        PARTITION BY accno, profile, query ORDER BY f
+        PARTITION BY accno, profile, query ORDER BY f, t
         ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW
     ) AS island
 FROM ${set}_prev;
