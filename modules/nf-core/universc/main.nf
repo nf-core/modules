@@ -88,7 +88,7 @@ process UNIVERSC {
         --reference ${reference_name} \\
         --jobmode "local" \\
         --localcores ${task.cpus} \\
-        --localmem 8 \\
+        --localmem ${task.memory.toGiga()} \\
         --per-cell-data \\
         ${args}
 
