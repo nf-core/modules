@@ -1,0 +1,64 @@
+nextflow_process {
+
+    name "Test Process SENTIEONCLI_DNASCOPELONGREAD"
+    script "../main.nf"
+    process "SENTIEONCLI_DNASCOPELONGREAD"
+
+    tag "modules"
+    tag "modules_local"
+    tag "sentieoncli"
+    tag "sentieon"
+
+    test("homo_sapiens - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'fai' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[3] = Channel.of('test model bundle')
+                    .collectFile(name: 'dnascope_model.bundle')
+                    .map { file -> [ [ id: 'sentieon_ml_model_bundle' ], file ] }
+                input[4] = [
+                    [ id:'diploid_intervals' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true)
+                ]
+                input[5] = [ [ id:'haploid_intervals' ], [] ]
+                input[6] = [ [ id:'dbsnp' ], [] ]
+                input[7] = [ [ id:'dbsnp_tbi' ], [] ]
+                input[8] = [ [ id:'pop_vcf' ], [] ]
+                input[9] = [ [ id:'pop_vcf_tbi' ], [] ]
+                input[10] = [ [ id:'input_ref' ], [] ]
+                input[11] = [ [ id:'input_ref_fai' ], [] ]
+                input[12] = "HiFi"
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    file(process.out.vcf[0][1]).name,
+                    file(process.out.vcf_tbi[0][1]).name,
+                    file(process.out.gvcf[0][1]).name,
+                    file(process.out.gvcf_tbi[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+}
