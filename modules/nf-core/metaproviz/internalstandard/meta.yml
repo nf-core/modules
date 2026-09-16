@@ -25,12 +25,12 @@ input:
           e.g. `[ id:'test' ]`
     - se_rds:
         type: file
-        description: A SummarizedExperiment (assay + colData) saved as RDS. Mutually exclusive with data_matrix/feature_matrix/sample_matrix — provide this alone, or the other three alone, not both. Pass [] when using the other shape.
+        description: A SummarizedExperiment saved as RDS; its colData is used as the sample metadata — a condition column (named "Conditions" by default, or whatever --conditions_col points at) splits the CV out per condition (condition_cv output), and a colData column can also be used to identify pool/QC samples to exclude before computing the CV (via --pool_metadata_col/--pool_metadata_value). Mutually exclusive with data_matrix/feature_matrix/sample_matrix — provide this alone, or the other three alone, not both. Pass [] when using the other shape.
         pattern: "*.rds"
         optional: true
     - data_matrix:
         type: file
-        description: Feature-by-sample abundance matrix (TSV/CSV), first column the feature ID. Required together with feature_matrix and sample_matrix if se_rds is not given; pass [] otherwise.
+        description: Feature-by-sample abundance matrix (TSV/CSV), first column the feature ID. Use NA (or an empty cell) for metabolites that weren't detected. Required together with feature_matrix and sample_matrix if se_rds is not given; pass [] otherwise.
         pattern: "*.{tsv,csv}"
         optional: true
     - feature_matrix:
