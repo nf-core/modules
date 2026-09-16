@@ -30,7 +30,7 @@ process UNIVERSC {
     """
     mkdir -p "\$PWD/.local-cellranger" "\$PWD/.local-universc"
 
-    cp -a /cellranger-3.0.2.9001 "\$PWD/.local-cellranger/"
+    ln -s /cellranger-3.0.2.9001 "\$PWD/.local-cellranger/cellranger-3.0.2.9001"
     cp -a /universc "\$PWD/.local-universc/"
 
     local_cr="\$PWD/.local-cellranger/cellranger-3.0.2.9001"
