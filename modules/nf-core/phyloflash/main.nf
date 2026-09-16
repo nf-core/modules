@@ -14,7 +14,7 @@ process PHYLOFLASH {
 
     output:
     tuple val(meta), path("${meta.id}*/*"), emit: results
-    tuple val("${task.process}"), val('phyloflash'), eval("phyloFlash.pl -version 2>&1 | sed 's/^.*phyloFlash v//'"), topic: versions, emit: versions_phyloflash
+    tuple val("${task.process}"), val('phyloflash'), eval("phyloFlash.pl -version 2>&1 | sed 's/.*phyloFlash v//'"), topic: versions, emit: versions_phyloflash
 
     when:
     task.ext.when == null || task.ext.when
