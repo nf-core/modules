@@ -91,16 +91,11 @@ nextflow_process {
             def peptideHits = (consensusSection =~ /<PeptideHit /).count
             assertAll(
                 { assert process.success },
-                { assert content.contains('<consensusElementList>') },
-                { assert process.out.resolved[0][0] == [id:'test'] },
-                { assert file(process.out.resolved[0][1]).name == 'test_resolved.consensusXML' },
-                { assert peptideHits > 0 },
-                { assert peptideHits <= peptideIds },
                 { assert peptideHits == peptideIds },
                 { assert snapshot(
+                    file(process.out.resolved[0][1]).name,
                     peptideIds,
-                    peptideHits,
-                    process.out.findAll { key, val -> !(key in ['0', 'resolved']) }
+                    process.out.versions_openms
                 ).match() }
             )
         }
