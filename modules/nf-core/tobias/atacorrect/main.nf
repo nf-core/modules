@@ -29,13 +29,13 @@ process TOBIAS_ATACORRECT {
     export MPLCONFIGDIR="\${PWD}/.matplotlib"
 
     TOBIAS ATACorrect \\
-        --bam $bam \\
-        --genome $fasta \\
-        --peaks $peaks \\
-        --prefix $prefix \\
+        --bam ${bam} \\
+        --genome ${fasta} \\
+        --peaks ${peaks} \\
+        --prefix ${prefix} \\
         --outdir . \\
         --cores ${task.cpus} \\
-        $args
+        ${args}
     """
 
     stub:
