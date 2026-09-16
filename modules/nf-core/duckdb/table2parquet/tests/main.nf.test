@@ -120,6 +120,35 @@ nextflow_process {
 
     }
 
+    // meta.id/task.ext.prefix and the input file path aren't under this module's control. The
+    // generated SQL is piped into duckdb's stdin via a *quoted* heredoc, not a `duckdb -c "..."`
+    // argument, so shell metacharacters can't be expanded/executed by bash before duckdb ever
+    // sees the query -- if `$(touch pwned)` ran, it would evaluate to an empty string (touch has
+    // no stdout) and vanish from the output filename, so asserting the literal payload survives
+    // verbatim is sufficient proof it didn't. The apostrophe separately checks the SQL-quote
+    // escaping this module previously had none of at all.
+    test("csv - meta.id containing an apostrophe and shell metacharacters") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: "O'Brien" + '\$(touch pwned)`echo also_pwned`' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/generic/csv/test.csv', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.parquet[0][1].toString().tokenize('/').last() == "O'Brien\$(touch pwned)`echo also_pwned`.parquet" }
+            )
+        }
+
+    }
+
     test("csv - stub") {
 
         options "-stub"
