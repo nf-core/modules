@@ -142,3 +142,17 @@ authors:
   - "@vagkaratzas"
 maintainers:
   - "@vagkaratzas"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/myloasm_findutils_gzip:154a360acd2dca07
+      build_id: bd-154a360acd2dca07_1
+      scan_id: sc-8ad31c3881a69148_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/myloasm_findutils_gzip:7b85c14dfcd70722
+      build_id: bd-7b85c14dfcd70722_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/67/67f705c8fa26ae809d73e5ee2c872c3087fe8abaad12e133bdba8ba4f8cdc553/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/myloasm/.conda-lock/linux_amd64-bd-154a360acd2dca07_1.txt

@@ -4,8 +4,8 @@ process MYLOASM {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/22/225ce5652f6d4f9cb0bc9acb813f87d32abe42fcf0b9a41125c8bb6a84ca3709/data'
-        : 'community.wave.seqera.io/library/myloasm:0.7.0--497d9a84b31cc548'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/67/67f705c8fa26ae809d73e5ee2c872c3087fe8abaad12e133bdba8ba4f8cdc553/data'
+        : 'community.wave.seqera.io/library/myloasm_findutils_gzip:154a360acd2dca07'}"
 
     input:
     tuple val(meta), path(reads)
