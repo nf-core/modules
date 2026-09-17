@@ -60,10 +60,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    path("${process.out.results[0][1]}/abundance.tsv"),
-                    process.out.log,
-                    process.out.findAll { key, val -> key.startsWith('versions') }).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["json_info", "results"])).match() }
             )
         }
     }
@@ -93,10 +90,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    path("${process.out.results[0][1]}/abundance.tsv"),
-                    process.out.log,
-                    process.out.findAll { key, val -> key.startsWith('versions') }).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["json_info", "results"])).match() }
             )
         }
     }
@@ -129,11 +123,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.results,
-                    process.out.json_info,
-                    process.out.log,
-                    process.out.findAll { key, val -> key.startsWith('versions') }).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["json_info", "results"])).match() }
             )
         }
     }
@@ -166,11 +156,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.results,
-                    process.out.json_info,
-                    process.out.log,
-                    process.out.findAll { key, val -> key.startsWith('versions') }).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["json_info", "results"])).match() }
             )
         }
     }
