@@ -117,8 +117,12 @@ LEFT JOIN domain_coords
 ORDER BY ranked.accno, ranked.rank
 """ : 'SELECT * FROM ranked ORDER BY accno, rank\n'
 
+    // Quoted heredoc: no shell expansion in the body -- sqlLit only defends the SQL layer, this
+    // defends the shell layer. Delimiter is randomized per task so a real newline in a value
+    // can't forge a line that closes it early.
+    def heredocTag = "SQL_${java.util.UUID.randomUUID().toString().replace('-', '')}"
     """
-    duckdb -c "
+    duckdb <<'${heredocTag}'
     SET threads=${task.cpus};
     SET memory_limit='${task.memory.toGiga()}GB';
     SET temp_directory='.';
@@ -134,7 +138,7 @@ ORDER BY ranked.accno, ranked.rank
     FROM read_parquet('${tbloutSql}');
     ${domtbl_sql}
     COPY (${output_select}) TO '${prefixSql}.hmmrank.tsv.gz' (FORMAT CSV, DELIMITER '\\t', HEADER, COMPRESSION 'gzip', NULLSTR 'NA');
-    "
+${heredocTag}
     """
 
     stub:
