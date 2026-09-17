@@ -31,8 +31,7 @@ workflow QUANTIFY_PSEUDO_ALIGNMENT {
         SALMON_QUANT (
             reads,
             index,
-            gtf.map { g -> [ [:], g ] },
-            transcript_fasta.map { fasta -> [ [:], fasta ] }
+            gtf.combine(transcript_fasta).map { g, fasta -> [ [:], g, fasta ] }
         )
         ch_pseudo_results = SALMON_QUANT.out.results
         ch_pseudo_multiqc = ch_pseudo_results

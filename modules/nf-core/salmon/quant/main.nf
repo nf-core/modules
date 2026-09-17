@@ -10,8 +10,7 @@ process SALMON_QUANT {
     input:
     tuple val(meta), path(reads)
     tuple val(meta2), path(index)
-    tuple val(meta3), path(gtf)
-    tuple val(meta4), path(transcript_fasta)
+    tuple val(meta3), path(gtf), path(transcript_fasta)
 
     output:
     tuple val(meta), path("${prefix}"), emit: results

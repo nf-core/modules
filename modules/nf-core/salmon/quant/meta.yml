@@ -48,16 +48,11 @@ input:
         type: file
         description: GTF of the reference transcriptome
         ontologies: []
-  - - meta4:
-        type: map
-        description: |
-          Groovy Map containing reference information
-          e.g. [ id:'genome' ]
     - transcript_fasta:
         type: file
         description: |
           Fasta file of the reference transcriptome. Required in alignment
-          mode as the `-t` reference; pass `[[:], []]` in reads mode.
+          mode as the `-t` reference; pass `[]` in reads mode.
         ontologies: []
 output:
   results:
