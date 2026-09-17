@@ -38,12 +38,7 @@ input:
         type: directory
         description: |
           Folder containing the salmon index files. Required for reads
-          mode; pass `[[:], []]` in alignment mode.
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing reference information
-          e.g. [ id:'genome' ]
+          mode; pass `[]` in alignment mode.
     - gtf:
         type: file
         description: GTF of the reference transcriptome

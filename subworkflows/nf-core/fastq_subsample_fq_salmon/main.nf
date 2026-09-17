@@ -18,7 +18,7 @@ workflow FASTQ_SUBSAMPLE_FQ_SALMON {
 
     main:
 
-    ch_gtf_transcript_fasta_meta = ch_gtf.combine(ch_transcript_fasta).map { gtf, transcript_fasta -> [ [:], gtf, transcript_fasta ] }
+    ch_gtf_transcript_fasta = ch_gtf.combine(ch_transcript_fasta)
 
     //
     // Create Salmon index if required
@@ -45,7 +45,7 @@ workflow FASTQ_SUBSAMPLE_FQ_SALMON {
     //
     // Pseudo-alignment with Salmon
     //
-    SALMON_QUANT ( FQ_SUBSAMPLE.out.fastq, ch_index, ch_gtf_transcript_fasta_meta )
+    SALMON_QUANT ( FQ_SUBSAMPLE.out.fastq, ch_index.combine(ch_gtf_transcript_fasta) )
 
     emit:
     index             = ch_index                           // channel: [ val(meta), index ]
