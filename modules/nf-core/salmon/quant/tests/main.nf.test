@@ -27,9 +27,6 @@ nextflow_process {
     test("sarscov2 - single_end") {
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = Channel.of([
@@ -66,9 +63,6 @@ nextflow_process {
     test("sarscov2 - single_end stub") {
         options "-stub"
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = Channel.of([
@@ -105,9 +99,6 @@ nextflow_process {
     test("sarscov2 - single_end multiple files") {
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = Channel.of([
@@ -147,9 +138,6 @@ nextflow_process {
     test("sarscov2 - single_end multiple files with forward strandedness") {
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = Channel.of([
@@ -185,9 +173,6 @@ nextflow_process {
         config "./nextflow_ext_args_libtype.config"
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = Channel.of([
@@ -222,9 +207,6 @@ nextflow_process {
     test("sarscov2 - pair_end") {
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = Channel.of([
@@ -264,9 +246,6 @@ nextflow_process {
     test("sarscov2 - pair_end stub") {
         options "-stub"
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = Channel.of([
@@ -306,9 +285,6 @@ nextflow_process {
     test("sarscov2 - single_end multiple files stub") {
         options "-stub"
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = Channel.of([
@@ -348,9 +324,6 @@ nextflow_process {
     test("sarscov2 - pair_end multiple") {
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = Channel.of([
@@ -392,9 +365,6 @@ nextflow_process {
     test("sarscov2 - pair_end multiple stub") {
         options "-stub"
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = Channel.of([

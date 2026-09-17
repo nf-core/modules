@@ -11,9 +11,6 @@ nextflow_process {
     test("sarscov2") {
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = Channel.of([
@@ -41,9 +38,6 @@ nextflow_process {
     test("sarscov2 transcriptome only") {
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = Channel.of([
@@ -71,9 +65,6 @@ nextflow_process {
     test("sarscov2 stub") {
         options "-stub"
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = Channel.of([
