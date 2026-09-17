@@ -2,6 +2,7 @@ nextflow_workflow {
 
     name "Test Workflow FASTQ_SUBSAMPLE_FQ_SALMON"
     script "../main.nf"
+    config "./nextflow.config"
     workflow "FASTQ_SUBSAMPLE_FQ_SALMON"
     tag "subworkflows"
     tag "subworkflows_nfcore"
@@ -12,7 +13,6 @@ nextflow_workflow {
     tag "salmon/quant"
 
     test("homo_sapiens paired-end [fastq]") {
-        config "./nextflow.config"
 
         setup {
             run("SALMON_INDEX") {
@@ -67,7 +67,6 @@ nextflow_workflow {
     }
 
     test("homo_sapiens paired-end [fastq] - stub") {
-        config "./nextflow.config"
 
         options "-stub"
 
