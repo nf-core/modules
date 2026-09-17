@@ -25,7 +25,7 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/salmon/index/main.nf"
                 process {
                     """
-                    input[0] = Channel.of([
+                    input[0] = channel.of([
                         [ id:'test' ], // meta map
                         file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/transcriptome.fasta", checkIfExists: true),
                         file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true)
@@ -50,8 +50,8 @@ nextflow_workflow {
                     ]
                 ]
                 input[2]  = SALMON_INDEX.out.index
-                input[3]  = Channel.of(file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/transcriptome.fasta", checkIfExists: true))
-                input[4]  = Channel.of(file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.gtf", checkIfExists: true))
+                input[3]  = channel.of(file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/transcriptome.fasta", checkIfExists: true))
+                input[4]  = channel.of(file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.gtf", checkIfExists: true))
                 input[5]  = 'gene_id'
                 input[6]  = 'gene_name'
                 input[7]  = 'salmon'
@@ -89,7 +89,7 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/kallisto/index/main.nf"
                 process {
                     """
-                    input[0] = Channel.of([
+                    input[0] = channel.of([
                         [ id:'transcriptome' ], // meta map
                         file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/transcriptome.fasta", checkIfExists: true)
                     ])
@@ -113,8 +113,8 @@ nextflow_workflow {
                     ]
                 ]
                 input[2]  = KALLISTO_INDEX.out.index
-                input[3]  = Channel.of(file(params.modules_testdata_base_path +  "genomics/homo_sapiens/genome/transcriptome.fasta", checkIfExists: true))
-                input[4]  = Channel.of(file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.gtf", checkIfExists: true))
+                input[3]  = channel.of(file(params.modules_testdata_base_path +  "genomics/homo_sapiens/genome/transcriptome.fasta", checkIfExists: true))
+                input[4]  = channel.of(file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.gtf", checkIfExists: true))
                 input[5]  = 'gene_id'
                 input[6]  = 'gene_name'
                 input[7]  = 'kallisto'
@@ -153,7 +153,7 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/salmon/index/main.nf"
                 process {
                     """
-                    input[0] = Channel.of([
+                    input[0] = channel.of([
                         [ id:'test' ], // meta map
                         file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/transcriptome.fasta", checkIfExists: true),
                         file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true)
@@ -178,8 +178,8 @@ nextflow_workflow {
                     ]
                 ]
                 input[2]  = SALMON_INDEX.out.index
-                input[3]  = Channel.of(file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/transcriptome.fasta", checkIfExists: true))
-                input[4]  = Channel.of(file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.gtf", checkIfExists: true))
+                input[3]  = channel.of(file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/transcriptome.fasta", checkIfExists: true))
+                input[4]  = channel.of(file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.gtf", checkIfExists: true))
                 input[5]  = 'gene_id'
                 input[6]  = 'gene_name'
                 input[7]  = 'salmon'
@@ -207,7 +207,7 @@ nextflow_workflow {
                 script "../../../../modules/nf-core/kallisto/index/main.nf"
                 process {
                     """
-                    input[0] = Channel.of([
+                    input[0] = channel.of([
                         [ id:'transcriptome' ], // meta map
                         file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/transcriptome.fasta", checkIfExists: true)
                     ])
@@ -231,8 +231,8 @@ nextflow_workflow {
                     ]
                 ]
                 input[2]  = KALLISTO_INDEX.out.index
-                input[3]  = Channel.of(file(params.modules_testdata_base_path +  "genomics/homo_sapiens/genome/transcriptome.fasta", checkIfExists: true))
-                input[4]  = Channel.of(file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.gtf", checkIfExists: true))
+                input[3]  = channel.of(file(params.modules_testdata_base_path +  "genomics/homo_sapiens/genome/transcriptome.fasta", checkIfExists: true))
+                input[4]  = channel.of(file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.gtf", checkIfExists: true))
                 input[5]  = 'gene_id'
                 input[6]  = 'gene_name'
                 input[7]  = 'kallisto'
