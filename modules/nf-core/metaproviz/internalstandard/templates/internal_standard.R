@@ -30,42 +30,65 @@ suppressPackageStartupMessages({
 
 suppressPackageStartupMessages(library(MetaProViz))
 
-# ── ARG PARSING ─────────────────────────────────────────────────────────────
-args <- commandArgs(trailingOnly = TRUE)
-get_arg <- function(flag, default = NULL) {
-  idx <- match(flag, args); if (is.na(idx) || idx == length(args)) return(default)
-  v <- args[idx + 1]; if (startsWith(v, "--")) return(default); v
+writeLines(
+  c(
+    '"${task.process}":',
+    paste("    r-base:", strsplit(R.version.string, " ")[[1]][3]),
+    paste("    metaproviz:", as.character(packageVersion("MetaProViz")))
+  ),
+  "versions.yml"
+)
+
+# ── PARSE PARAMETERS FROM NEXTFLOW ──────────────────────────────────────────
+nullify <- function(x) if (is.null(x) || x == "" || x == "null" || x == "[]") NULL else x
+
+parse_args <- function(x) {
+  if (is.null(x) || !nzchar(trimws(x))) return(list())
+  args_list <- unlist(strsplit(x, ' ?--')[[1]])[-1]
+  args_vals <- lapply(args_list, function(a) scan(text = a, what = 'character', quiet = TRUE))
+  args_vals <- lapply(args_vals, function(z) { length(z) <- 2; z })
+  parsed <- structure(lapply(args_vals, function(a) a[2]), names = lapply(args_vals, function(a) a[1]))
+  parsed[!is.na(parsed)]
 }
 
-se_path             <- get_arg("--se")
-data_matrix_path    <- get_arg("--data_matrix")
-feature_matrix_path <- get_arg("--feature_matrix")
-sample_matrix_path  <- get_arg("--sample_matrix")
-is_list_str    <- get_arg("--internal_standards", "")
-user_pattern   <- get_arg("--pattern",             "")
-cutoff_cv      <- as.numeric(get_arg("--cutoff_cv", "30"))
+opt <- list(
+  internal_standards  = "",
+  pattern             = "",
+  cutoff_cv           = "30",
+  pool_samples        = "",
+  pool_metadata_col   = "",
+  pool_metadata_value = "Pool",
+  pool_pattern        = "pool",
+  conditions_col      = "Conditions"
+)
+args_opt <- parse_args('$task.ext.args')
+for (ao in names(args_opt)) {
+  if (!ao %in% names(opt)) stop(paste("Invalid option:", ao))
+  opt[[ao]] <- args_opt[[ao]]
+}
+
+se_path             <- nullify('$se_rds')
+data_matrix_path    <- nullify('$data_matrix')
+feature_matrix_path <- nullify('$feature_matrix')
+sample_matrix_path  <- nullify('$sample_matrix')
+is_list_str          <- opt\$internal_standards
+user_pattern          <- opt\$pattern
+cutoff_cv             <- as.numeric(opt\$cutoff_cv)
 
 # Pool/QC samples are ALWAYS dropped before the IS CV is computed (when any are
-# found). Pools are homogeneous mixtures, so their internal-standard values are
-# tighter than real samples and would pull the overall CV down, masking drift
-# that is only visible in the biological samples. Pool samples are detected with
-# the same precedence as the POOL_ESTIMATION module: explicit list >>> metadata
-# column+value >>> name pattern. If no pools are found, all samples are used.
-pool_samples_str    <- get_arg("--pool_samples",        "")
-pool_metadata_col   <- get_arg("--pool_metadata_col",   "")
-pool_metadata_value <- get_arg("--pool_metadata_value", "Pool")
-pool_pattern        <- get_arg("--pool_pattern",        "pool")
+# found). Pool detection precedence: explicit list => metadata column+value
+# => name pattern. If no pools are found, all samples are used.
+pool_samples_str     <- opt\$pool_samples
+pool_metadata_col    <- opt\$pool_metadata_col
+pool_metadata_value  <- opt\$pool_metadata_value
+pool_pattern          <- opt\$pool_pattern
 
-# Name of the colData column holding experimental condition, used to break
-# the IS CV out per condition (condition_cv output). Defaults to "Conditions".
-conditions_col      <- get_arg("--conditions_col",      "Conditions")
+# colData column holding experimental condition, used to break the IS CV out
+# per condition (condition_cv output). Column not found => condition_cv is
+# written header-only.
+conditions_col        <- opt\$conditions_col
 
-# All output filenames are `<prefix>.<suffix>`, per nf-core naming
-# convention (https://nf-co.re/docs/specifications/components/modules/naming-conventions):
-# "output file names SHOULD consist of only ${prefix} and the file-format
-# suffix" — needed so filenames don't collide across samples when this
-# module runs on many samples in one pipeline.
-prefix              <- get_arg("--prefix", "internal_standard")
+prefix               <- ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix')
 cv_out              <- paste0(prefix, ".cv.tsv")
 high_var_out        <- paste0(prefix, ".high_var.txt")
 condition_cv_out    <- paste0(prefix, ".condition_cv.tsv")
@@ -74,7 +97,7 @@ report_out          <- paste0(prefix, ".report.html")
 log_out             <- paste0(prefix, ".log")
 
 # Default regex — case-insensitive PCRE. Covers common IS labels.
-DEFAULT_PATTERN <- "-d\\d+|-13C\\d*|ISTD|^IS_|_IS$|^IS$"
+DEFAULT_PATTERN <- "-d\\\\d+|-13C\\\\d*|ISTD|^IS_|_IS\$|^IS\$"
 
 # ── LOGGING ─────────────────────────────────────────────────────────────────
 ll <- character(0); wc <- 0; ec <- 0
@@ -87,7 +110,7 @@ log_msg <- function(lev = "INFO", ...) {
 log_section <- function(t) {
   sep <- paste(rep("─", 60), collapse = "")
   ll <<- c(ll, "", sep, paste0("  ", t), sep)
-  message(sep, "\n  ", t, "\n", sep)
+  message(sep, "\\n  ", t, "\\n", sep)
 }
 flush_log <- function(p = log_out) {
   writeLines(c(ll, "",
@@ -98,21 +121,16 @@ esc <- function(x) gsub(">", "&gt;", gsub("<", "&lt;",
                     gsub("&", "&amp;", x, fixed = TRUE), fixed = TRUE), fixed = TRUE)
 
 placeholder_outputs <- function(reason_html) {
-  # Always emit all declared outputs so Nextflow doesn't fail the process.
-  # (condition_cv and versions.yml are both non-optional in main.nf; a
-  # missing declared output fails the Nextflow process even when this R
-  # script itself exits 0 — versions.yml is written separately by main.nf's
-  # own script: block after this script returns, so it's covered, but
-  # condition_cv has to be written here explicitly.)
+
   writeLines(character(0),                      high_var_out)
   write.table(data.frame(Metabolite=character(0), CV=numeric(0),
                          HighVar=logical(0)),
-              cv_out, sep="\t", quote=FALSE,
+              cv_out, sep="\\t", quote=FALSE,
               row.names=FALSE, na="NA")
   # Same header-only shape used when real condition metadata is absent
   # (see condition_cv_df's `else` branch further down).
   write.table(data.frame(Standard = character(0)),
-              condition_cv_out, sep="\t", quote=FALSE,
+              condition_cv_out, sep="\\t", quote=FALSE,
               row.names=FALSE, na="NA")
   saveRDS(list(), plots_out)
   writeLines(sprintf(
@@ -166,7 +184,7 @@ if (have_se) {
     if (!file.exists(p)) abort("Input file not found: ", p)
 
   read_flat <- function(path) {
-    sep <- if (grepl("\\.csv$", path, ignore.case = TRUE)) "," else "\t"
+    sep <- if (grepl("\\\\.csv\$", path, ignore.case = TRUE)) "," else "\\t"
     tryCatch(read.delim(path, sep = sep, check.names = FALSE,
                         stringsAsFactors = FALSE),
              error = function(e) abort("Failed to read ", path, ": ",
@@ -304,11 +322,11 @@ if (length(is_feats) == 0) {
     "No internal-standard features were detected in this SE — neither in the ",
     "explicit list (if any), nor by the user pattern (if any), nor by the ",
     "default pattern (deuterated -dN, 13C, ISTD, IS_, _IS). The step is ",
-    "harmless to skip; pass --internal_standards \"...\" or ",
-    "--internal_standard_pattern \"...\" to point at the right names if your ",
+    "harmless to skip; pass --internal_standards \\"...\\" or ",
+    "--internal_standard_pattern \\"...\\" to point at the right names if your ",
     "data does include IS."))
   flush_log(log_out)
-  message("\n✓ internal_standard complete (no IS features) | ",
+  message("\\n✓ internal_standard complete (no IS features) | ",
           wc, " warning(s)")
   quit(save = "no", status = 0)
 }
@@ -326,11 +344,13 @@ assay_df       <- t(assay(se_is, 1)) %>% as.data.frame(check.names = FALSE)
 sample_info_df <- as.data.frame(colData(se_is), check.names = FALSE)
 
 # For pool_estimation: all samples are "pools" (we want CV across everything).
-# Preserve the original condition column (name set via --conditions_col).
+# Preserve the original condition column (name set via --conditions_col) under
+# a fixed internal name, since the "Conditions" column itself gets overwritten
+# below for the pool_estimation() call.
 if (conditions_col %in% colnames(sample_info_df)) {
-  sample_info_df$Conditions_original <- sample_info_df[[conditions_col]]
+  sample_info_df\$Conditions_original <- sample_info_df[[conditions_col]]
 }
-sample_info_df$Conditions <- "Pool"
+sample_info_df\$Conditions <- "Pool"
 
 # ── RUN pool_estimation ─────────────────────────────────────────────────────
 log_section("Running MetaProViz::pool_estimation (limited to IS features)")
@@ -349,7 +369,7 @@ pe <- tryCatch(
 )
 
 cv_df <- pe[["DF"]][["CV"]]
-if (is.null(cv_df)) abort("pool_estimation did not return DF$CV.")
+if (is.null(cv_df)) abort("pool_estimation did not return DF\$CV.")
 plots <- pe[["Plot"]]; if (is.null(plots)) plots <- list()
 
 # ── SUPERPLOT: ONE BOX PER INTERNAL STANDARD ────────────────────────────────
@@ -363,8 +383,8 @@ superplot_meta <- sample_info_df
 # Drop the "Conditions" column set earlier to "Pool" for the pool_estimation()
 # call above — it's irrelevant here and its name collides with what
 # viz_superplot() renames AllSamples to internally.
-superplot_meta$Conditions <- NULL
-superplot_meta$AllSamples <- "IS"
+superplot_meta\$Conditions <- NULL
+superplot_meta\$AllSamples <- "IS"
 has_real_conditions <- "Conditions_original" %in% colnames(superplot_meta)
 superplot_metadata_info <- if (has_real_conditions) {
   c(Conditions = "AllSamples", Superplot = "Conditions_original")
@@ -379,11 +399,6 @@ superplot_res <- tryCatch(
     metadata_info   = superplot_metadata_info,
     plot_type       = "Box",
     print_plot      = FALSE,
-    # save_plot = NULL hits a bug in viz_superplot() (it still tries to use
-    # an internal `folder` variable that only gets set when save_plot is
-    # non-NULL). Workaround: give it a throwaway path and let it keep its
-    # default save_plot = "svg" — we only use the returned Plot object
-    # anyway, the files it writes here are never read.
     path            = tempdir()
   ),
   error = function(e) {
@@ -423,11 +438,11 @@ log_msg("INFO", "IS with CV > ", cutoff_cv, "%: ",
         length(high_var), " / ", nrow(cv_df))
 
 write.table(cv_df, cv_out,
-            sep = "\t", quote = FALSE, row.names = FALSE, na = "NA")
+            sep = "\\t", quote = FALSE, row.names = FALSE, na = "NA")
 writeLines(if (length(high_var) > 0) high_var else character(0),
            high_var_out)
 write.table(condition_cv_df, condition_cv_out,
-            sep = "\t", quote = FALSE, row.names = FALSE, na = "NA")
+            sep = "\\t", quote = FALSE, row.names = FALSE, na = "NA")
 saveRDS(list(PoolEstimationStyle = plots, Superplot = superplot_plots),
         plots_out)
 log_msg("INFO", "Written: ", cv_out, ", ", high_var_out, ", ",
@@ -440,14 +455,14 @@ png_to_b64 <- function(p, w = 8, h = 5) {
   tmp <- tempfile(fileext = ".png")
   ggplot2::ggsave(tmp, plot = p, width = w, height = h, dpi = 100,
                   units = "in", bg = "white")
-  raw <- readBin(tmp, "raw", n = file.info(tmp)$size); unlink(tmp)
+  raw <- readBin(tmp, "raw", n = file.info(tmp)\$size); unlink(tmp)
   paste0("data:image/png;base64,", base64enc::base64encode(raw))
 }
 
 # One box plot per standard. Name + CV% go on the plot's own x-axis label.
 superplot_html <- ""
 if (length(superplot_plots) > 0) {
-  cv_lookup <- setNames(cv_df$CV, cv_df$Metabolite)
+  cv_lookup <- setNames(cv_df\$CV, cv_df\$Metabolite)
   for (nm in names(superplot_plots)) {
     p <- superplot_plots[[nm]]
     if (!inherits(p, "ggplot")) next
@@ -472,7 +487,7 @@ if (length(superplot_plots) > 0) {
     if (!is.na(src)) {
       superplot_html <- paste0(
         superplot_html,
-        sprintf('<img src="%s" alt="%s" />\n', src, esc(axis_label))
+        sprintf('<img src="%s" alt="%s" />\\n', src, esc(axis_label))
       )
     }
   }
@@ -568,7 +583,7 @@ run_meta_html <- sprintf(
  length(high_var), nrow(cv_df))
 
 # ── SESSION SUMMARY (packages used + citation reminder) ─────────────────────
-session_info_text <- paste(capture.output(sessionInfo()), collapse = "\n")
+session_info_text <- paste(capture.output(sessionInfo()), collapse = "\\n")
 session_summary_html <- sprintf(
 '<details>
   <summary>Full R session info (click to expand)</summary>
@@ -623,7 +638,7 @@ before measurement, so unlike real metabolites, their values are expected to sta
 across the run.
 </p>
 <p>
-This module computes each internal standard\'s coefficient of variation (CV) across all real
+This module computes each internal standard\\'s coefficient of variation (CV) across all real
 samples. Pool and QC samples are excluded, since their already-pooled nature would understate
 true injection-to-injection variability. A high CV indicates instrument drift or injection
 issues rather than biological variation.
@@ -645,7 +660,7 @@ below also color individual dots by condition.
 
 <h2>Plots</h2>
 <p>
-Each internal standard gets one box plot below, generated with MetaProViz\'s
+Each internal standard gets one box plot below, generated with MetaProViz\\'s
 <code>viz_superplot()</code> function, showing its values across all samples used for the CV
 calculation.
 </p>
@@ -661,7 +676,7 @@ metadata, all dots are shown in black instead.
 
 <h2>CV per standard, overall</h2>
 <p>
-Every internal standard\'s CV, computed across all real samples together. The table is also
+Every internal standard\\'s CV, computed across all real samples together. The table is also
 saved as <code>%s</code>.
 </p>
 %s
@@ -688,18 +703,7 @@ esc(log_out), session_summary_html)
 writeLines(html, report_out)
 log_msg("INFO", "Written: ", report_out)
 
-# MetaProViz::pool_estimation() (release 4.0.0):
-# it only skips writing its own result files when both save_plot and
-# save_table are NULL, but a later code path unconditionally uses a
-# variable only defined when at least one is non-NULL, so passing both
-# NULL crashes. We pass save_plot = NULL only, so our call above
-# doesn't crash, but it still writes its own date-stamped CSVs/logs that
-# aren't part of this module's declared outputs. Cleaned up here, at the
-# very end, rather than right after that call: metaproviz/omnipathr's own
-# logging expects metaproviz-log/omnipathr-log to keep existing across
-# the whole run, so deleting them mid-script broke the later
-# viz_superplot() call's internal logging (confirmed — deleting them
-# there made viz_superplot() fail with "cannot open the connection").
+# Cleaned up not needed files
 unlink("MetaProViz_Results", recursive = TRUE)
 unlink("metaproviz-log", recursive = TRUE)
 unlink("omnipathr-log", recursive = TRUE)
@@ -707,5 +711,5 @@ unlink("Rplots.pdf")
 
 flush_log(log_out)
 message(sprintf(
-  "\n✓ internal_standard complete — %d / %d IS flagged HighVar | %d warning(s)",
+  "\\n✓ internal_standard complete — %d / %d IS flagged HighVar | %d warning(s)",
   length(high_var), nrow(cv_df), wc))
