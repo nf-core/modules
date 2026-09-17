@@ -28,8 +28,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     sanitizeOutput(process.out,
-                        unstableKeys: ["contigs", "contigs_alt", "contigs_dup", "mapping", "log"],
-                        ignoreKeys: ["results"]
+                        unstableKeys: ["contigs", "contigs_alt", "contigs_dup", "mapping"],
+                        ignoreKeys: ["results", "log"]
                     )
                 ).match() },
                 { assert path(process.out.log[0][1]).readLines().any { l -> l.contains('Assembly completed') } }
