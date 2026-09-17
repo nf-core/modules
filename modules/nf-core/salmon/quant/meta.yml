@@ -25,7 +25,9 @@ input:
         description: |
           List of input FastQ files for single-end or paired-end data, or a
           single BAM of reads already aligned to the transcriptome (a `.bam`
-          extension switches the module into salmon's alignment mode).
+          extension switches the module into salmon's alignment mode). If
+          `meta.strandedness` is `forward` or `reverse`, it selects the
+          library type; pass `--libType` via `ext.args` to override it.
         ontologies: []
   - - meta2:
         type: map

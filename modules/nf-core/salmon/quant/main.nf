@@ -51,10 +51,26 @@ process SALMON_QUANT {
         reference = "--index ${index}"
         input_reads = meta.single_end ? "-r ${reads1.join(" ")}" : "-1 ${reads1.join(" ")} -2 ${reads2.join(" ")}"
     }
+
+    // meta.strandedness of 'auto' or unset is left to salmon's own '-l A' (auto-detect) default.
+    // salmon rejects a repeated --libType, so skip this entirely when ext.args sets its own.
+    def libtype_opt = ''
+    if (!args.contains('--libType')) {
+        if (meta.strandedness == 'forward') {
+            libtype_opt = "--libType=${meta.single_end ? 'SF' : 'ISF'}"
+        }
+        else if (meta.strandedness == 'reverse') {
+            libtype_opt = "--libType=${meta.single_end ? 'SR' : 'ISR'}"
+        }
+        else if (meta.strandedness == 'unstranded') {
+            libtype_opt = "--libType=${meta.single_end ? 'U' : 'IU'}"
+        }
+    }
     """
     salmon quant \\
         --geneMap ${gtf} \\
         --threads ${task.cpus} \\
+        ${libtype_opt} \\
         ${reference} \\
         ${input_reads} \\
         ${args} \\

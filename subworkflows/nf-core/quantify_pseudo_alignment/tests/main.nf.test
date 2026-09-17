@@ -85,7 +85,7 @@ nextflow_workflow {
         }
     }
 
-    test("salmon libType from meta.strandedness via ext.args") {
+    test("salmon libType from meta.strandedness") {
 
         setup {
             run("SALMON_INDEX") {
@@ -135,8 +135,6 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                // no lib_type input and no --libType default from the module; only the
-                // ext.args closure reading meta.strandedness can produce ISF here
                 { assert path("${workflow.out.results[0][1]}/lib_format_counts.json").json.expected_format == 'ISF' }
             )
         }
