@@ -27,11 +27,8 @@ workflow FASTA_HMMSEARCH_RANK_FASTAS {
     // profile), and duckdb/table2parquet converts it. tblout and domtblout go through separate
     // calls with distinct meta ids so their Parquet filenames don't collide once both are
     // staged into the same HMMER_HMMRANK task.
-    // Sorted by label before splitting into labels/files: .collect() gathers parallel
-    // HMMER_HMMSEARCH tasks in whatever order they happen to finish, not submission order, so
-    // without this the combined table's profile block order (and therefore this task's output
-    // file) would vary run to run even though its content doesn't -- hmmrank's own final
-    // ORDER BY absorbs this for its own output, but this intermediate one is published as-is.
+    // Sorted by id: .collect() completion order isn't deterministic, and only hmmrank's own
+    // output gets a final ORDER BY -- this intermediate one is published as-is.
     HMMER_HMMSEARCH.out.target_summary
         .map { meta, tbl -> [ meta.id, tbl ] }
         .collect(flat: false)
