@@ -37,10 +37,10 @@ process MGNIFAM_UPDATEFAMILIES {
 
     mgnifam update_families \\
         --hmm_input "\${lib_file:-hmm_input}" \\
-        --fasta_file ${fasta_file} \\
-        --output_dir ${prefix} \\
-        --cpus ${task.cpus} \\
-        --chunk_id ${prefix} \\
+        --fasta_file "${fasta_file}" \
+        --output_dir "${prefix}" \
+        --cpus ${task.cpus} \
+        --chunk_id "${prefix}" \
         ${index} \\
         ${args}
     """
