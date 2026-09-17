@@ -9,9 +9,7 @@ process KALLISTO_QUANT {
 
     input:
     tuple val(meta), path(reads)
-    tuple val(meta2), path(index)
-    path gtf
-    path chromosomes
+    tuple val(meta2), path(index), path(gtf), path(chromosomes)
     val fragment_length
     val fragment_length_sd
 

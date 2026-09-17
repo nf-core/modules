@@ -37,9 +37,7 @@ workflow QUANTIFY_PSEUDO_ALIGNMENT {
     } else {
         KALLISTO_QUANT (
             reads,
-            index,
-            gtf,
-            [],
+            index.combine(gtf.map { g -> [ g, [] ] }),
             kallisto_quant_fraglen,
             kallisto_quant_fraglen_sd
         )
