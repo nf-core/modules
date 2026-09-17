@@ -120,13 +120,8 @@ nextflow_process {
 
     }
 
-    // meta.id/task.ext.prefix and the input file path aren't under this module's control. The
-    // generated SQL is piped into duckdb's stdin via a *quoted* heredoc, not a `duckdb -c "..."`
-    // argument, so shell metacharacters can't be expanded/executed by bash before duckdb ever
-    // sees the query -- if `$(touch pwned)` ran, it would evaluate to an empty string (touch has
-    // no stdout) and vanish from the output filename, so asserting the literal payload survives
-    // verbatim is sufficient proof it didn't. The apostrophe separately checks the SQL-quote
-    // escaping this module previously had none of at all.
+    // `$(touch pwned)` surviving verbatim in the output filename proves it wasn't executed --
+    // a real expansion would vanish (touch has no stdout).
     test("csv - meta.id containing an apostrophe and shell metacharacters") {
 
         when {

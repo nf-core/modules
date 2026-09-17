@@ -117,12 +117,8 @@ LEFT JOIN domain_coords
 ORDER BY ranked.accno, ranked.rank
 """ : 'SELECT * FROM ranked ORDER BY accno, rank\n'
 
-    // Piped into duckdb's stdin via a *quoted* heredoc ('SQL', not SQL) rather than passed as a
-    // `duckdb -c "..."` argument: meta.id/task.ext.prefix/file paths aren't under this module's
-    // control, and a bash *double*-quoted string still expands `\$foo`, `` `cmd` ``, and `\$(cmd)``
-    // before duckdb ever sees the query -- sqlLit only defends the SQL layer, not this shell
-    // layer. A quoted heredoc's body is copied verbatim, with no shell expansion at all, closing
-    // that gap regardless of what a sample id or path contains.
+    // Quoted heredoc ('SQL'): its body gets no shell expansion, unlike `duckdb -c "..."` --
+    // sqlLit only defends the SQL layer, this defends the shell layer.
     """
     duckdb <<'SQL'
     SET threads=${task.cpus};

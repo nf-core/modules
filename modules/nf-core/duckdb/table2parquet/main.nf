@@ -26,18 +26,11 @@ process DUCKDB_TABLE2PARQUET {
     if ( ! delim ) {
         error("DUCKDB_TABLE2PARQUET: cannot determine a delimiter for '${table.name}' -- expected a .csv or .tsv suffix, optionally followed by .gz or .zst")
     }
-    // A single quote inside a SQL string literal is escaped by doubling it, not by a backslash --
-    // meta.id/task.ext.prefix and the input file path aren't under this module's control, so any
-    // embedded "'" (e.g. an apostrophe in a sample id) would otherwise prematurely close the
-    // literal and corrupt the generated SQL.
+    // SQL string literals escape an embedded "'" by doubling it, not with a backslash.
     def sqlLit = { s -> s.toString().replace("'", "''") }
     def tableSql = sqlLit.call(table)
     def prefixSql = sqlLit.call(prefix)
-    // Piped into duckdb's stdin via a *quoted* heredoc ('SQL', not SQL), not passed as a
-    // `duckdb -c "..."` argument: a bash *double*-quoted string still expands `\$foo`,
-    // `` `cmd` ``, and `\$(cmd)` before duckdb ever sees the query, regardless of the SQL-quote
-    // escaping above. A quoted heredoc's body is copied verbatim, with no shell expansion at
-    // all, closing that gap regardless of what a sample id or path contains.
+    // Quoted heredoc ('SQL'): its body gets no shell expansion, unlike `duckdb -c "..."`.
     """
     duckdb <<'SQL'
         SET threads=${task.cpus};

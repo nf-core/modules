@@ -482,13 +482,8 @@ seq1                               -   200 model_A               PF00001   200  
         }
     }
 
-    // The generated SQL is piped into duckdb's stdin via a *quoted* heredoc rather than passed
-    // as a `duckdb -c "..."` argument, specifically so that shell metacharacters in an
-    // attacker/user-shaped meta.id -- `$foo`, a backtick, `$(cmd)` -- can't be expanded/executed
-    // by bash before duckdb ever sees the query. If the substitution ran, `$(touch pwned)` would
-    // evaluate to an empty string (touch has no stdout) and vanish from the filename; asserting
-    // the literal payload text survives verbatim in the output filename is sufficient proof it
-    // didn't run.
+    // `$(touch pwned)` surviving verbatim in the output filename proves it wasn't executed --
+    // a real expansion would vanish (touch has no stdout).
     test("hmmrank - meta.id containing shell metacharacters doesn't get executed") {
         when {
             process {
