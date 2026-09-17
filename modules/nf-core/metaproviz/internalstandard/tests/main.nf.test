@@ -26,7 +26,7 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success },               
+                { assert process.success },
                 { assert process.out.versions_internalstandard != null },
                 { assert snapshot(
                     process.out.cv_table,
