@@ -27,16 +27,12 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out).findAll { key, val ->
-                        key in ['gfa'] || key.startsWith('versions')
-                    },
-                    file(process.out.contigs[0][1]).exists(),
-                    file(process.out.contigs_alt[0][1]).exists(),
-                    file(process.out.results[0][1]).list().size(),
-                    path(process.out.contigs_dup[0][1]).exists(),
-                    path(process.out.mapping[0][1]).linesGzip.size(),
-                    path(process.out.log[0][1]).readLines().any{ it.contains('Assembly completed') }
-                ).match() }
+                    sanitizeOutput(process.out,
+                        unstableKeys: ["contigs", "contigs_alt", "contigs_dup", "mapping", "log"],
+                        ignoreKeys: ["results"]
+                    )
+                ).match() },
+                { assert path(process.out.log[0][1]).readLines().any { l -> l.contains('Assembly completed') } }
             )
         }
 
@@ -64,12 +60,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out).findAll { key, val -> key.startsWith('versions') },
-                    sanitizeOutput(process.out)
-                        .findAll { key, val -> !key.startsWith('versions') }
-                        .collectEntries { key, val ->
-                            [key, val.collect { meta, output_file -> [meta, file(output_file).name] }]
-                        }
+                    sanitizeOutput(process.out, ignoreKeys: ["results"])
                 ).match() }
             )
         }
