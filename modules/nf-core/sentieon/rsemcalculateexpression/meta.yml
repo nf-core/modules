@@ -32,12 +32,6 @@ input:
       description: RSEM index
       pattern: "rsem/*"
       ontologies: []
-  - strandedness:
-      type: string
-      description: Optional strandedness of the RNA-Seq data
-      allowed:
-        - "forward"
-        - "reverse"
 output:
   counts_gene:
     - - meta:

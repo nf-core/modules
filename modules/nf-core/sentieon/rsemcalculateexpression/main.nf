@@ -11,7 +11,6 @@ process SENTIEON_RSEMCALCULATEEXPRESSION {
     input:
     tuple val(meta), path(reads)  // FASTQ files or BAM file for --alignments mode
     path  index
-    val   strandedness
 
     output:
     tuple val(meta), path("*.genes.results")   , emit: counts_gene
@@ -34,7 +33,12 @@ process SENTIEON_RSEMCALCULATEEXPRESSION {
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
 
-    def strandedness_arg = strandedness == 'forward' ? '--strandedness forward' : (strandedness == 'reverse' ? '--strandedness reverse' : '')
+    def strandedness = ''
+    if (meta.strandedness == 'forward') {
+        strandedness = '--strandedness forward'
+    } else if (meta.strandedness == 'reverse') {
+        strandedness = '--strandedness reverse'
+    }
 
     // Detect if input is BAM file(s)
     def is_bam = reads.toString().toLowerCase().endsWith('.bam')
@@ -70,7 +74,7 @@ process SENTIEON_RSEMCALCULATEEXPRESSION {
         --num-threads $task.cpus \\
         --temporary-folder ./tmp/ \\
         $alignment_mode \\
-        $strandedness_arg \\
+        $strandedness \\
         \$PAIRED_END_FLAG \\
         $args \\
         $reads \\
