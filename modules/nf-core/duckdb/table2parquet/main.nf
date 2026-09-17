@@ -30,14 +30,16 @@ process DUCKDB_TABLE2PARQUET {
     def sqlLit = { s -> s.toString().replace("'", "''") }
     def tableSql = sqlLit.call(table)
     def prefixSql = sqlLit.call(prefix)
-    // Quoted heredoc ('SQL'): its body gets no shell expansion, unlike `duckdb -c "..."`.
+    // Quoted heredoc: no shell expansion in the body. Delimiter is randomized per task so a
+    // real newline in a value can't forge a line that closes it early.
+    def heredocTag = "SQL_${java.util.UUID.randomUUID().toString().replace('-', '')}"
     """
-    duckdb <<'SQL'
+    duckdb <<'${heredocTag}'
         SET threads=${task.cpus};
         SET memory_limit='${task.memory.toGiga()}GB';
         SET temp_directory='.';
         COPY (SELECT * FROM read_csv('${tableSql}', delim='${delim}', header=true${args})) TO '${prefixSql}.parquet' (FORMAT PARQUET${args2});
-SQL
+${heredocTag}
     """
 
     stub:
