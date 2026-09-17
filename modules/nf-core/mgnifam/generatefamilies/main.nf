@@ -4,8 +4,8 @@ process MGNIFAM_GENERATEFAMILIES {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mgnifam:2.0.0--pyhdfd78af_0' :
-        'quay.io/biocontainers/mgnifam:2.0.0--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/mgnifam:3.0.0--pyhdfd78af_0' :
+        'quay.io/biocontainers/mgnifam:3.0.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(clustering), path(fasta_file), path(fasta_index)
@@ -37,7 +37,7 @@ process MGNIFAM_GENERATEFAMILIES {
         --fasta_file ${fasta_file} \\
         --output_dir ${prefix} \\
         --cpus ${task.cpus} \\
-        --chunk_num ${prefix} \\
+        --chunk_id ${prefix} \\
         ${index} \\
         ${args}
     """
