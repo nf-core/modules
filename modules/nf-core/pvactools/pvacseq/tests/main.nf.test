@@ -1,0 +1,116 @@
+nextflow_process {
+
+    name "Test Process PVACTOOLS_PVACSEQ"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "PVACTOOLS_PVACSEQ"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pvactools"
+    tag "pvactools/pvacseq"
+    tag "pvactools/installvepplugin"
+    tag "ensemblvep/vep"
+    tag "untar"
+
+
+    test("homo sapiens - vcf.gz") {
+
+        setup {
+            run("PVACTOOLS_INSTALLVEPPLUGIN") {
+                script "../../installvepplugin"
+
+                process {}
+            }
+            run("UNTAR") {
+                script "../../../untar/main.nf"
+                process {
+                """
+                input[0] = [
+                    [ id:'vep_test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vep.tar.gz', checkIfExists: true)
+                ]
+                """
+                }
+            }
+            run("ENSEMBLVEP_VEP") {
+                script "../../../../../modules/nf-core/ensemblvep/vep"
+
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test_annotate.vcf.gz', checkIfExists: true),
+                        []
+                    ])
+                    input[1] = 'GRCh38'
+                    input[2] = 'homo_sapiens'
+                    input[3] = '106'
+                    input[4] = UNTAR.out.untar.map{ it[1] }
+                    input[5] = Channel.of([
+                        [id:'fasta'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    ])
+                    input[6] = PVACTOOLS_INSTALLVEPPLUGIN.out.vep_plugins_dir
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ],
+                    'hugelymodelbat',
+                    'HLA-A*23:01,DPA1*01:03-DPB1*105:01',
+                ]).join(ENSEMBLVEP_VEP.out.vcf)
+                input[1] = 'all'
+                input[2] = []
+                input[3] = []
+                input[4] = []
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success }, // There is no meaningful output because a valid VEP cache is not available
+                { assert snapshot(process.out.versions).match("pvacseq_test_data_versions") }
+            )
+        }
+    }
+
+    test("homo sapiens - vcf.gz - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ],
+                    'test',
+                    'HLA-A*23:01,DPA1*01:03-DPB1*105:01',
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/empty.vcf.gz', checkIfExists: true)
+                ])
+                input[1] = 'NetMHC MHCnuggetsII'
+                input[2] = []
+                input[3] = []
+                input[4] = []
+                input[5] = []
+                input[6] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match("pvacseq_stub") }
+            )
+        }
+
+    }
+
+}
