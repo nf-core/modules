@@ -3,7 +3,6 @@ nextflow_workflow {
     name "Test Workflow FASTQ_SUBSAMPLE_FQ_SALMON"
     script "../main.nf"
     workflow "FASTQ_SUBSAMPLE_FQ_SALMON"
-    config "./nextflow.config"
     tag "subworkflows"
     tag "subworkflows_nfcore"
     tag "subworkflows/fastq_subsample_fq_salmon"
@@ -13,6 +12,7 @@ nextflow_workflow {
     tag "salmon/quant"
 
     test("homo_sapiens paired-end [fastq]") {
+        config "./nextflow.config"
 
         setup {
             run("SALMON_INDEX") {
@@ -30,9 +30,6 @@ nextflow_workflow {
         }
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             workflow {
                 """
                 make_index = false
@@ -70,6 +67,7 @@ nextflow_workflow {
     }
 
     test("homo_sapiens paired-end [fastq] - stub") {
+        config "./nextflow.config"
 
         options "-stub"
 
@@ -89,9 +87,6 @@ nextflow_workflow {
         }
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             workflow {
                 """
                 make_index = false
@@ -115,7 +110,7 @@ nextflow_workflow {
             def readlines2 = path(workflow.out.reads[0][1][1]).linesGzip
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
             )
         }
     }
