@@ -49,14 +49,14 @@ process MGNIFAM_GENERATEFAMILIES {
     echo $args
 
     mkdir -p ${prefix}/seed_msa ${prefix}/full_msa ${prefix}/hmm ${prefix}/rf
-    echo '' | gzip > ${prefix}/seed_msa/${prefix}_1.sto.gz
-    echo '' | gzip > ${prefix}/full_msa/${prefix}_1.sto.gz
-    echo '' | gzip > ${prefix}/hmm/${prefix}_1.hmm.gz
+    echo "" | gzip > ${prefix}/seed_msa/${prefix}_1.sto.gz
+    echo "" | gzip > ${prefix}/full_msa/${prefix}_1.sto.gz
+    echo "" | gzip > ${prefix}/hmm/${prefix}_1.hmm.gz
     touch ${prefix}/rf/${prefix}_1.txt
     touch ${prefix}/${prefix}_families.tsv
     touch ${prefix}/${prefix}_metadata.csv
     touch ${prefix}/${prefix}.log
-    echo '' | gzip > ${prefix}/${prefix}_reps.fasta.gz
+    echo "" | gzip > ${prefix}/${prefix}_reps.fasta.gz
     touch ${prefix}/${prefix}_successful.txt
     touch ${prefix}/${prefix}_discarded.csv
     touch ${prefix}/${prefix}_converged.txt
