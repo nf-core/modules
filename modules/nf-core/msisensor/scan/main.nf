@@ -12,7 +12,7 @@ process MSISENSOR_SCAN {
 
     output:
     tuple val(meta), path("*.tab"), emit: txt
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('msisensor'), eval("msisensor 2>&1 | sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p'"), emit: versions_msisensor, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,10 +35,6 @@ process MSISENSOR_SCAN {
         -o ${prefix}.msisensor_scan.tab \\
         $args
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        msisensor: \$(msisensor 2>&1 | sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p')
-    END_VERSIONS
     """
 
     stub:

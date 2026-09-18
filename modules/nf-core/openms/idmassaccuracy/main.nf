@@ -13,7 +13,7 @@ process OPENMS_IDMASSACCURACY {
     output:
     tuple val(meta), path("*frag_mass_err.tsv") , emit: frag_err
     tuple val(meta), path("*prec_mass_err.tsv") , emit: prec_err, optional: true
-    path "versions.yml"                         , emit: versions
+    tuple val("${task.process}"), val('openms'), eval("FileInfo --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p'"), emit: versions_openms, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,10 +38,6 @@ process OPENMS_IDMASSACCURACY {
         -threads $task.cpus \\
         $args
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        OpenMS: \$(FileInfo --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p')
-    END_VERSIONS
     """
 
     stub:
@@ -58,9 +54,5 @@ process OPENMS_IDMASSACCURACY {
     touch ${prefix}_frag_mass_err.tsv
     touch ${prefix}_prec_mass_err.tsv
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        OpenMS: \$(FileInfo --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p')
-    END_VERSIONS
     """
 }
