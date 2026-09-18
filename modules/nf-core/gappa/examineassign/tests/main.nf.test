@@ -42,6 +42,9 @@ nextflow_process {
     test("test-gappa-examineassign - gzipped taxon file") {
 
         when {
+            params {
+                module_args = "--per-query-results --krona --sativa"
+            }
             process {
                 """
                 def gzipped = java.nio.file.Files.createTempDirectory('gappa_tax_gz').resolve('gappa_taxonomy.tsv.gz')
