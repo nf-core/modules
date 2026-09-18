@@ -33,15 +33,15 @@ process SALMON_QUANT {
     def reference
     def input_reads
     if (alignment_mode) {
-        if (!transcript_fasta_file?.isFile()) {
-            error("[Salmon Quant] Alignment mode needs 'transcript_fasta' to be an existing fasta file as the reference (BAM input detected for sample '${meta.id}').")
+        if (!transcript_fasta_file) {
+            error("[Salmon Quant] Alignment mode needs 'transcript_fasta' to be provided as the reference (BAM input detected for sample '${meta.id}').")
         }
         reference = "-t ${transcript_fasta}"
         input_reads = "-a ${reads}"
     }
     else {
-        if (!index_dir?.isDirectory()) {
-            error("[Salmon Quant] Reads mode needs 'index' to be an existing salmon index directory (no BAM input detected for sample '${meta.id}').")
+        if (!index_dir) {
+            error("[Salmon Quant] Reads mode needs 'index' to be provided as a salmon index directory (no BAM input detected for sample '${meta.id}').")
         }
         def reads1 = []
         def reads2 = []
