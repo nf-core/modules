@@ -3,10 +3,6 @@ process UNIVERSC {
     label 'process_medium'
 
     container "quay.io/nf-core/universc:1.2.5.1"
-    containerOptions "${ ['singularity', 'apptainer'].contains(workflow.containerEngine) ?
-        "-B /var/tmp --writable-tmpfs" : workflow.containerEngine == 'docker' ?
-        "--privileged" : workflow.containerEngine == 'podman' ?
-        "--runtime crun --userns=keep-id --systemd=always" : '' }"
 
     input:
     tuple val(meta), path(reads)
@@ -15,7 +11,8 @@ process UNIVERSC {
 
     output:
     tuple val(meta), path("${prefix}/outs/*"), emit: outs
-    path "versions.yml"                      , emit: versions
+    tuple val("${task.process}"), val('cellranger'), eval("cellranger 2>&1 | sed '/^cellranger/!d;s/cellranger  (//;s/)//'"), emit: versions_cellranger, topic: versions
+    tuple val("${task.process}"), val('universc'), eval("universc --version | sed -n 's/launch_universc.sh version //p'"), emit: versions_universc, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,6 +28,58 @@ process UNIVERSC {
 
     def reference_name = reference.name
     """
+    cr_version=\$(cellranger 2>&1 | sed '/^cellranger/!d;s/cellranger  (//;s/)//')
+    img_cr="/cellranger-\$cr_version"
+    img_cs="\$img_cr/cellranger-cs/\$cr_version"
+
+    local_cr="\$PWD/.local-cellranger/cellranger-\$cr_version"
+    local_cs="\$local_cr/cellranger-cs/\$cr_version"
+
+    # Create local Cell Ranger directory structure
+    mkdir -p "\$local_cs/lib/python" "\$local_cs/mro"
+
+    # Top-level Cell Ranger files/directories
+    ln -s \$img_cr/cellranger-tiny-fastq "\$local_cr/cellranger-tiny-fastq"
+    ln -s \$img_cr/cellranger-tiny-ref  "\$local_cr/cellranger-tiny-ref"
+
+    # Cell Ranger CS: everything except lib and mro is symlinked
+    for item in \$img_cs/*; do
+        name=\$(basename "\$item")
+        if [[ "\$name" != "lib" && "\$name" != "mro"  ]]; then
+            ln -s "\$item" "\$local_cs/\$name"
+        fi
+    done
+
+    # lib: everything except python is symlinked
+    for item in \$img_cs/lib/*; do
+        name=\$(basename "\$item")
+        if [[ "\$name" != "python" ]]; then
+            ln -s "\$item" "\$local_cs/lib/\$name"
+        fi
+    done
+
+    # Copy python and mro folders (~191 MB, mostly barcodes) as modified by universc
+    cp -a \$img_cs/lib/python "\$local_cs/lib"
+    cp -a \$img_cs/mro \$local_cs
+
+    # Symlink cellranger bin
+    ln -s "\$local_cs/bin/cellranger" "\$local_cr/cellranger"
+
+    # UNIVERSC needs its installation directory to be writable
+    mkdir -p "\$PWD/.local-universc"
+    cp -a /universc "\$PWD/.local-universc/"
+
+    local_universc="\$PWD/.local-universc/universc"
+
+    # Fix UNIVERSC launcher symlink
+    rm "\$local_universc/universc"
+    ln -s "\$local_universc/launch_universc.sh" "\$local_universc/universc"
+
+    # Fix malformed [[ syntax in UNIVERSC
+    sed -i 's/"\$technology" == "vasa-drop"/ "\$technology" == "vasa-drop"/' "\$local_universc/universc"
+
+    export PATH="\$local_cr:\$local_universc:\$PATH"
+
     export PYTHON_EGG_CACHE=\$(pwd)/.cache
     universc \\
         --id ${prefix} \\
@@ -41,18 +90,10 @@ process UNIVERSC {
         --localcores ${task.cpus} \\
         --localmem ${task.memory.toGiga()} \\
         --per-cell-data \\
-        ${args} 1> _log 2> _err
+        ${args}
 
     # save log files
     echo !! > ${prefix}/outs/_invocation
-    cp _log ${prefix}/outs/_log
-    cp _err ${prefix}/outs/_err
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellranger:  \$(echo \$(cellranger count --version 2>&1 | head -n 2 | tail -n 1 | sed 's/^.* //g' | sed 's/(//g' | sed 's/)//g' ))
-        universc:  \$(echo \$(bash /universc/launch_universc.sh --version | grep version | grep universc  | sed 's/^.* //g' ))
-    END_VERSIONS
     """
 
 
@@ -65,12 +106,62 @@ process UNIVERSC {
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
+    cr_version=\$(cellranger 2>&1 | sed '/^cellranger/!d;s/cellranger  (//;s/)//')
+    img_cr="/cellranger-\$cr_version"
+    img_cs="\$img_cr/cellranger-cs/\$cr_version"
+
+    local_cr="\$PWD/.local-cellranger/cellranger-\$cr_version"
+    local_cs="\$local_cr/cellranger-cs/\$cr_version"
+
+    # Create local Cell Ranger directory structure
+    mkdir -p "\$local_cs/lib/python" "\$local_cs/mro"
+
+    # Top-level Cell Ranger files/directories
+    ln -s \$img_cr/cellranger-tiny-fastq "\$local_cr/cellranger-tiny-fastq"
+    ln -s \$img_cr/cellranger-tiny-ref  "\$local_cr/cellranger-tiny-ref"
+
+    # Cell Ranger CS: everything except lib and mro is symlinked
+    for item in \$img_cs/*; do
+        name=\$(basename "\$item")
+        if [[ "\$name" != "lib" && "\$name" != "mro"  ]]; then
+            ln -s "\$item" "\$local_cs/\$name"
+        fi
+    done
+
+    # lib: everything except python is symlinked
+    for item in \$img_cs/lib/*; do
+        name=\$(basename "\$item")
+        if [[ "\$name" != "python" ]]; then
+            ln -s "\$item" "\$local_cs/lib/\$name"
+        fi
+    done
+
+    # Copy python and mro folders (~191 MB, mostly barcodes) as modified by universc
+    cp -a \$img_cs/lib/python "\$local_cs/lib"
+    cp -a \$img_cs/mro \$local_cs
+
+    # Symlink cellranger bin
+    ln -s "\$local_cs/bin/cellranger" "\$local_cr/cellranger"
+
+    # UNIVERSC needs its installation directory to be writable
+    mkdir -p "\$PWD/.local-universc"
+    cp -a /universc "\$PWD/.local-universc/"
+
+    local_universc="\$PWD/.local-universc/universc"
+
+    # Fix UNIVERSC launcher symlink
+    rm "\$local_universc/universc"
+    ln -s "\$local_universc/launch_universc.sh" "\$local_universc/universc"
+
+    # Fix malformed [[ syntax in UNIVERSC
+    sed -i 's/"\$technology" == "vasa-drop"/ "\$technology" == "vasa-drop"/' "\$local_universc/universc"
+
+    export PATH="\$local_cr:\$local_universc:\$PATH"
+
     mkdir -p ${prefix}/outs/
     cd ${prefix}/outs/
 
     touch _invocation
-    touch _log
-    touch _err
 
     touch basic_stats.txt
     touch metrics_summary.csv
@@ -81,22 +172,16 @@ process UNIVERSC {
 
     mkdir -p filtered_feature_bc_matrix
     touch filtered_feature_bc_matrix.h5
-    echo | gzip > filtered_feature_bc_matrix/barcodes.tsv.gz
-    echo | gzip > filtered_feature_bc_matrix/features.tsv.gz
-    echo | gzip > filtered_feature_bc_matrix/matrix.mtx.gz
+    echo "" | gzip > filtered_feature_bc_matrix/barcodes.tsv.gz
+    echo "" | gzip > filtered_feature_bc_matrix/features.tsv.gz
+    echo "" | gzip > filtered_feature_bc_matrix/matrix.mtx.gz
 
     mkdir -p raw_feature_bc_matrix
     touch raw_feature_bc_matrix.h5
-    echo | gzip > raw_feature_bc_matrix/barcodes.tsv.gz
-    echo | gzip > raw_feature_bc_matrix/features.tsv.gz
-    echo | gzip > raw_feature_bc_matrix/matrix.mtx.gz
+    echo "" | gzip > raw_feature_bc_matrix/barcodes.tsv.gz
+    echo "" | gzip > raw_feature_bc_matrix/features.tsv.gz
+    echo "" | gzip > raw_feature_bc_matrix/matrix.mtx.gz
 
     cd ../..
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellranger:  \$(echo \$(cellranger count --version 2>&1 | head -n 2 | tail -n 1 | sed 's/^.* //g' | sed 's/(//g' | sed 's/)//g' ))
-        universc:  \$(echo \$(bash /universc/launch_universc.sh --version | grep version | grep universc | sed 's/^.* //g' ))
-    END_VERSIONS
     """
 }
