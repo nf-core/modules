@@ -30,4 +30,28 @@ nextflow_process {
 
     }
 
+    test("acquisition - txt - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'imaging/staging/imaging_mass_cytometry/acquisition.txt', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
 }
