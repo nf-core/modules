@@ -1,0 +1,69 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: crabs_merge
+description: CRABS merges multiple CRABS-formatted files into a single database.
+keywords:
+  - crabs
+  - merge
+  - reference database
+tools:
+  - crabs:
+      description: |
+        CRABS (Creating Reference databases for Amplicon-Based Sequencing)
+        creates and curates reference databases for metabarcoding analyses.
+      homepage: https://github.com/gjeunen/reference_database_creator
+      documentation: https://github.com/gjeunen/reference_database_creator?tab=readme-ov-file#running-crabs
+      tool_dev_url: https://github.com/gjeunen/reference_database_creator
+      doi: 10.1111/1750-0998.13741
+      licence:
+        - "MIT License"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - crabsdb:
+        type: file
+        description: One or more CRABS-formatted database files to merge.
+        pattern: "*.txt"
+        ontologies: []
+output:
+  crabsdb:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.txt":
+          type: file
+          description: Merged CRABS-formatted database file.
+          pattern: "*.txt"
+          ontologies: []
+  versions_crabs:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - crabs:
+          type: string
+          description: The name of the tool
+      - crabs --help 2>/dev/null | grep -oE 'v[0-9.]+' | cut -c2-:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - crabs:
+          type: string
+          description: The name of the tool
+      - crabs --help 2>/dev/null | grep -oE 'v[0-9.]+' | cut -c2-:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@famosab"
+  - "@a4000"
+maintainers:
+  - "@famosab"
+  - "@a4000"
