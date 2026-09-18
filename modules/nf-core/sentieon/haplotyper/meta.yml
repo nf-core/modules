@@ -30,7 +30,8 @@ input:
         ontologies: []
     - intervals:
         type: file
-        description: Bed file with the genomic regions included in the library (optional)
+        description: Bed file with the genomic regions included in the library
+          (optional)
         ontologies: []
     - recal_table:
         type: file
@@ -96,7 +97,7 @@ output:
           description: Compressed VCF file
           pattern: "*.unfiltered.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   vcf_tbi:
     - - meta:
           type: map
@@ -119,7 +120,7 @@ output:
           description: Compressed GVCF file
           pattern: "*.g.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   gvcf_tbi:
     - - meta:
           type: map
@@ -139,7 +140,7 @@ output:
           type: string
           description: The tool name
       - 'sentieon driver --version | sed "s/.*-//g"':
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 topics:
   versions:
@@ -150,7 +151,7 @@ topics:
           type: string
           description: The tool name
       - 'sentieon driver --version | sed "s/.*-//g"':
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 authors:
   - "@asp8200"

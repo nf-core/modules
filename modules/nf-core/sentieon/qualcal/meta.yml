@@ -1,5 +1,6 @@
 name: "sentieon_qualcal"
-description: Generate recalibration table and optionally perform base quality recalibration
+description: Generate recalibration table and optionally perform base quality
+  recalibration
 keywords:
   - base quality score recalibration
   - bqsr
@@ -58,7 +59,7 @@ input:
         description: VCF files with known sites for indels / snps (optional)
         pattern: "*.vcf.gz"
         ontologies:
-          - edam: http://edamontology.org/format_3989 # GZIP format
+          - edam: http://edamontology.org/format_3989
   - - meta5:
         type: map
         description: |
@@ -81,7 +82,7 @@ input:
         ontologies: []
   - generate_recalibrated_bams:
       type: boolean
-      description: If truem, writes recalibrated bams to disc
+      description: If true, writes recalibrated bam files to disk
 output:
   table:
     - - meta:
@@ -124,10 +125,11 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.csv":
           type: file
-          description: Recalibration results output file used for plotting. (optional)
+          description: Recalibration results output file used for plotting.
+            (optional)
           pattern: "*.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3752
   pdf:
     - - meta:
           type: map
@@ -147,13 +149,8 @@ output:
           type: string
           description: The tool name
       - 'sentieon driver --version | sed "s/.*-//g"':
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
-authors:
-  - "@FriederikeHanssen"
-maintainers:
-  - "@FriederikeHanssen"
-
 topics:
   versions:
     - - ${task.process}:
@@ -163,5 +160,9 @@ topics:
           type: string
           description: The tool name
       - 'sentieon driver --version | sed "s/.*-//g"':
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
+authors:
+  - "@FriederikeHanssen"
+maintainers:
+  - "@FriederikeHanssen"

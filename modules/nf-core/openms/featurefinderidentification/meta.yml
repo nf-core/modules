@@ -1,0 +1,85 @@
+name: "openms_featurefinderidentification"
+description: Detects and quantifies features in MS1 data based on peptide identifications (targeted feature extraction).
+keywords:
+  - quantification
+  - feature detection
+  - featureXML
+  - openms
+  - proteomics
+tools:
+  - "openms":
+      description: "OpenMS is an open-source software C++ library for LC-MS data management and analyses"
+      homepage: "https://openms.de"
+      documentation: "https://openms.readthedocs.io/en/latest/index.html"
+      tool_dev_url: "https://github.com/OpenMS/OpenMS"
+      doi: "10.1038/s41592-024-02197-7"
+      licence: ["BSD"]
+      identifier: "biotools:openms"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - mzml:
+        type: file
+        description: Centroided MS1 spectra.
+        pattern: "*.mzML"
+        ontologies:
+          - edam: http://edamontology.org/data_2536 # Mass spectrometry data
+    - id_int:
+        type: file
+        description: Peptide identifications from this run (internal IDs) used as targets for feature detection.
+        pattern: "*.idXML"
+        ontologies:
+          - edam: http://edamontology.org/data_2536 # Mass spectrometry data
+    - id_ext:
+        type: file
+        description: Optional external peptide identifications (e.g. from other runs) to be transferred and scored. Pass an empty list to omit.
+        pattern: "*.idXML"
+        ontologies:
+          - edam: http://edamontology.org/data_2536 # Mass spectrometry data
+    - out_type:
+        type: string
+        description: File extension of the output feature map (featureXML).
+output:
+  features:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - ${prefix}.${out_type}:
+          type: file
+          description: Detected features with assigned identifications.
+          pattern: "*.featureXML"
+          ontologies:
+            - edam: http://edamontology.org/data_2536 # Mass spectrometry data
+  versions_openms:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - openms:
+          type: string
+          description: The name of the tool
+      - "FileInfo --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - openms:
+          type: string
+          description: The name of the tool
+      - "FileInfo --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@jonasscheid"
+maintainers:
+  - "@jonasscheid"
