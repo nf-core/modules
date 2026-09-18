@@ -22,33 +22,21 @@ process PHYLOFLASH {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if (meta.single_end) {
-        """
-        phyloFlash.pl \\
-            ${args} \\
-            -read1 ${reads[0]} \\
-            -lib ${prefix} \\
-            -interleaved \\
-            -dbhome . \\
-            -CPUs ${task.cpus}
+    def input_reads = meta.single_end ?
+        "-read1 ${reads[0]} -interleaved" :
+        "-read1 ${reads[0]} -read2 ${reads[1]}"
 
-        mkdir ${prefix}
-        mv ${prefix}.* ${prefix}
-        """
-    } else {
-        """
-        phyloFlash.pl \\
-            ${args} \\
-            -read1 ${reads[0]} \\
-            -read2 ${reads[1]} \\
-            -lib ${prefix} \\
-            -dbhome . \\
-            -CPUs ${task.cpus}
+    """
+    phyloFlash.pl \\
+        ${args} \\
+        ${input_reads} \\
+        -lib ${prefix} \\
+        -dbhome . \\
+        -CPUs ${task.cpus}
 
-        mkdir ${prefix}
-        mv ${prefix}.* ${prefix}
-        """
-    }
+    mkdir ${prefix}
+    mv ${prefix}.* ${prefix}
+    """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
