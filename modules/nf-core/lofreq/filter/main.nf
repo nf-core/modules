@@ -3,16 +3,16 @@ process LOFREQ_FILTER {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/lofreq:2.1.5--py38h588ecb2_4' :
-        'biocontainers/lofreq:2.1.5--py38h588ecb2_4' }"
+        'quay.io/biocontainers/lofreq:2.1.5--py38h588ecb2_4' }"
 
     input:
     tuple val(meta), path(vcf)
 
     output:
     tuple val(meta), path("*.gz"), emit: vcf
-    path "versions.yml"          , emit: versions
+    tuple val("${task.process}"), val('lofreq'), eval("lofreq version | sed -n '1s/^.* //p'"), emit: versions_lofreq, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,21 +26,11 @@ process LOFREQ_FILTER {
         $args \\
         -i $vcf \\
         -o ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        lofreq: \$(echo \$(lofreq version 2>&1) | sed 's/^version: //; s/ *commit.*\$//')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        lofreq: \$(echo \$(lofreq version 2>&1) | sed 's/^version: //; s/ *commit.*\$//')
-    END_VERSIONS
     """
 }

@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "rtn_tni"
 description: Uses the RTN R package for transcriptional regulatory network inference
   (TNI).
@@ -14,9 +13,9 @@ tools:
       documentation: "https://www.bioconductor.org/packages/release/bioc/vignettes/RTN/inst/doc/RTN.html"
       tool_dev_url: "https://www.bioconductor.org/packages/release/bioc/html/RTN.html"
       doi: "10.1038/ncomms3464"
-      licence: ["Artistic-2.0"]
+      licence:
+        - "Artistic-2.0"
       identifier: biotools:rtn
-
 input:
   - - meta:
         type: map
@@ -78,10 +77,15 @@ output:
   versions:
     - versions.yml:
         type: file
-        description: File containing software versions
+        description: YAML file containing versions of tools used in the module
         pattern: "versions.yml"
         ontologies:
           - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: string
+        description: The name of the process
 authors:
   - "@mribeirodantas"
 maintainers:

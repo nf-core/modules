@@ -16,7 +16,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test_gecco', single_end:true ], // meta map
+                    [ id:'test_gecco' ],
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta', checkIfExists: true),
                     []
                 ]
@@ -32,11 +32,11 @@ nextflow_process {
             process {
                 """
                 input[0] = GECCO_RUN.out.clusters
-                            .mix(GECCO_RUN.out.gbk)
-                            .groupTuple(by:0)
-                            .map { meta, paths ->
-                                [meta, paths[0], paths[1]]
-                            }
+                    .mix(GECCO_RUN.out.gbk)
+                    .groupTuple(by:0)
+                    .map { meta, paths ->
+                        [meta, paths[0], paths[1]]
+                    }
                 input[1] = "clusters"
                 input[2] = "gff"
                 """
@@ -46,10 +46,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.gff,
-                    process.out.versions.collect{ path(it).yaml }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
@@ -61,11 +58,11 @@ nextflow_process {
             process {
                 """
                 input[0] = GECCO_RUN.out.clusters
-                            .mix(GECCO_RUN.out.gbk)
-                            .groupTuple(by:0)
-                            .map { meta, paths ->
-                                [meta, paths[0], paths[1]]
-                            }
+                    .mix(GECCO_RUN.out.gbk)
+                    .groupTuple(by:0)
+                    .map { meta, paths ->
+                        [meta, paths[0], paths[1]]
+                    }
                 input[1] = "gbk"
                 input[2] = "faa"
                 """
@@ -75,10 +72,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.faa,
-                    process.out.versions.collect{ path(it).yaml }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
@@ -92,11 +86,11 @@ nextflow_process {
             process {
                 """
                 input[0] = GECCO_RUN.out.clusters
-                            .mix(GECCO_RUN.out.gbk)
-                            .groupTuple(by:0)
-                            .map { meta, paths ->
-                                [meta, paths[0], paths[1]]
-                            }
+                    .mix(GECCO_RUN.out.gbk)
+                    .groupTuple(by:0)
+                    .map { meta, paths ->
+                        [meta, paths[0], paths[1]]
+                    }
                 input[1] = "clusters"
                 input[2] = "gff"
                 """
@@ -106,10 +100,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    process.out.versions.collect{ path(it).yaml }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

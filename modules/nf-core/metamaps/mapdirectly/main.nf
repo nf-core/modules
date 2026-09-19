@@ -3,9 +3,9 @@ process METAMAPS_MAPDIRECTLY {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/metamaps:0.1.633d2e0--h21ec9f0_0':
-        'biocontainers/metamaps:0.1.633d2e0--h21ec9f0_0' }"
+        'quay.io/biocontainers/metamaps:0.1.633d2e0--h21ec9f0_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -16,7 +16,7 @@ process METAMAPS_MAPDIRECTLY {
     tuple val(meta), path("*classification_res.meta")                     , emit: meta_file
     tuple val(meta), path("*classification_res.meta.unmappedReadsLengths"), emit: meta_unmappedreadsLengths
     tuple val(meta), path("*classification_res.parameters")               , emit: para_file
-    path "versions.yml"                                                                                          , emit: versions
+    tuple val("${task.process}"), val('metamaps'), eval("metamaps | sed -n 's/.*MetaMaps v //p'"), emit: versions_metamaps, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,17 +28,12 @@ process METAMAPS_MAPDIRECTLY {
     db=`find -L ${database} -name "DB.fa"`
     metamaps \\
         mapDirectly \\
-        $args \\
+        ${args} \\
         --all \\
         --reference \$db \\
-        --threads $task.cpus \\
-        --query $reads \\
+        --threads ${task.cpus} \\
+        --query ${reads} \\
         --output ${prefix}.classification_res
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        metamaps: \$(metamaps | sed -n 2p | sed 's/^.*MetaMaps v //')
-    END_VERSIONS
     """
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
@@ -47,10 +42,5 @@ process METAMAPS_MAPDIRECTLY {
     touch ${prefix}_classification_res.meta
     touch ${prefix}_classification_res.meta.unmappedReadsLengths
     touch ${prefix}_classification_res.parameters
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        metamaps: \$(metamaps | sed -n 2p | sed 's/^.*MetaMaps v //')
-    END_VERSIONS
     """
 }

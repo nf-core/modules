@@ -3,9 +3,9 @@ process SKESA {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/skesa%3A2.5.1--h077b44d_3':
-        'biocontainers/skesa:2.5.1--h077b44d_3' }"
+        'quay.io/biocontainers/skesa:2.5.1--h077b44d_3' }"
 
     input:
     tuple val(meta), path(fastq)

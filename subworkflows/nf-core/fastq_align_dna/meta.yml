@@ -18,33 +18,25 @@ components:
   - snapaligner/align
   - strobealign
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - reads:
+  - ch_reads:
       type: file
       description: |
         List of input FastQ files of size 1 and 2 for single-end and paired-end data,
         respectively.
-  - meta2:
-      type: map
+
+        Structure: [ val(meta), [ path(reads) ] ]
+  - ch_aligner_index:
+      type: directory
       description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test' ]
-  - index:
+        Directory containing the aligner genome index files.
+
+        Structure: [ val(meta2), path(index) ]
+  - ch_fasta:
       type: file
-      description: Aligner genome index files
-      pattern: "Directory containing aligner index"
-  - meta3:
-      type: map
       description: |
-        Groovy Map containing reference information
-        e.g. [ id:'genome' ]
-  - fasta:
-      type: file
-      description: Reference genome in fasta format
+        Reference genome in fasta format.
+
+        Structure: [ val(meta3), path(fasta) ]
       pattern: "*.{fa, fasta, fna}"
   - aligner:
       type: string
@@ -56,31 +48,30 @@ input:
         - dragmap
         - snap
         - strobealign
-  - sort_bam:
+  - sort:
       type: boolean
       description: sort output
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - bam:
       type: file
-      description: BAM file
+      description: |
+        BAM file.
+
+        Structure: [ val(meta), path(bam) ]
       pattern: "*.bam"
   - bam_index:
       type: file
-      description: BAM index (currently only for snapaligner)
+      description: |
+        BAM index (only produced by some aligners).
+
+        Structure: [ val(meta), path(bai/csi) ]
       pattern: "*.{bai, csi}"
-  - report:
+  - reports:
       type: file
-      description: Alignment report (currently only for dragmap)
-      pattern: "*.txt"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      description: |
+        Alignment report (currently only for dragmap).
+
+        Structure: [ val(meta), path(log) ]
 authors:
   - "@matthdsm"
 maintainers:

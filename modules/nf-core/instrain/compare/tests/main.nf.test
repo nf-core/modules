@@ -50,7 +50,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.comparison_table,
                     process.out.snv_info,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 },
                 { assert path(process.out.pooled_snv[0][1]).text.contains("0\t0\t3412\t0\t0") },
@@ -75,7 +75,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

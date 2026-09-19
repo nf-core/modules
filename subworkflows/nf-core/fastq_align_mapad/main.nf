@@ -20,8 +20,6 @@ workflow FASTQ_ALIGN_MAPAD {
 
     main:
 
-    ch_versions = channel.empty()
-
     // WARNING: You must specify in your prefix `meta.id_index` in your `modules.conf`
     // to ensure that you do not overwrite multiple BAM files from one sample mapped
     // against multiple references. This meta map is added by the subworkflow but can be removed
@@ -51,7 +49,6 @@ workflow FASTQ_ALIGN_MAPAD {
 
     // Alignment
     MAPAD_MAP(ch_preppedinput_for_mapad.reads, ch_preppedinput_for_mapad.index, val_mismatch_parameter, val_double_stranded_library, val_five_prime_overhang, val_three_prime_overhang, val_deam_rate_double_stranded, val_deam_rate_single_stranded, val_indel_rate)
-    ch_versions = ch_versions.mix(MAPAD_MAP.out.versions.first())
 
     // Sort, index BAM file and run samtools stats, flagstat and idxstats
     BAM_SORT_STATS_SAMTOOLS(MAPAD_MAP.out.bam, ch_fasta_fai)
@@ -63,5 +60,4 @@ workflow FASTQ_ALIGN_MAPAD {
     stats        = BAM_SORT_STATS_SAMTOOLS.out.stats // channel: [ val(meta), path(stats) ]
     flagstat     = BAM_SORT_STATS_SAMTOOLS.out.flagstat // channel: [ val(meta), path(flagstat) ]
     idxstats     = BAM_SORT_STATS_SAMTOOLS.out.idxstats // channel: [ val(meta), path(idxstats) ]
-    versions     = ch_versions // channel: [ path(versions.yml) ]
 }

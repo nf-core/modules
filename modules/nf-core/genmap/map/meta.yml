@@ -14,7 +14,8 @@ tools:
       documentation: https://github.com/cpockrandt/genmap
       tool_dev_url: https://github.com/cpockrandt/genmap
       doi: "10.1093/bioinformatics/btaa222"
-      licence: ["BSD-3-Clause"]
+      licence:
+        - "BSD-3-Clause"
       identifier: ""
 input:
   - - meta:
@@ -32,7 +33,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - regions:
         type: file
-        description: optional - a bed file with regions to define the mappability off
+        description: optional - a bed file with regions to define the mappability
+          off
         pattern: "*.bed"
         ontologies: []
 output:
@@ -81,13 +83,27 @@ output:
           pattern: "*.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
+  versions_genmap:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - genmap:
+          type: string
+          description: The name of the tool
+      - "genmap --version |& sed -n 's/GenMap version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - genmap:
+          type: string
+          description: The name of the tool
+      - "genmap --version |& sed -n 's/GenMap version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jianhong"
   - "@nvnieuwk"

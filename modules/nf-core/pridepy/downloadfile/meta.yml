@@ -1,0 +1,68 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "pridepy_downloadfile"
+description: Download a single file from the PRIDE Archive by name using pridepy.
+keywords:
+  - pride
+  - download
+  - proteomics
+  - mass spectrometry
+tools:
+  - "pridepy":
+      description: |
+        Python client library and command-line tool to access PRIDE Archive data
+        programmatically, including downloading files from public proteomics datasets.
+      homepage: "https://github.com/PRIDE-Archive/pridepy"
+      documentation: "https://github.com/PRIDE-Archive/pridepy"
+      tool_dev_url: "https://github.com/PRIDE-Archive/pridepy"
+      licence: ["Apache-2.0"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - file_name:
+        type: string
+        description: Name of the file to download from the PRIDE Archive dataset
+    - pride_accession:
+        type: string
+        description: PRIDE Archive project accession (e.g. PXD000001) identifying the dataset
+
+output:
+  file:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${file_name}":
+          type: file
+          description: The file downloaded from the PRIDE Archive
+          pattern: "*"
+  versions_pridepy:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "pridepy":
+          type: string
+          description: The name of the tool
+      - 'python -c "from importlib.metadata import version; print(version(''pridepy''))"':
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pridepy:
+          type: string
+          description: The name of the tool
+      - 'python -c "from importlib.metadata import version; print(version(''pridepy''))"':
+          type: string
+          description: The expression to obtain the version of the tool
+authors:
+  - "@jonasscheid"
+maintainers:
+  - "@jonasscheid"

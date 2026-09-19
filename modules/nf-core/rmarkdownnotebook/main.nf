@@ -6,9 +6,9 @@ process RMARKDOWNNOTEBOOK {
     //dependencies for your analysis. The container at least needs to contain the
     //yaml and rmarkdown R packages.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-31ad840d814d356e5f98030a4ee308a16db64ec5:0e852a1e4063fdcbe3f254ac2c7469747a60e361-0' :
-        'biocontainers/mulled-v2-31ad840d814d356e5f98030a4ee308a16db64ec5:0e852a1e4063fdcbe3f254ac2c7469747a60e361-0' }"
+        'quay.io/biocontainers/mulled-v2-31ad840d814d356e5f98030a4ee308a16db64ec5:0e852a1e4063fdcbe3f254ac2c7469747a60e361-0' }"
 
     input:
     tuple val(meta), path(notebook)
@@ -20,7 +20,7 @@ process RMARKDOWNNOTEBOOK {
     tuple val(meta), path("*.parameterised.Rmd"), emit: parameterised_notebook, optional: true
     tuple val(meta), path("artifacts/*")        , emit: artifacts, optional: true
     tuple val(meta), path("session_info.log")   , emit: session_info
-    path  "versions.yml"                        , emit: versions
+    tuple val("${task.process}"), val("rmarkdownnotebook"), eval("Rscript -e \"cat(paste(packageVersion('rmarkdown'), collapse='.'))\""), emit: versions_rmarkdownnotebook, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -108,11 +108,6 @@ process RMARKDOWNNOTEBOOK {
     rmarkdown::render('${prefix}.parameterised.Rmd', output_file='${prefix}.html', envir = new.env())
     writeLines(capture.output(sessionInfo()), "session_info.log")
     EOF
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rmarkdown: \$(Rscript -e "cat(paste(packageVersion('rmarkdown'), collapse='.'))")
-    END_VERSIONS
     """
 
     stub:
@@ -120,10 +115,5 @@ process RMARKDOWNNOTEBOOK {
     """
     touch ${prefix}.html
     touch session_info.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rmarkdown: \$(Rscript -e "cat(paste(packageVersion('rmarkdown'), collapse='.'))")
-    END_VERSIONS
     """
 }

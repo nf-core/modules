@@ -2,6 +2,7 @@ nextflow_process {
 
     name "Test Process GT_SUFFIXERATOR"
     script "../main.nf"
+    config "./nextflow.config"
     process "GT_SUFFIXERATOR"
 
     tag "modules"
@@ -10,16 +11,18 @@ nextflow_process {
     tag "gt/suffixerator"
 
     test("homo_sapiens-genome_fasta-success") {
-
-        config "./nextflow.config"
-
         when {
+            params {
+                module_args = '-des -sds no'
+                // '-des' is for '-sds'
+                // '-sds no' turns off sds which is an empty file for the test data
+            }
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                    ]
+                ]
                 input[1] = 'dna'
                 """
             }
@@ -28,21 +31,23 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
     test("sarscov2-proteome_fasta-success") {
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
-                    ]
+                ]
                 input[1] = 'protein'
                 """
             }
@@ -51,10 +56,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
     test("stub-dna") {
@@ -62,12 +66,15 @@ nextflow_process {
         options '-stub'
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                    ]
+                ]
                 input[1] = 'dna'
                 """
             }
@@ -76,10 +83,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
     test("stub-protein") {
@@ -87,12 +93,15 @@ nextflow_process {
         options '-stub'
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                    ]
+                ]
                 input[1] = 'protein'
                 """
             }
@@ -101,21 +110,23 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
     test("wrong-mode-fail") {
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                    ]
+                ]
                 input[1] = 'xyz'
                 """
             }
@@ -123,11 +134,10 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert !process.success },
+                { assert process.failed },
                 { assert process.stdout.toString().contains("Mode must be one of 'dna', or 'protein'") }
             )
         }
-
     }
 
     test("wrong-mode-fail-stub") {
@@ -135,12 +145,15 @@ nextflow_process {
         options '-stub'
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                    ]
+                ]
                 input[1] = 'xyz'
                 """
             }
@@ -148,11 +161,10 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert !process.success },
+                { assert process.failed },
                 { assert process.stdout.toString().contains("Mode must be one of 'dna', or 'protein'") }
             )
         }
-
     }
 
 }

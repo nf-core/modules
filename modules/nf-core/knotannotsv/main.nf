@@ -3,16 +3,15 @@ process KNOTANNOTSV {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/knotannotsv:1.1.5--hdfd78af_0'
-        : 'biocontainers/knotannotsv:1.1.5--hdfd78af_0'}"
+        : 'quay.io/biocontainers/knotannotsv:1.1.5--hdfd78af_0'}"
 
     input:
     tuple val(meta), path(annotsv_tsv), val(knot_out_xl)
 
     output:
-    tuple val(meta), path("*.html"), emit: html, optional: true
-    tuple val(meta), path("*.xlsm"), emit: xl, optional: true
+    tuple val(meta), path("*.{html,xlsm}"), emit: output_file
     // CHANGE bellow when UPDATE
     tuple val("${task.process}"), val('knotannotsv'), val('1.1.5'), emit: versions_knotannotsv, topic: versions
 

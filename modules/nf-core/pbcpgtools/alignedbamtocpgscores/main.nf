@@ -3,9 +3,9 @@ process PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pb-cpg-tools:3.0.0--h9ee0642_0':
-        'biocontainers/pb-cpg-tools:3.0.0--h9ee0642_0' }"
+        'quay.io/biocontainers/pb-cpg-tools:3.0.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)

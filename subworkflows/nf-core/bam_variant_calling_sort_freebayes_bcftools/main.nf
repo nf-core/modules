@@ -1,5 +1,4 @@
 include { FREEBAYES      } from '../../../modules/nf-core/freebayes'
-include { BCFTOOLS_INDEX } from '../../../modules/nf-core/bcftools/index'
 include { BCFTOOLS_SORT  } from '../../../modules/nf-core/bcftools/sort'
 
 workflow BAM_VARIANT_CALLING_SORT_FREEBAYES_BCFTOOLS {
@@ -24,11 +23,6 @@ workflow BAM_VARIANT_CALLING_SORT_FREEBAYES_BCFTOOLS {
     // Sort VCF files
     BCFTOOLS_SORT(FREEBAYES.out.vcf)
 
-    // Index VCF files
-    BCFTOOLS_INDEX(BCFTOOLS_SORT.out.vcf)
-
     emit:
-    csi      = BCFTOOLS_INDEX.out.csi // channel: [ val(meta), path(csi) ]
-    tbi      = BCFTOOLS_INDEX.out.tbi // channel: [ val(meta), path(tbi) ]
-    vcf      = BCFTOOLS_SORT.out.vcf // channel: [ val(meta), path(vcf) ]
+    vcf_index      = BCFTOOLS_SORT.out.vcf.join(BCFTOOLS_SORT.out.index) // channel: [ val(meta), path(vcf), path(index) ]
 }

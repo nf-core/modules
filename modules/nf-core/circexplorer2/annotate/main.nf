@@ -3,9 +3,9 @@ process CIRCEXPLORER2_ANNOTATE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/circexplorer2:2.3.8--pyh864c0ab_1':
-        'biocontainers/circexplorer2:2.3.8--pyh864c0ab_1' }"
+        'quay.io/biocontainers/circexplorer2:2.3.8--pyh864c0ab_1' }"
 
     input:
     tuple val(meta), path(junctions)

@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "viennarna_rnalfold"
 description: calculate locally stable secondary structures of RNAs
 keywords:
@@ -20,9 +19,9 @@ tools:
       homepage: "https://www.tbi.univie.ac.at/RNA/"
       documentation: "https://viennarna.readthedocs.io/en/latest/"
       doi: 10.1186/1748-7188-6-26
-      licence: ["custom"]
+      licence:
+        - "custom"
       identifier: biotools:viennarna
-
 input:
   - fasta:
       type: file
@@ -37,13 +36,27 @@ output:
         description: The text Output of RNALfold
         pattern: "*.{lfold}"
         ontologies: []
+  versions_rnalfold:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - RNALfold:
+          type: string
+          description: The name of the tool
+      - RNALfold --version 2>&1 | sed -n '1s/RNALfold //p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - RNALfold:
+          type: string
+          description: The name of the tool
+      - RNALfold --version 2>&1 | sed -n '1s/RNALfold //p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@kokul-atx"
 maintainers:

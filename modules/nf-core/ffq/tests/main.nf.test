@@ -23,7 +23,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.json).match() },
+                { assert snapshot(process.out.versions_ffq).match("test-ffq-single-id_versions") }
             )
         }
     }
@@ -42,7 +43,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(process.out.json).match() },
+                { assert snapshot(process.out.versions_ffq).match("test-ffq-multiple-ids_versions") }
             )
         }
     }

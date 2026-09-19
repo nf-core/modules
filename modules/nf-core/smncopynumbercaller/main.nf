@@ -3,12 +3,13 @@ process SMNCOPYNUMBERCALLER {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/smncopynumbercaller:1.1.2--py310h7cba7a3_0' :
-        'biocontainers/smncopynumbercaller:1.1.2--py310h7cba7a3_0' }"
+        'quay.io/biocontainers/smncopynumbercaller:1.1.2--py310h7cba7a3_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
+    tuple val(meta2), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("out/*.tsv"),  emit: smncopynumber
@@ -22,11 +23,13 @@ process SMNCOPYNUMBERCALLER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def reference = fasta ? "--reference ${fasta}" : ''
     """
     echo $bam | tr ' ' '
     ' > manifest.txt
     smn_caller.py \\
         $args \\
+        $reference \\
         --manifest manifest.txt \\
         --prefix $prefix \\
         --outDir "out" \\

@@ -3,7 +3,7 @@ process FORCE_TILEEXTENT {
     label 'process_single'
     stageInMode 'copy' // needed by the module to work properly when aoi is a shapefile
 
-    container "nf-core/force:3.8.01"
+    container "quay.io/nf-core/force:3.8.01"
 
     input:
     path aoi

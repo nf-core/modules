@@ -2,7 +2,9 @@ process MCSTAGING_MACSIMA2MC {
     tag "$meta.id"
     label 'process_single'
 
-    container "ghcr.io/schapirolabor/macsima2mc:v1.2.15"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'oras://community.wave.seqera.io/library/numpy_python_pip_macsima2mc:b42790f2c05a215a' :
+        'community.wave.seqera.io/library/numpy_python_pip_macsima2mc:3fa6bf589964777e' }"
 
     input:
     tuple val(meta), path(input_dir), val(output_dir)
@@ -23,7 +25,7 @@ process MCSTAGING_MACSIMA2MC {
     def args   = task.ext.args   ?: ''
 
     """
-    python /staging/macsima2mc/macsima2mc.py \
+    macsima2mc \
         -i ${input_dir} \
         -o ${output_dir} \
         ${args}

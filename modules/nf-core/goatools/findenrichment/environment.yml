@@ -1,0 +1,8 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - conda-forge::goatools=1.6.4
+  - conda-forge::statsmodels=0.14.6 # required for certain statistical tests

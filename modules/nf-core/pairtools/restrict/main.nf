@@ -3,9 +3,9 @@ process PAIRTOOLS_RESTRICT {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pairtools:1.1.3--py39h7a39fba_0' :
-        'biocontainers/pairtools:1.1.3--py39h7a39fba_0' }"
+        'quay.io/biocontainers/pairtools:1.1.3--py39h7a39fba_0' }"
 
     input:
     tuple val(meta), path(pairs)
@@ -28,5 +28,11 @@ process PAIRTOOLS_RESTRICT {
         $args \\
         -o ${prefix}.pairs.gz \\
         $pairs
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.pairs.gz
     """
 }

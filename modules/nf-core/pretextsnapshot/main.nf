@@ -3,7 +3,7 @@ process PRETEXTSNAPSHOT {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fd/fde9c7892c9878e4aa8cbcb744039045a182efabac3e311a7fdb1e43b1fbb4d6/data':
         'community.wave.seqera.io/library/pretextsnapshot:0.0.7--9470b2ea6b8991c8' }"
 

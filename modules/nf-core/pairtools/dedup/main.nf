@@ -3,9 +3,9 @@ process PAIRTOOLS_DEDUP {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pairtools:1.1.3--py39h7a39fba_0' :
-        'biocontainers/pairtools:1.1.3--py39h7a39fba_0' }"
+        'quay.io/biocontainers/pairtools:1.1.3--py39h7a39fba_0' }"
 
     input:
     tuple val(meta), path(input)
@@ -27,5 +27,12 @@ process PAIRTOOLS_DEDUP {
         -o ${prefix}.pairs.gz \\
         --output-stats ${prefix}.pairs.stat \\
         $input
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.pairs.gz
+    touch ${prefix}.pairs.stat
     """
 }

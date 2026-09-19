@@ -5,7 +5,7 @@ process VCF2MAF {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7c/7cbf9421f0bee23a93a35c5d0c7166ac1e89a40008d8e474cecfddb93226bf65/data':
         'community.wave.seqera.io/library/ensembl-vep_vcf2maf:2d40b60b4834af73' }"
 
@@ -16,7 +16,8 @@ process VCF2MAF {
 
     output:
     tuple val(meta), path("*.maf"), emit: maf
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('vcf2maf'), val("1.6.22"), emit: versions_vcf2maf, topic: versions
+    tuple val("${task.process}"), val('ensemblvep'), eval('vep --help 2>&1 | sed -n "s/^  ensembl-vep *: //p"'), emit: versions_ensemblvep, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -42,11 +43,6 @@ process VCF2MAF {
         --ref-fasta $fasta \\
         --input-vcf $vcf \\
         --output-maf ${prefix}.maf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vcf2maf: $VERSION\$VEP_VERSION
-    END_VERSIONS
     """
 
     stub:
@@ -60,10 +56,5 @@ process VCF2MAF {
     fi
 
     touch ${prefix}.maf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vcf2maf: $VERSION\$VEP_VERSION
-    END_VERSIONS
     """
 }

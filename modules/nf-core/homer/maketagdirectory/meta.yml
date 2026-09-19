@@ -11,7 +11,8 @@ tools:
         HOMER (Hypergeometric Optimization of Motif EnRichment) is a suite of tools for Motif Discovery and next-gen sequencing analysis.
       documentation: http://homer.ucsd.edu/homer/
       doi: 10.1016/j.molcel.2010.05.004.
-      licence: ["GPL-3.0-or-later"]
+      licence:
+        - "GPL-3.0-or-later"
       identifier: biotools:homer
   - samtools:
       description: |
@@ -21,7 +22,8 @@ tools:
       homepage: http://www.htslib.org/
       documentation: http://www.htslib.org/doc/samtools.html
       doi: 10.1093/bioinformatics/btp352
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:homer
   - DESeq2:
       description: |
@@ -30,7 +32,8 @@ tools:
       documentation: "https://bioconductor.org/packages/DESeq2"
       tool_dev_url: "https://github.com/mikelove/DESeq2"
       doi: 10.18129/B9.bioc.DESeq2
-      licence: ["LGPL-3.0-or-later"]
+      licence:
+        - "LGPL-3.0-or-later"
       identifier: biotools:homer
   - edgeR:
       description: |
@@ -39,7 +42,8 @@ tools:
       documentation: "https://bioconductor.org/packages/edgeR"
       tool_dev_url: "https://git.bioconductor.org/packages/edgeR"
       doi: 10.18129/B9.bioc.edgeR
-      licence: ["GPL >=2"]
+      licence:
+        - "GPL >=2"
       identifier: biotools:homer
 input:
   - - meta:
@@ -78,13 +82,84 @@ output:
           type: directory
           description: The tagInfo.txt included to ensure there's proper output
           pattern: "*_tagdir/tagInfo.txt"
+  versions_homer:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - homer:
+          type: string
+          description: The name of the tool
+      - "4.11":
+          type: string
+          description: The expression to obtain the version of the tool
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools --version 2>&1 | sed '1!d;s/^.*samtools //':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_deseq2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deseq2:
+          type: string
+          description: The name of the tool
+      - Rscript -e "cat(as.character(packageVersion('DESeq2')))":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_edger:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - edger:
+          type: string
+          description: The name of the tool
+      - Rscript -e "cat(as.character(packageVersion('edgeR')))":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - homer:
+          type: string
+          description: The name of the tool
+      - "4.11":
+          type: string
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools --version 2>&1 | sed '1!d;s/^.*samtools //':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deseq2:
+          type: string
+          description: The name of the tool
+      - Rscript -e "cat(as.character(packageVersion('DESeq2')))":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - edger:
+          type: string
+          description: The name of the tool
+      - Rscript -e "cat(as.character(packageVersion('edgeR')))":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@edmundmiller"
 maintainers:

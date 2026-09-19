@@ -2,13 +2,13 @@ process KRONA_KRONADB {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/krona:2.7.1--pl526_5' :
-        'biocontainers/krona:2.7.1--pl526_5' }"
+        'quay.io/biocontainers/krona:2.7.1--pl526_5' }"
 
     output:
     path 'taxonomy/taxonomy.tab', emit: db
-    path "versions.yml"         , emit: versions
+    tuple val("${task.process}"), val('krona'), eval("ktImportTaxonomy | grep -Po \"(?<=KronaTools )[0-9.]+\""), emit: versions_krona, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,16 +23,11 @@ process KRONA_KRONADB {
     assert false: deprecation_message
 
     def args = task.ext.args ?: ''
-    def VERSION = '2.7.1' // Version information not provided by tool on CLI
     """
     ktUpdateTaxonomy.sh \\
         $args \\
         taxonomy/
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        krona: $VERSION
-    END_VERSIONS
     """
 
     stub:
@@ -41,9 +36,5 @@ process KRONA_KRONADB {
 
     touch taxonomy/taxonomy.tab
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        krona: \$(ktImportTaxonomy | grep -Po "(?<=KronaTools )[0-9.]+")
-    END_VERSIONS
     """
 }

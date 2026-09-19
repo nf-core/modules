@@ -3,16 +3,16 @@ process MAPAD_INDEX {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mapad:0.45.0--ha96b9cd_0':
-        'biocontainers/mapad:0.45.0--ha96b9cd_0' }"
+        'quay.io/biocontainers/mapad:0.45.0--ha96b9cd_0' }"
 
     input:
     tuple val(meta), path(fasta, stageAs: "mapad/*")
 
     output:
     tuple val(meta), path("mapad/"), emit: index
-    path "versions.yml"            , emit: versions
+    tuple val("${task.process}"), val("mapad"), eval("mapad --version | sed 's/^mapAD //'"), topic: versions, emit: versions_mapad
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,13 +22,13 @@ process MAPAD_INDEX {
     """
     mapad \\
         index \\
-        $args \\
-        --reference $fasta \\
-        --threads $task.cpus
+        ${args} \\
+        --reference ${fasta} \\
+        --threads ${task.cpus}
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mapad: \$(echo \$(mapad --version) | sed 's/^mapAD //' )
-    END_VERSIONS
+    stub:
+    """
+    touch ${fasta}.{tbw,tle,toc,tos,tpi,trt,tsa}
     """
 }

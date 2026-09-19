@@ -31,7 +31,7 @@ nextflow_process {
                 { assert snapshot(
                         stablefiles.sort(),
                         unstablefiles.sort(),
-                        process.out.versions
+                        process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )

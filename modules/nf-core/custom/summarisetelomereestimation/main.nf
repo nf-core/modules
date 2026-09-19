@@ -3,7 +3,7 @@ process CUSTOM_SUMMARISETELOMEREESTIMATION {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1f/1fa34006114914735768188b781d7f2c8ae7132acd024ce4c45704170715b54f/data'
         : 'community.wave.seqera.io/library/pandas_python:8e99df08b7f7c3e1' }"
 

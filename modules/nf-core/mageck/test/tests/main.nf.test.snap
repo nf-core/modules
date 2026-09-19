@@ -2,41 +2,10 @@
     "mageck-test - csv - stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.gene_summary.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.sgrna_summary.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.R:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "3": [
-                    "versions.yml:md5,d63cf999d719137c7310a3f5b4e03fd8"
-                ],
                 "gene_summary": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test"
                         },
                         "test.gene_summary.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
@@ -44,8 +13,7 @@
                 "r_script": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test"
                         },
                         "test.R:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
@@ -53,50 +21,118 @@
                 "sgrna_summary": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test"
                         },
                         "test.sgrna_summary.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,d63cf999d719137c7310a3f5b4e03fd8"
+                "versions_mageck": [
+                    [
+                        "MAGECK_TEST",
+                        "mageck",
+                        "0.5.9.5"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-06-19T14:43:43.267128486",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.07.0"
-        },
-        "timestamp": "2024-06-17T15:11:41.655784"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
     },
     "mageck-test - csv": {
         "content": [
-            [
-                "versions.yml:md5,d63cf999d719137c7310a3f5b4e03fd8"
-            ],
-            "id\tnum\tneg|score\tneg|p-value\tneg|fdr\tneg|rank\tneg|goodsgrna\tneg|lfc\tpos|score\tpos|p-value\tpos|fdr\tpos|rank\tpos|goodsgrna\tpos|lfc",
-            "sgrna\tGene\tcontrol_count\ttreatment_count\tcontrol_mean\ttreat_mean\tLFC\tcontrol_var\tadj_var\tscore\tp.low\tp.high\tp.twosided\tFDR\thigh_in_treatment",
-            "pdf(file='test.pdf',width=4.5,height=4.5);"
+            {
+                "gene_summary": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.gene_summary.txt:md5,23d39164e44e7125a5f5912463fa5970"
+                    ]
+                ],
+                "r_script": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.R:md5,9c913f55aa7e7142399396088332ea3b"
+                    ]
+                ],
+                "sgrna_summary": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.sgrna_summary.txt:md5,26e4a50272a0289b0261a5380276f273"
+                    ]
+                ],
+                "versions_mageck": [
+                    [
+                        "MAGECK_TEST",
+                        "mageck",
+                        "0.5.9.5"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-06-19T14:58:18.071931034",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.07.0"
-        },
-        "timestamp": "2024-06-17T15:11:06.123141"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
     },
     "mageck-test-day0 - csv": {
         "content": [
-            [
-                "versions.yml:md5,d63cf999d719137c7310a3f5b4e03fd8"
-            ],
-            "id\tnum\tneg|score\tneg|p-value\tneg|fdr\tneg|rank\tneg|goodsgrna\tneg|lfc\tpos|score\tpos|p-value\tpos|fdr\tpos|rank\tpos|goodsgrna\tpos|lfc",
-            "sgrna\tGene\tcontrol_count\ttreatment_count\tcontrol_mean\ttreat_mean\tLFC\tcontrol_var\tadj_var\tscore\tp.low\tp.high\tp.twosided\tFDR\thigh_in_treatment"
+            {
+                "gene_summary": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "test.HL60.final_vs_HL60.initial.gene_summary.txt:md5,973d57a2a432eb6c7e602ca466299b6d",
+                            "test.KBM7.final_vs_HL60.initial.gene_summary.txt:md5,5a39c0132560cf6a3818b0e463df99a9",
+                            "test.KBM7.initial_vs_HL60.initial.gene_summary.txt:md5,d532a4280945d28bad2186287b32cb3e",
+                            "test.gene_summary.txt:md5,2e5447f5930f01f9adea57bf89cec5fe"
+                        ]
+                    ]
+                ],
+                "r_script": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.R:md5,0849644a8ebfef2cf35d1ac351a02bca"
+                    ]
+                ],
+                "sgrna_summary": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "test.HL60.final_vs_HL60.initial.sgrna_summary.txt:md5,a299a0f2cf7ce62bcf8aa4b4f48ea9db",
+                            "test.KBM7.final_vs_HL60.initial.sgrna_summary.txt:md5,aeb64ee78422ef4906161cb03c0c0ad2",
+                            "test.KBM7.initial_vs_HL60.initial.sgrna_summary.txt:md5,60c9104cad7d49bcead4d29cafb2af40",
+                            "test.sgrna_summary.txt:md5,60c9104cad7d49bcead4d29cafb2af40"
+                        ]
+                    ]
+                ],
+                "versions_mageck": [
+                    [
+                        "MAGECK_TEST",
+                        "mageck",
+                        "0.5.9.5"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-06-19T14:58:31.303470713",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.07.0"
-        },
-        "timestamp": "2024-06-17T15:11:25.915572"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
     }
 }

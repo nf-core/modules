@@ -3,7 +3,7 @@ process SRATOOLS_FASTERQDUMP {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/37/37aacd127aa32161d8b38a83efb18df01a8ab1d769a93e88f80342d27801b548/data' :
         'community.wave.seqera.io/library/sra-tools_pigz:4a694d823f6f7fcf' }"
 

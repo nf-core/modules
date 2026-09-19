@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "foldseek_createdb"
 description: Create a database from protein structures
 keywords:
@@ -12,7 +11,8 @@ tools:
       documentation: "https://github.com/steineggerlab/foldseek"
       tool_dev_url: "https://github.com/steineggerlab/foldseek"
       doi: "10.1038/s41587-023-01773-0"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:foldseek
 input:
   - - meta:
@@ -22,10 +22,12 @@ input:
           e.g. `[ id:'test', single_end:false ]`
     - pdb:
         type: file
-        description: Protein structure(s) in PDB, mmCIF or mmJSON format (also works
-          with folder input)
+        description: Protein structure(s) in PDB, mmCIF or mmJSON format (also
+          works with folder input)
         pattern: "*.{pdb,mmcif,mmjson}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_1476" # PDB
+          - edam: "http://edamontology.org/format_1477" # mmCIF
 output:
   db:
     - - meta:
@@ -33,16 +35,30 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:false ]`
-      - ${meta.id}:
+      - ${prefix}:
           type: directory
           description: Directory containing pdb database files
           pattern: "*"
+  versions_foldseek:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - foldseek:
+          type: string
+          description: The name of the tool
+      - "foldseek --help |& sed -n 's/.*Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - foldseek:
+          type: string
+          description: The name of the tool
+      - "foldseek --help |& sed -n 's/.*Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@vagkaratzas"

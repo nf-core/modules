@@ -27,19 +27,21 @@ nextflow_process {
         }
 
         then {
-            def lines = path(process.out.transcript_metadata[0][1]).linesGzip.size()
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml,
-                    "transcript metadata lines: $lines",
-                    "transcript metadata header: ${path(process.out.transcript_metadata[0][1]).linesGzip[0]}",
-                    "cell metadata header: ${path(process.out.cell_metadata[0][1]).linesGzip[0]}",
-                    "cell_polygons - minimum file size > 5kb: ${file(process.out.cell_polygons[0][1]).length() >= 5000}",
-                    "cell_polygons_layers - minimum file size > 5kb: ${file(process.out.cell_polygons_layers[0][1]).length() >= 5000}",
-                    path(process.out.expected_counts[0][1]).linesGzip[0]
-                ).match() }
+                { assert snapshot(sanitizeOutput(
+                                    process.out,
+                                    unstableKeys: [
+                                        "zarr",
+                                        "cell_polygons",
+                                        "transcript_metadata",
+                                        "cell_metadata",
+                                        "cell_polygons_layers",
+                                        "expected_counts",
+                                        "union_cell_polygons"
+                                    ]
+                                )).match()
+                }
             )
         }
     }
@@ -64,7 +66,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions) }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

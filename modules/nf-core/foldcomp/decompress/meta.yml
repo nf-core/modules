@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "foldcomp_decompress"
 description: Decompression tool for foldcomp compressed structures
 keywords:
@@ -13,7 +12,8 @@ tools:
       documentation: "https://github.com/steineggerlab/foldcomp"
       tool_dev_url: "https://github.com/steineggerlab/foldcomp"
       doi: "10.1093/bioinformatics/btad153"
-      licence: ["GPL v3-or-later"]
+      licence:
+        - "GPL v3-or-later"
       identifier: biotools:foldcomp
 input:
   - - meta:
@@ -40,12 +40,26 @@ output:
             Either single protein structure (if input was file) or folder with all decompressed protein structures (if input was directory)
           pattern: "{*_pdb,*.pdb,*.cif}"
           ontologies: []
+  versions_foldcomp:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - foldcomp:
+          type: string
+          description: The name of the tool
+      - foldcomp --version | cut -d' ' -f2:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - foldcomp:
+          type: string
+          description: The name of the tool
+      - foldcomp --version | cut -d' ' -f2:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@vagkaratzas"

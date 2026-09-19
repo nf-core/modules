@@ -31,14 +31,7 @@ workflow FASTQ_ALIGN_DNA {
     // Align fastq files to reference genome and (optionally) sort
     if (aligner == 'bowtie2') {
 
-        /*
-        This is a temporary fix until all aligner handle ch_fasta_fai
-        */
-        ch_fasta_fai = ch_fasta.map { meta, fasta ->
-            tuple(meta, fasta, [])
-        }
-
-        BOWTIE2_ALIGN(ch_reads, ch_aligner_index, ch_fasta_fai, false, sort)
+        BOWTIE2_ALIGN(ch_reads, ch_aligner_index, ch_fasta, false, sort)
         // if aligner is bowtie2
         ch_bam = ch_bam.mix(BOWTIE2_ALIGN.out.bam)
     }

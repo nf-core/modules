@@ -1,13 +1,14 @@
 process ICHORCNA_CREATEPON {
+    tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f0/f07cec06705b4443052d3d7eaccebdbd0078366f7d074bfd4a6893980c6e2c4b/data' :
         'community.wave.seqera.io/library/r-ichorcna:0.5.1--eed4be826f05c9d4' }"
 
     input:
-    path wigs
+    tuple val(meta), path(wigs)
     path gc_wig
     path map_wig
     path centromere
@@ -15,25 +16,28 @@ process ICHORCNA_CREATEPON {
     path exons
 
     output:
-    path "${prefix}*.rds", emit: rds
-    path "${prefix}*.txt", emit: txt
-    path "versions.yml"  , emit: versions
+    tuple val(meta), path("${prefix}*.rds"), emit: rds
+    tuple val(meta), path("${prefix}*.txt"), emit: txt
+    path "versions.yml", emit: versions, topic: versions
 
     when:
-        task.ext.when == null || task.ext.when
+    task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args     ?: ''
-    prefix = task.ext.prefix ?: "PoN"
-    def map    = map_wig         ? "mapWig='${map_wig}',"                 : 'mapWig=NULL,'
-    def centro = centromere      ? "centromere='${centromere}',"          : ''
-    def rep    = rep_time_wig    ? "repTimeWig='${rep_time_wig}',"        : 'repTimeWig=NULL,'
-    def exons_opt  = exons           ? "exons.bed='${exons}',"                : ''
+    def args   = task.ext.args   ?: ''
+    prefix     = task.ext.prefix ?: "PoN"
+    def map    = map_wig         ? "mapWig='${map_wig}',"          : 'mapWig=NULL,'
+    def centro = centromere      ? "centromere='${centromere}',"   : ''
+    def rep    = rep_time_wig    ? "repTimeWig='${rep_time_wig}'," : 'repTimeWig=NULL,'
+    def exons_opt  = exons       ? "exons.bed='${exons}',"         : ''
 
     """
     #!/usr/bin/env Rscript
     library("ichorCNA")
     library("yaml")
+    library("GenomeInfoDb")
+
+    options(UCSC.goldenPath.url = "https://hgdownload2.soe.ucsc.edu/goldenPath")
 
     write.table(strsplit("${wigs}"," ")[[1]],"filelist.txt", row.names = FALSE, col.names = FALSE)
 
@@ -45,13 +49,13 @@ process ICHORCNA_CREATEPON {
         outfile = "${prefix}",
         ${exons_opt}
         ${centro}
-        $args
+        ${args}
     )
 
     ### Make Versions YAML for NF-Core ###
     versions = list()
-    versions["r"]        <- paste(R.Version()\$major, R.Version()\$minor, sep=".")
-    versions["ichorCNA"] <- paste(packageVersion("ichorCNA"), sep=".")
+    versions["r-base"]     <- paste(R.Version()\$major, R.Version()\$minor, sep=".")
+    versions["r-ichorCNA"] <- paste(packageVersion("ichorCNA"), sep=".")
 
     yaml_str <- as.yaml(
         list(
@@ -72,8 +76,8 @@ process ICHORCNA_CREATEPON {
 
     ### Make Versions YAML for NF-Core ###
     versions = list()
-    versions["r"]        <- paste(R.Version()\$major, R.Version()\$minor, sep=".")
-    versions["ichorCNA"] <- paste(packageVersion("ichorCNA"), sep=".")
+    versions["r-base"]     <- paste(R.Version()\$major, R.Version()\$minor, sep=".")
+    versions["r-ichorCNA"] <- paste(packageVersion("ichorCNA"), sep=".")
 
     yaml_str <- as.yaml(
         list(

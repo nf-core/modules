@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: maxbin2
 description: MaxBin is a software that is capable of clustering metagenomic contigs
 keywords:
@@ -151,13 +152,27 @@ output:
           pattern: "*_gene.tar.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_maxbin2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - maxbin2:
+          type: string
+          description: The name of the tool
+      - run_MaxBin.pl -v | sed "1!d;s/MaxBin //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - maxbin2:
+          type: string
+          description: The name of the tool
+      - run_MaxBin.pl -v | sed "1!d;s/MaxBin //":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:

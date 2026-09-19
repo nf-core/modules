@@ -2,9 +2,9 @@ process SNPSITES {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/snp-sites:2.5.1--hed695b0_0' :
-        'biocontainers/snp-sites:2.5.1--hed695b0_0' }"
+        'quay.io/biocontainers/snp-sites:2.5.1--hed695b0_0' }"
 
     input:
     path alignment
@@ -12,8 +12,8 @@ process SNPSITES {
     output:
     path "*.fas"        , emit: fasta
     path "*.sites.txt"  , emit: constant_sites
-    path "versions.yml" , emit: versions
     env 'CONSTANT_SITES', emit: constant_sites_string
+    tuple val("${task.process}"), val('snpsites'), eval("snp-sites -V 2>&1 | sed 's/snp-sites //'"), emit: versions_snpsites, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,22 +29,12 @@ process SNPSITES {
     echo \$(snp-sites -C $alignment) > constant.sites.txt
 
     export CONSTANT_SITES=\$(cat constant.sites.txt)
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        snpsites: \$(snp-sites -V 2>&1 | sed 's/snp-sites //')
-    END_VERSIONS
     """
     stub:
     """
     touch filtered_alignment.fas
     touch constant.sites.txt
     export CONSTANT_SITES=\$(cat constant.sites.txt)
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        snpsites: \$(snp-sites -V 2>&1 | sed 's/snp-sites //')
-    END_VERSIONS
     """
 
 }

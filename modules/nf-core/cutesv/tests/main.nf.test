@@ -14,11 +14,13 @@ nextflow_process {
 
             process {
                 """
-                input[0] = Channel.of([[id:'test'],// meta map
+                input[0] = channel.of([
+                    [id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/bam/test.sorted.bam',checkIfExists:true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/bam/test.sorted.bam.bai',checkIfExists:true),
                 ])
-                input[1] = Channel.of([[id:'fasta'],
+                input[1] = channel.of([
+                    [id:'fasta'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta',checkIfExists:true)
                 ])
                 """
@@ -28,8 +30,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
-                    process.out.vcf.collect{ [it[0], path(it[1]).vcf.summary] }
+                    process.out.vcf.collect{ [it[0], path(it[1]).vcf.summary] },
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -43,11 +45,13 @@ nextflow_process {
 
             process {
                 """
-                input[0] = Channel.of([[id:'test'],// meta map
+                input[0] = channel.of([
+                    [id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/bam/test.sorted.bam',checkIfExists:true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/bam/test.sorted.bam.bai',checkIfExists:true),
                 ])
-                input[1] = Channel.of([[id:'fasta'],
+                input[1] = channel.of([
+                    [id:'fasta'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta',checkIfExists:true)
                 ])
                 """
@@ -56,10 +60,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    process.out.versions.collect{ path(it).yaml }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

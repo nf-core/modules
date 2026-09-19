@@ -4,9 +4,9 @@ process MERQURY_MERQURY {
 
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/merqury:1.3--hdfd78af_4':
-        'biocontainers/merqury:1.3--hdfd78af_4' }"
+        'quay.io/biocontainers/merqury:1.3--hdfd78af_4' }"
 
     input:
     tuple val(meta), path(meryl_db), path(assembly)

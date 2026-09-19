@@ -33,11 +33,8 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    // NOTE tagdir
                     path(workflow.out.bed_graph.get(0).get(1)).linesGzip.size(),
-                    workflow.out.peaks,
-                    workflow.out.bed,
-                    path(workflow.out.versions.get(0)).yaml,
+                    sanitizeOutput(workflow.out, unstableKeys:["bed_graph"])
                 ).match() },
             )
         }
@@ -63,12 +60,9 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    // NOTE tagdir
                     path(workflow.out.bed_graph.get(0).get(1)).linesGzip.size(),
-                    workflow.out.peaks,
-                    workflow.out.bed,
-                    path(workflow.out.versions.get(0)).yaml,
-                ).match() },
+                    sanitizeOutput(workflow.out, unstableKeys:["bed_graph"])
+                ).match() }
             )
         }
     }
@@ -97,14 +91,9 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    // NOTE tagdir
                     path(workflow.out.bed_graph.get(0).get(1)).linesGzip.size(),
-                    workflow.out.peaks,
-                    workflow.out.bed,
-                    path(workflow.out.bed.get(0).get(1)).readLines()[30],
-                    path(workflow.out.bed.get(0).get(1)).readLines()[32],
-                    path(workflow.out.versions.get(0)).yaml,
-                ).match() },
+                    sanitizeOutput(workflow.out, unstableKeys:["bed_graph"])
+                ).match() }
             )
         }
     }
@@ -129,14 +118,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    // NOTE tagdir
-                    path(workflow.out.bed_graph.get(0).get(1)).linesGzip.size(),
-                    workflow.out.peaks,
-                    workflow.out.bed,
-                    path(workflow.out.versions.get(0)).yaml,
-                ).match() },
-                { assert snapshot(path(workflow.out.versions.get(0)).yaml).match("versions") },
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
             )
         }
     }

@@ -3,7 +3,7 @@ process VCFEXPRESS {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/05/056c133c8f4cdb8f8025830e951c7f8b02dbf4c78425cb3a3c1b3bf9e3840ae4/data' :
         'community.wave.seqera.io/library/vcfexpress:0.3.4--bbad2b1ffb0f6492'}"
 

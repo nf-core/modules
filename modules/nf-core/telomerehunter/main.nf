@@ -3,7 +3,7 @@ process TELOMEREHUNTER {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/80/80328294e56cd32cb354e132be9fe29b20e59acbdd1e071cd94aec5c21f9abda/data'
         : 'community.wave.seqera.io/library/python_pysam_samtools_numpy_pruned:e5e0b9c3eb477e2e' }"
 

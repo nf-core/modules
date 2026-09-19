@@ -1,0 +1,81 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "eautils_fastqstats"
+description: Calculate general and per-base statistics from FASTQ files
+keywords:
+  - fastq
+  - statistics
+  - quality control
+  - genomics
+tools:
+  - "eautils":
+      description: "Command-line tools for processing biological sequencing data."
+      homepage: "https://expressionanalysis.github.io/ea-utils/"
+      documentation: "https://expressionanalysis.github.io/ea-utils/"
+      tool_dev_url: "https://github.com/ExpressionAnalysis/ea-utils"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fastq:
+        type: file
+        description: Input FASTQ file
+        pattern: "*.{fastq,fq,fastq.gz,fq.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1930" # FASTQ
+
+output:
+  general_stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_general.tsv":
+          type: file
+          description: General FASTQ statistics in TSV format
+          pattern: "*_general.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  per_base_stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_per_base.tsv":
+          type: file
+          description: Per-base FASTQ statistics in TSV format
+          pattern: "*_per_base.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  versions_fastqstats:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fastq-stats:
+          type: string
+          description: The name of the tool
+      - "1.1.2":
+          type: string
+          description: The version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fastq-stats:
+          type: string
+          description: The name of the tool
+      - "1.1.2":
+          type: string
+          description: The version of the tool
+authors:
+  - "@itrujnara"
+maintainers:
+  - "@itrujnara"

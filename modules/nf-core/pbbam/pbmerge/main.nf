@@ -3,9 +3,9 @@ process PBBAM_PBMERGE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pbbam:2.4.0--hdcf5f25_1' :
-        'biocontainers/pbbam:2.4.0--hdcf5f25_1' }"
+        'quay.io/biocontainers/pbbam:2.4.0--hdcf5f25_1' }"
 
     input:
     tuple val(meta), path(bam)
@@ -13,7 +13,7 @@ process PBBAM_PBMERGE {
     output:
     tuple val(meta), path("*.bam"), emit: bam
     tuple val(meta), path("*.pbi"), emit: pbi
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('pbbam'), eval("pbmerge --version | head -n1 | sed 's/pbmerge //' | sed -E 's/ .+//'"), emit: versions_pbbam, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,10 +35,6 @@ This module is no longer fit for purpose because pbbam has been deprecated by Pa
         $args \\
         *.bam
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pbbam: \$( pbmerge --version | head -n1 | sed 's/pbmerge //' | sed -E 's/ .+//' )
-    END_VERSIONS
     """
 
     stub:
@@ -55,9 +51,5 @@ This module is no longer fit for purpose because pbbam has been deprecated by Pa
     touch ${prefix}.bam
     touch ${prefix}.bam.pbi
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pbbam: \$( pbmerge --version | head -n1 | sed 's/pbmerge //' | sed -E 's/ .+//' )
-    END_VERSIONS
     """
 }

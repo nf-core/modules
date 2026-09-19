@@ -35,8 +35,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name + ":variantsMD5," + path(it).vcf.variantsMD5 }},
-                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
-                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.index.collect { it.collect { it instanceof Map ? it : file(it).name }},
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
@@ -68,8 +67,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name + ":variantsMD5," + path(it).vcf.variantsMD5 }},
-                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
-                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.index.collect { it.collect { it instanceof Map ? it : file(it).name }},
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
@@ -101,8 +99,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name + ":variantsMD5," + path(it).vcf.variantsMD5 }},
-                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
-                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.index.collect { it.collect { it instanceof Map ? it : file(it).name }},
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
@@ -134,8 +131,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name + ":variantsMD5," + path(it).vcf.variantsMD5 }},
-                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
-                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.index.collect { it.collect { it instanceof Map ? it : file(it).name }},
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
@@ -167,8 +163,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name + ":variantsMD5," + path(it).vcf.variantsMD5 }},
-                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
-                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.index.collect { it.collect { it instanceof Map ? it : file(it).name }},
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
@@ -206,8 +201,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name }},
-                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
-                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.index.collect { it.collect { it instanceof Map ? it : file(it).name }},
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
@@ -240,8 +234,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name }},
-                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
-                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.index.collect { it.collect { it instanceof Map ? it : file(it).name }},
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
@@ -279,8 +272,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name }},
-                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
-                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.index.collect { it.collect { it instanceof Map ? it : file(it).name }},
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
@@ -314,8 +306,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name }},
-                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
-                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.index.collect { it.collect { it instanceof Map ? it : file(it).name }},
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
@@ -349,8 +340,8 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name }},
-                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
-                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.index.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.index.collect { it.collect { it instanceof Map ? it : file(it).name }},
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
@@ -384,8 +375,8 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name }},
-                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
-                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.index.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.index.collect { it.collect { it instanceof Map ? it : file(it).name }},
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
@@ -419,8 +410,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name }},
-                    process.out.tbi.collect { it.collect { it instanceof Map ? it : file(it).name }},
-                    process.out.csi.collect { it.collect { it instanceof Map ? it : file(it).name }},
+                    process.out.index.collect { it.collect { it instanceof Map ? it : file(it).name }},
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )

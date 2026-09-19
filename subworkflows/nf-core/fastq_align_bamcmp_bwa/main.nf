@@ -21,7 +21,9 @@ workflow FASTQ_ALIGN_BAMCMP_BWA {
     // Map reads with BWA to the primary index, must be queryname sorted (controlled by config)
     //
 
-    BWA_MEM_PRIMARY(ch_reads, ch_primary_index, ch_fasta_fai, true)
+    ch_fasta = ch_fasta_fai.map { it -> tuple(it[0], it[1]) }
+
+    BWA_MEM_PRIMARY(ch_reads, ch_primary_index, ch_fasta, true)
 
     //
     // Map reads with BWA to the contaminant index, must be queryname sorted (controlled by config)

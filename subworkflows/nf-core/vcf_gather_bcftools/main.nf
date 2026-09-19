@@ -1,6 +1,6 @@
 include { BCFTOOLS_CONCAT } from '../../../modules/nf-core/bcftools/concat/main'
 include { BCFTOOLS_SORT   } from '../../../modules/nf-core/bcftools/sort/main'
-include { TABIX_TABIX     } from '../../../modules/nf-core/tabix/tabix/main'
+include { HTSLIB_BGZIPTABIX     } from '../../../modules/nf-core/htslib/bgziptabix/main'
 
 workflow VCF_GATHER_BCFTOOLS {
     take:
@@ -27,12 +27,13 @@ workflow VCF_GATHER_BCFTOOLS {
             [groupKey(newMeta, count), meta, vcf, index]
         }
         .groupTuple()
-        .branch { key, meta, vcf, index ->
-            def cleanedMetas = meta.collect { m ->
-                m.findAll { k, _v -> !(k in arr_common_meta) }
-            }
-            def newMeta = arr_common_meta ? key.target + [metas: cleanedMetas] : meta[0]
-            def out_tuple = [newMeta, vcf, index]
+        .branch { key, metas, vcf, index ->
+            def cleanedMetas = metas.collect { meta -> meta
+                .findAll { k, _v -> !(k in arr_common_meta) }
+                .toSorted() // sort inside each meta map
+            }.sort { a, b -> a.toString() <=> b.toString() } // sort across meta maps
+            def newMeta = arr_common_meta ? key.target + [metas: cleanedMetas] : metas[0]
+            def out_tuple = [newMeta, vcf.sort(), index.sort()]
 
             one: vcf.size() == 1
                 return out_tuple
@@ -54,13 +55,17 @@ workflow VCF_GATHER_BCFTOOLS {
         ch_tabix_input = ch_vcf_concat
     }
 
-    TABIX_TABIX(ch_tabix_input)
+    HTSLIB_BGZIPTABIX(
+        ch_tabix_input.map { meta, vcf -> [meta, vcf, [], []] },
+        "compress",
+        true,
+        "vcf"
+    )
 
-    ch_vcf_index = ch_tabix_input
-        .join(TABIX_TABIX.out.index)
+    ch_vcf_index = HTSLIB_BGZIPTABIX.out.output.join(HTSLIB_BGZIPTABIX.out.index)
 
     emit:
-    vcf       = ch_vcf_concat         // channel: [ val(meta), [ vcf ] ]
-    index     = TABIX_TABIX.out.index // channel: [ val(meta), [ tbi or csi ] ]
-    vcf_index = ch_vcf_index          // channel: [ val(meta), [ vcf ], [ tbi or csi ] ]
+    vcf       = HTSLIB_BGZIPTABIX.out.output // channel: [ val(meta), [ vcf ] ]
+    index     = HTSLIB_BGZIPTABIX.out.index  // channel: [ val(meta), [ tbi or csi ] ]
+    vcf_index = ch_vcf_index                 // channel: [ val(meta), [ vcf ], [ tbi or csi ] ]
 }

@@ -3,9 +3,9 @@ process ODGI_LAYOUT {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/odgi:0.9.0--py312h5e9d817_1':
-        'biocontainers/odgi:0.9.0--py312h5e9d817_1' }"
+        'quay.io/biocontainers/odgi:0.9.0--py312h5e9d817_1' }"
 
     input:
     tuple val(meta), path(graph)
@@ -13,7 +13,7 @@ process ODGI_LAYOUT {
     output:
     tuple val(meta), path("*.lay"), optional: true, emit: lay
     tuple val(meta), path("*.tsv"), optional: true, emit: tsv
-    path "versions.yml"                           , emit: versions
+    tuple val("${task.process}"), val('odgi'), eval("odgi version | sed 's/^v//; s/-.*//'"), emit: versions_odgi, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,9 +26,10 @@ process ODGI_LAYOUT {
         --threads $task.cpus \\
         --idx ${graph} \\
         $args
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        odgi: \$(echo \$(odgi version 2>&1) | cut -f 1 -d '-' | cut -f 2 -d 'v')
-    END_VERSIONS
+    """
+
+    stub:
+    """
+    touch ${meta.id}.lay
     """
 }

@@ -5,9 +5,9 @@ process SVANALYZER_SVBENCHMARK {
 
     //Conda is not supported at the moment: https://github.com/bioconda/bioconda-recipes/issues/37646
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/svanalyzer:0.36--pl526_0':
-        'biocontainers/svanalyzer:0.36--pl526_0' }"
+        'quay.io/biocontainers/svanalyzer:0.36--pl526_0' }"
 
     input:
     tuple val(meta), path(test), path(test_tbi), path(truth), path(truth_tbi), path(bed)

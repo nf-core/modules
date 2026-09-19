@@ -1,0 +1,62 @@
+nextflow_process {
+
+    name "Test Process TOBIAS_SCOREBIGWIG"
+    script "../main.nf"
+    process "TOBIAS_SCOREBIGWIG"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "tobias"
+    tag "tobias/scorebigwig"
+
+    test("sarscov2 - bigwig") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bigwig/test.bigwig', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bed/test.bed', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert process.out.footprints },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - signal - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bigwig/test.bigwig', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bed/test.bed', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert process.out.footprints },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

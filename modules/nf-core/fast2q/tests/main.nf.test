@@ -41,8 +41,7 @@ nextflow_process {
                         file(process.out.distribution_plot[0][1]).name,
                         file(process.out.reads_plot[0][1]).name,
                         file(process.out.reads_plot_percentage[0][1]).name,
-                        process.out.versions,                       // versions file
-                        path(process.out.versions[0]).yaml          // Validate against the versions snapshot
+                        process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -80,8 +79,7 @@ nextflow_process {
                         file(process.out.distribution_plot[0][1]).name,
                         file(process.out.reads_plot[0][1]).name,
                         file(process.out.reads_plot_percentage[0][1]).name,
-                        process.out.versions,                       // versions file
-                        path(process.out.versions[0]).yaml          // Validate against the versions snapshot
+                        process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -119,8 +117,7 @@ nextflow_process {
                         file(process.out.distribution_plot[0][1]).name,
                         file(process.out.reads_plot[0][1]).name,
                         file(process.out.reads_plot_percentage[0][1]).name,
-                        process.out.versions,                       // versions file
-                        path(process.out.versions[0]).yaml          // Validate against the versions snapshot
+                        process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -152,11 +149,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                        process.out,
-                        path(process.out.versions[0]).yaml // Validate against the versions snapshot
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

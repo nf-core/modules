@@ -30,11 +30,10 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
-                    process.out.tbi,
+                    sanitizeOutput(process.out, unstableKeys: ["vcf", "tbi"]),
                     path(process.out.vcf[0][1]).vcf.summary
                     ).match() },
             )
@@ -63,11 +62,10 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
-                    process.out.tbi,
+                    sanitizeOutput(process.out, unstableKeys: ["vcf", "tbi"]),
                     path(process.out.vcf[0][1]).vcf.summary
                     ).match() },
             )
@@ -98,9 +96,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

@@ -5,7 +5,7 @@ process SNAKEMAKE {
     // You will have to add all modules to this Conda definition and
     // replace the container definition for one that suits your needs
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b9/b91b2eddb4c4c0a5e17721d29764e59a50035b9fa9996eb9cb392829f2d7a533/data'
         : 'community.wave.seqera.io/library/snakemake:9.14.0--dfee75b6201d25c6'}"
 

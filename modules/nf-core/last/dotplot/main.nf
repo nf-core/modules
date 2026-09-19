@@ -3,9 +3,9 @@ process LAST_DOTPLOT {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/38/386dbe9821e6f2eebd5bcc67b3c82e2b730135c51bb565bae6511b24aba17e56/data'
-        : 'community.wave.seqera.io/library/last_open-fonts:b8d1af8fd12256e2'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1c/1c4449f5ba5639244ad3dce879156ca57c7b58d7264e3cc9834eca08efb5d959/data'
+        : 'community.wave.seqera.io/library/last_gzip_open-fonts:92dd7f8fc3f0c4fd'}"
 
     input:
     tuple val(meta), path(maf), path(annot_b)

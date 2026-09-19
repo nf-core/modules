@@ -12,7 +12,8 @@ tools:
       documentation: "https://github.com/motu-tool/mOTUs/wiki"
       tool_dev_url: "https://github.com/motu-tool/mOTUs"
       doi: "10.1186/s40168-022-01410-z"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 input:
   - - meta:
@@ -66,7 +67,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.mgc":
           type: file
-          description: Optional intermediate mgc read count table file saved with `-M`.
+          description: Optional intermediate mgc read count table file saved with
+            `-M`.
           pattern: "*.{mgc}"
           ontologies: []
   log:
@@ -80,13 +82,29 @@ output:
           description: Standard error logging file containing summary statistics
           pattern: "*.log"
           ontologies: []
+  versions_motus:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - motus:
+          type: string
+          description: The name of the tool
+      - 3.1.0:
+          type: string
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - motus:
+          type: string
+          description: The name of the tool
+      - 3.1.0:
+          type: string
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@jianhong"
 maintainers:

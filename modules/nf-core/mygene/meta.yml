@@ -11,9 +11,9 @@ tools:
       documentation: "https://docs.mygene.info/projects/mygene-py/en/latest/"
       tool_dev_url: "https://github.com/biothings/mygene.py"
       doi: "10.1093/nar/gks1114"
-      licence: ["Apache-2.0"]
+      licence:
+        - "Apache-2.0"
       identifier: biotools:mygene
-
 input:
   - - meta:
         type: map
@@ -22,9 +22,9 @@ input:
           e.g. `[ id:'sample1' ]`
     - gene_list:
         type: file
-        description: A tsv/csv file that contains a list of gene ids in one of the columns.
-          By default, the column name should be "gene_id", but this can be changed by
-          using "--columname gene_id" in ext.args.
+        description: A tsv/csv file that contains a list of gene ids in one of the
+          columns. By default, the column name should be "gene_id", but this can
+          be changed by using "--columname gene_id" in ext.args.
         pattern: "*.{csv,tsv}"
         ontologies:
           - edam: http://edamontology.org/format_3752 # CSV
@@ -56,13 +56,27 @@ output:
           pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
+  versions_mygene:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mygene:
+          type: string
+          description: The name of the tool
+      - 3.2.2:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mygene:
+          type: string
+          description: The name of the tool
+      - 3.2.2:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@suzannejin"
 maintainers:

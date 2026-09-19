@@ -1,109 +1,105 @@
 {
     "sarscov2 - crai": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test-indexcov.ped:md5,8737714b6ea160e06d5282391f89f791"
-                ]
-            ],
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test-indexcov.bed.gz:md5,04aa3637cffca5d99316df7741c06589"
-                ]
-            ],
-            "test-indexcov.bed.gz.tbi",
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test-indexcov.roc:md5,548b76fdf16e97768b0c9b8ecbfd5bef"
-                ]
-            ],
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    [
-                        "index.html:md5,41840ede180b20cdf6074c431269929e",
-                        "test-indexcov-depth-chr21.html:md5,4c839b03f2f41e3fdca5642903c35008",
-                        "test-indexcov-roc-chr21.html:md5,f84b547328a23196f16f71d093eb7450"
-                    ]
-                ]
-            ],
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    [
-                        "test-indexcov-depth-chr21.png:md5,1999b0bf1cd0680f6d107d438e7257cf",
-                        "test-indexcov-roc-chr21.png:md5,41f1460535b255fff053da59fcccf698"
-                    ]
-                ]
-            ],
-            [
-                "versions.yml:md5,f9c06c1c05a2a31854b4e04e449a24c5"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-08-22T06:40:17.142801459"
-    },
-    "sarscov2 - stub": {
-        "content": [
             {
-                "0": [
+                "bed": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test-indexcov.bed.gz:md5,04aa3637cffca5d99316df7741c06589"
+                    ]
+                ],
+                "bed_index": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test-indexcov.bed.gz.tbi"
+                    ]
+                ],
+                "html": [
                     [
                         {
                             "id": "test"
                         },
                         [
-                            "test-indexcov.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
-                            "test-indexcov.bed.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                            "index.html:md5,41840ede180b20cdf6074c431269929e",
+                            "test-indexcov-depth-chr21.html:md5,4c839b03f2f41e3fdca5642903c35008",
+                            "test-indexcov-roc-chr21.html:md5,f84b547328a23196f16f71d093eb7450"
                         ]
                     ]
                 ],
-                "1": [
-                    
-                ],
-                "2": [
+                "output": [
                     [
                         {
                             "id": "test"
                         },
-                        "test-indexcov.bed.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        [
+                            "index.html",
+                            "test-indexcov-depth-chr21.html",
+                            "test-indexcov-depth-chr21.png",
+                            "test-indexcov-roc-chr21.html",
+                            "test-indexcov-roc-chr21.png",
+                            "test-indexcov.bed.gz",
+                            "test-indexcov.bed.gz.tbi",
+                            "test-indexcov.ped",
+                            "test-indexcov.roc"
+                        ]
                     ]
                 ],
-                "3": [
+                "ped": [
                     [
                         {
                             "id": "test"
                         },
-                        "test-indexcov.bed.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test-indexcov.ped:md5,8737714b6ea160e06d5282391f89f791"
                     ]
                 ],
-                "4": [
-                    
+                "png": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "test-indexcov-depth-chr21.png:md5,1999b0bf1cd0680f6d107d438e7257cf",
+                            "test-indexcov-roc-chr21.png:md5,41f1460535b255fff053da59fcccf698"
+                        ]
+                    ]
                 ],
-                "5": [
-                    
+                "roc": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test-indexcov.roc:md5,548b76fdf16e97768b0c9b8ecbfd5bef"
+                    ]
                 ],
-                "6": [
-                    
+                "versions_goleft": [
+                    [
+                        "GOLEFT_INDEXCOV",
+                        "goleft",
+                        "0.2.4"
+                    ]
                 ],
-                "7": [
-                    "versions.yml:md5,f9c06c1c05a2a31854b4e04e449a24c5"
-                ],
+                "versions_tabix": [
+                    [
+                        "GOLEFT_INDEXCOV",
+                        "tabix",
+                        "1.12"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-05-11T18:06:20.999016596",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.03.2"
+        }
+    },
+    "sarscov2 - stub": {
+        "content": [
+            {
                 "bed": [
                     [
                         {
@@ -143,63 +139,108 @@
                 "roc": [
                     
                 ],
-                "versions": [
-                    "versions.yml:md5,f9c06c1c05a2a31854b4e04e449a24c5"
+                "versions_goleft": [
+                    [
+                        "GOLEFT_INDEXCOV",
+                        "goleft",
+                        "0.2.4"
+                    ]
+                ],
+                "versions_tabix": [
+                    [
+                        "GOLEFT_INDEXCOV",
+                        "tabix",
+                        "1.12"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-05-11T18:06:30.620099429",
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-08-22T06:44:59.203730744"
+            "nf-test": "0.9.5",
+            "nextflow": "26.03.2"
+        }
     },
     "sarscov2 - bam": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test-indexcov.ped:md5,da2bd9882474d2f00f8ad2ab20b140c9"
+            {
+                "bed": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test-indexcov.bed.gz:md5,eab7a78287e261d600c06def12a33029"
+                    ]
+                ],
+                "bed_index": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test-indexcov.bed.gz.tbi"
+                    ]
+                ],
+                "html": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "index.html:md5,d1cc28023cd827446e0f9c905c94fe3e"
+                    ]
+                ],
+                "output": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "index.html",
+                            "test-indexcov.bed.gz",
+                            "test-indexcov.bed.gz.tbi",
+                            "test-indexcov.ped",
+                            "test-indexcov.roc"
+                        ]
+                    ]
+                ],
+                "ped": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test-indexcov.ped:md5,da2bd9882474d2f00f8ad2ab20b140c9"
+                    ]
+                ],
+                "png": [
+                    
+                ],
+                "roc": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test-indexcov.roc:md5,3f460308bb86203d1ada71b7c84d995d"
+                    ]
+                ],
+                "versions_goleft": [
+                    [
+                        "GOLEFT_INDEXCOV",
+                        "goleft",
+                        "0.2.4"
+                    ]
+                ],
+                "versions_tabix": [
+                    [
+                        "GOLEFT_INDEXCOV",
+                        "tabix",
+                        "1.12"
+                    ]
                 ]
-            ],
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test-indexcov.bed.gz:md5,eab7a78287e261d600c06def12a33029"
-                ]
-            ],
-            "test-indexcov.bed.gz.tbi",
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test-indexcov.roc:md5,3f460308bb86203d1ada71b7c84d995d"
-                ]
-            ],
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "index.html:md5,d1cc28023cd827446e0f9c905c94fe3e"
-                ]
-            ],
-            [
-                
-            ],
-            [
-                "versions.yml:md5,f9c06c1c05a2a31854b4e04e449a24c5"
-            ]
+            }
         ],
+        "timestamp": "2026-05-11T18:06:07.628966458",
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-08-22T06:39:48.470187823"
+            "nf-test": "0.9.5",
+            "nextflow": "26.03.2"
+        }
     }
 }

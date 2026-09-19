@@ -3,9 +3,9 @@ process CATPACK_BINS {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/cat:6.0.1--hdfd78af_1'
-        : 'biocontainers/cat:6.0.1--hdfd78af_1'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/15/15bcec1eccda12562504e88d44abc8a29742c6b600ae178cc9579fedc3a69062/data'
+        : 'community.wave.seqera.io/library/cat_gzip:0ab95a62b35744c9'}"
 
     input:
     tuple val(meta), path(bins, stageAs: 'bins/*')
@@ -13,7 +13,7 @@ process CATPACK_BINS {
     tuple val(meta3), path(taxonomy)
     tuple val(meta4), path(proteins)
     tuple val(meta5), path(diamond_table)
-    val(bin_suffix)
+    val bin_suffix
 
     output:
     tuple val(meta), path("*.ORF2LCA.txt"), emit: orf2lca
@@ -32,13 +32,25 @@ process CATPACK_BINS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def premade_proteins = proteins ? "-p ${proteins}" : ''
     def premade_table = diamond_table ? "-d ${diamond_table}" : ''
+    // CAT_pack does not support gzipped input. If bin_suffix ends in .gz,
+    // decompress the bins and strip .gz off the suffix passed to CAT_pack.
+    def is_compressed = bin_suffix.endsWith('.gz')
+    def cat_suffix = is_compressed ? bin_suffix - ~/\.gz$/ : bin_suffix
+    def bins_dir = is_compressed ? 'input_bins' : 'bins'
     """
+    if ${is_compressed}; then
+        mkdir input_bins
+        for f in bins/*${bin_suffix}; do
+            gunzip -c "\$f" > "input_bins/\$(basename "\$f" .gz)"
+        done
+    fi
+
     CAT_pack bins \\
         -n ${task.cpus} \\
-        -b bins/ \\
+        -b ${bins_dir}/ \\
         -d ${database} \\
         -t ${taxonomy} \\
-        -s ${bin_suffix} \\
+        -s ${cat_suffix} \\
         ${premade_proteins} \\
         ${premade_table} \\
         -o ${prefix} \\

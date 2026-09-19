@@ -10,11 +10,11 @@ nextflow_process {
     tag "samtools"
     tag "samtools/quickcheck"
 
-    test(" bam - PE ") {
+    test("bam - PE") {
         when {
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id:'test.paired_end.sorted' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
                 ])
@@ -23,15 +23,15 @@ nextflow_process {
         }
 
         then {
-            assertAll (
-                { assert process.success },
+            assert process.success
+            assertAll(
                 { assert process.out.bam.collect{ it[2] } == ["0"] },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
-    test(" bam - SE ") {
+    test("bam - SE") {
         when {
             process {
                 """
@@ -44,15 +44,15 @@ nextflow_process {
         }
 
         then {
-            assertAll (
-                { assert process.success },
+            assert process.success
+            assertAll(
                 { assert process.out.bam.collect{ it[2] } == ["0"] },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
-    test(" bam - PE - stub") {
+    test("bam - PE - stub") {
         options "-stub"
 
         when {
@@ -67,19 +67,19 @@ nextflow_process {
         }
 
         then {
-            assertAll (
-                { assert process.success },
+            assert process.success
+            assertAll(
                 { assert process.out.bam.collect{ it[2] } == ["0"] },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
-    test(" cram - PE ") {
+    test("cram - PE") {
         when {
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id:'test.paired_end.sorted' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true)
                 ])
@@ -88,15 +88,15 @@ nextflow_process {
         }
 
         then {
-            assertAll (
-                { assert process.success },
+            assert process.success
+            assertAll(
                 { assert process.out.bam.collect{ it[2] } == ["0"] },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
-    test(" sam - PE - No targets") {
+    test("sam - PE - No targets") {
         /* SAM header misses targets of corresponding alignments */
         when {
             process {
@@ -110,15 +110,15 @@ nextflow_process {
         }
 
         then {
-            assertAll (
-                { assert process.success },
+            assert process.success
+            assertAll(
                 { assert process.out.bam.collect{ it[2] } == ["8"] },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
-    test(" sam - PE - No targets - ignore targets / unaligned option") {
+    test("sam - PE - No targets - ignore targets / unaligned option") {
         /* SAM header misses targets of corresponding alignments, but the '-u' parameter makes this tolerated as unaligned */
         config "./nextflow.config"
 
@@ -134,15 +134,15 @@ nextflow_process {
         }
 
         then {
-            assertAll (
-                { assert process.success },
+            assert process.success
+            assertAll(
                 { assert process.out.bam.collect{ it[2] } == ["0"] },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
-    test(" bam - ?E - Bad EOF") {
+    test("bam - ?E - Bad EOF") {
         when {
             process {
                 """
@@ -155,15 +155,15 @@ nextflow_process {
         }
 
         then {
-            assertAll (
-                { assert process.success },
+            assert process.success
+            assertAll(
                 { assert process.out.bam.collect{ it[2] } == ["16"] },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
-    test(" bam - ?E - No targets") {
+    test("bam - ?E - No targets") {
         when {
             process {
                 """
@@ -176,15 +176,15 @@ nextflow_process {
         }
 
         then {
-            assertAll (
-                { assert process.success },
+            assert process.success
+            assertAll(
                 { assert process.out.bam.collect{ it[2] } == ["8"] },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
-    test(" bam - ?E - Bad header") {
+    test("bam - ?E - Bad header") {
         when {
             process {
                 """
@@ -197,10 +197,10 @@ nextflow_process {
         }
 
         then {
-            assertAll (
-                { assert process.success },
+            assert process.success
+            assertAll(
                 { assert process.out.bam.collect{ it[2] } == ["4"] },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

@@ -3,9 +3,9 @@ process RIBOWALTZ {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ribowaltz:2.0--r43hdfd78af_0':
-        'biocontainers/ribowaltz:2.0--r43hdfd78af_0' }"
+        'quay.io/biocontainers/ribowaltz:2.0--r43hdfd78af_0' }"
 
     input:
     tuple val(meta) , path(bam)
@@ -23,7 +23,7 @@ process RIBOWALTZ {
     tuple val(meta), path("*nt_coverage_psite.tsv{,.gz}")     , emit: cds_window_coverage  , optional: true
     tuple val(meta), path("ribowaltz_qc/*.pdf")               , emit: ribowaltz_qc         , optional: true
     tuple val(meta), path("ribowaltz_qc/*.tsv")               , emit: ribowaltz_qc_data    , optional: true
-    path "versions.yml"                                       , emit: versions
+    path "versions.yml"                                       , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

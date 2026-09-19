@@ -1,5 +1,6 @@
 name: faqcs
-description: Perform adapter and quality trimming on sequencing reads with reporting
+description: Perform adapter and quality trimming on sequencing reads with
+  reporting
 keywords:
   - trimming
   - quality control
@@ -13,7 +14,8 @@ tools:
       documentation: https://github.com/LANL-Bioinformatics/FaQCs
       tool_dev_url: https://github.com/LANL-Bioinformatics/FaQCs
       doi: "10.1186/s12859-014-0366-2"
-      licence: ["GPLv3 License"]
+      licence:
+        - "GPLv3 License"
       identifier: ""
 input:
   - - meta:
@@ -80,8 +82,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.discard.fastq.gz":
           type: file
-          description: Reads that failed the preprocessing (Optional with --discard
-            args setting)
+          description: Reads that failed the preprocessing (Optional with
+            --discard args setting)
           pattern: "*discard.fastq.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -108,13 +110,27 @@ output:
           description: fastq log file
           pattern: "*.log"
           ontologies: []
+  versions_faqcs:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - faqcs:
+          type: string
+          description: The name of the tool
+      - "FaQCs --version 2>&1 | sed 's/^.*Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - faqcs:
+          type: string
+          description: The name of the tool
+      - "FaQCs --version 2>&1 | sed 's/^.*Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@mjcipriano"
   - "@sateeshperi"

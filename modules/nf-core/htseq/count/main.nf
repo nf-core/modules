@@ -3,9 +3,9 @@ process HTSEQ_COUNT {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/htseq:2.0.3--py310ha14a713_0':
-        'biocontainers/htseq:2.0.3--py310ha14a713_0' }"
+        'quay.io/biocontainers/htseq:2.0.3--py310ha14a713_0' }"
 
     input:
     tuple val(meta), path(input), path(index)
@@ -13,7 +13,7 @@ process HTSEQ_COUNT {
 
     output:
     tuple val(meta), path("*.txt"), emit: txt
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('htseq'), eval("htseq-count --version"), emit: versions_htseq, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,22 +28,11 @@ process HTSEQ_COUNT {
         ${gtf} \\
         ${args} \\
         > ${prefix}.txt
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        htseq: \$(echo \$(htseq-count --version ) | sed 's/^.*htseq-count //; s/Using.*\$//' ))
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        : \$(echo \$(htseq-count --version ) | sed 's/^.*htseq-count //; s/Using.*\$//' ))
-    END_VERSIONS
     """
 }

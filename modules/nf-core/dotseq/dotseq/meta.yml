@@ -1,0 +1,216 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "dotseq_dotseq"
+description: |
+  Detect differential ORF usage (DOU) and ORF-level differential
+  translation efficiency (DTE) from Ribo-seq with matched RNA-seq using
+  DOTSeq. Wraps DOTSeqDataSetsFromSummarizeOverlaps() + DOTSeq() +
+  getContrasts() and emits the package's native contrast tables plus
+  plotDOT() visualisations.
+keywords:
+  - riboseq
+  - rnaseq
+  - translation
+  - differential
+  - orf
+tools:
+  - "dotseq":
+      description: "Differential ORF Translation analysis for Ribo-seq with matched RNA-seq"
+      homepage: "https://bioconductor.org/packages/release/bioc/html/DOTSeq.html"
+      documentation: "https://bioconductor.org/packages/release/bioc/vignettes/DOTSeq/inst/doc/DOTSeq.html"
+      tool_dev_url: "https://github.com/compgenom/DOTSeq"
+      licence:
+        - "MIT"
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing contrast information. e.g. [ id:'treatment_vs_control' ]
+    - contrast_variable:
+        type: string
+        description: Sample-sheet column that holds the experimental condition (mapped to DOTSeq's `condition` internally).
+    - reference:
+        type: string
+        description: Value of the contrast_variable to use as reference (baseline).
+    - target:
+        type: string
+        description: Value of the contrast_variable to use as target (non-reference).
+  - - meta2:
+        type: map
+        description: Groovy map containing study-wide metadata
+    - samplesheet:
+        type: file
+        description: |
+          CSV or TSV sample sheet with `run`, `strategy`, `replicate`, and
+          `condition` columns (defaults; can be overridden via
+          task.ext.args). Both Ribo-seq and RNA-seq samples are required:
+          DOTSeq's design is `~ condition * strategy` and the interaction
+          term is unestimable without both strategies.
+        ontologies:
+          - edam: "http://edamontology.org/format_3752"
+          - edam: "http://edamontology.org/format_3475"
+    - counts:
+        type: file
+        description: |
+          Per-ORF count matrix. First column is the ORF identifier (default
+          `orf_id`, override via `--orf_id_col`); remaining columns are
+          sample IDs that must match the `run` values in the sample sheet.
+          Both Ribo-seq and RNA-seq sample columns belong in this single
+          matrix; the sample sheet's `strategy` column distinguishes them.
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
+    - annotation:
+        type: file
+        description: |
+          Per-ORF annotation table (one row per ORF). Required columns:
+          `orf_id` (matches the count matrix) and `gene_id` (parent gene;
+          DOTSeq's DOU model groups child ORFs by gene). Optional columns:
+          `orf_type` (used by plotDOT()'s heatmap to pair a gene's main ORF
+          against its short ORFs; defaults to the main-ORF value when absent)
+          and `chrom`, `start`, `end`, `strand` (used only for downstream
+          inspection - dummy ranges are generated when absent because
+          DOTSeq's fit does not depend on genomic coordinates). Column names
+          can be overridden via task.ext.args (`--gene_id_col`,
+          `--orf_type_col`, etc.). plotDOT()'s heatmap hardcodes the literal
+          label `mORF` for a gene's main ORF and only accepts `uORF` or
+          `dORF` for the short-ORF bucket it is paired against; whichever
+          value in `orf_type` denotes the main ORF is remapped to `mORF`
+          internally (override the source value via `--orf_type_main_value`,
+          default `mORF`), but short-ORF rows must already be labelled
+          `uORF`/`dORF` or the heatmap is silently skipped.
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
+
+output:
+  translation:
+    - - meta:
+          type: map
+          description: Groovy Map containing contrast information. e.g. [ id:'treatment_vs_control' ]
+      - "*.translation.dotseq.results.tsv":
+          type: file
+          description: |
+            Per-ORF differential translation efficiency: DOTSeq's DTE
+            interaction-term results (DESeq2 + ashr shrinkage). Emitted only
+            when the DTE module is selected (the default).
+          pattern: ".translation.dotseq.results.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
+  dou:
+    - - meta:
+          type: map
+          description: Groovy Map containing contrast information. e.g. [ id:'treatment_vs_control' ]
+      - "*.dou.dotseq.results.tsv":
+          type: file
+          description: |
+            DOTSeq Differential ORF Usage results (beta-binomial GLM
+            modelling Ribo / RNA proportion changes within each gene,
+            shrunk with ashr). DOTSeq-unique. Emitted only when the DOU
+            module is selected (the default).
+          pattern: ".dou.dotseq.results.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
+  dou_strategy:
+    - - meta:
+          type: map
+          description: Groovy Map containing contrast information. e.g. [ id:'treatment_vs_control' ]
+      - "*.dou_strategy.dotseq.results.tsv":
+          type: file
+          description: DOU strategy contrasts (Ribo vs RNA effect per condition), when present.
+          pattern: ".dou_strategy.dotseq.results.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
+  dte_strategy:
+    - - meta:
+          type: map
+          description: Groovy Map containing contrast information. e.g. [ id:'treatment_vs_control' ]
+      - "*.dte_strategy.dotseq.results.tsv":
+          type: file
+          description: DTE strategy contrasts (Ribo vs RNA effect per condition), when present.
+          pattern: ".dte_strategy.dotseq.results.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
+  volcano_plot:
+    - - meta:
+          type: map
+          description: Groovy Map containing contrast information. e.g. [ id:'treatment_vs_control' ]
+      - "*.volcano.png":
+          type: file
+          description: DOTSeq plotDOT() volcano (DOU + DTE significance).
+          pattern: ".volcano.png"
+          ontologies:
+            - edam: "http://edamontology.org/format_3603"
+  composite_plot:
+    - - meta:
+          type: map
+          description: Groovy Map containing contrast information. e.g. [ id:'treatment_vs_control' ]
+      - "*.composite.png":
+          type: file
+          description: DOTSeq plotDOT() composite scatter (DOU vs DTE effect sizes).
+          pattern: ".composite.png"
+          ontologies:
+            - edam: "http://edamontology.org/format_3603"
+  venn_plot:
+    - - meta:
+          type: map
+          description: Groovy Map containing contrast information. e.g. [ id:'treatment_vs_control' ]
+      - "*.venn.png":
+          type: file
+          description: DOTSeq plotDOT() Venn diagram of DOU vs DTE significant ORFs.
+          pattern: ".venn.png"
+          ontologies:
+            - edam: "http://edamontology.org/format_3603"
+  heatmap_plot:
+    - - meta:
+          type: map
+          description: Groovy Map containing contrast information. e.g. [ id:'treatment_vs_control' ]
+      - "*.heatmap.png":
+          type: file
+          description: DOTSeq plotDOT() heatmap of DOU across top genes.
+          pattern: ".heatmap.png"
+          ontologies:
+            - edam: "http://edamontology.org/format_3603"
+  interaction_p_distribution_plot:
+    - - meta:
+          type: map
+          description: Groovy Map containing contrast information. e.g. [ id:'treatment_vs_control' ]
+      - "*.interaction_p_distribution.png":
+          type: file
+          description: Histogram of DOTSeq's DTE adjusted p-values.
+          pattern: ".interaction_p_distribution.png"
+          ontologies:
+            - edam: "http://edamontology.org/format_3603"
+  rdata:
+    - - meta:
+          type: map
+          description: Groovy Map containing contrast information. e.g. [ id:'treatment_vs_control' ]
+      - "*.DOTSeqDataSets.rds":
+          type: file
+          description: Serialised DOTSeqDataSets object containing DOU + DTE fits
+          pattern: ".DOTSeqDataSets.rds"
+          ontologies: []
+  session_info:
+    - - meta:
+          type: map
+          description: Groovy Map containing contrast information. e.g. [ id:'treatment_vs_control' ]
+      - "*.R_sessionInfo.log":
+          type: file
+          description: dump of R sessionInfo()
+          pattern: "*.log"
+          ontologies:
+            - edam: "http://edamontology.org/data_1678"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750"
+topics:
+  versions:
+    - versions.yml:
+        type: string
+        description: The name of the process
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"

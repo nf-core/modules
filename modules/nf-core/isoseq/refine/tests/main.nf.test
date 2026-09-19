@@ -31,7 +31,7 @@ nextflow_process {
                     process.out.bam,
                     process.out.pbi,
                     process.out.report,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() },
                 { assert path(process.out.consensusreadset.get(0).get(1)).text.contains("PacBio.DataSet.ConsensusReadSet") },
                 { assert path(process.out.summary.get(0).get(1)).text.contains("pbcopper") },

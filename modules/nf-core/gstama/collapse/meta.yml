@@ -15,7 +15,8 @@ tools:
       documentation: https://github.com/GenomeRIK/tama/wiki
       tool_dev_url: https://github.com/sguizard/gs-tama
       doi: 10.1186/s12864-020-07123-7
-      licence: ["GNU GPL3"]
+      licence:
+        - "GNU GPL3"
       identifier: ""
 input:
   - - meta:
@@ -42,8 +43,8 @@ output:
             e.g. [ id:'test' ]
       - "*_collapsed.bed":
           type: file
-          description: a bed12 format file containing the final collapsed version of
-            your transcriptome
+          description: a bed12 format file containing the final collapsed version
+            of your transcriptome
           pattern: "*.bed"
           ontologies: []
   bed_trans_reads:
@@ -54,16 +55,16 @@ output:
             e.g. [ id:'test' ]
       - "*_trans_read.bed":
           type: file
-          description: This file uses bed12 format to show the transcript model for
-            each read based on the mapping prior to collapsing. This only contains the
-            reads which were accepted according to the defined thresholds. You can use
-            this file to see if there were any strange occurrences during collapsing.
-            It also contains the relationships between reads and collapsed transcript
-            models. The 1st subfield in the 4th column shows the final transcript ID
-            and the 2nd subfield in the 4th column shows the read ID. If you used no_cap
-            mode for collapsing there may be multiple lines for a single read. This
-            happens when a 5' degraded read can match to multiple 5' longer transcript
-            models.
+          description: This file uses bed12 format to show the transcript model
+            for each read based on the mapping prior to collapsing. This only
+            contains the reads which were accepted according to the defined
+            thresholds. You can use this file to see if there were any strange
+            occurrences during collapsing. It also contains the relationships
+            between reads and collapsed transcript models. The 1st subfield in the
+            4th column shows the final transcript ID and the 2nd subfield in the
+            4th column shows the read ID. If you used no_cap mode for collapsing
+            there may be multiple lines for a single read. This happens when a 5'
+            degraded read can match to multiple 5' longer transcript models.
           pattern: "*_trans_read.bed"
           ontologies: []
   local_density_error:
@@ -74,8 +75,8 @@ output:
             e.g. [ id:'test' ]
       - "*_local_density_error.txt":
           type: file
-          description: This file contains the log of filtering for local density error
-            around the splice junctions ("-lde")
+          description: This file contains the log of filtering for local density
+            error around the splice junctions ("-lde")
           pattern: "*_local_density_error.txt"
           ontologies: []
   polya:
@@ -86,7 +87,8 @@ output:
             e.g. [ id:'test' ]
       - "*_polya.txt":
           type: file
-          description: This file contains the reads with potential poly A truncation.
+          description: This file contains the reads with potential poly A
+            truncation.
           pattern: "*_polya.txt"
           ontologies: []
   read:
@@ -97,9 +99,9 @@ output:
             e.g. [ id:'test' ]
       - "*_read.txt":
           type: file
-          description: This file contains information for all mapped reads from the
-            input SAM/BAM file. It shows both accepted and discarded reads and should
-            match the number of mapped reads in your SAM/BAM file
+          description: This file contains information for all mapped reads from
+            the input SAM/BAM file. It shows both accepted and discarded reads and
+            should match the number of mapped reads in your SAM/BAM file
           pattern: "*_read.txt"
           ontologies: []
   strand_check:
@@ -110,8 +112,8 @@ output:
             e.g. [ id:'test' ]
       - "*_strand_check.txt":
           type: file
-          description: This file shows instances where the sam flag strand information
-            contrasted the GMAP strand information.
+          description: This file shows instances where the sam flag strand
+            information contrasted the GMAP strand information.
           pattern: "*_strand_check.txt"
           ontologies: []
   trans_report:
@@ -122,16 +124,10 @@ output:
             e.g. [ id:'test' ]
       - "*_trans_report.txt":
           type: file
-          description: This file contains collapsing information for each transcript.
+          description: This file contains collapsing information for each
+            transcript.
           pattern: "*_trans_report.txt"
           ontologies: []
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
   varcov:
     - - meta:
           type: map
@@ -140,8 +136,8 @@ output:
             e.g. [ id:'test' ]
       - "*_varcov.txt":
           type: file
-          description: This file contains the coverage information for each variant
-            detected.
+          description: This file contains the coverage information for each
+            variant detected.
           pattern: "*_varcov.txt"
           ontologies: []
   variants:
@@ -152,11 +148,33 @@ output:
             e.g. [ id:'test' ]
       - "*_variants.txt":
           type: file
-          description: This file contains the variants called. Variants are only called
-            if 5 or more reads show the variant at a specific locus. If you would like
-            to change the threshold, please make an issue about this in the Github repo.
+          description: This file contains the variants called. Variants are only
+            called if 5 or more reads show the variant at a specific locus. If you
+            would like to change the threshold, please make an issue about this in
+            the Github repo.
           pattern: "*_variants.txt"
           ontologies: []
+  versions_gstama:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gstama:
+          type: string
+          description: The name of the tool
+      - tama_collapse.py -version | sed -n 's/tc_version_date_//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gstama:
+          type: string
+          description: The name of the tool
+      - tama_collapse.py -version | sed -n 's/tc_version_date_//p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@sguizard"
 maintainers:

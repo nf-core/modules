@@ -11,7 +11,8 @@ tools:
       documentation: https://github.com/mbhall88/rasusa/blob/master/README.md
       tool_dev_url: https://github.com/mbhall88/rasusa
       doi: "10.5281/zenodo.3731394"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:rasusa
 input:
   - - meta:
@@ -52,7 +53,6 @@ output:
       - 'rasusa --version 2>&1 | sed -e "s/rasusa //g"':
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
     - - ${task.process}:

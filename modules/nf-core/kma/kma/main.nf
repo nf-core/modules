@@ -3,7 +3,7 @@ process KMA_KMA {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4f/4fc6c961562aef21c24b4f2330d9cd7e9bbda162b0d584a5cd5428e0b725e0d6/data':
         'community.wave.seqera.io/library/kma:1.5.0--eb093e0381fb59ea' }"
 
@@ -21,7 +21,7 @@ process KMA_KMA {
     tuple val(meta), path("*.vcf.gz") , optional: true, emit: vcf
     tuple val(meta), path("*.sam")    , optional: true, emit: sam
     tuple val(meta), path("*.spa")    , optional: true, emit: spa
-    path "versions.yml"               , emit: versions
+    tuple val("${task.process}"), val('kma'), eval('kma -v 2>&1 | sed "s/^KMA-//"'), emit: versions_kma, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -63,10 +63,6 @@ process KMA_KMA {
         $args \\
         $sam_output || [ \$? -eq 95 ]
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        kma: \$(echo \$(kma -v 2>&1) | sed 's/^KMA-//')
-    END_VERSIONS
     """
 
     stub:
@@ -83,10 +79,5 @@ process KMA_KMA {
     ${create_mat}
     ${create_vcf}
     ${create_sam}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        kma: \$(echo \$(kma -v 2>&1) | sed 's/^KMA-//')
-    END_VERSIONS
     """
 }

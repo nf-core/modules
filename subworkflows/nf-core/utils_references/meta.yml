@@ -6,8 +6,56 @@ keywords:
   - pipeline
   - references
 components: []
-input: []
-output: []
+input:
+  - yaml_reference:
+      type: file
+      description: |
+        References YAML file, validated against
+        `subworkflows/nf-core/utils_references/schema_references.json`
+        and turned into a channel of reference entries.
+      pattern: "*.{yml,yaml}"
+  - param_file:
+      type: string
+      description: |
+        Path to a file that overrides the reference file taken from the YAML.
+        When set, it is used for every reference entry; pass `null` to fall
+        back on `attribute_file`.
+  - param_value:
+      type: string
+      description: |
+        Value that overrides the reference value taken from the YAML. When set,
+        it is used for every reference entry; pass `null` to fall back on
+        `attribute_value`.
+  - attribute_file:
+      type: string
+      description: |
+        Name of the attribute in the references YAML holding the file to
+        extract, e.g. `fasta`.
+  - attribute_value:
+      type: string
+      description: |
+        Name of the attribute in the references YAML holding the value to
+        extract, e.g. `species`.
+  - basepath:
+      type: string
+      description: |
+        Base path substituted for the `${params.igenomes_base}` placeholder in
+        file attributes read from the references YAML.
+output:
+  - references_file:
+      type: file
+      description: |
+        Collected list of reference files, one entry per reference that has the
+        requested file attribute (or for which `param_file` was given).
+
+        Structure: [ [ val(meta), path(file) ], ... ]
+  - references_value:
+      type: string
+      description: |
+        Collected list of reference values, one entry per reference that has the
+        requested value attribute (or for which `param_value` was given).
+
+        Structure: [ [ val(meta), val(value) ], ... ]
 authors:
   - "@maxulysse"
 maintainers:

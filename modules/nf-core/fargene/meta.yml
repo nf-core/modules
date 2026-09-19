@@ -15,7 +15,8 @@ tools:
       homepage: https://github.com/fannyhb/fargene
       documentation: https://github.com/fannyhb/fargene
       tool_dev_url: https://github.com/fannyhb/fargene
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:fargene
 input:
   - - meta:
@@ -161,7 +162,7 @@ output:
             as positive, together with its read-pair, gathered in two files
           pattern: "*.{fastq}"
           ontologies:
-            - edam: http://edamontology.org/format_1930 # FASTQ
+            - edam: http://edamontology.org/format_1930
   trimmed:
     - - meta:
           type: map
@@ -206,13 +207,27 @@ output:
             input sequences. Are only saved if option --store-peptides is used.
           pattern: "*.{fasta}"
           ontologies: []
+  versions_fargene:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fargene:
+          type: string
+          description: The name of the tool
+      - "0.1":
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fargene:
+          type: string
+          description: The name of the tool
+      - "0.1":
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@louperelo"
 maintainers:

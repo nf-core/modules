@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "knotannotsv"
 description: Simple tool to create a customizable html file (to be displayed on
   a web browser) from an AnnotSV output
@@ -32,29 +33,18 @@ input:
         type: boolean
         description: Specify 'true' to output as XLSM (rather than HTML by default)
 output:
-  html:
+  output_file:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.html":
+      - "*.{html,xlsm}":
           type: file
-          description: HTML annotated file
-          pattern: "*.html"
+          description: HTML (or XLSM if 'knot_out_xl=true') annotated file
+          pattern: "*.{html,xlsm}"
           ontologies:
             - edam: "http://edamontology.org/format_2331" # HTML
-  xl:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-      - "*.xlsm":
-          type: file
-          description: Alternative XLSM annotated file (if 'knot_out_xl=true')
-          pattern: "*.xlsm"
-          ontologies:
             - edam: "http://edamontology.org/format_3620" # XLSX
   versions_knotannotsv:
     - - ${task.process}:

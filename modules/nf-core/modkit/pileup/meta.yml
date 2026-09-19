@@ -26,8 +26,9 @@ input:
         ontologies: []
     - bai:
         type: file
-        description: Associated index file for BAM
-        pattern: "*.bai"
+        description: Associated index file for BAM. Both BAI and CSI indices
+          are supported by modkit (via htslib).
+        pattern: "*.{bai,csi}"
         ontologies: []
   - - meta2:
         type: map
@@ -37,7 +38,9 @@ input:
     - fasta:
         type: file
         description: Reference sequence in FASTA format. Required for motif (e.g.
-          CpG) filtering
+          CpG) filtering. Note that when using --cpg via ext.args, you must also
+          pass --modified-bases (e.g. '--cpg --modified-bases 5mC') or modkit
+          will error with a missing required argument.
         pattern: "*.fasta"
         ontologies: []
     - fai:
@@ -53,7 +56,12 @@ input:
     - bed:
         type: file
         description: BED file that will restrict threshold estimation and pileup
-          results to positions overlapping intervals in the file
+          results to positions overlapping intervals in the file. Must be in
+          BED3 (chr, start, end) or BED6 format; modkit rejects other column
+          counts with "improperly formatted BED line, must be BED3 or BED6"
+          followed by "zero valid positions parsed from BED file". Note also
+          that modkit requires --motif or --modified-bases in ext.args whenever
+          --include-bed is used, and errors out otherwise.
         pattern: "*.bed"
         ontologies: []
 output:

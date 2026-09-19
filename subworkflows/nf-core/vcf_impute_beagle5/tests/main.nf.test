@@ -78,7 +78,7 @@ nextflow_workflow {
             }
             workflow {
                 """
-                input[0] = BCFTOOLS_VIEW_BCF.out.vcf.join(BCFTOOLS_VIEW_BCF.out.csi)
+                input[0] = BCFTOOLS_VIEW_BCF.out.vcf.join(BCFTOOLS_VIEW_BCF.out.index)
                 input[1] = channel.of([
                     [panel: "1000GP", chr: "chr22"],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),

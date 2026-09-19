@@ -11,7 +11,8 @@ tools:
       homepage: "https://www.illumina.com/products/by-type/informatics-products/basespace-sequence-hub/apps/hap-py-benchmarking.html"
       documentation: "https://github.com/Illumina/hap.py"
       tool_dev_url: "https://github.com/Illumina/hap.py"
-      licence: ["BSD-2-clause"]
+      licence:
+        - "BSD-2-clause"
       identifier: biotools:happy
 input:
   - - meta:
@@ -72,13 +73,27 @@ output:
           pattern: "*.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
+  versions_happy:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - happy:
+          type: string
+          description: The name of the tool
+      - 0.3.15:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - happy:
+          type: string
+          description: The name of the tool
+      - 0.3.15:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@kubranarci"
 maintainers:

@@ -3,9 +3,9 @@ process KAIJU_KAIJU {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/kaiju:1.10.0--h43eeafb_0'
-        : 'biocontainers/kaiju:1.10.0--h43eeafb_0'}"
+        : 'quay.io/biocontainers/kaiju:1.10.0--h43eeafb_0'}"
 
     input:
     tuple val(meta), path(reads)
@@ -23,7 +23,9 @@ process KAIJU_KAIJU {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def input = meta.single_end ? "-i ${reads}" : "-i ${reads[0]} -j ${reads[1]}"
 
-    if (!db.find { db_files -> db_files.name.endsWith('names.dmp') } || !db.find { db_files -> db_files.name.endsWith('nodes.dmp') }) {
+    def db_list = db instanceof List ? db : db.listDirectory()
+
+    if (!db_list.find { db_files -> db_files.name.endsWith('names.dmp') } || !db_list.find { db_files -> db_files.name.endsWith('nodes.dmp') }) {
         error('[KAIJU_KAIJU] Module error: Missing one of `nodes.dmp`, `names.dmp`. Check input.')
     }
     """

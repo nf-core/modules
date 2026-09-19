@@ -2,7 +2,7 @@ process CTATSPLICING_STARTOCANCERINTRONS {
     tag "$meta.id"
     label 'process_single'
 
-    container "nf-core/ctatsplicing:0.0.3"
+    container "quay.io/nf-core/ctatsplicing:0.0.3"
 
     input:
     tuple val(meta), path(split_junction), path(junction), path(bam), path(bai)

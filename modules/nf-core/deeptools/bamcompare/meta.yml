@@ -1,0 +1,102 @@
+name: "deeptools_bamcompare"
+description: Compares two BAM files based on the number of mapped reads and
+  generates a bigWig or bedGraph file with the log2 ratio, ratio, difference or
+  other operations.
+keywords:
+  - bam
+  - bigwig
+  - bedgraph
+  - normalization
+  - comparison
+tools:
+  - deeptools:
+      description: A set of user-friendly tools for normalization and
+        visualization of deep-sequencing data
+      homepage: https://deeptools.readthedocs.io/en/latest/
+      documentation: https://deeptools.readthedocs.io/en/latest/content/tools/bamCompare.html
+      tool_dev_url: https://github.com/deeptools/deepTools
+      doi: "10.1093/nar/gkw257"
+      licence:
+        - "GPL v3"
+      identifier: biotools:deeptools
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - bam1:
+        type: file
+        description: Sorted BAM file 1 (usually treatment)
+        pattern: "*.{bam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+    - bai1:
+        type: file
+        description: BAM index file for BAM file 1
+        pattern: "*.{bai}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327" # BAI
+    - bam2:
+        type: file
+        description: Sorted BAM file 2 (usually control)
+        pattern: "*.{bam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+    - bai2:
+        type: file
+        description: BAM index file for BAM file 2
+        pattern: "*.{bai}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327" # BAI
+output:
+  bigwig:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.bigWig":
+          type: file
+          description: BigWig coverage file of comparison results
+          pattern: "*.{bigWig}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3006" # bigWig
+  bedgraph:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.bedgraph":
+          type: file
+          description: BedGraph coverage file of comparison results
+          pattern: "*.{bedgraph}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3583" # BedGraph
+  versions_deeptools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deeptools:
+          type: string
+          description: The name of the tool
+      - bamCompare --version | sed "s/bamCompare //g":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deeptools:
+          type: string
+          description: The name of the tool
+      - bamCompare --version | sed "s/bamCompare //g":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@seqeraai"
+  - "@oliverdrechsel"
+maintainers:
+  - "@oliverdrechsel"

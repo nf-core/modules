@@ -1,16 +1,36 @@
 {
     "multiple - region_args": {
         "content": [
-            "000000001-000029829.vcf.gz.tbi",
-            "000000001-000029829.vcf.gz",
-            [
-                "versions.yml:md5,131488e7eb93b8c761765afcbc51a719"
-            ]
+            {
+                "tbi": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "000000001-000029829.vcf.gz.tbi"
+                    ]
+                ],
+                "vcf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "000000001-000029829.vcf.gz"
+                    ]
+                ],
+                "versions_graphtyper": [
+                    [
+                        "GRAPHTYPER_GENOTYPE",
+                        "graphtyper",
+                        "2.7.2"
+                    ]
+                ]
+            }
         ],
-        "timestamp": "2026-02-14T13:12:02.090140452",
+        "timestamp": "2026-05-11T22:30:39.050124678",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.03.2"
         }
     },
     "single - region_file": {
@@ -34,14 +54,20 @@
                     ]
                 ]
             ],
-            [
-                "versions.yml:md5,131488e7eb93b8c761765afcbc51a719"
-            ]
+            {
+                "versions_graphtyper": [
+                    [
+                        "GRAPHTYPER_GENOTYPE",
+                        "graphtyper",
+                        "2.7.2"
+                    ]
+                ]
+            }
         ],
-        "timestamp": "2026-02-16T16:05:22.263192697",
+        "timestamp": "2026-05-11T22:30:23.400437096",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.03.2"
         }
     },
     "single - region_file - stub": {
@@ -69,15 +95,19 @@
                         ]
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,131488e7eb93b8c761765afcbc51a719"
+                "versions_graphtyper": [
+                    [
+                        "GRAPHTYPER_GENOTYPE",
+                        "graphtyper",
+                        "2.7.2"
+                    ]
                 ]
             }
         ],
-        "timestamp": "2026-02-14T12:28:22.719581642",
+        "timestamp": "2026-05-11T22:30:46.904602299",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.03.2"
         }
     }
 }

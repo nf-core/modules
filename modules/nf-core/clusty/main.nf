@@ -4,9 +4,9 @@ process CLUSTY {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/clusty:1.2.2--h9ee0642_0':
-        'biocontainers/clusty:1.2.2--h9ee0642_0' }"
+        'quay.io/biocontainers/clusty:1.2.2--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(distances)
@@ -14,7 +14,7 @@ process CLUSTY {
 
     output:
     tuple val(meta), path("*.tsv"), emit: assignments
-    tuple val("${task.process}"), val('clusty'), eval('echo $(clusty --version 2>&1)'), topic: versions, emit: versions_clusty
+    tuple val("${task.process}"), val('clusty'), eval("clusty --version 2>&1 || true"), topic: versions, emit: versions_clusty
 
     when:
     task.ext.when == null || task.ext.when

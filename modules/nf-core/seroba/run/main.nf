@@ -3,17 +3,17 @@ process SEROBA_RUN {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/seroba:1.0.2--pyhdfd78af_1':
-        'biocontainers/seroba:1.0.2--pyhdfd78af_1' }"
+        'quay.io/biocontainers/seroba:1.0.2--pyhdfd78af_1' }"
 
     input:
     tuple val(meta), path(reads)
 
     output:
     tuple val(meta), path("${prefix}/${prefix}.tsv")                              , emit: tsv
-    tuple val(meta), path("${prefix}/detailed_serogroup_info.txt"), optional: true, emit: txt
-    path "versions.yml"                                                           , emit: versions
+    tuple val(meta), path("${prefix}/detailed_serogroup_info.txt"), optional: true , emit: txt
+    tuple val("${task.process}"), val('seroba'), eval('seroba version'), emit: versions_seroba, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,10 +30,13 @@ process SEROBA_RUN {
 
     # Avoid name collisions
     mv ${prefix}/pred.tsv ${prefix}/${prefix}.tsv
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seroba: \$(seroba version)
-    END_VERSIONS
+    stub:
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir -p ${prefix}
+    touch ${prefix}/${prefix}.tsv
     """
 }

@@ -11,14 +11,12 @@ workflow QUANTIFY_PSEUDO_ALIGNMENT {
     take:
     samplesheet               // channel: [ val(meta), /path/to/samplsheet ]
     reads                     // channel: [ val(meta), [ reads ] ]
-    index                     // channel: /path/to//index/
+    index                     // channel: [ val(meta2), /path/to/index/ ]
     transcript_fasta          // channel: /path/to/transcript.fasta
     gtf                       // channel: /path/to/genome.gtf
     gtf_id_attribute          //     val: GTF gene ID attribute
     gtf_extra_attribute       //     val: GTF alternative gene attribute (e.g. gene_name)
     pseudo_aligner            //     val: kallisto or salmon
-    alignment_mode            //    bool: Run Salmon in alignment mode
-    lib_type                  //     val: String to override Salmon library type
     kallisto_quant_fraglen    //     val: Estimated fragment length required by Kallisto in single-end mode
     kallisto_quant_fraglen_sd //     val: Estimated standard error for fragment length required by Kallisto in single-end mode
     skip_merge                //    bool: skip cross-sample merging, run tximport per-sample
@@ -32,20 +30,14 @@ workflow QUANTIFY_PSEUDO_ALIGNMENT {
     if (pseudo_aligner == 'salmon') {
         SALMON_QUANT (
             reads,
-            index,
-            gtf,
-            transcript_fasta,
-            alignment_mode,
-            lib_type
+            index.combine(gtf).combine(transcript_fasta).first()
         )
         ch_pseudo_results = SALMON_QUANT.out.results
         ch_pseudo_multiqc = ch_pseudo_results
     } else {
         KALLISTO_QUANT (
             reads,
-            index,
-            gtf,
-            [],
+            index.combine(gtf.map { g -> [ g, [] ] }).first(),
             kallisto_quant_fraglen,
             kallisto_quant_fraglen_sd
         )
@@ -70,6 +62,7 @@ workflow QUANTIFY_PSEUDO_ALIGNMENT {
     results                       = ch_pseudo_results                                              // channel: [ val(meta), results_dir ]
     multiqc                       = ch_pseudo_multiqc                                              // channel: [ val(meta), files_for_multiqc ]
     tx2gene                       = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.tx2gene                // channel: [ val(meta), tx2gene.tsv ]
+    tx2gene_augmented             = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.tx2gene_augmented      // channel: [ val(meta), tx2gene_augmented.tsv ]
 
     tpm_gene                      = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.tpm_gene               //    path: *gene_tpm.tsv
     counts_gene                   = QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT.out.counts_gene            //    path: *gene_counts.tsv

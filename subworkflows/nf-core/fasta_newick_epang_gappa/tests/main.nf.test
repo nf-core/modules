@@ -32,7 +32,7 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of(
+                input[0] = channel.of(
                     [
                         meta: [ id: "hmmer", min_bitscore: 4 ],
                         data: [
@@ -57,21 +57,18 @@ nextflow_workflow {
                 { assert snapshot(workflow.out.grafted_phylogeny.get(0).get(1)).md5().match("hmmer.graft.placement.epa_result.newick_lines") },
                 { assert snapshot(file(workflow.out.taxonomy_profile.get(0).get(1)).name).match("hmmer.taxonomy.profile.tsv") },
                 { assert snapshot(file(workflow.out.taxonomy_per_query.get(0).get(1)).name).match("hmmer.taxonomy.per_query.tsv") },
-                { assert snapshot(file(workflow.out.versions.get(0)).name).match("hmmer.versions.yml") },
-                { assert snapshot(workflow.out.versions.get(0)).md5().match("hmmer.versions.yml_lines") },
             )
         }
     }
 
     test("test_fasta_newick_epang_gappa_mafft") {
-
         when {
             params {
                 outdir = "$outputDir"
             }
             workflow {
                 """
-                input[0] = Channel.of(
+                input[0] = channel.of(
                     [
                         meta: [ id: "mafft" ],
                         data: [
@@ -98,8 +95,6 @@ nextflow_workflow {
                 { assert snapshot(workflow.out.grafted_phylogeny.get(0).get(1)).md5().match("mafft.taxonomy.profile.tsv_lines") },
                 { assert snapshot(file(workflow.out.taxonomy_per_query.get(0).get(1)).name).match("mafft.taxonomy.per_query.tsv") },
                 { assert snapshot(workflow.out.grafted_phylogeny.get(0).get(1)).md5().match("mafft.taxonomy.per_query.tsv_lines") },
-                { assert snapshot(file(workflow.out.versions.get(0)).name).match("mafft.versions.yml") },
-                { assert snapshot(workflow.out.versions.get(0)).md5().match("mafft.versions.yml_lines") },
             )
         }
     }
@@ -109,7 +104,7 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of(
+                input[0] = channel.of(
                     [
                         meta: [ id: "clustalo" ],
                         data: [
@@ -134,8 +129,6 @@ nextflow_workflow {
                 { assert snapshot(workflow.out.grafted_phylogeny.get(0).get(1)).md5().match("clustalo.graft.placement.epa_result.newick_lines") },
                 { assert snapshot(file(workflow.out.taxonomy_profile.get(0).get(1)).name).match("clustalo.taxonomy.profile.tsv") },
                 { assert snapshot(file(workflow.out.taxonomy_per_query.get(0).get(1)).name).match("clustalo.taxonomy.per_query.tsv") },
-                { assert snapshot(file(workflow.out.versions.get(0)).name).match("clustalo.versions.yml") },
-                { assert snapshot(workflow.out.versions.get(0)).md5().match("clustalo.versions.yml_lines") },
             )
         }
     }
@@ -145,7 +138,7 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                input[0] = Channel.of(
+                input[0] = channel.of(
                     [
                         meta: [ id: "nucl_hmmer" ],
                         data: [
@@ -167,8 +160,6 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(file(workflow.out.jplace.get(0).get(1)).name).match("nucl_hmmer.epa_result.jplace.gz") },
                 { assert snapshot(file(workflow.out.grafted_phylogeny.get(0).get(1)).name).match("nucl_hmmer.graft.placement.epa_result.newick") },
-                { assert snapshot(file(workflow.out.versions.get(0)).name).match("nucl_hmmer.versions.yml") },
-                { assert snapshot(workflow.out.versions.get(0)).md5().match("nucl_hmmer.versions.yml_lines") },
             )
         }
     }

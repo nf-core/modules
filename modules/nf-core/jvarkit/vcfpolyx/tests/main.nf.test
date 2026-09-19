@@ -34,13 +34,11 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    path(process.out.versions[0]).yaml
+                    sanitizeOutput(process.out, unstableKeys: ['vcf'])
                 ).match()}
             )
         }
-
     }
-
 
     test("sarscov2 - vcf+bed") {
 
@@ -63,13 +61,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert file(process.out.vcf[0][1]).exists() },
-                { assert snapshot(
-                    path(process.out.versions[0]).yaml
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ['vcf'])).match() }
             )
         }
-
     }
 
     test("sarscov2 - vcf - stub") {
@@ -98,6 +92,5 @@ nextflow_process {
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 }

@@ -1,0 +1,494 @@
+nextflow_process {
+
+    name "Test Process CUSTOM_ORFMERGE"
+    script "../main.nf"
+    process "CUSTOM_ORFMERGE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "custom"
+    tag "custom/orfmerge"
+    tag "custom/orfnormalise"
+
+    setup {
+        run("CUSTOM_ORFNORMALISE", alias: "CUSTOM_ORFNORMALISE_RIBOTISH") {
+            script "../../orfnormalise/main.nf"
+            config "./setup_prefix.config"
+            process {
+                """
+                input[0] = channel.of([
+                    [id: 'sample1', caller: 'ribotish'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.pred.txt', checkIfExists: true),
+                    'ribotish'
+                ])
+                input[1] = channel.of([
+                    [id: 'reference'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf', checkIfExists: true)
+                ])
+                """
+            }
+        }
+        run("CUSTOM_ORFNORMALISE", alias: "CUSTOM_ORFNORMALISE_RIBOCODE") {
+            script "../../orfnormalise/main.nf"
+            config "./setup_prefix.config"
+            process {
+                """
+                input[0] = channel.of([
+                    [id: 'sample1', caller: 'ribocode'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribocode.txt', checkIfExists: true),
+                    'ribocode'
+                ])
+                input[1] = channel.of([
+                    [id: 'reference'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf', checkIfExists: true)
+                ])
+                """
+            }
+        }
+        run("CUSTOM_ORFNORMALISE", alias: "CUSTOM_ORFNORMALISE_RIBOTISH_SAMPLE2") {
+            script "../../orfnormalise/main.nf"
+            config "./setup_prefix.config"
+            process {
+                """
+                input[0] = channel.of([
+                    [id: 'sample2', caller: 'ribotish'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.pred.txt', checkIfExists: true),
+                    'ribotish'
+                ])
+                input[1] = channel.of([
+                    [id: 'reference'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf', checkIfExists: true)
+                ])
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens [chr20] - ribotish + ribocode") {
+
+        when {
+            process {
+                """
+                ch_beds = CUSTOM_ORFNORMALISE_RIBOTISH.out.bed12
+                    .mix(CUSTOM_ORFNORMALISE_RIBOCODE.out.bed12)
+                    .mix(CUSTOM_ORFNORMALISE_RIBOTISH_SAMPLE2.out.bed12)
+                    .map { _meta, bed -> bed }
+                    .collect()
+                    .map { beds -> [ 'cohort', beds ] }
+                ch_tsvs = CUSTOM_ORFNORMALISE_RIBOTISH.out.tsv
+                    .mix(CUSTOM_ORFNORMALISE_RIBOCODE.out.tsv)
+                    .mix(CUSTOM_ORFNORMALISE_RIBOTISH_SAMPLE2.out.tsv)
+                    .map { _meta, tsv -> tsv }
+                    .collect()
+                    .map { tsvs -> [ 'cohort', tsvs ] }
+                input[0] = ch_beds
+                    .combine(ch_tsvs, by: 0)
+                    .map { _k, beds, tsvs -> [ [id: 'cohort'], beds, tsvs ] }
+                """
+            }
+        }
+
+        then {
+            def lines = path(process.out.catalogue_tsv[0][1]).text.readLines()
+            def cols  = lines[0].split('\t') as List
+            def rows  = lines.drop(1).collect { it.split('\t') }
+            def aa             = cols.indexOf('aa_length')
+            def cls            = cols.indexOf('orf_class')
+            def called_ribotish = cols.indexOf('called_by_ribotish')
+            def called_ribocode = cols.indexOf('called_by_ribocode')
+            def score_ribotish  = cols.indexOf('score_ribotish')
+            def score_ribocode  = cols.indexOf('score_ribocode')
+            def n_samples       = cols.indexOf('n_samples')
+            def samples         = cols.indexOf('samples')
+            def native_col          = cols.indexOf('orf_type_native')
+            def smorf           = cols.indexOf('is_smorf')
+            def mqc_lines  = path(process.out.multiqc[0][1]).text.readLines().findAll { !it.startsWith('#') && !it.startsWith('Class') && it.trim() }
+            def mqc_counts = mqc_lines.collect { it.split('\t')[1].toInteger() }
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert rows.size() > 0 },
+                { assert rows.every { it[aa].toInteger() > 0 } },
+                // Each row must come from at least one caller; the
+                // catalogue must include calls from both callers exercised
+                // in setup.
+                { assert rows.every { it[called_ribotish] == '1' || it[called_ribocode] == '1' } },
+                { assert rows.any { it[called_ribotish] == '1' } },
+                { assert rows.any { it[called_ribocode] == '1' } },
+                // The `||` assertion above is satisfied by zero merging, but this
+                // fixture's Ribo-TISH and RiboCode calls never share a transcript
+                // and span, so cross-caller merging cannot be asserted here. The
+                // synthetic class-disagreement test below covers it instead.
+                // Every class in the catalogue must appear in the MultiQC
+                // table, so CLASS_ORDER cannot silently omit one.
+                { assert mqc_counts.sum() == rows.size() },
+                // The caller's own label is preserved for every row.
+                { assert rows.every { it[native_col] && it[native_col] != '' } },
+                // is_smorf is a length flag, so it must agree with the
+                // aa_length on its own row and never appear as a class.
+                { assert rows.every { it[smorf] in ['0', '1'] } },
+                { assert rows.every { (it[smorf] == '1') == (it[aa].toInteger() in 1..100) } },
+                { assert rows.every { it[cls] != 'smORF' } },
+                // For rows where a caller contributed, the score column must
+                // carry a numeric value (catches the case where a parser
+                // bug populates `1` indicator but no real score).
+                { assert rows.findAll { it[called_ribotish] == '1' }.every { it[score_ribotish] && it[score_ribotish] != '' } },
+                { assert rows.findAll { it[called_ribocode] == '1' }.every { it[score_ribocode] && it[score_ribocode] != '' } },
+                // Class distribution must not collapse to one bucket.
+                { assert rows.collect { it[cls] }.toSet().size() >= 1 },
+                { assert rows.collect { it[cls] }.toSet().any { it != 'other' } },
+                // Cross-sample recurrence: ribotish is run for both sample1
+                // and sample2, so the shared ribotish calls must collapse to
+                // one cluster recording both samples.
+                { assert rows.every { it[n_samples].toInteger() >= 1 } },
+                { assert rows.any { it[n_samples].toInteger() == 2 } },
+                { assert rows.findAll { it[n_samples].toInteger() == 2 }.every { it[samples] == 'sample1,sample2' } }
+            )
+        }
+    }
+
+    test("homo_sapiens [chr20] - consensus view, min-samples 2") {
+
+        config "./consensus_threshold.config"
+
+        when {
+            process {
+                """
+                ch_beds = CUSTOM_ORFNORMALISE_RIBOTISH.out.bed12
+                    .mix(CUSTOM_ORFNORMALISE_RIBOCODE.out.bed12)
+                    .mix(CUSTOM_ORFNORMALISE_RIBOTISH_SAMPLE2.out.bed12)
+                    .map { _meta, bed -> bed }
+                    .collect()
+                    .map { beds -> [ 'cohort', beds ] }
+                ch_tsvs = CUSTOM_ORFNORMALISE_RIBOTISH.out.tsv
+                    .mix(CUSTOM_ORFNORMALISE_RIBOCODE.out.tsv)
+                    .mix(CUSTOM_ORFNORMALISE_RIBOTISH_SAMPLE2.out.tsv)
+                    .map { _meta, tsv -> tsv }
+                    .collect()
+                    .map { tsvs -> [ 'cohort', tsvs ] }
+                input[0] = ch_beds
+                    .combine(ch_tsvs, by: 0)
+                    .map { _k, beds, tsvs -> [ [id: 'cohort'], beds, tsvs ] }
+                """
+            }
+        }
+
+        then {
+            def cols      = path(process.out.catalogue_tsv[0][1]).text.readLines()[0].split('\t') as List
+            def full_rows = path(process.out.catalogue_tsv[0][1]).text.readLines().drop(1)
+            def con_rows  = path(process.out.consensus_tsv[0][1]).text.readLines().drop(1)
+            def n_samples = cols.indexOf('n_samples')
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                // The full catalogue is unaffected by the threshold.
+                { assert full_rows.size() > 0 },
+                // The 2-sample ORF survives; single-sample ORFs are dropped, so
+                // the consensus view is a non-empty strict subset of the full one.
+                { assert con_rows.size() > 0 },
+                { assert con_rows.size() < full_rows.size() },
+                { assert con_rows.collect { it.split('\t') }.every { it[n_samples].toInteger() >= 2 } }
+            )
+        }
+    }
+
+    test("class disagreement at identical coordinates merges into one row") {
+
+        when {
+            process {
+                """
+                def beds = channel
+                    .of(
+                            'chr1\t1000\t1300\tribotish|a\t0\t+\t1000\t1300\t0\t1\t300,\t0,',
+                            'chr1\t1000\t1300\tribocode|b\t0\t+\t1000\t1300\t0\t1\t300,\t0,'
+                    )
+                    .collectFile(name: 'synthetic.bed12', newLine: true, sort: false)
+                def tsvs = channel
+                    .of(
+                            'orf_id\tcaller\tsample_id\tchrom\tstart\tend\tstrand\tgene_id\ttranscript_id\torf_class\taa_length\tscore\torf_type_native\tis_smorf',
+                            "ribotish|a\tribotish\ts1\tchr1\t1000\t1300\t+\tg1\tt1\tuORF\t99\t0.01\t5'UTR\t1",
+                            'ribocode|b\tribocode\ts1\tchr1\t1000\t1300\t+\tg1\tt1\tuoORF\t99\t0.01\tOverlap_uORF\t1'
+                    )
+                    .collectFile(name: 'synthetic.tsv', newLine: true, sort: false)
+                input[0] = beds.combine(tsvs).map { bed, tsv -> [ [id: 'cohort'], [bed], [tsv] ] }
+                """
+            }
+        }
+
+        then {
+            def lines = path(process.out.catalogue_tsv[0][1]).text.readLines()
+            def cols  = lines[0].split('\t') as List
+            def rows  = lines.drop(1).collect { it.split('\t') }
+            def cls   = cols.indexOf('orf_class')
+            def native_col = cols.indexOf('orf_type_native')
+            def rt    = cols.indexOf('called_by_ribotish')
+            def rc    = cols.indexOf('called_by_ribocode')
+            def aa    = cols.indexOf('aa_length')
+            assertAll(
+                { assert process.success },
+                // Ribo-TISH cannot report uoORF, so keying the merge on
+                // orf_class would emit one row per caller.
+                { assert rows.size() == 1 },
+                { assert rows[0][rt] == '1' && rows[0][rc] == '1' },
+                // CLASS_SPECIFICITY picks the more specific call.
+                { assert rows[0][cls] == 'uoORF' },
+                { assert rows[0][native_col] == "5'UTR,Overlap_uORF" }
+            )
+        }
+    }
+
+    test("canonical_cds keeps a short variant separate but merges fuzzy CDS bounds") {
+
+        when {
+            process {
+                """
+                def beds = channel
+                    .of(
+                            'chr1\t1000\t1900\tribotish|cds\t0\t+\t1000\t1900\t0\t1\t900,\t0,',
+                            'chr1\t1000\t1870\tribocode|cds\t0\t+\t1000\t1870\t0\t1\t870,\t0,',
+                            'chr1\t1000\t1100\tribotish|trunc\t0\t+\t1000\t1100\t0\t1\t100,\t0,'
+                    )
+                    .collectFile(name: 'synthetic.bed12', newLine: true, sort: false)
+                def tsvs = channel
+                    .of(
+                            'orf_id\tcaller\tsample_id\tchrom\tstart\tend\tstrand\tgene_id\ttranscript_id\torf_class\taa_length\tscore\torf_type_native\tis_smorf',
+                            'ribotish|cds\tribotish\ts1\tchr1\t1000\t1900\t+\tg1\tt1\tcanonical_cds\t299\t0.01\tCDS\t0',
+                            'ribocode|cds\tribocode\ts1\tchr1\t1000\t1870\t+\tg1\tt1\tcanonical_cds\t289\t0.01\tannotated\t0',
+                            'ribotish|trunc\tribotish\ts1\tchr1\t1000\t1100\t+\tg1\tt1\tcanonical_cds\t32\t0.01\tTrunc\t1'
+                    )
+                    .collectFile(name: 'synthetic.tsv', newLine: true, sort: false)
+                input[0] = beds.combine(tsvs).map { bed, tsv -> [ [id: 'cohort'], [bed], [tsv] ] }
+                """
+            }
+        }
+
+        then {
+            def lines = path(process.out.catalogue_tsv[0][1]).text.readLines()
+            def cols  = lines[0].split('\t') as List
+            def rows  = lines.drop(1).collect { it.split('\t') }
+            def cls   = cols.indexOf('orf_class')
+            def native_col = cols.indexOf('orf_type_native')
+            def rt    = cols.indexOf('called_by_ribotish')
+            def rc    = cols.indexOf('called_by_ribocode')
+            def aa    = cols.indexOf('aa_length')
+            assertAll(
+                { assert process.success },
+                // The two full-length CDS calls differ by 30 nt (0.97 exonic
+                // overlap) and merge; the 32 aa truncation is 0.11 and does not.
+                { assert rows.size() == 2 },
+                { assert rows.count { it[native_col].contains('Trunc') } == 1 },
+                { assert rows.find { it[native_col].contains('Trunc') }[aa] == '32' },
+                { assert rows.find { it[native_col] == 'CDS,annotated' } != null }
+            )
+        }
+    }
+
+    test("short uORFs with fuzzy bounds stay separate rows (documented behaviour)") {
+
+        when {
+            process {
+                """
+                def beds = channel
+                    .of(
+                            'chr1\t1000\t1090\tribotish|u1\t0\t+\t1000\t1090\t0\t1\t90,\t0,',
+                            'chr1\t1000\t1096\tribocode|u2\t0\t+\t1000\t1096\t0\t1\t96,\t0,'
+                    )
+                    .collectFile(name: 'synthetic.bed12', newLine: true, sort: false)
+                def tsvs = channel
+                    .of(
+                            'orf_id\tcaller\tsample_id\tchrom\tstart\tend\tstrand\tgene_id\ttranscript_id\torf_class\taa_length\tscore\torf_type_native\tis_smorf',
+                            "ribotish|u1\tribotish\ts1\tchr1\t1000\t1090\t+\tg1\tt1\tuORF\t29\t0.01\t5'UTR\t1",
+                            'ribocode|u2\tribocode\ts1\tchr1\t1000\t1096\t+\tg1\tt1\tuORF\t31\t0.01\tuORF\t1'
+                    )
+                    .collectFile(name: 'synthetic.tsv', newLine: true, sort: false)
+                input[0] = beds.combine(tsvs).map { bed, tsv -> [ [id: 'cohort'], [bed], [tsv] ] }
+                """
+            }
+        }
+
+        then {
+            def lines = path(process.out.catalogue_tsv[0][1]).text.readLines()
+            def cols  = lines[0].split('\t') as List
+            def rows  = lines.drop(1).collect { it.split('\t') }
+            def cls   = cols.indexOf('orf_class')
+            def native_col = cols.indexOf('orf_type_native')
+            def rt    = cols.indexOf('called_by_ribotish')
+            def rc    = cols.indexOf('called_by_ribocode')
+            def aa    = cols.indexOf('aa_length')
+            assertAll(
+                { assert process.success },
+                // Transcript-anchored classes key on the exact span, so a 6 nt
+                // disagreement is two rows. Pinned deliberately: see CHANGELOG.
+                { assert rows.size() == 2 },
+                { assert rows.every { it[cls] == 'uORF' } },
+                { assert rows.every { it[rt] == '1' || it[rc] == '1' } }
+            )
+        }
+    }
+
+    test("cross-caller merging of transcript-anchored ORFs") {
+
+        when {
+            process {
+                """
+                def beds = channel
+                    .of(
+                            'chr1\t1000\t1300\tribotish|a\t0\t+\t1000\t1300\t0\t1\t300,\t0,',
+                            'chr1\t1000\t1300\tribocode|b\t0\t+\t1000\t1300\t0\t1\t300,\t0,',
+                            'chr1\t2000\t2300\tribotish|c\t0\t+\t2000\t2300\t0\t1\t300,\t0,'
+                    )
+                    .collectFile(name: 'synthetic.bed12', newLine: true, sort: false)
+                def tsvs = channel
+                    .of(
+                            'orf_id\tcaller\tsample_id\tchrom\tstart\tend\tstrand\tgene_id\ttranscript_id\torf_class\taa_length\tscore\torf_type_native\tis_smorf',
+                            "ribotish|a\tribotish\ts1\tchr1\t1000\t1300\t+\tg1\tt1\tuORF\t99\t0.01\t5'UTR\t1",
+                            'ribocode|b\tribocode\ts1\tchr1\t1000\t1300\t+\tg1\tt1\tuORF\t99\t0.01\tuORF\t1',
+                            "ribotish|c\tribotish\ts1\tchr1\t2000\t2300\t+\tg1\tt1\tuORF\t99\t0.01\t5'UTR\t1"
+                    )
+                    .collectFile(name: 'synthetic.tsv', newLine: true, sort: false)
+                input[0] = beds.combine(tsvs).map { bed, tsv -> [ [id: 'cohort'], [bed], [tsv] ] }
+                """
+            }
+        }
+
+        then {
+            def lines = path(process.out.catalogue_tsv[0][1]).text.readLines()
+            def cols  = lines[0].split('\t') as List
+            def rows  = lines.drop(1).collect { it.split('\t') }
+            def rt    = cols.indexOf('called_by_ribotish')
+            def rc    = cols.indexOf('called_by_ribocode')
+            def cls   = cols.indexOf('orf_class')
+            assertAll(
+                { assert process.success },
+                // Two callers reporting one uORF at the same coordinates must
+                // collapse to a single row carrying both; a second uORF on the
+                // same transcript at a different span must stay separate.
+                { assert rows.size() == 2 },
+                { assert rows.count { it[rt] == '1' && it[rc] == '1' } == 1 },
+                { assert rows.every { it[cls] == 'uORF' } }
+            )
+        }
+    }
+
+    test("cross-caller merging of non-transcript-anchored ORFs by reciprocal overlap") {
+
+        when {
+            process {
+                """
+                def beds = channel
+                    .of(
+                            'chr1\t5000\t5300\tribotish|n1\t0\t+\t5000\t5300\t0\t1\t300,\t0,',
+                            'chr1\t5000\t5290\tribocode|n2\t0\t+\t5000\t5290\t0\t1\t290,\t0,'
+                    )
+                    .collectFile(name: 'synthetic.bed12', newLine: true, sort: false)
+                def tsvs = channel
+                    .of(
+                            'orf_id\tcaller\tsample_id\tchrom\tstart\tend\tstrand\tgene_id\ttranscript_id\torf_class\taa_length\tscore\torf_type_native\tis_smorf',
+                            'ribotish|n1\tribotish\ts1\tchr1\t5000\t5300\t+\tg1\tt1\tnovel_u\t99\t0.01\tNovel\t1',
+                            'ribocode|n2\tribocode\ts1\tchr1\t5000\t5290\t+\tg1\tt1\tnovel_u\t95\t0.01\tnovel\t1'
+                    )
+                    .collectFile(name: 'synthetic.tsv', newLine: true, sort: false)
+                input[0] = beds.combine(tsvs).map { bed, tsv -> [ [id: 'cohort'], [bed], [tsv] ] }
+                """
+            }
+        }
+
+        then {
+            def lines = path(process.out.catalogue_tsv[0][1]).text.readLines()
+            def cols  = lines[0].split('\t') as List
+            def rows  = lines.drop(1).collect { it.split('\t') }
+            def rt    = cols.indexOf('called_by_ribotish')
+            def rc    = cols.indexOf('called_by_ribocode')
+            def cls   = cols.indexOf('orf_class')
+            assertAll(
+                { assert process.success },
+                // novel_u is clustered by reciprocal overlap rather than by an
+                // exact span, so two callers differing by 10 nt (0.97) merge.
+                { assert rows.size() == 1 },
+                { assert rows[0][rt] == '1' && rows[0][rc] == '1' },
+                { assert rows[0][cls] == 'novel_u' }
+            )
+        }
+    }
+
+
+    test("identical structures merge across strategy buckets") {
+
+        when {
+            process {
+                """
+                def beds = channel
+                    .of(
+                            'chr1\t1000\t1300\tribotish|a\t0\t+\t1000\t1300\t0\t1\t300,\t0,',
+                            'chr1\t1000\t1300\tprice|b\t0\t+\t1000\t1300\t0\t1\t300,\t0,'
+                    )
+                    .collectFile(name: 'crossbucket.bed12', newLine: true, sort: false)
+                def tsvs = channel
+                    .of(
+                            'orf_id\tcaller\tsample_id\tchrom\tstart\tend\tstrand\tgene_id\ttranscript_id\torf_class\taa_length\tscore\torf_type_native\tis_smorf',
+                            "ribotish|a\tribotish\ts1\tchr1\t1000\t1300\t+\tg1\tt1\tuORF\t99\t0.01\t5'UTR\t1",
+                            'price|b\tprice\ts1\tchr1\t1000\t1300\t+\tg1\t\tnovel_u\t99\t0.01\torphan\t1'
+                    )
+                    .collectFile(name: 'crossbucket.tsv', newLine: true, sort: false)
+                input[0] = beds.combine(tsvs).map { bed, tsv -> [ [id: 'cohort'], [bed], [tsv] ] }
+                """
+            }
+        }
+
+        then {
+            def lines = path(process.out.catalogue_tsv[0][1]).text.readLines()
+            def cols  = lines[0].split('\t') as List
+            def rows  = lines.drop(1).collect { it.split('\t') }
+            def native_col = cols.indexOf('orf_type_native')
+            assertAll(
+                { assert process.success },
+                // novel_u is reciprocal-overlap clustered and uORF is
+                // transcript-anchored, so without the exact-structure
+                // pre-grouping these two never reach the same cluster.
+                { assert rows.size() == 1 },
+                { assert rows[0][cols.indexOf('called_by_ribotish')] == '1' },
+                { assert rows[0][cols.indexOf('called_by_price')] == '1' },
+                // CLASS_SPECIFICITY prefers the positional call over the fallback.
+                { assert rows[0][cols.indexOf('orf_class')] == 'uORF' },
+                { assert rows[0][native_col].contains("5'UTR") },
+                { assert rows[0][native_col].contains('orphan') }
+            )
+        }
+    }
+
+
+    test("an unknown class sharing a structure with a known one still aborts") {
+
+        when {
+            process {
+                """
+                def beds = channel
+                    .of(
+                            'chr1\t1000\t1300\tribotish|a\t0\t+\t1000\t1300\t0\t1\t300,\t0,',
+                            'chr1\t1000\t1300\tribocode|b\t0\t+\t1000\t1300\t0\t1\t300,\t0,'
+                    )
+                    .collectFile(name: 'hidden.bed12', newLine: true, sort: false)
+                def tsvs = channel
+                    .of(
+                            'orf_id\tcaller\tsample_id\tchrom\tstart\tend\tstrand\tgene_id\ttranscript_id\torf_class\taa_length\tscore\torf_type_native\tis_smorf',
+                            "ribotish|a\tribotish\ts1\tchr1\t1000\t1300\t+\tg1\tt1\tuORF\t99\t0.01\t5'UTR\t1",
+                            'ribocode|b\tribocode\ts1\tchr1\t1000\t1300\t+\tg1\tt1\tNotAClass\t99\t0.01\tmystery\t1'
+                    )
+                    .collectFile(name: 'hidden.tsv', newLine: true, sort: false)
+                input[0] = beds.combine(tsvs).map { bed, tsv -> [ [id: 'cohort'], [bed], [tsv] ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                // representative() ranks an unknown class last, so validating
+                // proxies instead of input rows would let this one through and
+                // re-emit the row as uORF.
+                { assert process.failed },
+                { assert process.errorReport.contains('NotAClass') }
+            )
+        }
+    }
+
+}

@@ -1,0 +1,314 @@
+nextflow_process {
+
+    name "Test Process GCTA_REMLLDMS"
+    script "../main.nf"
+    process "GCTA_REMLLDMS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gcta"
+    tag "gcta/remlldms"
+    tag "gcta/makegrmpart"
+    tag "gawk"
+    config "./nextflow.config"
+
+    setup {
+        run("GAWK", alias: "GAWK_QUANTITATIVE_PHENOTYPE") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'QuantitativeTrait' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                ]
+                input[1] = Channel.of('{ print \$1, \$2, \$3 }').collectFile(name:'quantitative_phenotypes.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GAWK", alias: "GAWK_MULTI_PHENOTYPES") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'QuantitativeTraitMpheno' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                ]
+                input[1] = Channel.of('{ print \$1, \$2, \$3, (\$3 * 0.5) + ((NR % 7) / 10.0) }').collectFile(name:'multi_phenotypes.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GAWK", alias: "GAWK_BINARY_PHENOTYPE") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'BinaryTrait' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_binary_phenoname.phe', checkIfExists: true)
+                ]
+                input[1] = Channel.of('FNR == 1 { next } { print \$1, \$2, \$3 + 1 }').collectFile(name:'binary_phenotypes.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GAWK", alias: "GAWK_QUANTITATIVE_COVARIATES") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'covariates_quant' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                ]
+                input[1] = Channel.of('FNR == 1 { next } { print \$1, \$2, \$4, \$5 }').collectFile(name:'quantitative_covariates.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GAWK", alias: "GAWK_CATEGORICAL_COVARIATES") {
+            script "../../../gawk/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'covariates_cat' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                ]
+                input[1] = Channel.of('FNR == 1 { next } { print \$1, \$2, \$3 }').collectFile(name:'categorical_covariates.awk')
+                input[2] = false
+                """
+            }
+        }
+
+        run("GCTA_MAKEGRMPART", alias: "GCTA_MAKEGRMPART_LDMS1") {
+            script "../../makegrmpart/main.nf"
+            process {
+                """
+                file('plink_simulated.mbfile').text = 'plink_simulated\\n'
+
+                input[0] = [
+                    [ id:'plink_simulated_ldms1' ],
+                    1,
+                    1,
+                    file('plink_simulated.mbfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ]
+                ]
+                input[1] = [[ id:'all_variants' ], []]
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens gsmr - ldms mgrm with mpheno selection") {
+        when {
+            params {
+                module_args = '--mpheno 2'
+            }
+            process {
+                """
+                input[0] = Channel
+                    .of('plink_simulated_ldms1.part_1_1')
+                    .collectFile(name:'plink_simulated_ldms.mgrm', newLine: true)
+                    .combine(GCTA_MAKEGRMPART_LDMS1.out.grm_files)
+                    .map { mgrm_file, meta, grm_files, nparts_gcta, part_gcta_job ->
+                        [[ id:'plink_simulated_ldms' ], mgrm_file, grm_files]
+                    }
+                input[1] = GAWK_MULTI_PHENOTYPES.out.output.map { meta, pheno -> [[ id:'plink_simulated_ldms' ], pheno] }
+                input[2] = GAWK_QUANTITATIVE_COVARIATES.out.output.map { meta, covar -> [[ id:'plink_simulated_ldms' ], covar] }
+                input[3] = GAWK_CATEGORICAL_COVARIATES.out.output.map { meta, covar -> [[ id:'plink_simulated_ldms' ], covar] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.reml_results.size() == 1 },
+                { assert process.out.reml_results.get(0).get(0).id == "plink_simulated_ldms" },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens gsmr - quantitative phenotype with ldms mgrm and covariates") {
+        when {
+            process {
+                """
+                input[0] = Channel
+                    .of('plink_simulated_ldms1.part_1_1')
+                    .collectFile(name:'plink_simulated_ldms.mgrm', newLine: true)
+                    .combine(GCTA_MAKEGRMPART_LDMS1.out.grm_files)
+                    .map { mgrm_file, meta, grm_files, nparts_gcta, part_gcta_job ->
+                        [[ id:'plink_simulated_ldms' ], mgrm_file, grm_files]
+                    }
+                input[1] = GAWK_QUANTITATIVE_PHENOTYPE.out.output.map { meta, pheno -> [[ id:'plink_simulated_ldms' ], pheno] }
+                input[2] = GAWK_QUANTITATIVE_COVARIATES.out.output.map { meta, covar -> [[ id:'plink_simulated_ldms' ], covar] }
+                input[3] = GAWK_CATEGORICAL_COVARIATES.out.output.map { meta, covar -> [[ id:'plink_simulated_ldms' ], covar] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.reml_results.size() == 1 },
+                { assert process.out.reml_results.get(0).get(0).id == "plink_simulated_ldms" },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens gsmr - quantitative phenotype with ldms mgrm and no covariates") {
+        when {
+            process {
+                """
+                input[0] = Channel
+                    .of('plink_simulated_ldms1.part_1_1')
+                    .collectFile(name:'plink_simulated_ldms.mgrm', newLine: true)
+                    .combine(GCTA_MAKEGRMPART_LDMS1.out.grm_files)
+                    .map { mgrm_file, meta, grm_files, nparts_gcta, part_gcta_job ->
+                        [[ id:'plink_simulated_ldms' ], mgrm_file, grm_files]
+                    }
+                input[1] = GAWK_QUANTITATIVE_PHENOTYPE.out.output.map { meta, pheno -> [[ id:'plink_simulated_ldms' ], pheno] }
+                input[2] = [[ id:'plink_simulated_ldms' ], []]
+                input[3] = [[ id:'plink_simulated_ldms' ], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.reml_results.size() == 1 },
+                { assert process.out.reml_results.get(0).get(0).id == "plink_simulated_ldms" },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens gsmr - binary phenotype with ldms mgrm and prevalence") {
+        when {
+            params {
+                module_args = '--prevalence 0.1'
+            }
+            process {
+                """
+                input[0] = Channel
+                    .of('plink_simulated_ldms1.part_1_1')
+                    .collectFile(name:'plink_simulated_ldms.mgrm', newLine: true)
+                    .combine(GCTA_MAKEGRMPART_LDMS1.out.grm_files)
+                    .map { mgrm_file, meta, grm_files, nparts_gcta, part_gcta_job ->
+                        [[ id:'plink_simulated_ldms' ], mgrm_file, grm_files]
+                    }
+                input[1] = GAWK_BINARY_PHENOTYPE.out.output.map { meta, pheno -> [[ id:'plink_simulated_ldms' ], pheno] }
+                input[2] = [[ id:'plink_simulated_ldms' ], []]
+                input[3] = [[ id:'plink_simulated_ldms' ], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.reml_results.size() == 1 },
+                { assert process.out.reml_results.get(0).get(0).id == "plink_simulated_ldms" },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens gsmr - ldms mgrm defaults to first phenotype") {
+        when {
+            process {
+                """
+                input[0] = Channel
+                    .of('plink_simulated_ldms1.part_1_1')
+                    .collectFile(name:'plink_simulated_ldms.mgrm', newLine: true)
+                    .combine(GCTA_MAKEGRMPART_LDMS1.out.grm_files)
+                    .map { mgrm_file, meta, grm_files, nparts_gcta, part_gcta_job ->
+                        [[ id:'plink_simulated_ldms' ], mgrm_file, grm_files]
+                    }
+                input[1] = GAWK_MULTI_PHENOTYPES.out.output.map { meta, pheno -> [[ id:'plink_simulated_ldms' ], pheno] }
+                input[2] = GAWK_QUANTITATIVE_COVARIATES.out.output.map { meta, covar -> [[ id:'plink_simulated_ldms' ], covar] }
+                input[3] = GAWK_CATEGORICAL_COVARIATES.out.output.map { meta, covar -> [[ id:'plink_simulated_ldms' ], covar] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.reml_results.size() == 1 },
+                { assert process.out.reml_results.get(0).get(0).id == "plink_simulated_ldms" },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens gsmr - fails when mgrm references missing GRM basename") {
+        when {
+            process {
+                """
+                input[0] = Channel
+                    .of('plink_simulated_ldms_missing.part_1_1')
+                    .collectFile(name:'plink_simulated_ldms_broken.mgrm', newLine: true)
+                    .combine(GCTA_MAKEGRMPART_LDMS1.out.grm_files)
+                    .map { mgrm_file, meta, grm_files, nparts_gcta, part_gcta_job ->
+                        [[ id:'plink_simulated_ldms' ], mgrm_file, grm_files]
+                    }
+                input[1] = GAWK_QUANTITATIVE_PHENOTYPE.out.output.map { meta, pheno -> [[ id:'plink_simulated_ldms' ], pheno] }
+                input[2] = GAWK_QUANTITATIVE_COVARIATES.out.output.map { meta, covar -> [[ id:'plink_simulated_ldms' ], covar] }
+                input[3] = GAWK_CATEGORICAL_COVARIATES.out.output.map { meta, covar -> [[ id:'plink_simulated_ldms' ], covar] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert !process.success },
+                { assert process.exitStatus != 0 }
+            )
+        }
+    }
+
+    test("homo_sapiens gsmr - quantitative phenotype with ldms mgrm - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel
+                    .of('plink_simulated_ldms1.part_1_1')
+                    .collectFile(name:'plink_simulated_ldms.mgrm', newLine: true)
+                    .combine(GCTA_MAKEGRMPART_LDMS1.out.grm_files)
+                    .map { mgrm_file, meta, grm_files, nparts_gcta, part_gcta_job ->
+                        [[ id:'plink_simulated_ldms' ], mgrm_file, grm_files]
+                    }
+                input[1] = GAWK_QUANTITATIVE_PHENOTYPE.out.output.map { meta, pheno -> [[ id:'plink_simulated_ldms' ], pheno] }
+                input[2] = [[ id:'plink_simulated_ldms' ], []]
+                input[3] = [[ id:'plink_simulated_ldms' ], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.reml_results.size() == 1 },
+                { assert process.out.reml_results.get(0).get(0).id == "plink_simulated_ldms" },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

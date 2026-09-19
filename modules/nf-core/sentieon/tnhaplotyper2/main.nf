@@ -4,9 +4,9 @@ process SENTIEON_TNHAPLOTYPER2 {
     label 'sentieon'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/73/73e9111552beb76e2ad3ad89eb75bed162d7c5b85b2433723ecb4fc96a02674a/data'
-        : 'community.wave.seqera.io/library/sentieon:202503.02--def60555294d04fa'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3a/3aeac96f5787ca7dc1b8ed6679094246a6089ff8faf8f2d90d96fdace514229c/data'
+        : 'community.wave.seqera.io/library/sentieon_gzip:b8170ec7a010f305'}"
 
     input:
     tuple val(meta), path(input), path(input_index), path(intervals)
@@ -79,7 +79,7 @@ process SENTIEON_TNHAPLOTYPER2 {
     def orientation = emit_orientation_data ? "touch ${prefix}.orientation_data.tsv" : ""
     def contamination = emit_contamination_data ? "touch ${prefix}.{contamination_data.tsv,segments}" : ""
     """
-    echo | gzip > ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
     touch ${prefix}.vcf.gz.stats
     ${orientation}

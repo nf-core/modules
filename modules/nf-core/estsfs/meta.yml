@@ -13,7 +13,8 @@ tools:
       documentation: "https://sourceforge.net/projects/est-usfs/"
       tool_dev_url: "https://sourceforge.net/projects/est-usfs/files/est-sfs-release-2.04.tar.gz"
       doi: "10.1534/genetics.118.301120"
-      licence: ["Free for Academic Use"]
+      licence:
+        - "Free for Academic Use"
       identifier: ""
 input:
   - - meta:
@@ -60,12 +61,26 @@ output:
             for each site
           pattern: "*.txt"
           ontologies: []
+  versions_estsfs:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - est-sfs:
+          type: string
+          description: The name of the tool
+      - "2.04":
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - est-sfs:
+          type: string
+          description: The name of the tool
+      - "2.04":
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@BioInf2305"

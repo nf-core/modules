@@ -3,6 +3,7 @@ nextflow_process {
 
     name "Test Process NANOFILT"
     script "../main.nf"
+    config "./nextflow.config"
     process "NANOFILT"
 
     tag "modules"
@@ -27,7 +28,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(
+                    process.out.filtreads,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
 
             )
         }
@@ -54,7 +58,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(sanitizeOutput(
+                    process.out)).match() }
             )
         }
 

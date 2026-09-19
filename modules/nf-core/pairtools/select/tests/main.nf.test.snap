@@ -1,4 +1,40 @@
 {
+    "test-pairtools-select - stub": {
+        "content": [
+            {
+                "selected": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.selected.pairs.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "unselected": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.unselected.pairs.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions_pairtools": [
+                    [
+                        "PAIRTOOLS_SELECT",
+                        "pairtools",
+                        "1.1.3"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-06-12T19:35:54.851342669",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
     "test-pairtools-select": {
         "content": [
             [
@@ -16,6 +52,24 @@
                 "#samheader: @SQ\tSN:chr1\tLN:100"
             ],
             {
+                "selected": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.selected.pairs.gz"
+                    ]
+                ],
+                "unselected": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.unselected.pairs.gz"
+                    ]
+                ],
                 "versions_pairtools": [
                     [
                         "PAIRTOOLS_SELECT",
@@ -25,10 +79,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-03-25T00:57:22.099470463",
+        "timestamp": "2026-06-12T19:35:47.182228403",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
         }
     }
 }

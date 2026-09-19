@@ -1,6 +1,6 @@
 name: bcftools_query
-description: Extracts fields from VCF or BCF files and outputs them in user-defined
-  format.
+description: Extracts fields from VCF or BCF files and outputs them in
+  user-defined format.
 keywords:
   - query
   - variant calling
@@ -13,7 +13,8 @@ tools:
       homepage: http://samtools.github.io/bcftools/bcftools.html
       documentation: http://www.htslib.org/doc/bcftools.html
       doi: 10.1093/bioinformatics/btp352
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:bcftools
 input:
   - - meta:
@@ -68,7 +69,7 @@ output:
           type: string
           description: The tool name
       - "bcftools --version | sed '1!d; s/^.*bcftools //'":
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 topics:
   versions:
@@ -79,7 +80,7 @@ topics:
           type: string
           description: The tool name
       - "bcftools --version | sed '1!d; s/^.*bcftools //'":
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 authors:
   - "@abhi18av"

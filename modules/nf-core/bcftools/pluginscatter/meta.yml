@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "bcftools_pluginscatter"
 description: Split VCF by chunks or regions, creating multiple VCFs.
 keywords:
@@ -13,7 +12,8 @@ tools:
       homepage: http://samtools.github.io/bcftools/bcftools.html
       documentation: http://samtools.github.io/bcftools/bcftools.html#reheader
       doi: 10.1093/gigascience/giab008
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:bcftools
 input:
   - - meta:
@@ -54,8 +54,8 @@ input:
       ontologies: []
   - targets:
       type: file
-      description: Optional file containing the regions to work on (but streams instead
-        of index-jumping)
+      description: Optional file containing the regions to work on (but streams
+        instead of index-jumping)
       pattern: "*.bed"
       ontologies: []
 output:
@@ -70,28 +70,16 @@ output:
           description: The resulting files of the scattering
           pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
           ontologies: []
-  tbi:
+  index:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.tbi":
+      - "*.{tbi,csi}":
           type: file
-          description: Alternative VCF file index
-          pattern: "*.tbi"
-          ontologies: []
-  csi:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.csi":
-          type: file
-          description: Default VCF file index
-          pattern: "*.csi"
-          ontologies: []
+          description: VCF file index
+          pattern: "*.{tbi,csi}"
   versions_bcftools:
     - - ${task.process}:
           type: string
@@ -99,8 +87,8 @@ output:
       - bcftools:
           type: string
           description: The tool name
-      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
-          type: string
+      - bcftools --version | sed '1!d; s/^.*bcftools //':
+          type: eval
           description: The command used to generate the version of the tool
 topics:
   versions:
@@ -110,8 +98,8 @@ topics:
       - bcftools:
           type: string
           description: The tool name
-      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
-          type: string
+      - bcftools --version | sed '1!d; s/^.*bcftools //':
+          type: eval
           description: The command used to generate the version of the tool
 authors:
   - "@nvnieuwk"

@@ -1,0 +1,72 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "custom_bed12codonpositions"
+description: |
+  Expand a BED12 into a BED6 of in-frame mRNA positions, projected back
+  to genomic coordinates. Default behaviour emits one row per codon (the
+  5' nucleotide); --step / --width / --frame control the stride, span
+  and offset on the spliced mRNA. Useful for codon-level work on
+  spliced features (e.g. ribo-seq P-site counts per codon, frame /
+  periodicity QC, novel-ORF tiling).
+keywords:
+  - bed12
+  - bed6
+  - codon
+  - splicing
+  - coordinates
+tools:
+  - "bed12codonpositions":
+      description: |
+        Python helper that expands a BED12 into per-codon BED6
+        positions along the spliced feature, with configurable frame,
+        step and span width via `ext.args`.
+      tool_dev_url: "https://github.com/nf-core/modules/blob/master/modules/nf-core/custom/bed12codonpositions/main.nf"
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample/feature-set information
+          e.g. `[ id:'catalogue' ]`
+    - bed12:
+        type: file
+        description: |
+          BED12 file with one record per multi-block feature. blockStarts
+          are offsets from column 2 (start); blockSizes are in nt; blocks
+          must be in ascending genomic-coordinate order.
+        pattern: "*.{bed,bed12}"
+        ontologies:
+          - edam: http://edamontology.org/format_3586 # BED
+output:
+  bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map matching the input meta.
+      - ${prefix}.bed:
+          type: file
+          description: |
+            BED6 file with one row per in-frame mRNA position projected
+            back to genomic coordinates. Columns are chrom, start, end,
+            name (from BED12 column 4), score (preserved from BED12
+            column 5), strand. Sorted in mRNA-traversal order, which
+            means descending genomic order on '-' strand records.
+          pattern: "*.bed"
+          ontologies:
+            - edam: http://edamontology.org/format_3003 # BED
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: string
+        description: The name of the process
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"

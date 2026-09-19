@@ -1,4 +1,3 @@
-
 nextflow_process {
 
     name "Test Process PLASMIDID"
@@ -15,11 +14,11 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [ id:'test' ], // meta map
-				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
-				]
-				input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-
+                input[0] = [
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 """
             }
         }
@@ -27,20 +26,31 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-					file(process.out.data[0][1]).name,
-					file(process.out.database[0][1]).name,
-					file(process.out.images[0][1]).name,
-					file(process.out.kmer[0][1]).name,
-					file(process.out.logs[0][1]).name,
-					process.out.fasta_files,
-					process.out.html,
-					process.out.tab,
-					process.out.versions
-					).match()
-				}
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["images", "logs", "data", "database", "kmer"])).match() }
             )
         }
     }
 
+    test("test-plasmidid-stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
 }

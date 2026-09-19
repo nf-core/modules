@@ -1,0 +1,325 @@
+nextflow_process {
+
+    name "Test Process PARSESDRF_CONVERT"
+    script "../main.nf"
+    process "PARSESDRF_CONVERT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "parsesdrf"
+    tag "parsesdrf/convert"
+
+    test("sdrf - mhcquant - PXD009752") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'PXD009752' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true),
+                    [],
+                    ''
+                ]
+                input[1] = 'mhcquant'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sdrf - openms - PXD009752") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'PXD009752' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true),
+                    [],
+                    ''
+                ]
+                input[1] = 'openms'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sdrf - maxquant - PXD009752") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'PXD009752' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/UP000005640_9606_500prot.fasta', checkIfExists: true),
+                    '.'
+                ]
+                input[1] = 'maxquant'
+                """
+            }
+        }
+
+        then {
+            // maxquant XML is non-deterministic upstream (Python hash-seed reorders <variableModifications>); skip md5s.
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["maxquant"])).match() }
+            )
+        }
+
+    }
+
+    test("sdrf - msstats - PXD009752") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'PXD009752' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true),
+                    [],
+                    ''
+                ]
+                input[1] = 'msstats'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sdrf - normalyzerde - PXD009752") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'PXD009752' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true),
+                    [],
+                    ''
+                ]
+                input[1] = 'normalyzerde'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sdrf - diann - PXD009752") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'PXD009752' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true),
+                    [],
+                    ''
+                ]
+                input[1] = 'diann'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sdrf - mhcquant - PXD009752 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'PXD009752' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true),
+                    [],
+                    ''
+                ]
+                input[1] = 'mhcquant'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sdrf - openms - PXD009752 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'PXD009752' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true),
+                    [],
+                    ''
+                ]
+                input[1] = 'openms'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sdrf - maxquant - PXD009752 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'PXD009752' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true),
+                    [],
+                    ''
+                ]
+                input[1] = 'maxquant'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sdrf - msstats - PXD009752 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'PXD009752' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true),
+                    [],
+                    ''
+                ]
+                input[1] = 'msstats'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sdrf - normalyzerde - PXD009752 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'PXD009752' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true),
+                    [],
+                    ''
+                ]
+                input[1] = 'normalyzerde'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sdrf - diann - PXD009752 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'PXD009752' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/mhcquant/testdata/PXD009752.sdrf.tsv', checkIfExists: true),
+                    [],
+                    ''
+                ]
+                input[1] = 'diann'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

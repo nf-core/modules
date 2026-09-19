@@ -3,18 +3,20 @@ process ULTRA_INDEX {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-4b749ef583d6de806ddbf51c2d235ac8c14763c6:c2c0cd48e7ed1cf3f365b421c7389d04e6bfa812-0':
-        'biocontainers/mulled-v2-4b749ef583d6de806ddbf51c2d235ac8c14763c6:c2c0cd48e7ed1cf3f365b421c7389d04e6bfa812-0' }"
+        'quay.io/biocontainers/mulled-v2-4b749ef583d6de806ddbf51c2d235ac8c14763c6:c2c0cd48e7ed1cf3f365b421c7389d04e6bfa812-0' }"
 
     input:
     tuple val(meta), path(fasta)
     tuple val(meta2), path(gtf)
 
     output:
-    tuple val(meta), path("*.db")    , emit: database
+    tuple val(meta), path("*.db"), emit: database
     tuple val(meta), path("*.pickle"), emit: pickle
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('ultra'), eval("uLTRA --version | sed 's/uLTRA //'"), emit: versions_ultra, topic: versions
+    tuple val("${task.process}"), val('gffutils'), eval("python -c 'import gffutils; print(gffutils.__version__)'"), emit: versions_gffutils, topic: versions
+    tuple val("${task.process}"), val('sqlite'), eval("python -c 'import sqlite3; print(sqlite3.sqlite_version)'"), emit: versions_sqlite, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,13 +30,6 @@ process ULTRA_INDEX {
         ${fasta} \\
         ${gtf} \\
         ./
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ultra: \$( uLTRA --version|sed 's/uLTRA //g' )
-        gffutils: \$(python -c "import gffutils; print(gffutils.__version__)")
-        sqlite: \$(python -c "import sqlite3; print(sqlite3.sqlite_version)")
-    END_VERSIONS
     """
 
     stub:
@@ -60,12 +55,5 @@ process ULTRA_INDEX {
     touch segment_to_ref.pickle
     touch splices_to_transcripts.pickle
     touch transcripts_to_splices.pickle
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ultra: \$( uLTRA --version|sed 's/uLTRA //g' )
-        gffutils: \$(python -c "import gffutils; print(gffutils.__version__)")
-        sqlite: \$(python -c "import sqlite3; print(sqlite3.sqlite_version)")
-    END_VERSIONS
     """
 }

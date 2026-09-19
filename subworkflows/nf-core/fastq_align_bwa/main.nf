@@ -17,8 +17,8 @@ workflow FASTQ_ALIGN_BWA {
     //
     // Map reads with BWA
     //
-
-    BWA_MEM(ch_reads, ch_index, ch_fasta_fai, val_sort_bam)
+    ch_fasta = ch_fasta_fai.map { meta, fasta, _fai -> [meta, fasta] }
+    BWA_MEM(ch_reads, ch_index, ch_fasta, val_sort_bam)
 
     //
     // Sort, index BAM file and run samtools stats, flagstat and idxstats

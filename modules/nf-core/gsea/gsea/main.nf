@@ -3,7 +3,7 @@ process GSEA_GSEA {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0f/0f4fe28961396eeeaa98484cb4f2db5c79abfdf117700df132312fe5c41bff81/data':
         'community.wave.seqera.io/library/gsea:4.3.2--a7421d7504fd7c81' }"
 
@@ -43,28 +43,30 @@ process GSEA_GSEA {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def rpt_label = prefix.replaceAll('\\.$', '') // Remove any trailing dots from prefix when passed as report label, so GSEA doesn't produce double-dotted top-level outputs
-    def chip_command = chip ? "-chip $chip -collapse true" : ''
+    def rpt_label = prefix.replaceAll('\\.$', '')
+    def chip_command = chip ? "-chip \"$chip\" -collapse true" : ''
+    // gsea-cli takes a comma-delimited -gmx value to pool multiple gene set files into one run.
+    def gmx = gene_sets instanceof List ? gene_sets.join(',') : gene_sets
 
     """
     # Run GSEA
 
     gsea-cli GSEA \\
-        -res $gct \\
-        -cls ${cls}#${target}_versus_${reference} \\
-        -gmx $gene_sets \\
+        -res "$gct" \\
+        -cls "${cls}#${target}_versus_${reference}" \\
+        -gmx "$gmx" \\
         $chip_command \\
         -out . \\
-        --rpt_label $rpt_label \\
+        --rpt_label "$rpt_label" \\
         $args
 
     # Un-timestamp the outputs for path consistency
-    mv ${rpt_label}.Gsea.*/* .
+    mv "$rpt_label".Gsea.*/* .
     timestamp=\$(cat *.rpt | grep producer_timestamp | awk '{print \$2}')
 
     for pattern in _\${timestamp} .\${timestamp}; do
         find . -name "*\${pattern}*" | sed "s|^\\./||" | while read -r f; do
-            mv \$f \${f//\$pattern/}
+            mv "\$f" "\${f//\$pattern/}"
         done
     done
     sed -i.bak "s/[_\\.]\$timestamp//g" *.rpt *.html && rm *.bak
