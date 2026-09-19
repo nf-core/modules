@@ -1,0 +1,75 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: plink_fit_regenie
+description: Fit REGENIE Step 1 prediction models from PLINK-format genotype bundles
+keywords:
+  - regenie
+  - gwas
+  - plink
+  - step1
+  - genotype
+components:
+  - regenie/step1
+  - regenie/splitl0
+  - regenie/runl0
+  - regenie/runl1
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - genotype_file:
+      type: file
+      description: PLINK-format genotype file, either PLINK 1 BED or PLINK 2 PGEN
+      pattern: "*.{bed,pgen}"
+  - variant_file:
+      type: file
+      description: PLINK-format variant file matching the genotype file
+      pattern: "*.{bim,pvar}"
+  - sample_file:
+      type: file
+      description: PLINK-format sample file matching the genotype file
+      pattern: "*.{fam,psam}"
+  - pheno:
+      type: file
+      description: REGENIE phenotype file
+      pattern: "*"
+  - covar:
+      type: file
+      description: Optional REGENIE covariate file. Use [] when absent.
+      pattern: "*"
+  - bsize:
+      type: integer
+      description: Step 1 block size. Use [] to keep the module default.
+  - step1_mode:
+      type: string
+      description: Step 1 execution mode. Must be "standard" or "chunked".
+  - n_l0_jobs:
+      type: integer
+      description: Number of L0 jobs for chunked mode. Use [] for standard mode.
+output:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing sample information
+        e.g. [ id:'test' ]
+  - predictions:
+      type: file
+      description: REGENIE Step 1 prediction list
+      pattern: "*_pred.list"
+  - loco:
+      type: file
+      description: REGENIE Step 1 leave-one-chromosome-out predictions
+      pattern: "*.loco.gz"
+  - logs:
+      type: file
+      description: REGENIE log files from the selected Step 1 execution path
+      pattern: "*.log"
+  - versions:
+      type: file
+      description: Compatibility versions channel. REGENIE module versions are published via topic channels.
+      pattern: "versions.yml"
+authors:
+  - "@lyh970817"
+maintainers:
+  - "@lyh970817"
