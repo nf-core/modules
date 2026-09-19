@@ -15,6 +15,7 @@ nextflow_process {
     setup {
         run("SOURMASH_SKETCH", alias: "SOURMASH_SKETCH_1") {
             script "../../sketch/main.nf"
+            config "./nextflow.config"
             process {
             """
             input[0] = Channel.fromList(
@@ -32,6 +33,7 @@ nextflow_process {
 
         run("SOURMASH_SKETCH", alias: "SOURMASH_SKETCH_2") {
             script "../../sketch/main.nf"
+            config "./nextflow.config"
             process {
             """
             input[0] = Channel.fromList(
