@@ -14,7 +14,8 @@ process NARFMAP_ALIGN {
     val   sort_bam
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.{bam,cram}"), emit: mapped
+    tuple val(meta), path('*.{csi,bai,crai}'), emit: index, optional: true
     tuple val(meta), path('*.log'), emit: log
     tuple val("${task.process}"), val('narfmap'), eval("dragen-os --version 2>&1"), topic: versions, emit: versions_narfmap
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
