@@ -8,9 +8,9 @@ nextflow_process {
     tag "modules_nfcore"
     tag "seqkit"
     tag "seqkit/sample"
+    config './nextflow.config'
 
     test("sarscov2 - fastq_gz - proportion") {
-        config './nextflow.config'
         when {
             params {
                 module_args = '--proportion 0.5 --rand-seed 11'
@@ -31,8 +31,30 @@ nextflow_process {
 
     }
 
+    test("sarscov2 - fastq_gz - proportion - paired end") {
+
+        when {
+            params {
+                module_args = '--proportion 0.5 --rand-seed 11'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert snapshot(sanitizeOutput(process.out)).match()
+        }
+
+    }
+
     test("sarscov2 - genome_fasta - proportion") {
-        config './nextflow.config'
         when {
             params {
                 module_args = '--proportion 0.5 --rand-seed 11'
@@ -54,7 +76,6 @@ nextflow_process {
     }
 
     test("file_name_conflict - fail_with_error") {
-        config './nextflow.config'
         when {
             params {
                 module_args = '--proportion 0.5 --rand-seed 11'
@@ -77,7 +98,6 @@ nextflow_process {
     }
 
     test("sarscov2 - fastq_gz - proportion - stub") {
-        config './nextflow.config'
         options "-stub"
 
         when {
