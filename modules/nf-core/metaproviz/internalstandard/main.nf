@@ -15,7 +15,8 @@ process METAPROVIZ_INTERNALSTANDARD {
     tuple val(meta), path("*.plots.rds")         , emit: plots
     tuple val(meta), path("*.report.html")       , emit: report
     tuple val(meta), path("*.log")               , emit: log
-    path "versions.yml"                                            , emit: versions_internalstandard, topic: versions
+    path "versions.yml"                                            , emit: versions_metaproviz, topic: versions
+    path "versions.yml"                                            , emit: versions_r_base, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,7 +34,6 @@ process METAPROVIZ_INTERNALSTANDARD {
         error "METAPROVIZ_INTERNALSTANDARD module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def prefix  = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.0.0'
     """
     touch ${prefix}.cv.tsv ${prefix}.high_var.txt \\
           ${prefix}.condition_cv.tsv ${prefix}.plots.rds \\
@@ -41,8 +41,8 @@ process METAPROVIZ_INTERNALSTANDARD {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        r-base: 4.4.1
-        metaproviz: $VERSION
+        r-base: \$(Rscript -e 'cat(strsplit(R.version.string, " ")[[1]][3])')
+        metaproviz: \$(Rscript -e 'cat(as.character(packageVersion("MetaProViz")))')
     END_VERSIONS
     """
 }

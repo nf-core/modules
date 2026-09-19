@@ -26,11 +26,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.versions_internalstandard != null },
+                { assert process.out.versions_metaproviz != null },
+                { assert process.out.versions_r_base != null },
                 { assert process.out.high_var != null },
                 { assert snapshot(
                     process.out.cv_table,
-                    process.out.versions_internalstandard
+                    process.out.versions_metaproviz
                   ).match() }
             )
         }
@@ -55,11 +56,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.versions_internalstandard != null },
+                { assert process.out.versions_metaproviz != null },
+                { assert process.out.versions_r_base != null },
                 { assert process.out.high_var != null },
                 { assert snapshot(
                     process.out.cv_table,
-                    process.out.versions_internalstandard
+                    process.out.versions_metaproviz
                   ).match() }
             )
         }
@@ -88,7 +90,8 @@ nextflow_process {
                 { assert process.out.plots != null },
                 { assert process.out.report != null },
                 { assert process.out.log != null },
-                { assert process.out.versions_internalstandard != null }
+                { assert process.out.versions_metaproviz != null },
+                { assert process.out.versions_r_base != null }
             )
         }
     }

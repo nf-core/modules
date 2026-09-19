@@ -35,19 +35,25 @@ input:
         description: Feature-by-sample abundance matrix (TSV/CSV), first column the feature ID. Use NA (or an empty cell) for metabolites that weren't detected. Required together with feature_matrix and sample_matrix if se_rds is not given; pass [] otherwise.
         pattern: "*.{tsv,csv}"
         optional: true
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3752 # CSV
     - feature_matrix:
         type: file
         description: Feature metadata (TSV/CSV), first column the feature ID matching data_matrix's rows. Required together with data_matrix and sample_matrix if se_rds is not given; pass [] otherwise.
         pattern: "*.{tsv,csv}"
         optional: true
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3752 # CSV
     - sample_matrix:
         type: file
         description: Sample metadata (TSV/CSV), first column the sample ID matching data_matrix's columns. Required together with data_matrix and feature_matrix if se_rds is not given; pass [] otherwise.
         pattern: "*.{tsv,csv}"
         optional: true
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3752 # CSV
 
 output:
   cv_table:
@@ -60,7 +66,8 @@ output:
           type: file
           description: Per internal-standard feature CV across samples.
           pattern: "*.cv.tsv"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   high_var:
     - - meta:
           type: map
@@ -71,7 +78,8 @@ output:
           type: file
           description: Internal standards exceeding the CV cutoff.
           pattern: "*.high_var.txt"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # TXT
   condition_cv:
     - - meta:
           type: map
@@ -82,7 +90,8 @@ output:
           type: file
           description: Per-standard CV broken down by condition (wide format, one column per condition). Only meaningful when real condition metadata is present; header-only (just a Standard column) otherwise.
           pattern: "*.condition_cv.tsv"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   plots:
     - - meta:
           type: map
@@ -116,18 +125,35 @@ output:
           description: INFO/WARN log.
           pattern: "*.log"
           ontologies: []
-  versions_internalstandard:
+  versions_metaproviz:
     - versions.yml:
         type: file
-        description: File containing software versions.
+        description: File containing software versions, including MetaProViz.
         pattern: "versions.yml"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+  versions_r_base:
+    - versions.yml:
+        type: file
+        description: File containing software versions, including base R.
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 
 topics:
   versions:
     - versions.yml:
-        type: string
-        description: The name of the process
+        type: file
+        description: File containing software versions, including MetaProViz.
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+    - versions.yml:
+        type: file
+        description: File containing software versions, including base R.
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 
 authors:
   - "@christinaschmidt1"
@@ -135,7 +161,3 @@ authors:
 maintainers:
   - "@christinaschmidt1"
   - "@giuliaroeth"
-versions:
-  - versions.yml:
-      type: file
-      description: YAML file containing versions of tools used in the module
