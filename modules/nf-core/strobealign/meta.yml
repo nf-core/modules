@@ -190,3 +190,27 @@ authors:
 maintainers:
   - "@matthdsm"
   - "@nvnieuwk"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/htslib_samtools_strobealign_pigz:be473d108d6e0fb8
+      build_id: bd-be473d108d6e0fb8_1
+      scan_id: sc-1c7aa91ff75be091_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/htslib_samtools_strobealign_pigz:90eb6a088ad3d321
+      build_id: bd-90eb6a088ad3d321_1
+      scan_id: sc-2d791fc8861014bc_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/htslib_samtools_strobealign_pigz:38afc784dff2496a
+      build_id: bd-38afc784dff2496a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/58/58b8968bb248307d133950891a33c9e569f5f1aa729ad997d8bb1311ec7f2589/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/htslib_samtools_strobealign_pigz:90ad219a62d4fc12
+      build_id: bd-90ad219a62d4fc12_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/54/54a576c51485cf7af3223084b2bfffabbe1c25c92c987ba564bb061ad0a16c89/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/strobealign/.conda-lock/linux_amd64-bd-90eb6a088ad3d321_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/strobealign/.conda-lock/linux_arm64-bd-be473d108d6e0fb8_1.txt

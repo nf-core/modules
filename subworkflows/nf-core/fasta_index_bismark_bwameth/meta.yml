@@ -41,27 +41,24 @@ output:
   - fasta_fai:
       type: file
       description: |
-        Reference genome
+        Reference genome and its index
+
         Structure: [ val(meta), path(fasta), path(fai) ]
-      pattern: "*.{fa/fa.gz,fai}"
+      pattern: "*.{fa,fai}"
   - bismark_index:
-      type: file
+      type: directory
       description: |
         Bismark genome index files
+
         Structure: [ val(meta), path(bismark_index) ]
-        pattern: "BismarkIndex"
+      pattern: "BismarkIndex"
   - bwameth_index:
-      type: file
+      type: directory
       description: |
         Bwameth genome index files
+
         Structure: [ val(meta), path(bwameth_index) ]
-        pattern: "index"
-  - versions:
-      type: file
-      description: |
-        File containing software versions
-        Structure: [ path(versions.yml) ]
-      pattern: "versions.yml"
+      pattern: "index"
 authors:
   - "@sateeshperi"
   - "dcarrillox"

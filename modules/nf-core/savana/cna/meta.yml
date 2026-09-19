@@ -183,19 +183,6 @@ output:
           pattern: "*kbp_bin_ref_*_*.bed"
           ontologies:
             - edam: "http://edamontology.org/format_3003" # BED
-  allele_counts:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-      - ${prefix}_allele_counts_hetSNPs.bed:
-          type: file
-          description: Allele counts for heterozygous SNPs (optional)
-          pattern: "*_allele_counts_hetSNPs.bed"
-          ontologies:
-            - edam: "http://edamontology.org/format_3003" # BED
-
   no_fit:
     - - meta:
           type: map
@@ -209,6 +196,19 @@ output:
           optional: true
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
+  allele_counts:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_allele_counts_hetSNPs.bed:
+          type: file
+          description: Allele counts for heterozygous SNPs (optional)
+          pattern: "*_allele_counts_hetSNPs.bed"
+          ontologies:
+            - edam: "http://edamontology.org/format_3003" # BED
+
   versions_savana:
     - - ${task.process}:
           type: string

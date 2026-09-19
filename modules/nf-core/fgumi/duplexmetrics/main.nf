@@ -4,8 +4,8 @@ process FGUMI_DUPLEXMETRICS {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e6/e613097ca7c84595a8683b6b042d113ac40e1936a809477aa95fcd1f8f3bfca2/data'
-        : 'community.wave.seqera.io/library/fgumi:0.6.0--c97194d17da0d1cd'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/99/99c92db2efcbcc4d20f2541060e09ed0f5a4338927f4a2ae3ab683de585efeb6/data'
+        : 'community.wave.seqera.io/library/fgumi:0.7.0--d91f99b4cd4aae5a'}"
 
     input:
     tuple val(meta), path(bam), path(intervals)

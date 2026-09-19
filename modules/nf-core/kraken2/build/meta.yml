@@ -111,16 +111,6 @@ output:
           pattern: "*.{dmp,accession2taxid}"
           ontologies:
             - edam: http://edamontology.org/data_3028 # Taxonomy
-  versions_kraken2:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - kraken2:
-          type: string
-          description: The name of the tool
-      - kraken2 --version 2>&1 | head -1 | sed "s/^.*Kraken version //; s/ .*//":
-          type: eval
-          description: The expression to obtain the version of the tool
   unmapped:
     - - meta:
           type: map
@@ -135,6 +125,16 @@ output:
           pattern: "unmapped*.txt"
           ontologies:
             - edam: http://edamontology.org/data_2526 # Text data
+  versions_kraken2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kraken2:
+          type: string
+          description: The name of the tool
+      - kraken2 --version 2>&1 | head -1 | sed "s/^.*Kraken version //; s/ .*//":
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:

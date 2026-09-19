@@ -5,8 +5,8 @@ process SENTIEON_GVCFTYPER {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/73/73e9111552beb76e2ad3ad89eb75bed162d7c5b85b2433723ecb4fc96a02674a/data'
-        : 'community.wave.seqera.io/library/sentieon:202503.02--def60555294d04fa'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3a/3aeac96f5787ca7dc1b8ed6679094246a6089ff8faf8f2d90d96fdace514229c/data'
+        : 'community.wave.seqera.io/library/sentieon_gzip:b8170ec7a010f305'}"
 
     input:
     tuple val(meta), path(gvcfs), path(tbis), path(intervals)
@@ -24,6 +24,7 @@ process SENTIEON_GVCFTYPER {
     task.ext.when == null || task.ext.when
 
     script:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_genotyped"
     def gvcfs_input = '-v ' + gvcfs.join(' -v ')
     def dbsnp_cmd = dbsnp ? "--dbsnp ${dbsnp}" : ""
@@ -38,6 +39,7 @@ process SENTIEON_GVCFTYPER {
         -r ${fasta} \\
         ${interval_command} \\
         --algo GVCFtyper \\
+        ${args} \\
         ${gvcfs_input} \\
         ${dbsnp_cmd} \\
         ${prefix}.vcf.gz

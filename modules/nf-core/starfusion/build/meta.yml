@@ -49,19 +49,17 @@ input:
       description: Dfam species name
   - pfam_url:
       type: file
-      description: Pfam-A HMM database file (gzipped)
-      pattern: "*.{hmm.gz}"
-      ontologies: []
+      description: Gzipped Pfam-A HMM library, unpacked and indexed with hmmpress
+      pattern: "Pfam-A.hmm.gz"
   - dfam_urls:
       type: file
-      description: Dfam HMM database files and indices
-      pattern: "*.{hmm,h3f,h3i,h3m,h3p}"
-      ontologies: []
+      description: |
+        Dfam HMM library and its four hmmpress index files
+        (.hmm, .hmm.h3f, .hmm.h3i, .hmm.h3m, .hmm.h3p)
+      pattern: "*.hmm{,.h3f,.h3i,.h3m,.h3p}"
   - annot_filter_url:
       type: file
-      description: Annotation filter rule file URL or path
-      pattern: "*.pm"
-      ontologies: []
+      description: Annotation filter rule file passed to --annot_filter_rule
 output:
   reference:
     - - meta:
