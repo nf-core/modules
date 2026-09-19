@@ -1,0 +1,119 @@
+nextflow_process {
+
+    name "Test Process METAPROVIZ_INTERNALSTANDARD"
+    script "../main.nf"
+    process "METAPROVIZ_INTERNALSTANDARD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "metaproviz"
+    tag "metaproviz/internalstandard"
+
+    test("internal standard - cellular se rds") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
+                    [], [], []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.versions_internalstandard != null },
+                { assert process.out.high_var != null },
+                { assert snapshot(
+                    process.out.cv_table,
+                    process.out.versions_internalstandard
+                  ).match() }
+            )
+        }
+    }
+
+    test("internal standard - cellular csv matrices") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/csv/data_matrix.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/csv/feature_matrix.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/csv/sample_matrix.csv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.versions_internalstandard != null },
+                { assert process.out.high_var != null },
+                { assert snapshot(
+                    process.out.cv_table,
+                    process.out.versions_internalstandard
+                  ).match() }
+            )
+        }
+    }
+
+    test("internal standard - no IS features found (tissue)") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/patient/tissue/SE.RData', checkIfExists: true),
+                    [], [], []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.cv_table != null },
+                { assert process.out.high_var != null },
+                { assert process.out.condition_cv != null },
+                { assert process.out.plots != null },
+                { assert process.out.report != null },
+                { assert process.out.log != null },
+                { assert process.out.versions_internalstandard != null }
+            )
+        }
+    }
+
+    test("internal standard - cellular se rds - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
+                    [], [], []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

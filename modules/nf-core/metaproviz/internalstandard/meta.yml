@@ -1,0 +1,141 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "metaproviz_internalstandard"
+description: Quality-control check on internal-standard (spike-in) features — their coefficient of variation across all samples reads out LC-MS technical noise. Read-only; does not modify the SE.
+keywords:
+  - metabolomics
+  - quality control
+  - internal standard
+  - coefficient of variation
+  - MetaProViz
+tools:
+  - "metaproviz":
+      description: "MetaProViz — Metabolomics Processing, functional analysis and Visualization."
+      homepage: "https://saezlab.github.io/MetaProViz/"
+      documentation: "https://saezlab.github.io/MetaProViz/"
+      tool_dev_url: "https://github.com/saezlab/MetaProViz"
+      doi: "10.1038/s44320-026-00231-8"
+      licence: ["BSD-3-Clause"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - se_rds:
+        type: file
+        description: A SummarizedExperiment saved as RDS; its colData is used as the sample metadata — a condition column (named "Conditions" by default, or whatever --conditions_col points at) splits the CV out per condition (condition_cv output), and a colData column can also be used to identify pool/QC samples to exclude before computing the CV (via --pool_metadata_col/--pool_metadata_value). Mutually exclusive with data_matrix/feature_matrix/sample_matrix — provide this alone, or the other three alone, not both. Pass [] when using the other shape.
+        pattern: "*.rds"
+        optional: true
+        ontologies: []
+    - data_matrix:
+        type: file
+        description: Feature-by-sample abundance matrix (TSV/CSV), first column the feature ID. Use NA (or an empty cell) for metabolites that weren't detected. Required together with feature_matrix and sample_matrix if se_rds is not given; pass [] otherwise.
+        pattern: "*.{tsv,csv}"
+        optional: true
+        ontologies: []
+    - feature_matrix:
+        type: file
+        description: Feature metadata (TSV/CSV), first column the feature ID matching data_matrix's rows. Required together with data_matrix and sample_matrix if se_rds is not given; pass [] otherwise.
+        pattern: "*.{tsv,csv}"
+        optional: true
+        ontologies: []
+    - sample_matrix:
+        type: file
+        description: Sample metadata (TSV/CSV), first column the sample ID matching data_matrix's columns. Required together with data_matrix and feature_matrix if se_rds is not given; pass [] otherwise.
+        pattern: "*.{tsv,csv}"
+        optional: true
+        ontologies: []
+
+output:
+  cv_table:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.cv.tsv":
+          type: file
+          description: Per internal-standard feature CV across samples.
+          pattern: "*.cv.tsv"
+          ontologies: []
+  high_var:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.high_var.txt":
+          type: file
+          description: Internal standards exceeding the CV cutoff.
+          pattern: "*.high_var.txt"
+          ontologies: []
+  condition_cv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.condition_cv.tsv":
+          type: file
+          description: Per-standard CV broken down by condition (wide format, one column per condition). Only meaningful when real condition metadata is present; header-only (just a Standard column) otherwise.
+          pattern: "*.condition_cv.tsv"
+          ontologies: []
+  plots:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.plots.rds":
+          type: file
+          description: Saved ggplot objects.
+          pattern: "*.plots.rds"
+          ontologies: []
+  report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.report.html":
+          type: file
+          description: Self-contained HTML report.
+          pattern: "*.report.html"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.log":
+          type: file
+          description: INFO/WARN log.
+          pattern: "*.log"
+          ontologies: []
+  versions_internalstandard:
+    - versions.yml:
+        type: file
+        description: File containing software versions.
+        pattern: "versions.yml"
+        ontologies: []
+
+topics:
+  versions:
+    - versions.yml:
+        type: string
+        description: The name of the process
+
+authors:
+  - "@christinaschmidt1"
+  - "@giuliaroeth"
+maintainers:
+  - "@christinaschmidt1"
+  - "@giuliaroeth"
+versions:
+  - versions.yml:
+      type: file
+      description: YAML file containing versions of tools used in the module
