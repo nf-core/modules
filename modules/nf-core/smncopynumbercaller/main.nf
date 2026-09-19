@@ -9,6 +9,7 @@ process SMNCOPYNUMBERCALLER {
 
     input:
     tuple val(meta), path(bam), path(bai)
+    tuple val(meta2), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("out/*.tsv"),  emit: smncopynumber
@@ -22,11 +23,13 @@ process SMNCOPYNUMBERCALLER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def reference = fasta ? "--reference ${fasta}" : ''
     """
     echo $bam | tr ' ' '
     ' > manifest.txt
     smn_caller.py \\
         $args \\
+        $reference \\
         --manifest manifest.txt \\
         --prefix $prefix \\
         --outDir "out" \\

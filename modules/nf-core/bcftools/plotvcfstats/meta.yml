@@ -33,7 +33,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'sample1' ]
-      - "*plots*":
+      - ${prefix}_plots:
           type: directory
           description: Output directory containing plots, raw data, and log files
           pattern: "*plots*"
@@ -44,12 +44,36 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'sample1' ]
-      - "*.pdf":
+      - ${prefix}.plot-vcfstats.pdf:
           type: file
-          description: (Link to the original) summary output in PDF
+          description: Summary output in PDF
           pattern: "*.pdf"
           ontologies:
             - edam: "http://edamontology.org/format_3508"
+  images_pdf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}_plots/*.pdf:
+          type: file
+          description: All the individual PDF images generated (no summary PDF)
+          pattern: "*.pdf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3508"
+  images_png:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}_plots/*.png:
+          type: file
+          description: All the individual PNG images generated
+          pattern: "*.png"
+          ontologies:
+            - edam: "http://edamontology.org/format_3603"
   versions_bcftools:
     - - ${task.process}:
           type: string

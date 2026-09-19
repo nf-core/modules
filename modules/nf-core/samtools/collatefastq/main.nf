@@ -4,8 +4,8 @@ process SAMTOOLS_COLLATEFASTQ {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8c/8c5d2818c8b9f58e1fba77ce219fdaf32087ae53e857c4a496402978af26e78c/data'
-        : 'community.wave.seqera.io/library/htslib_samtools:1.23.1--5b6bb4ede7e612e5'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/31/315d2445cd42b0f5512fa37965a9c59bc93ae8614b7d105150caece6c61e2e71/data'
+        : 'community.wave.seqera.io/library/htslib_samtools_xz:1595ae0727655963'}"
 
     input:
     tuple val(meta), path(input)
@@ -52,17 +52,18 @@ process SAMTOOLS_COLLATEFASTQ {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def empty = "echo '' | gzip "
-    def singletoncommand = "${empty}> ${prefix}_singleton.fq.gz"
-    def interleavecommand = interleave && !meta.single_end ? "${empty}> ${prefix}_interleaved.fq.gz" : ""
-    def output1command = !interleave ? "${empty}> ${prefix}_1.fq.gz" : ""
-    def output2command = !interleave && !meta.single_end ? "${empty}> ${prefix}_2.fq.gz" : ""
+    def empty = "echo | bgzip -c "
+    def interleave_command = interleave && !meta.single_end ? "${empty}> ${prefix}_interleaved.fq.gz" : ""
+    def other_command = "${empty} > ${prefix}_other.fq.gz"
+    def output1_command = !interleave ? "${empty}> ${prefix}_1.fq.gz" : ""
+    def output2_command = !interleave && !meta.single_end ? "${empty}> ${prefix}_2.fq.gz" : ""
+    def singleton_command = "${empty}> ${prefix}_singleton.fq.gz"
 
     """
-    ${output1command}
-    ${output2command}
-    ${interleavecommand}
-    ${singletoncommand}
-    ${empty}> ${prefix}_other.fq.gz
+    ${interleave_command}
+    ${other_command}
+    ${output1_command}
+    ${output2_command}
+    ${singleton_command}
     """
 }

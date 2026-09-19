@@ -8,8 +8,7 @@ keywords:
   - metabolic reconstruction
 tools:
   - carveme:
-      description: CarveMe is a python-based tool for genome-scale metabolic model
-        reconstruction.
+      description: CarveMe is a python-based tool for genome-scale metabolic model reconstruction.
       homepage: https://carveme.readthedocs.io
       documentation: https://carveme.readthedocs.io
       tool_dev_url: https://github.com/cdanielmachado/carveme
@@ -163,9 +162,10 @@ output:
       - carveme:
           type: string
           description: The name of the tool
-      - "pip show carveme | sed -n 's/^Version: //p'":
+      - python -c "from importlib.metadata import version; print(version('carveme'))":
           type: eval
           description: The expression to obtain the version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -174,9 +174,10 @@ topics:
       - carveme:
           type: string
           description: The name of the tool
-      - "pip show carveme | sed -n 's/^Version: //p'":
+      - python -c "from importlib.metadata import version; print(version('carveme'))":
           type: eval
           description: The expression to obtain the version of the tool
+
 authors:
   - "@vagkaratzas"
 maintainers:

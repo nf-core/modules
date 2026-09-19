@@ -4,8 +4,8 @@ process LAST_POSTMASK {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2e/2eb57450207840a7fba7f60b65239a86679bfcaa79fb5fba652dd41af2b3e1d9/data'
-        : 'community.wave.seqera.io/library/last:1651--c83f04148c23181f'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/05/05ff1dba1dcf86a28dd9d911ffcbc925175b370e77b5ea699ae421b8481556bc/data'
+        : 'community.wave.seqera.io/library/last_gzip:40e65bc1d7d8624e'}"
 
     input:
     tuple val(meta), path(maf)

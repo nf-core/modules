@@ -11,7 +11,7 @@ nextflow_process {
 
     test("caddsv-get annotations - stub") {
 
-        options "-stub"
+        options "-stub" // since the actual run downloads a large set of annotations, only a stub test is included.
 
         when {
             process {
@@ -31,7 +31,7 @@ nextflow_process {
 
     test("caddsv-get segmentnt - stub") {
 
-        options "-stub"
+        options "-stub" // since the actual run downloads a large set of annotations, only a stub test is included.
 
         when {
             process {

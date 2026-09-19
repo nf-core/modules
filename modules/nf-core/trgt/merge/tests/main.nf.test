@@ -80,8 +80,7 @@ nextflow_process {
             process {
                 """
                 input[0] = BCFTOOLS_SORT.out.vcf
-                            .join(BCFTOOLS_SORT.out.tbi)
-                            .view()
+                            .join(BCFTOOLS_SORT.out.index)
                             .map { meta, vcf, tbi -> [ [ id : 'test' ], vcf, tbi ] }
                             .groupTuple()
                 input[1] = [[],[]]
@@ -107,7 +106,7 @@ nextflow_process {
             process {
                 """
                 input[0] = BCFTOOLS_SORT.out.vcf
-                            .join(BCFTOOLS_SORT.out.tbi)
+                            .join(BCFTOOLS_SORT.out.index)
                             .map { meta, vcf, tbi -> [ [ id : 'test' ], vcf, tbi ] }
                             .groupTuple()
                 input[1] = GUNZIP.out.gunzip
@@ -133,8 +132,7 @@ nextflow_process {
             process {
                 """
                 input[0] = BCFTOOLS_SORT.out.vcf
-                            .join(BCFTOOLS_SORT.out.tbi)
-                            .first()
+                            .join(BCFTOOLS_SORT.out.index)
                             .map { meta, vcf, tbi -> [ [ id : 'test' ], vcf, tbi ] }
                 input[1] = GUNZIP.out.gunzip
                 input[2] = SAMTOOLS_FAIDX.out.fai
@@ -155,8 +153,7 @@ nextflow_process {
             process {
                 """
                 input[0] = BCFTOOLS_SORT.out.vcf
-                            .join(BCFTOOLS_SORT.out.tbi)
-                            .first()
+                            .join(BCFTOOLS_SORT.out.index)
                             .map { meta, vcf, tbi -> [ [ id : 'test' ], vcf, tbi ] }
                 input[1] = GUNZIP.out.gunzip
                 input[2] = SAMTOOLS_FAIDX.out.fai
@@ -184,8 +181,7 @@ nextflow_process {
             process {
                 """
                 input[0] = BCFTOOLS_SORT.out.vcf
-                            .join(BCFTOOLS_SORT.out.tbi)
-                            .first()
+                            .join(BCFTOOLS_SORT.out.index)
                             .map { meta, vcf, tbi -> [ [ id : 'test' ], vcf, tbi ] }
                 input[1] = GUNZIP.out.gunzip
                 input[2] = SAMTOOLS_FAIDX.out.fai
@@ -212,7 +208,7 @@ nextflow_process {
             process {
                 """
                 input[0] = BCFTOOLS_SORT.out.vcf
-                            .join(BCFTOOLS_SORT.out.tbi)
+                            .join(BCFTOOLS_SORT.out.index)
                             .map { meta, vcf, tbi -> [ [ id : 'test' ], vcf, tbi ] }
                             .groupTuple()
                 input[1] = [[],[]]
@@ -223,7 +219,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -236,7 +232,7 @@ nextflow_process {
             process {
                 """
                 input[0] = BCFTOOLS_SORT.out.vcf
-                            .join(BCFTOOLS_SORT.out.tbi)
+                            .join(BCFTOOLS_SORT.out.index)
                             .map { meta, vcf, tbi -> [ [ id : 'test' ], vcf, tbi ] }
                             .groupTuple()
                 input[1] = [[],[]]
@@ -247,7 +243,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -257,7 +253,7 @@ nextflow_process {
             process {
                 """
                 input[0] = BCFTOOLS_SORT.out.vcf
-                            .join(BCFTOOLS_SORT.out.tbi)
+                            .join(BCFTOOLS_SORT.out.index)
                             .map { meta, vcf, tbi -> [ [ id : 'test' ], vcf, tbi ] }
                             .groupTuple()
                 input[1] = [[],[]]
@@ -268,7 +264,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

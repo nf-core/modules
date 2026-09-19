@@ -1,5 +1,5 @@
 ## optimized nvidia base container for older python and tensorflow
-FROM nvcr.io/nvidia/tensorflow:20.10-tf1-py3
+FROM nvcr.io/nvidia/tensorflow:20.10-tf1-py3@sha256:9206ed88af83ca5dd4ba6bd95cf6aff6f8432ce98699aa43c216222747dc4500
 
 ARG NUMORPH_3DUNET_VERSION="1.0.9"
 
@@ -22,7 +22,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN pip install --upgrade pip
 
-# the tool needs this 
+# the tool needs this
 RUN pip install git+https://github.com/keras-team/keras-contrib.git
 
 # Install the package

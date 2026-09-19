@@ -16,7 +16,7 @@ process NAIL_SEARCH {
     tuple val(meta), path("${prefix}.txt"), emit: output
     tuple val(meta), path("${prefix}.tbl"), emit: target_summary
     tuple val(meta), path("${prefix}.ali"), emit: alignments, optional: true
-    path "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val('nail'), eval("nail --version 2>&1 | sed 's/^.*nail //'"), emit: versions_nail, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,17 +27,12 @@ process NAIL_SEARCH {
     alignment = write_align ? "--ali-out ${prefix}.ali" : '' // no def here due to current Nextflow bug; cause: Variable `prefix` already defined in the process scope
     """
     nail search \\
-        $args \\
-        -t $task.cpus \\
-        $alignment \\
+        ${args} \\
+        -t ${task.cpus} \\
+        ${alignment} \\
         --tbl-out ${prefix}.tbl \\
         ${query} \\
         ${target} > ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        nail: \$(echo \$(nail --version 2>&1) | sed 's/^.*nail\\w*//' )
-    END_VERSIONS
     """
 
     stub:
@@ -46,10 +41,5 @@ process NAIL_SEARCH {
     touch ${prefix}.txt
     touch ${prefix}.tbl
     ${write_align ? "touch ${prefix}.ali" : ''}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        nail: \$(echo \$(nail --version 2>&1) | sed 's/^.*nail\\w*//' )
-    END_VERSIONS
     """
 }

@@ -12,11 +12,11 @@ doi:10.1038/s41587-022-01369-0; gencode-riboseqORFs collapse_cutoff 0.9), with
 two deliberate departures from that reference:
 
   - GENCODE collapses overlapping ORFs of any size within a shared locus;
-    this restricts collapsing to small ORFs (orf_class == "smORF", i.e.
-    aa_length <= 100) and clusters them locus-agnostically across the whole
+    this restricts collapsing to small ORFs (aa_length <= --smorf-max-aa,
+    default 100) and clusters them locus-agnostically across the whole
     catalogue, since the target case is one micropeptide recurring at several
-    non-overlapping loci. The smORF-only restriction is this pipeline's choice,
-    not a GENCODE property.
+    non-overlapping loci. The small-ORF-only restriction is this pipeline's
+    choice, not a GENCODE property.
   - similarity is MMseqs2 global sequence identity (--min-seq-id 0.9,
     mmseqs/easycluster upstream) rather than GENCODE's longest-shared-substring
     / P-site-overlap metric, so the 0.9 here approximates rather than
@@ -32,11 +32,14 @@ filtering). The filter is applied after the collapse, so the consensus is the
 high-confidence subset of the de-redundified catalogue and a folded
 micropeptide is judged on its combined cross-caller / cross-sample evidence.
 
-Only smORF rows are collapsed; larger ORFs and transcript-anchored classes pass
-through untouched, preserving the deterministic coordinate/transcript merge from
-upstream. Among the smORF members of a cluster the representative is chosen here
-(longest aa_length, ties broken by orf_id) so the result is independent of which
-sequence MMseqs2 labelled the cluster representative. Catalogue row order is
+Only small ORFs are collapsed; larger ORFs pass through untouched, preserving
+the deterministic coordinate/transcript merge from upstream. Eligibility is the
+catalogue's `is_smorf` flag, independent of `orf_class`, so a short uORF and a
+short novel ORF are both candidates; `--smorf-max-aa` re-derives the flag and
+aborts on disagreement. Among the members of a cluster the representative is
+chosen here (class specificity, then longest aa_length, then orf_id) so the
+result is independent of which sequence MMseqs2 labelled the cluster
+representative. Catalogue row order is
 preserved; dropped members fold their cross-caller / cross-sample evidence and
 gene mappings into the survivor.
 """
@@ -63,8 +66,12 @@ SCORE_DIRECTIONS = {
     "rpbp": "max",
     "price": "min",
 }
-CLASS_ORDER = ("canonical_cds", "uORF", "dORF", "novel_u", "smORF", "other")
-SMORF_CLASS = "smORF"
+CLASS_ORDER = ("canonical_cds", "uORF", "uoORF", "dORF", "doORF", "intORF", "novel_u", "other")
+
+# Survivor preference when a peptide cluster spans more than one class, most
+# specific first. Mirrors orfmerge's CLASS_SPECIFICITY so an annotated CDS is
+# never deleted by a longer novel ORF that happens to share its peptide.
+CLASS_SPECIFICITY = ("canonical_cds", "uoORF", "uORF", "doORF", "dORF", "intORF", "novel_u", "other")
 
 
 def read_fasta(path):
@@ -113,8 +120,16 @@ def best_score(values, direction):
 
 
 def merge_members(members):
-    """Fold smORF rows sharing an AA cluster into one representative row dict."""
-    rep = sorted(members, key=lambda r: (-int(r.get("aa_length") or 0), r["orf_id"]))[0]
+    """Fold small-ORF rows sharing an AA cluster into one representative row dict."""
+    rank = {c: i for i, c in enumerate(CLASS_SPECIFICITY)}
+    rep = sorted(
+        members,
+        key=lambda r: (
+            rank.get(r.get("orf_class", "other"), len(rank)),
+            -int(r.get("aa_length") or 0),
+            r["orf_id"],
+        ),
+    )[0]
     out = dict(rep)
     for c in CALLERS:
         out[f"called_by_{c}"] = "1" if any(r.get(f"called_by_{c}") == "1" for r in members) else "0"
@@ -122,6 +137,9 @@ def merge_members(members):
     samples = sorted({s for r in members for s in (r.get("samples") or "").split(",") if s})
     out["n_samples"] = str(len(samples))
     out["samples"] = ",".join(samples)
+    if "orf_type_native" in out:
+        natives = sorted({t for r in members for t in (r.get("orf_type_native") or "").split(",") if t})
+        out["orf_type_native"] = ",".join(natives)
     return rep["orf_id"], out
 
 
@@ -139,13 +157,35 @@ def main():
         default=1,
         help="Minimum distinct samples for an ORF to enter the consensus view (default: 1)",
     )
+    parser.add_argument(
+        "--smorf-max-aa",
+        type=int,
+        default=100,
+        help="Maximum aa_length eligible for peptide-level collapse (default: 100)",
+    )
     args = parser.parse_args(shlex.split("${args}"))
+    if args.smorf_max_aa < 1:
+        sys.exit(f"orfcollapse: --smorf-max-aa must be >= 1, got {args.smorf_max_aa}")
 
     prefix = "${prefix}"
 
     catalogue = pd.read_csv("${catalogue_tsv}", sep="\\t", comment="#", dtype=str, keep_default_na=False)
     header = list(catalogue.columns)
     rows = catalogue.to_dict("records")
+
+    # The collapse scope is derived from these columns, so a silent rename
+    # upstream must abort rather than quietly collapse nothing.
+    missing = [c for c in ("orf_class", "aa_length", "is_smorf") if c not in header]
+    if missing:
+        sys.exit(f"orfcollapse: catalogue is missing required column(s) {missing}")
+
+    unknown = sorted(set(catalogue["orf_class"]) - set(CLASS_ORDER))
+    if unknown:
+        sys.exit(f"orfcollapse: unknown orf_class value(s) {unknown}; update CLASS_ORDER")
+
+    invalid_smorf = sorted(set(catalogue["is_smorf"]) - {"0", "1"})
+    if invalid_smorf:
+        sys.exit(f"orfcollapse: invalid is_smorf value(s) {invalid_smorf}; expected 0 or 1")
 
     bed_index = {}
     with open("${bed12}") as fh:
@@ -157,9 +197,26 @@ def main():
     aa = read_fasta("${aa_fasta}")
     cluster_of = read_clusters("${cluster_tsv}")
 
+    # Eligibility is the catalogue's is_smorf; --smorf-max-aa is kept only to
+    # re-derive it, so a threshold mismatch between processes fails loudly.
+    def is_small(row):
+        try:
+            aa = int(row.get("aa_length") or 0)
+        except ValueError:
+            return False
+        return 0 < aa <= args.smorf_max_aa
+
+    diverged = [r["orf_id"] for r in rows if (r.get("is_smorf") == "1") != is_small(r)]
+    if diverged:
+        sys.exit(
+            f"orfcollapse: is_smorf disagrees with --smorf-max-aa={args.smorf_max_aa} on "
+            f"{len(diverged)} row(s) (first: {diverged[:3]}); pass the same --smorf-max-aa "
+            "to CUSTOM_ORFNORMALISE and CUSTOM_ORFCOLLAPSE"
+        )
+
     clusters = defaultdict(list)
     for r in rows:
-        if r.get("orf_class") == SMORF_CLASS:
+        if r.get("is_smorf") == "1":
             clusters[cluster_of.get(r["orf_id"], r["orf_id"])].append(r)
 
     remap, merged_rows, dropped = {}, {}, set()

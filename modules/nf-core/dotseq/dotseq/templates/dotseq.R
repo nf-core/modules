@@ -34,7 +34,9 @@ option_list <- list(
     make_option("--gene_id_col",         type = "character", default = "gene_id",
                 help = "Annotation column holding the parent gene id [default: %default]"),
     make_option("--orf_type_col",        type = "character", default = "orf_type",
-                help = "Annotation column holding the ORF biotype (mORF/uORF/dORF/etc.); used by plotDOT()'s heatmap [default: %default]"),
+                help = "Annotation column holding the ORF biotype; used by plotDOT()'s heatmap [default: %default]"),
+    make_option("--orf_type_main_value", type = "character", default = "mORF",
+                help = "Value in --orf_type_col denoting a gene's main/canonical ORF. plotDOT()'s heatmap hardcodes the literal label 'mORF' for this bucket, so any other value found here is remapped to 'mORF' before plotting [default: %default]"),
     make_option("--chrom_col",           type = "character", default = "chrom",
                 help = "Optional annotation column with the ORF chromosome; dummy ranges built if absent."),
     make_option("--start_col",           type = "character", default = "start",
@@ -198,8 +200,11 @@ cnt <- cnt[, cond\$run, drop = FALSE]
 ## DOTSeq's DOU module fits a beta-binomial GLM per parent gene, grouping     ##
 ## the gene's child ORFs, so gene_id is load-bearing on the annotation. The   ##
 ## genomic ranges themselves are stored for downstream inspection only - the  ##
-## model fit does not depend on them. plotDOT()'s heatmap uses orf_type to    ##
-## bucket uORF/dORF, so we honour it when present.                            ##
+## model fit does not depend on them. plotDOT()'s heatmap buckets ORFs by     ##
+## orf_type into a hardcoded "mORF" main class plus a caller-chosen short-ORF ##
+## class, so the main-ORF value found in the annotation is remapped to the   ##
+## literal string "mORF" for DOTSeq's consumption regardless of what label    ##
+## the caller uses upstream.                                                  ##
 ################################################################################
 
 ann <- read_delim_auto(opt\$annotation_file)
@@ -246,8 +251,12 @@ strand[!strand %in% c("+", "-", "*")] <- "*"
 
 gene_ids <- as.character(ann[[opt\$gene_id_col]])
 orf_number <- ave(gene_ids, gene_ids, FUN = seq_along)
-orf_type <- if (opt\$orf_type_col %in% names(ann)) as.character(ann[[opt\$orf_type_col]]) else rep("mORF", nrow(ann))
-orf_type[is.na(orf_type) | !nzchar(trimws(orf_type))] <- "mORF"
+orf_type <- if (opt\$orf_type_col %in% names(ann)) as.character(ann[[opt\$orf_type_col]]) else rep(opt\$orf_type_main_value, nrow(ann))
+orf_type[is.na(orf_type) | !nzchar(trimws(orf_type))] <- opt\$orf_type_main_value
+if (opt\$orf_type_main_value != "mORF") {
+    orf_type[orf_type == "mORF"] <- paste0(opt\$orf_type_main_value, "_not_main")
+}
+orf_type[orf_type == opt\$orf_type_main_value] <- "mORF"
 
 annotation_gr <- GRanges(
     seqnames = chrom,
@@ -365,8 +374,14 @@ if (opt\$generate_plots) {
     }
 
     # plotDOT's default `force_new_device = TRUE` would reset our png() device;
-    # disable it. Return success so the heatmap fallback can distinguish a real
-    # plot from one that left a 0-byte file behind.
+    # disable it. `id_mapping = FALSE` is rejected by plotDOT()'s own internal
+    # heatmap helper (it only normalises FALSE -> NULL for some plot types),
+    # so NULL is used throughout to mean "no gene-symbol lookup" for every
+    # plot type. Some plotDOT() failures (e.g. too few paired ORFs to build a
+    # heatmap) are caught internally by the package itself and logged rather
+    # than raised, so no R error reaches this tryCatch and the png() device is
+    # closed having drawn nothing - check for a non-empty output file, not
+    # just the absence of a thrown error, to detect that case too.
     safe_plot_dot <- function(plot_type, fname, results_df = NULL, data = NULL,
                               annotation_params = list()) {
         if (is.null(results_df) || nrow(results_df) == 0) return(invisible(FALSE))
@@ -376,13 +391,15 @@ if (opt\$generate_plots) {
                 plot_type         = plot_type,
                 results           = results_df,
                 data              = data,
-                id_mapping        = FALSE,
+                id_mapping        = NULL,
                 plot_params       = list(top_hits = opt\$top_hits),
                 annotation_params = annotation_params,
                 force_new_device  = FALSE
             )
             dev.off()
-            invisible(TRUE)
+            drew_plot <- file.exists(fname) && file.info(fname)\$size > 0
+            if (!drew_plot && file.exists(fname)) unlink(fname)
+            invisible(drew_plot)
         }, error = \\(e) {
             while (length(dev.list()) > 0) dev.off()
             if (file.exists(fname)) unlink(fname)

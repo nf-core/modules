@@ -1,0 +1,111 @@
+nextflow_process {
+
+    name "Test Process FUNGTION_FUNGTION (GPU)"
+    script "../main.nf"
+    process "FUNGTION_FUNGTION"
+    config "./nextflow.gpu.config"
+
+    tag "gpu"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fungtion"
+    tag "fungtion/fungtion"
+    tag "fungtion/downloadmodels"
+
+    test("cazyme - faa - gpu - predictions") {
+
+        setup {
+            run("FUNGTION_DOWNLOADMODELS") {
+                script "../../downloadmodels/main.nf"
+            }
+        }
+
+        when {
+            params {
+                module_args = "--html-report --keep-temp"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/database/protein_mini_with_cazymes.faa', checkIfExists: true)
+                ]
+                input[1] = FUNGTION_DOWNLOADMODELS.out.models
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.predictions,
+                    path(process.out.log[0][1]).readLines().size(),
+                    path(process.out.analysis[0][1]).exists(),
+                    path(process.out.html[0][1]).exists(),
+                    path(process.out.assets[0][1]).exists(),
+                    path(process.out.temp[0][1]).exists(),
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("cazyme - faa - gpu - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = ""
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/database/protein_mini_with_cazymes.faa', checkIfExists: true)
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("cazyme - faa - html-report keep-temp - gpu - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = "--html-report --keep-temp"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/database/protein_mini_with_cazymes.faa', checkIfExists: true)
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

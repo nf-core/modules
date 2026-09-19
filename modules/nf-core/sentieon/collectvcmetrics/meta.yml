@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "sentieon_collectvcmetrics"
-description: Accelerated implementation of the Picard CollectVariantCallingMetrics
-  tool.
+description: Accelerated implementation of the Picard
+  CollectVariantCallingMetrics tool.
 keywords:
   - vcf
   - sentieon
@@ -13,9 +12,9 @@ tools:
         Our software improves upon BWA, STAR, Minimap2, GATK, HaplotypeCaller, Mutect, and Mutect2 based pipelines and is deployable on any generic-CPU-based computing system.
       homepage: https://www.sentieon.com/
       documentation: https://www.sentieon.com/
-      licence: ["Commercial (requires license for use; redistribution allowed)"]
+      licence:
+        - "Commercial (requires license for use; redistribution allowed)"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -110,7 +109,7 @@ output:
           type: string
           description: The tool name
       - 'sentieon driver --version | sed "s/.*-//g"':
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 topics:
   versions:
@@ -121,7 +120,7 @@ topics:
           type: string
           description: The tool name
       - 'sentieon driver --version | sed "s/.*-//g"':
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 authors:
   - "@adamrtalbot"

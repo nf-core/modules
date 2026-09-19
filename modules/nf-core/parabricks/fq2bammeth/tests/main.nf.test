@@ -29,6 +29,8 @@ nextflow_process {
 
     test("SRR389222 single-end [fastq]") {
 
+        config './nextflow.config'
+
         when {
             process {
                 """

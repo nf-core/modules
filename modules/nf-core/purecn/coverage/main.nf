@@ -20,15 +20,13 @@ process PURECN_COVERAGE {
     tuple val(meta), path("*.png")         , emit: png         , optional: true
     tuple val(meta), path("*_loess_qc.txt"), emit: loess_qc_txt, optional: true
     tuple val(meta), path("*_loess.txt.gz"), emit: loess_txt   , optional: true
-    path "versions.yml"                    , emit: versions
+    tuple val("${task.process}"), val('purecn'), val('2.12.0'), emit: versions_purecn, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def VERSION = '2.12.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
     if (task.stageInMode != 'link') {
         error "purecn/coverage can not handle staging files with symlinks. Please change the stageInmode option to 'Link'"
     }
@@ -42,10 +40,6 @@ process PURECN_COVERAGE {
         --intervals ${intervals} \\
         $args
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        purecn: ${VERSION}
-    END_VERSIONS
     """
 
     stub:
@@ -53,23 +47,17 @@ process PURECN_COVERAGE {
     def prefix       = task.ext.prefix                 ?: "${meta.id}"
     def png          = args.contains("--skip-gc-norm") ? "" : "touch ${prefix}.png"
     def loess_qc_txt = args.contains("--skip-gc-norm") ? "" : "touch ${prefix}_loess_qc.txt"
-    def loess_txt    = args.contains("--skip-gc-norm") ? "" : "echo | gzip > ${prefix}_loess.txt.gz"
-    def VERSION = '2.12.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
+    def loess_txt    = args.contains("--skip-gc-norm") ? "" : "echo \"\" | gzip > ${prefix}_loess.txt.gz"
     if (task.stageInMode != 'link') {
         error "purecn/coverage can not handle staging files with symlinks. Please change the stageInmode option to 'Link'"
     }
 
     """
-    echo | gzip > ${prefix}.txt.gz
+    echo "" | gzip > ${prefix}.txt.gz
     touch ${prefix}.bed
     ${png}
     ${loess_qc_txt}
     ${loess_txt}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        purecn: ${VERSION}
-    END_VERSIONS
     """
 }

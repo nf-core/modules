@@ -17,7 +17,7 @@ process PURECN_INTERVALFILE {
     tuple val(meta), path("*.txt"), emit: txt
     // Only produced if --export is used
     tuple val(meta), path("*.bed"), emit: bed, optional: true
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('purecn'), eval("Rscript -e 'cat(as.character(packageVersion(\"PureCN\")))'"), emit: versions_purecn, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,10 +35,6 @@ process PURECN_INTERVALFILE {
         --genome ${genome} \\
         $args
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        purecn: \$(Rscript -e 'packageVersion("PureCN")' | sed -n 's|\\[1\\] ‘\\(.*\\)’|\\1|p')
-    END_VERSIONS
     """
 
     stub:
@@ -50,9 +46,5 @@ process PURECN_INTERVALFILE {
     """
     touch ${prefix}.txt
     ${bed}
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        purecn: \$(Rscript -e 'packageVersion("PureCN")' | sed -n 's|\\[1\\] ‘\\(.*\\)’|\\1|p')
-    END_VERSIONS
     """
 }
