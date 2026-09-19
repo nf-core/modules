@@ -19,7 +19,7 @@ process SEQKIT_SAMPLE {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}_sampled"
     def fastx_list = fastx instanceof List ? fastx : [fastx]
     def first_file = fastx_list[0].toString()
     extension = "fastq"
@@ -49,7 +49,6 @@ process SEQKIT_SAMPLE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def fastx_list = fastx instanceof List ? fastx : [fastx]
     def first_file = fastx_list[0].toString()
