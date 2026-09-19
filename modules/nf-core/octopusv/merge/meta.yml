@@ -1,0 +1,86 @@
+name: "octopusv_merge"
+description: "Merge and harmonize structural variant calls from multiple samples."
+keywords:
+  - structural variants
+  - merge
+  - genomics
+  - svcf
+tools:
+  - "octopusv":
+      description: "End-to-end structural variant post-processing: standardize, merge,
+        compare, and export SVs."
+      homepage: "https://github.com/ylab-hi/OctopuSV"
+      documentation: "https://github.com/ylab-hi/OctopuSV"
+      tool_dev_url: "https://github.com/ylab-hi/octopusV"
+      doi: "10.1093/bioinformatics/btaf599"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - svcfs:
+        type: file
+        description: List of SVCF files to merge
+        pattern: "*.svcf"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
+    - strategy_flag:
+        type: string
+        description: |
+          Merge strategy for octopusv merge. Valid values: union, intersect, specific,
+          min-support, exact-support, max-support, expression. Defaults to union when this flag is empty.
+          NOTE: Some flags require additional arguments.
+output:
+  svcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.svcf":
+          type: file
+          description: Sorted VCF file
+          pattern: "*.svcf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016"
+  upset_plot:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.png":
+          type: file
+          description: Upset plot comparing the variants in the input SVCF files (generated with --upsetr-output flag)
+          pattern: "*.png"
+          ontologies:
+            - edam: "http://edamontology.org/format_3603"
+  versions_octopusv:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - octopusv:
+          type: string
+          description: The name of the tool
+      - python -c "import importlib.metadata as m; print(m.version('octopusv'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - octopusv:
+          type: string
+          description: The name of the tool
+      - python -c "import importlib.metadata as m; print(m.version('octopusv'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@manascripts"
+maintainers:
+  - "@manascripts"

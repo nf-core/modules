@@ -1,0 +1,56 @@
+name: fusionreport_download
+description: Build DB for fusionreport
+keywords:
+  - sort
+  - RNA-seq
+  - fusion_report
+  - download
+tools:
+  - fusionreport:
+      description: Generate an interactive summary report from fusion detection
+        tools.
+      homepage: https://github.com/Clinical-Genomics/fusion-report
+      documentation: https://github.com/Clinical-Genomics/fusion-report/blob/master/README.md
+      tool_dev_url: https://github.com/Clinical-Genomics/fusion-report
+      licence:
+        - "GPL v3"
+      identifier: ""
+input:
+  - meta:
+      type: map
+      description: |
+        Groovy Map containing database information
+output:
+  fusionreport_ref:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing database information
+      - ${prefix}:
+          type: directory
+          description: directory containing the genome resource files required for
+            fusioncatcher
+          pattern: "${prefix}"
+  versions_fusionreport:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fusion_report:
+          type: string
+          description: The name of the tool
+      - fusion_report --version |& sed 's/fusion-report //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fusion_report:
+          type: string
+          description: The name of the tool
+      - fusion_report --version |& sed 's/fusion-report //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@praveenraj2018"

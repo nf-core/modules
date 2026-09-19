@@ -1,0 +1,59 @@
+
+nextflow_process {
+
+    name "Test Process SAMBAMBA_MARKDUP"
+    script "../main.nf"
+    process "SAMBAMBA_MARKDUP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "sambamba"
+    tag "sambamba/markdup"
+
+    test("test-sambamba-markdup") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				[ id:'test', single_end:false ], // meta map
+				file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"])).match()}
+            )
+        }
+    }
+
+    test("test-sambamba-markdup - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+				[ id:'test', single_end:false ], // meta map
+				file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

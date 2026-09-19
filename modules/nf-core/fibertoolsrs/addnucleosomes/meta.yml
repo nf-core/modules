@@ -1,0 +1,70 @@
+name: "fibertoolsrs_addnucleosomes"
+description: Add nucleosomes positions and MSP position to ONT BAM files
+keywords:
+  - methylation
+  - genomics
+  - bam
+  - m6A
+  - nucleosome
+  - fiberseq
+tools:
+  - fibertoolsrs:
+      description: "Mitchell Vollger's rust tools for fiberseq data."
+      homepage: "https://fiberseq.github.io/fibertools/fibertools.html"
+      documentation: "https://fiberseq.github.io/fibertools/fibertools.html"
+      tool_dev_url: "https://github.com/fiberseq/fibertools-rs"
+      doi: "10.5281/zenodo.14782951"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Sorted BAM/CRAM file
+        pattern: "*.{bam,cram}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+          - edam: "http://edamontology.org/format_2573"
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bam":
+          type: file
+          description: bam file with nucleosome calls
+          pattern: "*.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572"
+  versions_fibertoolsrs:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fibertools-rs:
+          type: string
+          description: The name of the tool
+      - ft --version | sed 's/fibertools-rs v//;s/\t.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fibertools-rs:
+          type: string
+          description: The name of the tool
+      - ft --version | sed 's/fibertools-rs v//;s/\t.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@YiJin-Xiong"
+maintainers:
+  - "@YiJin-Xiong"

@@ -1,0 +1,69 @@
+name: "tidk_plot"
+description: |
+  Plots telomeric repeat frequency against sliding window location
+  using data produced by `tidk/search`
+keywords:
+  - genomics
+  - telomere
+  - search
+  - plot
+tools:
+  - "tidk":
+      description: tidk is a toolkit to identify and visualise telomeric repeats
+        in genomes
+      homepage: "https://github.com/tolkit/telomeric-identifier"
+      documentation: "https://github.com/tolkit/telomeric-identifier"
+      tool_dev_url: "https://github.com/tolkit/telomeric-identifier"
+      doi: "10.5281/zenodo.10091385"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - tsv:
+        type: file
+        description: Search results in TSV format from `tidk search`
+        pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
+output:
+  svg:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.svg":
+          type: file
+          description: Telomere search plot
+          pattern: "*.svg"
+          ontologies: []
+  versions_tidk:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tidk:
+          type: string
+          description: The name of the tool
+      - tidk --version | sed 's/tidk //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tidk:
+          type: string
+          description: The name of the tool
+      - tidk --version | sed 's/tidk //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@GallVp"
+maintainers:
+  - "@GallVp"

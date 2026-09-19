@@ -1,0 +1,32 @@
+nextflow_process {
+
+    name "Test Process ISOSEQ_CLUSTER"
+    script "../main.nf"
+    process "ISOSEQ_CLUSTER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "isoseq"
+    tag "isoseq/cluster"
+
+    test("PacBio isoseq cluster - CCS clustering test - deprecated") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.bam', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.") }
+            )
+        }
+    }
+}

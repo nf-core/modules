@@ -1,0 +1,65 @@
+
+nextflow_process {
+
+    name "Test Process GAPPA_EXAMINEASSIGN"
+    script "../main.nf"
+    process "GAPPA_EXAMINEASSIGN"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gappa"
+    tag "gappa/examineassign"
+
+    test("test-gappa-examineassign") {
+
+        when {
+            params {
+                module_args = "--per-query-results --krona --sativa"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/gappa/epa_result.jplace.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/gappa/gappa_taxonomy.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match()}
+            )
+        }
+    }
+
+    test("test-gappa-examineassign-stub") {
+        options '-stub'
+
+        when {
+            params {
+                module_args = "--per-query-results --krona --sativa"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/gappa/epa_result.jplace.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/gappa/gappa_taxonomy.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match()}
+            )
+        }
+    }
+
+}

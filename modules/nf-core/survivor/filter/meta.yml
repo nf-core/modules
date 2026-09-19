@@ -1,0 +1,79 @@
+name: "survivor_filter"
+description: Filter a vcf file based on size and/or regions to ignore
+keywords:
+  - survivor
+  - filter
+  - vcf
+  - structural variants
+tools:
+  - "survivor":
+      description: "Toolset for SV simulation, comparison and filtering"
+      homepage: "https://github.com/fritzsedlazeck/SURVIVOR/wiki"
+      documentation: "https://github.com/fritzsedlazeck/SURVIVOR/wiki"
+      tool_dev_url: "https://github.com/fritzsedlazeck/SURVIVOR"
+      doi: "10.1038/NCOMMS14061"
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf_file:
+        type: file
+        description: VCF file to filter
+        ontologies: []
+    - bed:
+        type: file
+        description: BED file with regions to ignore (NA to disable)
+        ontologies: []
+  - minsv:
+      type: integer
+      description: Min SV size (-1 to disable)
+  - maxsv:
+      type: integer
+      description: Max SV size (-1 to disable)
+  - minallelefreq:
+      type: float
+      description: Min allele frequency (0-1)
+  - minnumreads:
+      type: integer
+      description: Min number of reads support [RE flag (-1 to disable)]
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.vcf":
+          type: file
+          description: Filtered VCF file
+          pattern: "*.{vcf}"
+          ontologies: []
+  versions_survivor:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - survivor:
+          type: string
+          description: The name of the tool
+      - "SURVIVOR 2>&1 | grep 'Version' | sed 's/Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - survivor:
+          type: string
+          description: The name of the tool
+      - "SURVIVOR 2>&1 | grep 'Version' | sed 's/Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@LlaneroHiboreo"
+maintainers:
+  - "@LlaneroHiboreo"

@@ -1,0 +1,36 @@
+nextflow_process {
+
+    name "Test Process QUARTONOTEBOOK"
+    script "../main.nf"
+    process "QUARTONOTEBOOK"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "quartonotebook"
+
+    test("test module deprecation") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [], // Meta map
+                    []  // Notebook
+                ]
+                input[1] = [:] // Parameters
+                input[2] = []  // Input files
+                input[3] = []  // Extensions
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.")}
+            )
+        }
+
+    }
+
+}

@@ -1,0 +1,62 @@
+nextflow_process {
+
+    name "Test Process TABIX_BGZIPTABIX"
+    script "../main.nf"
+    process "TABIX_BGZIPTABIX"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "tabix"
+    tag "tabix/bgziptabix"
+
+    config "./nextflow.config"
+
+    test("sarscov2 - bed - tbi - deprecated") {
+        when {
+            params {
+                module_args = '-p vcf'
+            }
+            process {
+                """
+                input[0] = [
+                                [ id:'tbi_test' ],
+                                [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true) ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.") }
+            )
+        }
+    }
+
+    test("sarscov2 - bed - tbi - deprecated - stub") {
+        options "-stub"
+
+        when {
+            params {
+                module_args = '-p vcf'
+            }
+            process {
+                """
+                input[0] = [
+                                [ id:'test' ],
+                                [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true) ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.") }
+            )
+        }
+    }
+
+}

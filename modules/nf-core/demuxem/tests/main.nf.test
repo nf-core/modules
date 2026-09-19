@@ -1,0 +1,73 @@
+// nf-core modules test demuxem
+nextflow_process {
+
+    name "Test Process DEMUXEM"
+    script "../main.nf"
+    process "DEMUXEM"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "demuxem"
+
+    test("Standard_Multiome - h5 - csv") {
+
+        when {
+            process {
+                """
+
+                input[0] = [
+                    [ id:'sample1'],
+                    file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/438-21-raw_feature_bc_matrix.h5",checkIfExists: true),
+                    file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/438_21_raw_HTO.csv",checkIfExists: true)
+                    ]
+                input[1] = ""
+                input[2] = ""
+                input[3] = ""
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.zarr[0][1]).name,
+                    file(process.out.out_zarr[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("Standard_Multiome - h5 - csv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+
+                input[0] = [
+                    [ id:'sample1'],
+                    file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/438-21-raw_feature_bc_matrix.h5",checkIfExists: true),
+                    file(params.modules_testdata_base_path + "/genomics/homo_sapiens/10xgenomics/cellranger/hashing_demultiplexing/438_21_raw_HTO.csv",checkIfExists: true)
+                    ]
+                input[1] = ""
+                input[2] = ""
+                input[3] = "True"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

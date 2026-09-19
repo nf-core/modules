@@ -1,0 +1,92 @@
+nextflow_process {
+
+    name "Test Process MUSCLE"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "MUSCLE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "muscle"
+
+    test("test_muscle - fasta phys physi msf clw html") {
+
+        when {
+            params {
+                module_args = '-fasta -verbose -phys -phyi -msf -clw -html -maxiters 2'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists:true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["log"])).match() }
+            )
+        }
+    }
+
+    test("test_muscle_maketree") {
+
+        setup {
+            run("MUSCLE", alias: "MUSCLE_SETUP") {
+                script "../main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id:'test'],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists:true)
+                    ]
+                    """
+                }
+            }
+        }
+        when {
+            params {
+                setup_args = '-fasta -verbose -phys -phyi -maxiters 2'
+                module_args = '-maketree'
+            }
+            process {
+                """
+                input[0] = MUSCLE_SETUP.out.aligned_fasta
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["log"])).match() }
+            )
+        }
+    }
+
+    test("test_muscle - stub") {
+        options '-stub'
+        when {
+            params {
+                module_args = '-fasta -verbose -phys -phyi -maxiters 2'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists:true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

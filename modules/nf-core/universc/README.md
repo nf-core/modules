@@ -27,7 +27,7 @@ To comply with licensing and respect 10X Genomics Trademarks, the 10X Genomics l
 has been removed from HTML reports, the tool has been renamed, and proprietary
 closed-source tools to build Cloupe files are disabled.
 
-It is still suffient to generate summary reports and count matrices compatible with
+It is still sufficient to generate summary reports and count matrices compatible with
 single-cell analysis tools available for 10X Genomics and Cell Ranger output format
 in Python and R packages.
 
@@ -45,10 +45,10 @@ process {
 
 ...
     withName: CELLRANGER_MKGTF {
-        container = "nfcore/universc:1.2.5.1"
+        container = "nf-core/universc:1.2.5.1"
     }
     withName: CELLRANGER_MKREF{
-       container = "nfcore/universc:1.2.5.1"
+       container = "nf-core/universc:1.2.5.1"
     }
 ...
 }
@@ -66,7 +66,7 @@ and for singularity use the `--writeable` parameter.
 These are set as default in universc/main.nf:
 
 ```
-    container "nfcore/universc:1.2.5.1"
+    container "nf-core/universc:1.2.5.1"
     if (workflow.containerEngine == 'docker'){
         containerOptions = "--privileged"
     }
@@ -104,7 +104,7 @@ modify this code provided that they also contain this license.
 
 The tomkellygenetics/universc:<VERSION> container is automatically updated with tomkellygenetics/universc:latest.
 
-A stable release is mirrored at nfcore/universc:1.2.5.1 and will be updated as needed.
+A stable release is mirrored at nf-core/universc:1.2.5.1 and will be updated as needed.
 
 To build an updated container use the Dockerfile provided here:
 

@@ -1,0 +1,203 @@
+// nf-core modules test tar
+nextflow_process {
+
+    name "Test Process TAR"
+    script "../main.nf"
+    process "TAR"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "tar"
+    tag "untar"
+
+    setup {
+        run("UNTAR") {
+            script "../../untar/main.nf"
+            process {
+            """
+            input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/kraken2.tar.gz', checkIfExists: true)
+            ]
+            """
+            }
+        }
+    }
+
+    test("sarscov2 - genome - db - kraken2 - none") {
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                input[1] = ''
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ['archive'])
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - genome - db - kraken2 - .gz") {
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                input[1] = '.gz'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ['archive'])
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - genome - db - kraken2 - .bz2") {
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                input[1] = '.bz2'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ['archive'])
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - genome - db - kraken2 - .lzip") {
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                input[1] = '.lz'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ['archive'])
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - genome - db - kraken2 - .lzma") {
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                input[1] = '.lzma'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ['archive'])
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - genome - db - kraken2 - .lzo") {
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                input[1] = '.lzo'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ['archive'])
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - genome - db - kraken2 - .zst") {
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                input[1] = '.zst'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ['archive'])
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - genome - db - kraken2 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                input[1] = '.gz'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

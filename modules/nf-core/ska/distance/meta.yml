@@ -1,0 +1,111 @@
+name: "ska_distance"
+description: Calculate pairwise distances and basic clustering from SKA sketches
+keywords:
+  - genomics
+  - metagenomics
+  - kmer
+  - split_kmers
+  - distance
+  - clustering
+tools:
+  - "ska":
+      description: "SKA (Split Kmer Analysis)"
+      homepage: "https://github.com/simonrharris/SKA"
+      documentation: "https://github.com/simonrharris/SKA/wiki"
+      tool_dev_url: "https://github.com/simonrharris/SKA"
+      doi: "10.1101/453142"
+      licence:
+        - "MIT"
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1'  ]`
+    - sketch_files:
+        type: file
+        description: SKA sketch files
+        pattern: "*.skf"
+        ontologies: []
+    - sketch_list:
+        type: file
+        description: List of SKA sketch files
+        pattern: "*.txt"
+
+        ontologies: []
+output:
+  distances:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*distances.tsv":
+          type: file
+          description: Pairwise distance table
+          pattern: "*distance.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  cluster_list:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*clusters.tsv":
+          type: file
+          description: List of samples and their clusters
+          pattern: "*clusters.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  cluster_files:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*cluster*.txt":
+          type: file
+          description: Cluster files
+          pattern: "*cluster*.txt"
+          ontologies: []
+  dot:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.dot":
+          type: file
+          description: DOT file for visualization
+          pattern: "*.dot"
+          ontologies: []
+  versions_ska:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ska:
+          type: string
+          description: The name of the tool
+      - "ska --version | sed -n 's/Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ska:
+          type: string
+          description: The name of the tool
+      - "ska --version | sed -n 's/Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@itrujnara"
+maintainers:
+  - "@itrujnara"

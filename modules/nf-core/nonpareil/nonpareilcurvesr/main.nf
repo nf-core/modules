@@ -1,0 +1,46 @@
+process NONPAREIL_NONPAREILCURVESR {
+    tag "$meta.id"
+    label 'process_single'
+
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/nonpareil:3.5.5--r43hdcf5f25_0':
+        'quay.io/biocontainers/nonpareil:3.5.5--r43hdcf5f25_0' }"
+
+    input:
+    tuple val(meta), path(npos)
+
+    output:
+    tuple val(meta), path("*.json"), emit: json, optional: true
+    tuple val(meta), path("*.tsv" ), emit: tsv , optional: true
+    tuple val(meta), path("*.csv" ), emit: csv , optional: true
+    tuple val(meta), path("*.pdf" ), emit: pdf , optional: true
+
+    tuple val("${task.process}"), val('nonpareil'), eval('nonpareil -V 2>&1 | sed "s/Nonpareil v//"'), emit: versions_nonpareil, topic: versions
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    NonpareilCurves.R \\
+        $args \\
+        --json ${prefix}.json \\
+        --tsv ${prefix}.tsv \\
+        --csv ${prefix}.csv \\
+        --pdf ${prefix}.pdf \\
+        $npos
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.json
+    touch ${prefix}.tsv
+    touch ${prefix}.csv
+    touch ${prefix}.pdf
+    """
+}

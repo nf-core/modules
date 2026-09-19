@@ -1,8 +1,0 @@
-- name: bcftools split test_bcftools_split
-  command: nextflow run ./tests/modules/nf-core/bcftools/split -entry test_bcftools_split -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/bcftools/split/nextflow.config
-  tags:
-    - bcftools
-    - bcftools/split
-  files:
-    - path: output/bcftools/test.chr22.vcf.gz
-    - path: output/bcftools/versions.yml

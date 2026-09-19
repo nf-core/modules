@@ -1,0 +1,62 @@
+name: blast_updateblastdb
+description: Downloads a BLAST database from NCBI
+keywords:
+  - fasta
+  - blast
+  - download
+  - database
+tools:
+  - blast:
+      description: |
+        BLAST finds regions of similarity between biological sequences.
+      homepage: https://blast.ncbi.nlm.nih.gov/Blast.cgi
+      documentation: https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=Blastdocs
+      doi: 10.1016/S0022-2836(05)80360-2
+      licence:
+        - "US-Government-Work"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'mito', single_end:false ]
+    - name:
+        type: string
+        description: Name of the NCBI BLAST database to be downloaded
+output:
+  db:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'mito', single_end:false ]
+      - prefix:
+          type: directory
+          description: Output directory containing blast database files
+          pattern: "*"
+  versions_updateblastdb:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - updateblastdb:
+          type: string
+          description: The name of the tool
+      - update_blastdb.pl -version 2>&1 | tail -n1 | rev | cut -f1 -d ' ' | rev:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - updateblastdb:
+          type: string
+          description: The name of the tool
+      - update_blastdb.pl -version 2>&1 | tail -n1 | rev | cut -f1 -d ' ' | rev:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@toniher"
+maintainers:
+  - "@toniher"

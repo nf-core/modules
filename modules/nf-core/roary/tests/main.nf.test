@@ -1,0 +1,67 @@
+nextflow_process {
+
+    name "Test Process ROARY"
+    script "../main.nf"
+    process "ROARY"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "roary"
+
+    test("candidatus_portiera_aleyrodidarum - multi_gffs") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: "test_gff" ],
+                    [
+                        file(params.modules_testdata_base_path + '/genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true),
+                        file(params.modules_testdata_base_path + '/genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test2.gff', checkIfExists: true),
+                        file(params.modules_testdata_base_path + '/genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test3.gff', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll (
+                { assert path(process.out.results[0][1].find { it.toString().contains("gene_presence_absence.csv") }).exists() },
+                { assert path(process.out.results[0][1].find { it.toString().contains("accessory_binary_genes.fa.newick") }).exists() },
+                { assert path(process.out.results[0][1].find { it.toString().contains("summary_statistics.txt") }).exists() },
+                { assert path(process.out.results[0][1].find { it.toString().contains("accessory_binary_genes.fa") }).exists() },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["results"])).match() }
+            )
+        }
+
+    }
+
+    test("candidatus_portiera_aleyrodidarum - multi_gffs - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: "test_gff" ],
+                    [
+                        file(params.modules_testdata_base_path + '/genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true),
+                        file(params.modules_testdata_base_path + '/genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test2.gff', checkIfExists: true),
+                        file(params.modules_testdata_base_path + '/genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test3.gff', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll (
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

@@ -1,0 +1,67 @@
+name: "truvari_consistency"
+description: Over multiple vcfs, calculate their intersection/consistency.
+keywords:
+  - structural variants
+  - sv
+  - vcf
+  - intersection
+  - comparison
+tools:
+  - "truvari":
+      description: "Structural variant comparison tool for VCFs"
+      homepage: "https://github.com/ACEnglish/truvari"
+      documentation: "https://github.com/acenglish/truvari/wiki"
+      tool_dev_url: "https://github.com/ACEnglish/truvari"
+      doi: "10.1186/s13059-022-02840-6"
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - vcfs:
+        type: file
+        description: two or more VCF files to compare
+        pattern: "*.{vcf,gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
+output:
+  consistency:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.{txt,json}":
+          type: file
+          description: Output report in txt or json format
+          pattern: "*.{txt,json}"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  versions_truvari:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - truvari:
+          type: string
+          description: The name of the tool
+      - "truvari version | sed 's/Truvari v//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - truvari:
+          type: string
+          description: The name of the tool
+      - "truvari version | sed 's/Truvari v//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@kubranarci"
+maintainers:
+  - "@kubranarci"

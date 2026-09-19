@@ -2,6 +2,8 @@ name: "cooler_makebins"
 description: Generate fixed-width genomic bins
 keywords:
   - makebins
+  - cooler
+  - genomic bins
 tools:
   - "cooler":
       description: Sparse binary format for genomic interaction matrices
@@ -10,25 +12,54 @@ tools:
       tool_dev_url: https://github.com/open2c/cooler
       doi: "10.1093/bioinformatics/btz540"
       licence: ["BSD-3-Clause"]
-
+      identifier: ""
 input:
-  - chromsize:
-      type: file
-      description: Path to chromosome size file
-  - cool_bin:
-      type: value
-      description: Resolution (bin size) in base pairs
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - chromsizes:
+        type: file
+        description: Path to a chromsizes file.
+        ontologies: []
+    - cool_bin:
+        type: integer
+        description: Resolution (bin size) in base pairs
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - bed:
-      type: file
-      description: Genome segmentation at a fixed resolution as a BED file.
-      pattern: "*.bed"
-
+  bed:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.bed":
+          type: file
+          description: Genome segmentation at a fixed resolution as a BED file.
+          pattern: "*.bed"
+          ontologies: []
+  versions_cooler:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cooler:
+          type: string
+          description: The name of the tool
+      - cooler --version 2>&1 | sed "s/cooler, version //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cooler:
+          type: string
+          description: The name of the tool
+      - cooler --version 2>&1 | sed "s/cooler, version //":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
+  - "@nservant"
+  - "@muffato"
+maintainers:
   - "@nservant"
   - "@muffato"

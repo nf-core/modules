@@ -13,25 +13,61 @@ tools:
       documentation: http://rseqc.sourceforge.net/
       doi: 10.1093/bioinformatics/bts356
       licence: ["GPL-3.0-or-later"]
+      identifier: biotools:rseqc
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: the bam file to calculate statistics of
-      pattern: "*.{bam}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: the bam file to calculate statistics of
+        pattern: "*.{bam}"
+        ontologies: []
+    - bai:
+        type: file
+        description: BAM index file
+        pattern: "*.{bai}"
+        ontologies: []
 output:
-  - txt:
-      type: file
-      description: bam statistics report
-      pattern: "*.bam_stat.txt"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  txt:
+    - - meta:
+          type: file
+          description: bam statistics report
+          pattern: "*.bam_stat.txt"
+          ontologies: []
+      - "*.bam_stat.txt":
+          type: file
+          description: bam statistics report
+          pattern: "*.bam_stat.txt"
+          ontologies: []
+  versions_rseqc:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - rseqc:
+          type: string
+          description: The tool name
+      - bam_stat.py --version | sed "s/bam_stat.py //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - rseqc:
+          type: string
+          description: The tool name
+      - bam_stat.py --version | sed "s/bam_stat.py //":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@drpatelh"
   - "@kevinmenden"
+  - "@rhassaine"
+maintainers:
+  - "@drpatelh"
+  - "@kevinmenden"
+  - "@rhassaine"

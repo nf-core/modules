@@ -1,0 +1,110 @@
+name: abritamr_run
+description: A NATA accredited tool for reporting the presence of antimicrobial
+  resistance genes in bacterial genomes
+keywords:
+  - bacteria
+  - fasta
+  - antibiotic resistance
+tools:
+  - "abritamr":
+      description: "A pipeline for running AMRfinderPlus and collating results into
+        functional classes"
+      homepage: "https://github.com/MDU-PHL/abritamr"
+      documentation: "https://github.com/MDU-PHL/abritamr"
+      tool_dev_url: "https://github.com/MDU-PHL/abritamr"
+      doi: "10.1038/s41467-022-35713-4"
+      licence:
+        - "GPL v3"
+      identifier: biotools:abritamr
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - fasta:
+        type: file
+        description: Assembled contigs in FASTA format
+        pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,faa,faa.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+output:
+  matches:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.summary_matches.txt":
+          type: file
+          description: Tab-delimited file, with a row per sequence, and columns
+            representing functional drug classes
+          pattern: "*.summary_matches.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Textual format
+  partials:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.summary_partials.txt":
+          type: file
+          description: Tab-delimited file, with a row per sequence, and columns
+            representing partial hits to functional drug classes
+          pattern: "*.summary_partials.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Textual format
+  virulence:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.summary_virulence.txt":
+          type: string
+          description: Tab-delimited file, with a row per sequence, and columns
+            representing AMRFinderPlus virulence gene classification
+          pattern: "*.summary_virulence.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Textual format
+  out:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.amrfinder.out":
+          type: string
+          description: raw output from AMRFinder plus (per sequence)
+          pattern: "*.amrfinder.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Textual format
+  txt:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.abritamr.txt":
+          type: string
+          description: Tab-delimited file, combining non-empty summary files
+          pattern: "*.abritamr.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Textual format
+  versions_abritamr:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - abritamr:
+          type: string
+          description: The name of the tool
+      - abritamr --version 2>&1 | sed 's/^.*abritamr \([0-9.]*\).*/\1/':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - abritamr:
+          type: string
+          description: The name of the tool
+      - abritamr --version 2>&1 | sed 's/^.*abritamr \([0-9.]*\).*/\1/':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@rpetit3"
+maintainers:
+  - "@rpetit3"
+  - "@sateeshperi"

@@ -1,0 +1,56 @@
+nextflow_process {
+
+    name "Test Process ARIBA_GETREF"
+    script "../main.nf"
+    process "ARIBA_GETREF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ariba"
+    tag "ariba/getref"
+
+    test("card") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                    "card"
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.db.get(0).get(1)).linesGzip[0].contains("card") }
+            )
+        }
+
+    }
+
+    test("card - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ], // meta map
+                    "card"
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

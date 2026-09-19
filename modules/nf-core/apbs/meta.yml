@@ -1,0 +1,117 @@
+name: "apbs"
+description: |
+  Compute biomolecular electrostatics by solving the Poisson-Boltzmann equation
+  using APBS (Adaptive Poisson-Boltzmann Solver). Produces electrostatic potential
+  maps and solvation energy values for large biomolecular assemblages.
+keywords:
+  - electrostatics
+  - poisson-boltzmann
+  - solvation
+  - structural-biology
+  - biophysics
+  - computational-chemistry
+tools:
+  - "apbs":
+      description: |
+        APBS (Adaptive Poisson-Boltzmann Solver) is a software package for modelling
+        biomolecular solvation through solution of the Poisson-Boltzmann equation.
+        It computes electrostatic solvation energies and potentials for large
+        biomolecular assemblages and is widely used in structural biology and
+        computational biophysics.
+      homepage: "https://www.poissonboltzmann.org/"
+      documentation: "https://apbs.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/Electrostatics/apbs"
+      licence:
+        - "Custom"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - apbs_input:
+        type: file
+        description: |
+          APBS input configuration file specifying the electrostatics calculation,
+          including paths to molecular structure files (PQR/PDB) and calculation
+          parameters. The file extension is typically `.in` but `.inp` is also
+          accepted for legacy purposes.
+        pattern: "*.{in,inp}"
+        ontologies: []
+    - pqr:
+        type: file
+        description: |
+          One or more PQR molecular structure files referenced by the input
+          configuration file. PQR files contain atomic coordinates, charges, and
+          radii used by APBS for electrostatics calculations.
+        pattern: "*.pqr"
+        ontologies:
+          - edam: "http://edamontology.org/format_4035" # PQR
+output:
+  dx:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.dx":
+          type: file
+          description: |
+            OpenDX format volumetric electrostatic potential map file output by APBS.
+            Optional: this output is only produced when the input configuration file
+            contains a `write pot dx <dx_filename>` directive.
+          pattern: "*.dx"
+          ontologies: []
+  mc:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - io.mc:
+          type: file
+          description: |
+            APBS multigrid calculation output file containing energy and force
+            information from the finite difference solver.
+          pattern: "io.mc"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.log:
+          type: file
+          description: |
+            APBS standard output log file containing calculation results, including
+            electrostatic solvation energies and run diagnostics.
+          pattern: "*.log"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Textual format
+  versions_apbs:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - apbs:
+          type: string
+          description: The name of the tool
+      - apbs --version 2>&1 | sed '6!d;s|^.*Version APBS ||; s| .*\$||':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - apbs:
+          type: string
+          description: The name of the tool
+      - apbs --version 2>&1 | sed '6!d;s|^.*Version APBS ||; s| .*\$||':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"

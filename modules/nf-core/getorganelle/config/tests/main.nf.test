@@ -1,0 +1,57 @@
+nextflow_process {
+
+    name "Test Process GETORGANELLE_CONFIG"
+    script "../main.nf"
+    process "GETORGANELLE_CONFIG"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "getorganelle"
+    tag "getorganelle/config"
+
+    test("test-getorganelle-config") {
+
+        when {
+            process {
+                """
+                input[0] = 'all'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {
+                    def stable_name = getAllFilesFromDir(process.out.db[0][1].toString(), include:['*', '**/*'])
+                    def stable_content = getAllFilesFromDir(process.out.db[0][1].toString(), include:["**/VERSION", "**/animal_mt.fasta"])
+
+                    assert snapshot(
+                        stable_name*.name.sort(),
+                        stable_content,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("test-getorganelle-config-stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = 'all'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

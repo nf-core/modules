@@ -1,0 +1,62 @@
+nextflow_process {
+
+    name 'Test Process ANNDATA_BARCODES'
+    script '../main.nf'
+    process 'ANNDATA_BARCODES'
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "anndata/barcodes"
+    tag "anndata"
+
+    test("scdownstream - h5ad - csv") {
+        when {
+            process {
+                """
+                input[0] = channel.from([
+                    [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679759_filtered_matrix.h5ad', checkIfExists: true)
+
+                    ]
+                ]).combine(channel.from('AAACCTGAGATATGGT', 'AAACCTGAGCAATATG', 'AAACCTGAGCACCGCT').collectFile(newLine: true))
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("scdownstream - h5ad - csv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = channel.from([
+                    [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679759_filtered_matrix.h5ad', checkIfExists: true)
+
+                    ]
+                ]).combine(channel.from('AAACCTGAGATATGGT', 'AAACCTGAGCAATATG', 'AAACCTGAGCACCGCT').collectFile(newLine: true))
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+}

@@ -1,0 +1,31 @@
+nextflow_process {
+
+    name "Test Process STARAMR_SEARCH"
+    script "../main.nf"
+    process "STARAMR_SEARCH"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "staramr"
+    tag "staramr/search"
+
+    test("staramr_search - bacteroides_fragilis - genome_fna_gz") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["results_xlsx", "summary_tsv", "detailed_summary_tsv", "resfinder_tsv", "plasmidfinder_tsv", "mlst_tsv", "settings_txt", "pointfinder_tsv"])).match() }
+            )
+        }
+    }
+}

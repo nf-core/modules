@@ -2,18 +2,18 @@ process VSEARCH_SORT {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::vsearch=2.21.1"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vsearch:2.21.1--h95f258a_0':
-        'quay.io/biocontainers/vsearch:2.21.1--h95f258a_0' }"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/vsearch:2.31.0--hd2be7a0_0':
+        'quay.io/biocontainers/vsearch:2.31.0--hd2be7a0_0' }"
 
     input:
     tuple val(meta), path(fasta)
     val sort_arg
 
     output:
-    tuple val(meta), path("*_sorted.fasta"), emit: fasta
-    path "versions.yml"                    , emit: versions
+    tuple val(meta), path("*.fasta"), emit: fasta
+    tuple val("${task.process}"), val('vsearch'), eval('vsearch --version 2>&1 | sed -n "1s/.*v\\([0-9.]*\\).*/\\\\1/p"'), emit: versions_vsearch, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,20 +28,11 @@ process VSEARCH_SORT {
         --threads $task.cpus \\
         --output ${prefix}.fasta \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vsearch: \$(vsearch --version 2>&1 | head -n 1 | sed 's/vsearch //g;s/,.*//g;s/^v//;s/_.*//')
-    END_VERSIONS
     """
 
     stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vsearch: \$(vsearch --version 2>&1 | head -n 1 | sed 's/vsearch //g;s/,.*//g;s/^v//;s/_.*//')
-    END_VERSIONS
     """
 }

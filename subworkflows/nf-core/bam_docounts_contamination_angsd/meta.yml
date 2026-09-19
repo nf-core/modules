@@ -1,0 +1,40 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "bam_docounts_contamination_angsd"
+description: Calculate contamination of the X-chromosome with ANGSD
+keywords:
+  - angsd
+  - bam
+  - contamination
+  - docounts
+components:
+  - angsd/docounts
+  - angsd/contamination
+input:
+  - ch_bam:
+      type: file
+      description: |
+        BAM/CRAM file and its index.
+
+        Structure: [ val(meta), path(bam), path(bai) ]
+      pattern: "*.{bam,cram}"
+
+  - ch_hapmap_file:
+      type: file
+      description: |
+        Hapmap file.
+
+        Structure: [ val(meta), path(hapmap_file) ]
+
+output:
+  - txt:
+      type: file
+      description: |
+        Contamination estimation file.
+
+        Structure: [ val(meta), path(txt) ]
+      pattern: "*.txt"
+
+authors:
+  - "@scarlhoff"
+maintainers:
+  - "@scarlhoff"

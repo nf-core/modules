@@ -1,0 +1,84 @@
+name: "chopper"
+description: Filter and trim long read data.
+keywords:
+  - filter
+  - trimming
+  - fastq
+  - nanopore
+  - qc
+tools:
+  - "zcat":
+      description: "zcat uncompresses either a list of files on the command line or
+        its standard input and writes the uncompressed data on standard output."
+      documentation: "https://linux.die.net/man/1/zcat"
+      args_id: "$args"
+      identifier: ""
+  - "chopper":
+      description: "A rust command line for filtering and trimming long reads."
+      homepage: "https://github.com/wdecoster/chopper"
+      documentation: "https://github.com/wdecoster/chopper"
+      tool_dev_url: "https://github.com/wdecoster/chopper"
+      doi: "10.1093/bioinformatics/bty149"
+      licence: ["MIT"]
+      args_id: "$args2"
+      identifier: ""
+  - "gzip":
+      description: "Gzip reduces the size of the named files using Lempel-Ziv coding
+        (LZ77)."
+      documentation: "https://linux.die.net/man/1/gzip"
+      args_id: "$args3"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fastq:
+        type: file
+        description: FastQ with reads from long read sequencing e.g. PacBio or ONT
+        pattern: "*.{fastq.gz}"
+        ontologies: []
+  - fasta:
+      type: file
+      description: An optional reference fasta file against which to remove reads that
+        align to it.
+      pattern: "*.fasta"
+      ontologies: []
+output:
+  fastq:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fastq.gz":
+          type: file
+          description: Filtered and trimmed FastQ file
+          pattern: "*.{fastq.gz}"
+          ontologies: []
+  versions_chopper:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - chopper:
+          type: string
+          description: The name of the tool
+      - "chopper --version 2>&1 | cut -d ' ' -f 2":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - chopper:
+          type: string
+          description: The name of the tool
+      - "chopper --version 2>&1 | cut -d ' ' -f 2":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@FynnFreyer"
+maintainers:
+  - "@FynnFreyer"

@@ -1,0 +1,85 @@
+nextflow_process {
+
+    name "Test Process samshee"
+    script "../main.nf"
+    process "SAMSHEE"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "samshee"
+
+    test("test samplesheet_v1") {
+
+        when {
+            params {
+                v1_schema             = true
+                json_schema_validator = '{"required": ["Data"]}'
+                name_schema_validator = null
+            }
+            process {
+                """
+                input[0] = [ [ id: 'test', lane:1 ], file("https://raw.githubusercontent.com/nf-core/test-datasets/demultiplex/testdata/miseq_35147139/miseq_35147139_samplesheet.csv", checkIfExists: true) ]
+                input[1] = file("schema.json")
+                new File("schema.json").text = '''{
+                    "\$schema": "https://json-schema.org/draft/2020-12/schema",
+                    "required": ["Settings"]
+                }'''
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+
+    }
+    test("test samplesheet_v2") {
+
+        when {
+            params {
+                v1_schema             = null
+                json_schema_validator = null
+                name_schema_validator = '{"$ref": "urn:samshee:illuminav2/v1"}'
+            }
+            process {
+                """
+                input[0] = [ [ id: 'test', lane:1 ], file("https://raw.githubusercontent.com/nf-core/test-datasets/demultiplex/testdata/NextSeq2000/SampleSheet.csv", checkIfExists: true) ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+
+    }
+
+    test("stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                v1_schema             = null
+                json_schema_validator = null
+                name_schema_validator = null
+            }
+            process {
+                """
+                input[0] = [ [ id: 'test', lane:1 ], file("https://raw.githubusercontent.com/nf-core/test-datasets/demultiplex/testdata/NextSeq2000/SampleSheet.csv", checkIfExists: true) ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(process.out).match()
+        }
+
+    }
+
+}

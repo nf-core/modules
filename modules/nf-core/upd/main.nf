@@ -1,0 +1,37 @@
+
+process UPD {
+    tag "$meta.id"
+    label 'process_single'
+
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/upd:0.1.1--pyhdfd78af_0':
+        'quay.io/biocontainers/upd:0.1.1--pyhdfd78af_0' }"
+
+    input:
+    tuple val(meta), path(vcf)
+
+    output:
+    tuple val(meta), path("*.bed"), emit: bed
+    tuple val("${task.process}"), val('upd'), eval("upd --version 2>&1 | sed 's/upd, version //'"), topic: versions, emit: versions_upd
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    upd \\
+        --vcf $vcf \\
+        $args \\
+        | sort -k 1,1 -k 2,2n >${prefix}.bed
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bed
+    """
+
+}

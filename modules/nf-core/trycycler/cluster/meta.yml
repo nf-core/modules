@@ -1,0 +1,70 @@
+name: "trycycler_cluster"
+description: Cluster contigs from multiple assemblies by similarity
+keywords:
+  - cluster
+  - alignment
+  - fastq
+  - fasta
+  - genomics
+tools:
+  - "trycycler":
+      description: Trycycler is a tool for generating consensus long-read
+        assemblies for bacterial genomes
+      homepage: https://github.com/rrwick/Trycycler
+      documentation: https://github.com/rrwick/Trycycler/wiki
+      doi: 10.1186/s13059-021-02483-z
+      licence:
+        - "GPL v3"
+      identifier: biotools:trycycler
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - contigs:
+        type: file
+        description: Contigs file
+        ontologies: []
+    - reads:
+        type: file
+        description: Long-read FASTQ file, optionally gzip compressed
+        ontologies: []
+output:
+  cluster_dir:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*":
+          type: directory
+          description: Output directory containing clustering results
+  versions_trycycler:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - trycycler:
+          type: string
+          description: The name of the tool
+      - trycycler --version | sed 's/Trycycler v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - trycycler:
+          type: string
+          description: The name of the tool
+      - trycycler --version | sed 's/Trycycler v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@watsonar"
+maintainers:
+  - "@watsonar"

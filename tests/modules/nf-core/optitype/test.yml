@@ -1,9 +1,0 @@
-- name: optitype test_optitype
-  command: nextflow run ./tests/modules/nf-core/optitype -entry test_optitype -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/optitype/nextflow.config
-  tags:
-    - optitype
-  files:
-    - path: output/optitype/test/test_coverage_plot.pdf
-    - path: output/optitype/test/test_result.tsv
-      contains:
-        - "1439"

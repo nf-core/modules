@@ -1,0 +1,54 @@
+nextflow_process {
+
+    name "Test Process TABIX_BGZIP"
+    script "../main.nf"
+    process "TABIX_BGZIP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "tabix"
+    tag "tabix/bgzip"
+
+    test("sarscov2 - vcf - bgzip - compress - deprecated") {
+        when {
+            process {
+                """
+                input[0] = [
+                                [ id:'bgzip_test' ],
+                                [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true) ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.") }
+            )
+        }
+    }
+
+    test("sarscov2 - vcf - bgzip - compress - deprecated - stub") {
+        options '-stub'
+        config "./bgzip_compress.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                                [ id:"test_stub" ],
+                                [ file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true) ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.") }
+            )
+        }
+    }
+}

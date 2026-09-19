@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "vcf_extract_relate_somalier"
 description: Perform somalier extraction and relate stats on input VCFs
 keywords:
@@ -6,8 +7,8 @@ keywords:
   - vcf
   - ped
   - relatedness
-modules:
-  - tabix/tabix
+components:
+  - htslib/bgziptabix
   - somalier/extract
   - somalier/relate
 input:
@@ -61,9 +62,7 @@ output:
       description: |
         A TSV file detailing the relatedness between all samples with the same meta
         Structure: [ val(meta), path(tsv) ]
-  - versions:
-      description: |
-        Files containing software versions
-        Structure: [ path(versions.yml) ]
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

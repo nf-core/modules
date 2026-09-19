@@ -1,0 +1,58 @@
+
+nextflow_process {
+
+    name "Test Process CLONALFRAMEML"
+    script "../main.nf"
+    process "CLONALFRAMEML"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "clonalframeml"
+
+    test("test-clonalframeml") {
+
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ],
+				    file(params.modules_testdata_base_path + 'genomics/prokaryotes/haemophilus_influenzae/genome/genome.aln.nwk', checkIfExists: true),
+				    file(params.modules_testdata_base_path + 'genomics/prokaryotes/haemophilus_influenzae/genome/genome.aln.gz', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("test-clonalframeml -- stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ],
+				    file(params.modules_testdata_base_path + 'genomics/prokaryotes/haemophilus_influenzae/genome/genome.aln.nwk', checkIfExists: true),
+				    file(params.modules_testdata_base_path + 'genomics/prokaryotes/haemophilus_influenzae/genome/genome.aln.gz', checkIfExists: true)
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

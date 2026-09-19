@@ -1,0 +1,82 @@
+name: "kmcp_compute"
+description: Generate k-mers (sketches) from FASTA/Q sequences
+keywords:
+  - metagenomics
+  - classify
+  - taxonomic profiling
+  - fastq
+  - sequences
+  - kmers
+tools:
+  - "kmcp":
+      description: "Accurate metagenomic profiling of both prokaryotic and viral populations
+        by pseudo-mapping"
+      homepage: "https://github.com/shenwei356/kmcp"
+      documentation: "https://github.com/shenwei356/kmcp#documents"
+      tool_dev_url: "https://github.com/shenwei356/kmcp"
+      doi: "10.1093/bioinformatics/btac845"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - sequences:
+        type: file
+        description: List of fasta files, or a directory containing FASTA files
+        pattern: "**/*.{fa,fa.gz,fasta,fasta.gz,fna,fna.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+output:
+  outdir:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}:
+          type: directory
+          description: Output directory containing all .unik files and a summary
+            file in .txt format. Every .unik file contains the sequence/reference
+            ID,chunk index, number of chunks, and genome size of reference.
+          pattern: "*/"
+  info:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/_info.txt:
+          type: file
+          description: Summary file that is generated for later use
+          pattern: "*_info.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Textual format
+  versions_kmcp:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kmcp:
+          type: string
+          description: The name of the tool
+      - kmcp version 2>&1 | sed 's/^.*kmcp v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kmcp:
+          type: string
+          description: The name of the tool
+      - kmcp version 2>&1 | sed 's/^.*kmcp v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@sofstam"
+maintainers:
+  - "@sofstam"

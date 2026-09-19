@@ -10,39 +10,69 @@ tools:
       homepage: http://smithlabresearch.org/software/preseq/
       documentation: http://smithlabresearch.org/wp-content/uploads/manual.pdf
       tool_dev_url: https://github.com/smithlabcode/preseq
-
-      licence: ["GPL"]
-
+      licence:
+        - "GPL"
+      identifier: biotools:preseq
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: BAM/CRAM/SAM file
-      pattern: "*.{bam,cram,sam}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - ccurve:
-      type: file
-      description: File containing output of Preseq c curve
-      pattern: "*.{c_curve.txt}"
-  - log:
-      type: file
-      description: Log file containing stderr produced by Preseq
-      pattern: "*.{log}"
+  c_curve:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.c_curve.txt":
+          type: file
+          description: Preseq c_curve output file
+          pattern: "*.{c_curve.txt}"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.log":
+          type: file
+          description: Log file containing stderr produced by Preseq
+          pattern: "*.{log}"
+          ontologies: []
+  versions_preseq:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - preseq:
+          type: string
+          description: The name of the tool
+      - "preseq 2>&1 | sed -n 's/Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - preseq:
+          type: string
+          description: The name of the tool
+      - "preseq 2>&1 | sed -n 's/Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 
 authors:
   - "@drpatelh"
-  - "@Emiller88"
+  - "@edmundmiller"
+maintainers:
+  - "@drpatelh"
+  - "@edmundmiller"

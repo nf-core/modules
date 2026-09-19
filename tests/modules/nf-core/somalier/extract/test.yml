@@ -1,9 +1,0 @@
-- name: somalier extract test_somalier_extract
-  command: nextflow run ./tests/modules/nf-core/somalier/extract -entry test_somalier_extract -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/somalier/extract/nextflow.config
-  tags:
-    - somalier
-    - somalier/extract
-  files:
-    - path: output/somalier/normal.somalier
-      md5sum: 21f0b980edd42ddaa8ab964959c1de02
-    - path: output/somalier/versions.yml

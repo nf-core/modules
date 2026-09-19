@@ -1,42 +1,65 @@
 name: legsta
-description: Typing of clinical and environmental isolates of Legionella pneumophila
+description: Typing of clinical and environmental isolates of Legionella
+  pneumophila
 keywords:
   - bacteria
   - legionella
+  - clinical
+  - pneumophila
 tools:
   - legsta:
       description: In silico Legionella pneumophila Sequence Based Typing
       homepage: https://github.com/tseemann/legsta
       documentation: https://github.com/tseemann/legsta
       tool_dev_url: https://github.com/tseemann/legsta
-
-      licence: ["GPL v3"]
-
+      licence:
+        - "GPL v3"
+      identifier: biotools:legsta
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - seqs:
-      type: file
-      description: FASTA, GenBank or EMBL formatted files
-      pattern: "*.{fasta,gbk,embl}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - seqs:
+        type: file
+        description: FASTA, GenBank or EMBL formatted files
+        pattern: "*.{fasta,gbk,embl}"
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - tsv:
-      type: file
-      description: Tab-delimited summary of the results
-      pattern: "*.{tsv}"
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tsv":
+          type: file
+          description: Tab-delimited summary of the results
+          pattern: "*.{tsv}"
 
+  versions_legsta:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - "legsta":
+          type: string
+          description: The name of the tool
+      - legsta --version 2>&1 | sed 's/^.*legsta //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - "legsta":
+          type: string
+          description: The name of the tool
+      - legsta --version 2>&1 | sed 's/^.*legsta //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

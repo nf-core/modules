@@ -1,0 +1,37 @@
+process SNPSIFT_DBNSFP {
+    tag "${meta.id}"
+    label 'process_medium'
+
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3d/3d8ec79a01bcc86a5ce258c66fc18e48c1826aebc7e7114454757919162ff9e6/data'
+        : 'community.wave.seqera.io/library/snpsift:5.4.0c--6546f37f72acfb46'}"
+
+    input:
+    tuple val(meta), path(vcf), path(vcf_tbi)
+    tuple val(meta2), path(database), path(dbs_tbi)
+
+    output:
+    tuple val(meta), path("*.vcf"), emit: vcf
+    tuple val("${task.process}"), val('snpsift'), eval("SnpSift -version 2>&1 | grep -oE '[0-9]+\\.[0-9]+[a-z]?'"), emit: versions_snpsift, topic: versions
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    SnpSift \\
+        dbnsfp \\
+        ${args} \\
+        -db ${database} \\
+        ${vcf} > ${prefix}.vcf
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.vcf
+    """
+}

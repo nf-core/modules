@@ -1,0 +1,74 @@
+name: "gem2_gemindexer"
+description: Create a GEM index from a FASTA file
+keywords:
+  - fasta
+  - index
+  - reference
+  - mappability
+tools:
+  - "gem2":
+      description: "GEM2 is a high-performance mapping tool. It also provide a unique
+        tool to evaluate mappability."
+      homepage: "https://paoloribeca.science/gem"
+      licence:
+        - "Custom"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: A reference FASTA file to index
+        pattern: "*.{fasta,fa,fna}"
+        ontologies: []
+output:
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.gem":
+          type: file
+          description: The GEM index file
+          pattern: "*.gem"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.log":
+          type: file
+          description: The execution log
+          pattern: "*.log"
+          ontologies: []
+  versions_gem2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gem2:
+          type: string
+          description: The name of the tool
+      - "20200110":
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gem2:
+          type: string
+          description: The name of the tool
+      - "20200110":
+          type: string
+          description: The expression to obtain the version of the tool
+authors:
+  - "@nvnieuwk"
+maintainers:
+  - "@nvnieuwk"

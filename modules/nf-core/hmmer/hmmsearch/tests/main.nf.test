@@ -1,0 +1,123 @@
+nextflow_process {
+
+    name "Test Process HMMER_HMMSEARCH"
+    script "../main.nf"
+    process "HMMER_HMMSEARCH"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hmmer"
+    tag "hmmer/hmmsearch"
+
+    test("bacteria - [ hmm, fasta ] - txt") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'delete_me/hmmer/bac.16S_rRNA.hmm.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/hmmer/e_coli_k12_16s.fna.gz', checkIfExists: true),
+                    false,
+                    false,
+                    false
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                // the pipeline statistics footer (CPU time, Mc/sec) is run-dependent, so "output" is unstable
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["output"])).match() }
+            )
+        }
+
+    }
+
+    test("bacteria - [ hmm, fasta ] - txt - sto - tbl - domtbl") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'delete_me/hmmer/bac.16S_rRNA.hmm.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/hmmer/e_coli_k12_16s.fna.gz', checkIfExists: true),
+                    true,
+                    true,
+                    true
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                // "output" carries the CPU-time footer and "target_summary"/"domain_summary" carry a
+                // "Current dir"/"Date" comment block, all run-dependent
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["output", "target_summary", "domain_summary"])).match() }
+            )
+        }
+
+    }
+
+    test("bacteria - [ hmm, fasta ] - txt - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'delete_me/hmmer/bac.16S_rRNA.hmm.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/hmmer/e_coli_k12_16s.fna.gz', checkIfExists: true),
+                    false,
+                    false,
+                    false
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("bacteria - [ hmm, fasta ] - txt - sto - tbl - domtbl - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'delete_me/hmmer/bac.16S_rRNA.hmm.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/hmmer/e_coli_k12_16s.fna.gz', checkIfExists: true),
+                    true,
+                    true,
+                    true
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

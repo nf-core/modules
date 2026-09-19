@@ -1,0 +1,69 @@
+nextflow_process {
+
+    name "Test Process CSVTK_SPLIT"
+    script "../main.nf"
+    process "CSVTK_SPLIT"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "csvtk"
+    tag "csvtk/split"
+
+    test("split - csv") {
+
+        when {
+            params {
+                module_args = "-C '&' --fields 'first_name'"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + '/generic/tsv/test.tsv', checkIfExists: true)
+                ]
+                input[1] = "tsv"
+                input[2] = "tsv"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("split - csv - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = ""
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + '/generic/tsv/test.tsv', checkIfExists: true)
+                ]
+                input[1] = "tsv"
+                input[2] = "tsv"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

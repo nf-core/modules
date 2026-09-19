@@ -1,0 +1,63 @@
+{
+    "test-pairtools-restrict": {
+        "content": [
+            [
+                "#chromosomes: chr1 chr2",
+                "#chromsize: chr1 10000",
+                "#chromsize: chr2 10000",
+                "#samheader: @SQ\tSN:chr1\tLN:10000",
+                "#samheader: @SQ\tSN:chr2\tLN:10000"
+            ],
+            {
+                "restrict": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.restrict.pairs.gz"
+                    ]
+                ],
+                "versions_pairtools": [
+                    [
+                        "PAIRTOOLS_RESTRICT",
+                        "pairtools",
+                        "1.1.3"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-06-12T19:35:31.390493929",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "test-pairtools-restrict - stub": {
+        "content": [
+            {
+                "restrict": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.restrict.pairs.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions_pairtools": [
+                    [
+                        "PAIRTOOLS_RESTRICT",
+                        "pairtools",
+                        "1.1.3"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-06-12T19:35:38.552482463",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    }
+}

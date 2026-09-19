@@ -1,0 +1,74 @@
+name: "falint"
+description: A fasta linter/validator
+keywords:
+  - fasta
+  - validation
+  - genome
+tools:
+  - "falint":
+      description: "A Fasta linter/validator"
+      homepage: "https://github.com/GallVp/fa-lint"
+      documentation: "https://github.com/GallVp/fa-lint"
+      tool_dev_url: "https://github.com/GallVp/fa-lint"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing file information
+          e.g. [ id:'test' ]
+    - fasta:
+        type: file
+        description: Input fasta file
+        pattern: "*.fasta"
+        ontologies: []
+output:
+  success_log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing file information
+            e.g. [ id:'test' ]
+      - "*.success.log":
+          type: file
+          description: Log file for successful validation
+          pattern: "*.success.log"
+          ontologies: []
+  error_log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing file information
+            e.g. [ id:'test' ]
+      - "*.error.log":
+          type: file
+          description: Log file for failed validation
+          pattern: "*.error.log"
+          ontologies: []
+  versions_falint:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - falint:
+          type: string
+          description: The name of the tool
+      - fa-lint --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - falint:
+          type: string
+          description: The name of the tool
+      - fa-lint --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@gallvp"
+maintainers:
+  - "@gallvp"

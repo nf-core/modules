@@ -1,0 +1,104 @@
+name: "eklipse"
+description: tool for detection and quantification of large mtDNA
+  rearrangements.
+keywords:
+  - eklipse
+  - mitochondria
+  - mtDNA
+  - circos
+  - deletion
+  - SV
+tools:
+  - "eklipse":
+      description: "tool for detection and quantification of large mtDNA rearrangements."
+      homepage: "https://github.com/dooguypapua/eKLIPse/tree/master"
+      documentation: "https://github.com/dooguypapua/eKLIPse/tree/master"
+      tool_dev_url: "https://github.com/dooguypapua/eKLIPse/tree/master"
+      doi: "10.1038/s41436-018-0350-8"
+      licence:
+        - "GNU General Public v3 or later (GPL v3+)"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: MT BAM/SAM file
+        pattern: "*.{bam,sam}"
+        ontologies: []
+    - bai:
+        type: file
+        description: MT BAM/SAM index file
+        pattern: "*.{bai,sai}"
+        ontologies: []
+  - ref_gb:
+      type: file
+      description: mtDNA reference genome in Genbank format, optional if empty
+        NC_012920.1.gb will be used
+      pattern: "*.{gb}"
+      ontologies: []
+output:
+  deletions:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*deletions.csv":
+          type: file
+          description: csv file with deletion information
+          pattern: "*deletions.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  genes:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*genes.csv":
+          type: file
+          description: csv file with gene information
+          pattern: "*genes.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  circos:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.png":
+          type: file
+          description: png file with circos plot of mt
+          pattern: "*.{png}"
+          ontologies: []
+  versions_eklipse:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - eklipse:
+          type: string
+          description: The name of the tool
+      - eKLIPse.py 2>&1 | sed -n 's/.*\[v\([^]]*\)\].*/\1/p' | tr '-' '.':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - eklipse:
+          type: string
+          description: The name of the tool
+      - eKLIPse.py 2>&1 | sed -n 's/.*\[v\([^]]*\)\].*/\1/p' | tr '-' '.':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@Lucpen"
+maintainers:
+  - "@Lucpen"
+  - "@EfraMP"

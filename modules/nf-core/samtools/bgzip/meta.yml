@@ -1,0 +1,78 @@
+name: samtools_bgzip
+description: DEPRECATED. Use HTSLIB/BGZIPTABIX instead. Converts an arbitrary compressed or uncompressed file to BGZIP
+keywords:
+  - compression
+  - fasta
+  - gff
+  - vcf
+  - bed
+  - BGZF
+  - gzip
+  - bgzip
+tools:
+  - samtools:
+      description: |
+        SAMtools is a set of utilities for interacting with and post-processing
+        short DNA sequence read alignments in the SAM, BAM and CRAM formats, written by Heng Li.
+        These files are generated as output by short read aligners like BWA.
+      homepage: http://www.htslib.org/
+      documentation: http://www.htslib.org/doc/samtools.html
+      doi: 10.1093/bioinformatics/btp352
+      licence:
+        - "MIT"
+      identifier: biotools:samtools
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test' ]
+    - infile:
+        type: file
+        description: Input file, compressed or not.
+        pattern: "*.*"
+        ontologies: []
+  - out_ext:
+      type: string
+      description: |
+        Extension of the output file. Only used for naming, does not affect the compression.
+output:
+  output:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - output.gz:
+          type: map
+          description: |
+            A FASTA file compressed with the BGZF algorithm.  It will be
+            the original file if it was already BGZF-compressed.
+          pattern: "*.*.gz"
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@charles-plessy"
+maintainers:
+  - "@charles-plessy"
+  - "@matthdsm"
+  - "@itrujnara"

@@ -1,22 +1,22 @@
 process GATK4_CALIBRATEDRAGSTRMODEL {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
-    conda "bioconda::gatk4=4.4.0.0"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
-        'quay.io/biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b9/b9822b92da68a3e7916072218082e3fa79bebc2f377947c363613adeecd56ec5/data'
+        : 'community.wave.seqera.io/library/gatk4-main_gcnvkernel:961440660027ec01'}"
 
     input:
     tuple val(meta), path(bam), path(bam_index)
-    path  fasta
-    path  fasta_fai
-    path  dict
-    path  strtablefile
+    path fasta
+    path fasta_fai
+    path dict
+    path strtablefile
 
     output:
-    tuple val(meta), path("*.txt")   , emit: dragstr_model
-    path "versions.yml"              , emit: versions
+    tuple val(meta), path("*.txt"), emit: dragstr_model
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,12 +27,14 @@ process GATK4_CALIBRATEDRAGSTRMODEL {
 
     def avail_mem = 3072
     if (!task.memory) {
-        log.info '[GATK CalibrateDragstrModel] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
-    } else {
-        avail_mem = (task.memory.mega*0.8).intValue()
+        log.info('[GATK CalibrateDragstrModel] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.')
+    }
+    else {
+        avail_mem = (task.memory.mega * 0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" CalibrateDragstrModel \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        CalibrateDragstrModel \\
         --input ${bam} \\
         --output ${prefix}.txt \\
         --reference ${fasta} \\
@@ -40,11 +42,6 @@ process GATK4_CALIBRATEDRAGSTRMODEL {
         --threads ${task.cpus} \\
         --tmp-dir . \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -52,10 +49,5 @@ process GATK4_CALIBRATEDRAGSTRMODEL {
 
     """
     touch ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }

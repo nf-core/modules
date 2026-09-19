@@ -1,0 +1,74 @@
+
+nextflow_process {
+
+    name "Test Process PRESEQ_CCURVE"
+    script "../main.nf"
+    process "PRESEQ_CCURVE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "preseq"
+    tag "preseq/ccurve"
+
+    test("test-preseq-ccurve-single-end") {
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ],
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+				]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["log"])).match() }
+            )
+        }
+    }
+
+    test("test-preseq-ccurve-paired-end") {
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ],
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+				]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["log"])).match() }
+            )
+        }
+    }
+
+    test("test-preseq-ccurve-paired-end-stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test', single_end:false ],
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+				]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

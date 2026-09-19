@@ -11,37 +11,66 @@ tools:
       documentation: http://sanger-pathogens.github.io/Roary/
       tool_dev_url: https://github.com/sanger-pathogens/Roary/
       doi: "10.1093/bioinformatics/btv421"
-      licence: ["GPL v3"]
-
+      licence:
+        - "GPL v3"
+      identifier: biotools:roary
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - gff:
-      type: file
-      description: A set of GFF3 formatted files
-      pattern: "*.{gff}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - gff:
+        type: file
+        description: A set of GFF3 formatted files
+        pattern: "*.{gff}"
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - results:
-      type: directory
-      description: Directory containing Roary result files
-      pattern: "*/*"
-  - aln:
-      type: file
-      description: Core-genome alignment produced by Roary (Optional)
-      pattern: "*.{aln}"
+  results:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/*:
+          type: directory
+          description: Directory containing Roary result files
+          pattern: "*/*"
+  aln:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/*.aln:
+          type: file
+          description: Core-genome alignment produced by Roary (Optional)
+          pattern: "*.{aln}"
+          ontologies: []
+  versions_roary:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - roary:
+          type: string
+          description: The name of the tool
+      - roary --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - roary:
+          type: string
+          description: The name of the tool
+      - roary --version:
+          type: eval
+          description: The expression to obtain the version of the tool
 
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

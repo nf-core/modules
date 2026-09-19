@@ -1,0 +1,70 @@
+nextflow_process {
+
+    name "Test Process FASTQSCREEN_BUILDFROMINDEX"
+    script "../main.nf"
+    process "FASTQSCREEN_BUILDFROMINDEX"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fastqscreen"
+    tag "fastqscreen/buildfromindex"
+    tag "bowtie2/build"
+
+    setup {
+
+        run("BOWTIE2_BUILD") {
+            script "../../../bowtie2/build/main.nf"
+            process {
+                """
+                input[0] = channel.of([
+                    [id: "sarscov2"],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ], [
+                    [id: "human"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ])
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - human") {
+
+        when {
+            process {
+                """
+                input[0] = BOWTIE2_BUILD.out.index.map{meta, index -> meta.id}.collect()
+                input[1] = BOWTIE2_BUILD.out.index.map{meta, index -> index}.collect()
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - human - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = BOWTIE2_BUILD.out.index.map{meta, index -> meta.id}.collect()
+                input[1] = BOWTIE2_BUILD.out.index.map{meta, index -> index}.collect()
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

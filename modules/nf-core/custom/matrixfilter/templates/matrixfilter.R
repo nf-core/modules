@@ -15,6 +15,17 @@
 # sample number related to group size. Note that we do not filter with an
 # awareness of the groups themselves, since this adds bias towards discovery
 # between those groups.
+#
+# This script supports the following options:
+#
+# - `--minimum_abundance`: Minimum value threshold for feature filtering.
+#   Set to a numeric value (e.g., 0.5) to enable, or to 'false'/'null' to disable.
+# - `--minimum_samples`: Minimum number of samples passing the abundance threshold.
+# - `--minimum_samples_not_na`: Minimum number of non-NA values per feature.
+# - `--grouping_variable`: Optional column in sample sheet for group-specific filtering.
+# - `--minimum_proportion`: Proportion-based filtering threshold.
+# - `--minimum_proportion_not_na`: Minimum proportion of non-NA values required per feature.
+# - `--most_variant_features`: Optional integer specifying the number of most-variant features to retain.
 
 ################################################
 ################################################
@@ -69,16 +80,47 @@ read_delim_flexible <- function(file, header = TRUE, row.names = NULL, nrows = -
     )
 }
 
+#' Convert NULL-like inputs to R NULL.
+#'
+#' @param v Any input to be checked and parsed.
+#'
+#' @return NULL object if input is NULL-like, otherwise the original input.
+parse_null <- function(v) {
+    if (is.null(v)) return(NULL)
+    if (length(v) == 0) return(NULL)
+    vv <- as.character(v)
+    if (vv %in% c("null", "NULL", "", "false", "FALSE")) return(NULL)
+    v
+}
+
+#' Identify rows that are among the top n most variant
+#'
+#' @param matrix_data Matrix object
+#'
+#' @return output Boolean vector
+
+most_variant_test <- function(matrix_data) {
+
+    # Determine the indices of the top variant rows based on variance
+    top_indices <- order(-apply(matrix_data, 1, var, na.rm = TRUE))[1:opt\$most_variant_features]
+
+    # Return a boolean vector indicating if each row is among the top variant ones
+    1:nrow(matrix_data) %in% top_indices
+}
+
 # Set up default options
 
 opt <- list(
-    abundance_matrix_file = '$abundance',
-    sample_file = '$samplesheet',
-    sample_id_col = NULL,
-    minimum_abundance = 1,
-    minimum_samples = 1,
-    minimum_proportion = 0,
-    grouping_variable = NULL
+    abundance_matrix_file = '$abundance',   # Path to input abundance matrix (TSV/CSV)
+    sample_file = '$samplesheet',           # Path to optional sample metadata file
+    sample_id_col = NULL,                   # Column name in samplesheet matching matrix columns
+    minimum_abundance = 1,                  # Abundance threshold (disabled if NULL/false)
+    minimum_samples = 1,                    # Minimum number of samples passing abundance filter
+    minimum_proportion = 0,                 # Proportion-based filtering threshold (optional)
+    grouping_variable = NULL,               # Grouping variable for stratified filtering (optional)
+    minimum_proportion_not_na = 0.5,        # Minimum proportion of non-NA values per feature
+    minimum_samples_not_na = NULL,          # Minimum count of non-NA samples per feature (optional)
+    most_variant_features = NULL            # Number of most variant rows to keep (optional)
 )
 opt_types <- lapply(opt, class)
 
@@ -88,8 +130,11 @@ for ( ao in names(args_opt)){
         stop(paste("Invalid option:", ao))
     }else{
 
-        # Preserve classes from defaults where possible
-        if (! is.null(opt[[ao]])){
+        # Allow explicit nulls from Nextflow CLI args
+        args_opt[[ao]] <- parse_null(args_opt[[ao]])
+
+        # Preserve classes from defaults where possible (only if not NULL now)
+        if (!is.null(args_opt[[ao]]) && !is.null(opt[[ao]])) {
             args_opt[[ao]] <- as(args_opt[[ao]], opt_types[[ao]])
         }
         opt[[ao]] <- args_opt[[ao]]
@@ -125,7 +170,7 @@ if (opt\$sample_file != ''){
 
     # If we're not using a sample sheet to select columns, then at least make
     # sure the ones we have are numeric (some upstream things like the RNA-seq
-    # workflow have annotation colummns as well)
+    # workflow have annotation columns as well)
 
     numeric_columns <- unlist(lapply(1:ncol(abundance_matrix), function(x) is.numeric(abundance_matrix[,x])))
     abundance_matrix <- abundance_matrix[,numeric_columns]
@@ -152,16 +197,76 @@ if ((opt\$sample_file != '') && ( ! is.null(opt\$grouping_variable))){
     opt\$minimum_samples <- ncol(abundance_matrix) * opt\$minimum_proportion
 }
 
-# Generate a boolean vector specifying the features to retain
+# Also set up filtering for NAs; use by default minimum_proportion_not_na; only
+# use minimum_samples_not_na if it is provided (default NULL)
+# -->NA test can always use minimum_samples_not_na as this will contain the correct
+# value even if the proportion is to be used
 
-keep <- apply(abundance_matrix, 1, function(x){
-    sum(x > opt\$minimum_abundance) >= opt\$minimum_samples
-})
+if (is.null(opt\$minimum_samples_not_na)) {
+    opt\$minimum_samples_not_na <- ncol(abundance_matrix) * opt\$minimum_proportion_not_na
+}
+
+# Define the tests
+
+tests <- list(
+    'na' = function(x) !any(is.na(x)) || sum(!is.na(x)) >= opt\$minimum_samples_not_na  # check if enough values in row are not NA
+)
+
+# Only apply abundance filter if a threshold was provided
+if (!is.null(opt\$minimum_abundance)) {
+    tests[["abundance"]] = function(x) sum(x >= opt\$minimum_abundance, na.rm = TRUE) >= opt\$minimum_samples
+}
+
+# Apply the functions row-wise on the abundance_matrix and store the result in a boolean matrix
+
+boolean_matrix <- do.call(
+    rbind,
+    lapply(seq_len(nrow(abundance_matrix)), function(i) {
+        vapply(tests, function(f) f(abundance_matrix[i, ]), logical(1))
+    })
+)
+
+rownames(boolean_matrix) <- rownames(abundance_matrix)
+colnames(boolean_matrix) <- names(tests)
+# Apply the 'most_variant_test' function to identify the most variant rows and add
+# the result to the boolean matrix
+
+if (! is.null(opt\$most_variant_features)) {
+    most_variant_vectors <- most_variant_test(abundance_matrix)
+    boolean_matrix <- cbind(boolean_matrix, most_variant_vectors)
+}
+
+# We will retain features passing all tests
+
+keep <- apply(boolean_matrix, 1, all)
 
 # Write out the matrix retaining the specified rows and re-prepending the
 # column with the feature identifiers
 
-prefix = ifelse('$task.ext.prefix' == 'null', '', '$task.ext.prefix')
+prefix = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix')
+
+thresholds <- data.frame(
+    rule = c(
+        "minimum_samples_not_na",
+        if (!is.null(opt\$minimum_abundance)) c("minimum_abundance", "minimum_samples"),
+        if (!is.null(opt\$most_variant_features)) "most_variant_features"
+    ),
+    threshold = c(
+        opt\$minimum_samples_not_na,
+        if (!is.null(opt\$minimum_abundance)) c(opt\$minimum_abundance, opt\$minimum_samples),
+        if (!is.null(opt\$most_variant_features)) opt\$most_variant_features
+    ),
+    check.names = FALSE
+)
+
+    write.table(
+        thresholds,
+        file = paste0(prefix, ".thresholds.tsv"),
+        sep = "\t",
+        quote = FALSE,
+        row.names = FALSE
+    )
+
 
 write.table(
     data.frame(rownames(abundance_matrix)[keep], abundance_matrix[keep,,drop = FALSE]),
@@ -170,6 +275,17 @@ write.table(
         '.filtered.tsv'
     ),
     col.names = c(feature_id_name, colnames(abundance_matrix)),
+    row.names = FALSE,
+    sep = '\t',
+    quote = FALSE
+)
+
+# Write a boolean matrix returning specifying the status of each test
+
+write.table(
+    data.frame(rownames(abundance_matrix), boolean_matrix),
+    file = paste0(prefix, '.tests.tsv'),
+    col.names = c(feature_id_name, colnames(boolean_matrix)),
     row.names = FALSE,
     sep = '\t',
     quote = FALSE

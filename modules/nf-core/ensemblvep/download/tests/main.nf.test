@@ -1,0 +1,83 @@
+nextflow_process {
+
+    name "Test Process ENSEMBLVEP_DOWNLOAD"
+    script "../main.nf"
+    process "ENSEMBLVEP_DOWNLOAD"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ensemblvep"
+    tag "ensemblvep/download"
+
+    test("ENSEMBLVEP download cache for 115_WBcel235") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id:"115_WBcel235"],
+                    params.vep_genome,
+                    params.vep_species,
+                    params.vep_cache_version
+                ])
+                input[1] = true
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("ENSEMBLVEP download cache - preflight fails for invalid species") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id:"invalid_species"],
+                    "GRCh38",
+                    "invalid_species",
+                    params.vep_cache_version
+                ])
+                input[1] = true
+                """
+            }
+        }
+
+        then {
+            assert process.failed
+        }
+    }
+
+    test("ENSEMBLVEP download cache for 115_WBcel235 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id:"115_WBcel235"],
+                    params.vep_genome,
+                    params.vep_species,
+                    params.vep_cache_version
+                ])
+                input[1] = true
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

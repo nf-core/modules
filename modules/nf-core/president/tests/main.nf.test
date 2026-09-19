@@ -1,0 +1,102 @@
+import java.text.SimpleDateFormat
+
+nextflow_process {
+
+    name "Test Process PRESIDENT"
+    script "../main.nf"
+    process "PRESIDENT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "president"
+
+    test("president - nocompress") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: "test" ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/all_sites.fas', checkIfExists: true)
+                ]
+                input[1] = [[id: "genome" ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["report", "log"])).match() }
+            )
+        }
+    }
+
+    test("president - compress") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: "test" ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/all_sites.fas', checkIfExists: true)
+                ]
+                input[1] = [[id: "genome" ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                input[2] = "true"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["report", "log"])).match() }
+            )
+        }
+    }
+
+    test("president - nocompress - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: "test" ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/all_sites.fas', checkIfExists: true)
+                ]
+                input[1] = [[id: "genome" ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("president - compress - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: "test" ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/all_sites.fas', checkIfExists: true)
+                ]
+                input[1] = [[id: "genome" ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
+                input[2] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

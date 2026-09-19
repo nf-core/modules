@@ -1,0 +1,58 @@
+process MAPAD_MAP {
+    tag "$meta.id"
+    label 'process_medium'
+
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/mapad:0.45.0--ha96b9cd_0':
+        'quay.io/biocontainers/mapad:0.45.0--ha96b9cd_0' }"
+
+    input:
+    tuple val(meta) , path(reads) // Supports only single-end or merged paired-end data
+    tuple val(meta2), path(index)
+    val mismatch_parameter
+    val double_stranded_library
+    val five_prime_overhang
+    val three_prime_overhang
+    val deam_rate_double_stranded
+    val deam_rate_single_stranded
+    val indel_rate
+
+    output:
+    tuple val(meta), path("*.bam"), emit: bam
+    tuple val("${task.process}"), val("mapad"), eval("mapad --version | sed 's/^mapAD //'"), topic: versions, emit: versions_mapad
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    def library_preparation = double_stranded_library ? 'double_stranded' : 'single_stranded'
+
+    """
+    INDEX=`find -L ./ -name "*.tbw" | sed 's/\\.tbw\$//'`
+
+    mapad \\
+        map \\
+        ${args} \\
+        --threads ${task.cpus} \\
+        --reads ${reads} \\
+        --reference \${INDEX} \\
+        --output ${prefix}.bam \\
+        -p ${mismatch_parameter} \\
+        --library ${library_preparation} \\
+        -f ${five_prime_overhang} \\
+        -t ${three_prime_overhang} \\
+        -d ${deam_rate_double_stranded} \\
+        -s ${deam_rate_single_stranded} \\
+        -i ${indel_rate}
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bam
+    """
+}

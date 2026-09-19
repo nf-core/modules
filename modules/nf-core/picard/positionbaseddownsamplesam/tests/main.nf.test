@@ -1,0 +1,60 @@
+nextflow_process {
+
+    name "Test Process PICARD_POSITIONBASEDDOWNSAMPLESAM"
+    script "../main.nf"
+    process "PICARD_POSITIONBASEDDOWNSAMPLESAM"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "picard"
+    tag "picard/positionbaseddownsamplesam"
+
+    test("sarscov2 - bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    0.9
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.bam.collect{meta, bam_ ->  file(bam_).name + ':headerMD5,' + bam(bam_).getHeaderMD5()},
+                    process.out.bam.collect{meta, bam_ ->  file(bam_).name + ':readsMD5,' + bam(bam_).getReadsMD5()},
+                    process.out.bai,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - bam - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    0.5
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

@@ -1,0 +1,131 @@
+nextflow_process {
+
+    name "Test Process GLIMPSE2_CONCORDANCE"
+    script "../main.nf"
+    process "GLIMPSE2_CONCORDANCE"
+
+    config "./nextflow.config"
+
+    tag "glimpse2"
+    tag "glimpse2/concordance"
+    tag "glimpse2/phase"
+    tag "bcftools/index"
+    tag "modules_nfcore"
+    tag "modules"
+
+    test("test glimpse2 concordance") {
+
+        when {
+            params {
+                glimpse2_concordance_args = "--gt-val --af-tag AF --seed 1"
+            }
+            process {
+                """
+                target = channel.of([
+                    [id: "input"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi",checkIfExists:true)
+                ])
+                truth = channel.of([
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz.csi",checkIfExists:true)
+                ])
+                allele_freq = channel.of([
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz.csi",checkIfExists:true)
+                ])
+                list_inputs = target
+                        .combine( truth )
+                        .combine( allele_freq )
+                        .combine( channel.of([[]]) )
+                        .combine( channel.of(["chr22"]) )
+
+                input[0] = list_inputs
+                input[1] = [
+                    [id:"params"],
+                    [],"0 0.01 0.05 0.1 0.2 0.5", [], [], [], []
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
+        }
+
+    }
+
+    test("test list of region and rsquare per site") {
+        when {
+            params {
+                glimpse2_concordance_args = "--gt-val --af-tag AF --out-r2-per-site"
+            }
+            process {
+                """
+                target = channel.of([
+                    [id: "input"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi",checkIfExists:true)
+                ])
+                truth = channel.of([
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr21_22.vcf.gz.csi",checkIfExists:true)
+                ])
+                allele_freq = channel.of([
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz.csi",checkIfExists:true)
+                ])
+                list_inputs = target
+                        .combine( truth )
+                        .combine( allele_freq )
+                        .combine( channel.of([[]]) )
+                        .combine( channel.of([["chr22", "chr22"]]) )
+
+                input[0] = list_inputs
+                input[1] = [
+                    [id:"params"],
+                    [],"0 0.01 0.05 0.1 0.2 0.5", [], [], [], []
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
+        }
+
+    }
+
+    test("test list of region and rsquare per site -- stub") {
+        options "-stub"
+        when {
+            params {
+                glimpse2_concordance_args = "--gt-val --af-tag AF --out-r2-per-site"
+            }
+            process {
+                """
+                input[0] = [
+                    [id: "input"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi",checkIfExists:true),
+                    [], [],
+                    [],
+                    [], []
+                ]
+                input[1] = [
+                    [id:"params"],
+                    [],"0 0.01 0.05 0.1 0.2 0.5", [], [], [], []
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
+        }
+
+    }
+}

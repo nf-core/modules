@@ -2,55 +2,64 @@ process KALLISTO_QUANT {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::kallisto=0.48.0"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/kallisto:0.48.0--h15996b6_2':
-        'quay.io/biocontainers/kallisto:0.48.0--h15996b6_2' }"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e2/e21d2cff2526b0995996977c057f0c17844073781f86a18b15fef178a97ed7cb/data':
+        'community.wave.seqera.io/library/kallisto:0.52.0--31c771060d82d25c' }"
 
     input:
     tuple val(meta), path(reads)
-    path index
-    path gtf
-    path chromosomes
+    tuple val(meta2), path(index), path(gtf), path(chromosomes)
+    val fragment_length
+    val fragment_length_sd
 
     output:
-    tuple val(meta), path("abundance.tsv"), emit: abundance
-    tuple val(meta), path("abundance.h5") , emit: abundance_hdf5
-    tuple val(meta), path("run_info.json"), emit: run_info
-    tuple val(meta), path("*.log.txt")    , emit: log
-    path "versions.yml"                   , emit: versions
+    tuple val(meta), path("${prefix}")        , emit: results
+    tuple val(meta), path("*.run_info.json")  , emit: json_info
+    tuple val(meta), path("*.log")            , emit: log
+    tuple val("${task.process}"), val('kallisto'), eval("kallisto version | sed 's/.*version //'"), emit: versions_kallisto, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def single = meta.single_end ? "--single --fragment-length ${task.ext.fragment_len} --sd ${task.ext.sd}" : ""
+    prefix = task.ext.prefix ?: "${meta.id}"
     def gtf_input = gtf ? "--gtf ${gtf}" : ''
     def chromosomes_input = chromosomes ? "--chromosomes ${chromosomes}" : ''
+
+    def single_end_params = ''
+    if (meta.single_end) {
+        if (!(fragment_length =~ /^\d+$/)) {
+            error "fragment_length must be set and numeric for single-end data"
+        }
+        if (!(fragment_length_sd =~ /^\d+$/)) {
+            error "fragment_length_sd must be set and numeric for single-end data"
+        }
+        single_end_params = "--single --fragment-length=${fragment_length} --sd=${fragment_length_sd}"
+    }
+
     """
-    kallisto quant \\
+    mkdir -p $prefix && kallisto quant \\
             --threads ${task.cpus} \\
             --index ${index} \\
             ${gtf_input} \\
             ${chromosomes_input} \\
-            ${single} \\
+            ${single_end_params} \\
             ${args} \\
-            -o . \\
-            ${reads} 2> >(tee -a ${prefix}.log.txt >&2)
+            -o $prefix \\
+            ${reads} 2>| >(tee -a ${prefix}/kallisto_quant.log >&2)
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        kallisto: \$(echo \$(kallisto version) | sed "s/kallisto, version //g" )
-    END_VERSIONS
+    cp ${prefix}/kallisto_quant.log ${prefix}.log
+    cp ${prefix}/run_info.json ${prefix}.run_info.json
     """
 
     stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+
     """
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        kallisto: \$(echo \$(kallisto version) | sed "s/kallisto, version //g" )
-    END_VERSIONS
+    mkdir -p $prefix
+    touch ${prefix}.log
+    touch ${prefix}.run_info.json
     """
 }

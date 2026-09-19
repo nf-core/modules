@@ -2,10 +2,10 @@ process PAIRTOOLS_FLIP {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::pairtools=0.3.0"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pairtools:0.3.0--py37hb9c2fc3_5' :
-        'quay.io/biocontainers/pairtools:0.3.0--py37hb9c2fc3_5' }"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/pairtools:1.1.3--py39h7a39fba_0' :
+        'quay.io/biocontainers/pairtools:1.1.3--py39h7a39fba_0' }"
 
     input:
     tuple val(meta), path(sam)
@@ -13,7 +13,7 @@ process PAIRTOOLS_FLIP {
 
     output:
     tuple val(meta), path("*.flip.gz"), emit: flip
-    path "versions.yml"               , emit: versions
+    tuple val("${task.process}"), val('pairtools'), eval("pairtools --version | sed 's/.*pairtools.*version //'") , emit: versions_pairtools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,10 +28,11 @@ process PAIRTOOLS_FLIP {
         $args \\
         -o ${prefix}.flip.gz \\
         $sam
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pairtools: \$(pairtools --version 2>&1 | sed 's/pairtools.*version //')
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.flip.gz
     """
 }

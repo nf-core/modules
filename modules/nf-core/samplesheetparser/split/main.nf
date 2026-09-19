@@ -1,0 +1,55 @@
+process SAMPLESHEETPARSER_SPLIT {
+    tag "$meta.id"
+    label 'process_single'
+
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/samplesheet-parser:2.5.2--pyhdfd78af_0' :
+        'quay.io/biocontainers/samplesheet-parser:2.5.2--pyhdfd78af_0' }"
+
+    input:
+    tuple val(meta), path(samplesheet)
+    val by
+    val to
+
+    output:
+    tuple val(meta), path("split/*.csv"), emit: samplesheets
+    tuple val(meta), path("*.split.json"), emit: json
+    tuple val("${task.process}"), val('samplesheet-parser'), eval("samplesheet --version | sed 's/samplesheet-parser //'"), topic: versions, emit: versions_samplesheetparser
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args   = task.ext.args   ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def by_norm = by.toLowerCase()
+    def to_norm = to.toLowerCase()
+    if (!['project', 'lane'].contains(by_norm)) {
+        error "by must be 'project' or 'lane', got: ${by}"
+    }
+    if (!['v1', 'v2'].contains(to_norm)) {
+        error "to must be 'v1' or 'v2', got: ${to}"
+    }
+    // samplesheet-parser >=2.5.2 exits 0 on a successful split (warnings are
+    // advisory), so no exit-code handling is needed here.
+    """
+    mkdir -p split
+
+    samplesheet split \\
+        --by ${by_norm} \\
+        --to ${to_norm} \\
+        --output-dir split \\
+        --format json \\
+        ${args} \\
+        ${samplesheet} > ${prefix}.split.json
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir -p split
+    touch split/stub_SampleSheet.csv
+    touch ${prefix}.split.json
+    """
+}

@@ -1,0 +1,64 @@
+name: "wisecondorx_newref"
+description: Create a new reference using healthy reference samples
+keywords:
+  - reference
+  - copy number alterations
+  - npz
+tools:
+  - "wisecondorx":
+      description: "WIthin-SamplE COpy Number aberration DetectOR, including sex chromosomes"
+      homepage: "https://github.com/CenterForMedicalGeneticsGhent/WisecondorX"
+      documentation: "https://github.com/CenterForMedicalGeneticsGhent/WisecondorX"
+      tool_dev_url: "https://github.com/CenterForMedicalGeneticsGhent/WisecondorX"
+      doi: "10.1093/nar/gky1263"
+      licence:
+        - "Attribution-NonCommercial-ShareAlike CC BY-NC-SA"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - inputs:
+        type: file
+        description: Multiple NPZ files from healthy patients
+        pattern: "*.{npz}"
+        ontologies: []
+output:
+  npz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.npz":
+          type: file
+          description: The reference NPZ file
+          pattern: "*.{npz}"
+          ontologies: []
+  versions_wisecondorx:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - wisecondorx:
+          type: string
+          description: The name of the tool
+      - python -c "import wisecondorx; print(wisecondorx.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - wisecondorx:
+          type: string
+          description: The name of the tool
+      - python -c "import wisecondorx; print(wisecondorx.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@nvnieuwk"
+maintainers:
+  - "@nvnieuwk"

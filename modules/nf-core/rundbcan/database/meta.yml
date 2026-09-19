@@ -1,0 +1,52 @@
+name: "rundbcan_database"
+description: command from run_dbcan to prepare the database for dbCAN
+  annotation.
+keywords:
+  - dbCAN
+  - download
+  - CAZyme
+  - CAZyme gene Cluster
+  - genomes
+tools:
+  - "run_dbcan":
+      description: "Standalone version of dbCAN annotation tool for automated CAZyme
+        annotation."
+      homepage: "https://bcb.unl.edu/dbCAN2/"
+      documentation: "https://run-dbcan.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/bcb-unl/run_dbcan"
+      doi: "10.1093/nar/gkad328"
+      licence:
+        - "GPL v3-or-later"
+      identifier: biotools:dbcan
+input: []
+output:
+  dbcan_db:
+    - dbcan_db:
+        type: directory
+        description: Download directory for dbCAN databases
+        pattern: "dbcan_db"
+  versions_rundbcan:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rundbcan:
+          type: string
+          description: The name of the tool
+      - "run_dbcan version | sed 's/dbCAN version: //g'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rundbcan:
+          type: string
+          description: The name of the tool
+      - "run_dbcan version | sed 's/dbCAN version: //g'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@Xinpeng021001"
+maintainers:
+  - "@Xinpeng021001"

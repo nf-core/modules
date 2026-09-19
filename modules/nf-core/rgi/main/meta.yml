@@ -11,47 +11,140 @@ tools:
       documentation: https://github.com/arpcard/rgi
       tool_dev_url: https://github.com/arpcard/rgi
       doi: "10.1093/nar/gkz935"
-      licence: ["https://card.mcmaster.ca/about"]
-
+      licence:
+        - "https://card.mcmaster.ca/about"
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: Nucleotide or protein sequences in FASTA format
-      pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,faa,faa.gz}"
-
-output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - json:
-      type: file
-      description: JSON formatted file with RGI results
-      pattern: "*.{json}"
-  - tsv:
-      type: file
-      description: Tab-delimited file with RGI results
-      pattern: "*.{txt}"
-  - temp:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Nucleotide or protein sequences in FASTA format
+        pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,faa,faa.gz}"
+        ontologies: []
+  - card:
       type: directory
-      description: Directory containing various intermediate files
-      pattern: "temp/"
-  - tool_version:
-      type: string
-      description: The version of the tool in string format (useful for downstream tools such as hAMRronization)
-  - db_version:
-      type: string
-      description: The version of the used database in string format (useful for downstream tools such as hAMRronization)
+      description: Directory containing the CARD database. This is expected to be the unarchived but otherwise unaltered download folder (see RGI documentation for download instructions).
+      pattern: "*/"
+  - wildcard:
+      type: directory
+      description: Directory containing the WildCARD database (optional). This is expected to be the unarchived but otherwise unaltered download folder (see RGI documentation for download instructions).
+      pattern: "*/"
+output:
+  json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "${prefix}.json":
+          type: file
+          description: JSON formatted file with RGI results
+          pattern: "${prefix}.{json}"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "${prefix}.txt":
+          type: file
+          description: Tab-delimited file with RGI results
+          pattern: "${prefix}.txt"
+          ontologies: []
+  tmp:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - temp/:
+          type: directory
+          description: Directory containing various intermediate files
+          pattern: "temp/"
+  tool_version:
+    - RGI_VERSION:
+        type: string
+        description: The version of the tool in string format (useful for downstream tools such as hAMRronization)
+  db_version:
+    - DB_VERSION:
+        type: string
+        description: The version of the used database in string format (useful for downstream tools such as hAMRronization)
+  versions_rgi:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rgi:
+          type: string
+          description: The name of the tool
+      - rgi main --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+  versions_db:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rgi-database:
+          type: string
+          description: The name of the tool
+      - echo \$DB_VERSION:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+  versions_kma:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kma:
+          type: string
+          description: The name of the tool
+      - kma -v | sed 's/KMA-//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rgi:
+          type: string
+          description: The name of the tool
+      - rgi main --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rgi-database:
+          type: string
+          description: The name of the tool
+      - echo \$DB_VERSION:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kma:
+          type: string
+          description: The name of the tool
+      - kma -v | sed 's/KMA-//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@rpetit3"
   - "@jfy133"
+  - "@jasmezz"
+maintainers:
+  - "@rpetit3"
+  - "@jfy133"
+  - "@jasmezz"

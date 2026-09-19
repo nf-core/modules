@@ -1,0 +1,100 @@
+name: "bedgovcf"
+description: Convert a BED file to a VCF file according to a YAML config
+keywords:
+  - bed
+  - vcf
+  - conversion
+  - variants
+tools:
+  - "bedgovcf":
+      description: "A simple tool to convert BED files to VCF files"
+      homepage: "https://github.com/nvnieuwk/bedgovcf"
+      documentation: "https://github.com/nvnieuwk/bedgovcf"
+      tool_dev_url: "https://github.com/nvnieuwk/bedgovcf"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - bed:
+        type: file
+        description: The BED file to convert to VCF
+        pattern: "*.bed"
+        ontologies: []
+    - config:
+        type: file
+        description: The config file to use for the conversion
+        pattern: "*.{yml,yaml}"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing fasta index information
+          e.g. `[ id:'test', single_end:false ]`
+    - fai:
+        type: file
+        description: The fasta index file
+        pattern: "*.fai"
+        ontologies: []
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.vcf.gz":
+          type: file
+          description: The converted VCF file
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_bedgovcf:
+    - - ${task.process}:
+          type: string
+          description: The process name
+      - bedgovcf:
+          type: string
+          description: The tool name
+      - bedgovcf --version 2>&1 | sed 's/^bedgovcf version //':
+          type: eval
+          description: The tool version
+  versions_bgzip:
+    - - ${task.process}:
+          type: string
+          description: The process name
+      - bgzip:
+          type: string
+          description: The tool name
+      - bgzip --version | head -1 | sed "s/bgzip (htslib) //":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process name
+      - bedgovcf:
+          type: string
+          description: The tool name
+      - bedgovcf --version 2>&1 | sed 's/^bedgovcf version //':
+          type: eval
+          description: The tool version
+    - - ${task.process}:
+          type: string
+          description: The process name
+      - bgzip:
+          type: string
+          description: The tool name
+      - bgzip --version | head -1 | sed "s/bgzip (htslib) //":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@nvnieuwk"

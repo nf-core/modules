@@ -1,0 +1,113 @@
+include { UNTAR                     } from '../../../modules/nf-core/untar/main'
+include { GUNZIP                    } from '../../../modules/nf-core/gunzip/main'
+include { BISMARK_GENOMEPREPARATION } from '../../../modules/nf-core/bismark/genomepreparation/main'
+include { BWAMETH_INDEX             } from '../../../modules/nf-core/bwameth/index/main'
+include { SAMTOOLS_FAIDX            } from '../../../modules/nf-core/samtools/faidx/main'
+
+workflow FASTA_INDEX_BISMARK_BWAMETH {
+    take:
+    fasta_fai // channel: [ val(meta), [ fasta ], [ fai ] ]
+    bismark_index // channel: [ val(meta), [ bismark index ] ]
+    bwameth_index // channel: [ val(meta), [ bwameth index ] ]
+    aligner // string: bismark, bismark_hisat or bwameth
+    use_mem2 // boolean: generate mem2 index if no index provided, and bwameth is selected
+
+    main:
+
+    ch_fasta_fai = channel.empty()
+    ch_bismark_index = channel.empty()
+    ch_bwameth_index = channel.empty()
+
+    // Check if fasta file is gzipped and decompress if needed
+    fasta_fai
+        .branch { _meta, fasta, _fai ->
+            gzipped: fasta.toString().endsWith('.gz')
+            unzipped: true
+        }
+        .set { ch_fasta_branched }
+
+    GUNZIP(
+        ch_fasta_branched.gzipped
+            .map{ meta, fasta, _fai -> [meta, fasta] }
+    )
+
+    SAMTOOLS_FAIDX(
+        ch_fasta_branched.unzipped
+            .mix(GUNZIP.out.gunzip)
+            .map { meta, fasta ->
+                [meta, fasta, []]
+            },
+        false,
+    )
+    ch_fasta_fai = ch_fasta_branched
+        .unzipped.mix(GUNZIP.out.gunzip)
+        .join(SAMTOOLS_FAIDX.out.fai)
+
+    // Aligner: bismark or bismark_hisat
+    if (aligner =~ /bismark/) {
+        /*
+         * Generate bismark index if not supplied
+         */
+        if (bismark_index) {
+            // Handle channel-based bismark index
+            bismark_index
+                .branch { _meta, file ->
+                    gzipped: file.toString().endsWith('.gz')
+                    unzipped: true
+                }
+                .set { ch_bismark_index_branched }
+
+            UNTAR(
+                ch_bismark_index_branched.gzipped
+            )
+
+            ch_bismark_index = ch_bismark_index_branched.unzipped.mix(UNTAR.out.untar)
+        }
+        else {
+            BISMARK_GENOMEPREPARATION(
+                ch_fasta_fai.map{ meta, fasta, _fai -> [meta, fasta] }
+            )
+            ch_bismark_index = BISMARK_GENOMEPREPARATION.out.index
+        }
+    }
+    else if (aligner == 'bwameth') {
+        /*
+         * Generate bwameth index if not supplied
+         */
+        if (bwameth_index) {
+            // Handle channel-based bwameth index
+            bwameth_index
+                .branch { _meta, file ->
+                    gzipped: file.toString().endsWith('.gz')
+                    unzipped: true
+                }
+                .set { ch_bwameth_index_branched }
+
+            UNTAR(
+                ch_bwameth_index_branched.gzipped
+            )
+
+            ch_bwameth_index = ch_bwameth_index_branched.unzipped.mix(UNTAR.out.untar)
+        }
+        else {
+            if (use_mem2) {
+                BWAMETH_INDEX(
+                    ch_fasta_fai.map{ meta, fasta, _fai -> [meta, fasta] },
+                    true,
+                )
+            }
+            else {
+                BWAMETH_INDEX(
+                    ch_fasta_fai.map{ meta, fasta, _fai -> [meta, fasta] },
+                    false,
+                )
+            }
+            ch_bwameth_index = BWAMETH_INDEX.out.index
+        }
+    }
+
+    emit:
+    fasta_fai     = ch_fasta_fai // channel: [ val(meta), [ fasta ], [ fai ] ]
+    bismark_index = ch_bismark_index // channel: [ val(meta), [ bismark index ] ]
+    bwameth_index = ch_bwameth_index // channel: [ val(meta), [ bwameth index ] ]
+}

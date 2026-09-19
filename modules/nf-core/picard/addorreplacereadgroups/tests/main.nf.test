@@ -1,0 +1,80 @@
+
+nextflow_process {
+
+    name "Test Process PICARD_ADDORREPLACEREADGROUPS"
+    script "../main.nf"
+    process "PICARD_ADDORREPLACEREADGROUPS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "picard"
+    tag "picard/addorreplacereadgroups"
+
+    test("sarscov2 - bam") {
+        config "./bam.config"
+
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true) ]
+                input[1] = [ [:], [], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.bam.collect{meta, bam_ ->  file(bam_).name + ':readsMD5,' + bam(bam_).getReadsMD5()},
+                    file(process.out.bai[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match()}
+            )
+        }
+    }
+
+    test("homo_sapiens - cram") {
+        config "./cram.config"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ],[file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true)] ]
+                input[1] = [ [:], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true) ]
+                """
+            }
+        }
+
+        then {
+            def fasta = 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/genome/genome.fasta'
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.cram.collect{meta, cram_ ->  file(cram_).name + ':readsMD5,' + cram(cram_, fasta).getReadsMD5()},
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match()}
+            )
+        }
+    }
+
+    test("sarscov2 - bam - stub") {
+        config "./bam.config"
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true) ]
+                input[1] = [ [:], [], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

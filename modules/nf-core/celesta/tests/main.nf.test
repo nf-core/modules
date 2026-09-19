@@ -1,0 +1,76 @@
+nextflow_process {
+
+    name "Test Process CELESTA"
+    script "../main.nf"
+    process "CELESTA"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "celesta"
+
+    test("celesta - csv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'imaging/downstream/celesta/img_data.csv', checkIfExists: true)
+                    ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + 'imaging/downstream/celesta/signature_matrix.csv', checkIfExists: true)
+                    ]
+                input[2] = [
+                    file(params.modules_testdata_base_path + 'imaging/downstream/celesta/thresholds_celesta.csv', checkIfExists: true)
+                    ]
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.quality[0][1]).name, // Unstable
+                    file(process.out.celltypes[0][1]).name, // Unstable
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("celesta - csv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'imaging/downstream/celesta/img_data.csv', checkIfExists: true)
+                    ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + 'imaging/downstream/celesta/signature_matrix.csv', checkIfExists: true)
+                    ]
+                input[2] = [
+                    file(params.modules_testdata_base_path + 'imaging/downstream/celesta/thresholds_celesta.csv', checkIfExists: true)
+                    ]
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

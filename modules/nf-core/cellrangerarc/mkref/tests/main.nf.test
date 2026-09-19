@@ -1,0 +1,80 @@
+nextflow_process {
+
+    name "Test Process CELLRANGERARC_MKREF"
+    script "../main.nf"
+    process "CELLRANGERARC_MKREF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cellrangerarc"
+    tag "cellrangerarc/mkref"
+    tag "unzip"
+
+    setup {
+        run("UNZIP") {
+            script "../../../unzip/main.nf"
+
+            process {
+                """
+                input[0] = [[],file(params.modules_testdata_base_path + 'genomics/mus_musculus/genome/chr19.fa.gz',checkIfExists:true)]
+                """
+            }
+        }
+    }
+    test("mouse - fa.gz") {
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                    [id: "cellrangerarc"]
+                ])
+                .combine(UNZIP.out.unzipped_archive.map{it[1]}+"/chr19.fa")
+                .combine(channel.of([
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/genome/chr19.filtered.gtf.gz',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome_motifs.txt',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/cellranger_arc_mkref_test_mm39_chr19_config.json',checkIfExists:true)
+                ]))
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.config,
+                    getAllFilesFromDir(process.out.reference[0][1])
+                        .collect{
+                            f -> f.name == "genomeParameters.txt" ? f.name : f
+                        },
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("mouse - fa.gz - stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                    [id: "cellrangerarc"]
+                ])
+                .combine(UNZIP.out.unzipped_archive.map{it[1]}+"/chr19.fa")
+                .combine(channel.of([
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/genome/chr19.filtered.gtf.gz',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome_motifs.txt',checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/illumina/10xgenomics/multiome/cellranger_arc_mkref_test_mm39_chr19_config.json',checkIfExists:true)
+                ]))
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

@@ -1,53 +1,38 @@
 process SENTIEON_BWAINDEX {
-    tag "$fasta"
+    tag "${fasta}"
     label 'process_high'
     label 'sentieon'
 
-    secret 'SENTIEON_LICENSE_BASE64'
-
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "Sentieon modules does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
-
-    container 'nfcore/sentieon:202112.06'
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7e/7ee64f3b4cd58eaa6ed3a7a0769c0a5f4fbd150842fa64358831970bacaf37e6/data'
+        : 'community.wave.seqera.io/library/sentieon:202503.03--df1987151f8b6d33'}"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path(bwa), emit: index
-    path "versions.yml"       , emit: versions
+    tuple val(meta), path("bwa"), emit: index
+    tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ? "bwa/${task.ext.prefix}" : "bwa/${fasta.baseName}"
+    def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64
+        ? "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; "
+        : ""
     """
-    if [ \${SENTIEON_LICENSE_BASE64:-"unset"} != "unset" ]; then
-        echo "Initializing SENTIEON_LICENSE env variable"
-        if [ "\${#SENTIEON_LICENSE_BASE64}" -lt "1500" ]; then # Sentieon License server
-            export SENTIEON_LICENSE=\$(echo -e "\$SENTIEON_LICENSE_BASE64" | base64 -d)
-        else  # Localhost license file
-            export SENTIEON_LICENSE=\$(mktemp)
-            echo -e "\$LICENSE_ENCODED" | base64 -d > \$SENTIEON_LICENSE
-        fi
-    fi
-
+    ${sentieonLicense}
     mkdir bwa
 
     sentieon \\
         bwa index \\
-        $args \\
-        -p bwa/${fasta.baseName} \\
-        $fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-        bwa: \$(echo \$(sentieon bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
-    END_VERSIONS
+        ${args} \\
+        -p ${prefix} \\
+        ${fasta}
     """
 
     stub:
@@ -59,11 +44,5 @@ process SENTIEON_BWAINDEX {
     touch bwa/genome.bwt
     touch bwa/genome.pac
     touch bwa/genome.sa
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-        bwa: \$(echo \$(sentieon bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
-    END_VERSIONS
     """
 }

@@ -2,8 +2,8 @@ process SEQUENZAUTILS_BAM2SEQZ {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::sequenza-utils=3.0.0"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/sequenza-utils:3.0.0--py38h6ed170a_2' :
         'quay.io/biocontainers/sequenza-utils:3.0.0--py38h6ed170a_2' }"
 
@@ -14,7 +14,7 @@ process SEQUENZAUTILS_BAM2SEQZ {
 
     output:
     tuple val(meta), path("*.gz"), emit: seqz
-    path "versions.yml"          , emit: versions
+    tuple val("${task.process}"), val("sequenzautils"), eval("sequenza-utils 2>&1 | sed '/version/!d;s/.*version //;s/ .*//'"), topic: versions, emit: versions_sequenzautils
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,16 +25,17 @@ process SEQUENZAUTILS_BAM2SEQZ {
     """
     sequenza-utils \\
         bam2seqz \\
-        $args \\
-        -n $normalbam \\
-        -t $tumourbam \\
-        --fasta $fasta \\
-        -gc $wigfile \\
+        ${args} \\
+        -n ${normalbam} \\
+        -t ${tumourbam} \\
+        --fasta ${fasta} \\
+        -gc ${wigfile} \\
         -o ${prefix}.gz
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sequenzautils: \$(echo \$(sequenza-utils 2>&1) | sed 's/^.*is version //; s/ .*\$//')
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.gz
     """
 }

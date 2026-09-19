@@ -2,8 +2,8 @@ process CDHIT_CDHIT {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::cd-hit=4.8.1"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cd-hit%3A4.8.1--h5b5514e_7':
         'quay.io/biocontainers/cd-hit:4.8.1--h5b5514e_7' }"
 
@@ -13,7 +13,7 @@ process CDHIT_CDHIT {
     output:
     tuple val(meta), path("*.fasta")    ,emit: fasta
     tuple val(meta), path("*.clstr")    ,emit: clusters
-    path "versions.yml"                 ,emit: versions
+    tuple val("${task.process}"), val('cdhit'), eval("cd-hit -h | sed -n '1s/.*version \\([0-9.]*\\).*/\\1/p'"), topic: versions, emit: versions_cdhit
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,16 +21,27 @@ process CDHIT_CDHIT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def avail_mem = 3072
+    if (!task.memory) {
+        log.info '[cd-hit] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = (task.memory.mega*0.8).intValue()
+    }
     """
     cd-hit \\
-        -i $sequences \\
+        $args \\
+        -i ${sequences} \\
         -o ${prefix}.fasta \\
-        -M $task.memory.mega \\
+        -M $avail_mem \\
         -T $task.cpus
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cdhit: \$(cd-hit -h | head -n 1 | sed 's/^.*====== CD-HIT version //;s/ (built on .*) ======//' )
-    END_VERSIONS
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "${args}"
+    touch ${prefix}.fasta
+    touch ${prefix}.fasta.clstr
     """
 }

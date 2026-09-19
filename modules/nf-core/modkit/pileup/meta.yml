@@ -1,0 +1,117 @@
+name: modkit_pileup
+description: A bioinformatics tool for working with modified bases
+keywords:
+  - methylation
+  - ont
+  - long-read
+tools:
+  - "modkit":
+      description: A bioinformatics tool for working with modified bases in Oxford
+        Nanopore sequencing data
+      homepage: https://github.com/nanoporetech/modkit
+      documentation: https://github.com/nanoporetech/modkit
+      tool_dev_url: https://github.com/nanoporetech/modkit
+      licence: ["Oxford Nanopore Technologies PLC. Public License Version 1.0"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - bam:
+        type: file
+        description: Sorted BAM/CRAM file
+        pattern: "*.{bam,cram}"
+        ontologies: []
+    - bai:
+        type: file
+        description: Associated index file for BAM. Both BAI and CSI indices
+          are supported by modkit (via htslib).
+        pattern: "*.{bai,csi}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'hg38' ]`
+    - fasta:
+        type: file
+        description: Reference sequence in FASTA format. Required for motif (e.g.
+          CpG) filtering. Note that when using --cpg via ext.args, you must also
+          pass --modified-bases (e.g. '--cpg --modified-bases 5mC') or modkit
+          will error with a missing required argument.
+        pattern: "*.fasta"
+        ontologies: []
+    - fai:
+        type: file
+        description: Associated index file for FASTA
+        pattern: "*.fai"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing BED file information
+          e.g. `[ id:'regions' ]`
+    - bed:
+        type: file
+        description: BED file that will restrict threshold estimation and pileup
+          results to positions overlapping intervals in the file. Must be in
+          BED3 (chr, start, end) or BED6 format; modkit rejects other column
+          counts with "improperly formatted BED line, must be BED3 or BED6"
+          followed by "zero valid positions parsed from BED file". Note also
+          that modkit requires --motif or --modified-bases in ext.args whenever
+          --include-bed is used, and errors out otherwise.
+        pattern: "*.bed"
+        ontologies: []
+output:
+  bedgz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.bed.gz":
+          type: file
+          description: bgzf-compressed bedMethyl output file(s)
+          pattern: "*.bed"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.log":
+          type: file
+          description: File for debug logs to be written to
+          pattern: "*.log"
+          ontologies: []
+  versions_modkit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - modkit:
+          type: string
+          description: The name of the tool
+      - modkit --version | sed 's/modkit //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - modkit:
+          type: string
+          description: The name of the tool
+      - modkit --version | sed 's/modkit //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@Michal-Babins"
+  - "@fellen31"
+maintainers:
+  - "@fellen31"
+  - "@jkh00"

@@ -1,0 +1,40 @@
+process EMBOSS_CONS {
+    tag "$meta.id"
+    label 'process_single'
+
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/emboss:6.6.0--h86d058a_5':
+        'quay.io/biocontainers/emboss:6.6.0--h86d058a_5' }"
+
+    input:
+    tuple val(meta), path(fasta)
+
+    output:
+    tuple val(meta), path("*.fa") , emit: consensus
+    tuple val("${task.process}"), val('emboss'), eval('cons -version 2>&1 | sed "s/EMBOSS://"'), emit: versions_emboss, topic: versions
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    if ("$fasta" == "${prefix}.fa") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    """
+    cons \\
+        ${args} \\
+        -name ${prefix} \\
+        -sequence $fasta \\
+        -outseq ${prefix}.fa
+
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "$meta.id"
+    if ("$fasta" == "${prefix}.fa") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    """
+    touch ${prefix}.fa
+
+    """
+}

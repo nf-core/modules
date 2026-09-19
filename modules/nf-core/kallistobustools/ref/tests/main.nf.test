@@ -1,0 +1,111 @@
+nextflow_process {
+
+    name "Test Process KALLISTOBUSTOOLS_REF"
+    script "../main.nf"
+    process "KALLISTOBUSTOOLS_REF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "kallistobustools"
+    tag "kallistobustools/ref"
+
+    test("genome.fasta + genome.gtf + 'standard'") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: 'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = [
+                    [id: 'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
+                input[2] = 'standard'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out, unstableKeys: ["index"])).match()
+        }
+    }
+
+    test("genome.fasta + genome.gtf + 'nac'") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: 'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = [
+                    [id: 'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
+                input[2] = 'nac'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out, unstableKeys: ["index"])).match()
+        }
+    }
+
+    test("genome.fasta + genome.gtf + 'standard' - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: 'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = [
+                    [id: 'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
+                input[2] = 'standard'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out, unstableKeys: ["index"])).match()
+        }
+    }
+
+    test("genome.fasta + genome.gtf + 'nac' - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: 'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = [
+                    [id: 'genome'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
+                input[2] = 'nac'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out, unstableKeys: ["index"])).match()
+        }
+    }
+}

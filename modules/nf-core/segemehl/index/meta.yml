@@ -11,23 +11,56 @@ tools:
       homepage: "https://www.bioinf.uni-leipzig.de/Software/segemehl/"
       documentation: "https://www.bioinf.uni-leipzig.de/Software/segemehl/"
       doi: "10.1186/gb-2014-15-2-r34"
-      licence: "GPL v3"
-
+      licence:
+        - "GPL v3"
+      identifier: biotools:segemehl
 input:
-  - fasta:
-      type: file
-      description: Reference genome FASTA file
-      pattern: "*.{fa,fasta}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing genome information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: Reference genome FASTA file
+        pattern: "*.{fa,fasta}"
+        ontologies: []
 output:
-  - index:
-      type: file
-      description: Segemehl index file
-      pattern: "*.{idx}"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing genome information
+            e.g. [ id:'genome' ]
+      - "*.idx":
+          type: file
+          description: Segemehl index file
+          pattern: "*.{idx}"
+          ontologies: []
+  versions_segemehl:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - segemehl:
+          type: string
+          description: The name of the tool
+      - segemehl.x 2>&1 | sed '/^  [0-9]\.[0-9\.]*/!d;s/^  //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - segemehl:
+          type: string
+          description: The name of the tool
+      - segemehl.x 2>&1 | sed '/^  [0-9]\.[0-9\.]*/!d;s/^  //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
 
 authors:
+  - "@BarryDigby"
+maintainers:
   - "@BarryDigby"

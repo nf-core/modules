@@ -1,0 +1,44 @@
+process PLINK2_VCF2BGEN {
+    tag "${meta.id}"
+    label 'process_single'
+
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/plink2:2.00a5.10--h4ac6f70_0'
+        : 'quay.io/biocontainers/plink2:2.00a5.10--h4ac6f70_0'}"
+
+    input:
+    tuple val(meta), path(vcf), val(dosage_field), val(bgen_reffirst), val(sample_name_mode)
+
+    output:
+    tuple val(meta), path("*.bgen"), emit: bgen_file
+    tuple val(meta), path("*.sample"), emit: sample_file
+    tuple val(meta), path("*.log"), emit: log_file
+    tuple val("${task.process}"), val('plink2'), eval("plink2 --version 2>&1 | sed 's/^PLINK v//; s/ 64.*\$//'"), topic: versions, emit: versions_plink2
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def reffirst = bgen_reffirst ? "ref-first" : ""
+    """
+    plink2 \
+        --threads ${task.cpus} \
+        --memory ${task.memory.toMega()} \
+        --vcf ${vcf} 'dosage=${dosage_field}' \
+        --export bgen-1.2 ${reffirst}\
+        --${sample_name_mode} \
+        --out ${prefix} \
+        ${args}
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bgen
+    touch ${prefix}.sample
+    touch ${prefix}.log
+    """
+}

@@ -2,8 +2,8 @@ process PBCCS {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::pbccs=6.4.0"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/pbccs:6.4.0--h9ee0642_0' :
         'quay.io/biocontainers/pbccs:6.4.0--h9ee0642_0' }"
 
@@ -18,7 +18,7 @@ process PBCCS {
     tuple val(meta), path("*.report.txt" )    , emit: report_txt
     tuple val(meta), path("*.report.json" )   , emit: report_json
     tuple val(meta), path("*.metrics.json.gz"), emit: metrics
-    path  "versions.yml"                      , emit: versions
+    tuple val("${task.process}"), val('pbccs'), eval("ccs --version 2>&1 | sed '1!d;s/^.*ccs //; s/ .*//'"), topic: versions, emit: versions_pbccs
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,18 +28,23 @@ process PBCCS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     ccs \\
-        $bam \\
+        ${bam} \\
         ${prefix}.chunk${chunk_num}.bam \\
         --report-file ${prefix}.chunk${chunk_num}.report.txt \\
         --report-json ${prefix}.chunk${chunk_num}.report.json \\
         --metrics-json ${prefix}.chunk${chunk_num}.metrics.json.gz \\
-        --chunk $chunk_num/$chunk_on \\
-        -j $task.cpus \\
-        $args
+        --chunk ${chunk_num}/${chunk_on} \\
+        -j ${task.cpus} \\
+        ${args}
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pbccs: \$(echo \$(ccs --version 2>&1) | grep 'ccs' | sed 's/^.*ccs //; s/ .*\$//')
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.chunk1.bam
+    touch ${prefix}.chunk1.bam.pbi
+    touch ${prefix}.report.txt
+    touch ${prefix}.report.json
+    echo "" | gzip > ${prefix}.metrics.json.gz
     """
 }

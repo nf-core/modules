@@ -1,0 +1,123 @@
+nextflow_process {
+
+    name "Test Process SAMTOOLS_BAM2FQ"
+    script "../main.nf"
+    process "SAMTOOLS_BAM2FQ"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "samtools"
+    tag "samtools/bam2fq"
+
+    config "./nextflow.config"
+
+    test("bam") {
+
+        when {
+            process {
+                """
+                split = false
+
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.umi_converted.bam', checkIfExists: true)
+                ]
+                input[1] = split
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("bam_split") {
+
+        when {
+            process {
+                """
+                split = true
+
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.umi_converted.bam', checkIfExists: true)
+                ]
+                input[1] = split
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.reads.collect{
+                        meta, read_gz ->
+                        [ meta, read_gz.collect{ read_file ->
+                            if (read_file ==~ /.*(other|singleton)\.fq\.gz$/) {
+                                return file(read_file).name
+                            } else {
+                                return read_file
+                            }
+                        }]
+                    },
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+    }
+
+    test("bam - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                split = false
+
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.umi_converted.bam', checkIfExists: true)
+                ]
+                input[1] = split
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("bam_split - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                split = true
+
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.umi_converted.bam', checkIfExists: true)
+                ]
+                input[1] = split
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

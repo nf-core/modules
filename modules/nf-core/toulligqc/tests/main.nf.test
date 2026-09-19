@@ -1,0 +1,130 @@
+nextflow_process {
+
+    name "Test Process TOULLIGQC"
+    script "../main.nf"
+    process "TOULLIGQC"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "toulligqc"
+
+    test("sarscov2 - nanopore sequencing_summary") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/sequencing_summary/test2.sequencing_summary.txt', checkIfExists: true),
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.report_html[0][1]).name,
+                    file(process.out.report_data.get(0).get(1)).readLines()[11..74],
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() },
+            )
+        }
+    }
+
+    test("sarscov2 - nanopore sequencing_summary + barcodes") {
+        config  "./nextflow.config"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/sequencing_summary/test2.sequencing_summary.txt', checkIfExists: true),
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.report_html[0][1]).name,
+                    file(process.out.report_data.get(0).get(1)).readLines()[11..74],
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() },
+            )
+        }
+    }
+
+    test("sarscov2 - nanopore fastq") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true),
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.report_html[0][1]).name,
+                    file(process.out.report_data.get(0).get(1)).readLines()[11..67],
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() },
+            )
+        }
+    }
+
+    test("sarscov2 - nanopore bam") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/bam/test.sorted.bam', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.report_html[0][1]).name,
+                    file(process.out.report_data.get(0).get(1)).readLines()[11..74],
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() },
+            )
+        }
+    }
+
+    test("sarscov2 - nanopore bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/bam/test.sorted.bam', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out))}
+            )
+        }
+    }
+}

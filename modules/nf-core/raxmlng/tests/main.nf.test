@@ -1,0 +1,115 @@
+nextflow_process {
+    name "Test Process RAXMLNG"
+    script "../main.nf"
+    process "RAXMLNG"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "raxmlng"
+    config "./nextflow.config"
+
+    test("sarscov2 - no bootstrap") {
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists: true), // alignment fasta
+                    'GTR+G' // model
+                ]
+                """
+            }
+
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - bootstrap") {
+        when {
+            params {
+                module_args = '--bootstrap'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists: true), // alignment fasta
+                    'GTR+G' // model
+                ]
+                """
+            }
+
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["phylogeny_bootstrapped"])).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - no bootstrap - stub") {
+    options "-stub"
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test_stub' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists: true), // alignment file path
+                    'GTR+G' // model string
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+
+    test("sarscov2 - bootstrap - stub") {
+    options "-stub"
+
+        when {
+            params {
+                module_args = '--bootstrap'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test_stub' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists: true), // alignment file path
+                    'GTR+G' // model string
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

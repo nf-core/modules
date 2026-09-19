@@ -1,0 +1,109 @@
+nextflow_process {
+
+    name "Test Process BRACKEN_BUILD"
+    script "../main.nf"
+    process "BRACKEN_BUILD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bracken"
+    tag "bracken/build"
+    tag "gunzip"
+    tag "kraken2"
+    tag "kraken2/add"
+    tag "kraken2/build"
+
+    setup {
+
+        run("GUNZIP") {
+            script "modules/nf-core/gunzip/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [],
+                    file(
+                        params.modules_testdata_base_path + "genomics/sarscov2/metagenome/prot.accession2taxid.gz",
+                        checkIfExists: true
+                    )
+                ])
+                """
+            }
+        }
+
+        run("KRAKEN2_ADD") {
+            script "modules/nf-core/kraken2/add/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                        [
+                        file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/sarscov2/genome/proteome.fasta", checkIfExists: true)
+                        ]
+                    ]
+                input[1] = file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/prot_names.dmp", checkIfExists: true)
+                input[2] = file(params.modules_testdata_base_path + "genomics/sarscov2/metagenome/prot_nodes.dmp", checkIfExists: true)
+                input[3] = GUNZIP.out.gunzip.map{ it[1] }
+                input[4] = []
+                """
+            }
+        }
+
+        run("KRAKEN2_BUILD") {
+            script "modules/nf-core/kraken2/build/main.nf"
+            process {
+                """
+                ch_seqid2taxid = KRAKEN2_ADD.out.seqid2taxid_map.ifEmpty([[:],[]])
+
+                input[0] = KRAKEN2_ADD.out.library_added_files
+                input[1] = ch_seqid2taxid
+                input[2] = KRAKEN2_ADD.out.taxonomy_files
+                input[3] = false // Do not clean up otherwise Bracken fails
+                """
+            }
+        }
+
+    }
+
+    test("bracken - db") {
+
+        when {
+            process {
+                """
+                input[0] = KRAKEN2_BUILD.out.db_separated
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file("${process.out.db[0][1]}").list().sort(),
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match()}
+            )
+        }
+
+    }
+
+    test("bracken - db - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [[id: 'kraken2db_forbuilding'], [], [], [], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

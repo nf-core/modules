@@ -1,0 +1,34 @@
+nextflow_process {
+
+    name "Test Process ISOSEQ3_TAG"
+    script "../main.nf"
+    process "ISOSEQ3_TAG"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "isoseq3"
+    tag "isoseq3/tag"
+
+    test("isoseq tag - bam - deprecated") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'mini'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/mini.5p--3p.bam', checkIfExists: true)
+                    ]
+                input[1] = "T-12U-16B"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.") }
+            )
+        }
+
+    }
+
+}

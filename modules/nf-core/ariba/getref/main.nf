@@ -2,17 +2,17 @@ process ARIBA_GETREF {
     tag "$db_name"
     label 'process_low'
 
-    conda "bioconda::ariba=2.14.6"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ariba:2.14.6--py39h67e14b5_3':
         'quay.io/biocontainers/ariba:2.14.6--py39h67e14b5_3' }"
 
     input:
-    val(db_name)
+    tuple val(meta), val(db_name)
 
     output:
-    tuple path("${db_name}.tar.gz"), emit: db
-    path "versions.yml"            , emit: versions
+    tuple val(meta), path("${db_name}.tar.gz"), emit: db
+    tuple val("${task.process}"), val('ariba'), eval('ariba version | sed -nE "s/ARIBA version: //p"'), emit: versions_ariba, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,10 +32,10 @@ process ARIBA_GETREF {
         ${db_name}
 
     tar -zcvf ${db_name}.tar.gz ${db_name}/
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ariba:  \$(echo \$(ariba version 2>&1) | sed 's/^.*ARIBA version: //;s/ .*\$//')
-    END_VERSIONS
+    stub:
+    """
+    echo "" | gzip > ${db_name}.tar.gz
     """
 }

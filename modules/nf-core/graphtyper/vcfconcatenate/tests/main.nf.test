@@ -1,0 +1,66 @@
+
+nextflow_process {
+
+    name "Test Process GRAPHTYPER_VCFCONCATENATE"
+    script "../main.nf"
+    process "GRAPHTYPER_VCFCONCATENATE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "graphtyper"
+    tag "graphtyper/vcfconcatenate"
+
+    test("test-graphtyper-vcfconcatenate") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_all' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    file(process.out.tbi[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match()}
+            )
+        }
+    }
+
+    test("test-graphtyper-vcfconcatenate-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_all' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

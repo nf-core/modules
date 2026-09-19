@@ -1,0 +1,123 @@
+nextflow_process {
+
+    name "Test Process GUNC_MERGECHECKM"
+    script "../main.nf"
+    process "GUNC_MERGECHECKM"
+    config "./nextflow.config"
+
+    tag "modules_nfcore"
+    tag "modules"
+    tag "gunc"
+    tag "gunc/mergecheckm"
+    tag "gunc/run"
+    tag "gunc/downloaddb"
+    tag "checkm/lineagewf"
+    tag "checkm/qa"
+    tag "untar"
+
+    test("gunc - mergecheckm") {
+
+        setup {
+            run("UNTAR") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                    """
+                    input[0] = [ [], file('https://data.ace.uq.edu.au/public/CheckM_databases/checkm_data_2015_01_16.tar.gz', checkIfExists: true) ]
+                    """
+                }
+            }
+
+            run("CHECKM_LINEAGEWF") {
+                script "../../../checkm/lineagewf/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: 'test', single_end: false],
+                        file(
+                            params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta',
+                            checkIfExists: true
+                        )
+                    ]
+                    input[1] = 'fasta'
+                    input[2] = UNTAR.out.untar.map{ _meta, db -> [db] }
+                    """
+                }
+            }
+
+            run("CHECKM_QA") {
+                script "../../../checkm/qa/main.nf"
+                process {
+                    """
+                    input[0] = CHECKM_LINEAGEWF.out.checkm_output
+                                .join(CHECKM_LINEAGEWF.out.marker_file)
+                                .map { sample_data -> sample_data + [[]] }
+                    input[1] = []
+                    input[2] = UNTAR.out.untar.map{ _meta, db -> [db] }
+                    """
+                }
+            }
+
+            run("GUNC_DOWNLOADDB") {
+                script "../../downloaddb/main.nf"
+                process {
+                    """
+                    input[0] = 'test_data'
+                    """
+                }
+            }
+
+            run("GUNC_RUN") {
+                script "../../run/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: 'test'],
+                        [file(
+                            params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta',
+                            checkIfExists: true
+                        )]
+                    ]
+                    input[1] = GUNC_DOWNLOADDB.out.db
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = GUNC_RUN.out.maxcss_level_tsv.join(CHECKM_QA.out.output)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("gunc - mergecheckm - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [id: "test"], [], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+}

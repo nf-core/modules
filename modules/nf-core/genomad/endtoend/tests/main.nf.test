@@ -1,0 +1,78 @@
+nextflow_process {
+
+    name "Test Process GENOMAD_ENDTOEND"
+    script "../main.nf"
+    process "GENOMAD_ENDTOEND"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "genomad"
+    tag "genomad/endtoend"
+    tag "untar"
+
+    setup {
+        run("UNTAR") {
+            script "../../../untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id: "genomad_db"],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/mag/databases/genomad/genomad_db_subset_v1.9.tar.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - genome - fasta") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                input[1] = UNTAR.out.untar
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(
+                        process.out,
+                        unstableKeys: ["virus_fasta", "virus_proteins", "plasmid_fasta", "plasmid_proteins"],
+                        ignoreKeys: ["genomad_results"]
+                    )).match()
+                }
+            )
+        }
+    }
+
+    test("sarscov2 - genome - fasta - stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = UNTAR.out.untar
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, ignoreKeys: ["genomad_results"])).match() }
+            )
+        }
+    }
+}

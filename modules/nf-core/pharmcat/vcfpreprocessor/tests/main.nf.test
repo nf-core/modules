@@ -1,0 +1,91 @@
+nextflow_process {
+
+    name "Test Process PHARMCAT_VCFPREPROCESSOR"
+    script "../main.nf"
+    process "PHARMCAT_VCFPREPROCESSOR"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pharmcat"
+    tag "pharmcat/vcfpreprocessor"
+
+    config "./nextflow.config"
+
+    test("pharmcat VCF PREPROCESSOR") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr22.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr22.vcf.gz.csi', checkIfExists: true),
+                ]
+                input[1] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
+                input[2] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)]
+                input[3] = [
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pharmcat/test.chr22.single.sample.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pharmcat/test.chr22.single.sample.vcf.gz.tbi', checkIfExists: true)
+                ]
+                input[4] = [
+                    [id: 'test'],
+                    file('https://github.com/PharmGKB/PharmCAT/releases/download/v3.1.1/pharmcat_positions_3.1.1.uniallelic.vcf.bgz', checkIfExists: true),
+                    file('https://github.com/PharmGKB/PharmCAT/releases/download/v3.1.1/pharmcat_positions_3.1.1.uniallelic.vcf.bgz.csi', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.preprocessed_vcf.get(0).get(1)).name,
+                    process.out.versions_pharmcat
+                ).match() }
+            )
+        }
+
+    }
+
+    test("pharmcat VCF PREPROCESSOR - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr22.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878_GIAB.chr22.vcf.gz.csi', checkIfExists: true),
+                ]
+                input[1] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
+                input[2] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)]
+                input[3] = [
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pharmcat/test.chr22.single.sample.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pharmcat/test.chr22.single.sample.vcf.gz.tbi', checkIfExists: true)
+                ]
+                input[4] = [
+                    [id: 'test'],
+                    file('https://github.com/PharmGKB/PharmCAT/releases/download/v3.1.1/pharmcat_positions_3.1.1.uniallelic.vcf.bgz', checkIfExists: true),
+                    file('https://github.com/PharmGKB/PharmCAT/releases/download/v3.1.1/pharmcat_positions_3.1.1.uniallelic.vcf.bgz.csi', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out)
+                ).match() }
+            )
+        }
+
+    }
+
+}

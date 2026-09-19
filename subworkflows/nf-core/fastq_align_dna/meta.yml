@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "fastq_align_dna"
 description: Align fastq files to a reference genome
 keywords:
@@ -8,32 +9,35 @@ keywords:
   - bwamem2
   - dragmap
   - snapaligner
-modules:
+  - strobealign
+components:
   - bowtie2/align
   - bwa/mem
   - bwamem2/mem
   - dragmap/align
   - snapaligner/align
+  - strobealign
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - reads:
+  - ch_reads:
       type: file
       description: |
         List of input FastQ files of size 1 and 2 for single-end and paired-end data,
         respectively.
-  - meta2:
-      type: map
+
+        Structure: [ val(meta), [ path(reads) ] ]
+  - ch_aligner_index:
+      type: directory
       description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test' ]
-  - index:
+        Directory containing the aligner genome index files.
+
+        Structure: [ val(meta2), path(index) ]
+  - ch_fasta:
       type: file
-      description: Aligner genome index files
-      pattern: "Directory containing aligner index"
+      description: |
+        Reference genome in fasta format.
+
+        Structure: [ val(meta3), path(fasta) ]
+      pattern: "*.{fa, fasta, fna}"
   - aligner:
       type: string
       description: Aligner to use for alignment
@@ -43,30 +47,32 @@ input:
         - bwamem2
         - dragmap
         - snap
-  - sort_bam:
+        - strobealign
+  - sort:
       type: boolean
       description: sort output
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - bam:
       type: file
-      description: BAM file
+      description: |
+        BAM file.
+
+        Structure: [ val(meta), path(bam) ]
       pattern: "*.bam"
-  - bai:
+  - bam_index:
       type: file
-      description: BAM index (currently only for snapaligner)
-      pattern: "*.bai"
-  - report:
+      description: |
+        BAM index (only produced by some aligners).
+
+        Structure: [ val(meta), path(bai/csi) ]
+      pattern: "*.{bai, csi}"
+  - reports:
       type: file
-      description: Alignment report (currently only for dragmap)
-      pattern: "*.txt"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      description: |
+        Alignment report (currently only for dragmap).
+
+        Structure: [ val(meta), path(log) ]
 authors:
+  - "@matthdsm"
+maintainers:
   - "@matthdsm"

@@ -1,0 +1,87 @@
+nextflow_process {
+
+    name "Test Process FUSIONREPORT_DETECT"
+    script "../main.nf"
+    config './nextflow.config'
+    process "FUSIONREPORT_DETECT"
+
+    tag "modules"
+    tag "modules_local"
+    tag "fusionreport"
+    tag "fusionreport/detect"
+    tag "modules_nfcore"
+    tag "fusionreport/download"
+
+    setup {
+        run("FUSIONREPORT_DOWNLOAD") {
+            script "../../../fusionreport/download/main.nf"
+            process {
+                """
+                input[0] = [id: 'fusion_report_db']
+                """
+            }
+        }
+    }
+
+
+    test("FUSIONREPORT - arriba - starfusion - fusioncatcher") {
+        when {
+            params {
+                fusionreport_download_args = "--no-cosmic"
+                fusionreport_detect_args   = "--no-cosmic"
+                fusionreport_detect_args2  = "--export csv"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test_sample' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/arriba.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/starfusion.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/fusioncatcher.txt', checkIfExists: true)
+                ]
+                input[1] = FUSIONREPORT_DOWNLOAD.out.fusionreport_ref
+                input[2] = 1
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["report", "html"])).match() }
+            )
+        }
+
+    }
+
+    test("FUSIONREPORT - arriba - starfusion - fusioncatcher - stub") {
+        options "-stub"
+
+        when {
+            params {
+                fusionreport_download_args = "--no-cosmic"
+                fusionreport_detect_args   = "--no-cosmic"
+                fusionreport_detect_args2  = "--export csv"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test_sample' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/arriba.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/starfusion.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/fusioncatcher.txt', checkIfExists: true)
+                ]
+                input[1] = FUSIONREPORT_DOWNLOAD.out.fusionreport_ref
+                input[2] = 1
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

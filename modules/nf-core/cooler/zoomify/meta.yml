@@ -2,6 +2,8 @@ name: cooler_zoomify
 description: Generate a multi-resolution cooler file by coarsening
 keywords:
   - mcool
+  - cool
+  - cooler
 tools:
   - cooler:
       description: Sparse binary format for genomic interaction matrices
@@ -10,32 +12,52 @@ tools:
       tool_dev_url: https://github.com/open2c/cooler
       doi: "10.1093/bioinformatics/btz540"
       licence: ["BSD-3-clause"]
-
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - cool:
-      type: file
-      description: Path to COOL file
-      pattern: "*.{cool,mcool}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - cool:
+        type: file
+        description: Path to COOL file
+        pattern: "*.{cool,mcool}"
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - mcool:
-      type: file
-      description: Output mcool file
-      pattern: "*.mcool"
-
+  mcool:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.mcool":
+          type: file
+          description: Output mcool file
+          pattern: "*.mcool"
+          ontologies: []
+  versions_cooler:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cooler:
+          type: string
+          description: The name of the tool
+      - cooler --version 2>&1 | sed "s/cooler, version //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cooler:
+          type: string
+          description: The name of the tool
+      - cooler --version 2>&1 | sed "s/cooler, version //":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
+  - "@jianhong"
+maintainers:
   - "@jianhong"

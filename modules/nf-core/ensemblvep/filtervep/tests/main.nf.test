@@ -1,0 +1,119 @@
+nextflow_process {
+
+    name "Test Process ENSEMBLVEP_FILTERVEP"
+    script "../main.nf"
+    process "ENSEMBLVEP_FILTERVEP"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ensemblvep"
+    tag "ensemblvep/vep"
+    tag "ensemblvep/filtervep"
+
+    test("test_ensemblvep_filtervep_vcf") {
+        config "./vcf.config"
+
+        setup {
+            run("ENSEMBLVEP_VEP") {
+                script "../../vep/main.nf"
+
+                process {
+                    """
+                    vep_cache = channel.of([
+                        [ id:'115_WBcel235' ],
+                        file('s3://annotation-cache/vep_cache/115_WBcel235/')
+                    ]).collect()
+
+                    input[0] = channel.of([
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true),
+                        []
+                    ])
+                    input[1] = params.vep_genome
+                    input[2] = params.vep_species
+                    input[3] = params.vep_cache_version
+                    input[4] = vep_cache
+                    input[5] = channel.value([
+                        [id:"fasta"],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ])
+                    input[6] = []
+                    input[7] = [[], []]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = ENSEMBLVEP_VEP.out.vcf
+                input[1] = []
+                input[2] = "vcf"
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions") }).match() },
+                { assert path(process.out.output.get(0).get(1)).readLines().first().contains("##fileformat=VCFv4.2") }
+            )
+        }
+    }
+
+    test("test_ensemblvep_filtervep_tab_gz") {
+        config "./tab.gz.config"
+
+        setup {
+            run("ENSEMBLVEP_VEP") {
+                script "../../vep/main.nf"
+
+                process {
+                    """
+                    vep_cache = channel.of([
+                        [ id:'115_WBcel235' ],
+                        file('s3://annotation-cache/vep_cache/115_WBcel235/')
+                    ]).collect()
+
+                    input[0] = channel.of([
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true),
+                        []
+                    ])
+                    input[1] = params.vep_genome
+                    input[2] = params.vep_species
+                    input[3] = params.vep_cache_version
+                    input[4] = vep_cache
+                    input[5] = channel.value([
+                        [id:"fasta"],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ])
+                    input[6] = []
+                    input[7] = [[], []]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = ENSEMBLVEP_VEP.out.tab
+                input[1] = []
+                input[2] = "tab.gz"
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions") }).match() },
+                { assert path(process.out.output.get(0).get(1)).readLines().first().contains("## ENSEMBL VARIANT EFFECT PREDICTOR v116.1") }
+            )
+        }
+    }
+}

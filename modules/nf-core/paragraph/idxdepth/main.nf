@@ -2,8 +2,8 @@ process PARAGRAPH_IDXDEPTH {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::paragraph=2.3"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/paragraph:2.3--h8908b6f_0':
         'quay.io/biocontainers/paragraph:2.3--h8908b6f_0' }"
 
@@ -15,7 +15,7 @@ process PARAGRAPH_IDXDEPTH {
     output:
     tuple val(meta), path("*.json") , emit: depth
     tuple val(meta), path("*.tsv")  , emit: binned_depth, optional:true
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('paragraph'), val('2.3'), emit: versions_paragraph, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,11 +23,11 @@ process PARAGRAPH_IDXDEPTH {
     script:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
-    def VERSION = '2.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
     def type = input.extension
     def output_bins = type == "cram" ? "--output-bins ${prefix}.tsv" : ""
+    if (type == "cram" && workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "PARAGRAPH_IDXDEPTH module does not support Conda with CRAM input. Please use Docker / Singularity / Podman instead."
+    }
     """
     idxdepth \\
         --bam ${input} \\
@@ -36,28 +36,17 @@ process PARAGRAPH_IDXDEPTH {
         --output ${prefix}.json \\
         ${output_bins} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        paragraph: ${VERSION}
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
-    def VERSION = '2.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
     def type = input.extension
     def output_bins = type == "cram" ? "touch ${prefix}.tsv" : ""
+    if (type == "cram" && workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error "PARAGRAPH_IDXDEPTH module does not support Conda with CRAM input. Please use Docker / Singularity / Podman instead."
+    }
     """
     touch ${prefix}.json
     ${output_bins}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        paragraph: ${VERSION}
-    END_VERSIONS
     """
 }

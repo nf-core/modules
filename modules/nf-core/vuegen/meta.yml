@@ -1,0 +1,97 @@
+name: vuegen
+description: >
+  The VueGen nf-core module is designed to automate report generation from outputs
+  produced by other modules, subworkflows, or pipelines. The module integrates the
+  VueGen Python library and customizes it for compatibility with the Nextflow environment.
+  VueGen automates the creation of reports from bioinformatics outputs, supporting
+  formats
+  like PDF, HTML, DOCX, ODT, PPTX, Reveal.js, Jupyter notebooks, and Streamlit web
+  applications.
+keywords:
+  - reports
+  - data-visualization
+  - streamlit
+  - quarto
+tools:
+  - "vuegen":
+      description: >
+        The VueGen nf-core module is designed to automate report generation from outputs
+        produced by other modules, subworkflows, or pipelines. The module integrates
+        the
+        VueGen Python library and customizes it for compatibility with the Nextflow
+        environment.
+        VueGen automates the creation of reports from bioinformatics outputs, supporting
+        formats
+        like PDF, HTML, DOCX, ODT, PPTX, Reveal.js, Jupyter notebooks, and Streamlit
+        web applications.
+      homepage: https://github.com/Multiomics-Analytics-Group/vuegen
+      documentation: https://vuegen.readthedocs.io/
+      tool_dev_url: https://github.com/Multiomics-Analytics-Group/vuegen
+      doi: 10.1101/2025.03.05.641152
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - input_type:
+      type: string
+      pattern: "^(config|directory)$"
+      description: Specifies whether the input is a configuration file ('config') or a directory ('directory').
+  - input_path:
+      type: file
+      description: Path to the input directory or configuration file used by VueGen.
+      ontologies: []
+  - report_type:
+      type: string
+      pattern: "^(streamlit|html|pdf|docx|odt|revealjs|pptx|jupyter)$"
+      description: The type of report to generate. Options include 'streamlit', 'html', 'pdf', 'docx', 'odt', 'revealjs', 'pptx', and 'jupyter'.
+output:
+  output_folder:
+    - "*report":
+        type: directory
+        description: |
+          The output directory containing the generated report files.
+          - If `report_type` is 'streamlit', a 'streamlit_report' directory is created, containing subfolders for each section with Python scripts corresponding to the web application's pages.
+          - For other report types, a 'quarto_report' directory is generated, containing a Quarto Markdown (qmd) file that structures the entire report.
+        pattern: "*report"
+  versions_vuegen:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vuegen:
+          type: string
+          description: The name of the tool
+      - 'python -c "import vuegen; print(vuegen.__version__)"':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vuegen:
+          type: string
+          description: The name of the tool
+      - 'python -c "import vuegen; print(vuegen.__version__)"':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@sayalaruano"
+  - "@enryH"
+  - "@albsantosdel"
+maintainers:
+  - "@sayalaruano"
+  - "@enryH"
+  - "@albsantosdel"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/python_pytinytex_quarto_r-tinytex_pruned:9eebdec0448f6563
+      build_id: bd-9eebdec0448f6563_1
+      scan_id: sc-fdc3fb6bcec30409_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/python_pytinytex_quarto_r-tinytex_pruned:dee5e2966278494d
+      build_id: bd-dee5e2966278494d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a0/a0ff4f778cefa7ae78c684ba2b97dc4a1fac3d49ffc958c532bfe06e19e23807/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/vuegen/.conda-lock/linux_amd64-bd-9eebdec0448f6563_1.txt

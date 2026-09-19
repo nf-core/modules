@@ -1,0 +1,120 @@
+nextflow_process {
+
+    name "Test Process FASTQSCREEN_FASTQSCREEN"
+    script "../main.nf"
+    process "FASTQSCREEN_FASTQSCREEN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bowtie2/build"
+    tag "fastqscreen"
+    tag "fastqscreen/buildfromindex"
+    tag "fastqscreen/fastqscreen"
+    tag "buildfromindex"
+    tag "modules_fastqscreen"
+
+    setup {
+
+        run("BOWTIE2_BUILD") {
+            script "../../../bowtie2/build/main.nf"
+            process {
+                """
+                input[0] = channel.of([
+                    [id: "sarscov2"],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ], [
+                    [id: "human"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        run("FASTQSCREEN_BUILDFROMINDEX") {
+            script "../../../fastqscreen/buildfromindex/main.nf"
+            process {
+                """
+                input[0] = BOWTIE2_BUILD.out.index.map{meta, index -> meta.id}.collect()
+                input[1] = BOWTIE2_BUILD.out.index.map{meta, index -> index}.collect()
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - human") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
+                ]
+                input[1] = FASTQSCREEN_BUILDFROMINDEX.out.database
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.txt[0][1]).name,
+                    file(process.out.png[0][1]).name,
+                    file(process.out.html[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - human - tags") {
+        config './nextflow.config'
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
+                ]
+                input[1] = FASTQSCREEN_BUILDFROMINDEX.out.database
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.txt,
+                    process.out.fastq,
+                    path(process.out.html[0][1]).readLines()[0..10],
+                    file(process.out.png[0][1]).name
+                    ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - human - stub") {
+
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]
+                ]
+                input[1] = FASTQSCREEN_BUILDFROMINDEX.out.database
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

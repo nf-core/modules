@@ -1,0 +1,61 @@
+name: hifiadapterfilt_downloaddb
+description: |
+  Downloads the pre-built PacBio adapter BLAST database from the HiFiAdapterFilt
+  GitHub repository. The database contains two adapter sequences: NGB00972.1
+  (Pacific Biosciences Blunt Adapter, 45 bp) and NGB00973.1 (C2 Primer, 35 bp).
+  This module is consumed by hifiadapterfilt/hifiadapterfilt as a prerequisite to
+  provide the BLAST database for adapter detection.
+keywords:
+  - pacbio
+  - hifi
+  - adapter
+  - blast
+  - database
+  - download
+tools:
+  - hifiadapterfilt:
+      description: |
+        HiFiAdapterFilt uses BLAST to identify and remove adapter sequences
+        from PacBio HiFi reads, producing adapter-filtered FASTQ output along
+        with detailed statistics.
+      homepage: https://github.com/sheinasim/HiFiAdapterFilt
+      documentation: https://github.com/sheinasim/HiFiAdapterFilt
+      tool_dev_url: https://github.com/sheinasim/HiFiAdapterFilt
+      licence:
+        - "MIT"
+      identifier: biotools:HiFiAdapterFilt
+input: []
+output:
+  db:
+    - DB:
+        type: directory
+        description: |
+          Directory containing the pre-built BLAST nucleotide database for PacBio
+          adapter sequences. Contains pacbio_vectors_db.* files (NGB00972.1 Blunt
+          Adapter and NGB00973.1 C2 Primer).
+        pattern: "DB"
+  versions_hifiadapterfilt:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hifiadapterfilt:
+          type: string
+          description: The name of the tool
+      - hifiadapterfilt.sh --version 2>&1 | head -1:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hifiadapterfilt:
+          type: string
+          description: The name of the tool
+      - hifiadapterfilt.sh --version 2>&1 | head -1:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"

@@ -1,0 +1,148 @@
+name: fusionreport_detect
+description: fusionreport_detect
+keywords:
+  - sort
+  - RNA-seq
+  - fusion report
+  - detect
+tools:
+  - fusionreport:
+      description: Tool for parsing outputs from fusion detection tools
+      homepage: https://github.com/Clinical-Genomics/fusion-report
+      documentation: https://github.com/Clinical-Genomics/fusion-report
+      doi: "10.1101/011650"
+      licence:
+        - "GPL v3"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - arriba_fusions:
+        type: file
+        description: File
+        pattern: "*.fusions.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+    - starfusion_fusions:
+        type: file
+        description: File containing fusions from STARfusion
+        pattern: "*.starfusion.fusion_predictions.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+    - fusioncatcher_fusions:
+        type: file
+        description: File containing fusions from fusioncatcher
+        pattern: "*.fusions.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - fusionreport_ref:
+        type: directory
+        description: directory containing the genome resource files required for fusioncatcher
+        pattern: "fusion_report_db"
+  - tools_cutoff:
+      type: integer
+      description: Discard fusions detected by less than $tools_cutoff tools both
+        for display in fusionreport html index and to consider in fusioninspector.
+output:
+  fusion_list:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*fusionreport.tsv":
+          type: file
+          description: |
+            Fusion report
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  fusion_list_filtered:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*fusionreport_filtered.tsv":
+          type: file
+          description: |
+            Filtered fusion report
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*index.html":
+          type: file
+          description: |
+            Interactive HTML report
+          pattern: "*.index.html"
+          ontologies:
+            - edam: "http://edamontology.org/format_2331" # HTML
+  html:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*_*.html":
+          type: map
+          description: |
+            All HTML report files
+          pattern: "*_*.html"
+          ontologies:
+            - edam: "http://edamontology.org/format_2331" # HTML
+  csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*.csv":
+          type: file
+          description: |
+            Report in CSV format
+          pattern: "*.csv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3752" # CSV
+  json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*.json":
+          type: file
+          description: |
+            Report in JSON format
+          pattern: "*.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464"
+  versions_fusionreport:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fusion_report:
+          type: string
+          description: The name of the tool
+      - fusion_report --version |& sed 's/fusion-report //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fusion_report:
+          type: string
+          description: The name of the tool
+      - fusion_report --version |& sed 's/fusion-report //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@praveenraj2018"
+  - "@rannick"

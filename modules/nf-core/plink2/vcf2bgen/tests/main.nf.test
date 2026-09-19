@@ -1,0 +1,124 @@
+nextflow_process {
+
+    name "Test Process PLINK2_VCF2BGEN"
+    script "../main.nf"
+    process "PLINK2_VCF2BGEN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "plink2"
+    tag "plink2/vcf2bgen"
+    config "./nextflow.config"
+    test("plink2 - vcf2bgen - vcf - double-id") {
+
+        when {
+            params {
+                plink2_vcf2bgen_args = "--max-alleles 2 --vcf-half-call r"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true),
+                    'DS',
+                    true,
+                    'double-id'
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log_file"])).match() }
+            )
+        }
+
+    }
+
+    test("plink2 - vcf2bgen - vcf - const-fid") {
+
+        when {
+            params {
+                plink2_vcf2bgen_args = "--max-alleles 2 --vcf-half-call r"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true),
+                    'DS',
+                    true,
+                    'double-id'
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log_file"])).match() }
+            )
+        }
+
+    }
+
+    test("plink2 - vcf2bgen - vcf - ref-last") {
+
+        when {
+            params {
+                plink2_vcf2bgen_args = "--max-alleles 2 --vcf-half-call r"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true),
+                    'DS',
+                    true,
+                    'double-id'
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log_file"])).match() }
+            )
+        }
+
+    }
+
+    test("plink2 - vcf2bgen - stub") {
+        options "-stub"
+
+        when {
+            params {
+                plink2_vcf2bgen_args = "--max-alleles 2 --vcf-half-call r"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz', checkIfExists: true),
+                    'DS',
+                    true,
+                    'double-id'
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+}

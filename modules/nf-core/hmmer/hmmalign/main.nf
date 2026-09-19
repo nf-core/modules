@@ -2,18 +2,18 @@ process HMMER_HMMALIGN {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::hmmer=3.3.2"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hmmer:3.3.2--h1b792b2_1' :
-        'quay.io/biocontainers/hmmer:3.3.2--h1b792b2_1' }"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/hmmer:3.4--hb6cb901_4' :
+        'quay.io/biocontainers/hmmer:3.4--hb6cb901_4' }"
 
     input:
     tuple val(meta), path(fasta)
     path hmm
 
     output:
-    tuple val(meta), path("*.sthlm.gz"), emit: sthlm
-    path "versions.yml"                , emit: versions
+    tuple val(meta), path("*.sto.gz"), emit: sto
+    tuple val("${task.process}"), val('hmmer'), eval("hmmsearch -h | sed '2!d;s/^# HMMER *//;s/ .*//'"), emit: versions_hmmer, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,11 +25,12 @@ process HMMER_HMMALIGN {
     hmmalign \\
         $args \\
         $hmm \\
-        $fasta | gzip -c > ${prefix}.sthlm.gz
+        $fasta | gzip -c > ${prefix}.sto.gz
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hmmer: \$(hmmalign -h | grep -o '^# HMMER [0-9.]*' | sed 's/^# HMMER *//')
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.sto.gz
     """
 }

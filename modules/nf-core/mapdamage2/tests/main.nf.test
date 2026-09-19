@@ -1,0 +1,64 @@
+
+nextflow_process {
+
+    name "Test Process MAPDAMAGE2"
+    script "../main.nf"
+    process "MAPDAMAGE2"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mapdamage2"
+
+    test("test-mapdamage2") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys:[
+                        "fragmisincorporation_plot", "runtime_log", "stats_out_mcmc_correct_prob",
+                        "stats_out_mcmc_hist", "stats_out_mcmc_iter", "stats_out_mcmc_iter_summ_stat",
+                        "stats_out_mcmc_post_pred", "stats_out_mcmc_trace"
+                    ])
+                ).match()}
+            )
+        }
+    }
+
+    test("test-mapdamage2-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

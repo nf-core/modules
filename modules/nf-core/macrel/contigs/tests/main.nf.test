@@ -1,0 +1,59 @@
+
+nextflow_process {
+
+    name "Test Process MACREL_CONTIGS"
+    script "../main.nf"
+    process "MACREL_CONTIGS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "macrel"
+    tag "macrel/contigs"
+
+    test("test-macrel-contigs") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test1.contigs.fa.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys:["log_file"]),
+                    path(process.out.all_orfs[0][1]).linesGzip[0]
+                ).match()}
+            )
+        }
+    }
+
+    test("test-macrel-contigs-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test1.contigs.fa.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

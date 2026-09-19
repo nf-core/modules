@@ -1,0 +1,52 @@
+process CATPACK_PREPARE {
+    tag "${meta.id}"
+    label 'process_medium'
+    label 'process_long'
+    label 'process_high_memory'
+
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/15/15bcec1eccda12562504e88d44abc8a29742c6b600ae178cc9579fedc3a69062/data'
+        : 'community.wave.seqera.io/library/cat_gzip:0ab95a62b35744c9'}"
+
+    input:
+    tuple val(meta), path(db_fasta)
+    path names
+    path nodes
+    path acc2tax
+
+    output:
+    tuple val(meta), path("${prefix}/db/"), emit: db
+    tuple val(meta), path("${prefix}/tax/"), emit: taxonomy
+    tuple val("${task.process}"), val('catpack'), eval("CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g'"), topic: versions, emit: versions_catpack
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    CAT_pack prepare \\
+        -n ${task.cpus} \\
+        --db_fasta ${db_fasta} \\
+        --names ${names} \\
+        --nodes ${nodes} \\
+        --acc2tax ${acc2tax} \\
+        --db_dir ${prefix}/ \\
+        ${args}
+    """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch database.log
+    mkdir -p ${prefix}/db
+    touch ${prefix}/db/database.dmnd
+    touch ${prefix}/db/database.fastaid2LCAtaxid
+    touch ${prefix}/db/database.taxids_with_multiple_offspring
+    mkdir -p ${prefix}/tax
+    touch ${prefix}/tax/nodes.dmp
+    touch ${prefix}/tax/names.dmp
+    """
+}

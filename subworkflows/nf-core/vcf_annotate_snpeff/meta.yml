@@ -1,12 +1,14 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: vcf_annotate_snpeff
 description: Perform annotation with snpEff and bgzip + tabix index the resulting VCF file
 keywords:
   - vcf
   - annotation
   - snpeff
-modules:
+components:
   - snpeff
-  - tabix/bgziptabix
+  - snpeff/snpeff
+  - htslib/bgziptabix
 input:
   - ch_vcf:
       description: |
@@ -28,9 +30,15 @@ output:
       description: |
         html reports
         Structure: [ path(html) ]
-  - versions:
+  - summary:
       description: |
-        Files containing software versions
-        Structure: [ path(versions.yml) ]
+        html reports
+        Structure: [ path(csv) ]
+  - genes_txt:
+      description: |
+        html reports
+        Structure: [ path(txt) ]
 authors:
+  - "@maxulysse"
+maintainers:
   - "@maxulysse"

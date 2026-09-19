@@ -1,0 +1,118 @@
+nextflow_process {
+
+    name "Test Process EMBOSS_SEQRET"
+
+    script "../main.nf"
+    process "EMBOSS_SEQRET"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "emboss"
+    tag "emboss/seqret"
+    tag "gunzip"
+
+    setup {
+        run("GUNZIP") {
+            script "modules/nf-core/gunzip/main.nf"
+
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.gbff.gz',checkIfExists:true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("bacteroides_fragilis - gbff - gz - embl") {
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = 'embl'
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("bacteroides_fragilis - gbff - gz - gff") {
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = 'gff'
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.outseq[0][1]).name,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("bacteroides_fragilis - gbff - gz - pir") {
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = 'pir'
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("bacteroides_fragilis - gbff - gz - fasta") {
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = 'fasta'
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("bacteroides_fragilis - gbff - gz - fasta -- stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = 'fasta'
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

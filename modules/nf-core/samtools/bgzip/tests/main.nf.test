@@ -1,0 +1,52 @@
+nextflow_process {
+
+    name "Test Process SAMTOOLS_BGZIP"
+    script "../main.nf"
+    process "SAMTOOLS_BGZIP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "samtools"
+    tag "samtools/bgzip"
+
+    test("test_samtools_bgzip - deprecated") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
+                input[1] = 'fasta' // suffix
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.") }
+            )
+        }
+    }
+
+    test("test_samtools_bgzip - deprecated - stub") {
+
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
+                input[1] = 'fasta' // suffix
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.") }
+            )
+        }
+    }
+}

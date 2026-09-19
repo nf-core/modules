@@ -1,27 +1,55 @@
 name: krona_kronadb
 description: KronaTools Update Taxonomy downloads a taxonomy database
+deprecated: true
 keywords:
   - database
   - taxonomy
   - krona
 tools:
   - krona:
-      description: Krona Tools is a set of scripts to create Krona charts from several Bioinformatics tools as well as from text and XML files.
+      description: Krona Tools is a set of scripts to create Krona charts from several
+        Bioinformatics tools as well as from text and XML files.
       homepage: https://github.com/marbl/Krona/wiki/KronaTools
       documentation: https://github.com/marbl/Krona/wiki/Installing
       doi: 10.1186/1471-2105-12-385
-
+      publication:
+        author: "Ondov B.D., Bergman N.H. & Phillippy A.M."
+        year: 2011
+        title: "Interactive metagenomic visualization in a Web browser"
+        source: "BMC Bioinformatics"
+      licence: ["https://raw.githubusercontent.com/marbl/Krona/master/KronaTools/LICENSE.txt"]
+      identifier: biotools:krona
 #  There is no input. This module downloads a pre-built taxonomy database for use with Krona Tools.
-
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - db:
-      type: file
-      description: A TAB separated file that contains a taxonomy database.
-      pattern: "*.{tab}"
-
+  db:
+    - taxonomy/taxonomy.tab:
+        type: file
+        description: A TAB separated file that contains a taxonomy database.
+        pattern: "*.{tab}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+  versions_krona:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - krona:
+          type: string
+          description: The name of the tool
+      - 'ktImportTaxonomy | grep -Po "(?<=KronaTools )[0-9.]+"':
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - krona:
+          type: string
+          description: The name of the tool
+      - 'ktImportTaxonomy | grep -Po "(?<=KronaTools )[0-9.]+"':
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
+  - "@mjakobs"
+maintainers:
   - "@mjakobs"

@@ -1,0 +1,100 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "fasta_clean_fcs"
+description: Foreign Contamination Screen (FCS) is a tool suite for identifying and removing contaminant sequences in genome assemblies
+keywords:
+  - contamination screening
+  - cleaning
+  - assemblies
+  - fasta
+components:
+  - fcs/fcsadaptor
+  - fcsgx/rungx
+input:
+  - ch_fasta:
+      type: file
+      description: |
+        Channel containing the assembly to screen. The meta map must carry the
+        taxonomy ID of the expected organism, e.g. [ id:'test', taxid:'id' ].
+
+        Structure: [ val(meta), path(fasta) ]
+      pattern: "*.{fasta,fa}"
+  - database:
+      type: directory
+      description: |
+        Directory containing the FCS-GX database.
+
+        Structure: [ path(database) ]
+  - ramdisk_path:
+      type: string
+      description: Path to RAM disk for improved performance (optional)
+
+output:
+  - fcsadaptor_cleaned_assembly:
+      type: file
+      description: |
+        Cleaned assembly in fasta format, alongside the taxonomy ID it was screened
+        against. Falls back to the unmodified input assembly when FCS-adaptor found
+        nothing to clean.
+
+        Structure: [ val(meta), val(taxid), path(fasta) ]
+      pattern: "*.cleaned_sequences.fa.gz"
+  - fcsadaptor_report:
+      type: file
+      description: |
+        Report of identified adaptors.
+
+        Structure: [ val(meta), path(report) ]
+      pattern: "*.fcs_adaptor_report.txt"
+  - fcsadaptor_log:
+      type: file
+      description: |
+        FCS-adaptor log file.
+
+        Structure: [ val(meta), path(log) ]
+      pattern: "*.fcs_adaptor.log"
+  - fcsadaptor_pipeline_args:
+      type: file
+      description: |
+        Run arguments.
+
+        Structure: [ val(meta), path(pipeline_args) ]
+      pattern: "*.pipeline_args.yaml"
+  - fcsadaptor_skipped_trims:
+      type: file
+      description: |
+        Skipped trim information.
+
+        Structure: [ val(meta), path(skipped_trims) ]
+      pattern: "*.skipped_trims.jsonl"
+  - fcsgx_report:
+      type: file
+      description: |
+        Report containing the contig identifier and recommended action (EXCLUDE, TRIM, FIX, REVIEW).
+
+        Structure: [ val(meta), path(report) ]
+      pattern: "*.fcs_gx_report.txt"
+  - fcsgx_taxonomy_report:
+      type: file
+      description: |
+        Report containing the contig identifier and mapped contaminant species.
+
+        Structure: [ val(meta), path(taxonomy_report) ]
+      pattern: "*.taxonomy.rpt"
+  - fcsgx_log:
+      type: file
+      description: |
+        FCS-GX log file.
+
+        Structure: [ val(meta), path(summary) ]
+      pattern: "*.summary.txt"
+  - fcsgx_hits:
+      type: file
+      description: |
+        Intermediate FCS-GX alignments.
+
+        Structure: [ val(meta), path(hits) ]
+      pattern: "*.hits.tsv.gz"
+authors:
+  - "@scorreard"
+maintainers:
+  - "@scorreard"

@@ -1,0 +1,41 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "bam_markduplicates_samtools"
+description: Samtools markduplicate SAM/BAM/CRAM file
+keywords:
+  - markdup
+  - bam
+  - sam
+  - cram
+components:
+  - samtools/collate
+  - samtools/fixmate
+  - samtools/sort
+  - samtools/markdup
+input:
+  - ch_bam:
+      type: file
+      description: |
+        BAM/CRAM/SAM file.
+
+        Structure: [ val(meta), path(bam) ]
+      pattern: "*.{bam,cram,sam}"
+
+  - ch_fasta_fai:
+      type: file
+      description: |
+        FASTA file and its index.
+
+        Structure: [ val(meta2), path(fasta), path(fai) ]
+      pattern: "*.{fasta,fa,fai}"
+output:
+  - bam:
+      type: file
+      description: |
+        Sorted and markduplicate BAM/CRAM/SAM file.
+
+        Structure: [ val(meta), path(bam) ]
+      pattern: "*.{bam,cram,sam}"
+authors:
+  - "@priyanka-surana"
+maintainers:
+  - "@priyanka-surana"

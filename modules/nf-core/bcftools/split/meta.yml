@@ -1,7 +1,9 @@
 name: "bcftools_split"
 description: Split a vcf file into files per chromosome
 keywords:
-  - sort
+  - vcf
+  - split
+  - genomics
 tools:
   - "bcftools":
       description: Sort VCF files by coordinates.
@@ -9,37 +11,63 @@ tools:
       documentation: http://www.htslib.org/doc/bcftools.html
       tool_dev_url: https://github.com/samtools/bcftools
       doi: "10.1093/bioinformatics/btp352"
-      licence: ["MIT"]
-
+      licence:
+        - "MIT"
+      identifier: biotools:bcftools
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcf:
-      type: file
-      description: Compressed vcf file
-      pattern: "*.vcf.gz"
-  - tbi:
-      type: file
-      description: Compressed vcf file index
-      pattern: "*.{tbi,csi}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: Compressed vcf file
+        pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989
+    - tbi:
+        type: file
+        description: Compressed vcf file index
+        pattern: "*.{tbi,csi}"
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - split_vcf:
-      type: file
-      description:
-      pattern: "*.vcf.gz"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  split_vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.vcf.gz":
+          type: file
+          description: Compressed vcf files per chromosome
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
+  versions_bcftools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
+          type: eval
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - "bcftools --version | sed '1!d; s/^.*bcftools //'":
+          type: eval
+          description: The command used to generate the version of the tool
 authors:
+  - "@matthdsm"
+  - "@atrigila"
+maintainers:
   - "@matthdsm"
   - "@atrigila"

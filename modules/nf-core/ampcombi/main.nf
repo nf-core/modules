@@ -2,51 +2,88 @@ process AMPCOMBI {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::ampcombi=0.1.7"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ampcombi:0.1.7--pyhdfd78af_0':
         'quay.io/biocontainers/ampcombi:0.1.7--pyhdfd78af_0' }"
 
     input:
     tuple val(meta),  path(amp_input)
     path(faa_input)
-    path( opt_amp_db )
+    path(opt_amp_db)
 
     output:
-    tuple val(meta), path("${meta.id}*")                        , emit: sample_dir
-    tuple val(meta), path("${meta.id}/*diamond_matches.txt")    , emit: txt
-    tuple val(meta), path("${meta.id}/*ampcombi.csv")           , emit: csv
-    tuple val(meta), path("${meta.id}/*amp.faa")                , emit: faa
-    tuple val(meta), path("AMPcombi_summary.csv")               , optional:true, emit: summary_csv
-    tuple val(meta), path("AMPcombi_summary.html")              , optional:true, emit: summary_html
-    tuple val(meta), path("*.log")                              , optional:true, emit: log
-    tuple val(meta), path("*/amp_ref_database")                 , optional:true, emit: results_db
-    tuple val(meta), path("*/amp_ref_database/*.dmnd")          , optional:true, emit: results_db_dmnd
-    tuple val(meta), path("*/amp_ref_database/*.clean.fasta")   , optional:true, emit: results_db_fasta
-    tuple val(meta), path("*/amp_ref_database/*.tsv")           , optional:true, emit: results_db_tsv
-    path "versions.yml"                                         , emit: versions
+    tuple val(meta), path("${meta.id}/")                    , emit: sample_dir
+    tuple val(meta), path("${meta.id}/*diamond_matches.txt"), emit: txt
+    tuple val(meta), path("${meta.id}/*ampcombi.csv")       , emit: csv
+    tuple val(meta), path("${meta.id}/*amp.faa")            , emit: faa
+    tuple val(meta), path("AMPcombi_summary.csv")           , emit: summary_csv     , optional:true
+    tuple val(meta), path("AMPcombi_summary.html")          , emit: summary_html    , optional:true
+    tuple val(meta), path("*.log")                          , emit: log             , optional:true
+    tuple val(meta), path("amp_ref_database/")              , emit: results_db      , optional:true
+    tuple val(meta), path("amp_ref_database/*.dmnd")        , emit: results_db_dmnd , optional:true
+    tuple val(meta), path("amp_ref_database/*.clean.fasta") , emit: results_db_fasta, optional:true
+    tuple val(meta), path("amp_ref_database/*.tsv")         , emit: results_db_tsv  , optional:true
+    tuple val("${task.process}"), val('ampcombi'), val('0.1.7'), emit: versions_ampcombi, topic: versions
+// As the module is deprecated and not run, we're hardcoding the version as instructed in
+// https://nf-co.re/docs/guidelines/components/modules#emission-of-versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def deprecation_message = """
+    WARNING: This module has been deprecated.
+
+    Reason:
+    This module is no longer recommended for use to parse results from antimicrobial tools.
+    It is recommended to use ampcombi v.0.2.2 submodules instead:
+    - nf-core/modules/ampcombi2/parse_tables
+    - nf-core/modules/ampcombi2/complete
+    - nf-core/modules/ampcombi2/cluster
+
+    """
+    assert false: deprecation_message
+    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def db = opt_amp_db? "--amp_database $opt_amp_db": ""
-    def faa = faa_input.isDirectory() ? "--faa ${faa_input}/" : "--faa ${faa_input}"
     """
     ampcombi \\
-        $args \\
-        --path_list '${amp_input.collect{"$it"}.join("' '")}' \\
+        --path_list '${amp_input.collect{file_path -> "$file_path"}.join("' '")}' \\
         --sample_list ${prefix} \\
+        ${db} \\
+        --faa ${faa_input} \\
+        ${args} \\
         --log True \\
         --threads ${task.cpus} \\
-        ${db} \\
-        ${faa}
+    """
+    stub:
+    def deprecation_message = """
+    WARNING: This module has been deprecated.
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ampcombi: \$(ampcombi --version | sed 's/ampcombi //')
-    END_VERSIONS
+    Reason:
+    This module is no longer recommended for use to parse results from antimicrobial tools.
+    It is recommended to use ampcombi v.0.2.2 submodules instead:
+    - nf-core/modules/ampcombi2/parse_tables
+    - nf-core/modules/ampcombi2/complete
+    - nf-core/modules/ampcombi2/cluster
+
+    """
+    assert false: deprecation_message
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    mkdir -p ${prefix}
+    touch ${prefix}/*diamond_matches.txt
+    touch ${prefix}/*ampcombi.csv
+    touch ${prefix}/*amp.faa
+    touch AMPcombi_summary.csv
+    touch AMPcombi_summary.html
+    touch *.log
+
+    mkdir -p amp_ref_database
+    touch amp_ref_database/*.dmnd
+    touch amp_ref_database/*.clean.fasta
+    touch amp_ref_database/*.tsv
     """
 }

@@ -1,43 +1,72 @@
 name: abricate_run
-description: Screen assemblies for antimicrobial resistance against multiple databases
+description: Screen assemblies for antimicrobial resistance against multiple
+  databases
 keywords:
   - bacteria
   - assembly
-  - antimicrobial reistance
+  - antimicrobial resistance
 tools:
   - abricate:
       description: Mass screening of contigs for antibiotic resistance genes
       homepage: https://github.com/tseemann/abricate
       documentation: https://github.com/tseemann/abricate
       tool_dev_url: https://github.com/tseemann/abricate
-
       licence: ["GPL v2"]
-
+      identifier: biotools:ABRicate
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - assembly:
-      type: file
-      description: FASTA, GenBank or EMBL formatted file
-      pattern: "*.{fa,fasta,fna,fa.gz,fasta.gz,fna.gz,gbk,gbk.gz,embl,embl.gz}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - assembly:
+        type: file
+        description: FASTA, GenBank or EMBL formatted file
+        pattern: "*.{fa,fasta,fna,fa.gz,fasta.gz,fna.gz,gbk,gbk.gz,embl,embl.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+          - edam: "http://edamontology.org/format_1936" # GenBank
+          - edam: "http://edamontology.org/format_2204" # EMBL format
+  - databasedir:
+      type: directory
+      description: Optional location of local copy of database files, possibly
+        with custom databases set up with `abricate --setupdb`
+      pattern: "*/"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - report:
-      type: file
-      description: Tab-delimited report of results
-      pattern: "*.{txt}"
-
+  report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt":
+          type: file
+          description: Tab-delimited report of results
+          pattern: "*.{txt}"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330"
+  versions_abricate:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - abricate:
+          type: string
+          description: The tool name
+      - "abricate --version | sed 's/^.* //' ":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - abricate:
+          type: string
+          description: The tool name
+      - "abricate --version | sed 's/^.* //' ":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

@@ -1,0 +1,206 @@
+name: "oatk"
+description: An nf-core module for the OATK
+keywords:
+  - organelle
+  - mitochondrion
+  - plastid
+  - PacBio
+  - HiFi
+  - assembly
+tools:
+  - "oatk":
+      description: "An organelle genome assembly toolkit"
+      homepage: "https://github.com/c-zhou/oatk"
+      documentation: "https://github.com/c-zhou/oatk"
+      tool_dev_url: "https://github.com/c-zhou/oatk"
+      doi: "10.5281/zenodo.10400173"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'Cladonia_norvegica' ]
+    - reads:
+        type: file
+        description: HiFi reads in FASTA format
+        pattern: "*.{fasta,fasta.gz,fa,fa.gz}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'Cladonia_norvegica' ]
+    - mito_hmm_files:
+        type: file
+        description: |
+          HMM profile for mitochondrial gene annotation, with corresponding
+          .h3i, h3f, .h3p, .h3m files from hmmpress
+        pattern: "*.{fam,h3i,h3f,h3p,h3m}"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'Cladonia_norvegica' ]
+    - pltd_hmm_files:
+        type: file
+        description: |
+          HMM profile for plastid gene annotation, with corresponding
+          .h3i, h3f, .h3p, .h3m files from hmmpress
+        pattern: "*.{fam,h3i,h3f,h3p,h3m}"
+        ontologies: []
+output:
+  mito_fasta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*mito.ctg.fasta":
+          type: file
+          description: the structure-solved MT contigs
+          pattern: "*mito.ctg.fasta"
+          ontologies: []
+  pltd_fasta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*pltd.ctg.fasta":
+          type: file
+          description: the structure-solved PT contigs
+          pattern: "*pltd.ctg.fasta"
+          ontologies: []
+  mito_bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*mito.ctg.bed":
+          type: file
+          description: the gene annotation for the MT sequences
+          pattern: "*mito.ctg.bed"
+          ontologies: []
+  pltd_bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*pltd.ctg.bed":
+          type: file
+          description: the gene annotation for the PT sequences
+          pattern: "*pltd.ctg.bed"
+          ontologies: []
+  mito_gfa:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*mito.gfa":
+          type: file
+          description: the subgraph for the MT genome
+          pattern: "*mito.gfa"
+          ontologies:
+            - edam: http://edamontology.org/format_3975 # GFA 1
+  pltd_gfa:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*pltd.gfa":
+          type: file
+          description: the subgraph for the PT genome
+          pattern: "*pltd.gfa"
+          ontologies:
+            - edam: http://edamontology.org/format_3975 # GFA 1
+  annot_mito_txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*annot_mito.txt":
+          type: file
+          description: the MT gene annotation file over all assembled sequences
+          pattern: "*annot_mito.txt"
+          ontologies: []
+  annot_pltd_txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*annot_pltd.txt":
+          type: file
+          description: the PT gene annotation file over all assembled sequences
+          pattern: "*annot_pltd.txt"
+          ontologies: []
+  final_gfa:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*utg.final.gfa":
+          type: file
+          description: the GFA file for the final genome assembly
+          pattern: "*utg.final.gfa"
+          ontologies:
+            - edam: http://edamontology.org/format_3975 # GFA 1
+  initial_gfa:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*utg.gfa":
+          type: file
+          description: the GFA file for the initial genome assembly
+          pattern: "*utg.gfa"
+          ontologies:
+            - edam: http://edamontology.org/format_3975 # GFA 1
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.log":
+          type: file
+          description: log file describing oatk run
+          pattern: "*.log"
+          ontologies:
+            - edam: http://edamontology.org/data_2526 # Text
+  versions_oatk:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - oatk:
+          type: string
+          description: The name of the tool
+      - oatk --version 2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - oatk:
+          type: string
+          description: The name of the tool
+      - oatk --version 2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@ksenia-krasheninnikova"

@@ -1,7 +1,8 @@
 name: "vcf2maf"
 description: vcf2maf
 keywords:
-  - "vcf2maf"
+  - vcf
+  - maf
   - annotation
 tools:
   - "vcf2maf":
@@ -11,37 +12,82 @@ tools:
       documentation: "https://github.com/mskcc/vcf2maf"
       tool_dev_url: "https://github.com/mskcc/vcf2maf"
       doi: "10.5281/zenodo.593251"
-      licence: "['Apache-2.0']"
-
+      licence: ["Apache-2.0"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcf:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: |
+          vcf to convert to MAF format. Must be uncompressed.
+        ontologies: []
+  - fasta:
       type: file
       description: |
-        vcf to convert to MAF format. Must be uncompressed.
+        Path to reference genome fasta file.
+      ontologies: []
   - vep_cache:
       type: file
       description: |
         Path to VEP cache dir. Required for correct running of VEP.
-
+      ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - maf:
-      type: file
-      description: MAF file produced from VCF
-      pattern: "*.maf"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+  maf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.maf":
+          type: file
+          description: MAF file produced from VCF
+          pattern: "*.maf"
+          ontologies: []
+  versions_vcf2maf:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vcf2maf:
+          type: string
+          description: The name of the tool
+      - "1.6.22":
+          type: string
+          description: The expression to obtain the version of the tool
+  versions_ensemblvep:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ensemblvep:
+          type: string
+          description: The name of the tool
+      - 'vep --help 2>&1 | sed -n "s/^  ensembl-vep *: //p"':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vcf2maf:
+          type: string
+          description: The name of the tool
+      - "1.6.22":
+          type: string
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ensemblvep:
+          type: string
+          description: The name of the tool
+      - 'vep --help 2>&1 | sed -n "s/^  ensembl-vep *: //p"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
+  - "@adamrtalbot"
+maintainers:
   - "@adamrtalbot"

@@ -1,0 +1,71 @@
+name: "vt_decompose"
+description: decomposes multiallelic variants into biallelic in a VCF file.
+keywords:
+  - decompose
+  - multiallelic
+  - small variants
+  - snps
+  - indels
+tools:
+  - "vt":
+      description: "A tool set for short variant discovery in genetic sequence data"
+      homepage: "https://genome.sph.umich.edu/wiki/Vt"
+      documentation: "https://genome.sph.umich.edu/wiki/Vt"
+      tool_dev_url: "https://github.com/atks/vt"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - vcf:
+        type: file
+        description: The VCF file to decompose
+        pattern: "*.vcf(.gz)?"
+        ontologies: []
+    - intervals:
+        type: file
+        description: The intervals of the variants of decompose
+        pattern: "*.bed"
+        ontologies: []
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.vcf.gz":
+          type: file
+          description: The decomposed VCF file
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
+  versions_vt:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vt:
+          type: string
+          description: The name of the tool
+      - 2015.11.10:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vt:
+          type: string
+          description: The name of the tool
+      - 2015.11.10:
+          type: string
+          description: The expression to obtain the version of the tool
+authors:
+  - "@nvnieuwk"
+maintainers:
+  - "@nvnieuwk"

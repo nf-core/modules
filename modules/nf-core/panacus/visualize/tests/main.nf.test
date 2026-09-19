@@ -1,0 +1,63 @@
+nextflow_process {
+
+    name "Test Process PANACUS_VISUALIZE"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "PANACUS_VISUALIZE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "panacus"
+    tag "panacus/visualize"
+
+    test("pangenome - tsv") {
+
+        when {
+            params {
+                module_args = "--format png"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'pangenomics/homo_sapiens/pangenome.panacus.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["image"])).match() }
+            )
+        }
+
+    }
+
+    test("pangenome - tsv -- stub") {
+        options "-stub"
+        when {
+            params {
+                module_args = "-f webp"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'pangenomics/homo_sapiens/pangenome.panacus.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["image"])).match() }
+            )
+        }
+
+    }
+
+}

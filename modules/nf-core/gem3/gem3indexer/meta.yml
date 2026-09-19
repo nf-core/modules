@@ -1,0 +1,72 @@
+name: "gem3_gem3indexer"
+description: Create a GEM index from a FASTA file
+keywords:
+  - fastq
+  - genomics
+  - mappability
+tools:
+  - "gem3":
+      description: "The GEM indexer (v3)."
+      homepage: "https://github.com/miqalvarez/gem3/tree/gem3-indexer"
+      licence:
+        - "GPL v3"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing information about the fasta file
+          e.g. [ id:'test' ]
+    - fasta:
+        type: file
+        description: A reference FASTA file to index
+        pattern: "*.{fasta,fa,fna}"
+        ontologies: []
+output:
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.gem":
+          type: file
+          description: The GEM index file
+          pattern: "*.gem"
+          ontologies: []
+  info:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.info":
+          type: file
+          description: The execution log
+          pattern: "*.info"
+          ontologies: []
+  versions_gem3:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gem3-indexer:
+          type: string
+          description: The name of the tool
+      - gem-indexer --version 2>&1 | sed 's/v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gem3-indexer:
+          type: string
+          description: The name of the tool
+      - gem-indexer --version 2>&1 | sed 's/v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@miqalvarez"
+maintainers:
+  - "@miqalvarez"

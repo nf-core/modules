@@ -1,19 +1,18 @@
-
 process ARIA2 {
-    tag "$source_url"
+    tag "$meta.id"
     label 'process_single'
 
-    conda "conda-forge::aria2=1.36.0"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/aria2:1.36.0' :
-        'quay.io/biocontainers/aria2:1.36.0' }"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/95/95c0d3d867f5bc805b926b08ee761a993b24062739743eb82cc56363e0f7817d/data' :
+        'community.wave.seqera.io/library/aria2:1.37.0--3a9ec328469995dd' }"
 
     input:
-    val source_url
+    tuple val(meta), val(source_url)
 
     output:
-    path ("$downloaded_file"), emit: downloaded_file
-    path "versions.yml"      , emit: versions
+    tuple val(meta), path("$downloaded_file"), emit: downloaded_file
+    tuple val("${task.process}"), val("aria2"), eval("aria2c --version 2>&1 | sed -n 's/^aria2 version \\([^ ]*\\).*/\\1/p'"), emit: versions_aria2, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,16 +22,19 @@ process ARIA2 {
     downloaded_file = source_url.split("/")[-1]
 
     """
-    set -e
-
     aria2c \\
         --check-certificate=false \\
-        $args \\
-        $source_url
+        ${args} \\
+        ${source_url}
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        aria2: \$(echo \$(aria2c --version 2>&1) | grep 'aria2 version' | cut -f3 -d ' ')
-    END_VERSIONS
+    stub:
+    def args = task.ext.args ?: ''
+    downloaded_file = source_url.split("/")[-1]
+
+    """
+    echo ${args}
+
+    touch ${downloaded_file}
     """
 }

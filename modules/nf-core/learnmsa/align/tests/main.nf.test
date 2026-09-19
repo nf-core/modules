@@ -1,0 +1,57 @@
+// nf-core modules test learnmsa/align
+nextflow_process {
+
+    name "Test Process LEARNMSA_ALIGN"
+    script "../main.nf"
+    process "LEARNMSA_ALIGN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "learnmsa"
+    tag "learnmsa/align"
+
+    test("seatoxin - fa") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["alignment"])).match() }
+            )
+        }
+
+    }
+
+    test("seatoxin - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "../../multiplesequencealign/testdata/setoxin-ref.fa", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

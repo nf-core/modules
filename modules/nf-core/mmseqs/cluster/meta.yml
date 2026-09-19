@@ -1,0 +1,66 @@
+name: "mmseqs_cluster"
+description: Cluster sequences using MMSeqs2 cluster.
+keywords:
+  - protein sequence
+  - databases
+  - clustering
+  - searching
+  - indexing
+  - mmseqs2
+tools:
+  - "mmseqs":
+      description: "MMseqs2: ultra fast and sensitive sequence search and clustering
+        suite"
+      homepage: "https://github.com/soedinglab/MMseqs2"
+      documentation: "https://mmseqs.com/latest/userguide.pdf"
+      tool_dev_url: "https://github.com/soedinglab/MMseqs2"
+      doi: "10.1093/bioinformatics/btw006"
+      licence:
+        - "GPL v3"
+      identifier: biotools:mmseqs
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - db_input:
+        type: file
+        description: Input database
+        ontologies: []
+output:
+  db_cluster:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - ${prefix}/:
+          type: file
+          description: a clustered MMseqs2 database used for clustering
+          ontologies: []
+  versions_mmseqs:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mmseqs:
+          type: string
+          description: The name of the tool
+      - mmseqs version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mmseqs:
+          type: string
+          description: The name of the tool
+      - mmseqs version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@Joon-Klaps"
+maintainers:
+  - "@Joon-Klaps"

@@ -1,0 +1,70 @@
+nextflow_process {
+
+    name "Test Process PORTCULLIS_FULL"
+    script "../main.nf"
+    config "./nextflow.config"
+
+    process "PORTCULLIS_FULL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "portcullis"
+    tag "portcullis/full"
+
+    test("portcullis_full_paired_end") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.bam', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/tab/test_rnaseq_SJ.out.tab', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["spliced_bam"], unstableKeys:["spliced_bai", "log"])).match() }
+            )
+        }
+    }
+
+    test("portcullis_full_paired_end_stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.bam', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/tab/test_rnaseq_SJ.out.tab', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

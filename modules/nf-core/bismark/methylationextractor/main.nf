@@ -2,14 +2,14 @@ process BISMARK_METHYLATIONEXTRACTOR {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::bismark=0.24.0"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bismark:0.24.0--hdfd78af_0' :
-        'quay.io/biocontainers/bismark:0.24.0--hdfd78af_0' }"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bd/bddea334e6ccbce005ce540214747acf822b040185d2198220dcfbb4b258c331/data' :
+        'community.wave.seqera.io/library/bismark:3.1.0--9557d6ab108a83e4' }"
 
     input:
     tuple val(meta), path(bam)
-    path index
+    tuple val(meta2), path(index)
 
     output:
     tuple val(meta), path("*.bedGraph.gz")         , emit: bedgraph
@@ -17,7 +17,7 @@ process BISMARK_METHYLATIONEXTRACTOR {
     tuple val(meta), path("*.cov.gz")              , emit: coverage
     tuple val(meta), path("*_splitting_report.txt"), emit: report
     tuple val(meta), path("*.M-bias.txt")          , emit: mbias
-    path "versions.yml"                            , emit: versions
+    tuple val("${task.process}"), val('bismark'), eval("bismark --version 2>&1 | grep -Eo '[0-9]+\\.[0-9]+\\.[0-9]+'"), emit: versions_bismark, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,17 +36,22 @@ process BISMARK_METHYLATIONEXTRACTOR {
     def seqtype  = meta.single_end ? '-s' : '-p'
     """
     bismark_methylation_extractor \\
-        $bam \\
+        ${bam} \\
         --bedGraph \\
         --counts \\
         --gzip \\
         --report \\
-        $seqtype \\
-        $args
+        ${seqtype} \\
+        ${args}
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bismark: \$(echo \$(bismark -v 2>&1) | sed 's/^.*Bismark Version: v//; s/Copyright.*\$//')
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.bedGraph.gz
+    echo "" | gzip > ${prefix}.txt.gz
+    echo "" | gzip > ${prefix}.cov.gz
+    touch ${prefix}_splitting_report.txt
+    touch ${prefix}.M-bias.txt
     """
 }

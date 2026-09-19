@@ -1,0 +1,57 @@
+nextflow_process {
+
+    name "Test Process MUDSKIPPER_INDEX"
+    script "../main.nf"
+    process "MUDSKIPPER_INDEX"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mudskipper"
+    tag "mudskipper/index"
+
+    test("homo_sapiens gtf") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: "test" ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.index.collect { meta, dir -> [meta, file(dir).list().sort()] },
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() },
+            )
+        }
+    }
+
+    test("homo_sapiens gtf -- stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: "test" ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

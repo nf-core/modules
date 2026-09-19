@@ -1,41 +1,63 @@
 name: msisensor_scan
-
 description: Scan a reference genome to get microsatellite & homopolymer information
+deprecated: true
 keywords:
-  - homoploymer,microsatellite
+  - homoploymer
+  - microsatellite
+  - MSI
 tools:
   - msisensor:
-      description: MSIsensor is a C++ program to detect replication slippage variants at microsatellite regions, and differentiate them as somatic or germline.
+      description: MSIsensor is a C++ program to detect replication slippage variants
+        at microsatellite regions, and differentiate them as somatic or germline.
       homepage: https://github.com/ding-lab/msisensor
-
       doi: "10.1093/bioinformatics/btt755"
       licence: ["MIT"]
-
+      identifier: biotools:msisensor
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: FASTA file
-      pattern: "*.{fa,fasta}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: FASTA file
+        pattern: "*.{fa,fasta}"
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - txt:
-      type: file
-      description: MSIsensor scan output file of homopolymers & minisatellites
-      pattern: "*.msisensor_scan.txt"
-
+  txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tab":
+          type: file
+          description: MSIsensor scan output file of homopolymers & minisatellites
+          pattern: "*.msisensor_scan.txt"
+          ontologies: []
+  versions_msisensor:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - msisensor:
+          type: string
+          description: The name of the tool
+      - "msisensor 2>&1 | sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p'":
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - msisensor:
+          type: string
+          description: The name of the tool
+      - "msisensor 2>&1 | sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p'":
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
+  - "@kevbrick"
+maintainers:
   - "@kevbrick"

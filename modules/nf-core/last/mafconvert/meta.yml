@@ -1,4 +1,5 @@
-name: last_mafconvert
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "last_mafconvert"
 description: Converts MAF alignments in another format.
 keywords:
   - LAST
@@ -6,74 +7,125 @@ keywords:
   - alignment
   - MAF
 tools:
-  - last:
-      description: LAST finds & aligns related regions of sequences.
-      homepage: https://gitlab.com/mcfrith/last
-      documentation: https://gitlab.com/mcfrith/last/-/blob/main/doc/
-      tool_dev_url: https://gitlab.com/mcfrith/last
-
+  - "last":
+      description: "LAST finds & aligns related regions of sequences."
+      homepage: "https://gitlab.com/mcfrith/last"
+      documentation: "https://gitlab.com/mcfrith/last/-/blob/main/doc/"
+      tool_dev_url: "https://gitlab.com/mcfrith/last"
       licence: ["GPL v3-or-later"]
-
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - maf:
-      type: file
-      description: Multiple Aligment Format (MAF) file, optionally compressed with gzip
-      pattern: "*.{maf.gz,maf}"
-  - format:
-      type: value
-      description: Output format (one of axt, blast, blasttab, chain, gff, html, psl, sam, or tab)
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - maf:
+        type: file
+        description: Multiple Alignment Format (MAF) file, optionally compressed
+          with gzip
+        pattern: "*.{maf.gz,maf}"
+        ontologies: []
+    - format:
+        type: string
+        description: Output format (one of axt, bam, blast, blasttab, blasttab+, cram, chain,
+          gff, html, psl, sam, or tab)
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fasta:
+        type: file
+        description: Genome file in FASTA format for CRAM conversion.  If
+          compressed it must be done in BGZF format (like with the bgzip tool).
+        pattern: "*.{fasta,fasta.gz,fasta.bgz,fasta.bgzf}"
+        ontologies: []
+    - fai:
+        type: file
+        description: Genome index file needed for CRAM conversion.
+        pattern: "*.fai"
+        ontologies: []
+    - gzi:
+        type: file
+        description: Genome index file needed for CRAM conversion when the genome
+          file was compressed with the BGZF algorithm.
+        pattern: "*.gzi"
+        ontologies: []
+    - sizes:
+        type: file
+        description: File listing sequence names and lenghts in that genome
+        pattern: "*.sizes"
+        ontologies: []
+    - dict:
+        type: file
+        description: Samtools dictionary of the genome file.
+        pattern: "*.dict"
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - axt_gz:
-      type: file
-      description: Gzipped pairwise alignment in Axt (Blastz) format (optional)
-      pattern: "*.axt.gz"
-  - blast_gz:
-      type: file
-      description: Gzipped pairwise alignment in blast format (optional)
-      pattern: "*.blast.gz"
-  - blasttab_gz:
-      type: file
-      description: Gzipped pairwise alignment in blasttab format (optional)
-      pattern: "*.blasttab.gz"
-  - chain_gz:
-      type: file
-      description: Gzipped pairwise alignment in UCSC chain format (optional)
-      pattern: "*.chain.gz"
-  - gff_gz:
-      type: file
-      description: Gzipped pairwise alignment in GFF format (optional)
-      pattern: "*.gff.gz"
-  - html_gz:
-      type: file
-      description: Gzipped pairwise alignment in HTML format (optional)
-      pattern: "*.html.gz"
-  - psl_gz:
-      type: file
-      description: Gzipped pairwise alignment in PSL (BLAT) format (optional)
-      pattern: "*.psl.gz"
-  - SAM:
-      type: file
-      description: Gzipped pairwise alignment in SAM format (optional)
-      pattern: "*.sam.gz"
-  - tab:
-      type: file
-      description: Gzipped pairwise alignment in TAB format (optional)
-      pattern: "*.tab.gz"
-
+  alignment:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.{axt.gz,bam,bcf,bed.gz,blast.gz,blasttab.gz,blasttabplus.gz,chain.gz,cram,gff.gz,html.gz,psl.gz,sam.gz,tab.gz}":
+          type: file
+          description: |
+            Pairwise alignment exported to Axt, BAM, BCF, BED, BLAST, Chain,
+            CRAM, GFF, HTML PSL, SAM or Tab format.  For BCF generation, pass
+            options to `bcftools merge` with `task.ext.args3` and to `bcftools
+            call` via `task.ext.args4`.
+          pattern: "*.{axt.gz,bam,bcf,bed.gz,blast.gz,blasttab.gz,blasttabplus.gz,chain.gz,cram,gff.gz,html.gz,psl.gz,sam.gz,tab.gz}"
+          ontologies: []
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.{bai,crai,csi}":
+          type: file
+          description: |
+            Optional index for the BAM, BCF or CRAM files. Pass `--write-index`
+            to `samtools` via `task.ext.args2`, or BAM and CRAM, and to
+            `bcftools call` via `task.ext.arg4` for BCF.
+          pattern: "*.{bai,crai,csi}"
+          ontologies: []
+  stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.stats":
+          type: file
+          description: Statistics on the BCF files.
+          pattern: "*.stats"
+          ontologies: []
+  versions_last:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - last:
+          type: string
+          description: The name of the tool
+      - "lastal --version | sed 's/lastal //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - last:
+          type: string
+          description: The name of the tool
+      - "lastal --version | sed 's/lastal //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@aleksandrabliznina"
+  - "@charles-plessy"
+maintainers:
+  - "@charles-plessy"

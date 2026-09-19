@@ -1,0 +1,85 @@
+// nf-core modules test islandpath
+nextflow_process {
+
+    name "Test Process ISLANDPATH"
+    script "../main.nf"
+    process "ISLANDPATH"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gunzip"
+    tag "islandpath"
+
+    test("bacteroides_fragilis - gbff") {
+
+        setup {
+            run("GUNZIP") {
+                script "../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = Channel.fromList([
+                                    tuple([ id:'test' ],
+                                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.gbff.gz', checkIfExists: true)),
+                                ])
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.gff[0],
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() },
+                { assert path(process.out.log[0]).text.contains("Running IslandPath-DIMOB") }
+            )
+        }
+
+    }
+
+    test("bacteroides_fragilis - gbff - stub") {
+
+        options "-stub"
+
+        setup {
+            run("GUNZIP") {
+                script "../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = Channel.fromList([
+                                    tuple([ id:'test' ],
+                                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.gbff.gz', checkIfExists: true)),
+                                ])
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

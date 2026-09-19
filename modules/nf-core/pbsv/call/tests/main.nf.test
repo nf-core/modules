@@ -1,0 +1,64 @@
+nextflow_process {
+    name "Test Process PBSV_CALL"
+    script "../main.nf"
+    process "PBSV_CALL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pbsv"
+    tag "pbsv/call"
+
+    test("pbsv-call - [svsig] [fasta]") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path +  'genomics/homo_sapiens/pacbio/svsig/NA03697B2_new.pbmm2.repeats.svsig.gz', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys:["vcf"]),
+                    path(process.out.vcf[0][1]).vcf.variantsMD5)
+                .match() }
+            )
+        }
+    }
+
+    test("pbsv-call - [svsig] [fasta] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path +  'genomics/homo_sapiens/pacbio/svsig/NA03697B2_new.pbmm2.repeats.svsig.gz', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

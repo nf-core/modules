@@ -3,6 +3,7 @@ description: Split single or paired-end fastq.gz files
 keywords:
   - split
   - fastq
+  - seqkit
 tools:
   - seqkit:
       description: |
@@ -11,29 +12,54 @@ tools:
       documentation: https://bioinf.shenwei.me/seqkit/
       doi: 10.1371/journal.pone.0163962
       licence: ["MIT"]
+      identifier: biotools:seqkit
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: FastQ files
-      pattern: "*.{fq.gz/fastq.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: FastQ files
+        pattern: "*.{f[aq].gz/fast[aq].gz}"
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
-      type: file
-      description: Split fastq files
-      pattern: "*.{fq.gz/fastq.gz}"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  reads:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/*:
+          type: file
+          description: Split fastq files
+          pattern: "*.{f[aq][.gz]/fast[aq][.gz]}"
+          ontologies: []
+  versions_seqkit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - seqkit:
+          type: string
+          description: The name of the tool
+      - seqkit version | sed 's/^.*v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - seqkit:
+          type: string
+          description: The name of the tool
+      - seqkit version | sed 's/^.*v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@FriederikeHanssen"
+  - "@heuermh"
+maintainers:
+  - "@FriederikeHanssen"
+  - "@heuermh"

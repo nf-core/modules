@@ -2,20 +2,19 @@ process METHYLDACKEL_EXTRACT {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::methyldackel=0.6.0"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/methyldackel:0.6.0--h22771d5_0' :
-        'quay.io/biocontainers/methyldackel:0.6.0--h22771d5_0' }"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/methyldackel:0.6.1--he4a0461_7' :
+        'quay.io/biocontainers/methyldackel:0.6.1--he4a0461_7' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
-    path fasta
-    path fai
+    tuple val(meta2), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("*.bedGraph") , optional: true, emit: bedgraph
     tuple val(meta), path("*.methylKit"), optional: true, emit: methylkit
-    path  "versions.yml"                                , emit: versions
+    tuple val("${task.process}"), val('methyldackel'), eval("MethylDackel --version 2>&1 | cut -f1 -d' '"), emit: versions_methyldackel, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,13 +23,15 @@ process METHYLDACKEL_EXTRACT {
     def args = task.ext.args ?: ''
     """
     MethylDackel extract \\
-        $args \\
-        $fasta \\
-        $bam
+        ${args} \\
+        ${fasta} \\
+        ${bam}
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        methyldackel: \$(MethylDackel --version 2>&1 | cut -f1 -d" ")
-    END_VERSIONS
+    stub:
+    def args = task.ext.args ?: ''
+    def out_extension = args.contains('--methylKit') ? 'methylKit' : 'bedGraph'
+    """
+    touch ${bam.baseName}_CpG.${out_extension}
     """
 }

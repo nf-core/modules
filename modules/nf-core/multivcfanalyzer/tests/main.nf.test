@@ -1,0 +1,153 @@
+nextflow_process {
+
+    name "Test Process MULTIVCFANALYZER"
+    script "../main.nf"
+    process "MULTIVCFANALYZER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "multivcfanalyzer"
+    tag "gatk/unifiedgenotyper"
+
+    test("sarscov2 - vcf") {
+
+        setup {
+            run("GATK_UNIFIEDGENOTYPER") {
+                script "../../gatk/unifiedgenotyper/main.nf"
+                process{
+                    """
+                    input[0] = Channel.of([ [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                        ],
+                        [ [ id:'test2' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam.bai', checkIfExists: true)
+                        ]
+                        )
+                    input[1] = [ [],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                        ]
+                    input[2] = [ [],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                        ]
+                    input[3] = [ [],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)
+                        ]
+                    input[4] = [[],[]]
+                    input[5] = [[],[]]
+                    input[6] = [[],[]]
+                    input[7] = [[],[]]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = GATK_UNIFIEDGENOTYPER.out.vcf.collect{ meta, vcf -> vcf }.map{ vcf -> [[ id: 'testVCF'], vcf]}
+                input[1] =  [ [id:'sarscov2'], //meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                input[2] = [[],[]]
+                input[3] = [[],[]]
+                input[4] = true
+                input[5] = 30
+                input[6] = 5
+                input[7] = 0.8
+                input[8] = 0.2
+                input[9] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith("versions")},
+                    path(process.out.full_alignment[0][1]).readLinesGzip().any { it.contains('>') },
+                    file(process.out.info_txt[0][1]).readLines().any { it.contains('Run finished:') },
+                    path(process.out.snp_alignment[0][1]).readLinesGzip().any { it.contains('>') },
+                    path(process.out.snp_genome_alignment[0][1]).readLinesGzip().any { it.contains('>Reference') },
+                    file(process.out.snpstatistics[0][1]).readLines().any { it.contains('SNP statistics for') },
+                    file(process.out.snptable[0][1]).readLines().any { it.contains('Position') },
+                    process.out.snptable_snpeff,
+                    file(process.out.snptable_uncertainty[0][1]).readLines().any { it.contains('Position') },
+                    file(process.out.structure_genotypes[0][1]).readLines().any { it.contains('-1') },
+                    file(process.out.structure_genotypes_nomissing[0][1]).readLines().any { it.contains('-1') },
+                    path(process.out.json[0][1]).json.metrics.sort()
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("sarscov2 - vcf - stub") {
+
+        options "-stub"
+
+        setup {
+            run("GATK_UNIFIEDGENOTYPER", alias: "GATK_UNIFIEDGENOTYPER_STUB") {
+                script "../../gatk/unifiedgenotyper/main.nf"
+
+                process{
+                    """
+                    input[0] = Channel.of([ [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+                        ],
+                        [ [ id:'test2' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam.bai', checkIfExists: true)
+                        ]
+                        )
+                    input[1] = [ [],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                        ]
+                    input[2] = [ [],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                        ]
+                    input[3] = [ [],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)
+                        ]
+                    input[4] = [[],[]]
+                    input[5] = [[],[]]
+                    input[6] = [[],[]]
+                    input[7] = [[],[]]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = GATK_UNIFIEDGENOTYPER_STUB.out.vcf.collect{ meta, vcf -> vcf }.map{ vcf -> [[ id: 'testVCF'], vcf]}
+                input[1] =  [ [id:'sarscov2'], //meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                input[2] = [[],[]]
+                input[3] = [[],[]]
+                input[4] = true
+                input[5] = 30
+                input[6] = 5
+                input[7] = 0.8
+                input[8] = 0.2
+                input[9] = [[],[]]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                    ).match() }
+            )
+        }
+    }
+}

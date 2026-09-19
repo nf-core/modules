@@ -1,0 +1,37 @@
+nextflow_process {
+
+    name "Test Process PHAROKKA_INSTALLDATABASES"
+    script "../main.nf"
+    process "PHAROKKA_INSTALLDATABASES"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pharokka"
+    tag "pharokka/installdatabases"
+
+    test("No input required") {
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.pharokka_db[0]).listFiles().any { it.name.startsWith("VERSION_") } },
+                { assert snapshot(
+                    file(process.out.pharokka_db[0]).listFiles()
+                        .findAll { !it.name.startsWith("VERSION_") }
+                        .sort(),
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("No input required -- stub") {
+        options "-stub"
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

@@ -1,0 +1,33 @@
+
+nextflow_process {
+
+    name "Test Process SAMTOOLS_GETRG"
+    script "../main.nf"
+    process "SAMTOOLS_GETRG"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "samtools"
+    tag "samtools/getrg"
+
+    test("test-samtools-getrg") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed }
+            )
+        }
+    }
+}

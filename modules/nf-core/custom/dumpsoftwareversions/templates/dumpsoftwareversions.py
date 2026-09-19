@@ -3,10 +3,10 @@
 
 """Provide functions to merge multiple versions.yml files."""
 
-
-import yaml
 import platform
 from textwrap import dedent
+
+import yaml
 
 
 def _make_versions_html(versions):
@@ -37,7 +37,7 @@ def _make_versions_html(versions):
                 dedent(
                     f"""\\
                     <tr>
-                        <td><samp>{process if (i == 0) else ''}</samp></td>
+                        <td><samp>{process if (i == 0) else ""}</samp></td>
                         <td><samp>{tool}</samp></td>
                         <td><samp>{version}</samp></td>
                     </tr>

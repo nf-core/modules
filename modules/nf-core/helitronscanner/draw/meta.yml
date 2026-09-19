@@ -1,0 +1,87 @@
+name: "helitronscanner_draw"
+description: HelitronScanner draw tool for Helitron transposons in genomes
+keywords:
+  - genomics
+  - helitron
+  - scanner
+tools:
+  - "helitronscanner":
+      description: "HelitronScanner uncovers a large overlooked cache of Helitron transposons
+        in many genomes"
+      homepage: "https://sourceforge.net/projects/helitronscanner"
+      documentation: "https://sourceforge.net/projects/helitronscanner"
+      tool_dev_url: "https://sourceforge.net/projects/helitronscanner"
+      doi: "10.1073/pnas.1410068111"
+      licence:
+        - "GPL v3-or-later"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: Genome data to scan for Helitrons
+        pattern: "*.{fa,fsa,fasta}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - head:
+        type: file
+        description: Output of the HelitronScanner head command
+        pattern: "*.{head}"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - tail:
+        type: file
+        description: Output of the HelitronScanner tail command
+        pattern: "*.{tail}"
+        ontologies: []
+output:
+  draw:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+          pattern: "*.{draw}"
+      - "*.draw":
+          type: map
+          description: |
+            The draw output from HelitronScanner
+          pattern: "*.{draw}"
+  versions_helitronscanner:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - helitronscanner:
+          type: string
+          description: The name of the tool
+      - HelitronScanner |& sed -n 's/HelitronScanner V//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - helitronscanner:
+          type: string
+          description: The name of the tool
+      - HelitronScanner |& sed -n 's/HelitronScanner V//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@GallVp"
+  - "@jguhlin"
+maintainers:
+  - "@GallVp"

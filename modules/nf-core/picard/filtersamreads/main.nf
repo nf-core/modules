@@ -1,19 +1,21 @@
 process PICARD_FILTERSAMREADS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
-    conda "bioconda::picard=3.0.0"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:3.0.0--hdfd78af_1' :
-        'quay.io/biocontainers/picard:3.0.0--hdfd78af_1' }"
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b4/b474c6f12c0502377b95062b75ef4b7778864b1353c7fc1d5a3b1f3b3017fd2e/data'
+        : 'community.wave.seqera.io/library/picard:3.5.0--842d4c70c98af9b4'}"
 
     input:
     tuple val(meta), path(bam), path(readlist)
+    tuple val(meta2), path(fasta)
     val filter
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.bai"), emit: bai, optional: true
+    tuple val("${task.process}"), val('picard'), eval("picard FilterSamReads --version 2>&1 | sed -n 's/.*Version://p'"), topic: versions, emit: versions_picard
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,40 +25,40 @@ process PICARD_FILTERSAMREADS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def avail_mem = 3072
     if (!task.memory) {
-        log.info '[Picard FilterSamReads] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
-    } else {
-        avail_mem = (task.memory.mega*0.8).intValue()
+        log.info('[Picard FilterSamReads] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.')
     }
-    if ( filter == 'includeAligned' || filter == 'excludeAligned' ) {
-        """
-        picard \\
-            FilterSamReads \\
-            -Xmx${avail_mem}M \\
-            --INPUT $bam \\
-            --OUTPUT ${prefix}.bam \\
-            --FILTER $filter \\
-            $args
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            picard: \$(picard FilterSamReads --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
-        END_VERSIONS
-        """
-    } else if ( filter == 'includeReadList' || filter == 'excludeReadList' ) {
-        """
-        picard \\
-            FilterSamReads \\
-            -Xmx${avail_mem}M \\
-            --INPUT $bam \\
-            --OUTPUT ${prefix}.bam \\
-            --FILTER $filter \\
-            --READ_LIST_FILE $readlist \\
-            $args
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            picard: \$(picard FilterSamReads --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
-        END_VERSIONS
-        """
+    else {
+        avail_mem = (task.memory.mega * 0.8).intValue()
     }
+
+    if ("${bam}" == "${prefix}.bam") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
+
+    def fasta_command = fasta ? "--REFERENCE_SEQUENCE ${fasta}" : ""
+    def read_list_command = filter.endsWith('ReadList') ? "--READ_LIST_FILE ${readlist}" : ""
+    """
+    picard \\
+        -Xmx${avail_mem}M \\
+        FilterSamReads \\
+        ${fasta_command} \\
+        --INPUT ${bam} \\
+        --OUTPUT ${prefix}.bam \\
+        --FILTER ${filter} \\
+        ${read_list_command} \\
+        ${args}
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    if ("${bam}" == "${prefix}.bam") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
+    def index_command = args.contains('--CREATE_INDEX true') ? "touch ${prefix}.bai" : ""
+    """
+    echo ${args}
+    touch ${prefix}.bam
+    ${index_command}
+    """
 }

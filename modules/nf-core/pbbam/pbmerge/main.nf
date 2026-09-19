@@ -2,10 +2,10 @@ process PBBAM_PBMERGE {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::pbbam=2.1.0"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pbbam:2.1.0--h3f0f298_2' :
-        'quay.io/biocontainers/pbbam:2.1.0--h3f0f298_2' }"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/pbbam:2.4.0--hdcf5f25_1' :
+        'quay.io/biocontainers/pbbam:2.4.0--hdcf5f25_1' }"
 
     input:
     tuple val(meta), path(bam)
@@ -13,23 +13,43 @@ process PBBAM_PBMERGE {
     output:
     tuple val(meta), path("*.bam"), emit: bam
     tuple val(meta), path("*.pbi"), emit: pbi
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('pbbam'), eval("pbmerge --version | head -n1 | sed 's/pbmerge //' | sed -E 's/ .+//'"), emit: versions_pbbam, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/pbtk/pbmerge
+
+Reason:
+This module is no longer fit for purpose because pbbam has been deprecated by PacificBiosciences
+
+"""
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    assert false: deprecation_message
     """
     pbmerge \\
         -o ${prefix}.bam \\
         $args \\
         *.bam
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pbbam: \$( pbmerge --version | head -n1 | sed 's/pbmerge //' | sed -E 's/ .+//' )
-    END_VERSIONS
+    """
+
+    stub:
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/pbtk/pbmerge
+
+Reason:
+This module is no longer fit for purpose because pbbam has been deprecated by PacificBiosciences
+
+"""
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    assert false: deprecation_message
+    """
+    touch ${prefix}.bam
+    touch ${prefix}.bam.pbi
+
     """
 }

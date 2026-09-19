@@ -1,0 +1,72 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "bam_ngscheckmate"
+description: Take a set of bam files and run NGSCheckMate to determine whether samples match with each other, using a set of SNPs.
+keywords:
+  - ngscheckmate
+  - qc
+  - bam
+  - snp
+components:
+  - bcftools/mpileup
+  - ngscheckmate/ncm
+input:
+  - ch_input:
+      type: file
+      description: |
+        BAM/CRAM file for each sample.
+
+        Structure: [ val(meta1), path(bam) ]
+      pattern: "*.{bam,cram}"
+  - ch_snp_bed:
+      type: file
+      description: |
+        BED file containing the SNPs to analyse. NGSCheckMate provides some default ones for hg19/hg38.
+
+        Structure: [ val(meta2), path(snp_bed) ]
+      pattern: "*.bed"
+  - ch_fasta:
+      type: file
+      description: |
+        Fasta file for the genome and its index.
+
+        Structure: [ val(meta3), path(fasta), path(fai) ]
+output:
+  - corr_matrix:
+      type: file
+      description: |
+        A text file containing the correlation matrix between each sample.
+
+        Structure: [ val(meta), path(corr_matrix) ]
+      pattern: "*corr_matrix.txt"
+  - matched:
+      type: file
+      description: |
+        A txt file containing only the samples that match with each other.
+
+        Structure: [ val(meta), path(matched) ]
+      pattern: "*matched.txt"
+  - all:
+      type: file
+      description: |
+        A txt file containing all the sample comparisons, whether they match or not.
+
+        Structure: [ val(meta), path(all) ]
+      pattern: "*all.txt"
+  - vcf:
+      type: file
+      description: |
+        vcf file for each sample giving the SNP calls.
+
+        Structure: [ val(meta), path(vcf) ]
+      pattern: "*.vcf.gz"
+  - pdf:
+      type: file
+      description: |
+        A pdf containing a dendrogram showing how the samples match up.
+
+        Structure: [ val(meta), path(pdf) ]
+      pattern: "*.pdf"
+authors:
+  - "@SPPearce"
+maintainers:
+  - "@SPPearce"

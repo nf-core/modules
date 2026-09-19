@@ -1,0 +1,114 @@
+name: nacho_normalize
+description: |
+  NACHO (NAnostring quality Control dasHbOard) is developed for NanoString nCounter data.
+  NanoString nCounter data is a messenger-RNA/micro-RNA (mRNA/miRNA) expression assay and works with fluorescent barcodes.
+  Each barcode is assigned a mRNA/miRNA, which can be counted after bonding with its target.
+  As a result each count of a specific barcode represents the presence of its target mRNA/miRNA.
+keywords:
+  - nacho
+  - nanostring
+  - mRNA
+  - miRNA
+  - qc
+tools:
+  - NACHO:
+      description: |
+        R package that uses two main functions to summarize and visualize NanoString RCC files,
+        namely: `load_rcc()` and `visualise()`. It also includes a function `normalise()`, which (re)calculates
+        sample specific size factors and normalises the data.
+        For more information `vignette("NACHO")` and `vignette("NACHO-analysis")`
+      homepage: https://github.com/mcanouil/NACHO
+      documentation: https://cran.r-project.org/web/packages/NACHO/vignettes/NACHO.html
+      doi: "10.1093/bioinformatics/btz647"
+      licence:
+        - "GPL-3.0"
+      identifier: ""
+      args_id: "$args"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - rcc_files:
+        type: file
+        description: |
+          List of RCC files for all samples, which are direct outputs from NanoString runs
+        pattern: "*.RCC"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing file information
+          e.g. [ id:'test_samplesheet' ]
+    - sample_sheet:
+        type: "file"
+        pattern: "*.csv"
+        description: |
+          Comma-separated file with 3 columns: RCC_FILE, RCC_FILE_NAME, and SAMPLE_ID
+
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
+output:
+  normalized_counts:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}.tsv:
+          type: file
+          description: |
+            Tab-separated file with gene normalized counts for the samples
+          pattern: "normalized_counts.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  normalized_counts_wo_HK:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}_wo_HKnorm.tsv:
+          type: file
+          description: |
+            Tab-separated file with gene normalized counts for the samples, without housekeeping genes.
+          pattern: "normalized_counts_wo_HKnorm.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: |
+          File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: file
+        description: |
+          File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@alanmmobbs93"
+maintainers:
+  - "@alanmmobbs93"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/r-base_r-dplyr_r-fs_r-ggplot2_pruned:bcd6d91c836e9200
+      build_id: bd-bcd6d91c836e9200_1
+      scan_id: sc-e5e004ec41ba8e12_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/r-base_r-dplyr_r-fs_r-ggplot2_pruned:f943fc99dde5724f
+      build_id: bd-f943fc99dde5724f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ad/ad421367a5d71eb73738675a68b5677e283686a8b0a6d5e5530f9ec203aadb30/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/nacho/normalize/.conda-lock/linux_amd64-bd-bcd6d91c836e9200_1.txt

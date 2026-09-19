@@ -1,8 +1,0 @@
-- name: "picard crosscheckfingerprints"
-  command: nextflow run ./tests/modules/nf-core/picard/crosscheckfingerprints -entry test_picard_crosscheckfingerprints -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/picard/crosscheckfingerprints/nextflow.config
-  tags:
-    - "picard"
-    - "picard/crosscheckfingerprints"
-  files:
-    - path: "output/picard/test.crosscheck_metrics.txt"
-    - path: output/picard/versions.yml

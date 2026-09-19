@@ -1,0 +1,72 @@
+name: "pbsv_call"
+description: "pbsv/call - PacBio structural variant (SV) calling and analysis tools"
+keywords:
+  - variant
+  - pacbio
+  - genomics
+tools:
+  - "pbsv":
+      description: "pbsv - PacBio structural variant (SV) calling and analysis tools"
+      homepage: "https://github.com/PacificBiosciences/"
+      documentation: "https://github.com/PacificBiosciences/"
+      tool_dev_url: "https://github.com/PacificBiosciences/"
+      licence:
+        - "BSD-3-clause-Clear"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - svsig:
+        type: file
+        description: structural variant file
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'reference']`
+    - fasta:
+        type: file
+        description: fasta file used as reference
+        ontologies: []
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.vcf":
+          type: file
+          description: structural variant file
+          ontologies: []
+  versions_pbsv:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pbsv:
+          type: string
+          description: The name of the tool
+      - pbsv --version |& sed 's/pbsv //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pbsv:
+          type: string
+          description: The name of the tool
+      - pbsv --version |& sed 's/pbsv //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@tanyasarkjain"
+maintainers:
+  - "@tanyasarkjain"

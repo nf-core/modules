@@ -1,0 +1,283 @@
+name: "differential_functional_enrichment"
+description: Run functional analysis on differential abundance analysis output
+keywords:
+  - functional analysis
+  - functional enrichment
+  - differential
+  - over-representation analysis
+components:
+  - gprofiler2/gost
+  - gsea/gsea
+  - decoupler/decoupler
+  - propr/grea
+  - custom/tabulartogseagct
+  - custom/tabulartogseacls
+  - custom/tabulartogseachip
+input:
+  - ch_input:
+      description: |
+        Channel with the input data for functional analysis.
+
+        `input` should be the DE statistics obtained from the DE modules, or the
+        normalised abundance matrix (in the case of running GSEA). `genesets` is the
+        gene sets database, in GMT format for all methods. `background` holds the
+        background features, currently only required for gprofiler2.
+        `analysis_method` is one of gprofiler2, gsea, decoupler or grea.
+
+        Structure: [ val(meta), path(input), path(genesets), path(background), val(analysis_method) ]
+  - ch_contrasts:
+      description: |
+        Channel with contrast information. `meta_contrast` holds all the contrast info,
+        such as contrast id, variable, reference, target, etc.
+
+        Structure: [ val(meta), val(meta_contrast), val(variable), val(reference), val(target), val(formula), val(comparison) ]
+  - ch_samplesheet:
+      description: |
+        Channel with sample information.
+
+        Structure: [ val(meta_exp), path(samplesheet) ]
+  - ch_featuresheet:
+      description: |
+        Channel with features information, alongside the features id and features symbol
+        column names.
+
+        Structure: [ val(meta_exp), path(features), val(features_id), val(features_symbol) ]
+
+output:
+  - gprofiler2_plot_html:
+      type: file
+      description: |
+        HTML file; interactive Manhattan plot of all enriched pathways. Note that this
+        file will only be generated if enriched pathways were found.
+
+        Structure: [ val(meta), path(plot_html) ]
+      pattern: "*.gprofiler2.gostplot.html"
+  - gprofiler2_all_enrich:
+      type: file
+      description: |
+        Table listing all enriched pathways that were found by gprofiler2. It can be
+        empty, if none is found.
+
+        Structure: [ val(meta), path(all_enrich) ]
+      pattern: "*.gprofiler2.all_enriched_pathways.tsv"
+  - gprofiler2_sub_enrich:
+      type: file
+      description: |
+        Table listing enriched pathways that were found from one particular source.
+        Note that it will only be created if any were found.
+
+        Structure: [ val(meta), path(sub_enrich) ]
+      pattern: "*.gprofiler2.*.sub_enriched_pathways.tsv"
+  - gprofiler2_artifacts:
+      type: file
+      description: |
+        PNG file; Manhattan plot of all enriched pathways.
+
+        Structure: [ val(meta), path(plot_png) ]
+      pattern: "*.gprofiler2.gostplot.png"
+  - gprofiler2_sub_plot:
+      type: file
+      description: |
+        PNG file; bar plot showing the fraction of genes that were found enriched in
+        each pathway.
+
+        Structure: [ val(meta), path(sub_plot) ]
+      pattern: "*.gprofiler2.*.sub_enriched_pathways.png"
+  - gprofiler2_rds:
+      type: file
+      description: |
+        RDS file; R object containing the results of the gost query.
+
+        Structure: [ val(meta), path(rds) ]
+      pattern: "*.gprofiler2.gost_results.rds"
+  - gprofiler2_filtered_gmt:
+      type: file
+      description: |
+        GMT file that was provided as input or that was downloaded from g:profiler if no
+        input GMT file was given; filtered for the selected datasources.
+
+        Structure: [ val(meta), path(filtered_gmt) ]
+      pattern: "*ENSG_filtered.gmt"
+  - gsea_report_tsv:
+      type: file
+      description: |
+        Main TSV results report files for the reference and target groups.
+
+        Structure: [ val(meta), path(report_tsv_ref), path(report_tsv_target) ]
+      pattern: "*gsea_report_for_*.tsv"
+  - gsea_report_html:
+      type: file
+      description: |
+        Main HTML results report files for the reference and target groups.
+
+        Structure: [ val(meta), path(report_html_ref), path(report_html_target) ]
+      pattern: "*gsea_report_for_*.html"
+  - gsea_index_html:
+      type: file
+      description: |
+        Top level report HTML file.
+
+        Structure: [ val(meta), path(index_html) ]
+      pattern: "*index.html"
+  - gsea_heat_map_corr_plot:
+      type: file
+      description: |
+        HTML file combining heatmap and rank correlation plot.
+
+        Structure: [ val(meta), path(heat_map_corr_plot) ]
+      pattern: "*heat_map_corr_plot.html"
+  - gsea_ranked_gene_list:
+      type: file
+      description: |
+        TSV file with ranked gene list and scores.
+
+        Structure: [ val(meta), path(ranked_gene_list) ]
+      pattern: "*ranked_gene_list*.tsv"
+  - gsea_gene_set_sizes:
+      type: file
+      description: |
+        TSV file with gene set sizes.
+
+        Structure: [ val(meta), path(gene_set_sizes) ]
+      pattern: "*gene_set_sizes.tsv"
+  - gsea_histogram:
+      type: file
+      description: |
+        Plot showing number of gene sets by enrichment score.
+
+        Structure: [ val(meta), path(histogram) ]
+      pattern: "*global_es_histogram.png"
+  - gsea_heatmap:
+      type: file
+      description: |
+        Heat map of the top 50 features for each phenotype in the test.
+
+        Structure: [ val(meta), path(heatmap) ]
+      pattern: "*heat_map_1.png"
+  - gsea_pvalues_vs_nes_plot:
+      type: file
+      description: |
+        Plot showing FDR q-value by normalised enrichment score.
+
+        Structure: [ val(meta), path(pvalues_vs_nes_plot) ]
+      pattern: "*pvalues_vs_nes_plot.png"
+  - gsea_ranked_list_corr:
+      type: file
+      description: |
+        Ranked gene list correlation profile.
+
+        Structure: [ val(meta), path(ranked_list_corr) ]
+      pattern: "*ranked_list_corr_2.png"
+  - gsea_butterfly_plot:
+      type: file
+      description: |
+        Butterfly plot with gene rank plotted against score.
+
+        Structure: [ val(meta), path(butterfly_plot) ]
+      pattern: "*butterfly_plot.png"
+  - gsea_gene_set_tsv:
+      type: file
+      description: |
+        Where -make_sets is not set to false, TSV files, one file for each gene set,
+        with detail on enrichment for each gene.
+
+        Structure: [ val(meta), [ path(gene_set_tsv) ] ]
+      pattern: "gene_sets_*.tsv"
+  - gsea_gene_set_html:
+      type: file
+      description: |
+        Where -make_sets is not set to false, HTML files, one file for each gene set,
+        with detail on enrichment for each gene.
+
+        Structure: [ val(meta), [ path(gene_set_html) ] ]
+      pattern: "gene_sets_*.html"
+  - gsea_gene_set_heatmap:
+      type: file
+      description: |
+        Where -make_sets is not set to false, PNG-format heatmaps, one file for each
+        gene set, showing expression for each gene.
+
+        Structure: [ val(meta), [ path(gene_set_heatmap) ] ]
+      pattern: "gene_sets_*.png"
+  - gsea_gene_set_enplot:
+      type: file
+      description: |
+        Where -make_sets is not set to false, PNG-format enrichment (barcode) plots, one
+        file for each gene set, showing how genes contribute to enrichment.
+
+        Structure: [ val(meta), [ path(gene_set_enplot) ] ]
+      pattern: "*enplot*.png"
+  - gsea_gene_set_dist:
+      type: file
+      description: |
+        Where -make_sets is not set to false, PNG-format enrichment score distribution
+        plots, one file for each gene set.
+
+        Structure: [ val(meta), [ path(gene_set_dist) ] ]
+      pattern: "*gset_rnd_es_dist*.png"
+  - gsea_snapshot:
+      type: file
+      description: |
+        HTML files, one each for positive and negative enrichment, collecting elements
+        of gsea_gene_set_enplot.
+
+        Structure: [ val(meta), [ path(snapshot) ] ]
+      pattern: "*_snapshot*.html"
+  - gsea_archive:
+      type: file
+      description: |
+        Where -zip_report is set, a zip archive containing all GSEA outputs.
+
+        Structure: [ val(meta), path(archive) ]
+      pattern: "*.zip"
+  - gsea_rpt:
+      type: file
+      description: |
+        File containing the parameter settings used by GSEA.
+
+        Structure: [ val(meta), path(rpt) ]
+      pattern: "*.rpt"
+  - decoupler_dc_estimate:
+      type: file
+      description: |
+        Files containing the estimation results of the enrichment(s).
+
+        Structure: [ val(meta), path(estimate_files) ]
+      pattern: "*estimate_decoupler.tsv"
+  - decoupler_dc_pvals:
+      type: file
+      description: |
+        Files containing the p-values associated to the estimation results of the
+        enrichment(s).
+
+        Structure: [ val(meta), path(pvals_files) ]
+      pattern: "*pvals_decoupler.tsv"
+  - decoupler_png:
+      type: file
+      description: |
+        Files containing the plots associated to the estimation results of the
+        enrichment(s).
+
+        Structure: [ val(meta), path(plot_files) ]
+      pattern: "*estimate_decoupler_plot.png"
+  - grea_results:
+      type: file
+      description: |
+        Main TSV results file from GREA.
+
+        Structure: [ val(meta), path(results) ]
+      pattern: "*.grea.tsv"
+  - session_info:
+      type: file
+      description: |
+        Log file containing information about the R session that was run for gprofiler2.
+
+        Structure: [ val(meta), path(session_info) ]
+      pattern: "*R_sessionInfo.log"
+authors:
+  - "@suzannejin"
+  - "@bjlang"
+  - "@caraiz2001"
+maintainers:
+  - "@suzannejin"
+  - "@pinin4fjords"

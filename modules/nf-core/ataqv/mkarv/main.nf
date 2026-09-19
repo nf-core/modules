@@ -1,18 +1,18 @@
 process ATAQV_MKARV {
     label 'process_medium'
 
-    conda "bioconda::ataqv=1.3.0"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ataqv:1.3.0--py39hccc85d7_2':
-        'quay.io/biocontainers/ataqv:1.3.0--py39hccc85d7_2' }"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/ataqv:1.3.1--py310ha155cf9_1':
+        'quay.io/biocontainers/ataqv:1.3.1--py310ha155cf9_1' }"
 
     input:
     path "jsons/*"
 
     output:
     path "html"        , emit: html
-    path "versions.yml", emit: versions
-
+    tuple val("${task.process}"), val('ataqv'), eval("ataqv --version 2>&1 || true"), emit: versions_ataqv, topic: versions
+    // tuple val("${task.process}"), val('mkarv'), eval('mkarv --version'), emit: versions_mkarv, topic: versions //Use this when version string has been fixed
     when:
     task.ext.when == null || task.ext.when
 
@@ -20,16 +20,16 @@ process ATAQV_MKARV {
     def args = task.ext.args ?: ''
     """
     mkarv \\
-        $args \\
-        --concurrency $task.cpus \\
+        ${args} \\
+        --concurrency ${task.cpus} \\
         --force \\
         ./html/ \\
         jsons/*
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        # mkarv: \$( mkarv --version ) # Use this when version string has been fixed
-        ataqv: \$( ataqv --version )
-    END_VERSIONS
+    stub:
+    """
+    mkdir -p html
+    touch html/index.html
     """
 }

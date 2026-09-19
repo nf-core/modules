@@ -1,0 +1,56 @@
+
+nextflow_process {
+
+    name "Test Process QCAT"
+    script "../main.nf"
+    process "QCAT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "qcat"
+
+    test("test-qcat") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+				    [ file("https://github.com/nf-core/test-datasets/raw/nanoseq/fastq/nondemultiplexed/sample_nobc_dx.fastq.gz", checkIfExists: true) ]
+				]
+				input[1] = 'NBD103/NBD104'
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("test-qcat-stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+				    [ file("https://github.com/nf-core/test-datasets/raw/nanoseq/fastq/nondemultiplexed/sample_nobc_dx.fastq.gz", checkIfExists: true) ]
+				]
+				input[1] = 'NBD103/NBD104'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

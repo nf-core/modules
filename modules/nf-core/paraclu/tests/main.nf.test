@@ -1,0 +1,50 @@
+nextflow_process {
+
+    name "Test Process PARACLU"
+
+    script "../main.nf"
+    process "PARACLU"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "paraclu"
+
+    test("sarscov2") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists:true)
+                ]
+                input[1] = 1
+                """
+            }
+        }
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out, unstableKeys:["bed"])).match()
+        }
+    }
+
+    test("sarscov2 - stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists:true)
+                ]
+                input[1] = 1
+                """
+            }
+        }
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
+        }
+    }
+
+}

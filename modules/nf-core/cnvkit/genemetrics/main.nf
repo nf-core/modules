@@ -1,19 +1,18 @@
 process CNVKIT_GENEMETRICS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
-    conda "bioconda::cnvkit=0.9.9 bioconda::samtools=1.16.1"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cnvkit:0.9.9--pyhdfd78af_0':
-        'quay.io/biocontainers/cnvkit:0.9.9--pyhdfd78af_0' }"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/39/3935f8d7507f85fd20e073f0625bb6bdff8aa1b6044f4bbb720c9a8063ea0390/data'
+:         'community.wave.seqera.io/library/cnvkit:0.9.14--288e98d6210b7304' }"
 
     input:
     tuple val(meta), path(cnr), path(cns)
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    //tuple val(meta), path("*.cnn"), emit: cnn
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('cnvkit'), eval('cnvkit.py version | sed -e "s/cnvkit v//g"'), emit: versions_cnvkit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,14 +25,16 @@ process CNVKIT_GENEMETRICS {
     """
     cnvkit.py \\
         genemetrics \\
-        $cnr \\
-        $segments \\
+        ${cnr} \\
+        ${segments} \\
         --output ${prefix}.tsv \\
-        $args
+        ${args}
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cnvkit: \$(cnvkit.py version | sed -e "s/cnvkit v//g")
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    touch ${prefix}.tsv
     """
 }

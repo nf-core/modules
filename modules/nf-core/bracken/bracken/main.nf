@@ -2,20 +2,19 @@ process BRACKEN_BRACKEN {
     tag "$meta.id"
     label 'process_low'
 
-    // WARN: Version information not provided by tool on CLI.
-    // Please update version string below when bumping container versions.
-    conda "bioconda::bracken=2.7"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bracken:2.7--py39hc16433a_0':
-        'quay.io/biocontainers/bracken:2.7--py39hc16433a_0' }"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f3/f30aa99d8d4f6ff1104f56dbacac95c1dc0905578fb250c80f145b6e80703bd1/data':
+        'community.wave.seqera.io/library/bracken:3.1--22a4e66ce04c5e01' }"
 
     input:
     tuple val(meta), path(kraken_report)
     path database
 
     output:
-    tuple val(meta), path(bracken_report), emit: reports
-    path "versions.yml"          , emit: versions
+    tuple val(meta), path(bracken_report)        , emit: reports
+    tuple val(meta), path(bracken_kraken_style_report), emit: txt
+    tuple val("${task.process}"), val('bracken'), eval('bracken -v | cut -f2 -d"v"'), topic: versions, emit: versions_bracken
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,19 +23,22 @@ process BRACKEN_BRACKEN {
     def args = task.ext.args ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}"
     bracken_report = "${prefix}.tsv"
-    // WARN: Version information not provided by tool on CLI.
-    // Please update version string below when bumping container versions.
-    def VERSION = '2.7'
+    bracken_kraken_style_report = "${prefix}.kraken2.report_bracken.txt"
     """
     bracken \\
         ${args} \\
         -d '${database}' \\
         -i '${kraken_report}' \\
-        -o '${bracken_report}'
+        -o '${bracken_report}' \\
+        -w '${bracken_kraken_style_report}'
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bracken: ${VERSION}
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    bracken_report = "${prefix}.tsv"
+    bracken_kraken_style_report = "${prefix}.kraken2.report_bracken.txt"
+    """
+    touch ${prefix}.tsv
+    touch ${bracken_kraken_style_report}
     """
 }

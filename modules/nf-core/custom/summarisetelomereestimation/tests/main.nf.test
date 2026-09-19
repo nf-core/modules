@@ -1,0 +1,78 @@
+// nf-core modules test custom/summarisetelomereestimation
+nextflow_process {
+
+    name "Test Process CUSTOM_SUMMARISETELOMEREESTIMATION"
+    script "../main.nf"
+    process "CUSTOM_SUMMARISETELOMEREESTIMATION"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "custom"
+    tag "custom/summarisetelomereestimation"
+    tag "telseq"
+
+    test("telseq input - length only") {
+        setup {
+            run("TELSEQ") {
+                script "../../../telseq/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test_telseq' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                        []
+                    ]
+                    input[1] = [
+                        [],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = TELSEQ.out.output.map { meta, tsv -> [ meta, tsv, [], 'telseq' ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.summary },
+                { assert snapshot(
+                    process.out.summary,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+    test("telseq input - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'stub' ], [], [], 'telseq' ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.summary,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+}

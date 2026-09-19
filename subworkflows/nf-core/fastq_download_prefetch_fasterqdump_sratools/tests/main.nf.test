@@ -1,0 +1,47 @@
+nextflow_workflow {
+
+    name "Test workflow: fastq_download_prefetch_fasterqdump_sratools/main.nf"
+    script "../main.nf"
+    workflow "FASTQ_DOWNLOAD_PREFETCH_FASTERQDUMP_SRATOOLS"
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "custom/sratoolsncbisettings"
+    tag "sratools/prefetch"
+    tag "sratools/fasterqdump"
+    tag "subworkflows/fastq_download_prefetch_fasterqdump_sratools"
+
+    test("Parameters: default") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [[ id:'test_single_end', single_end:true  ], 'DRR000774'],
+                    [[ id:'test_paired_end', single_end:false ], 'SRR11140744']
+                )
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            def pelines1 = path(workflow.out.reads[0][1][0]).linesGzip
+            def pelines2 = path(workflow.out.reads[0][1][1]).linesGzip
+            def selines = path(workflow.out.reads[1][1]).linesGzip
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    [
+                        pe_reads_1_lines: pelines1[0..5],
+                        pe_reads_1_size: pelines1.size(),
+                        pe_reads_2_lines: pelines2[0..5],
+                        pe_reads_2_size: pelines2.size(),
+                        se_reads_lines: selines[0..5],
+                        se_reads_size: selines.size()
+                    ],
+                    workflow.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+}

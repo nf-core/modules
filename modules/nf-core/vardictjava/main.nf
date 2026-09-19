@@ -1,48 +1,57 @@
 process VARDICTJAVA {
     tag "$meta.id"
-    label 'process_medium'
+    label 'process_high'
 
-    conda "bioconda::vardict-java=1.8.3"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vardict-java:1.8.3--hdfd78af_0':
-        'quay.io/biocontainers/vardict-java:1.8.3--hdfd78af_0' }"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/mulled-v2-731b8c4cf44d76e9aa181af565b9eee448d82a8c:edd70e76f3529411a748168f6eb1a61f29702123-0' :
+        'quay.io/biocontainers/mulled-v2-731b8c4cf44d76e9aa181af565b9eee448d82a8c:edd70e76f3529411a748168f6eb1a61f29702123-0' }"
 
     input:
-    tuple val(meta), path(bam), path(bai), path(bed)
-    path(fasta)
-    path(fasta_fai)
+    tuple val(meta), path(bams), path(bais), path(bed)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fasta_fai)
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('vardict-java'), eval('realpath \$( command -v vardict-java ) | sed \'s/.*java-//;s/-.*//\''), emit: versions_vardictjava, topic: versions
+    tuple val("${task.process}"), val('var2vcf_valid.pl'), eval('var2vcf_valid.pl -h | sed \'2!d;s/.* //\''), emit: versions_var2vcfvalid, topic: versions
+    tuple val("${task.process}"), val('htslib'), eval("tabix -h 2>&1 | sed -n '2s/Version: *//p'"), emit: versions_htslib, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
+    def args = task.ext.args ?: '-c 1 -S 2 -E 3'
     def args2 = task.ext.args2 ?: ''
+    def args3 = task.ext.args3 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    """
-    export JAVA_OPTS='"-Xms${task.memory.toMega()/4}m" "-Xmx${task.memory.toGiga()}g" "-Dsamjdk.reference_fasta=$fasta"'
-    vardict-java \\
-        $args \\
-        -c 1 -S 2 -E 3 \\
-        -b $bam \\
-        -th $task.cpus \\
-        -N $prefix \\
-        -G $fasta \\
-        $bed \\
-        | teststrandbias.R \\
-        | var2vcf_valid.pl \\
-            $args2 \\
-            -N $prefix \\
-        | gzip -c > ${prefix}.vcf.gz
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vardict-java: \$( realpath \$( command -v vardict-java ) | sed 's/.*java-//;s/-.*//' )
-        var2vcf_valid.pl: \$( var2vcf_valid.pl -h | sed '2!d;s/.* //' )
-    END_VERSIONS
+    // Don't run test scripts when -fisher has been used by vardictjava
+    def run_test = !args.contains("-fisher")
+
+    def somatic = bams instanceof List && bams.size() == 2 ? true : false
+    def input = somatic ? "-b \"${bams[0]}|${bams[1]}\"" : "-b ${bams}"
+    def test = run_test ? somatic ? "| testsomatic.R" : "| teststrandbias.R" : ""
+    def convert_to_vcf = somatic ? "var2vcf_paired.pl" : "var2vcf_valid.pl"
+    """
+    export JAVA_OPTS='"-Xms${task.memory.toMega()/4}m" "-Xmx${task.memory.toGiga()}g" "-Dsamjdk.reference_fasta=${fasta}"'
+    vardict-java \\
+        ${args} \\
+        ${input} \\
+        -th ${task.cpus} \\
+        -G ${fasta} \\
+        ${bed} \\
+    ${test} \\
+    | ${convert_to_vcf} \\
+        ${args2} \\
+    | bgzip ${args3} --threads ${task.cpus} > ${prefix}.vcf.gz
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    echo '' | gzip > ${prefix}.vcf.gz
     """
 }

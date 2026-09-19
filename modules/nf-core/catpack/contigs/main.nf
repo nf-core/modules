@@ -1,0 +1,67 @@
+process CATPACK_CONTIGS {
+    tag "${meta.id}"
+    label 'process_medium'
+
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/15/15bcec1eccda12562504e88d44abc8a29742c6b600ae178cc9579fedc3a69062/data'
+        : 'community.wave.seqera.io/library/cat_gzip:0ab95a62b35744c9'}"
+
+    input:
+    tuple val(meta), path(contigs)
+    tuple val(meta2), path(database)
+    tuple val(meta3), path(taxonomy)
+    tuple val(meta4), path(proteins)
+    tuple val(meta5), path(diamond_table)
+
+    output:
+    tuple val(meta), path("*.ORF2LCA.txt"), emit: orf2lca
+    tuple val(meta), path("*.contig2classification.txt"), emit: contig2classification
+    tuple val(meta), path("*.log"), emit: log
+    tuple val(meta), path("*.diamond"), optional: true, emit: diamond
+    tuple val(meta), path("*.predicted_proteins.faa"), optional: true, emit: faa
+    tuple val(meta), path("*.gff"), optional: true, emit: gff
+    tuple val("${task.process}"), val('catpack'), eval("CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g'"), topic: versions, emit: versions_catpack
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def premade_proteins = proteins ? "--proteins_fasta ${proteins}" : ''
+    def premade_table = diamond_table ? "--diamond_alignment ${diamond_table}" : ''
+    """
+    # CAT_pack does not support gzipped input, so decompress any gzipped contigs.
+    contigs_fastas=""
+    for f in ${contigs}; do
+        if [[ "\$f" == *.gz ]]; then
+            gunzip -c "\$f" > "\$(basename "\$f" .gz)"
+            contigs_fastas="\${contigs_fastas} \$(basename "\$f" .gz)"
+        else
+            contigs_fastas="\${contigs_fastas} \$f"
+        fi
+    done
+
+    CAT_pack contigs \\
+        --nproc ${task.cpus} \\
+        --contigs_fasta \${contigs_fastas## } \\
+        --database_folder ${database} \\
+        --taxonomy_folder ${taxonomy} \\
+        --out_prefix ${prefix} \\
+        ${premade_proteins} \\
+        ${premade_table} \\
+        ${args}
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.ORF2LCA.txt
+    touch ${prefix}.contig2classification.txt
+    touch ${prefix}.log
+    touch ${prefix}.diamond
+    touch ${prefix}.predicted_proteins.faa
+    touch ${prefix}.predicted_proteins.gff
+    """
+}

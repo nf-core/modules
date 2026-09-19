@@ -1,8 +1,11 @@
 name: "manta_convertinversion"
-description: Manta calls structural variants (SVs) and indels from mapped paired-end sequencing reads. This script reformats inversions into single inverted sequence junctions which was the format used in Manta versions <= 1.4.0.
+description: Manta calls structural variants (SVs) and indels from mapped paired-end
+  sequencing reads. This script reformats inversions into single inverted sequence
+  junctions which was the format used in Manta versions <= 1.4.0.
 keywords:
   - structural variants
   - conversion
+  - indels
 tools:
   - manta:
       description: Structural variant and indel caller for mapped sequencing data
@@ -11,35 +14,96 @@ tools:
       tool_dev_url: https://github.com/Illumina/manta
       doi: "10.1093/bioinformatics/btv710"
       licence: ["GPL v3"]
-
+      identifier: biotools:manta_sv
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcf:
-      type: file
-      description: VCF file produces by Manta
-      pattern: "*.vcf.gz"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: VCF file produces by Manta
+        pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing fasta information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: The reference fasta file
+        pattern: "*.{fasta,fa,fna}"
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - vcf:
-      type: file
-      description: VCF file with reformatted inversions
-      pattern: "*.vcf.gz"
-  - tbi:
-      type: file
-      description: TBI file produces by Manta
-      pattern: "*.vcf.gz.tbi"
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.vcf.gz":
+          type: file
+          description: VCF file with reformatted inversions
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.vcf.gz.tbi":
+          type: file
+          description: TBI file produces by Manta
+          pattern: "*.vcf.gz.tbi"
+          ontologies: []
+  versions_manta:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - manta:
+          type: string
+          description: The name of the tool
+      - configManta.py --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools --version | head -1 | sed -e s'/samtools //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - manta:
+          type: string
+          description: The name of the tool
+      - configManta.py --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools --version | head -1 | sed -e s'/samtools //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
+  - "@FriederikeHanssen"
+maintainers:
   - "@FriederikeHanssen"

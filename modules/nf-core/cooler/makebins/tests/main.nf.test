@@ -1,0 +1,59 @@
+
+nextflow_process {
+
+    name "Test Process COOLER_MAKEBINS"
+    script "../main.nf"
+    process "COOLER_MAKEBINS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cooler"
+    tag "cooler/makebins"
+
+    test("test-cooler-makebins") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/cload/hg19/hg19.chrom.sizes', checkIfExists: true),
+				    "1000000"
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test-cooler-makebins - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/cload/hg19/hg19.chrom.sizes', checkIfExists: true),
+				    "1000000"
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

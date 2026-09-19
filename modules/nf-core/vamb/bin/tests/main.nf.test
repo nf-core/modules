@@ -1,0 +1,187 @@
+nextflow_process {
+
+    name "Test Process VAMB_BIN"
+    script "../main.nf"
+    process "VAMB_BIN"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gawk"
+    tag "vamb"
+    tag "vamb/bin"
+
+    test("metagenome - binning - bam") {
+
+        when {
+            params {
+                gawk_args2 = ""
+                gawk_prefix = "test_taxonomy"
+                // recommended parameters for testing in default mode
+                vamb_args = "-e 5 -q 2 3 --minfasta 1 -o C --seed 1"
+            }
+            process {
+                """
+                input[0] = [
+                    [id: "test"],
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/contigs.fasta.gz", checkIfExists: true),
+                    [],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s1.sorted.bam", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s2.sorted.bam", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s3.sorted.bam", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s4.sorted.bam", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s5.sorted.bam", checkIfExists: true)
+                    ],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            def binned = process.out.bins.get(0).get(1).collectMany { path(it).fasta.keySet().toList() }
+            def clustered = path(process.out.clusters_unsplit.get(0).get(1)).readLines().drop(1).collect { it.split('\t')[1] }
+            assertAll(
+                // the clustering is stochastic, so only the partition is asserted
+                { assert clustered && binned.sort() == clustered.sort() },
+                { assert path(process.out.log.get(0).get(1)).readLines().any { it.contains('Completed Vamb') } },
+                { assert snapshot(
+                    // every file Vamb writes differs between machines, the npz archives included
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+
+    test("metagenome - binning - tsv") {
+
+        when {
+            params {
+                gawk_args2 = ""
+                gawk_prefix = "test_taxonomy"
+                vamb_args = "-e 5 -q 2 3 --minfasta 1 -o C --seed 1"
+            }
+            process {
+                """
+                input[0] = [
+                    [id: "test"],
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/contigs.fasta.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/abundances.tsv", checkIfExists: true),
+                    [],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            def binned = process.out.bins.get(0).get(1).collectMany { path(it).fasta.keySet().toList() }
+            def clustered = path(process.out.clusters_unsplit.get(0).get(1)).readLines().drop(1).collect { it.split('\t')[1] }
+            assertAll(
+                { assert clustered && binned.sort() == clustered.sort() },
+                { assert path(process.out.log.get(0).get(1)).readLines().any { it.contains('Completed Vamb') } },
+                { assert snapshot(
+                    // every file Vamb writes differs between machines, the npz archives included
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+
+    test("metagenome - binning - bam - taxonomy") {
+
+        setup {
+            // the contig labels give the source genome, so the taxonomy comes from the names
+            run("GAWK") {
+                script "../../../gawk/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: "test"],
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/abundances.tsv", checkIfExists: true)
+                    ]
+                    input[1] = []
+                    input[2] = false
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                gawk_prefix = "test_taxonomy"
+                gawk_args2 = '\'BEGIN { FS = OFS = "\\t"; print "contigs", "predictions" } NR > 1 { print $1, ($1 ~ /hinf/ ? "Bacteria;Pseudomonadota;Gammaproteobacteria;Pasteurellales;Pasteurellaceae;Haemophilus;Haemophilus influenzae" : "Bacteria;Pseudomonadota;Gammaproteobacteria;Johnevansiales;Johnevansiaceae;Candidatus Portiera;Candidatus Portiera aleyrodidarum") }\''
+                // recommended parameters for testing in taxonomy mode
+                vamb_args = "-e 5 -q 2 3 -pe 5 --minfasta 1 -o C --seed 1"
+            }
+            process {
+                """
+                input[0] = channel.of([
+                    [id: "test"],
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/contigs.fasta.gz", checkIfExists: true),
+                    [],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s1.sorted.bam", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s2.sorted.bam", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s3.sorted.bam", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s4.sorted.bam", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s5.sorted.bam", checkIfExists: true)
+                    ]
+                ]).combine(GAWK.out.output.map { meta, tsv -> tsv })
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            def binned = process.out.bins.get(0).get(1).collectMany { path(it).fasta.keySet().toList() }
+            def clustered = path(process.out.clusters_unsplit.get(0).get(1)).readLines().drop(1).collect { it.split('\t')[1] }
+            assertAll(
+                { assert clustered && binned.sort() == clustered.sort() },
+                { assert path(process.out.taxometer_results.get(0).get(1)).readLines().size() > 1 },
+                { assert path(process.out.log.get(0).get(1)).readLines().any { it.contains('Completed Vamb') } },
+                { assert snapshot(
+                    // every file Vamb writes differs between machines, the npz archives included
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+
+    test("metagenome - binning - bam - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                gawk_args2 = ""
+                gawk_prefix = "test_taxonomy"
+                vamb_args = ""
+            }
+            process {
+                """
+                input[0] = [
+                    [id: "test"],
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/contigs.fasta.gz", checkIfExists: true),
+                    [],
+                    [
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/multisample/s1.sorted.bam", checkIfExists: true)
+                    ],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

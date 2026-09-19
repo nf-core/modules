@@ -7,46 +7,34 @@ include { SAMTOOLS_INDEX        } from '../../../modules/nf-core/samtools/index/
 include { BAM_STATS_SAMTOOLS    } from '../bam_stats_samtools/main'
 
 workflow BAM_MARKDUPLICATES_PICARD {
-
     take:
-    ch_bam   // channel: [ val(meta), path(bam) ]
-    ch_fasta // channel: [ path(fasta) ]
-    ch_fai   // channel: [ path(fai) ]
+    ch_reads // channel: [ val(meta), path(reads) ]
+    ch_fasta_fai // channel: [ val(meta), path(fasta), path(fai)]
 
     main:
+    PICARD_MARKDUPLICATES(ch_reads, ch_fasta_fai)
 
-    ch_versions = Channel.empty()
+    ch_markdup = PICARD_MARKDUPLICATES.out.bam.mix(PICARD_MARKDUPLICATES.out.cram)
 
-    PICARD_MARKDUPLICATES ( ch_bam, ch_fasta, ch_fai )
-    ch_versions = ch_versions.mix(PICARD_MARKDUPLICATES.out.versions.first())
+    SAMTOOLS_INDEX(ch_markdup)
 
-    SAMTOOLS_INDEX ( PICARD_MARKDUPLICATES.out.bam )
-    ch_versions = ch_versions.mix(SAMTOOLS_INDEX.out.versions.first())
+    ch_reads_index = ch_markdup.join(SAMTOOLS_INDEX.out.index, by: [0])
 
-    ch_bam_bai = PICARD_MARKDUPLICATES.out.bam
-        .join(SAMTOOLS_INDEX.out.bai, by: [0], remainder: true)
-        .join(SAMTOOLS_INDEX.out.csi, by: [0], remainder: true)
-        .map {
-            meta, bam, bai, csi ->
-                if (bai) {
-                    [ meta, bam, bai ]
-                } else {
-                    [ meta, bam, csi ]
-                }
-        }
+    BAM_STATS_SAMTOOLS(ch_reads_index, ch_fasta_fai)
 
-    BAM_STATS_SAMTOOLS ( ch_bam_bai, ch_fasta )
-    ch_versions = ch_versions.mix(BAM_STATS_SAMTOOLS.out.versions)
+    ch_per_sample_mqc_bundle = BAM_STATS_SAMTOOLS.out.stats
+        .join(BAM_STATS_SAMTOOLS.out.flagstat,   remainder: true)
+        .join(BAM_STATS_SAMTOOLS.out.idxstats,   remainder: true)
+        .join(PICARD_MARKDUPLICATES.out.metrics, remainder: true)
+        .map { row -> [row[0], row.drop(1).findAll { f -> f != null }.collectMany { e -> (e instanceof List) ? e : [e] }] }
 
     emit:
-    bam      = PICARD_MARKDUPLICATES.out.bam     // channel: [ val(meta), path(bam) ]
-    metrics  = PICARD_MARKDUPLICATES.out.metrics // channel: [ val(meta), path(bam) ]
-    bai      = SAMTOOLS_INDEX.out.bai            // channel: [ val(meta), path(bai) ]
-    csi      = SAMTOOLS_INDEX.out.csi            // channel: [ val(meta), path(csi) ]
-
-    stats    = BAM_STATS_SAMTOOLS.out.stats      // channel: [ val(meta), path(stats) ]
-    flagstat = BAM_STATS_SAMTOOLS.out.flagstat   // channel: [ val(meta), path(flagstat) ]
-    idxstats = BAM_STATS_SAMTOOLS.out.idxstats   // channel: [ val(meta), path(idxstats) ]
-
-    versions = ch_versions                       // channel: [ versions.yml ]
+    bam                   = PICARD_MARKDUPLICATES.out.bam // channel: [ val(meta), path(bam) ]
+    cram                  = PICARD_MARKDUPLICATES.out.cram // channel: [ val(meta), path(cram) ]
+    metrics               = PICARD_MARKDUPLICATES.out.metrics // channel: [ val(meta), path(metrics) ]
+    index                 = SAMTOOLS_INDEX.out.index // channel: [ val(meta), path(index) ]
+    stats                 = BAM_STATS_SAMTOOLS.out.stats // channel: [ val(meta), path(stats) ]
+    flagstat              = BAM_STATS_SAMTOOLS.out.flagstat // channel: [ val(meta), path(flagstat) ]
+    idxstats              = BAM_STATS_SAMTOOLS.out.idxstats // channel: [ val(meta), path(idxstats) ]
+    per_sample_mqc_bundle = ch_per_sample_mqc_bundle // channel: [ val(meta), list(files) ]
 }

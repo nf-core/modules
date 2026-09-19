@@ -1,0 +1,107 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: samclip
+description: Filters SAM/BAM/CRAM files for soft and hard clipped alignments
+keywords:
+  - soft-clipped reads
+  - hard-clipped reads
+  - clipping
+  - genomics
+  - sam
+  - bam
+  - cram
+tools:
+  - samclip:
+      description: Filters SAM file for soft and hard clipped alignments
+      homepage: https://github.com/tseemann/samclip
+      documentation: https://github.com/tseemann/samclip
+      tool_dev_url: https://github.com/tseemann/samclip
+      doi: "no DOI available"
+      licence: ["GPL v3"]
+      identifier: biotools:samclip
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: BAM file
+        pattern: "*.bam"
+        ontologies:
+          - edam: http://edamontology.org/format_2572 # BAM
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing fasta reference information
+          e.g. `[ id:'ref' ]`
+    - reference:
+        type: file
+        description: |
+          reference FASTA file
+        pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+    - reference_index:
+        type: file
+        description: |
+          reference FASTA file index
+        pattern: "*.fai"
+        ontologies: []
+output:
+  reads:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1']`
+      - "*.{bam,cram}":
+          type: file
+          description: Filtered BAM/CRAM file
+          pattern: "*.{bam,cram}"
+          ontologies:
+            - edam: http://edamontology.org/format_2572 # BAM
+            - edam: http://edamontology.org/format_3462 # CRAM
+  versions_samclip:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samclip:
+          type: string
+          description: The tool name
+      - "samclip --version | sed 's/^.*samclip //g'":
+          type: string
+          description: The command used to generate the version of the tool
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samtools:
+          type: string
+          description: The tool name
+      - "samtools version | sed '1!d;s/.* //'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samclip:
+          type: string
+          description: The tool name
+      - "samclip --version | sed 's/^.*samclip //g'":
+          type: string
+          description: The command used to generate the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - samtools:
+          type: string
+          description: The tool name
+      - "samtools version | sed '1!d;s/.* //'":
+          type: string
+          description: The command used to generate the version of the tool
+authors:
+  - "@emmcauley"
+maintainers:
+  - "@emmcauley"

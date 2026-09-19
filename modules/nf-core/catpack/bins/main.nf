@@ -1,0 +1,70 @@
+process CATPACK_BINS {
+    tag "${meta.id}"
+    label 'process_medium'
+
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/15/15bcec1eccda12562504e88d44abc8a29742c6b600ae178cc9579fedc3a69062/data'
+        : 'community.wave.seqera.io/library/cat_gzip:0ab95a62b35744c9'}"
+
+    input:
+    tuple val(meta), path(bins, stageAs: 'bins/*')
+    tuple val(meta2), path(database)
+    tuple val(meta3), path(taxonomy)
+    tuple val(meta4), path(proteins)
+    tuple val(meta5), path(diamond_table)
+    val bin_suffix
+
+    output:
+    tuple val(meta), path("*.ORF2LCA.txt"), emit: orf2lca
+    tuple val(meta), path("*.bin2classification.txt"), emit: bin2classification
+    tuple val(meta), path("*.log"), emit: log
+    tuple val(meta), path("*.diamond"), optional: true, emit: diamond
+    tuple val(meta), path("*.predicted_proteins.faa"), optional: true, emit: faa
+    tuple val(meta), path("*.gff"), optional: true, emit: gff
+    tuple val("${task.process}"), val('catpack'), eval("CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g'"), topic: versions, emit: versions_catpack
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def premade_proteins = proteins ? "-p ${proteins}" : ''
+    def premade_table = diamond_table ? "-d ${diamond_table}" : ''
+    // CAT_pack does not support gzipped input. If bin_suffix ends in .gz,
+    // decompress the bins and strip .gz off the suffix passed to CAT_pack.
+    def is_compressed = bin_suffix.endsWith('.gz')
+    def cat_suffix = is_compressed ? bin_suffix - ~/\.gz$/ : bin_suffix
+    def bins_dir = is_compressed ? 'input_bins' : 'bins'
+    """
+    if ${is_compressed}; then
+        mkdir input_bins
+        for f in bins/*${bin_suffix}; do
+            gunzip -c "\$f" > "input_bins/\$(basename "\$f" .gz)"
+        done
+    fi
+
+    CAT_pack bins \\
+        -n ${task.cpus} \\
+        -b ${bins_dir}/ \\
+        -d ${database} \\
+        -t ${taxonomy} \\
+        -s ${cat_suffix} \\
+        ${premade_proteins} \\
+        ${premade_table} \\
+        -o ${prefix} \\
+        ${args}
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.ORF2LCA.txt
+    touch ${prefix}.bin2classification.txt
+    touch ${prefix}.log
+    touch ${prefix}.diamond
+    touch ${prefix}.predicted_proteins.faa
+    touch ${prefix}.predicted_proteins.gff
+    """
+}

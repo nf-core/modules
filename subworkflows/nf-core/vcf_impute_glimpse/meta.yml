@@ -1,72 +1,100 @@
-name: "vcf_imputation_glimpse"
-description: Impute VCF/BCF files with Glimpse
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "vcf_impute_glimpse"
+description: |
+  Subworkflow to impute VCF files using GLIMPSE V1 software. The subworkflow
+  takes VCF files, phased reference panel, and genetic maps to perform imputation
+  and outputs phased and imputed VCF files.
+  Meta map of all channels, except ch_input, will be used to perform joint operations.
+  "regionout", "regionoutPadded", "regionSize" keys will be added to the meta map to distinguish
+  the different files before ligation and therefore should not be used.
 keywords:
   - glimpse
   - chunk
   - phase
   - ligate
-
-modules:
+components:
   - glimpse/chunk
   - glimpse/phase
   - glimpse/ligate
-
+  - bcftools/index
 input:
   - ch_vcf:
-      type: file
-      description: |
-        Target dataset in VCF/BCF format defined at all variable positions.
-        Index file of the input VCF/BCF file containing genotype likelihoods.
-        Target region, usually a full chromosome (e.g. chr20:1000000-2000000 or chr20).
-        The file could possibly be without GT field (for efficiency reasons a file containing only the positions is recommended).
-        Structure: [ meta, vcf, csi, region ]
-
+      description: Channel with target VCF files
+      structure:
+        - meta:
+          type: map
+          description: Metadata map
+        - vcf:
+          type: file
+          description: VCF file
+          pattern: "*.{vcf,bcf,vcf.gz}"
+        - index:
+          type: file
+          description: VCF index file
+          pattern: "*.{tbi,csi}"
+        - infos:
+          type: file
+          description: |
+            File containing ploidy information of each sample
+          pattern: "*.{txt, tsv}"
   - ch_ref:
-      type: file
-      description: |
-        Reference panel of haplotypes in VCF/BCF format.
-        Index file of the Reference panel file.
-        Structure: [ meta, vcf, csi ]
-
+      description: Channel with reference phased VCF files
+      structure:
+        - meta:
+          type: map
+          description: Metadata map
+        - vcf:
+          type: file
+          description: VCF file
+          pattern: "*.{vcf,bcf,vcf.gz}"
+        - index:
+          type: file
+          description: VCF index file
+          pattern: "*.{tbi,csi}"
+        - region:
+          type: string
+          description: Region to perform chunking on
+          pattern: "[chr]+[0-9]+:[0-9]+-[0-9]+"
+  - ch_chunks:
+      description: Channel with chunks data
+      structure:
+        - meta:
+          type: map
+          description: Metadata map that will be combined with the input data map
+        - regionin:
+          type: string
+          description: Chunk region without buffer
+          pattern: "[chr]+[0-9]+:[0-9]+-[0-9]+"
+        - regionout:
+          type: string
+          description: Chunk region with buffer
+          pattern: "[chr]+[0-9]+:[0-9]+-[0-9]+"
   - ch_map:
-      type: file
-      description: File containing the genetic map.
-      Structure: [gmap]
-
-  - ch_infos:
-      type: file
-      description: |
-        File with sample names and ploidy information.
-        One sample per line with a mandatory second column indicating ploidy (1 or 2).
-        Sample names that are not present are assumed to have ploidy 2 (diploids).
-        GLIMPSE does NOT handle the use of sex (M/F) instead of ploidy.
-        Structure: [ txt ]
-
+      description: Channel with genetic map data (optional)
+      structure:
+        - meta:
+          type: map
+          description: Metadata map
+        - map:
+          type: file
+          description: Map file in GLIMPSE format
+          pattern: "*.map"
+  - chunk:
+      type: boolean
+      description: Whether to perform chunking of the input data before imputation.
 output:
-  - chunk_chr:
-      type: file
-      description: Tab delimited output txt file containing buffer and imputation regions.
-      Structure: [meta, txt]
-
-  - phased_variants:
+  - chunks:
       type: file
       description: |
-        Output VCF/BCF file containing genotype probabilities (GP field),
-        imputed dosages (DS field), best guess genotypes (GT field),
-        sampled haplotypes in the last (max 16) main iterations (HS field) and info-score.
-        Structure: [ val(meta), bcf ]
-
-  - merged_variants:
+        Tab delimited output txt file containing buffer and imputation regions.
+        Structure: [meta, txt]
+  - vcf_index:
       type: file
       description: |
-        Output VCF/BCF file for the merged regions.
+        Output phased VCF/BCF file for the merged regions, with its index.
         Phased information (HS field) is updated accordingly for the full region.
-        Structure: [ val(meta), bcf ]
-
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+        Structure: [ val(meta), path(bcf), path(csi) ]
 authors:
+  - "@LouisLeNezet"
+maintainers:
   - "@LouisLeNezet"

@@ -1,5 +1,6 @@
 name: filtlong
-description: Filtlong filters long reads based on quality measures or short read data.
+description: Filtlong filters long reads based on quality measures or short read
+  data.
 keywords:
   - nanopore
   - quality control
@@ -9,47 +10,81 @@ keywords:
   - short reads
 tools:
   - filtlong:
-      description: Filtlong is a tool for filtering long reads. It can take a set of long reads and produce a smaller, better subset. It uses both read length (longer is better) and read identity (higher is better) when choosing which reads pass the filter.
+      description: Filtlong is a tool for filtering long reads. It can take a set
+        of long reads and produce a smaller, better subset. It uses both read
+        length (longer is better) and read identity (higher is better) when
+        choosing which reads pass the filter.
       homepage: https://anaconda.org/bioconda/filtlong
-
       tool_dev_url: https://github.com/rrwick/Filtlong
-
-      licence: ["GPL v3"]
-
+      licence:
+        - "GPL v3"
+      identifier: biotools:filtlong
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - shortreads:
-      type: file
-      description: fastq file
-      pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
-  - longreads:
-      type: file
-      description: fastq file
-      pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - shortreads:
+        type: file
+        description: fastq file
+        pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930
+    - longreads:
+        type: file
+        description: fastq file
+        pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - reads:
-      type: file
-      description: Filtered (compressed) fastq file
-      pattern: "*.fastq.gz"
-  - log:
-      type: file
-      description: Standard error logging file containing summary statistics
-      pattern: "*.log"
-
+  reads:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fastq.gz":
+          type: file
+          description: Filtered (compressed) fastq file
+          pattern: "*.fastq.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.log":
+          type: file
+          description: Standard error logging file containing summary statistics
+          pattern: "*.log"
+          ontologies: []
+  versions_filtlong:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - filtlong:
+          type: string
+          description: The tool name
+      - 'filtlong --version | sed -e "s/Filtlong v//g"':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - filtlong:
+          type: string
+          description: The tool name
+      - 'filtlong --version | sed -e "s/Filtlong v//g"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
+  - "@d4straub"
+  - "@sofstam"
+maintainers:
   - "@d4straub"
   - "@sofstam"

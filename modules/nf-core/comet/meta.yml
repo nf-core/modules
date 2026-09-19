@@ -1,0 +1,127 @@
+name: "comet"
+description: Comet is an open source tandem mass spectrometry (MS/MS) sequence database search tool
+keywords:
+  - spectrum identification
+  - search engine
+  - proteomics
+  - fasta
+  - mzml
+tools:
+  - "comet":
+      description: "Comet is an open source tandem mass spectrometry (MS/MS) sequence database search tool."
+      homepage: "https://uwpr.github.io/Comet/"
+      documentation: "https://uwpr.github.io/Comet/"
+      tool_dev_url: "https://github.com/UWPR/Comet"
+      doi: "10.1002/pmic.201200439"
+      licence: ["Apache License 2.0"]
+      identifier: "biotools:comet"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - mzml:
+        type: file
+        description: File containing mass spectra in mzML format
+        pattern: "*.{mzML}"
+        ontologies: []
+    - fasta:
+        type: file
+        description: Protein sequence database containing targets and decoys
+        pattern: "*.{fasta}"
+        ontologies: []
+    - comet_params:
+        type: file
+        description: Comet params file containing the search parameters
+        pattern: "*.{comet.params}"
+        ontologies: []
+
+output:
+  params:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}*.comet.params":
+          type: file
+          description: The parameter file used for the Comet search (for reproducibility)
+          pattern: "*.comet.params"
+  sqt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}*.sqt":
+          type: file
+          description: Search results in SQT format
+          pattern: "*.sqt"
+  txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}*.txt":
+          type: file
+          description: Search results in simple TXT format
+          pattern: "*.txt"
+  pepxml:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}*.pep.xml":
+          type: file
+          description: Search results in pepXML format
+          pattern: "*.pep.xml"
+  mzid:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}*.mzid":
+          type: file
+          description: Search results in mzIdentML format
+          pattern: "*.mzid"
+  pin:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}*.pin":
+          type: file
+          description: Search results in Percolator input format (pin)
+          pattern: "*.pin"
+  versions_comet:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "comet":
+          type: string
+          description: The name of the tool
+      - "comet 2>&1 | head -2 | tail -1 | sed 's;.*\"\\(.*\\).*\";\\1;g'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - comet:
+          type: string
+          description: The name of the tool
+      - comet 2>&1 | head -2 | tail -1 | sed 's;.*"\(.*\).*";\1;g':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@julianu"
+maintainers:
+  - "@julianu"

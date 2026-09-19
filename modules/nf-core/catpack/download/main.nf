@@ -1,0 +1,53 @@
+process CATPACK_DOWNLOAD {
+    tag "${meta.id}"
+    label 'process_single'
+    label 'process_long'
+
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/15/15bcec1eccda12562504e88d44abc8a29742c6b600ae178cc9579fedc3a69062/data'
+        : 'community.wave.seqera.io/library/cat_gzip:0ab95a62b35744c9'}"
+
+    input:
+    tuple val(meta), val(db)
+
+    output:
+    tuple val(meta), path("${prefix}/*.${db}.gz"), emit: fasta
+    tuple val(meta), path("${prefix}/*.names.dmp"), emit: names
+    tuple val(meta), path("${prefix}/*.nodes.dmp"), emit: nodes
+    tuple val(meta), path("${prefix}/*accession2taxid*.gz"), emit: acc2tax
+    tuple val(meta), path("${prefix}/*.log"), emit: log
+    tuple val("${task.process}"), val('catpack'), eval("CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g'"), topic: versions, emit: versions_catpack
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    CAT_pack \\
+        download \\
+        ${args} \\
+        --db ${db} \\
+        -o ${prefix}/
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "CAT_pack \\
+        download \\
+        ${args} \\
+        --db ${db}
+        -o ${prefix}/"
+
+    mkdir ${prefix}/
+    echo "" | gzip > ${prefix}/${prefix}.${db}.gz
+    touch ${prefix}/${prefix}.names.dmp
+    touch ${prefix}/${prefix}.nodes.dmp
+    echo "" | gzip > ${prefix}/${prefix}.accession2taxid.gz
+    touch ${prefix}/${prefix}.log
+    """
+}

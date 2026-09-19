@@ -9,30 +9,59 @@ keywords:
   - index
   - reference
   - fasta
-
 tools:
   - biscuit:
-      description: A utility for analyzing sodium bisulfite conversion-based DNA methylation/modification data
+      description: A utility for analyzing sodium bisulfite conversion-based DNA
+        methylation/modification data
       homepage: https://huishenlab.github.io/biscuit/
       documentation: https://huishenlab.github.io/biscuit/docs/alignment
       tool_dev_url: https://github.com/huishenlab/biscuit
-
-      licence: ["MIT"]
-
+      licence:
+        - "MIT"
+      identifier: biotools:biscuit
 input:
-  - fasta:
-      type: file
-      description: Input genome fasta file
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Input genome fasta file
+        ontologies: []
 output:
-  - index:
-      type: dir
-      description: Biscuit genome index directory
-      pattern: "BiscuitIndex"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+  index:
+    - - meta:
+          type: directory
+          description: Directory containing biscuit genome index
+          pattern: "index"
+      - BiscuitIndex:
+          type: directory
+          description: Directory containing biscuit genome index
+          pattern: "index"
+  versions_biscuit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - biscuit:
+          type: string
+          description: The name of the tool
+      - "biscuit version |& sed '1!d; s/^.*BISCUIT Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - biscuit:
+          type: string
+          description: The name of the tool
+      - "biscuit version |& sed '1!d; s/^.*BISCUIT Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@njspix"
+maintainers:
+  - "@njspix"
+  - "@sateeshperi"

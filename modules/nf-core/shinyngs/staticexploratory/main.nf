@@ -2,13 +2,13 @@ process SHINYNGS_STATICEXPLORATORY {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::r-shinyngs=1.5.9"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-shinyngs:1.5.9--r42hdfd78af_0':
-        'quay.io/biocontainers/r-shinyngs:1.5.9--r42hdfd78af_0' }"
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d5/d5f79ef0afe3e3831496c61c81aeda56312f49ac324dc378d3312af7acae2ec6/data'
+        : 'community.wave.seqera.io/library/r-shinyngs:3.2.1--d43071e62bc500d3'}"
 
     input:
-    tuple val(meta), path(sample), path(feature_meta), path(assay_files)
+    tuple val(meta), path(sample), path(feature_meta), path(assay_files), val(variable)
 
     output:
     tuple val(meta), path("*/png/boxplot.png")                  , emit: boxplots_png
@@ -19,10 +19,10 @@ process SHINYNGS_STATICEXPLORATORY {
     tuple val(meta), path("*/html/pca2d.html")                  , emit: pca2d_html, optional: true
     tuple val(meta), path("*/png/pca3d.png")                    , emit: pca3d_png
     tuple val(meta), path("*/html/pca3d.html")                  , emit: pca3d_html, optional: true
-    tuple val(meta), path("*/png/mad_correlation.png")          , emit: mad_png
+    tuple val(meta), path("*/png/mad_correlation.png")          , emit: mad_png, optional: true
     tuple val(meta), path("*/html/mad_correlation.html")        , emit: mad_html, optional: true
     tuple val(meta), path("*/png/sample_dendrogram.png")        , emit: dendro
-    path "versions.yml"                                         , emit: versions
+    tuple val("${task.process}"), val('shinyngs'), eval('Rscript -e "library(shinyngs); cat(as.character(packageVersion(\'shinyngs\')))"'), emit: versions_shinyngs, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,14 +37,25 @@ process SHINYNGS_STATICEXPLORATORY {
         --sample_metadata "$sample" \\
         --feature_metadata "$feature_meta" \\
         --assay_files "${assay_files.join(',')}" \\
-        --contrast_variable "${meta.id}" \\
+        --contrast_variable "$variable" \\
         --outdir "$prefix" \\
         $args
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        r-base: \$(echo \$(R --version 2>&1) | sed 's/^.*R version //; s/ .*\$//')
-        r-shinyngs: \$(Rscript -e "library(shinyngs); cat(as.character(packageVersion('shinyngs')))")
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: meta.id
+    """
+    mkdir -p ${prefix}/png ${prefix}/html
+    touch ${prefix}/png/boxplot.png
+    touch ${prefix}/html/boxplot.html
+    touch ${prefix}/png/density.png
+    touch ${prefix}/html/density.html
+    touch ${prefix}/png/pca2d.png
+    touch ${prefix}/html/pca3d.html
+    touch ${prefix}/png/pca3d.png
+    touch ${prefix}/html/pca2d.html
+    touch ${prefix}/png/mad_correlation.png
+    touch ${prefix}/html/mad_correlation.html
+    touch ${prefix}/png/sample_dendrogram.png
     """
 }

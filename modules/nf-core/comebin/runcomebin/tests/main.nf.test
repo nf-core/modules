@@ -1,0 +1,78 @@
+nextflow_process {
+
+    name "Test Process COMEBIN_RUNCOMEBIN"
+    script "../main.nf"
+    process "COMEBIN_RUNCOMEBIN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "comebin"
+    tag "comebin/runcomebin"
+
+    test("metagenome - binning") {
+
+        config "./nextflow.config"
+
+        when {
+
+            process {
+                """
+                input[0] = channel.of([
+                    [id: "test"],
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/contigs.fasta.gz", checkIfExists: true),
+                    [
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/s1.sorted.bam", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/s2.sorted.bam", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/s3.sorted.bam", checkIfExists: true),
+                    ],
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.bins.get(0).get(1).size() >= 1 },
+                { assert snapshot(
+                    sanitizeOutput(process.out,
+                        // bin contents vary between machines due to BLAS and OpenMP
+                        unstableKeys: ["tsv"],
+                        ignoreKeys: ["bins", "embeddings", "covembeddings", "log"])
+                ).match() }
+            )
+        }
+
+    }
+
+    test("metagenome - binning - stub") {
+
+        options "-stub"
+
+        when {
+
+            process {
+                """
+                input[0] = channel.of([
+                    [id: "test"],
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/contigs.fasta.gz", checkIfExists: true),
+                    [
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/s1.sorted.bam", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/s2.sorted.bam", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/s3.sorted.bam", checkIfExists: true),
+                    ],
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

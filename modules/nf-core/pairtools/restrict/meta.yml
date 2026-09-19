@@ -1,46 +1,69 @@
 name: pairtools_restrict
 description: Assign restriction fragments to pairs
 keywords:
-  - sort
+  - pairs
+  - pairstools
+  - restriction fragments
 tools:
   - pairtools:
       description: CLI tools to process mapped Hi-C data
       homepage: http://pairtools.readthedocs.io/
       documentation: http://pairtools.readthedocs.io/
       tool_dev_url: https://github.com/mirnylab/pairtools
-
-      licence: ["MIT"]
-
+      licence:
+        - "MIT"
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - pairs:
-      type: file
-      description: pairs file
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - pairs:
+        type: file
+        description: pairs file
+        ontologies: []
   - frag:
       type: file
       description: |
         a tab-separated BED file with the positions of restriction fragments
         (chrom, start, end).
         Can be generated using cooler digest.
-
+      ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - restrict:
-      type: file
-      description: Filtered pairs file
-      pattern: "*.{pairs.gz}"
-
+  restrict:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.pairs.gz":
+          type: file
+          description: Filtered pairs file
+          pattern: "*.{pairs.gz}"
+          ontologies: []
+  versions_pairtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pairtools:
+          type: string
+          description: The name of the tool
+      - pairtools --version | sed 's/.*pairtools.*version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pairtools:
+          type: string
+          description: The name of the tool
+      - pairtools --version | sed 's/.*pairtools.*version //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
+  - "@jianhong"
+maintainers:
   - "@jianhong"

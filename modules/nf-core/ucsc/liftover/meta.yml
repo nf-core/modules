@@ -1,42 +1,77 @@
 name: ucsc_liftover
 description: convert between genome builds
 keywords:
-  - liftOver
+  - bed
+  - ucsc
+  - ucsc/liftover
 tools:
   - ucsc:
       description: Move annotations from one assembly to another
       homepage: http://hgdownload.cse.ucsc.edu/admin/exe/
       licence: ["varies; see http://genome.ucsc.edu/license"]
-
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bed:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bed:
+        type: file
+        description: Browser Extensible Data (BED) file
+        pattern: "*.{bed}"
+        ontologies: []
+  - chain:
       type: file
-      description: Browser Extensible Data (BED) file
-      pattern: "*.{bed}"
-
+      description: Chain file
+      pattern: "*.{chain,chain.gz}"
+      ontologies:
+        - edam: http://edamontology.org/format_3982 # CHAIN
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - version:
-      type: file
-      description: File containing software version
-      pattern: "versions.yml"
-  - lifted:
-      type: file
-      description: BED file containing successfully lifted variants
-      pattern: "*.{lifted.bed}"
-  - unlifted:
-      type: file
-      description: BED file containing variants that couldn't be lifted
-      pattern: "*.{unlifted.bed}"
-
+  lifted:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.lifted.bed":
+          type: file
+          description: BED file containing successfully lifted variants
+          pattern: "*.{lifted.bed}"
+          ontologies: []
+  unlifted:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.unlifted.bed":
+          type: file
+          description: BED file containing variants that couldn't be lifted
+          pattern: "*.{unlifted.bed}"
+          ontologies: []
+  versions_ucsc:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ucsc:
+          type: string
+          description: The name of the tool
+      - "482":
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ucsc:
+          type: string
+          description: The name of the tool
+      - "482":
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
+  - "@nebfield"
+maintainers:
   - "@nebfield"

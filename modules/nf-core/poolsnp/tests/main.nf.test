@@ -1,0 +1,146 @@
+nextflow_process {
+
+    name "Test Process POOLSNP"
+    script "../main.nf"
+    process "POOLSNP"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "poolsnp"
+    tag "samtools/mpileup"
+
+    setup {
+        run("SAMTOOLS_MPILEUP") {
+            script "../../samtools/mpileup/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    [ ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id: 'fasta'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - mpileup - max_cov") {
+
+        when {
+            process {
+                """
+                input[0] = SAMTOOLS_MPILEUP.out.mpileup
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [ [ id:'test' ], 0.7, [] ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    // process.out.vcf.collect{meta, vcf ->  file(vcf).name + ':variantsMD5,' + path(vcf).vcf.variantsMD5},
+                    // Somehow conda produces empty variantsMD5, so only capture filename
+                    process.out.vcf.collect{meta, vcf ->  file(vcf).name},
+                    process.out.max_cov,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - mpileup - max_cov_file") {
+
+        when {
+            process {
+                """
+                input[0] = SAMTOOLS_MPILEUP.out.mpileup
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = channel.of([
+                    [ id:'test' ],
+                    '',
+                ]).combine(channel.of("MT192765.1\t98").collectFile( name:'max_cov.tsv', newLine: true ))
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    // process.out.vcf.collect{meta, vcf ->  file(vcf).name + ':variantsMD5,' + path(vcf).vcf.variantsMD5},
+                    // Somehow conda produces empty variantsMD5, so only capture filename
+                    process.out.vcf.collect{meta, vcf ->  file(vcf).name},
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - mpileup - max_cov - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = SAMTOOLS_MPILEUP.out.mpileup
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [ [ id:'test' ], 0.7, [] ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - mpileup - max_cov_file - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = SAMTOOLS_MPILEUP.out.mpileup
+                input[1] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = channel.of([
+                    [ id:'test' ],
+                    '',
+                ]).combine(channel.of("MT192765.1\t98").collectFile( name:'max_cov.tsv', newLine: true ))
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

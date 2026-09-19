@@ -2,10 +2,11 @@ process CANU {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::canu=2.2"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/canu:2.2--ha47f30e_0':
-        'quay.io/biocontainers/canu:2.2--ha47f30e_0' }"
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/canu:2.3--h3fb4750_1':
+        'quay.io/biocontainers/canu:2.3--h3fb4750_1' }"
 
     input:
     tuple val(meta), path(reads)
@@ -21,7 +22,10 @@ process CANU {
     tuple val(meta), path("*.contigs.layout")           , emit: metadata                , optional: true
     tuple val(meta), path("*.contigs.layout.readToTig") , emit: contig_position         , optional: true
     tuple val(meta), path("*.contigs.layout.tigInfo")   , emit: contig_info             , optional: true
-    path "versions.yml"                                 , emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('canu'), val("2.3"), emit: versions_canu, topic: versions
+    tuple val("${task.process}"), val("minimap2"), eval("minimap2 --version"), emit: versions_minimap2, topic: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), emit: versions_samtools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,17 +38,32 @@ process CANU {
     """
     canu \\
         -p ${prefix} \\
-        $mode \\
         genomeSize=${genomesize} \\
         $args \\
         maxThreads=$task.cpus \\
-        $reads
+        $mode $reads
 
     gzip *.fasta
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        canu: \$(echo \$(canu --version 2>&1) | sed 's/^.*canu //; s/Using.*\$//' )
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    def trimmed_cmd = args.contains("-trimmed") ? "-trimmed" : ""
+    def corrected_cmd = args.contains("-corrected") ? "-corrected" : ""
+    """
+    echo "" | gzip > ${prefix}.contigs.fasta.gz
+    echo "" | gzip > ${prefix}.unassembled.fasta.gz
+    if [ "${corrected_cmd}" != "" ]; then
+        echo "" | gzip > ${prefix}.correctedReads.fasta.gz
+    fi
+
+    if [ "${trimmed_cmd}" != "" ]; then
+        echo "" | gzip > ${prefix}.trimmedReads.fasta.gz
+    fi
+    touch ${prefix}.contigs.layout
+    touch ${prefix}.contigs.layout.readToTig
+    touch ${prefix}.contigs.layout.tigInfo
+    touch ${prefix}.report
     """
 }

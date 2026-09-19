@@ -1,0 +1,85 @@
+name: "wipertools_fastqwiper"
+description: A tool of the wipertools suite that fixes or wipes out uncompliant
+  reads from FASTQ files
+keywords:
+  - fastq
+  - malformed
+  - corrupted
+  - fix
+tools:
+  - "fastqwiper":
+      description: "A tool of the wipertools suite that that fixes or wipes out uncompliant
+        reads from FASTQ files."
+      homepage: "https://github.com/mazzalab/fastqwiper"
+      documentation: "https://github.com/mazzalab/fastqwiper"
+      tool_dev_url: "https://github.com/mazzalab/fastqwiper"
+      doi: "no DOI available"
+      licence:
+        - "GPL v2-or-later"
+      identifier: ""
+      args_id: "$args"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - fastq:
+        type: file
+        description: FASTQ file to be cleaned
+        pattern: "*.{fastq,fastq.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1930"
+          - edam: "http://edamontology.org/format_3989"
+output:
+  wiped_fastq:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}.fastq.gz:
+          type: file
+          description: Cleaned FASTQ file
+          pattern: "*.{fastq,fastq.gz}"
+          ontologies:
+            - edam: "http://edamontology.org/format_1930"
+            - edam: "http://edamontology.org/format_3989"
+  report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.report":
+          type: file
+          description: Summary of the cleaning task
+          pattern: "*.report"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330"
+  versions_wipertools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - wipertools:
+          type: string
+          description: The name of the tool
+      - wipertools fastqwiper --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - wipertools:
+          type: string
+          description: The name of the tool
+      - wipertools fastqwiper --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@tm4zza"
+maintainers:
+  - "@mazzalab"
+  - "@tm4zza"

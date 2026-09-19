@@ -1,18 +1,18 @@
 process CHECKV_UPDATEDATABASE {
     label 'process_low'
 
-    conda "bioconda::checkv=1.0.1"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/checkv:1.0.1--pyhdfd78af_0':
-        'quay.io/biocontainers/checkv:1.0.1--pyhdfd78af_0' }"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/checkv:1.0.3--pyhdfd78af_0':
+        'quay.io/biocontainers/checkv:1.0.3--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path (fasta)
     path db
 
     output:
-    tuple val(meta), path("${prefix}/*")        , emit: checkv_db
-    path "versions.yml"                         , emit: versions
+    tuple val(meta), path("${prefix}/*"), emit: checkv_db
+    tuple val("${task.process}"), val("checkv"), eval("checkv -h 2>&1 | sed '1!d;s/^.*CheckV v//;s/:.*//'"), topic: versions, emit: versions_checkv
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,19 +22,20 @@ process CHECKV_UPDATEDATABASE {
     prefix    = task.ext.prefix ?: "${meta.id}"
     def checkv_db = db ?: ''
     def update_sequence = fasta ?: ''
-
     """
     checkv update_database \\
         --threads $task.cpus \\
         $args \\
         $checkv_db \\
         ./$prefix/  \\
-        $update_sequence \\
+        $update_sequence
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        checkv: \$(checkv -h 2>&1  | sed -n 's/^.*CheckV v//; s/: assessing.*//; 1p')
-    END_VERSIONS
+    stub:
+    prefix    = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir -p ${prefix}/
+    touch ${prefix}/README.txt
     """
 
 }

@@ -1,0 +1,101 @@
+name: "pygenprop_build"
+description: |
+  Generate a Micromeda file containing pathway annotations for one or more genomes.
+  Supporting InterProScan and protein sequence information can also be optionally incorporated.
+keywords:
+  - genome properties
+  - functional annotation
+  - interproscan
+  - pathway analysis
+  - micromeda
+tools:
+  - "pygenprop":
+      description: A python library for programmatic usage of EBI InterPro Genome Properties.
+      homepage: "https://github.com/Micromeda/pygenprop"
+      documentation: "https://pygenprop.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/Micromeda/pygenprop"
+      licence:
+        - "Apache-2.0"
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - ips:
+        type: file
+        description: InterProScan TSV output file
+        pattern: "*.tsv"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+  - gp_txt:
+      type: file
+      description: |
+        Genome Properties flatfile (e.g. genomeProperties.txt)
+        This file can be found on the original archived repository link below:
+        https://raw.githubusercontent.com/ebi-pf-team/genome-properties/refs/heads/master/flatfiles/genomeProperties.txt
+      pattern: "*.txt"
+      ontologies:
+        - edam: http://edamontology.org/format_2330 # TXT
+output:
+  meda:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.micro":
+          type: file
+          description: |
+            Micromeda SQLite database containing Genome Properties assignments
+          pattern: "*.micro"
+          ontologies:
+            - edam: "http://edamontology.org/format_3621" # SQLite format
+
+  versions_pygenprop:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pygenprop:
+          type: string
+          description: The name of the tool
+      - '"1.1"':
+          type: string
+          description: The expression to obtain the version of the tool
+  versions_python:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python -V | sed "s/Python //g":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pygenprop:
+          type: string
+          description: The name of the tool
+      - '"1.1"':
+          type: string
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python -V | sed "s/Python //g":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"

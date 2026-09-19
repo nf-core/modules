@@ -1,5 +1,6 @@
 name: "deepbgc_download"
-description: Database download module for DeepBGC which detects BGCs in bacterial and fungal genomes using deep learning.
+description: Database download module for DeepBGC which detects BGCs in bacterial
+  and fungal genomes using deep learning.
 keywords:
   - database
   - download
@@ -18,17 +19,36 @@ tools:
       documentation: "https://github.com/Merck/deepbgc"
       tool_dev_url: "https://github.com/Merck/deepbgc"
       doi: "10.1093/nar/gkz654"
-      licence: "['MIT']"
-
+      licence: ["MIT"]
+      identifier: biotools:DeepBGC
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - deepbgc_db:
-      type: directory
-      description: Contains reference database files
-      pattern: "deepbgc_db"
-
+  db:
+    - deepbgc_db/:
+        type: directory
+        description: Directory containing the DeepBGC database
+        pattern: "deepbgc_db/"
+  versions_deepbgc:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deepbgc:
+          type: string
+          description: The name of the tool
+      - deepbgc info 2>&1 | sed '6!d;s/.*= version //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deepbgc:
+          type: string
+          description: The name of the tool
+      - deepbgc info 2>&1 | sed '6!d;s/.*= version //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
+  - "@louperelo"
+maintainers:
   - "@louperelo"

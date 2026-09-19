@@ -2,27 +2,31 @@ process DEEPTOOLS_BAMCOVERAGE {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::deeptools=3.5.1 bioconda::samtools=1.16.1"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-eb9e7907c7a753917c1e4d7a64384c047429618a:62d1ebe2d3a2a9d1a7ad31e0b902983fa7c25fa7-0':
-        'quay.io/biocontainers/mulled-v2-eb9e7907c7a753917c1e4d7a64384c047429618a:62d1ebe2d3a2a9d1a7ad31e0b902983fa7c25fa7-0' }"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/mulled-v2-eb9e7907c7a753917c1e4d7a64384c047429618a:28424fe3aec58d2b3e4e4390025d886207657d25-0':
+        'quay.io/biocontainers/mulled-v2-eb9e7907c7a753917c1e4d7a64384c047429618a:28424fe3aec58d2b3e4e4390025d886207657d25-0' }"
 
     input:
-    tuple val(meta), path(input), path(input_index)
+    tuple val(meta) , path(input)   , path(input_index)
     path(fasta)
     path(fasta_fai)
+    tuple val(meta2), path(blacklist)
 
     output:
-    tuple val(meta), path("*.bigWig")   , emit: bigwig, optional: true
-    tuple val(meta), path("*.bedgraph") , emit: bedgraph, optional: true
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("*.bigWig")  , emit: bigwig  , optional: true
+    tuple val(meta), path("*.bedgraph"), emit: bedgraph, optional: true
+    tuple val("${task.process}"), val('deeptools'), eval('bamCoverage --version | sed "s/bamCoverage //g"') , emit: versions_deeptools, topic: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'") , emit: versions_samtools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}.bigWig"
+    def args      = task.ext.args ?: ''
+    def prefix    = task.ext.prefix ?: "${meta.id}"
+    def blacklist_cmd = blacklist ? "--blackListFileName ${blacklist}" : ""
+    def extension = args.contains("--outFileFormat bedgraph") || args.contains("-of bedgraph") ? "bedgraph" : "bigWig"
 
     // cram_input is currently not working with deeptools
     // therefore it's required to convert cram to bam first
@@ -39,15 +43,9 @@ process DEEPTOOLS_BAMCOVERAGE {
             --bam $input_out \\
             $args \\
             --numberOfProcessors ${task.cpus} \\
-            --outFileName ${prefix}
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-            deeptools: \$(bamCoverage --version | sed -e "s/bamCoverage //g")
-        END_VERSIONS
+            --outFileName ${prefix}.${extension} \\
+            $blacklist_cmd
         """
-
     }
     else {
         """
@@ -55,13 +53,15 @@ process DEEPTOOLS_BAMCOVERAGE {
             --bam $input_out \\
             $args \\
             --numberOfProcessors ${task.cpus} \\
-            --outFileName ${prefix}
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            deeptools: \$(bamCoverage --version | sed -e "s/bamCoverage //g")
-        END_VERSIONS
+            --outFileName ${prefix}.${extension} \\
+            $blacklist_cmd
         """
     }
 
+    stub:
+    def prefix    = task.ext.prefix ?: "${meta.id}"
+    def extension = args.contains("--outFileFormat bedgraph") || args.contains("-of bedgraph") ? "bedgraph" : "bigWig"
+    """
+    touch ${prefix}.${extension}
+    """
 }

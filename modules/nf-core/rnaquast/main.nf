@@ -1,0 +1,42 @@
+process RNAQUAST {
+    tag "$meta.id"
+    label 'process_medium'
+
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/rnaquast:2.3.0--h9ee0642_0':
+        'quay.io/biocontainers/rnaquast:2.3.0--h9ee0642_0' }"
+
+    input:
+    tuple val(meta) , path(fasta)
+    tuple val(meta2), path(reference)
+    tuple val(meta3), path(gtf)
+
+    output:
+    tuple val(meta), path("${prefix}"), emit: results
+    tuple val("${task.process}"), val('rnaquast'), eval("rnaQUAST.py -h | grep -i 'rnaQUAST.py v' | sed -E 's/.*v\\.([0-9.]+).*/\\1/'"), topic: versions, emit: versions_rnaquast
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    reference = reference ? "--reference ${reference}" : ''
+    gtf = gtf ? "--gtf ${gtf}" : ''
+    """
+    rnaQUAST.py \\
+        $args \\
+        --threads $task.cpus \\
+        --transcripts ${fasta} \\
+        ${reference} \\
+        ${gtf} \\
+        -o ${prefix}
+    """
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir ${prefix}
+    touch ${prefix}/rnaQUAST.log
+    """
+}

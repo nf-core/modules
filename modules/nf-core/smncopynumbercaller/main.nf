@@ -2,18 +2,20 @@ process SMNCOPYNUMBERCALLER {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::smncopynumbercaller=1.1.2"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/smncopynumbercaller:1.1.2--py310h7cba7a3_0' :
         'quay.io/biocontainers/smncopynumbercaller:1.1.2--py310h7cba7a3_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
+    tuple val(meta2), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("out/*.tsv"),  emit: smncopynumber
     tuple val(meta), path("out/*.json"), emit: run_metrics
-    path "versions.yml" , emit: versions
+    tuple val("${task.process}"), val('smncopynumbercaller'), val('1.1.2'), topic: versions, emit: versions_smncopynumbercaller
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,34 +23,24 @@ process SMNCOPYNUMBERCALLER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = "1.1.2" // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
+    def reference = fasta ? "--reference ${fasta}" : ''
     """
     echo $bam | tr ' ' '
     ' > manifest.txt
     smn_caller.py \\
         $args \\
+        $reference \\
         --manifest manifest.txt \\
         --prefix $prefix \\
         --outDir "out" \\
         --threads $task.cpus
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        SMNCopyNumberCaller: $VERSION
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = "1.1.2"
     """
     mkdir out
     touch out/${prefix}.tsv
     touch out/${prefix}.json
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        SMNCopyNumberCaller: $VERSION
-    END_VERSIONS
     """
 }

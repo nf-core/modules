@@ -1,0 +1,94 @@
+nextflow_process {
+
+    name "Test Process FINALETOOLKIT_DELFI"
+    script "../main.nf"
+    process "FINALETOOLKIT_DELFI"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "finaletoolkit"
+    tag "finaletoolkit/delfi"
+
+    test("homo_sapiens - bam") {
+
+        when {
+
+            process {
+
+                config "./nextflow.config"
+
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam.bai', checkIfExists: true),
+                ]
+                input[1] = [
+                    [id: 'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.2bit', checkIfExists: true),
+                ]
+                input[2] = [
+                    [id: 'sizes' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.sizes', checkIfExists: true),
+                ]
+                input[3] = [
+                    [id: 'bins' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bins_10kb.bed', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match()  }
+            )
+
+        }
+
+    }
+
+    test("homo_sapiens - stub") {
+
+        options "-stub"
+
+        when {
+
+            process {
+
+                config "./nextflow.config"
+
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam.bai', checkIfExists: true),
+                ]
+                input[1] = [
+                    [id: 'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.2bit', checkIfExists: true),
+                ]
+                input[2] = [
+                    [id: 'sizes' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.sizes', checkIfExists: true),
+                ]
+                input[3] = [
+                    [id: 'bins' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bins_10kb.bed', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match()  }
+            )
+
+        }
+
+    }
+
+}

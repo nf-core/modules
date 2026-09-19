@@ -1,0 +1,50 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "mafft_align"
+description: Prepare channels for running MAFFT/align
+keywords:
+  - msa
+  - mafft
+  - align
+components:
+  - mafft/align
+input:
+  - ch_fasta:
+      type: file
+      description: |
+        The input channel containing the FASTA files
+      pattern: "*.{bam/cram/sam}"
+      structure:
+        - - meta:
+              type: map
+              description: |
+                Groovy Map containing sample information
+                e.g. `[ id:'sample1', single_end:false ]`
+          - fasta:
+              type: file
+              description: Input sequences in FASTA format
+              pattern: "*.{fa,fasta}"
+              ontologies:
+                - edam: http://edamontology.org/format_1929
+output:
+  - alignment:
+      type: file
+      description: Channel containing the alignment file in fasta format.
+      structure:
+        - - meta:
+              type: map
+              description: |
+                Groovy Map containing sample information
+                e.g. `[ id:'test']`
+          - "*.aln.gz":
+              type: file
+              description: Alignment file, in FASTA format.
+              pattern: "*.aln.gz"
+              ontologies:
+                - edam: http://edamontology.org/format_1984
+
+authors:
+  - "@mirpedrol"
+maintainers:
+  - "@mirpedrol"
+  - "@luisas"
+  - "@JoseEspinosa"

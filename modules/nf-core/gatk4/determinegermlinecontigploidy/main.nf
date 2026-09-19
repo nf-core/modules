@@ -1,56 +1,51 @@
 process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
-
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'broadinstitute/gatk:4.4.0.0':
-        'broadinstitute/gatk:4.4.0.0' }"
-
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "GATK4_DETERMINEGERMLINECONTIGPLOIDY module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b9/b9822b92da68a3e7916072218082e3fa79bebc2f377947c363613adeecd56ec5/data'
+        : 'community.wave.seqera.io/library/gatk4-main_gcnvkernel:961440660027ec01'}"
 
     input:
     tuple val(meta), path(counts), path(bed), path(exclude_beds)
-    path(contig_ploidy_table)
-    path(ploidy_model)
+    tuple val(meta2), path(ploidy_model)
+    path contig_ploidy_table
 
     output:
-    tuple val(meta), path("*-calls.tar.gz") , emit: calls
-    tuple val(meta), path("*-model.tar.gz") , emit: model, optional: true
-    path "versions.yml"                     , emit: versions
+    tuple val(meta), path("${prefix}-calls"), emit: calls
+    tuple val(meta), path("${prefix}-model"), emit: model, optional: true
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-
-    def input_list = counts.collect(){"--input $it"}.join(" ")
+    prefix = task.ext.prefix ?: "${meta.id}"
     def intervals = bed ? "--intervals ${bed}" : ""
-    def exclude = exclude_beds ? exclude_beds.collect(){"--exclude-intervals $it"}.join(" ") : ""
-    def untar_model = ploidy_model ? (
-        ploidy_model ==~ /^.*\.tar\.gz$/ ? "tar -xzf ${ploidy_model}" : ""
-    ) : ""
-    def tar_model = ploidy_model ? "" : "tar czf ${prefix}-model.tar.gz ${prefix}-model"
-    def model = ploidy_model ? (
-        ploidy_model ==~ /^.*\.tar\.gz$/ ? "--model ${ploidy_model.toString().replace(".tar.gz","")}" : "--model ${ploidy_model}"
-    ) : ""
+    def exclude = exclude_beds ? exclude_beds.collect { bed_ -> "--exclude-intervals ${bed_}" }.join(" ") : ""
     def contig_ploidy = contig_ploidy_table ? "--contig-ploidy-priors ${contig_ploidy_table}" : ""
+    def model = ploidy_model ? "--model ${ploidy_model}" : ""
+    def input_list = counts.collect { count -> "--input ${count}" }.join(" ")
 
     def avail_mem = 3072
     if (!task.memory) {
-        log.info '[GATK DetermineGermlineContigPloidy] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
-    } else {
-        avail_mem = (task.memory.mega*0.8).intValue()
+        log.info('[GATK DetermineGermlineContigPloidy] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.')
+    }
+    else {
+        avail_mem = (task.memory.mega * 0.8).intValue()
     }
     """
-    ${untar_model}
+    export THEANO_FLAGS="base_compiledir=\$PWD"
+    export PYTENSOR_FLAGS="base_compiledir=\$PWD"
+    export MPLCONFIGDIR="\$PWD"
+    export XDG_CACHE_HOME="\$PWD"
+    export OMP_NUM_THREADS=${task.cpus}
+    export MKL_NUM_THREADS=${task.cpus}
 
-    gatk --java-options "-Xmx${avail_mem}M" DetermineGermlineContigPloidy \\
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        DetermineGermlineContigPloidy \\
         ${input_list} \\
         --output ./ \\
         --output-prefix ${prefix} \\
@@ -60,27 +55,12 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
         ${model} \\
         --tmp-dir . \\
         ${args}
-
-    tar czf ${prefix}-calls.tar.gz ${prefix}-calls
-    ${tar_model}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}-calls.tar.gz
-    touch ${prefix}-model.tar.gz
-    touch ${prefix}.tsv
-    touch ${prefix}2.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
+    touch ${prefix}-calls
+    touch ${prefix}-model
     """
 }

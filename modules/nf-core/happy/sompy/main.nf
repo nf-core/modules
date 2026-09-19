@@ -1,0 +1,59 @@
+process HAPPY_SOMPY {
+    tag "$meta.id"
+    label 'process_medium'
+
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/hap.py:0.3.15--py27hcb73b3d_0':
+        'quay.io/biocontainers/hap.py:0.3.15--py27hcb73b3d_0' }"
+
+    input:
+    tuple val(meta), path(query_vcf), path(truth_vcf), path(regions_bed), path(targets_bed)
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fasta_fai)
+    tuple val(meta4), path(false_positives_bed)
+    tuple val(meta5), path(ambiguous_beds)
+    tuple val(meta6), path(bams)
+
+    output:
+    tuple val(meta), path('*.features.csv')           , emit: features, optional: true
+    tuple val(meta), path('*.metrics.json')           , emit: metrics
+    tuple val(meta), path('*.stats.csv')              , emit: stats
+    tuple val("${task.process}"), val('happy'), val('0.3.15'), topic: versions, emit: versions_happy
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def regions = regions_bed ? "-R ${regions_bed}" : ""
+    def targets = targets_bed ? "-T ${targets_bed}" : ""
+    def false_positives = false_positives_bed ? "--false-positives ${false_positives_bed}" : ""
+    def ambiguous = ambiguous_beds ? "--ambiguous ${ambiguous_beds}" : ""
+    def bams_opt = bams ? "--bam ${bams}" : ""
+    """
+    som.py \\
+        ${truth_vcf} \\
+        ${query_vcf} \\
+        ${args} \\
+        --reference ${fasta} \\
+        ${regions} \\
+        ${targets} \\
+        ${false_positives} \\
+        ${ambiguous} \\
+        ${bams_opt} \\
+        -o ${prefix}
+
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.features.csv
+    touch ${prefix}.metrics.json
+    touch ${prefix}.stats.csv
+
+    """
+}

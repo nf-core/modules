@@ -1,0 +1,94 @@
+name: hisat3n_align
+description: Align nucleotide conversion sequencing reads (e.g., bisulfite-seq, SLAM-seq)
+  to a reference genome with HISAT-3N
+keywords:
+  - align
+  - bisulfite
+  - methylation
+  - nucleotide conversion
+  - SLAM-seq
+  - fastq
+  - genome
+tools:
+  - hisat-3n:
+      description: HISAT-3N is designed for nucleotide conversion sequencing technologies
+        and implemented based on HISAT2.
+      homepage: http://daehwankimlab.github.io/hisat2/hisat-3n/
+      documentation: http://daehwankimlab.github.io/hisat2/hisat-3n/
+      tool_dev_url: https://github.com/DaehwanKimLab/hisat2/tree/hisat-3n
+      doi: "10.1101/gr.275193.120"
+      licence: ["GPL v3"]
+      identifier: biotools:hisat2
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sample1', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+          respectively.
+        pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 #FASTQ
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - index:
+        type: file
+        description: HISAT-3N genome index files
+        pattern: "*.ht2"
+        ontologies: []
+output:
+  sam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1', single_end:false ]
+      - "*.sam":
+          type: file
+          description: Output SAM file containing read alignments
+          pattern: "*.sam"
+          ontologies:
+            - edam: http://edamontology.org/format_2573 #SAM
+  summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1', single_end:false ]
+      - "*.log":
+          type: file
+          description: Alignment summary log
+          pattern: "*.log"
+          ontologies: []
+  versions_hisat3n:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - hisat-3n:
+          type: string
+          description: The tool name
+      - "hisat-3n --version 2>&1 | head -1 | sed 's/.* //'":
+          type: eval
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - hisat-3n:
+          type: string
+          description: The tool name
+      - "hisat-3n --version 2>&1 | head -1 | sed 's/.* //'":
+          type: eval
+          description: The command used to generate the version of the tool
+authors:
+  - "@emmcauley"
+maintainers:
+  - "@emmcauley"

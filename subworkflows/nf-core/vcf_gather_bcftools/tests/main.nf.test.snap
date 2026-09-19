@@ -1,0 +1,164 @@
+{
+    "homo_sapiens - [vcf, tbi] [vcf, tbi] - meta [] 2 - sample, key - true": {
+        "content": [
+            [
+                [
+                    {
+                        "sample": "test",
+                        "key": "1",
+                        "metas": [
+                            {
+                                "other": "annotated",
+                                "id": "test_1"
+                            },
+                            {
+                                "other": "not_annotated",
+                                "id": "test_2"
+                            }
+                        ]
+                    },
+                    "27f188f2e0aeb3af6723aa52beb11edc",
+                    "VcfFile [chromosomes=[chr21], sampleCount=1, variantCount=1466, phased=false, phasedAutodetect=false]"
+                ]
+            ],
+            [
+                [
+                    {
+                        "sample": "test",
+                        "key": "1",
+                        "metas": [
+                            {
+                                "other": "annotated",
+                                "id": "test_1"
+                            },
+                            {
+                                "other": "not_annotated",
+                                "id": "test_2"
+                            }
+                        ]
+                    },
+                    "null.vcf.gz.tbi"
+                ]
+            ]
+        ],
+        "timestamp": "2026-08-03T15:38:27.977677292",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "homo_sapiens - [vcf, tbi] [vcf, tbi] - meta [] 1 - id - false": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test_1",
+                        "metas": [
+                            {
+                                "sample": "test",
+                                "other": "test_1"
+                            }
+                        ]
+                    },
+                    "test_1.vcf.gz:md5,14436719e207dff626ab5a025c5623f2"
+                ],
+                [
+                    {
+                        "id": "test_2",
+                        "metas": [
+                            {
+                                "sample": "test",
+                                "other": "test_2"
+                            }
+                        ]
+                    },
+                    "test_2.vcf.gz:md5,a0b87fd17270e86ec99ba63730db447f"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test_1",
+                        "metas": [
+                            {
+                                "sample": "test",
+                                "other": "test_1"
+                            }
+                        ]
+                    },
+                    "test_1.vcf.gz.tbi"
+                ],
+                [
+                    {
+                        "id": "test_2",
+                        "metas": [
+                            {
+                                "sample": "test",
+                                "other": "test_2"
+                            }
+                        ]
+                    },
+                    "test_2.vcf.gz.tbi"
+                ]
+            ]
+        ],
+        "timestamp": "2026-05-19T10:31:45.98501498",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "homo_sapiens no_meta - [vcf, tbi] [vcf, tbi] - meta equal [] 2 - [] - true": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "27f188f2e0aeb3af6723aa52beb11edc",
+                    "VcfFile [chromosomes=[chr21], sampleCount=1, variantCount=1466, phased=false, phasedAutodetect=false]"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.vcf.gz.tbi"
+                ]
+            ]
+        ],
+        "timestamp": "2026-05-19T10:31:54.592737445",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "homo_sapiens no_meta - [vcf, tbi] [vcf, tbi] - meta equal [] 2 - [] - true -- stub": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "other_meta": "test"
+                    },
+                    "test.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                    "test.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                [
+                    {
+                        "id": "test2",
+                        "other_meta": "test2"
+                    },
+                    "test2.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                    "test2.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ]
+            ]
+        ],
+        "timestamp": "2026-05-19T10:32:03.746217118",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    }
+}

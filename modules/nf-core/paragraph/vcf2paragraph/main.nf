@@ -3,8 +3,8 @@ process PARAGRAPH_VCF2PARAGRAPH {
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::paragraph=2.3"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/paragraph:2.3--h21f15d8_1':
         'quay.io/biocontainers/paragraph:2.3--h21f15d8_1' }"
 
@@ -14,7 +14,8 @@ process PARAGRAPH_VCF2PARAGRAPH {
 
     output:
     tuple val(meta), path("*.json.gz")  , emit: graph
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('paragraph'), val('2.3'), emit: versions_paragraph, topic: versions
+    tuple val("${task.process}"), val('bgzip'), eval("bgzip -h 2>&1 | tr '\n' ' ' | sed 's/^.*Version: //; s/ .*\$//'"), emit: versions_bgzip, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,8 +25,6 @@ process PARAGRAPH_VCF2PARAGRAPH {
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def VERSION = '2.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
     """
     vcf2paragraph.py \\
         ${args} \\
@@ -34,26 +33,12 @@ process PARAGRAPH_VCF2PARAGRAPH {
         ${prefix}.json
 
     bgzip --threads ${task.cpus} ${args2} ${prefix}.json
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        paragraph: ${VERSION}
-        bgzip: \$(echo \$(bgzip -h 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def VERSION = '2.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
     """
-    touch ${prefix}.json.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        paragraph: ${VERSION}
-        bgzip: \$(echo \$(bgzip -h 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
-    END_VERSIONS
+    echo "" | gzip > ${prefix}.json.gz
     """
 }

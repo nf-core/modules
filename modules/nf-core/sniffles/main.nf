@@ -2,20 +2,24 @@ process SNIFFLES {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::sniffles=2.0.7"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sniffles:2.0.7--pyhdfd78af_0' :
-        'quay.io/biocontainers/sniffles:2.0.7--pyhdfd78af_0' }"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a3/a392a64ae046bd1b8679f2ae590f88d84fed26d569ab70810df969741722dbcc/data'
+:         'community.wave.seqera.io/library/sniffles:2.8.0--c25a97c10afa095a' }"
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(input), path(index)
     tuple val(meta2), path(fasta)
+    tuple val(meta3), path(tandem_file)
+    val(vcf_output)
+    val(snf_output)
 
 
     output:
-    tuple val(meta), path("*.vcf"), emit: vcf
-    tuple val(meta), path("*.snf"), emit: snf
-    path "versions.yml"                    , emit: versions
+    tuple val(meta), path("*.vcf.gz")    , emit: vcf, optional: true
+    tuple val(meta), path("*.vcf.gz.tbi"), emit: tbi, optional: true
+    tuple val(meta), path("*.snf")       , emit: snf, optional: true
+    tuple val("${task.process}"), val('sniffles'), eval("sniffles --version | sed 's/.* //g'"), emit: versions_sniffles, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,18 +27,29 @@ process SNIFFLES {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def reference = fasta ? "--reference ${fasta}" : ""
+    def tandem_repeats = tandem_file ? "--tandem-repeats ${tandem_file}" : ''
+    def vcf = vcf_output ? "--vcf ${prefix}.vcf.gz": ''
+    def snf = snf_output ? "--snf ${prefix}.snf": ''
+
     """
     sniffles \\
-        --input $bam \\
-        --vcf ${prefix}.vcf \\
-        --snf ${prefix}.snf \\
-        --reference $fasta \\
+        --input $input \\
+        $reference \\
         -t $task.cpus \\
+        $tandem_repeats \\
+        $vcf \\
+        $snf \\
         $args
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sniffles: \$(sniffles --help 2>&1 | grep Version |sed 's/^.*Version //')
-    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def vcf = vcf_output ? "echo \"\" | gzip > ${prefix}.vcf.gz; touch ${prefix}.vcf.gz.tbi": ''
+    def snf = snf_output ? "touch ${prefix}.snf": ''
+
+    """
+    ${vcf}
+    ${snf}
     """
 }
-

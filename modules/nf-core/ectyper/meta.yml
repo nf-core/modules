@@ -10,42 +10,77 @@ tools:
       homepage: https://github.com/phac-nml/ecoli_serotyping
       documentation: https://github.com/phac-nml/ecoli_serotyping
       tool_dev_url: https://github.com/phac-nml/ecoli_serotyping
-
-      licence: ["Apache 2"]
-
+      licence:
+        - "Apache 2"
+      identifier: biotools:ectyper
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: FASTA formatted assembly file
-      pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: FASTA formatted assembly file
+        pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz}"
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - log:
-      type: file
-      description: ectyper log output
-      pattern: "*.log"
-  - tsv:
-      type: file
-      description: ectyper serotyping results in TSV format
-      pattern: "*.tsv"
-  - txt:
-      type: file
-      description: Allele report generated from BLAST results
-      pattern: "*.tst"
-
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.log":
+          type: file
+          description: ectyper log output
+          pattern: "*.log"
+          ontologies: []
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tsv":
+          type: file
+          description: ectyper serotyping results in TSV format
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt":
+          type: file
+          description: Allele report generated from BLAST results
+          pattern: "*.txt"
+          ontologies: []
+  versions_ectyper:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ectyper:
+          type: string
+          description: The name of the tool
+      - ectyper --version 2>&1 | sed 's/.*ectyper //; s/ .*$//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ectyper:
+          type: string
+          description: The name of the tool
+      - ectyper --version 2>&1 | sed 's/.*ectyper //; s/ .*$//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

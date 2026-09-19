@@ -1,0 +1,74 @@
+name: untarfiles
+description: Extract files.
+deprecated: true
+keywords:
+  - untar
+  - uncompress
+  - files
+tools:
+  - untar:
+      description: |
+        Extract tar.gz files.
+      documentation: https://www.gnu.org/software/tar/manual/
+      licence:
+        - "GPL-3.0-or-later"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - archive:
+        type: file
+        description: File to be untar
+        pattern: "*.{tar}.{gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_3981 # TAR format
+          - edam: http://edamontology.org/format_3989 # GZIP format
+output:
+  files:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/**:
+          type: string
+          description: A list containing references to individual archive files
+          pattern: "*/**"
+  versions_tar:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tar:
+          type: string
+          description: The name of the tool
+      - tar --version 2>&1 | sed '1s/^.*(GNU tar) //;q':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tar:
+          type: string
+          description: The name of the tool
+      - tar --version 2>&1 | sed '1s/^.*(GNU tar) //;q':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@joseespinosa"
+  - "@drpatelh"
+  - "@matthdsm"
+  - "@jfy133"
+  - "@pinin4fjords"
+maintainers:
+  - "@joseespinosa"
+  - "@drpatelh"
+  - "@matthdsm"
+  - "@jfy133"
+  - "@pinin4fjords"

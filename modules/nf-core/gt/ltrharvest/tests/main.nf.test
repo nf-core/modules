@@ -1,0 +1,176 @@
+nextflow_process {
+
+    name "Test Process GT_LTRHARVEST"
+    script "../main.nf"
+    process "GT_LTRHARVEST"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gt"
+    tag "gt/ltrharvest"
+    tag "gt/suffixerator"
+
+    test("homo_sapiens-genome_21_fasta-success") {
+        setup {
+            run("GT_SUFFIXERATOR") {
+                script "../../../gt/suffixerator"
+
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                    ]
+                    input[1] = 'dna'
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_suffixerator_args = '-suf -lcp'
+                module_ltrharvest_args = ''
+            }
+            process {
+                """
+                input[0] = GT_SUFFIXERATOR.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens-genome_21_fasta-success-extended_outputs") {
+        setup {
+            run("GT_SUFFIXERATOR") {
+                script "../../../gt/suffixerator"
+
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                    ]
+                    input[1] = 'dna'
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_suffixerator_args = '-suf -lcp'
+                module_ltrharvest_args = '-tabout no -out test.out.fasta -outinner test.inner.fasta'
+            }
+            process {
+                """
+                input[0] = GT_SUFFIXERATOR.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens-genome_21_fasta-success-extended_custom_outputs") {
+        setup {
+            run("GT_SUFFIXERATOR") {
+                script "../../../gt/suffixerator"
+
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                    ]
+                    input[1] = 'dna'
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_suffixerator_args = '-suf -lcp'
+                module_ltrharvest_args = '-tabout no -out custom.custom2.fa -outinner custom.custom2.custom3_custom4.fsa'
+            }
+            process {
+                """
+                input[0] = GT_SUFFIXERATOR.out.index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("stub") {
+        options '-stub'
+        when {
+            params {
+                module_suffixerator_args = ''
+                module_ltrharvest_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("stub-extended_outputs") {
+        options '-stub'
+        when {
+            params {
+                module_suffixerator_args = '-suf -lcp'
+                module_ltrharvest_args = '-tabout no -out test.out.fasta -outinner test.inner.fasta'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

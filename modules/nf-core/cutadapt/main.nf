@@ -2,10 +2,10 @@ process CUTADAPT {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::cutadapt=3.4"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cutadapt:3.4--py39h38f01e4_1' :
-        'quay.io/biocontainers/cutadapt:3.4--py39h38f01e4_1' }"
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/cutadapt:5.2--py311haab0aaa_0' :
+        'quay.io/biocontainers/cutadapt:5.2--py311haab0aaa_0'}"
 
     input:
     tuple val(meta), path(reads)
@@ -13,7 +13,7 @@ process CUTADAPT {
     output:
     tuple val(meta), path('*.trim.fastq.gz'), emit: reads
     tuple val(meta), path('*.log')          , emit: log
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val("cutadapt"), eval('cutadapt --version'), topic: versions, emit: versions_cutadapt
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,9 +29,19 @@ process CUTADAPT {
         $trimmed \\
         $reads \\
         > ${prefix}.cutadapt.log
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cutadapt: \$(cutadapt --version)
-    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    if (meta.single_end) {
+        output_command = "echo '' | gzip > ${prefix}.trim.fastq.gz ;"
+    }
+    else {
+        output_command  = "echo '' | gzip > ${prefix}_1.trim.fastq.gz ;"
+        output_command += "echo '' | gzip > ${prefix}_2.trim.fastq.gz ;"
+    }
+    """
+    ${output_command}
+    touch ${prefix}.cutadapt.log
     """
 }

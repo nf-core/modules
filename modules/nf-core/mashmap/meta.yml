@@ -1,0 +1,79 @@
+name: "mashmap"
+description: Mashmap is an approximate long read or contig mapper based on
+  Jaccard similarity
+keywords:
+  - mapper
+  - aligner
+  - minhash
+  - kmer
+tools:
+  - "mashmap":
+      description: "A fast approximate aligner for long DNA sequences."
+      homepage: "https://github.com/marbl/MashMap"
+      documentation: "https://github.com/marbl/MashMap"
+      tool_dev_url: "https://github.com/marbl/MashMap"
+      doi: "10.1007/978-3-319-56970-3_5"
+      licence:
+        - "Public Domain"
+      identifier: biotools:mashmap
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - fasta:
+        type: file
+        description: Input fasta file containing query sequences
+        pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - reference:
+        type: file
+        description: Input fasta file containing reference sequences
+        pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+        ontologies: []
+output:
+  paf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.paf":
+          type: file
+          description: Alignment in PAF format
+          pattern: "*.paf"
+          ontologies: []
+  versions_mashmap:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mashmap:
+          type: string
+          description: The name of the tool
+      - mashmap --version 2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mashmap:
+          type: string
+          description: The name of the tool
+      - mashmap --version 2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@mberacochea"
+maintainers:
+  - "@mberacochea"

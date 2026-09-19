@@ -1,0 +1,58 @@
+
+nextflow_process {
+
+    name "Test Process LISSERO"
+    script "../main.nf"
+    process "LISSERO"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "lissero"
+
+    test("test-lissero") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+				    file("https://github.com/MDU-PHL/LisSero/raw/master/tests/test_seq/NC_002973.fna", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.tsv[0][1]).readLines()[0],
+                    sanitizeOutput(process.out, unstableKeys: ["tsv"])
+                ).match() }
+            )
+        }
+    }
+
+    test("test-lissero-stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+				    file("https://github.com/MDU-PHL/LisSero/raw/master/tests/test_seq/NC_002973.fna", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

@@ -1,8 +1,0 @@
-- name: concoct extractfastabins test_concoct_extractfastabins
-  command: nextflow run ./tests/modules/nf-core/concoct/extractfastabins -entry test_concoct_extractfastabins -c ./tests/config/nextflow.config -c ./tests/modules/nf-core/concoct/extractfastabins/nextflow.config
-  tags:
-    - concoct
-    - concoct/extractfastabins
-  files:
-    - path: output/concoct/test/test_3.fa.gz
-      contains: ["MT192765.1"]

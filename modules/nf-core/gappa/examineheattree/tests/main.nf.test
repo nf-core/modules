@@ -1,0 +1,67 @@
+
+nextflow_process {
+
+    name "Test Process GAPPA_EXAMINEHEATTREE"
+    script "../main.nf"
+    process "GAPPA_EXAMINEHEATTREE"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gappa"
+    tag "gappa/examineheattree"
+
+    test("test-gappa-examineheattree") {
+
+        when {
+            params {
+                module_args = "--write-newick-tree --write-nexus-tree --write-phyloxml-tree --write-svg-tree"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/gappa/epa_result.jplace.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["svg", "colours", "log"]),
+                    file(process.out.svg[0][1]).readLines()[3..7],
+                    file(process.out.colours[0][1]).readLines()[3..5],
+                ).match()}
+            )
+        }
+    }
+
+    test("test-gappa-examineheattree-stub") {
+        options '-stub'
+
+        when {
+            params {
+                module_args = "--write-newick-tree --write-nexus-tree --write-phyloxml-tree --write-svg-tree"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/gappa/epa_result.jplace.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

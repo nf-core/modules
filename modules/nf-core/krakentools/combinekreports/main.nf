@@ -1,17 +1,18 @@
 process KRAKENTOOLS_COMBINEKREPORTS {
     label 'process_single'
 
-    conda "bioconda::krakentools=1.2"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/krakentools:1.2--pyh5e36f6f_0':
-        'quay.io/biocontainers/krakentools:1.2--pyh5e36f6f_0' }"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/krakentools:1.2.1--pyh7e72e81_0':
+        'quay.io/biocontainers/krakentools:1.2.1--pyh7e72e81_0'}"
 
     input:
     tuple val(meta), path(kreports)
 
     output:
     tuple val(meta), path("*.txt"), emit: txt
-    path "versions.yml", emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('krakentools'), val('1.2.1'), topic: versions, emit: versions_krakentools
 
     when:
     task.ext.when == null || task.ext.when
@@ -19,16 +20,16 @@ process KRAKENTOOLS_COMBINEKREPORTS {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     combine_kreports.py \\
         -r ${kreports} \\
         -o ${prefix}.txt \\
         ${args}
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        combine_kreports.py: ${VERSION}
-    END_VERSIONS
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.txt
     """
 }

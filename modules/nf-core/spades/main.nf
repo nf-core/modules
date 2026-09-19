@@ -2,10 +2,10 @@ process SPADES {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::spades=3.15.5"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/spades:3.15.5--h95f258a_1' :
-        'quay.io/biocontainers/spades:3.15.5--h95f258a_1' }"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7b/7b7b68c7f8471d9111841dbe594c00a41cdd3b713015c838c4b22705cfbbdfb2/data' :
+        'community.wave.seqera.io/library/spades:4.1.0--77799c52e1d1054a' }"
 
     input:
     tuple val(meta), path(illumina), path(pacbio), path(nanopore)
@@ -18,8 +18,9 @@ process SPADES {
     tuple val(meta), path('*.transcripts.fa.gz')  , optional:true, emit: transcripts
     tuple val(meta), path('*.gene_clusters.fa.gz'), optional:true, emit: gene_clusters
     tuple val(meta), path('*.assembly.gfa.gz')    , optional:true, emit: gfa
-    tuple val(meta), path('*.log')                , emit: log
-    path  "versions.yml"                          , emit: versions
+    tuple val(meta), path('*.warnings.log')         , optional:true, emit: warnings
+    tuple val(meta), path('*.spades.log')         , emit: log
+    tuple val("${task.process}"), val('spades'), eval("spades.py --version 2>&1 | sed -n 's/^.*SPAdes genome assembler v//p'"), topic: versions, emit: versions_spades
 
     when:
     task.ext.when == null || task.ext.when
@@ -65,9 +66,20 @@ process SPADES {
         gzip -n ${prefix}.gene_clusters.fa
     fi
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        spades: \$(spades.py --version 2>&1 | sed 's/^.*SPAdes genome assembler v//; s/ .*\$//')
-    END_VERSIONS
+    if [ -f warnings.log ]; then
+        mv warnings.log ${prefix}.warnings.log
+    fi
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.scaffolds.fa.gz
+    echo "" | gzip > ${prefix}.contigs.fa.gz
+    echo "" | gzip > ${prefix}.transcripts.fa.gz
+    echo "" | gzip > ${prefix}.gene_clusters.fa.gz
+    echo "" | gzip > ${prefix}.assembly.gfa.gz
+    touch ${prefix}.spades.log
+    touch ${prefix}.warnings.log
     """
 }

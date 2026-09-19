@@ -1,0 +1,73 @@
+name: "leviosam2_lift"
+description: Converting aligned short and long reads records from one reference
+  to another
+keywords:
+  - leviosam2
+  - index
+  - lift
+tools:
+  - "leviosam2":
+      description: "Fast and accurate coordinate conversion between assemblies"
+      homepage: "https://github.com/milkschen/leviosam2/blob/main/workflow/README.md"
+      documentation: "https://github.com/milkschen/leviosam2/blob/main/workflow/README.md"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - input:
+        type: file
+        description: SAM/BAM/CRAM file to be lifted
+        pattern: "*.{bam}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'reference' ]`
+    - clft:
+        type: file
+        description: Clft file of indexed ChainMap.
+        pattern: "*.{clft}"
+        ontologies: []
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'reference' ]`
+      - "*.bam":
+          type: file
+          description: Lifted bam file
+          pattern: "*.{bam}"
+          ontologies: []
+  versions_leviosam2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - "leviosam2":
+          type: string
+          description: The name of the tool
+      - leviosam2 --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - "leviosam2":
+          type: string
+          description: The name of the tool
+      - leviosam2 --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@lgrochowalski"
+maintainers:
+  - "@lgrochowalski"

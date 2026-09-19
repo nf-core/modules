@@ -1,0 +1,153 @@
+name: "wisecondorx_predict"
+description: Find copy number aberrations
+keywords:
+  - copy number variation
+  - bed
+  - npz
+  - png
+tools:
+  - "wisecondorx":
+      description: "WIthin-SamplE COpy Number aberration DetectOR, including sex chromosomes"
+      homepage: "https://github.com/CenterForMedicalGeneticsGhent/WisecondorX"
+      documentation: "https://github.com/CenterForMedicalGeneticsGhent/WisecondorX"
+      tool_dev_url: "https://github.com/CenterForMedicalGeneticsGhent/WisecondorX"
+      doi: "10.1093/nar/gky1263"
+      licence:
+        - "Attribution-NonCommercial-ShareAlike CC BY-NC-SA"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - npz:
+        type: file
+        description: An NPZ file created with WisecondorX convert
+        pattern: "*.npz"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test', single_end:false ]
+    - reference:
+        type: file
+        description: A reference NPZ file created with WisecondorX newref
+        pattern: "*.npz"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - blacklist:
+        type: file
+        description: OPTIONAL - A BED file containing blacklist regions (used
+          mainly when the reference is small)
+        pattern: "*.bed"
+        ontologies: []
+output:
+  aberrations_bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*_aberrations.bed"
+      - "*_aberrations.bed":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*_aberrations.bed"
+  bins_bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*_aberrations.bed"
+      - "*_bins.bed":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*_bins.bed"
+  segments_bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*_aberrations.bed"
+      - "*_segments.bed":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*_segments.bed"
+  chr_statistics:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*_aberrations.bed"
+      - "*_statistics.txt":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*_chr_statistics.txt"
+  chr_plots:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*_aberrations.bed"
+      - "[!genome_wide]*.png":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "[!genome_wide]*.png"
+  genome_plot:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*_aberrations.bed"
+      - genome_wide.png:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "genome_wide.png"
+  versions_wisecondorx:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - wisecondorx:
+          type: string
+          description: The name of the tool
+      - python -c "import wisecondorx; print(wisecondorx.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - wisecondorx:
+          type: string
+          description: The name of the tool
+      - python -c "import wisecondorx; print(wisecondorx.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@nvnieuwk"
+maintainers:
+  - "@nvnieuwk"

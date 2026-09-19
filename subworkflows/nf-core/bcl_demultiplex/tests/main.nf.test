@@ -1,0 +1,119 @@
+// nf-core subworkflows test bcl_demultiplex
+nextflow_workflow {
+
+    name "Test Subworkflow test_bcl_demultiplex_bclconvert"
+    script "../main.nf"
+    config "./nextflow.config"
+    workflow "BCL_DEMULTIPLEX"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/bcl_demultiplex"
+    tag "bclconvert"
+    tag "bcl2fastq"
+    tag "multiqcsav"
+    tag "untar"
+
+    test("bclconvert") {
+        setup {
+            run("UNTAR") {
+                script "../../../../modules/nf-core/untar/main.nf"
+                process {
+                """
+                input[0] = Channel.value([
+                    [id:'HMTFYDRXX', lane:1],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/bcl/200624_A00834_0183_BHMTFYDRXX.tar.gz")
+                ])
+                """
+                }
+            }
+        }
+
+        when {
+            workflow {
+                """
+                input[0] = UNTAR.out.untar.map { meta, bcl -> [meta, file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/illumina/bcl/SampleSheet.csv"), bcl] }
+                input[1] = "bclconvert"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    sanitizeOutput(workflow.out, unstableKeys: ["empty_fastq", "logs", "sav_report", "sav_data", "sav_plots", "undetermined"]).collectEntries { key, val ->
+                        if (key == "interop") {
+                            return [ key, val.collect { meta, files ->
+                                [
+                                    meta,
+                                    files.collect { interop_file ->
+                                        if (interop_file.endsWith("IndexMetricsOut.bin")) {
+                                            file(interop_file).name
+                                        } else {
+                                            interop_file
+                                        }
+                                    }
+                                ]
+                            } ]
+                        }
+                        return [ key, val ]
+                    },
+                    ).match()
+                },
+            )
+        }
+    }
+
+    test("bcl2fastq") {
+        setup {
+            run("UNTAR") {
+                script "../../../../modules/nf-core/untar/main.nf"
+                process {
+                """
+                input[0] = Channel.value([
+                    [id:'test', lane:1 ],
+                    file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/bcl/flowcell.tar.gz")
+                ])
+                """
+                }
+            }
+        }
+
+        when {
+            workflow {
+                """
+                input[0] = UNTAR.out.untar.map { meta, bcl -> [meta, file("https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/illumina/bcl/flowcell_samplesheet.csv"), bcl] }
+                input[1] = "bcl2fastq"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    sanitizeOutput(workflow.out, unstableKeys: ["empty_fastq", "logs", "sav_report", "sav_data", "sav_plots", "undetermined"]).collectEntries { key, val ->
+                        if (key == "fastq")
+                        if (key == "interop") {
+                            return [ key, val.collect { meta, files ->
+                                [
+                                    meta,
+                                    files.collect { interop_file ->
+                                        if (interop_file.endsWith("IndexMetricsOut.bin")) {
+                                            file(interop_file).name
+                                        } else {
+                                            interop_file
+                                        }
+                                    }
+                                ]
+                            } ]
+                        }
+                        return [ key, val ]
+                    },
+                    ).match()
+                },
+            )
+        }
+    }
+}

@@ -1,0 +1,309 @@
+nextflow_process {
+
+    name "Test Process MAFFT_ALIGN"
+    script "../main.nf"
+    process "MAFFT_ALIGN"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mafft"
+    tag "mafft/align"
+
+    test("SARS-CoV-2 scaffolds fasta - uncompressed") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/scaffolds.fasta', checkIfExists: true)
+                    ]
+                input[1] = [[:], []]
+                input[2] = [[:], []]
+                input[3] = [[:], []]
+                input[4] = [[:], []]
+                input[5] = [[:], []]
+                input[6] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("SARS-CoV-2 scaffolds fasta - compressed") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/scaffolds.fasta', checkIfExists: true)
+                    ]
+                input[1] = [[:], []]
+                input[2] = [[:], []]
+                input[3] = [[:], []]
+                input[4] = [[:], []]
+                input[5] = [[:], []]
+                input[6] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("SARS-CoV-2 scaffolds fasta - add informative sites fasta normal") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                input[1] = [[ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists: true)
+                    ]
+                input[2] = [[:], []]
+                input[3] = [[:], []]
+                input[4] = [[:], []]
+                input[5] = [[:], []]
+                input[6] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("SARS-CoV-2 scaffolds fasta - add informative sites fasta fragments") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                input[1] = [[:], []]
+                input[2] = [
+                    [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists: true)
+                    ]
+                input[3] = [[:], []]
+                input[4] = [[:], []]
+                input[5] = [[:], []]
+                input[6] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("SARS-CoV-2 scaffolds fasta - add informative sites fasta full") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                input[1] = [[:], []]
+                input[2] = [[:], []]
+                input[3] = [[ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists: true)
+                    ]
+                input[4] = [[:], []]
+                input[5] = [[:], []]
+                input[6] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("SARS-CoV-2 scaffolds fasta - add informative sites fasta profile") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                input[1] = [[:], []]
+                input[2] = [[:], []]
+                input[3] = [[:], []]
+                input[4] = [[ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists: true)
+                    ]
+                input[5] = [[:], []]
+                input[6] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("SARS-CoV-2 scaffolds fasta - add informative sites fasta long") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                input[1] = [[:], []]
+                input[2] = [[:], []]
+                input[3] = [[:], []]
+                input[4] = [[:], []]
+                input[5] =  [
+                    [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists: true)
+                    ]
+                input[6] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("SARS-CoV-2 scaffolds fasta - add informative sites all sites fasta multiple") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    ]
+                input[1] = [
+                    [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/all_sites.fas', checkIfExists: true)
+                    ]
+                input[2] = [
+                    [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists: true)
+                    ]
+                input[3] = [[:], []]
+                input[4] = [[:], []]
+                input[5] = [[:], []]
+                input[6] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("SARS-CoV-2 scaffolds fasta - uncompressed - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/scaffolds.fasta', checkIfExists: true)
+                    ]
+                input[1] = [[:], []]
+                input[2] = [[:], []]
+                input[3] = [[:], []]
+                input[4] = [[:], []]
+                input[5] = [[:], []]
+                input[6] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("SARS-CoV-2 scaffolds fasta - compressed - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/scaffolds.fasta', checkIfExists: true)
+                    ]
+                input[1] = [[:], []]
+                input[2] = [[:], []]
+                input[3] = [[:], []]
+                input[4] = [[:], []]
+                input[5] = [[:], []]
+                input[6] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

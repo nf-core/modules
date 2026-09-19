@@ -1,0 +1,100 @@
+nextflow_process {
+
+    name "Test Process MUDSKIPPER_BULK"
+    script "../main.nf"
+    process "MUDSKIPPER_BULK"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mudskipper"
+    tag "mudskipper/bulk"
+    tag "samtools/sort"
+    tag "mudskipper/index"
+
+    test("homo_sapiens - gtf - bam") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test' ],
+                    file(params.modules_testdata_base_path +  'genomics/homo_sapiens/illumina/bam/test2.paired_end.name.sorted.bam', checkIfExists: true)
+                ]
+                input[1] = [[], []]
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - gtf - bam - withindex") {
+
+        setup {
+            run("MUDSKIPPER_INDEX"){
+                script "../../index/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id: "genome" ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test' ],
+                    file(params.modules_testdata_base_path +  'genomics/homo_sapiens/illumina/bam/test2.paired_end.name.sorted.bam', checkIfExists: true)
+                ]
+                input[1] = MUDSKIPPER_INDEX.out.index
+                input[2] = []
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - gtf - bam -- stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test' ],
+                    file(params.modules_testdata_base_path +  'genomics/homo_sapiens/illumina/bam/test2.paired_end.name.sorted.bam', checkIfExists: true)
+                ]
+                input[1] = [[], []]
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

@@ -1,0 +1,59 @@
+nextflow_process {
+
+    name "Test Process QUANTMSUTILS_DIANNCFG"
+    script "../main.nf"
+    process "QUANTMSUTILS_DIANNCFG"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "quantmsutils"
+    tag "quantmsutils/dianncfg"
+
+    test("proteomics - generate DIA-NN config") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id:'test_exp'],
+                    'Trypsin',
+                    'Carbamidomethyl (C)',
+                    'Oxidation (M)'
+                ])
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
+            )
+        }
+    }
+
+    test("proteomics - generate DIA-NN config - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id:'test_exp'],
+                    'Trypsin',
+                    'Carbamidomethyl (C)',
+                    'Oxidation (M)'
+                ])
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

@@ -1,0 +1,93 @@
+name: "pharmcat_reporter"
+description: |
+  The Reporter module is responsible for generating a report with genotype-specific
+  expert-reviewed drug prescribing recommendations for clinical decision support.
+keywords:
+  - pharmcat
+  - report
+  - PGx
+tools:
+  - "pharmcat":
+      description: |
+        "PharmCAT (Pharmacogenomics Clinical Annotation Tool) is a bioinformatics
+        tool that analyzes genetic variants to predict drug response and tailor medical
+        treatment to an individual patient’s genetic profile."
+      homepage: "https://pharmcat.clinpgx.org/"
+      documentation: "https://pharmcat.clinpgx.org/"
+      tool_dev_url: "https://github.com/PharmGKB/PharmCAT"
+      doi: "10.1002/cpt.928"
+      licence:
+        - "MPL-2.0"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', name:'test_sample' ]`
+    - phenotypes:
+        type: file
+        description: The vcf file to be inspected
+        pattern: "*.json"
+        ontologies:
+          - edam: http://edamontology.org/format_3464
+output:
+  report_json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', name:'test_sample' ]`
+      - "*.report.json":
+          type: file
+          description: Json output from the reporter module of PharmCAT
+          pattern: "*.report.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464
+  report_html:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', name:'test_sample' ]`
+      - "*.report.html":
+          type: file
+          description: HTML output from the reporter module of PharmCAT
+          pattern: "*.report.html"
+          ontologies: []
+  report_tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', name:'test_sample' ]`
+      - "*.report.tsv":
+          type: file
+          description: Tab separated output from the reporter module of PharmCAT
+          pattern: "*.report.tsv"
+          ontologies: []
+  versions_pharmcat:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pharmcat:
+          type: string
+          description: The name of the tool
+      - pharmcat --version | cut -f2 -d ' ':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pharmcat:
+          type: string
+          description: The name of the tool
+      - pharmcat --version | cut -f2 -d ' ':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@ramsainanduri"
+maintainers:
+  - "@ramsainanduri"

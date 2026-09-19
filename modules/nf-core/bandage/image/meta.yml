@@ -1,5 +1,6 @@
 name: bandage_image
-description: Render an assembly graph in GFA 1.0 format to PNG and SVG image formats
+description: Render an assembly graph in GFA 1.0 format to PNG and SVG image
+  formats
 keywords:
   - gfa
   - graph
@@ -12,33 +13,68 @@ tools:
       homepage: https://github.com/rrwick/Bandage
       documentation: https://github.com/rrwick/Bandage
       licence: ["GPL-3.0-or-later"]
+      identifier: biotools:bandage
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - gfa:
-      type: file
-      description: Assembly graph in GFA 1.0 format
-      pattern: "*.gfa"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - gfa:
+        type: file
+        description: Assembly graph in GFA 1.0 format
+        pattern: "*.gfa"
+        ontologies:
+          - edam: http://edamontology.org/format_3975 # GFA 1
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - png:
-      type: file
-      description: Bandage image in PNG format
-      pattern: "*.png"
-  - svg:
-      type: file
-      description: Bandage image in SVG format
-      pattern: "*.svg"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  png:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.png":
+          type: file
+          description: Bandage image in PNG format
+          pattern: "*.png"
+          ontologies:
+            - edam: http://edamontology.org/format_3603 # PNG
+  svg:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.svg":
+          type: file
+          description: Bandage image in SVG format
+          pattern: "*.svg"
+          ontologies:
+            - edam: "http://edamontology.org/format_3604" # SVG
+  versions_bandage:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bandage:
+          type: string
+          description: The name of the tool
+      - 'export QT_QPA_PLATFORM=offscreen; Bandage --version 2>&1| grep Version | sed "s/^Version: //"':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bandage:
+          type: string
+          description: The name of the tool
+      - 'export QT_QPA_PLATFORM=offscreen; Bandage --version 2>&1| grep Version | sed "s/^Version: //"':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
+  - "@heuermh"
+maintainers:
   - "@heuermh"

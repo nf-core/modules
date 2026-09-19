@@ -2,10 +2,10 @@ process LIMA {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::lima=2.6.0"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/lima:2.6.0--h9ee0642_0' :
-        'quay.io/biocontainers/lima:2.6.0--h9ee0642_0' }"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/lima:2.12.0--h9ee0642_1' :
+        'quay.io/biocontainers/lima:2.12.0--h9ee0642_1' }"
 
     input:
     tuple val(meta), path(ccs)
@@ -15,12 +15,12 @@ process LIMA {
     tuple val(meta), path("*.counts") , emit: counts
     tuple val(meta), path("*.report") , emit: report
     tuple val(meta), path("*.summary"), emit: summary
-    path "versions.yml"               , emit: versions
+    tuple val("${task.process}"), val('lima'), eval("lima --version | head -n1 | sed 's/lima //g' | sed 's/ (.\\+//g'"), emit: versions_lima, topic: versions
 
     tuple val(meta), path("*.bam")              , optional: true, emit: bam
     tuple val(meta), path("*.bam.pbi")          , optional: true, emit: pbi
-    tuple val(meta), path("*.{fa, fasta}")      , optional: true, emit: fasta
-    tuple val(meta), path("*.{fa.gz, fasta.gz}"), optional: true, emit: fastagz
+    tuple val(meta), path("*.{fa,fasta}")      , optional: true, emit: fasta
+    tuple val(meta), path("*.{fa.gz,fasta.gz}"), optional: true, emit: fastagz
     tuple val(meta), path("*.fastq")            , optional: true, emit: fastq
     tuple val(meta), path("*.fastq.gz")         , optional: true, emit: fastqgz
     tuple val(meta), path("*.xml")              , optional: true, emit: xml
@@ -61,10 +61,12 @@ process LIMA {
         $prefix.\$OUT_EXT \\
         -j $task.cpus \\
         $args
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        lima: \$( lima --version | head -n1 | sed 's/lima //g' | sed 's/ (.\\+//g' )
-    END_VERSIONS
+    stub:
+    """
+    touch dummy.counts
+    touch dummy.report
+    touch dummy.summary
     """
 }

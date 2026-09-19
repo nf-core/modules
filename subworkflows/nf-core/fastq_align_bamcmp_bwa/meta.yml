@@ -1,0 +1,87 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: fastq_align_bamcmp_bwa
+description: Align reads to two different reference genomes using bwa, then use bamcmp to keep only reads that align better to the first genome, then sort with samtools
+keywords:
+  - bam
+  - cram
+  - bamcmp
+  - contamination
+  - align
+components:
+  - bamcmp
+  - bwa/mem
+  - bwa/align
+  - samtools/sort
+  - samtools/index
+  - samtools/stats
+  - samtools/idxstats
+  - samtools/flagstat
+  - bam_sort_stats_samtools
+input:
+  - ch_reads:
+      description: |
+        List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+        respectively.
+        Structure: [ val(meta), [ path(reads) ] ]
+  - ch_primary_index:
+      description: |
+        BWA genome index files for the primary species.
+        Structure: [ val(meta2), path(primary_index) ]
+  - ch_contaminant_index:
+      description: |
+        BWA genome index files for the contamination species.
+        Structure: [ val(meta3), path(contaminant_index) ]
+  - ch_fasta_fai:
+      type: file
+      description: |
+        Optional reference fasta file and index for the primary genome.
+        Structure: [ val(meta4), path(fasta), path(fai) ]
+output:
+  - bam:
+      description: |
+        Filtered BAM file, sorted by samtools
+        Structure: [ val(meta), path(bam) ]
+  - index:
+      description: |
+        BAI, CRAI or CSI index of the sorted filtered BAM file
+        Structure: [ val(meta), path(index) ]
+  - stats:
+      description: |
+        File containing samtools stats output
+        Structure: [ val(meta), path(stats) ]
+  - flagstat:
+      description: |
+        File containing samtools flagstat output
+        Structure: [ val(meta), path(flagstat) ]
+  - idxstats:
+      description: |
+        File containing samtools idxstats output
+        Structure: [ val(meta), path(idxstats) ]
+  - contaminant_bam:
+      description: |
+        BAM file of the reads that map better to the contamination genome. Sorted by queryname.
+        Structure: [ val(meta), path(bam) ]
+  - unfiltered_bam:
+      description: |
+        Primary unfiltered BAM file, sorted by samtools
+        Structure: [ val(meta), path(bam) ]
+  - unfiltered_index:
+      description: |
+        BAI, CRAI or CSI index of the sorted primary unfiltered BAM file
+        Structure: [ val(meta), path(index) ]
+  - unfiltered_stats:
+      description: |
+        File containing samtools stats output for primary unfiltered alignment.
+        Structure: [ val(meta), path(stats) ]
+  - unfiltered_flagstat:
+      description: |
+        File containing samtools flagstat output for primary unfiltered alignment.
+        Structure: [ val(meta), path(flagstat) ]
+  - unfiltered_idxstats:
+      description: |
+        File containing samtools idxstats output for primary unfiltered alignment.
+        Structure: [ val(meta), path(idxstats) ]
+authors:
+  - "@sppearce"
+maintainers:
+  - "@sppearce"

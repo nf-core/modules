@@ -1,0 +1,83 @@
+name: "seqfu_stats"
+description: Statistics for FASTA or FASTQ files
+keywords:
+  - seqfu
+  - stats
+  - n50
+tools:
+  - "seqfu":
+      description: "Cross-platform compiled suite of tools to manipulate and inspect
+        FASTA and FASTQ files"
+      homepage: "https://telatin.github.io/seqfu2/"
+      documentation: "https://telatin.github.io/seqfu2/"
+      tool_dev_url: "https://github.com/telatin/seqfu2"
+      doi: "10.3390/bioengineering8050059"
+      publication:
+        author: "Telatin A., Fariselli P. & Birolo G."
+        year: 2021
+        title: "SeqFu: A Suite of Utilities for the Robust and Reproducible Manipulation of Sequence Files"
+        source: "Bioengineering"
+      licence:
+        - "GPL v3"
+      identifier: biotools:seqfu
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - files:
+        type: file
+        description: One or more FASTA or FASTQ files
+        pattern: "*.{fasta,fastq,fasta.gz,fastq.gz,fq,fq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930
+output:
+  stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.tsv":
+          type: file
+          description: Tab-separated output file with basic sequence statistics.
+          pattern: "*.{tsv}"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  multiqc:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*_mqc.txt":
+          type: file
+          description: MultiQC ready table
+          pattern: "*.{_mqc.txt}"
+          ontologies: []
+  versions_seqfu:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - seqfu:
+          type: string
+          description: The name of the tool
+      - seqfu version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - seqfu:
+          type: string
+          description: The name of the tool
+      - seqfu version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@telatin"
+maintainers:
+  - "@telatin"

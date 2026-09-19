@@ -2,8 +2,8 @@ process YARA_INDEX {
     tag "$fasta"
     label 'process_medium'
 
-    conda "bioconda::yara=1.0.2"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/yara:1.0.2--2' :
         'quay.io/biocontainers/yara:1.0.2--2' }"
 
@@ -12,7 +12,7 @@ process YARA_INDEX {
 
     output:
     tuple val(meta), path("${fasta}*")   , emit: index
-    path "versions.yml"                  , emit: versions
+    tuple val("${task.process}"), val('yara'), eval("yara_indexer --version 2>&1 | grep 'yara_indexer version' | sed 's/^.*yara_indexer version: //; s/ .*\$//'"), topic: versions, emit: versions_yara
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,11 +23,15 @@ process YARA_INDEX {
     """
     yara_indexer \\
         $fasta \\
-        -o ${fasta}
+        -o ${fasta} \\
+        ${args}
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        yara: \$(echo \$(yara_indexer --version 2>&1) | sed 's/^.*yara_indexer version: //; s/ .*\$//')
-    END_VERSIONS
+    stub:
+    """
+    touch ${fasta}.lf.{drp,drs,drv,pst}
+    touch ${fasta}.rid.{concat,limits}
+    touch ${fasta}.sa.{ind,len,val}
+    touch ${fasta}.txt.{concat,limits,size}
     """
 }

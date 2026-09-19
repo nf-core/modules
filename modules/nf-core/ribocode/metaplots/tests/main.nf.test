@@ -1,0 +1,105 @@
+nextflow_process {
+
+    name "Test Process RIBOCODE_METAPLOTS"
+    script "../main.nf"
+    process "RIBOCODE_METAPLOTS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ribocode"
+    tag "ribocode/metaplots"
+    tag "untar"
+
+    setup {
+        run("UNTAR") {
+            script "../../../untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'annotation' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/ribocode/annotation.tar.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("test_ribocode_metaplots") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887.Aligned.toTranscriptome.out.bam", checkIfExists: true)
+                ]
+                input[1] = UNTAR.out.untar
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out.config).match("config") },
+                { assert process.out.pdf[0][1].toString().endsWith('.pdf') },
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions") }).match("versions") }
+            )
+        }
+    }
+
+    test("test_ribocode_metaplots - stub") {
+
+        options "-stub"
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887.Aligned.toTranscriptome.out.bam", checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'annotation' ],
+                    file("annotation")
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.config[0][1].toString().endsWith('_config.txt') },
+                { assert process.out.pdf[0][1].toString().endsWith('.pdf') }
+            )
+        }
+    }
+
+    test("test_ribocode_metaplots - empty config failure") {
+
+        config "./nextflow_fail.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887.Aligned.toTranscriptome.out.bam", checkIfExists: true)
+                ]
+                input[1] = UNTAR.out.untar
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert !process.success },
+                { assert process.stdout.toString().contains("ERROR: metaplots created config file with no data") }
+            )
+        }
+    }
+}

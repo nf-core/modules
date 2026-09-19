@@ -1,0 +1,48 @@
+process IDEMUX {
+    tag "${meta.id}"
+    label 'process_high'
+
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/idemux:0.1.6--pyhdfd78af_0'
+        : 'quay.io/biocontainers/idemux:0.1.6--pyhdfd78af_0'}"
+
+    input:
+    tuple val(meta), path(reads), path(samplesheet)
+
+    output:
+    tuple val(meta), path("[!undetermined]*.fastq.gz"), emit: fastq
+    tuple val(meta), path("undetermined_R?.fastq.gz") , emit: undetermined, optional: true
+    tuple val(meta), path("demultipexing_stats.tsv")  , emit: stats
+    tuple val("${task.process}"), val("idemux"), eval("idemux --version |& sed '1!d ; s/idemux //'"), topic: versions, emit: versions_idemux
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args = task.ext.args ?: ''
+
+    """
+    idemux \\
+        --r1 ${reads[0]} \\
+        --r2 ${reads[1]} \\
+        --sample-sheet ${samplesheet} \\
+        --out . \\
+        ${args}
+    """
+
+    stub:
+    """
+    echo -e "sample_name\twritten_reads" > demultipexing_stats.tsv
+
+    sed 1d ${samplesheet} | while IFS=, read -r sampleName _ _ _; do
+        touch "\${sampleName}_R1.fastq"
+        touch "\${sampleName}_R2.fastq"
+        echo -e "\${sampleName}\t100" >> demultipexing_stats.tsv
+    done
+
+    touch undetermined_R1.fastq
+    touch undetermined_R2.fastq
+    gzip *.fastq
+    """
+}

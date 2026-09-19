@@ -1,0 +1,152 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "ampcombi2_parsetables"
+description: A submodule that parses and standardizes the results from various antimicrobial
+  peptide identification tools.
+keywords:
+  - antimicrobial peptides
+  - amps
+  - parsing
+  - reporting
+  - align
+  - macrel
+  - amplify
+  - hmmsearch
+  - neubi
+  - ampir
+  - ampgram
+  - amptransformer
+  - DRAMP
+  - MMseqs2
+  - InterProScan
+tools:
+  - ampcombi2/parsetables:
+      description: "A parsing tool to convert and summarise the outputs from multiple
+        AMP detection tools in a standardized format."
+      homepage: "https://github.com/paleobiotechnology/AMPcombi"
+      documentation: "https://ampcombi.readthedocs.io"
+      tool_dev_url: "https://github.com/paleobiotechnology/AMPcombi/tree/dev"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - amp_input:
+        type: list
+        description: The path to the directory containing the results for the AMP tools
+          for each processed sample or a list of files corresponding to each file generated
+          by AMP tools.
+        pattern: "[*amptool.tsv, *amptool.tsv]"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+  - faa_input:
+      type: file
+      description: The path to the file corresponding to the respective protein fasta
+        files with '.faa' extension. File names have to contain the corresponding sample
+        name, i.e. sample_1.faa
+      pattern: "*.faa"
+      ontologies:
+        - edam: "http://edamontology.org/format_1929" # FASTA
+  - gbk_input:
+      type: file
+      description: The path to the file corresponding to the respective annotated files
+        with either '.gbk' or '.gbff' extensions. File names must contain the corresponding
+        sample name, i.e. sample_1.faa where "sample_1" is the sample name.
+      pattern: "*.gbk"
+      ontologies:
+        - edam: "http://edamontology.org/format_1936" # GenBank
+  - opt_amp_db:
+      type: string
+      description: The name of the database to download and set up. This can either
+        be 'DRAMP', 'APD' or 'UniRef100'.
+      pattern: "DRAMP|APD|UniRef100"
+  - opt_amp_db_dir:
+      type: directory
+      description: The path to the folder containing the fasta and tsv database files.
+      pattern: "path/to/amp_*_database"
+  - opt_interproscan:
+      type: directory
+      description: A path to a file corresponding to the respective tsv files containing
+        protein classifications of the annotated CDSs. The file must be the raw output
+        from InterProScan.
+      pattern: "*.tsv"
+      ontologies:
+        - edam: "http://edamontology.org/format_3475" # TSV
+output:
+  sample_dir:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}/:
+          type: directory
+          description: The output directory that contains the summary output and related
+            alignment files for one sample.
+          pattern: "/*"
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}/${prefix}_ampcombi.tsv:
+          type: file
+          description: A TSV file containing the summary of the AMP detection results for
+            one sample.
+          pattern: "/*_ampcombi.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  full_log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - Ampcombi_parse_tables.log:
+          type: file
+          description: A log file that captures the standard output for the entire process
+            in a log file. Can be activated by `--log`.
+          pattern: "Ampcombi_parse_tables.log"
+          ontologies: []
+  db:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - amp_${opt_amp_db}_database/:
+          type: directory
+          description: If the AMP reference database ID is not provided by the user
+            using the flag `--amp_database', by default the DRAMP database will be downloaded,
+            filtered and stored in this folder.
+          pattern: "/amp_*_database"
+  versions_ampcombi:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ampcombi:
+          type: string
+          description: The name of the tool
+      - ampcombi --version | sed 's/ampcombi //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ampcombi:
+          type: string
+          description: The name of the tool
+      - ampcombi --version | sed 's/ampcombi //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@darcy220606"
+maintainers:
+  - "@darcy220606"
+  - "@jasmezz"

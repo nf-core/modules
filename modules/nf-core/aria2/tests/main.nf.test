@@ -1,0 +1,47 @@
+nextflow_process {
+    name "Test Process ARIA2"
+    script "../main.nf"
+    process "ARIA2"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "aria2"
+
+    test("sarscov2 Illumina single end [bam]") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam'
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("sarscov2 Illumina single end [bam] - stub") {
+        options "-stub-run"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.bam'
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

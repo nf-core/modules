@@ -1,19 +1,18 @@
 process HOMER_MAKEUCSCFILE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
-
-    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::homer=4.11=pl526hc9558a2_3"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/homer:4.11--pl526hc9558a2_3' :
-        'quay.io/biocontainers/homer:4.11--pl526hc9558a2_3' }"
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0f/0fe4a3875b78dce3c66b43fb96489769cc32e55e329e2525d2af09096af2252a/data'
+        : 'community.wave.seqera.io/library/bioconductor-deseq2_bioconductor-edger_homer_samtools_pruned:a8f4c58755bb281b'}"
 
     input:
     tuple val(meta), path(tagDir)
 
     output:
     tuple val(meta), path("*.bedGraph.gz"), emit: bedGraph
-    path  "versions.yml"                  , emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('homer'), val("4.11"), emit: versions_homer, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,16 +20,16 @@ process HOMER_MAKEUCSCFILE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '4.11' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     makeUCSCfile \\
-        $tagDir \\
+        ${tagDir} \\
         -o ${prefix}.bedGraph \\
-        $args
+        ${args}
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        homer: $VERSION
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.bedGraph.gz
     """
 }

@@ -2,15 +2,14 @@ process GECCO_RUN {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::gecco=0.9.2"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gecco:0.9.2--pyhdfd78af_0':
-        'quay.io/biocontainers/gecco:0.9.2--pyhdfd78af_0' }"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/gecco:0.10.1--pyhdfd78af_0':
+        'quay.io/biocontainers/gecco:0.10.1--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(input), path(hmm)
     path model_dir
-
 
     output:
     tuple val(meta), path("*.genes.tsv")    , optional: true, emit: genes
@@ -18,8 +17,7 @@ process GECCO_RUN {
     tuple val(meta), path("*.clusters.tsv") , optional: true, emit: clusters
     tuple val(meta), path("*_cluster_*.gbk"), optional: true, emit: gbk
     tuple val(meta), path("*.json")         , optional: true, emit: json
-
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('gecco'), eval("gecco -V |& sed 's/gecco //'"), emit: versions_gecco, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,16 +30,24 @@ process GECCO_RUN {
     """
     gecco \\
         run \\
-        $args \\
-        -j $task.cpus \\
+        ${args} \\
+        -j ${task.cpus} \\
         -o ./ \\
         -g ${input} \\
-        $custom_model \\
-        $custom_hmm
+        ${custom_model} \\
+        ${custom_hmm}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gecco: \$(echo \$(gecco --version) | cut -f 2 -d ' ' )
-    END_VERSIONS
+    for i in \$(find -name '${input.baseName}*' -type f); do
+        mv \$i \${i/${input.baseName}/${prefix}};
+    done
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.genes.tsv
+    touch ${prefix}.features.tsv
+    touch ${prefix}.clusters.tsv
+    touch NC_018507.1_cluster_1.gbk
     """
 }

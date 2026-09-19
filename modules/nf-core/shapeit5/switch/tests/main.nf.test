@@ -1,0 +1,96 @@
+nextflow_process {
+
+    name "Test Process SHAPEIT5_SWITCH"
+    script "../main.nf"
+    process "SHAPEIT5_SWITCH"
+
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "shapeit5"
+    tag "shapeit5/switch"
+    tag "shapeit5/phasecommon"
+    tag "bcftools/index"
+
+    test("homo sapiens - vcf, scaffold, []") {
+        setup {
+            run("SHAPEIT5_PHASECOMMON") {
+                script "../../../shapeit5/phasecommon"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [ id:'scaffold', single_end:false ], // meta map
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists: true),
+                        [], "chr22", [], [], [], [], []
+                    ])
+                    """
+                }
+            }
+            run("BCFTOOLS_INDEX") {
+                script "../../../bcftools/index"
+                process {
+                    """
+                    input[0] = SHAPEIT5_PHASECOMMON.out.phased_variant
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                shapeit5_phasecommon_args = "--filter-maf 0.001 --seed 1"
+            }
+            process {
+                """
+                input[0] = SHAPEIT5_PHASECOMMON.out.phased_variant
+                    .join(BCFTOOLS_INDEX.out.index)
+                    .combine(channel.of([
+                    "chr22", [],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz.csi",checkIfExists:true)
+                ]))
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("homo sapiens - vcf, scaffold, [] - stub") {
+        options "-stub"
+        when {
+            params {
+                shapeit5_phasecommon_args = "--filter-maf 0.001 --seed 1"
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                    [id:'truth_panel'],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz",checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi",checkIfExists:true),
+                    "chr21", [], [], [], [], []
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

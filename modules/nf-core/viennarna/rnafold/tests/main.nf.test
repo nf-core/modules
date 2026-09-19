@@ -1,0 +1,57 @@
+nextflow_process {
+
+    name "Test Process VIENNARNA_RNAFOLD"
+    script "../main.nf"
+    process "VIENNARNA_RNAFOLD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "viennarna"
+    tag "viennarna/rnafold"
+
+    test("rnafold - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: "test" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/transcriptome.fasta", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["rnafold_ps"])).match() }
+            )
+        }
+    }
+
+    test("rnafold - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id1: "no meta id and no prefix" ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/transcriptome.fasta", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match('stub') }
+            )
+        }
+
+    }
+
+}

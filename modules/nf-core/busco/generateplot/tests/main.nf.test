@@ -1,0 +1,31 @@
+nextflow_process {
+
+    name "Test Process BUSCO_GENERATEPLOT"
+    script "../main.nf"
+    process "BUSCO_GENERATEPLOT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "busco"
+    tag "busco/generateplot"
+
+    test("deprecated") {
+
+        when {
+            process {
+                """
+                input[0] = file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.") }
+            )
+        }
+
+    }
+
+}

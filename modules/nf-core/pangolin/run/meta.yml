@@ -1,0 +1,69 @@
+name: pangolin_run
+description: Phylogenetic Assignment of Named Global Outbreak LINeages
+keywords:
+  - covid
+  - pangolin
+  - lineage
+  - run
+tools:
+  - pangolin:
+      description: |
+        Phylogenetic Assignment of Named Global Outbreak LINeages
+      homepage: https://github.com/cov-lineages/pangolin#pangolearn-description
+      manual: https://github.com/cov-lineages/pangolin#pangolearn-description
+      licence:
+        - "GPL-3.0-or-later"
+      identifier: biotools:pangolin_cov-lineages
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - fasta:
+        type: file
+        description: |
+          The genome assembly to be evaluated
+        ontologies: []
+  - db:
+      type: directory
+      description: |
+        Directory containing the Pangolin database
+output:
+  report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*.csv":
+          type: file
+          description: Pangolin lineage report
+          pattern: "*.{csv}"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 #CSV
+  versions_pangolin:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pangolin:
+          type: string
+          description: The name of the tool
+      - pangolin -v | sed 's/pangolin //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pangolin:
+          type: string
+          description: The name of the tool
+      - pangolin -v | sed 's/pangolin //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@kevinmenden"
+  - "@drpatelh"
+maintainers:
+  - "@kevinmenden"
+  - "@drpatelh"

@@ -1,0 +1,40 @@
+process FIBERTOOLSRS_PREDICTM6A {
+    tag "$meta.id"
+    label 'process_low'
+
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/fibertools-rs:0.8.2--h3b373d1_0':
+        'quay.io/biocontainers/fibertools-rs:0.8.2--h3b373d1_0' }"
+
+    input:
+    tuple val(meta), path(bam)
+
+    output:
+    tuple val(meta), path("*.bam"), emit: bam
+    tuple val("${task.process}"), val('fibertools-rs'), eval("ft --version | sed 's/fibertools-rs v//;s/\\t.*//'"), topic: versions, emit: versions_fibertoolsrs
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}_m6a"
+    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+
+    """
+    ft \\
+        predict-m6a \\
+        ${args} \\
+        --threads ${task.cpus} \\
+        ${bam} \\
+        ${prefix}.bam
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}_m6a"
+
+    """
+    touch ${prefix}.bam
+    """
+}

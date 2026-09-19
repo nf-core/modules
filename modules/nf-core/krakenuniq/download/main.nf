@@ -1,17 +1,17 @@
 process KRAKENUNIQ_DOWNLOAD {
     label 'process_low'
 
-    conda "bioconda::krakenuniq=1.0.2"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/krakenuniq:1.0.2--pl5321h19e8d03_0':
-        'quay.io/biocontainers/krakenuniq:1.0.2--pl5321h19e8d03_0' }"
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/krakenuniq:1.0.4--pl5321h6dccd9a_2'
+        : 'quay.io/biocontainers/krakenuniq:1.0.4--pl5321h6dccd9a_2'}"
 
     input:
     val pattern
 
     output:
-    path "${pattern}/"  , emit: output
-    path "versions.yml" , emit: versions
+    path "${pattern}/", emit: output
+    tuple val("${task.process}"), val('krakenuniq'), eval("krakenuniq --version | sed '1!d;s/KrakenUniq version //'"), emit: versions_krakenuniq, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,11 +23,11 @@ process KRAKENUNIQ_DOWNLOAD {
         --threads ${task.cpus} \\
         -o ${pattern}/ \\
         ${pattern} \\
-        $args
+        ${args}
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        krakenuniq: \$(echo \$(krakenuniq --version 2>&1) | sed 's/^.*KrakenUniq version //; s/ .*\$//')
-    END_VERSIONS
+    stub:
+    """
+    mkdir ${pattern}
     """
 }

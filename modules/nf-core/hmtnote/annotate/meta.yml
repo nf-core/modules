@@ -1,0 +1,63 @@
+name: hmtnote_annotate
+description: Human mitochondrial variants annotation using HmtVar. Contains .plk
+  file with annotation, so can be run offline
+deprecated: true
+keywords:
+  - hmtnote
+  - mitochondria
+  - annotation
+tools:
+  - hmtnote:
+      description: Human mitochondrial variants annotation using HmtVar.
+      homepage: https://github.com/robertopreste/HmtNote
+      documentation: https://hmtnote.readthedocs.io/en/latest/usage.html
+      doi: "10.1101/600619"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - vcf:
+        type: file
+        description: vcf file
+        pattern: "*.vcf"
+        ontologies: []
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*_annotated.vcf":
+          type: file
+          description: annotated vcf
+          pattern: "*_annotated.vcf"
+          ontologies: []
+  versions_hmtnote:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hmtnote:
+          type: string
+          description: The name of the tool
+      - hmtnote --version 2>&1 | sed 's/.*version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hmtnote:
+          type: string
+          description: The name of the tool
+      - hmtnote --version 2>&1 | sed 's/.*version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@sysbiocoder"
+maintainers:
+  - "@sysbiocoder"

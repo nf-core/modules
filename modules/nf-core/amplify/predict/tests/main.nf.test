@@ -1,0 +1,78 @@
+nextflow_process {
+
+    name "Test Process AMPLIFY_PREDICT"
+    script "../main.nf"
+    process "AMPLIFY_PREDICT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "amplify"
+    tag "amplify/predict"
+    tag "prodigal"
+    tag "gunzip"
+
+   test("AMPlify predict (with Prodigal) - sarscov2 - contigs.fasta") {
+
+        setup {
+            run("PRODIGAL") {
+                script "../../../prodigal/main.nf"
+                process {
+                    """
+                    input[0] = channel.of([
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
+                    ])
+                    input[1] = "gbk"
+                    """
+                }
+            }
+            run("GUNZIP") {
+                script "../../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] =  PRODIGAL.out.amino_acid_fasta
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("AMPlify predict (with Prodigal) - sarscov2 - contigs.fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = channel.of([ [ id:'test' ], [] ])
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

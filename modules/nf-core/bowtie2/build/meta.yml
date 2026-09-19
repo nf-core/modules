@@ -15,29 +15,57 @@ tools:
       documentation: http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml
       doi: 10.1038/nmeth.1923
       licence: ["GPL-3.0-or-later"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: Input genome fasta file
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Reference genome FASTA file
+        pattern: "*.{fa,fasta,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test', single_end:false ]
-  - index:
-      type: file
-      description: Bowtie2 genome index files
-      pattern: "*.bt2"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing reference information
+            e.g. [ id:'test', single_end:false ]
+      - bowtie2:
+          type: directory
+          description: Bowtie2 genome index files
+          pattern: "*.bt2"
+          ontologies: []
+  versions_bowtie2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bowtie2:
+          type: string
+          description: The name of the tool
+      - "bowtie2 --version 2>&1 | sed -n 's/.*bowtie2-align-s version //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bowtie2:
+          type: string
+          description: The name of the tool
+      - "bowtie2 --version 2>&1 | sed -n 's/.*bowtie2-align-s version //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
+  - "@joseespinosa"
+  - "@drpatelh"
+maintainers:
   - "@joseespinosa"
   - "@drpatelh"

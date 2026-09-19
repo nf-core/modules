@@ -1,0 +1,81 @@
+nextflow_process {
+
+    name "Test Process KAT_HIST"
+    config "./nextflow.config"
+    script "../main.nf"
+    process "KAT_HIST"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "kat"
+    tag "kat/hist"
+
+    test("homo_sapiens - fastq single") {
+        when {
+            params {
+                module_args = '-d'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test', single_end:true],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_1.fastq.gz', checkIfExists:true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.failed }
+            )
+        }
+    }
+    test("homo_sapiens - fastq paired") {
+        when {
+            params {
+                module_args = '-p ps'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test', single_end:false],
+                    [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_1.fastq.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_2.fastq.gz', checkIfExists:true),
+                    ]
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.failed }
+            )
+        }
+    }
+
+    test("homo_sapiens - fastq paired -- stub") {
+        options '-stub'
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test', single_end:false],
+                    [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_1.fastq.gz', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test2_2.fastq.gz', checkIfExists:true),
+                    ]
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.failed }
+            )
+        }
+    }
+}

@@ -2,8 +2,8 @@ process MYKROBE_PREDICT {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::mykrobe=0.11.0"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mykrobe:0.11.0--py39h2add14b_1':
         'quay.io/biocontainers/mykrobe:0.11.0--py39h2add14b_1' }"
 
@@ -14,7 +14,7 @@ process MYKROBE_PREDICT {
     output:
     tuple val(meta), path("${prefix}.csv") , emit: csv
     tuple val(meta), path("${prefix}.json"), emit: json
-    path "versions.yml"                    , emit: versions
+    tuple val("${task.process}"), val('mykrobe'),  eval("mykrobe --version 2>&1 | sed 's/^.*mykrobe v//'"), topic: versions, emit: versions_mykrobe
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,17 +25,19 @@ process MYKROBE_PREDICT {
     """
     mykrobe \\
         predict \\
-        $args \\
-        --species $species \\
-        --threads $task.cpus \\
-        --sample $prefix \\
+        ${args} \\
+        --species ${species} \\
+        --threads ${task.cpus} \\
+        --sample ${prefix} \\
         --format json_and_csv \\
         --output ${prefix} \\
-        --seq $seqs
+        --seq ${seqs}
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mykrobe: \$(echo \$(mykrobe --version 2>&1) | sed 's/^.*mykrobe v//' )
-    END_VERSIONS
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.csv
+    touch ${prefix}.json
     """
 }

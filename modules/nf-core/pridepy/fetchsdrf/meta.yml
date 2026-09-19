@@ -1,0 +1,68 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "pridepy_fetchsdrf"
+description: Fetch an SDRF file from the PRIDE Archive for a given project accession.
+keywords:
+  - pride
+  - sdrf
+  - proteomics
+  - download
+  - metadata
+tools:
+  - "pridepy":
+      description: |
+        Python client library to access PRIDE Archive data programmatically,
+        including downloading files and metadata for public proteomics datasets.
+      homepage: "https://github.com/PRIDE-Archive/pridepy"
+      documentation: "https://github.com/PRIDE-Archive/pridepy"
+      tool_dev_url: "https://github.com/PRIDE-Archive/pridepy"
+      licence: ["Apache-2.0"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'PXD004684' ]`
+    - pride_id:
+        type: string
+        description: PRIDE Archive project accession (e.g. PXD004684)
+
+output:
+  sdrf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'PXD004684' ]`
+      - "${prefix}.sdrf.tsv":
+          type: file
+          description: SDRF (Sample and Data Relationship Format) file describing the experimental design of the PRIDE project
+          pattern: "*.sdrf.tsv"
+  versions_pridepy:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - pridepy:
+          type: string
+          description: The tool name
+      - 'python -c "from importlib.metadata import version; print(version(''pridepy''))"':
+          type: string
+          description: The command used to generate the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - pridepy:
+          type: string
+          description: The tool name
+      - 'python -c "from importlib.metadata import version; print(version(''pridepy''))"':
+          type: string
+          description: The command used to generate the version of the tool
+
+authors:
+  - "@jonasscheid"
+maintainers:
+  - "@jonasscheid"

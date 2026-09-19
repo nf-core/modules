@@ -1,8 +1,10 @@
 name: gatk4_splitintervals
 description: Split intervals into sub-interval files.
 keywords:
-  - interval
   - bed
+  - gatk4
+  - interval
+  - splitintervals
 tools:
   - gatk4:
       description: Genome Analysis Toolkit (GATK4)
@@ -11,44 +13,85 @@ tools:
       tool_dev_url: https://github.com/broadinstitute/gatk
       doi: "10.1158/1538-7445.AM2017-3590"
       licence: ["BSD-3-clause"]
-
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - interval:
-      type: file
-      description: Interval list or BED
-      pattern: "*.{interval,interval_list,bed}"
-  - fasta:
-      type: file
-      description: Reference FASTA
-      pattern: "*.{fa,fasta}"
-  - fasta_fai:
-      type: file
-      description: Reference FASTA index
-      pattern: "*.fai"
-  - dict:
-      type: file
-      description: Reference sequence dictionary
-      pattern: "*.dict"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - intervals:
+        type: file
+        description: Interval file
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: Reference FASTA
+        pattern: "*.{fa,fasta}"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fai:
+        type: file
+        description: Reference FASTA index
+        pattern: "*.fai"
+        ontologies: []
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - dict:
+        type: file
+        description: Reference sequence dictionary
+        pattern: "*.dict"
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - bed:
-      type: file
-      description: A list of scattered interval lists
-      pattern: "*.interval_list"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+  split_intervals:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+          pattern: "*.interval_list"
+      - "**.interval_list":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+          pattern: "*.interval_list"
+  versions_gatk4:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
+  - "@ramprasadn"
+maintainers:
+  - "@nvnieuwk"
+  - "@ramprasadn"

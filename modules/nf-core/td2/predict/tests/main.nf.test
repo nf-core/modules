@@ -1,0 +1,77 @@
+nextflow_process {
+
+    name "Test Process TD2_PREDICT"
+    script "../main.nf"
+    process "TD2_PREDICT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "td2"
+    tag "td2/longorfs"
+    tag "td2/predict"
+
+    setup {
+        run("TD2_LONGORFS") {
+            script "modules/nf-core/td2/longorfs/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = [[id: 'test'], 24, 24]
+                input[2] = [
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/gene2transcript_mapping.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("td2.predict - transcriptome.fasta") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]).combine(TD2_LONGORFS.out.orfs.map{ meta, orfs -> return [meta, file(orfs[0].getParent())] }, by: 0)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ['bed'])).match() }
+            )
+        }
+
+    }
+
+    test("td2.predict - transcriptome.fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]).combine(TD2_LONGORFS.out.orfs.map{ meta, orfs -> return [meta, file(orfs[0].getParent())] }, by: 0)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

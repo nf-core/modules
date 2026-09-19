@@ -1,0 +1,60 @@
+nextflow_process {
+
+    name "Test Process PLINK2_PCA"
+    script "../main.nf"
+    process "PLINK2_PCA"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "plink2"
+    tag "plink2/pca"
+
+    test("plink2_pca") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'pca' ],
+                    10,
+                    true,
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pgen', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pvar', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.psam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["evecfile", "logfile"])).match() }
+            )
+        }
+    }
+
+    test("plink2_pca - stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'pca' ],
+                    10,
+                    true,
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pgen', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pvar', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.psam', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

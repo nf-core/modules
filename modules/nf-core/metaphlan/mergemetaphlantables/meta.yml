@@ -1,0 +1,67 @@
+name: "metaphlan_mergemetaphlantables"
+description: Merges output abundance tables from MetaPhlAn4
+keywords:
+  - metagenomics
+  - classification
+  - merge
+  - table
+  - profiles
+tools:
+  - metaphlan4:
+      description: Identify clades (phyla to species) present in the metagenome obtained
+        from a microbiome sample and their relative abundance
+      homepage: https://huttenhower.sph.harvard.edu/metaphlan/
+      documentation: https://github.com/biobakery/MetaPhlAn
+      doi: "10.1038/s41587-023-01688-w"
+      licence: ["MIT License"]
+      identifier: biotools:metaphlan
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - profiles:
+        type: file
+        description: List of per-sample MetaPhlAn4 taxonomic abundance tables
+        pattern: "*"
+        ontologies: []
+output:
+  txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.txt:
+          type: file
+          description: Combined MetaPhlAn4 table
+          pattern: "*.txt"
+          ontologies: []
+  versions_metaphlan:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - metaphlan:
+          type: string
+          description: The tool name
+      - "metaphlan --version 2>&1 | cut -d ' ' -f 3":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - metaphlan:
+          type: string
+          description: The tool name
+      - "metaphlan --version 2>&1 | cut -d ' ' -f 3":
+          type: string
+          description: The command used to generate the version of the tool
+authors:
+  - "@jfy133"
+  - "@LilyAnderssonLee"
+maintainers:
+  - "@jfy133"
+  - "@LilyAnderssonLee"

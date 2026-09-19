@@ -1,66 +1,107 @@
 name: "merquryfk_katgc"
-description: A reimplemenation of Kat GC to work with FastK databases
+description: A reimplemenation of KatGC to work with FastK databases
 keywords:
-  - k-mer
+  - k-mer frequency
   - GC content
+  - 3D heat map
+  - contour map
 tools:
   - "merquryfk":
       description: "FastK based version of Merqury"
       homepage: "https://github.com/thegenemyers/MERQURY.FK"
-
       tool_dev_url: "https://github.com/thegenemyers/MERQURY.FK"
-
-      licence: "https://github.com/thegenemyers/MERQURY.FK/blob/main/LICENSE"
-
+      license: ["https://github.com/thegenemyers/MERQURY.FK/blob/main/LICENSE"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fastk_hist:
-      type: file
-      description: A histogram files from the program FastK
-      pattern: "*.hist"
-  - fastk_ktab:
-      type: file
-      description: ktab files from the program FastK
-      pattern: "*.ktab*"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fastk_hist:
+        type: file
+        description: A histogram files from the program FastK
+        pattern: "*.hist"
+        ontologies: []
+    - fastk_ktab:
+        type: file
+        description: ktab files from the program FastK
+        pattern: "*.ktab*"
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - filled_gc_plot_png:
-      type: file
-      description: A filled GC content plot in PNG format
-      pattern: "*.fi.png"
-  - filled_gc_plot_pdf:
-      type: file
-      description: A filled GC content plot in PDF format
-      pattern: "*.fi.pdf"
-  - line_gc_plot_png:
-      type: file
-      description: A line GC content plot in PNG format
-      pattern: "*.ln.png"
-  - line_gc_plot_pdf:
-      type: file
-      description: A line GC content plot in PDF format
-      pattern: "*.ln.pdf"
-  - stacked_gc_plot_png:
-      type: file
-      description: A stacked GC content plot in PNG format
-      pattern: "*.st.png"
-  - stacked_gc_plot_pdf:
-      type: file
-      description: A stacked GC content plot in PDF format
-      pattern: "*.st.pdf"
-
+  images:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*.fi.{png,pdf}"
+      - "*.{png,pdf}":
+          type: file
+          description: |
+            GC content plots in PNG or PDF format
+          pattern: "*.{png,pdf}"
+          ontologies: []
+  versions_merquryfk:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - merquryfk:
+          type: string
+          description: The name of the tool
+      - "1.2":
+          type: string
+          description: The expression to obtain the version of the tool
+  versions_fastk:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fastk:
+          type: string
+          description: The name of the tool
+      - "1.2":
+          type: string
+          description: The expression to obtain the version of the tool
+  versions_r:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - R:
+          type: string
+          description: The name of the tool
+      - R --version | sed "1!d; s/.*version //; s/ .*//":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - merquryfk:
+          type: string
+          description: The name of the tool
+      - "1.2":
+          type: string
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fastk:
+          type: string
+          description: The name of the tool
+      - "1.2":
+          type: string
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - R:
+          type: string
+          description: The name of the tool
+      - R --version | sed "1!d; s/.*version //; s/ .*//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
+  - "@mahesh-panchal"
+maintainers:
   - "@mahesh-panchal"

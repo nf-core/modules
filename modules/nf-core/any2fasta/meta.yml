@@ -1,0 +1,70 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "any2fasta"
+description: Convert various sequence formats (GenBank, GFF, FASTQ, FASTA, CLUSTAL, Stockholm, GFA) to FASTA format. Input files may be gzip, bzip2, zip, or zstd compressed.
+keywords:
+  - fasta
+  - conversion
+  - sequences
+  - format
+  - genomics
+tools:
+  - "any2fasta":
+      description: "Convert various sequence formats to FASTA"
+      homepage: "https://github.com/tseemann/any2fasta"
+      documentation: "https://github.com/tseemann/any2fasta"
+      tool_dev_url: "https://github.com/tseemann/any2fasta"
+      licence:
+        - "GPL-3.0"
+      identifier: biotools:any2fasta
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - sequence:
+        type: file
+        description: |
+          Input sequence file in any supported format (GenBank, GFF, FASTQ, FASTA,
+          CLUSTAL, Stockholm, GFA). May be gzip, bzip2, zip, or zstd compressed. GFF3 must include a FASTA inside.
+        pattern: "*.{gb,gbk,fa,fasta,fna,fq,fastq,gff,gfa,clw,sth,gb.gz,gbk.gz,fa.gz,fasta.gz,fq.gz,fastq.gz}"
+
+output:
+  fasta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.fasta":
+          type: file
+          description: Output sequences in FASTA format
+          pattern: "*.fasta"
+  versions_any2fasta:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - any2fasta:
+          type: string
+          description: The name of the tool
+      - "any2fasta -v 2>&1 | head -1 | sed 's/any2fasta //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - any2fasta:
+          type: string
+          description: The name of the tool
+      - "any2fasta -v 2>&1 | head -1 | sed 's/any2fasta //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@cwoodside1278"
+maintainers:
+  - "@cwoodside1278"

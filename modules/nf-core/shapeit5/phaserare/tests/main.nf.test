@@ -1,0 +1,115 @@
+nextflow_process {
+
+    name "Test Process SHAPEIT5_PHASERARE"
+    script "../main.nf"
+    process "SHAPEIT5_PHASERARE"
+
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "shapeit5"
+    tag "shapeit5/phaserare"
+    tag "shapeit5/phasecommon"
+    tag "bcftools/index"
+
+    test("homo sapiens - vcf, scaffold, map") {
+        setup {
+            run("SHAPEIT5_PHASECOMMON") {
+                script "../../../shapeit5/phasecommon"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [ id:'scaffold', single_end:false ], // meta map
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists: true),
+                        [], "chr22", [], [], [], [], []
+                    ])
+                    """
+                }
+            }
+            run("BCFTOOLS_INDEX") {
+                script "../../../bcftools/index"
+                process {
+                    """
+                    input[0] = SHAPEIT5_PHASECOMMON.out.phased_variant
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                shapeit5_phasecommon_args = "--seed 1 --filter-maf 0.001"
+                shapeit5_phaserare_args = "--seed 1"
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'input', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists: true),
+                    [],
+                    "chr22:16580000-16600000",
+                ]).combine(
+                    SHAPEIT5_PHASECOMMON.out.phased_variant
+                        .join(BCFTOOLS_INDEX.out.index)
+                        .map{ meta, vcf, index ->  [vcf, index] }
+                )
+                .combine(channel.of([
+                    "chr22:16570000-16610000",
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.glimpse.map", checkIfExists: true)
+                ]))
+                input[1] = "vcf.gz"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.phased_variant.collect { meta, vcf -> [
+                        meta,
+                        file(vcf).name,
+                        path(vcf).vcf.summary,
+                        // path(vcf).vcf.variantsMD5 Conda give another md5 sum
+                    ] },
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo sapiens - vcf, scaffold, [] - stub") {
+        options "-stub"
+
+        when {
+            params {
+                shapeit5_phasecommon_args = "--seed 1 --filter-maf 0.001"
+                shapeit5_phaserare_args = "--seed 1"
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'input', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists: true),
+                    [], "chr22:16580000-16600000", [], [], [], []
+                ])
+                input[1] = "vcf.gz"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

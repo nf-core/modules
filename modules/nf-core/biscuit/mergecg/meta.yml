@@ -1,5 +1,6 @@
 name: biscuit_mergecg
-description: Merges methylation information for opposite-strand C's in a CpG context
+description: Merges methylation information for opposite-strand C's in a CpG
+  context
 keywords:
   - biscuit
   - DNA methylation
@@ -10,42 +11,97 @@ keywords:
   - bed
 tools:
   - biscuit:
-      description: A utility for analyzing sodium bisulfite conversion-based DNA methylation/modification data
+      description: A utility for analyzing sodium bisulfite conversion-based DNA
+        methylation/modification data
       homepage: https://huishenlab.github.io/biscuit/
       documentation: https://huishenlab.github.io/biscuit/docs/methylextraction.html
       tool_dev_url: https://github.com/huishenlab/biscuit
-
-      licence: ["MIT"]
-
+      licence:
+        - "MIT"
+      identifier: biotools:biscuit
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bed:
-      type: file
-      description: |
-        Biscuit BED file (output of biscuit vcf2bed)
-  - index:
-      type: dir
-      description: Biscuit genome index directory (generated with 'biscuit index')
-      pattern: "BiscuitIndex"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bed:
+        type: file
+        description: |
+          Biscuit BED file (output of biscuit vcf2bed)
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Input genome fasta file
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - index:
+        type: directory
+        description: Directory containing biscuit genome index
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - mergecg_bed:
-      type: file
-      description: Gzipped BED file with merged methylation information
-      pattern: "*.bed.gz"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+  bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bed.gz":
+          type: file
+          description: Gzipped BED file with merged methylation information
+          pattern: "*.bed.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_biscuit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - biscuit:
+          type: string
+          description: The name of the tool
+      - "biscuit version |& sed '1!d; s/^.*BISCUIT Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools --version |& sed '1!d; s/^.*samtools //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - biscuit:
+          type: string
+          description: The name of the tool
+      - "biscuit version |& sed '1!d; s/^.*BISCUIT Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools --version |& sed '1!d; s/^.*samtools //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@njspix"
+maintainers:
+  - "@njspix"
+  - "@sateeshperi"

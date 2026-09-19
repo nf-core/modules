@@ -1,0 +1,94 @@
+name: "mudskipper_bulk"
+description: Convert genomic BAM/SAM files to transcriptomic BAM/RAD files.
+keywords:
+  - bam
+  - transcriptome
+  - transcriptomic
+  - mudskipper
+  - sam
+  - rad
+tools:
+  - "mudskipper":
+      description: "mudskipper is a tool for converting genomic BAM/SAM files to transcriptomic BAM/RAD files."
+      homepage: "https://github.com/OceanGenomics/mudskipper"
+      documentation: "https://github.com/OceanGenomics/mudskipper"
+      tool_dev_url: "https://github.com/OceanGenomics/mudskipper"
+      licence:
+        - "BSD 3-clause"
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - bam:
+        type: file
+        description: Name-Sorted BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing annotation information
+          e.g. `[ id:'genome' ]`
+    - index:
+        type: directory
+        description: Annotation index created by mudskipper/index
+  - gtf:
+      type: file
+      description: Annotation file
+      pattern: "*.{gtf,gff,gff3}"
+      ontologies: []
+  - rad:
+      type: string
+      description: File type
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - ${prefix}.bam:
+          type: file
+          description: Sorted BAM file
+          pattern: "*.bam"
+          ontologies: []
+  rad:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - ${prefix}.rad:
+          type: file
+          description: RAD file
+          pattern: "*.rad"
+          ontologies: []
+  versions_mudskipper:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mudskipper:
+          type: string
+          description: The name of the tool
+      - mudskipper -V 2>&1 | sed 's/.*mudskipper //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mudskipper:
+          type: string
+          description: The name of the tool
+      - mudskipper -V 2>&1 | sed 's/.*mudskipper //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@anoronh4"

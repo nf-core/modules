@@ -1,0 +1,75 @@
+name: "basicpy"
+description: BaSiCPy is a python package for background and shading correction
+  of optical microscopy images. It is developed based on the Matlab version of
+  BaSiC tool with major improvements in the algorithm.
+keywords:
+  - illumiation_correction
+  - background_correction
+  - microscopy
+  - imaging
+tools:
+  - "basicpy":
+      description: "BaSiCPy is a python package for background and shading correction
+        of optical microscopy images. It is developed based on the Matlab version of
+        BaSiC tool with major improvements in the algorithm."
+      homepage: "https://github.com/peng-lab/BaSiCPy"
+      documentation: "https://basicpy.readthedocs.io/en/latest/index.html"
+      tool_dev_url: "https://github.com/peng-lab/BaSiCPy"
+      doi: 10.1038/ncomms14836
+      license:
+        - "MIT License"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - image:
+        type: file
+        description: BioFormats-compatible image file to be used for dark and flat
+          field illumination correction
+        pattern: "*.{ome.tiff,ome.tif,rcpnl,btf,nd2,tiff,tif,czi}"
+        ontologies: []
+output:
+  profiles:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*-dfp.ome.tif":
+          type: file
+          description: OME-TIFF fields for dark field illumination correction
+          pattern: "*.{ome.tif}"
+          ontologies: []
+      - "*-ffp.ome.tif":
+          type: file
+          description: OME-TIFF fields for flat field illumination correction
+          pattern: "*.{ome.tif}"
+          ontologies: []
+  versions_basicpy:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - basicpy:
+          type: string
+          description: The name of the tool
+      - 1.2.0:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - basicpy:
+          type: string
+          description: The name of the tool
+      - 1.2.0:
+          type: string
+          description: The expression to obtain the version of the tool
+authors:
+  - "@FloWuenne"
+maintainers:
+  - "@FloWuenne"

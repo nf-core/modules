@@ -1,0 +1,69 @@
+name: "custom_summarisetelomereestimation"
+description: "Normalise and combine telomere length and content estimates from telseq,
+  telogator2, and telomerehunter into a unified summary"
+keywords:
+  - telomere
+  - summary
+  - telseq
+  - telogator2
+  - telomerehunter
+tools:
+  - "pandas":
+      description: "Python Data Analysis Library"
+      homepage: "https://pandas.pydata.org/"
+      documentation: "https://pandas.pydata.org/docs/"
+      licence:
+        - "BSD-3-Clause"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - length_tsv:
+        type: file
+        description: TSV file from telseq or telogator2 with telomere length
+          estimates
+        pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
+    - content_tsv:
+        type: file
+        description: Optional TSV file from telomerehunter with telomere content
+          estimates
+        pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
+    - length_tool:
+        type: string
+        description: Which tool produced the length TSV ('telseq' or 'telogator2')
+output:
+  summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*_telomere_summary.tsv":
+          type: file
+          description: Unified summary TSV with normalised telomere length (kb)
+            and content metrics
+          pattern: "*_telomere_summary.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  versions:
+    - versions.yml:
+        type: file
+        description: YAML file containing versions of tools used in the module
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: string
+        description: The name of the process
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"

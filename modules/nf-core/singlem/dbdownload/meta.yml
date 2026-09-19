@@ -1,0 +1,59 @@
+name: "singlem_dbdownload"
+description: Download the SingleM metapackage database used for metagenome profiling
+keywords:
+  - metagenomics
+  - database
+  - download
+  - profiling
+  - singlem
+  - metapackage
+tools:
+  - "singlem":
+      description: |
+        SingleM is a tool for profiling shotgun metagenomes. It determines the relative
+        abundance of bacterial and archaeal taxa in a sample and can also profile dsDNA
+        phages. It has particular strength in dealing with novel lineages and is suitable
+        for tasks such as assessing eukaryotic contamination, finding bias in genome
+        recovery, and lineage-targeted MAG recovery.
+      homepage: "https://wwood.github.io/singlem"
+      documentation: "https://wwood.github.io/singlem"
+      tool_dev_url: "https://github.com/wwood/singlem"
+      doi: "10.1038/s41587-024-02492-w"
+      licence: ["GPL-3.0-or-later"]
+      identifier: biotools:singlem
+
+output:
+  singlem_database:
+    - "*.smpkg.zb":
+        type: file
+        description: SingleM metapackage database file used for taxonomic profiling
+        pattern: "*.smpkg.zb"
+        ontologies:
+          - edam: http://edamontology.org/data_0955 # Data index
+  versions_singlem:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - singlem:
+          type: string
+          description: The name of the tool
+      - singlem --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - singlem:
+          type: string
+          description: The name of the tool
+      - singlem --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@TheGreatJack"
+maintainers:
+  - "@TheGreatJack"

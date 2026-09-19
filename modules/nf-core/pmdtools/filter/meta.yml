@@ -12,44 +12,90 @@ tools:
       documentation: https://github.com/pontussk/PMDtools
       tool_dev_url: https://github.com/pontussk/PMDtools
       doi: "10.1073/pnas.1318934111"
-      licence: ["GPL v3"]
-
+      licence:
+        - "GPL v3"
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: BAM file
-      pattern: "*.bam"
-  - bai:
-      type: file
-      description: BAM index file
-      pattern: "*.bai"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM file
+        pattern: "*.bam"
+        ontologies: []
+    - bai:
+        type: file
+        description: BAM index file
+        pattern: "*.bai"
+        ontologies: []
   - threshold:
-      type: value
+      type: float
       description: Post-mortem damage score threshold
   - reference:
       type: file
       description: FASTA file
       pattern: "*.{fa,fasta}"
-
+      ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - bam:
-      type: file
-      description: Filtered BAM file
-      pattern: "*.bam"
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bam":
+          type: file
+          description: Filtered BAM file
+          pattern: "*.bam"
+          ontologies: []
+  versions_pmdtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pmdtools:
+          type: string
+          description: The name of the tool
+      - pmdtools --version | sed 's/.*v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pmdtools:
+          type: string
+          description: The name of the tool
+      - pmdtools --version | sed 's/.*v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
 
 authors:
+  - "@alexandregilardet"
+maintainers:
   - "@alexandregilardet"

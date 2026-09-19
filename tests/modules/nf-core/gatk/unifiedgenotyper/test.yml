@@ -1,9 +1,0 @@
-- name: gatk unifiedgenotyper test_gatk_unifiedgenotyper
-  command: nextflow run ./tests/modules/nf-core/gatk/unifiedgenotyper -entry test_gatk_unifiedgenotyper -c ./tests/config/nextflow.config  -c ./tests/modules/nf-core/gatk/unifiedgenotyper/nextflow.config
-  tags:
-    - gatk
-    - gatk/unifiedgenotyper
-  files:
-    - path: output/gatk/test.vcf.gz
-      contains:
-        - "#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	test"

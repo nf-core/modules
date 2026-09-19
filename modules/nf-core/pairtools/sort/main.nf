@@ -2,17 +2,17 @@ process PAIRTOOLS_SORT {
     tag "$meta.id"
     label 'process_high'
 
-    conda "bioconda::pairtools=0.3.0"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pairtools:0.3.0--py37hb9c2fc3_5' :
-        'quay.io/biocontainers/pairtools:0.3.0--py37hb9c2fc3_5' }"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/pairtools:1.1.3--py39h7a39fba_0' :
+        'quay.io/biocontainers/pairtools:1.1.3--py39h7a39fba_0' }"
 
     input:
     tuple val(meta), path(input)
 
     output:
     tuple val(meta), path("*.pairs.gz"), emit: sorted
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('pairtools'), eval("pairtools --version | sed 's/.*pairtools.*version //'") , emit: versions_pairtools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,19 +20,20 @@ process PAIRTOOLS_SORT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def mem      = task.memory.toString().replaceAll(/(\s|\.|B)+/, '')
+    def buffer = task.memory.toGiga().intdiv(2)
     """
     pairtools \\
         sort \\
         $args \\
         --nproc $task.cpus \\
-        --memory "$mem" \\
+        --memory ${buffer}G \\
         -o ${prefix}.pairs.gz \\
         $input
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pairtools: \$(pairtools --version 2>&1 | sed 's/pairtools.*version //')
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.pairs.gz
     """
 }

@@ -1,0 +1,321 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Meta yaml",
+    "description": "Validate the meta yaml file for an nf-core module",
+    "type": "object",
+    "properties": {
+        "name": {
+            "type": "string",
+            "description": "Name of the module"
+        },
+        "description": {
+            "type": "string",
+            "description": "Description of the module"
+        },
+        "deprecated": {
+            "type": "boolean",
+            "description": "Whether the module is deprecated and should not be used in new pipelines"
+        },
+        "keywords": {
+            "type": "array",
+            "description": "Keywords for the module",
+            "items": {
+                "type": "string",
+                "not": {
+                    "const": "example"
+                }
+            },
+            "uniqueItems": true,
+            "minItems": 3
+        },
+        "tools": {
+            "type": "array",
+            "description": "Tools used by the module",
+            "items": {
+                "type": "object",
+                "patternProperties": {
+                    ".*": {
+                        "type": "object",
+                        "properties": {
+                            "description": {
+                                "type": "string",
+                                "description": "Description of the output channel"
+                            },
+                            "homepage": {
+                                "type": "string",
+                                "description": "Homepage of the tool",
+                                "pattern": "^https?://.*$"
+                            },
+                            "documentation": {
+                                "type": "string",
+                                "description": "Documentation of the tool",
+                                "pattern": "^(https?|ftp)://.*$"
+                            },
+                            "tool_dev_url": {
+                                "type": "string",
+                                "description": "URL of the development version of the tool's documentation",
+                                "pattern": "^https?://.*$"
+                            },
+                            "doi": {
+                                "type": "string",
+                                "description": "DOI of the tool",
+                                "anyOf": [
+                                    {
+                                        "pattern": "^10\\.\\d{4,9}\\/[^,]+$"
+                                    },
+                                    {
+                                        "enum": ["no DOI available"]
+                                    }
+                                ]
+                            },
+                            "licence": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                },
+                                "description": "Licence of the tool",
+                                "minItems": 1,
+                                "uniqueItems": true,
+                                "message": "Licence must be an array of one or more entries, e.g. [\"MIT\"]"
+                            },
+                            "identifier": {
+                                "type": "string",
+                                "description": "bio.tools identifier of the tool",
+                                "pattern": "^(biotools:.*)?$"
+                            },
+                            "publication": {
+                                "type": "object",
+                                "description": "Publication metadata for citation",
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "description": "Title of the publication"
+                                    },
+                                    "author": {
+                                        "type": "string",
+                                        "description": "Author(s) of the publication (recommended: Harvard style 'Last, F. M.' separated by commas, with '& ' before the final author, e.g. 'Einstein, A., Feynman, R. P. & Hawking, S.')"
+                                    },
+                                    "source": {
+                                        "type": "string",
+                                        "description": "Journal, conference, workshop, or preprint server name"
+                                    },
+                                    "year": {
+                                        "type": "integer",
+                                        "description": "Publication year"
+                                    }
+                                },
+                                "if": {
+                                    "anyOf": [
+                                        { "required": ["title"] },
+                                        { "required": ["author"] },
+                                        { "required": ["source"] },
+                                        { "required": ["year"] }
+                                    ]
+                                },
+                                "then": {
+                                    "required": ["title", "author", "source", "year"]
+                                }
+                            }
+                        },
+                        "required": ["description"],
+                        "anyOf": [
+                            {
+                                "required": ["homepage"]
+                            },
+                            {
+                                "required": ["documentation"]
+                            },
+                            {
+                                "required": ["tool_dev_url"]
+                            },
+                            {
+                                "required": ["doi"]
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        "extra_args": {
+            "type": "array",
+            "description": "Extra arguments for the module",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "description": {
+                        "type": "string",
+                        "description": "Description of the argument"
+                    }
+                }
+            }
+        },
+        "input": {
+            "$ref": "#/$defs/channelArray",
+            "description": "Input channels for the module"
+        },
+        "output": {
+            "$ref": "#/$defs/channelMap",
+            "description": "Output channels for the module"
+        },
+        "topics": {
+            "$ref": "#/$defs/channelMap",
+            "description": "Topics of the module"
+        },
+        "authors": {
+            "type": "array",
+            "description": "Authors of the module",
+            "items": {
+                "type": "string"
+            }
+        },
+        "maintainers": {
+            "type": "array",
+            "description": "Maintainers of the module",
+            "items": {
+                "type": "string"
+            }
+        },
+        "containers": {
+            "type": "object",
+            "description": "Container images for the module",
+            "properties": {
+                "docker": {
+                    "type": "object",
+                    "description": "Docker containers for different architectures",
+                    "additionalProperties": {
+                        "$ref": "#/$defs/container"
+                    }
+                },
+                "singularity": {
+                    "type": "object",
+                    "description": "Singularity containers for different architectures",
+                    "additionalProperties": {
+                        "$ref": "#/$defs/container",
+                        "properties": {
+                            "name": {
+                                "pattern": "^oras://.*$"
+                            }
+                        },
+                        "required": ["https"]
+                    }
+                },
+                "conda": {
+                    "type": "object",
+                    "description": "Conda lock files for different architectures",
+                    "additionalProperties": {
+                        "type": "object",
+                        "description": "Conda lock file information",
+                        "properties": {
+                            "lock_file": {
+                                "type": "string",
+                                "description": "Path to the conda lock file, relative to the repository root",
+                                "pattern": "^.*\\.conda-lock/.*\\.txt$"
+                            }
+                        },
+                        "required": ["lock_file"]
+                    }
+                }
+            }
+        }
+    },
+    "$defs": {
+        "channelMap": {
+            "type": "object",
+            "patternProperties": {
+                ".*": {
+                    "$ref": "#/$defs/channelArray"
+                }
+            }
+        },
+        "channelElement": {
+            "type": "object",
+            "patternProperties": {
+                ".*": {
+                    "$ref": "#/$defs/elementProperties"
+                }
+            }
+        },
+        "channelArray": {
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    {
+                        "$ref": "#/$defs/channelElement"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/$defs/channelElement"
+                        }
+                    }
+                ]
+            }
+        },
+        "elementProperties": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "description": "Type of the channel element",
+                    "enum": ["map", "file", "directory", "string", "integer", "float", "boolean", "list", "eval"]
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Description of the channel"
+                },
+                "pattern": {
+                    "type": "string",
+                    "description": "Pattern of the channel, given in Java glob syntax"
+                },
+                "enum": {
+                    "type": "array",
+                    "description": "List of allowed values for the channel",
+                    "items": {
+                        "type": ["string", "number", "boolean", "array", "object"]
+                    },
+                    "uniqueItems": true
+                },
+                "ontologies": {
+                    "type": "array",
+                    "description": "List of ontologies for the channel",
+                    "uniqueItems": true,
+                    "items": {
+                        "type": "object",
+                        "patternProperties": {
+                            ".*": {
+                                "type": "string",
+                                "pattern": "^https?://.*"
+                            }
+                        }
+                    }
+                }
+            },
+            "required": ["type", "description"]
+        },
+        "container": {
+            "type": "object",
+            "description": "Container information for Docker or Singularity",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "description": "Container name/URI"
+                },
+                "https": {
+                    "type": "string",
+                    "description": "HTTPS URL to download the container (only for Singularity)",
+                    "pattern": "^https://.*$"
+                },
+                "build_id": {
+                    "type": "string",
+                    "description": "Build ID of the container"
+                },
+                "scan_id": {
+                    "type": "string",
+                    "description": "Security scan ID of the container (only for Docker)"
+                }
+            },
+            "required": ["name", "build_id"]
+        }
+    },
+    "required": ["name", "description", "keywords", "authors", "output", "tools"]
+}

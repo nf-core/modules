@@ -1,0 +1,54 @@
+name: "pharokka_installdatabases"
+description: Install databases necessary for Pharokka's functional analysis
+keywords:
+  - pharokka
+  - prokka
+  - bakta
+  - phage
+  - function
+  - install
+  - database
+tools:
+  - "pharokka":
+      description: "Fast Phage Annotation Program"
+      homepage: "https://pharokka.readthedocs.io"
+      documentation: "https://pharokka.readthedocs.io"
+      tool_dev_url: "https://github.com/gbouras13/pharokka"
+      doi: "10.1093/bioinformatics/btac776"
+      licence:
+        - "MIT"
+      identifier: biotools:pharokka
+
+output:
+  pharokka_db:
+    - ${prefix}/:
+        type: directory
+        description: Directory pointing to Pharokka's database
+        pattern: "${prefix}/"
+  versions_pharokka:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pharokka:
+          type: string
+          description: The name of the tool
+      - pharokka.py --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pharokka:
+          type: string
+          description: The name of the tool
+      - pharokka.py --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@CarsonJM"
+maintainers:
+  - "@CarsonJM"

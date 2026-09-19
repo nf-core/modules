@@ -1,18 +1,18 @@
 process PICARD_CREATESEQUENCEDICTIONARY {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
-    conda "bioconda::picard=3.0.0"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:3.0.0--hdfd78af_1' :
-        'quay.io/biocontainers/picard:3.0.0--hdfd78af_1' }"
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b4/b474c6f12c0502377b95062b75ef4b7778864b1353c7fc1d5a3b1f3b3017fd2e/data'
+        : 'community.wave.seqera.io/library/picard:3.5.0--842d4c70c98af9b4'}"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
     tuple val(meta), path("*.dict"), emit: reference_dict
-    path "versions.yml"            , emit: versions
+    tuple val("${task.process}"), val('picard'), eval("picard CreateSequenceDictionary --version 2>&1 | sed -n 's/.*Version://p'"), topic: versions, emit: versions_picard
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,21 +22,23 @@ process PICARD_CREATESEQUENCEDICTIONARY {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def avail_mem = 3072
     if (!task.memory) {
-        log.info '[Picard CreateSequenceDictionary] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
-    } else {
-        avail_mem = (task.memory.mega*0.8).intValue()
+        log.info('[Picard CreateSequenceDictionary] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.')
+    }
+    else {
+        avail_mem = (task.memory.mega * 0.8).intValue()
     }
     """
     picard \\
         -Xmx${avail_mem}M \\
-        CreateSequenceDictionary  \\
-        $args \\
-        --REFERENCE $fasta \\
+        CreateSequenceDictionary \\
+        ${args} \\
+        --REFERENCE ${fasta} \\
         --OUTPUT ${prefix}.dict
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        picard: \$(picard CreateSequenceDictionary --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.dict
     """
 }

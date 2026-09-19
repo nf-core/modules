@@ -1,0 +1,88 @@
+nextflow_process {
+
+    name "Test Process GLIMPSE2_SPLITREFERENCE"
+    script "../main.nf"
+    config "./nextflow.config"
+
+    process "GLIMPSE2_SPLITREFERENCE"
+
+    tag "modules_nfcore"
+    tag "modules"
+    tag "glimpse2"
+    tag "glimpse2/splitreference"
+
+    test("Should run without map") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'ref1000GP' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
+                    "chr22:16600000-16800000",
+                    "chr22:16600000-16800000",
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(
+                file(process.out.bin_ref[0][1]).name,
+                process.out.findAll { key, val -> key.startsWith('versions') }
+            ).match()
+        }
+    }
+
+    test("Should run with map") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'ref1000GP' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
+                    "chr22:16600000-16800000",
+                    "chr22:16600000-16800000",
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.glimpse.map", checkIfExists:true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(
+                file(process.out.bin_ref[0][1]).name,
+                process.out.findAll { key, val -> key.startsWith('versions') }
+            ).match()
+        }
+    }
+
+    test("Should run without map -- stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'ref1000GP' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
+                    "chr22:16600000-16800000",
+                    "chr22:16600000-16800000",
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
+        }
+
+    }
+
+}

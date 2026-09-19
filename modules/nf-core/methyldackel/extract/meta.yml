@@ -13,51 +13,92 @@ keywords:
 tools:
   - methyldackel:
       description: |
-        A (mostly) universal methylation extractor
-        for BS-seq experiments.
-      homepage: https://github.com/brentp/bwa-meth
-      documentation: https://github.com/brentp/bwa-meth
-      arxiv: arXiv:1401.1129
-      licence: ["MIT"]
+        Methylation caller from MethylDackel, a (mostly) universal methylation extractor
+        for methyl-seq experiments.
+      homepage: https://github.com/dpryan79/MethylDackel
+      documentation: https://github.com/dpryan79/MethylDackel/blob/master/README.md
+      licence:
+        - "MIT"
+      identifier: biotools:methyldackel
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: Input genome fasta file
-      pattern: "*.{fasta,fa}"
-  - fai:
-      type: file
-      description: FASTA index file
-      pattern: "*.fai"
-  - bam:
-      type: file
-      description: BAM/CRAM file
-      pattern: "*.{bam,cram}"
-  - bai:
-      type: file
-      description: BAM/CRAM index file
-      pattern: "*.{bai,crai}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: BAM/CRAM file
+        pattern: "*.{bam,cram}"
+        ontologies: []
+    - bai:
+        type: file
+        description: BAM/CRAM index file
+        pattern: "*.{bai,crai}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: Input genome fasta file
+        pattern: "*.{fasta,fa}"
+        ontologies: []
+    - fai:
+        type: file
+        description: FASTA index file
+        pattern: "*.{fai}"
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bedgraph:
-      type: file
-      description: bedGraph file, containing per-base methylation metrics
-      pattern: "*.bedGraph"
-  - methylkit:
-      type: file
-      description: methylKit file, containing per-base methylation metrics
-      pattern: "*.methylKit"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  bedgraph:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bedGraph":
+          type: file
+          description: bedGraph file, containing per-base methylation metrics
+          pattern: "*.bedGraph"
+          ontologies: []
+  methylkit:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.methylKit":
+          type: file
+          description: methylKit file, containing per-base methylation metrics
+          pattern: "*.methylKit"
+          ontologies: []
+  versions_methyldackel:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - methyldackel:
+          type: string
+          description: The name of the tool
+      - MethylDackel --version 2>&1 | cut -f1 -d' ':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - methyldackel:
+          type: string
+          description: The name of the tool
+      - MethylDackel --version 2>&1 | cut -f1 -d' ':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@phue"
+maintainers:
+  - "@phue"
+  - "@eduard-watchmaker"

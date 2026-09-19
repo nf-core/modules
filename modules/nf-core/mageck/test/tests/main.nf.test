@@ -1,0 +1,88 @@
+nextflow_process {
+
+    name "Test Process MAGECK_TEST"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "MAGECK_TEST"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mageck"
+    tag "mageck/test"
+
+    test("mageck-test - csv") {
+        when {
+            params {
+                module_args = "-t 'HL60.initial' "
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/count_table.csv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("mageck-test-day0 - csv") {
+        when {
+            params {
+                module_args = "--day0-label 'HL60.initial' "
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/count_table.csv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("mageck-test - csv - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = ""
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/count_table.csv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

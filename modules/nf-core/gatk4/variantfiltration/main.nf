@@ -1,22 +1,23 @@
 process GATK4_VARIANTFILTRATION {
-    tag "$meta.id"
-    label 'process_medium'
+    tag "${meta.id}"
+    label 'process_single'
 
-    conda "bioconda::gatk4=4.4.0.0"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk4:4.4.0.0--py36hdfd78af_0':
-        'quay.io/biocontainers/gatk4:4.4.0.0--py36hdfd78af_0' }"
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b9/b9822b92da68a3e7916072218082e3fa79bebc2f377947c363613adeecd56ec5/data'
+        : 'community.wave.seqera.io/library/gatk4-main_gcnvkernel:961440660027ec01'}"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
-    path  fasta
-    path  fai
-    path  dict
+    tuple val(meta2), path(fasta)
+    tuple val(meta3), path(fai)
+    tuple val(meta4), path(dict)
+    tuple val(meta5), path(gzi)
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    tuple val(meta), path("*.tbi")   , emit: tbi
-    path "versions.yml"		         , emit: versions
+    tuple val(meta), path("*.tbi"), emit: tbi
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,34 +26,39 @@ process GATK4_VARIANTFILTRATION {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
+    // Infer .dict file name that gatk expects, even if ends in .fasta.gz
+    def dict_name = fasta.getBaseName()
+    if (dict_name ==~ /^.*\.(fasta|fna|fa)$/) {
+        dict_name = dict_name.replaceAll(/\.(fasta|fna|fa)$/, "")
+    }
+    dict_name = "${dict_name}.dict"
+
     def avail_mem = 3072
     if (!task.memory) {
-        log.info '[GATK VariantFiltration] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
-    } else {
-        avail_mem = (task.memory.mega*0.8).intValue()
+        log.info('[GATK VariantFiltration] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.')
+    }
+    else {
+        avail_mem = (task.memory.mega * 0.8).intValue()
     }
     """
-    gatk --java-options "-Xmx${avail_mem}M" VariantFiltration \\
-        --variant $vcf \\
-        --output ${prefix}.vcf.gz \\
-        --reference $fasta \\
-        --tmp-dir . \\
-        $args
+    # Make sure the .dict file is named correctly
+    if [[ ${dict_name} != ${dict} ]]; then
+        ln -s ${dict} ${dict_name}
+    fi
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
+    gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
+        VariantFiltration \\
+        --variant ${vcf} \\
+        --output ${prefix}.vcf.gz \\
+        --reference ${fasta} \\
+        --tmp-dir . \\
+        ${args}
     """
+
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }

@@ -1,0 +1,86 @@
+nextflow_process {
+
+    name "Test Process GT_GFF3"
+    script "../main.nf"
+    process "GT_GFF3"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gt"
+    tag "gt/gff3"
+
+    test("sarscov2-gff3-valid") {
+        when {
+            params {
+                module_args = '-tidy -retainids'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("sarscov2-gff3-invalid") {
+        when {
+            params {
+                module_args = '-tidy -retainids'
+            }
+            process {
+                """
+                input[0] = channel.of(
+                    '##gff-version 3',
+                    'chr22\tID=gene:ENSG00000233995;Name=AP000547.1'
+                    )
+                    .collectFile(name: 'sample.gff3', newLine: true)
+                    .map { file -> [ [ id:'test' ], file ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() },
+                { assert path(process.out.error_log.get(0).get(1)).getText().contains("gt gff3: error:") }
+            )
+        }
+    }
+
+    test("sarscov2-gff3-valid -- stub") {
+        options "-stub"
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

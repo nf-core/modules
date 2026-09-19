@@ -1,22 +1,22 @@
 process PICARD_LIFTOVERVCF {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
-    conda "bioconda::picard=3.0.0"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/picard:3.0.0--hdfd78af_1' :
-        'quay.io/biocontainers/picard:3.0.0--hdfd78af_1' }"
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b4/b474c6f12c0502377b95062b75ef4b7778864b1353c7fc1d5a3b1f3b3017fd2e/data'
+        : 'community.wave.seqera.io/library/picard:3.5.0--842d4c70c98af9b4'}"
 
     input:
     tuple val(meta), path(input_vcf)
-    path dict
-    path chain
-    path fasta
+    tuple val(meta2), path(dict)
+    tuple val(meta3), path(fasta)
+    tuple val(meta4), path(chain)
 
     output:
-    tuple val(meta), path("*.lifted.vcf.gz")  , emit: vcf_lifted
+    tuple val(meta), path("*.lifted.vcf.gz"), emit: vcf_lifted
     tuple val(meta), path("*.unlifted.vcf.gz"), emit: vcf_unlifted
-    path "versions.yml"                       , emit: versions
+    tuple val("${task.process}"), val('picard'), eval("picard LiftoverVcf --version 2>&1 | sed -n 's/.*Version://p'"), topic: versions, emit: versions_picard
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,36 +26,27 @@ process PICARD_LIFTOVERVCF {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def avail_mem = 3072
     if (!task.memory) {
-        log.info '[Picard LiftoverVcf] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
-    } else {
-        avail_mem = (task.memory.mega*0.8).intValue()
+        log.info('[Picard LiftoverVcf] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.')
+    }
+    else {
+        avail_mem = (task.memory.mega * 0.8).intValue()
     }
     """
     picard \\
         -Xmx${avail_mem}M \\
         LiftoverVcf \\
-        $args \\
-        --INPUT $input_vcf \\
+        ${args} \\
+        --INPUT ${input_vcf} \\
         --OUTPUT ${prefix}.lifted.vcf.gz \\
-        --CHAIN $chain \\
+        --CHAIN ${chain} \\
         --REJECT ${prefix}.unlifted.vcf.gz \\
-        --REFERENCE_SEQUENCE $fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        picard: \$(echo \$(picard LiftoverVcf --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
-    END_VERSIONS
+        --REFERENCE_SEQUENCE ${fasta}
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.lifted.vcf.gz
-    touch ${prefix}.unlifted.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        picard: \$(echo \$(picard LiftoverVcf --version 2>&1) | grep -o 'Version:.*' | cut -f2- -d:)
-    END_VERSIONS
+    echo "" | gzip > ${prefix}.lifted.vcf.gz
+    echo "" | gzip > ${prefix}.unlifted.vcf.gz
     """
 }

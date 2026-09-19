@@ -2,10 +2,10 @@ process IVAR_VARIANTS {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::ivar=1.4"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ivar:1.4--h6b7c446_1' :
-        'quay.io/biocontainers/ivar:1.4--h6b7c446_1' }"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/ivar:1.4.4--h077b44d_0' :
+        'quay.io/biocontainers/ivar:1.4.4--h077b44d_0' }"
 
     input:
     tuple val(meta), path(bam)
@@ -17,7 +17,7 @@ process IVAR_VARIANTS {
     output:
     tuple val(meta), path("*.tsv")    , emit: tsv
     tuple val(meta), path("*.mpileup"), optional:true, emit: mpileup
-    path "versions.yml"               , emit: versions
+    tuple val("${task.process}"), val('ivar'), eval("ivar version | sed -n 's|iVar version \\(.*\\)|\\1|p'"), emit: versions_ivar, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -41,10 +41,13 @@ process IVAR_VARIANTS {
             $features \\
             -r $fasta \\
             -p $prefix
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ivar: \$(echo \$(ivar version 2>&1) | sed 's/^.*iVar version //; s/ .*\$//')
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def touch_mpileup = save_mpileup ? "touch ${prefix}.mpileup" : ''
+    """
+    touch ${prefix}.tsv
+    $touch_mpileup
     """
 }

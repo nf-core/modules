@@ -1,0 +1,80 @@
+name: "tidk_search"
+description: Searches a genome for a telomere string such as TTAGGG
+keywords:
+  - genomics
+  - telomere
+  - search
+tools:
+  - "tidk":
+      description: tidk is a toolkit to identify and visualise telomeric repeats
+        in genomes
+      homepage: "https://github.com/tolkit/telomeric-identifier"
+      documentation: "https://github.com/tolkit/telomeric-identifier"
+      tool_dev_url: "https://github.com/tolkit/telomeric-identifier"
+      doi: "10.5281/zenodo.10091385"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: The input fasta file
+        pattern: "*.{fsa,fa,fasta}"
+        ontologies: []
+  - string:
+      type: string
+      description: Search string such as TTAGGG
+output:
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.tsv":
+          type: file
+          description: Search results in TSV format
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  bedgraph:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bedgraph":
+          type: file
+          description: Search results in BEDGRAPH format
+          pattern: "*.bedgraph"
+          ontologies: []
+  versions_tidk:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tidk:
+          type: string
+          description: The name of the tool
+      - tidk --version | sed 's/tidk //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tidk:
+          type: string
+          description: The name of the tool
+      - tidk --version | sed 's/tidk //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@GallVp"
+maintainers:
+  - "@GallVp"

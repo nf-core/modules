@@ -1,0 +1,63 @@
+
+nextflow_process {
+
+    name "Test Process DSHBIO_FILTERBED"
+    script "../main.nf"
+    process "DSHBIO_FILTERBED"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "dshbio"
+    tag "dshbio/filterbed"
+
+    test("test-dshbio-filterbed") {
+
+        when {
+            params {
+                module_args = '--range chr21:1-24132500'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true)
+				]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("test-dshbio-filterbed-stub") {
+        options '-stub'
+
+        when {
+            params {
+                module_args = '--range chr21:1-24132500'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true)
+				]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

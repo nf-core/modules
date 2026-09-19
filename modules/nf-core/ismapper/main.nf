@@ -2,8 +2,8 @@ process ISMAPPER {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::ismapper=2.0.2"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ismapper:2.0.2--pyhdfd78af_1' :
         'quay.io/biocontainers/ismapper:2.0.2--pyhdfd78af_1' }"
 
@@ -12,26 +12,28 @@ process ISMAPPER {
 
     output:
     tuple val(meta), path("results/*"), emit: results
-    path "versions.yml"               , emit: versions
+    tuple val("${task.process}"), val('ismapper'), eval("ismap --version 2>&1 | sed -n 's/^.*ismap //p'"), emit: versions_ismapper, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     ismap \\
-        $args \\
-        --t $task.cpus \\
+        ${args} \\
+        --t ${task.cpus} \\
         --output_dir results \\
-        --queries $query \\
-        --reference $reference \\
-        --reads $reads
+        --queries ${query} \\
+        --reference ${reference} \\
+        --reads ${reads}
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ismapper: \$( echo \$( ismap --version 2>&1 ) | sed 's/^.*ismap //' )
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir -p results/${prefix}
+
+    touch results/${prefix}/${prefix}_left_final.fastq
     """
 }

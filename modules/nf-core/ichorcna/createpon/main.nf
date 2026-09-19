@@ -1,47 +1,89 @@
 process ICHORCNA_CREATEPON {
+    tag "$meta.id"
     label 'process_low'
 
-    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::r-ichorcna=0.3.2"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-ichorcna:0.3.2--r41hdfd78af_0' :
-        'quay.io/biocontainers/r-ichorcna:0.3.2--r41hdfd78af_0' }"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f0/f07cec06705b4443052d3d7eaccebdbd0078366f7d074bfd4a6893980c6e2c4b/data' :
+        'community.wave.seqera.io/library/r-ichorcna:0.5.1--eed4be826f05c9d4' }"
 
     input:
-    path wigs
+    tuple val(meta), path(wigs)
     path gc_wig
     path map_wig
     path centromere
+    path rep_time_wig
+    path exons
 
     output:
-    path "*.rds"        , emit: rds
-    path "*.txt"        , emit: txt
-    path "versions.yml" , emit: versions
+    tuple val(meta), path("${prefix}*.rds"), emit: rds
+    tuple val(meta), path("${prefix}*.txt"), emit: txt
+    path "versions.yml", emit: versions, topic: versions
 
     when:
-        task.ext.when == null || task.ext.when
+    task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def centro = centromere ? "--centromere ${centromere}" : ''
-    def prefix = task.ext.prefix ?: "PoN"
-    def VERSION = '0.3.2' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def args   = task.ext.args   ?: ''
+    prefix     = task.ext.prefix ?: "PoN"
+    def map    = map_wig         ? "mapWig='${map_wig}',"          : 'mapWig=NULL,'
+    def centro = centromere      ? "centromere='${centromere}',"   : ''
+    def rep    = rep_time_wig    ? "repTimeWig='${rep_time_wig}'," : 'repTimeWig=NULL,'
+    def exons_opt  = exons       ? "exons.bed='${exons}',"         : ''
+
     """
-    echo ${wigs} | tr " " "\\n" > wig_files.txt
+    #!/usr/bin/env Rscript
+    library("ichorCNA")
+    library("yaml")
+    library("GenomeInfoDb")
 
-    createPanelOfNormals.R \\
-        --filelist wig_files.txt \\
-        --gcWig ${gc_wig} \\
-        --mapWig ${map_wig} \\
-        ${centro} \\
-        ${args} \\
-        --outfile ${prefix}
+    options(UCSC.goldenPath.url = "https://hgdownload2.soe.ucsc.edu/goldenPath")
 
-    rm wig_files.txt
+    write.table(strsplit("${wigs}"," ")[[1]],"filelist.txt", row.names = FALSE, col.names = FALSE)
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ichorcna: $VERSION
-    END_VERSIONS
+    createPanelOfNormals(
+        gcWig='${gc_wig}',
+        ${map}
+        ${rep}
+        filelist = "filelist.txt",
+        outfile = "${prefix}",
+        ${exons_opt}
+        ${centro}
+        ${args}
+    )
+
+    ### Make Versions YAML for NF-Core ###
+    versions = list()
+    versions["r-base"]     <- paste(R.Version()\$major, R.Version()\$minor, sep=".")
+    versions["r-ichorCNA"] <- paste(packageVersion("ichorCNA"), sep=".")
+
+    yaml_str <- as.yaml(
+        list(
+            "${task.process}" = versions
+        )
+    )
+    writeLines(yaml_str, file("versions.yml"))
+    """
+
+    stub:
+    prefix = task.ext.prefix ?: "PoN"
+    """
+    #!/usr/bin/env Rscript
+    library("yaml")
+
+    file.create("${prefix}.rds")
+    file.create("${prefix}.txt")
+
+    ### Make Versions YAML for NF-Core ###
+    versions = list()
+    versions["r-base"]     <- paste(R.Version()\$major, R.Version()\$minor, sep=".")
+    versions["r-ichorCNA"] <- paste(packageVersion("ichorCNA"), sep=".")
+
+    yaml_str <- as.yaml(
+        list(
+            "${task.process}" = versions
+        )
+    )
+    writeLines(yaml_str, file("versions.yml"))
     """
 }

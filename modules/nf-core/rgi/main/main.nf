@@ -1,47 +1,83 @@
 process RGI_MAIN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
-    conda "bioconda::rgi=5.2.1"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/rgi:5.2.1--pyha8f3691_2':
-        'quay.io/biocontainers/rgi:5.2.1--pyha8f3691_2' }"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3f/3f452c8e124ee58ab6b26442d15401c57d471cb753f53921570dc484df4e7620/data'
+        : 'community.wave.seqera.io/library/rgi_kma:e905ecb8305e2609' }"
 
     input:
     tuple val(meta), path(fasta)
+    path card
+    path wildcard
 
     output:
-    tuple val(meta), path("*.json"), emit: json
-    tuple val(meta), path("*.txt") , emit: tsv
-    tuple val(meta), path("temp/")  , emit: tmp
-    env VER                        , emit: tool_version
-    env DBVER                      , emit: db_version
-    path "versions.yml"            , emit: versions
+    tuple val(meta), path("${prefix}.json"), emit: json
+    tuple val(meta), path("${prefix}.txt"), emit: tsv
+    tuple val(meta), path("temp/"), emit: tmp
+    env 'RGI_VERSION', emit: tool_version
+    env 'DB_VERSION', emit: db_version
+    tuple val("${task.process}"), val('rgi'), eval("rgi main --version"),  emit: versions_rgi, topic: versions
+    tuple val("${task.process}"), val('rgi-database'), eval("echo \$DB_VERSION"),  emit: versions_db , topic: versions
+    tuple val("${task.process}"), val('kma'), eval("kma -v | sed 's/KMA-//'"),  emit: versions_kma, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    // This customizes the command: rgi load
+    def args2 = task.ext.args2 ?: ''
+    // This customizes the command: rgi main
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def load_wildcard = ""
+
+    if (wildcard) {
+        load_wildcard = """ \\
+            --wildcard_annotation ${wildcard}/wildcard_database_v\$DB_VERSION.fasta \\
+            --wildcard_annotation_all_models ${wildcard}/wildcard_database_v\$DB_VERSION\\_all.fasta \\
+            --wildcard_index ${wildcard}/wildcard/index-for-model-sequences.txt \\
+            --amr_kmers ${wildcard}/wildcard/all_amr_61mers.txt \\
+            --kmer_database ${wildcard}/wildcard/61_kmer_db.json \\
+            --kmer_size 61
+        """
+    }
+
     """
+    export MPLCONFIGDIR=\$PWD
+    DB_VERSION=\$(ls ${card}/card_database_*_all.fasta | sed "s/${card}\\/card_database_v\\([0-9].*[0-9]\\).*/\\1/")
+
+    rgi \\
+        load \\
+        ${args} \\
+        --card_json ${card}/card.json \\
+        --debug --local \\
+        --card_annotation ${card}/card_database_v\$DB_VERSION.fasta \\
+        --card_annotation_all_models ${card}/card_database_v\$DB_VERSION\\_all.fasta \\
+        ${load_wildcard}
+
     rgi \\
         main \\
-        $args \\
-        --num_threads $task.cpus \\
-        --output_file $prefix \\
-        --input_sequence $fasta
+        ${args2} \\
+        --threads ${task.cpus} \\
+        --output_file ${prefix} \\
+        --input_sequence ${fasta}
 
     mkdir temp/
-    mv *.xml *.fsa *.{nhr,nin,nsq} *.draft *.potentialGenes *{variant,rrna,protein,predictedGenes,overexpression,homolog}.json temp/
+    for FILE in *.xml *.fsa *.{nhr,nin,nsq} *.draft *.potentialGenes *{variant,rrna,protein,predictedGenes,overexpression,homolog}.json; do [[ -e \$FILE ]] && mv \$FILE temp/; done
 
-    VER=\$(rgi main --version)
-    DBVER=\$(rgi database --version)
+    RGI_VERSION=\$(rgi main --version)
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rgi: \$(echo \$VER)
-        rgi-database: \$(echo \$DBVER)
-    END_VERSIONS
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir -p temp
+    touch ${prefix}.json
+    touch ${prefix}.txt
+
+    RGI_VERSION=\$(rgi main --version)
+    DB_VERSION=stub_version
     """
 }

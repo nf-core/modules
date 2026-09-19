@@ -2,53 +2,37 @@ process TABIX_BGZIP {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::tabix=1.11"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/tabix:1.11--hdfd78af_0' :
-        'quay.io/biocontainers/tabix:1.11--hdfd78af_0' }"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/92/92859404d861ae01afb87e2b789aebc71c0ab546397af890c7df74e4ee22c8dd/data' :
+        'community.wave.seqera.io/library/htslib:1.21--ff8e28a189fbecaa' }"
 
     input:
     tuple val(meta), path(input)
 
     output:
-    tuple val(meta), path("${output}")    , emit: output
-    tuple val(meta), path("${output}.gzi"), emit: gzi, optional: true
-    path  "versions.yml"                  , emit: versions
+    tuple val(meta), path("output.gz"), emit: output
+    tuple val(meta), path("*.gzi")    , emit: gzi, optional: true
+    tuple val("${task.process}"), val('tabix'), eval("tabix -h 2>&1 | grep -oP 'Version:\\s*\\K[^\\s]+'")   , topic: versions   , emit: versions_tabix
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}"
-    in_bgzip = ["gz", "bgz", "bgzf"].contains(input.getExtension())
-    extension = in_bgzip ? input.getBaseName().tokenize(".")[-1] : input.getExtension()
-    output   = in_bgzip ? "${prefix}.${extension}" : "${prefix}.${extension}.gz"
-    command = in_bgzip ? '-d' : ''
-    // Name the index according to $prefix, unless a name has been requested
-    if ((args.matches("(^| )-i\\b") || args.matches("(^| )--index(\$| )")) && !args.matches("(^| )-I\\b") && !args.matches("(^| )--index-name\\b")) {
-        args = args + " -I ${output}.gzi"
-    }
-    """
-    bgzip $command -c $args -@${task.cpus} $input > ${output}
+    def deprecation_message = """
+    WARNING: This module has been deprecated. Please use HTSLIB/BGZIPTABIX instead.
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tabix: \$(echo \$(tabix -h 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
-    END_VERSIONS
-    """
+    Reason:
+    This module is duplicative of TABIX/BGZIPTABIX and SAMTOOLS/BGZIP. The new HTSLIB/BGZIPTABIX module provides equivalent functionality with a more predictable behavior and better interface.
+    """.stripIndent()
+    assert false: deprecation_message
 
     stub:
-    prefix   = task.ext.prefix ?: "${meta.id}"
-    in_bgzip = ["gz", "bgz", "bgzf"].contains(input.getExtension())
-    output   = in_bgzip ? input.getBaseName() : "${prefix}.${input.getExtension()}.gz"
+    def deprecation_message = """
+    WARNING: This module has been deprecated. Please use HTSLIB/BGZIPTABIX instead.
 
-    """
-    touch ${output}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tabix: \$(echo \$(tabix -h 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
-    END_VERSIONS
-    """
+    Reason:
+    This module is duplicative of TABIX/BGZIPTABIX and SAMTOOLS/BGZIP. The new HTSLIB/BGZIPTABIX module provides equivalent functionality with a more predictable behavior and better interface.
+    """.stripIndent()
+    assert false: deprecation_message
 }

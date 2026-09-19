@@ -1,43 +1,66 @@
 name: fgbio_sortbam
-description: Sorts a SAM or BAM file. Several sort orders are available, including coordinate, queryname, random, and randomquery.
+description: Sorts a SAM or BAM file. Several sort orders are available,
+  including coordinate, queryname, random, and randomquery.
 keywords:
   - sort
   - bam
   - sam
 tools:
   - fgbio:
-      description: Tools for working with genomic and high throughput sequencing data.
+      description: Tools for working with genomic and high throughput sequencing
+        data.
       homepage: https://github.com/fulcrumgenomics/fgbio
       documentation: http://fulcrumgenomics.github.io/fgbio/
-      licence: ["MIT"]
-
+      licence:
+        - "MIT"
+      identifier: biotools:fgbio
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false, collapse:false ]
-  - bam:
-      type: file
-      description: |
-        The input SAM or BAM file to be sorted.
-      pattern: "*.{bam,sam}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false, collapse:false ]
+    - bam:
+        type: file
+        description: |
+          The input SAM or BAM file to be sorted.
+        pattern: "*.{bam,sam}"
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bam:
-      type: file
-      description: |
-        Output SAM or BAM file.
-      pattern: "*.{bam,sam}"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bam":
+          type: file
+          description: |
+            Output SAM or BAM file.
+          pattern: "*.{bam,sam}"
+          ontologies: []
+  versions_fgbio:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - fgbio:
+          type: string
+          description: The tool name
+      - 'fgbio --version 2>&1 | tr -d "[:cntrl:]" | sed -e "s/^.*Version: //;s/\[.*$//"':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - fgbio:
+          type: string
+          description: The tool name
+      - 'fgbio --version 2>&1 | tr -d "[:cntrl:]" | sed -e "s/^.*Version: //;s/\[.*$//"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
+  - "@sruthipsuresh"
+maintainers:
   - "@sruthipsuresh"

@@ -1,0 +1,57 @@
+nextflow_process {
+
+    name "Test Process PLINK2_VCF"
+    script "../main.nf"
+    process "PLINK2_VCF"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "plink2"
+    tag "plink2/vcf"
+    config "./nextflow.config"
+
+    test("plink2_vcf") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("plink2_vcf - stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

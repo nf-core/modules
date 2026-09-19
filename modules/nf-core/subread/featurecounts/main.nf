@@ -1,19 +1,19 @@
 process SUBREAD_FEATURECOUNTS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
-    conda "bioconda::subread=2.0.1"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/subread:2.0.1--hed695b0_0' :
-        'quay.io/biocontainers/subread:2.0.1--hed695b0_0' }"
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/subread:2.1.1--h577a1d6_0'
+        : 'quay.io/biocontainers/subread:2.1.1--h577a1d6_0'}"
 
     input:
     tuple val(meta), path(bams), path(annotation)
 
     output:
-    tuple val(meta), path("*featureCounts.txt")        , emit: counts
-    tuple val(meta), path("*featureCounts.txt.summary"), emit: summary
-    path "versions.yml"                                , emit: versions
+    tuple val(meta), path("*featureCounts.tsv"), emit: counts
+    tuple val(meta), path("*featureCounts.tsv.summary"), emit: summary
+    tuple val("${task.process}"), val('subread'), eval("featureCounts -v 2>&1 | sed 's/featureCounts v//'"), emit: versions_subread, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,22 +26,25 @@ process SUBREAD_FEATURECOUNTS {
     def strandedness = 0
     if (meta.strandedness == 'forward') {
         strandedness = 1
-    } else if (meta.strandedness == 'reverse') {
+    }
+    else if (meta.strandedness == 'reverse') {
         strandedness = 2
     }
     """
     featureCounts \\
-        $args \\
-        $paired_end \\
-        -T $task.cpus \\
-        -a $annotation \\
-        -s $strandedness \\
-        -o ${prefix}.featureCounts.txt \\
+        ${args} \\
+        ${paired_end} \\
+        -T ${task.cpus} \\
+        -a ${annotation} \\
+        -s ${strandedness} \\
+        -o ${prefix}.featureCounts.tsv \\
         ${bams.join(' ')}
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        subread: \$( echo \$(featureCounts -v 2>&1) | sed -e "s/featureCounts v//g")
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.featureCounts.tsv
+    touch ${prefix}.featureCounts.tsv.summary
     """
 }

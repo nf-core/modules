@@ -5,68 +5,135 @@ keywords:
   - expression
   - rna-seq
   - deseq2
-
 tools:
   - "shinyngs":
       description: "Provides Shiny applications for various array and NGS applications. Currently very RNA-seq centric, with plans for expansion."
       homepage: "https://github.com/pinin4fjords/shinyngs"
-      documentation: "https://rawgit.com/pinin4fjords/shinyngs/master/vignettes/shinyngs.html"
+      documentation: "https://pinin4fjords.github.io/shinyngs/"
       tool_dev_url: "https://github.com/pinin4fjords/shinyngs"
-      licence: "['AGPL v3']"
-
+      licence: ["AGPL v3"]
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing information on experiment, at a minimum an id.
-        e.g. [ id:'test' ]
-  - meta2:
-      type: map
-      description: |
-        Groovy Map containing information on experiment, at a minimum an id. To match meta.
-        e.g. [ id:'test' ]
-  - sample:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing information on experiment, at a minimum an id.
+          e.g. [ id:'test' ]
+    - sample:
+        type: file
+        description: |
+          CSV-format sample sheet with sample metadata
+        ontologies: []
+    - feature_meta:
+        type: file
+        description: |
+          TSV-format feature (e.g. gene) metadata
+        ontologies: []
+    - assay_files:
+        type: file
+        description: |
+          List of TSV-format matrix files representing different measures for the same samples (e.g. raw and normalised).
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing information on experiment, at a minimum an id. To match meta.
+          e.g. [ id:'test' ]
+    - contrasts:
+        type: file
+        description: |
+          CSV-format file with four columns identifying the sample sheet variable, reference level, treatment level, and optionally a comma-separated list of covariates used as blocking factors.
+        ontologies: []
+    - differential_results:
+        type: file
+        description: |
+          List of TSV-format differential analysis outputs, one per row of the contrasts file
+        ontologies: []
+  - contrast_stats_assay:
+      type: file
+      description: contrast statistics
+      ontologies: []
+  - gene_sets:
       type: file
       description: |
-        CSV-format sample sheet with sample metadata
-  - feature_meta:
+        Optional: GMT-format gene set files used for enrichment, referenced in the
+        app via the shinyngs `--enrichment_gene_sets` argument.
+      pattern: "*.{gmt}"
+      ontologies: []
+  - enrichment_results:
       type: file
       description: |
-        TSV-format feature (e.g. gene) metadata
-  - assay_files:
-      type: list
-      description: |
-        List of TSV-format matrix files representing different measures for the same samples (e.g. raw and normalised).
-  - contrasts:
-      type: file
-      description: |
-        CSV-format file with four columns identifying the sample sheet variable, reference level, treatment level, and optionally a comma-separated list of covariates used as blocking factors.
-  - differential_results:
-      type: list
-      description: |
-        List of TSV-format differential analysis outputs, one per row of the contrasts file
-
+        Optional: per-contrast enrichment result tables (e.g. GSEA output), matched
+        to contrasts in the app via the shinyngs `--enrichment_filename_template` argument.
+      ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing information on experiment.
-        e.g. [ id:'test' ]
-  - data:
-      type: file
-      description: |
-        A shinyngs ExploratorySummarizedExperiment
-        object serialized with saveRDS().
-      pattern: "app/data.rds"
-  - app:
-      type: file
-      description: |
-        The mini R script required build an application from data.rds.
-      pattern: "app/app.R"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  app:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing information on experiment.
+            e.g. [ id:'test' ]
+      - "*/data.rds":
+          type: file
+          description: |
+            The mini R script required build an application from data.rds.
+          pattern: "app/app.R"
+          ontologies:
+            - edam: http://edamontology.org/format_3999 # R script
+      - "*/app.R":
+          type: file
+          description: |
+            The mini R script required build an application from data.rds.
+          pattern: "app/app.R"
+          ontologies:
+            - edam: http://edamontology.org/format_3999 # R script
+  versions_shinyngs:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - shinyngs:
+          type: string
+          description: The name of the tool
+      - 'Rscript -e "library(shinyngs); cat(as.character(packageVersion(''shinyngs'')))"':
+          type: eval
+          description: The expression to obtain the version of the tool
 
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - shinyngs:
+          type: string
+          description: The name of the tool
+      - 'Rscript -e "library(shinyngs); cat(as.character(packageVersion(''shinyngs'')))"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/r-shinyngs:3.2.1--d43071e62bc500d3
+      build_id: bd-d43071e62bc500d3_1
+      scan_id: sc-5ac2dcb847246bad_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/r-shinyngs:3.2.1--d168a374ce5dc1af
+      build_id: bd-d168a374ce5dc1af_1
+      scan_id: sc-0f3dfab20873614f_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/r-shinyngs:3.2.1--b810af5b9efbb4b2
+      build_id: bd-b810af5b9efbb4b2_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d5/d5f79ef0afe3e3831496c61c81aeda56312f49ac324dc378d3312af7acae2ec6/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/r-shinyngs:3.2.1--ed7d3904b821c0a8
+      build_id: bd-ed7d3904b821c0a8_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/74/74ebb0b4cfa12e1174262987ffa0559ab388198ba94196a4fd295ce5a9051a22/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/shinyngs/app/.conda-lock/linux_amd64-bd-d43071e62bc500d3_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/shinyngs/app/.conda-lock/linux_arm64-bd-d168a374ce5dc1af_1.txt

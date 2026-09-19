@@ -1,0 +1,31 @@
+nextflow_process {
+
+    name "Test Process KRONA_KRONADB"
+    script "../main.nf"
+    process "KRONA_KRONADB"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "krona"
+    tag "krona/kronadb"
+
+    test("taxonomy - deprecated") {
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.") }
+            )
+        }
+    }
+
+    test("taxonomy - stub") {
+        options '-stub'
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

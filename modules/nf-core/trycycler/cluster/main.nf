@@ -1,0 +1,45 @@
+process TRYCYCLER_CLUSTER {
+    tag "$meta.id"
+    label 'process_medium'
+
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/trycycler:0.5.3--pyhdfd78af_0':
+        'quay.io/biocontainers/trycycler:0.5.3--pyhdfd78af_0' }"
+
+    input:
+    tuple val(meta), path(contigs), path(reads)
+
+    output:
+    tuple val(meta), path("*") , emit: cluster_dir
+    tuple val("${task.process}"), val('trycycler'), eval("trycycler --version | sed 's/Trycycler v//'"), emit: versions_trycycler, topic: versions
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    trycycler \\
+        cluster \\
+        ${args} \\
+        --assemblies ${contigs} \\
+        --reads ${reads} \\
+        --threads $task.cpus \\
+        --out_dir ${prefix}
+
+    gzip ${args2} ${prefix}/cluster_*/*/*.fasta
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    mkdir -p ${prefix}/cluster_001/1_contigs
+    echo "" | gzip > ${prefix}/cluster_001/1_contigs/A_contig_2a.fasta.gz
+    touch ${prefix}/contigs.newick
+    touch ${prefix}/contigs.phylip
+    """
+}

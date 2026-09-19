@@ -2,17 +2,17 @@ process KALLISTO_INDEX {
     tag "$fasta"
     label 'process_medium'
 
-    conda "bioconda::kallisto=0.46.2"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/kallisto:0.46.2--h4f7b962_1' :
-        'quay.io/biocontainers/kallisto:0.46.2--h4f7b962_1' }"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e2/e21d2cff2526b0995996977c057f0c17844073781f86a18b15fef178a97ed7cb/data':
+        'community.wave.seqera.io/library/kallisto:0.52.0--31c771060d82d25c' }"
 
     input:
-    path fasta
+    tuple val(meta), path(fasta)
 
     output:
-    path "kallisto" , emit: idx
-    path "versions.yml" , emit: versions
+    tuple val(meta), path("kallisto")  , emit: index
+    tuple val("${task.process}"), val('kallisto'), eval('kallisto 2>&1 | head -1 | sed "s/^kallisto //; s/Usage.*//"'), emit: versions_kallisto, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,20 +25,10 @@ process KALLISTO_INDEX {
         $args \\
         -i kallisto \\
         $fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        kallisto: \$(echo \$(kallisto 2>&1) | sed 's/^kallisto //; s/Usage.*\$//')
-    END_VERSIONS
     """
 
     stub:
     """
-    touch kallisto
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        kallisto: \$(echo \$(kallisto 2>&1) | sed 's/^kallisto //; s/Usage.*\$//')
-    END_VERSIONS
+    mkdir kallisto
     """
 }

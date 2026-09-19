@@ -1,0 +1,68 @@
+nextflow_process {
+
+    name "Test Process STAINWARPY_EXTRACTCHANNEL"
+    script "../main.nf"
+    process "STAINWARPY_EXTRACTCHANNEL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "stainwarpy"
+    tag "stainwarpy/extractchannel"
+
+    config "./nextflow.config"
+
+    test("colon_tissue_local - ome.tif") {
+
+        when {
+            params {
+                modules_args = "--channel-idx 0"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'sample1'],
+                    file(params.modules_testdata_base_path + 'imaging/hne_multiplexed/multiplexed_image_colon.ome.tif', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.single_ch_image.get(0).get(1)).exists(),
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                    ).match()
+                }
+            )
+        }
+
+    }
+
+    test("colon_tissue_local - ome.tif - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                modules_args = null
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'sample1'],
+                    file(params.modules_testdata_base_path + 'imaging/hne_multiplexed/multiplexed_image_colon.ome.tif', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            { assert process.success }
+            { assert snapshot(process.out).match() }
+        }
+
+    }
+
+}

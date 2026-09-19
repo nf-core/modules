@@ -1,56 +1,62 @@
 process SHAPEIT5_PHASECOMMON {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
-    conda "bioconda::shapeit5=1.0.0"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/shapeit5:1.0.0--h0c8ee15_0':
-        'quay.io/biocontainers/shapeit5:1.0.0--h0c8ee15_0'}"
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fa/fa06870e893f9045944461e5b674adffec6deec41e8496b63ec54d44a98d6134/data'
+        : 'community.wave.seqera.io/library/shapeit5:5.1.1--09a6cb254ece8f6e'}"
 
     input:
-        tuple val(meta) , path(input), path(input_index), val(region), path(pedigree)
-        tuple val(meta2), path(reference), path(reference_index)
-        tuple val(meta3), path(scaffold), path(scaffold_index)
-        tuple val(meta4), path(map)
+    tuple val(meta), path(input), path(input_index), path(pedigree), val(region), path(reference), path(reference_index), path(scaffold), path(scaffold_index), path(map)
 
     output:
-        tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: phased_variant
-        path "versions.yml"                               , emit: versions
+    tuple val(meta), path("*.{bcf,graph,bh}"), emit: phased_variant
+    tuple val("${task.process}"), val('shapeit5'), eval('SHAPEIT5_phase_common | sed "5!d;s/^.*Version *: //; s/ .*$//"'), topic: versions, emit: versions_shapeit5
 
     when:
-        task.ext.when == null || task.ext.when
+    task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def prefix = task.ext.prefix ?: "${meta.id}_${region.replace(":","_")}"
-    def suffix = task.ext.suffix ?: "vcf.gz"
+    def extension = args.contains("--output-format bcf")   ? "bcf"   :
+                    args.contains("--output-format graph") ? "graph" :
+                    args.contains("--output-format bh")    ? "bh"    :
+                    "bcf"
 
-    def map_command       = map       ? "--map $map"             : ""
-    def reference_command = reference ? "--reference $reference" : ""
-    def scaffold_command  = scaffold  ? "--scaffold $scaffold"   : ""
-    def pedigree_command  = pedigree  ? "--pedigree $pedigree"   : ""
+    if ("${input}" == "${prefix}.${extension}") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
+    }
 
-    meta.put("SHAPEIT5_PHASECOMMON", ["reference":"", "map":"", "scaffold":""])
-    meta.SHAPEIT5_PHASECOMMON.reference = reference ? meta2 :"None"
-    meta.SHAPEIT5_PHASECOMMON.map       = map       ? meta3 :"None"
-    meta.SHAPEIT5_PHASECOMMON.scaffold  = scaffold  ? meta4 :"None"
+    def map_command       = map       ? "--map ${map}"             : ""
+    def reference_command = reference ? "--reference ${reference}" : ""
+    def scaffold_command  = scaffold  ? "--scaffold ${scaffold}"   : ""
+    def pedigree_command  = pedigree  ? "--pedigree ${pedigree}"   : ""
 
     """
     SHAPEIT5_phase_common \\
-        $args \\
-        --input $input \\
-        $map_command \\
-        $reference_command \\
-        $scaffold_command \\
-        $pedigree_command \\
-        --region $region \\
-        --thread $task.cpus \\
-        --output ${prefix}.${suffix}
+        ${args} \\
+        --input ${input} \\
+        ${map_command} \\
+        ${reference_command} \\
+        ${scaffold_command} \\
+        ${pedigree_command} \\
+        --region ${region} \\
+        --thread ${task.cpus} \\
+        --output ${prefix}.${extension}
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            shapeit5: "\$(SHAPEIT5_phase_common | sed -nr '/Version/p' | grep -o -E '([0-9]+.){1,2}[0-9]' | head -1)"
-    END_VERSIONS
+    stub:
+    def args   = task.ext.args   ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    def extension = args.contains("--output-format bcf")   ? "bcf"   :
+                    args.contains("--output-format graph") ? "graph" :
+                    args.contains("--output-format bh")    ? "bh"    :
+                    "bcf"
+    """
+    touch ${prefix}.${extension}
     """
 }

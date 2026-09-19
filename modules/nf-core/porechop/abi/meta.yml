@@ -11,37 +11,76 @@ tools:
       documentation: "https://github.com/bonsai-team/Porechop_ABI"
       tool_dev_url: "https://github.com/bonsai-team/Porechop_ABI"
       doi: "10.1101/2022.07.07.499093"
-      licence: "['GPL v3']"
-
+      licence:
+        - "MIT"
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - reads:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: fastq/fastq.gz file
+        pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+  - custom_adapters:
       type: file
-      description: fastq/fastq.gz file
-      pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
+      description: Text file containing custom adapters
 
+      ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - reads:
-      type: file
-      description: Adapter-trimmed fastq.gz file
-      pattern: "*fastq.gz"
-  - log:
-      type: file
-      description: Log file containing stdout information
-      pattern: "*.log"
+  reads:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fastq.gz":
+          type: file
+          description: Adapter-trimmed fastq.gz file
+          pattern: "*.fastq.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.log":
+          type: file
+          description: Log file containing stdout information
+          pattern: "*.log"
+          ontologies: []
+  versions_porechop_abi:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - porechop_abi:
+          type: string
+          description: The name of the tool
+      - porechop_abi --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - porechop_abi:
+          type: string
+          description: The name of the tool
+      - porechop_abi --version:
+          type: eval
+          description: The expression to obtain the version of the tool
 
 authors:
   - "@sofstam"
+  - "LilyAnderssonLee"
+maintainers:
+  - "@sofstam"
+  - "LilyAnderssonLee"

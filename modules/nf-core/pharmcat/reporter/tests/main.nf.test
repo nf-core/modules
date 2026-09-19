@@ -1,0 +1,212 @@
+nextflow_process {
+
+    name "Test Process PHARMCAT_REPORTER"
+    script "../main.nf"
+    process "PHARMCAT_REPORTER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pharmcat"
+    tag "pharmcat/reporter"
+    tag "pharmcat/phenotyper"
+    tag "pharmcat/matcher"
+
+    config "./nextflow.config"
+
+
+    setup {
+        run("PHARMCAT_MATCHER") {
+            script "../../matcher/main.nf"
+            process {
+                """
+                input[0] =  Channel.fromList([
+                    tuple([id: 'PharmCAT'], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pharmcat/test.chr22.single.sample.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pharmcat/test.chr22.single.sample.vcf.gz.tbi', checkIfExists: true)),
+                ])
+                input[1] = Channel.of([])
+                """
+            }
+        }
+
+        run("PHARMCAT_PHENOTYPER") {
+            script "../../phenotyper/main.nf"
+            process {
+                """
+                input[0] = PHARMCAT_MATCHER.out.matcher_json.collect {
+                    meta, match_json -> match_json
+                }.map {
+                    match_json -> [
+                        [ id: 'test'],
+                        match_json,
+                        []
+                    ]
+                }
+                """
+            }
+        }
+    }
+
+    test("report - JSON + HTML + TSV") {
+
+        when {
+            params {
+                module_args = ' --reporter-save-html --reporter-save-json --reporter-save-calls-only-tsv '
+            }
+
+            process {
+                """
+                input[0] = PHARMCAT_PHENOTYPER.out.phenotyper_json
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.report_json[0][1]).name,
+                    file(process.out.report_html[0][1]).name,
+                    file(process.out.report_tsv[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+
+
+    test("report - JSON + HTML ONLY") {
+
+        when {
+            params {
+                module_args = ' --reporter-save-html --reporter-save-json '
+            }
+
+            process {
+                """
+                input[0] = PHARMCAT_PHENOTYPER.out.phenotyper_json
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.report_tsv[1] == null },
+                { assert snapshot(
+                    file(process.out.report_json[0][1]).name,
+                    file(process.out.report_html[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+
+    test("report - JSON ONLY") {
+
+        when {
+            params {
+                module_args = ' --reporter-save-json '
+            }
+
+            process {
+                """
+                input[0] = PHARMCAT_PHENOTYPER.out.phenotyper_json
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.report_tsv[1] == null },
+                { assert process.out.report_html[1] == null },
+                { assert snapshot(
+                    file(process.out.report_json[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+
+    test("report - TSV ONLY") {
+
+        when {
+            params {
+                module_args = ' --reporter-save-calls-only-tsv '
+            }
+
+            process {
+                """
+                input[0] = PHARMCAT_PHENOTYPER.out.phenotyper_json
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.report_json[1] == null },
+                { assert process.out.report_html[1] == null },
+                { assert snapshot(
+                    file(process.out.report_tsv[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+
+    test("report - general") {
+
+        when {
+            params {
+                module_args = " --reporter-sources CPIC,FDA  "
+            }
+
+            process {
+                """
+                input[0] = PHARMCAT_PHENOTYPER.out.phenotyper_json
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.report_json[1] == null },
+                { assert process.out.report_tsv[1] == null },
+                { assert snapshot(
+                    file(process.out.report_html[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+
+
+    test("report - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = ' --reporter-extended '
+            }
+
+            process {
+                """
+                input[0] = PHARMCAT_PHENOTYPER.out.phenotyper_json
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out)
+                ).match() }
+            )
+        }
+    }
+}

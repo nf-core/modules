@@ -1,0 +1,75 @@
+nextflow_process {
+
+    name "Test Process SUSHIE"
+    script "../main.nf"
+    process "SUSHIE"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "sushie"
+
+    test("homo_sapiens - popgen - afr") {
+
+        when {
+              params {
+                module_args = '--gwas-header chrom snp pos a0 a1 z'
+              }
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/AFR.gwas', checkIfExists: true) ]
+                ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/AFR.ld', checkIfExists: true)
+                ]
+                input[2] = "408112"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                    process.out.cs,
+                ).match() },
+                { assert file(process.out.corr[0][1]).exists() },
+                { assert file(process.out.weights[0][1]).exists() },
+                { assert file(process.out.log[0][1]).readLines().size() } // unstable
+            )
+        }
+    }
+
+    test("homo_sapiens - popgen - afr - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--gwas-header chrom snp pos a0 a1 z'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/AFR.gwas', checkIfExists: true) ]
+                ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/AFR.ld', checkIfExists: true)
+                ]
+                input[2] = "408112"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

@@ -3,38 +3,65 @@ description: Print SHA256 (256-bit) checksums.
 keywords:
   - checksum
   - sha256
+  - 256 bit
 tools:
   - "md5sum":
       description: Create an SHA256 (256-bit) checksum.
       homepage: "https://www.gnu.org"
       documentation: "https://linux.die.net/man/1/shasum"
-      licence: GPLv3+
-
+      licence:
+        - "GPLv3+"
+      identifier: ""
 input:
-  - meta:
-      type: map
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - files:
+        type: file
+        description: Any number of files
+        pattern: "*.*"
+        ontologies: []
+  - as_separate_files:
+      type: boolean
       description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - file:
-      type: file
-      description: Any file
-      pattern: "*.*"
-
+        If true, each file will have its own shasum file. If false, all files will be
+        checksummed into a single shasum file.
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - checksum:
-      type: file
-      description: File containing checksum
-      pattern: "*.sha256"
-
+  checksum:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.sha256":
+          type: file
+          description: File containing checksum
+          pattern: "*.sha256"
+          ontologies: []
+  versions_sha256sum:
+    - - ${task.process}:
+          type: string
+          description: Process name
+      - sha256sum:
+          type: string
+          description: Tool name
+      - "sha256sum --version 2>&1 | head -n 1 | sed 's/.* //'":
+          type: eval
+          description: Software version
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: Process name
+      - sha256sum:
+          type: string
+          description: Tool name
+      - "sha256sum --version 2>&1 | head -n 1 | sed 's/.* //'":
+          type: eval
+          description: Software version
 authors:
+  - "@matthdsm"
+maintainers:
   - "@matthdsm"

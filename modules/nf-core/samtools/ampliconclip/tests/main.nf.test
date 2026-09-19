@@ -1,0 +1,89 @@
+nextflow_process {
+
+    name "Test Process SAMTOOLS_AMPLICONCLIP"
+    script "../main.nf"
+    process "SAMTOOLS_AMPLICONCLIP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "samtools"
+    tag "samtools/ampliconclip"
+
+    test("sarscov2 - bam, bed") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
+                ]
+                input[2] = false
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys:["bam", "rejects_bam"])).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - bam, bed, save_cliprejects") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
+                    ]
+                input[2] = true
+                input[3] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys:["bam"], ignoreKeys: ["rejects_bam"])).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - bam, bed, save_cliprejects, save_clipstats") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                ]
+                input[1] = [
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
+                ]
+                input[2] = true
+                input[3] = true
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys:["bam"], ignoreKeys: ["rejects_bam"])).match() }
+            )
+        }
+    }
+}

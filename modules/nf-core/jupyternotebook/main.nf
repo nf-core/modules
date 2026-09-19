@@ -1,5 +1,3 @@
-include { dump_params_yml; indent_code_block } from "./parametrize"
-
 process JUPYTERNOTEBOOK {
     tag "$meta.id"
     label 'process_low'
@@ -7,8 +5,8 @@ process JUPYTERNOTEBOOK {
     //NB: You likely want to override this with a container containing all required
     //dependencies for your analysis. The container at least needs to contain the
     //ipykernel, jupytext, papermill and nbconvert Python packages.
-    conda "conda-forge::ipykernel=6.0.3 conda-forge::jupytext=1.11.4 conda-forge::nbconvert=6.1.0 conda-forge::papermill=2.3.3 conda-forge::matplotlib=3.4.2"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-514b1a5d280c7043110b2a8d0a87b57ba392a963:879972fc8bdc81ee92f2bce3b4805d89a772bf84-0' :
         'quay.io/biocontainers/mulled-v2-514b1a5d280c7043110b2a8d0a87b57ba392a963:879972fc8bdc81ee92f2bce3b4805d89a772bf84-0' }"
 
@@ -16,51 +14,40 @@ process JUPYTERNOTEBOOK {
     tuple val(meta), path(notebook)
     val parameters
     path input_files
+    val kernel_
 
     output:
-    tuple val(meta), path("*.html"), emit: report
-    tuple val(meta), path("artifacts/"), emit: artifacts, optional: true
-    path "versions.yml"            , emit: versions
+    tuple val(meta), path("*.html")                                                                                , emit: report
+    tuple val(meta), path("artifacts/")                                                                            , emit: artifacts, optional: true
+    tuple val("${task.process}"), val('jupytext'), eval('jupytext --version')                                      , emit: versions_jupytext, topic: versions
+    tuple val("${task.process}"), val('ipykernel'), eval('python -c "import ipykernel; print(ipykernel.__version__)"'), emit: versions_ipykernel, topic: versions
+    tuple val("${task.process}"), val('nbconvert'), eval('jupyter nbconvert --version')                            , emit: versions_nbconvert, topic: versions
+    tuple val("${task.process}"), val('papermill'), eval('papermill --version | cut -f1 -d" "')                    , emit: versions_papermill, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def parametrize = (task.ext.parametrize == null) ?  true : task.ext.parametrize
-    def implicit_params = (task.ext.implicit_params == null) ? true : task.ext.implicit_params
-    def meta_params = (task.ext.meta_params == null) ? true : task.ext.meta_params
-    def kernel   = task.ext.kernel ?: '-'
+    def kernel   = kernel_ ?: '-'
+    // Implicit parameters can be overwritten by supplying a value with parameters
+    notebook_parameters = [
+        meta: meta,
+        cpus: task.cpus,
+    ] + (parameters ?: [:])
 
     // Dump parameters to yaml file.
     // Using a yaml file over using the CLI params because
     //  * no issue with escaping
     //  * allows to pass nested maps instead of just single values
-    def params_cmd = ""
-    def render_cmd = ""
-    if (parametrize) {
-        nb_params = [:]
-        if (implicit_params) {
-            nb_params["cpus"] = task.cpus
-            nb_params["artifact_dir"] = "artifacts"
-            nb_params["input_dir"] = "./"
-        }
-        if (meta_params) {
-            nb_params["meta"] = meta
-        }
-        nb_params += parameters
-        params_cmd = dump_params_yml(nb_params)
-        render_cmd = "papermill -f .params.yml"
-    } else {
-        render_cmd = "papermill"
-    }
-
+    def yamlBuilder = new groovy.yaml.YamlBuilder()
+    yamlBuilder.call(notebook_parameters)
+    def yaml_content = yamlBuilder.toString().tokenize('\n').join("\n    ")
     """
-    set -o pipefail
-
-    # Dump .params.yml heredoc (section will be empty if parametrization is disabled)
-    ${indent_code_block(params_cmd, 4)}
+    # Dump parameters to yaml file
+    cat <<- END_YAML_PARAMS > params.yml
+    ${yaml_content}
+    END_YAML_PARAMS
 
     # Create output directory
     mkdir artifacts
@@ -71,17 +58,19 @@ process JUPYTERNOTEBOOK {
     export OMP_NUM_THREADS="$task.cpus"
     export NUMBA_NUM_THREADS="$task.cpus"
 
+    # Set temporary directory to remove warning about Matplotlib creating temporary directory
+    export MPLCONFIGDIR=./tmp
+
     # Convert notebook to ipynb using jupytext, execute using papermill, convert using nbconvert
     jupytext --to notebook --output - --set-kernel ${kernel} ${notebook} > ${notebook}.ipynb
-    ${render_cmd} ${notebook}.ipynb ${notebook}.executed.ipynb
+    papermill -f params.yml ${notebook}.ipynb ${notebook}.executed.ipynb
     jupyter nbconvert --stdin --to html --output ${prefix}.html < ${notebook}.executed.ipynb
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        jupytext: \$(jupytext --version)
-        ipykernel: \$(python -c "import ipykernel; print(ipykernel.__version__)")
-        nbconvert: \$(jupyter nbconvert --version)
-        papermill: \$(papermill --version | cut -f1 -d' ')
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.html
+    mkdir artifacts
     """
 }

@@ -1,0 +1,69 @@
+name: "lofreq_alnqual"
+description: Lofreq subcommand to for insert base and indel alignment qualities
+keywords:
+  - variant calling
+  - low frequency variant calling
+  - variants
+  - bam
+tools:
+  - "lofreq":
+      description: "A fast and sensitive variant-caller for inferring SNVs and indels
+        from next-generation sequencing data"
+      homepage: https://csb5.github.io/lofreq/
+      documentation: https://csb5.github.io/lofreq/commands/
+      doi: 10.1093/nar/gks918
+      licence: ["MIT"]
+      identifier: biotools:lofreq
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam:
+        type: file
+        description: Sorted BAM/CRAM/SAM file
+        pattern: "*.{bam,cram,sam}"
+        ontologies: []
+  - fasta:
+      type: file
+      description: Reference genome FASTA file
+      pattern: "*.{fasta}"
+      ontologies: []
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.bam":
+          type: file
+          description: BAM/CRAM/SAM file with base and indel alignment qualities
+          pattern: "*.{bam,cram,sam}"
+          ontologies: []
+  versions_lofreq:
+    - - ${task.process}:
+          type: string
+          description: Process which generated the version
+      - lofreq:
+          type: string
+          description: Tool name
+      - "lofreq version | sed -n '1s/^.* //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: Process which generated the version
+      - lofreq:
+          type: string
+          description: Tool name
+      - "lofreq version | sed -n '1s/^.* //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@MarieLataretu"
+maintainers:
+  - "@MarieLataretu"

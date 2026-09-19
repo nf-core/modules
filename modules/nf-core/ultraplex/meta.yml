@@ -1,0 +1,100 @@
+name: "ultraplex"
+description: Ultraplex is an all-in-one software package for processing and demultiplexing fastq files.
+keywords:
+  - demultiplex
+  - fastq
+  - umi
+tools:
+  - "ultraplex":
+      description: fastq demultiplexer
+      homepage: https://github.com/ulelab/ultraplex
+      documentation: https://github.com/ulelab/ultraplex
+      tool_dev_url: https://github.com/ulelab/ultraplex
+      doi: "10.5281/zenodo.465128"
+      licence:
+        - "MIT"
+      identifier: biotools:ultraplex
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: FASTQ file(s) to demultiplex
+        ontologies: []
+  - barcode_file:
+      type: file
+      description: FASTQ file containing barcode sequences
+      ontologies: []
+output:
+  fastq:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*[!no_match].fastq.gz"
+      - "*_matched.fastq.gz":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*[!no_match].fastq.gz"
+  no_match_fastq:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*[!no_match].fastq.gz"
+      - "*_no_match_*.fastq.gz":
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+          pattern: "*no_match.fastq.gz"
+  report:
+    - "*.log":
+        type: file
+        description: File containing demultiplexing log
+        pattern: "*.log"
+        ontologies: []
+  versions_ultraplex:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ultraplex:
+          type: string
+          description: The name of the tool
+      - 1.2.9:
+          type: string
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ultraplex:
+          type: string
+          description: The name of the tool
+      - 1.2.9:
+          type: string
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@CharlotteAnne"
+  - "@oscarwilkins"
+  - "@chris-cheshire"
+  - "@marc-jones"
+  - "@iraiosub"
+  - "@samirelanduk"
+maintainers:
+  - "@CharlotteAnne"
+  - "@oscarwilkins"
+  - "@chris-cheshire"
+  - "@marc-jones"
+  - "@iraiosub"
+  - "@samirelanduk"

@@ -10,38 +10,136 @@ tools:
       homepage: "https://github.com/quinlan-lab/vcf2db"
       documentation: "https://github.com/quinlan-lab/vcf2db"
       tool_dev_url: "https://github.com/quinlan-lab/vcf2db"
-
-      licence: "['MIT']"
-
+      licence:
+        - "MIT"
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcf:
-      type: file
-      description: VCF file
-      pattern: "*.vcf.gz"
-  - ped:
-      type: file
-      description: PED file
-      pattern: "*.ped"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: VCF file
+        pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989
+    - ped:
+        type: file
+        description: PED file
+        pattern: "*.ped"
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - db:
-      type: file
-      description: Gemini-compatible database file
-      pattern: "*.db"
-
+  db:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.db":
+          type: file
+          description: Gemini-compatible database file
+          pattern: "*.db"
+          ontologies: []
+  versions_vcf2db:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vcf2db:
+          type: string
+          description: The name of the tool
+      - 2020.02.24:
+          type: string
+          description: The expression to obtain the version of the tool
+  versions_python_snappy:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python-snappy:
+          type: string
+          description: The name of the tool
+      - 0.5.4:
+          type: string
+          description: The expression to obtain the version of the tool
+  versions_snappy:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - snappy:
+          type: string
+          description: The name of the tool
+      - 1.1.8:
+          type: string
+          description: The expression to obtain the version of the tool
+  versions_cyvcf2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cyvcf2:
+          type: string
+          description: The name of the tool
+      - python -c 'import cyvcf2; print(cyvcf2.__version__)':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_python:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python --version 2>&1 | awk '{print \$2}':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vcf2db:
+          type: string
+          description: The name of the tool
+      - 2020.02.24:
+          type: string
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python-snappy:
+          type: string
+          description: The name of the tool
+      - 0.5.4:
+          type: string
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - snappy:
+          type: string
+          description: The name of the tool
+      - 1.1.8:
+          type: string
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cyvcf2:
+          type: string
+          description: The name of the tool
+      - python -c 'import cyvcf2; print(cyvcf2.__version__)':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python --version 2>&1 | awk '{print \$2}':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
+  - "@nvnieuwk"
+maintainers:
   - "@nvnieuwk"

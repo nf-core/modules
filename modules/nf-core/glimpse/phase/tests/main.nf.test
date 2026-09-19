@@ -1,0 +1,84 @@
+nextflow_process {
+
+    name "Test Process GLIMPSE_PHASE"
+    script "../main.nf"
+    process "GLIMPSE_PHASE"
+    tag "glimpse"
+    tag "glimpse/phase"
+    tag "modules_nfcore"
+    tag "modules"
+
+    test("test_glimpse_phase") {
+
+        when {
+            process {
+                """
+                ch_sample = channel.of('NA12878 2').collectFile(name: 'sampleinfos.txt')
+                region    = channel.fromList([
+                    ["chr21:16570065-16597215","chr21:16570065-16592216"],
+                    ["chr21:16587172-16609999","chr21:16592229-16609999"]
+                ])
+                input_vcf = channel.of([
+                    [ id:'input'], // meta map
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExists: true)
+                ])
+                ref_panel = channel.of([
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz.csi", checkIfExists: true)
+                ])
+                ch_map   = channel.of([
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.glimpse.map", checkIfExists: true)
+                ])
+
+                input[0] = input_vcf
+                    | combine(ch_sample)
+                    | combine(region)
+                    | map { meta, vcf, index, sample, regionI, regionO ->
+                        [[id: meta.id, region : regionI], vcf, index, sample, regionI, regionO]
+                    }
+                    | combine(ref_panel)
+                    | combine(ch_map)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(
+                process.out.phased_variants.collect { meta, vcf -> [
+                        meta,
+                        file(vcf).name,
+                        path(vcf).vcf.summary,
+                        path(vcf).vcf.variantsMD5
+                ] },
+                process.out.findAll { key, val -> key.startsWith('versions') }
+            ).match()
+        }
+
+    }
+
+    test("test_glimpse_phase -- stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: "input"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExists: true),
+                    [], "chr21:16570065-16597215",
+                    [], [],
+                    [], []
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
+        }
+
+    }
+}

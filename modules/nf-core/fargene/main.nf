@@ -3,8 +3,8 @@ process FARGENE {
     label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    conda "bioconda::fargene=0.1"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/fargene:0.1--py27h21c881e_4' :
         'quay.io/biocontainers/fargene:0.1--py27h21c881e_4' }"
 
@@ -17,6 +17,7 @@ process FARGENE {
     tuple val(meta), path("*.log")                                                                               , emit: log
     tuple val(meta), path("${prefix}/results_summary.txt")                                                       , emit: txt
     tuple val(meta), path("${prefix}/hmmsearchresults/*.out")                                    , optional: true, emit: hmm
+    tuple val(meta), path("${prefix}/hmmsearchresults/retrieved-*.out")                          , optional: true, emit: hmm_genes
     tuple val(meta), path("${prefix}/predictedGenes/predicted-orfs.fasta")                       , optional: true, emit: orfs
     tuple val(meta), path("${prefix}/predictedGenes/predicted-orfs-amino.fasta")                 , optional: true, emit: orfs_amino
     tuple val(meta), path("${prefix}/predictedGenes/retrieved-contigs.fasta")                    , optional: true, emit: contigs
@@ -24,11 +25,13 @@ process FARGENE {
     tuple val(meta), path("${prefix}/predictedGenes/*filtered.fasta")                            , optional: true, emit: filtered
     tuple val(meta), path("${prefix}/predictedGenes/*filtered-peptides.fasta")                   , optional: true, emit: filtered_pept
     tuple val(meta), path("${prefix}/retrievedFragments/all_retrieved_*.fastq")                  , optional: true, emit: fragments
-    tuple val(meta), path("${prefix}/retrievedFragments/retrievedFragments/trimmedReads/*.fasta"), optional: true, emit: trimmed
+    tuple val(meta), path("${prefix}/retrievedFragments/trimmedReads/*.fasta")                   , optional: true, emit: trimmed
     tuple val(meta), path("${prefix}/spades_assembly/*")                                         , optional: true, emit: spades
     tuple val(meta), path("${prefix}/tmpdir/*.fasta")                                            , optional: true, emit: metagenome
     tuple val(meta), path("${prefix}/tmpdir/*.out")                                              , optional: true, emit: tmp
-    path "versions.yml"                                                                          , emit: versions
+    // the CLI does not provide any information about version
+    // make sure to update the line below when there is a new version
+    tuple val("${task.process}"), val('fargene'), val("0.1")                                                     , emit: versions_fargene, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,7 +39,6 @@ process FARGENE {
     script:
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '0.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     fargene \\
         $args \\
@@ -44,10 +46,26 @@ process FARGENE {
         -i $input \\
         --hmm-model $hmm_model \\
         -o $prefix
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fargene: $VERSION
-    END_VERSIONS
     """
+
+    stub:
+    prefix   = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.log
+    mkdir -p ${prefix}/{hmmsearchresults,predictedGenes,retrievedFragments}
+    mkdir -p ${prefix}/retrievedFragments/trimmedReads/
+
+    touch ${prefix}/results_summary.txt
+    touch ${prefix}/hmmsearchresults/retrieved-${prefix}.out
+    touch ${prefix}/hmmsearchresults/${prefix}.out
+    touch ${prefix}/predictedGenes/predicted-orfs.fasta
+    touch ${prefix}/predictedGenes/predicted-orfs-amino.fasta
+    touch ${prefix}/predictedGenes/retrieved-contigs.fasta
+    touch ${prefix}/predictedGenes/retrieved-contigs-peptides.fasta
+    touch ${prefix}/predictedGenes/${prefix}-filtered.fasta
+    touch ${prefix}/predictedGenes/${prefix}-filtered-peptides.fasta
+    touch ${prefix}/retrievedFragments/all_retrieved_${prefix}.fastq
+    touch ${prefix}/retrievedFragments/trimmedReads/${prefix}.fasta
+    """
+
 }

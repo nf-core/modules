@@ -2,10 +2,10 @@ process NEXTCLADE_RUN {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::nextclade=2.12.0"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/nextclade:2.12.0--h9ee0642_0' :
-        'quay.io/biocontainers/nextclade:2.12.0--h9ee0642_0' }"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7a/7acbe1c9567cd9e31fdf974b9fa1d8ed312ed9e1ae22cbe1c4c34d56096635af/data' :
+        'community.wave.seqera.io/library/nextclade:3.21.2--d3538cbe586c0f6c' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -20,8 +20,9 @@ process NEXTCLADE_RUN {
     tuple val(meta), path("${prefix}.auspice.json")  , optional:true, emit: json_auspice
     tuple val(meta), path("${prefix}.ndjson")        , optional:true, emit: ndjson
     tuple val(meta), path("${prefix}.aligned.fasta") , optional:true, emit: fasta_aligned
-    tuple val(meta), path("*.translation.fasta")     , optional:true, emit: fasta_translation
-    path "versions.yml"                              , emit: versions
+    tuple val(meta), path("*_translation.*.fasta")   , optional:true, emit: fasta_translation
+    tuple val(meta), path("${prefix}.nwk")           , optional:true, emit: nwk
+    tuple val("${task.process}"), val('nextclade'), eval("nextclade --version 2>&1 | sed 's/.*nextclade \\([^ ]*\\).*/\\1/'"), emit: versions_nextclade, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,10 +39,17 @@ process NEXTCLADE_RUN {
         --output-all ./ \\
         --output-basename ${prefix} \\
         $fasta
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        nextclade: \$(echo \$(nextclade --version 2>&1) | sed 's/^.*nextclade //; s/ .*\$//')
-    END_VERSIONS
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.csv
+    touch ${prefix}.tsv
+    touch ${prefix}.json
+    touch ${prefix}.auspice.json
+    touch ${prefix}.aligned.fasta
+    touch ${prefix}.cds_translation.test.fasta
+    touch ${prefix}.nwk
     """
 }

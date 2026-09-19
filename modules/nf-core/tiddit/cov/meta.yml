@@ -11,42 +11,85 @@ tools:
       homepage: https://github.com/SciLifeLab/TIDDIT
       documentation: https://github.com/SciLifeLab/TIDDIT/blob/master/README.md
       doi: "10.12688/f1000research.11168.1"
-      licence: ["GPL v3"]
-
+      licence:
+        - "GPL v3"
+      identifier: biotools:tiddit
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - input:
-      type: file
-      description: BAM/CRAM file
-      pattern: "*.{bam,cram}"
-  - fasta:
-      type: file
-      description: |
-        Reference genome file. Only needed when passing in CRAM instead of BAM.
-        If not using CRAM, please pass an empty file instead.
-      pattern: "*.fasta"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - input:
+        type: file
+        description: BAM/CRAM file
+        pattern: "*.{bam,cram}"
+        ontologies: []
+    - index:
+        type: file
+        description: Index of BAM/CRAM file
+        pattern: "*.{bai,crai,csi}"
+        ontologies:
+          - edam: http://edamontology.org/format_3327
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: |
+          Reference genome file. Only needed when passing in CRAM instead of BAM.
+          If not using CRAM, please pass an empty file instead.
+        pattern: "*.fasta"
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - cov:
-      type: file
-      description: The coverage of different regions. Optional.
-      pattern: "*.tab"
-  - wig:
-      type: file
-      description: The coverage of different regions in WIG format. Optional.
-      pattern: "*.wig"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  cov:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.bed:
+          type: file
+          description: The coverage of different regions in bed format. Optional.
+          pattern: "*.bed"
+          ontologies: []
+  wig:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.wig:
+          type: file
+          description: The coverage of different regions in WIG format. Optional.
+          pattern: "*.wig"
+          ontologies: []
+  versions_tiddit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tiddit:
+          type: string
+          description: The name of the tool
+      - "tiddit | sed -n 's/^usage: tiddit-//; s/ .*//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tiddit:
+          type: string
+          description: The name of the tool
+      - "tiddit | sed -n 's/^usage: tiddit-//; s/ .*//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@projectoriented"
+  - "@ramprasadn"
+maintainers:
+  - "@projectoriented"
+  - "@ramprasadn"

@@ -1,0 +1,65 @@
+name: "emboss_revseq"
+description: the revseq program from emboss reverse complements a nucleotide
+  sequence
+keywords:
+  - nucleotides
+  - reverse complement
+  - sequences
+tools:
+  - "emboss":
+      description: "The European Molecular Biology Open Software Suite"
+      homepage: "https://www.ebi.ac.uk/Tools/sfc/emboss_seqret/"
+      documentation: "https://emboss.bioinformatics.nl/cgi-bin/emboss/help/seqret"
+      tool_dev_url: "http://emboss.open-bio.org/"
+      doi: "10.1016/s0168-9525(00)02024-2 "
+      licence:
+        - "GPL"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - sequences:
+        type: file
+        description: Input sequences
+        pattern: "*.{fasta,fna,fa,fst,aln,phy}"
+        ontologies: []
+output:
+  revseq:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - '*.${sequences.name - ~/.*\./}':
+          type: file
+          description: File with reverse complemented sequences
+          pattern: "*.{fasta,fna,fa,fst,aln,phy}"
+          ontologies: []
+  versions_emboss:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - emboss:
+          type: string
+          description: The name of the tool
+      - revseq -version 2>&1 | sed 's/EMBOSS://':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - emboss:
+          type: string
+          description: The name of the tool
+      - revseq -version 2>&1 | sed 's/EMBOSS://':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@erikrikarddaniel"
+maintainers:
+  - "@erikrikarddaniel"

@@ -1,0 +1,93 @@
+
+nextflow_process {
+
+    name "Test Process NANOCOMP"
+    script "../main.nf"
+    process "NANOCOMP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "nanocomp"
+
+    test("test-nanocomp-fastq") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: "test" ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:[
+                    "report_html", "lengths_violin_html", "log_length_violin_html", "n50_html",
+                    "number_of_reads_html", "overlay_histogram_html",
+                    "overlay_histogram_normalized_html", "overlay_log_histogram_html",
+                    "overlay_log_histogram_normalized_html", "total_throughput_html",
+                    "quals_violin_html", "overlay_histogram_identity_html",
+                    "overlay_histogram_phredscore_html", "percent_identity_violin_html",
+                    "active_pores_over_time_html", "cumulative_yield_plot_gigabases_html",
+                    "sequencing_speed_over_time_html", "stats_txt"
+                ])).match() }
+            )
+        }
+    }
+
+    test("test-nanocomp-summary") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id: "test"],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/sequencing_summary/test.sequencing_summary.txt', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:[
+                    "report_html", "lengths_violin_html", "log_length_violin_html", "n50_html",
+                    "number_of_reads_html", "overlay_histogram_html",
+                    "overlay_histogram_normalized_html", "overlay_log_histogram_html",
+                    "overlay_log_histogram_normalized_html", "total_throughput_html",
+                    "quals_violin_html", "overlay_histogram_identity_html",
+                    "overlay_histogram_phredscore_html", "percent_identity_violin_html",
+                    "active_pores_over_time_html", "cumulative_yield_plot_gigabases_html",
+                    "sequencing_speed_over_time_html", "stats_txt"
+                ])).match() }
+            )
+        }
+    }
+
+    test("test-nanocomp-summary-stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: "test" ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/sequencing_summary/test.sequencing_summary.txt', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

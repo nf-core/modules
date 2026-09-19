@@ -1,0 +1,99 @@
+name: bcftools_plotvcfstats
+description: Plots the output of bcftools stats
+keywords:
+  - visualization
+  - stats
+  - VCF
+tools:
+  - plot:
+      description: |
+        Script for processing output of bcftools stats, plots graphs and creates a PDF presentation.
+      homepage: http://samtools.github.io/bcftools/bcftools.html
+      documentation: http://www.htslib.org/doc/bcftools.html
+      doi: 10.1093/bioinformatics/btp352
+      licence:
+        - "MIT"
+      identifier: biotools:bcftools
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sample1' ]
+    - stats:
+        type: file
+        description: Text file from BCFtools stats output
+        pattern: "*_stats.txt"
+        ontologies:
+          - edam: "http://edamontology.org/format_2330"
+output:
+  plot_dir:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}_plots:
+          type: directory
+          description: Output directory containing plots, raw data, and log files
+          pattern: "*plots*"
+          ontologies: []
+  plot_pdf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}.plot-vcfstats.pdf:
+          type: file
+          description: Summary output in PDF
+          pattern: "*.pdf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3508"
+  images_pdf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}_plots/*.pdf:
+          type: file
+          description: All the individual PDF images generated (no summary PDF)
+          pattern: "*.pdf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3508"
+  images_png:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}_plots/*.png:
+          type: file
+          description: All the individual PNG images generated
+          pattern: "*.png"
+          ontologies:
+            - edam: "http://edamontology.org/format_3603"
+  versions_bcftools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bcftools:
+          type: string
+          description: The name of the tool
+      - bcftools --version | sed '1!d; s/^.*bcftools //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bcftools:
+          type: string
+          description: The name of the tool
+      - bcftools --version | sed '1!d; s/^.*bcftools //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@yz533cb"

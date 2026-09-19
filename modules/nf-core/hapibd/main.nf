@@ -2,8 +2,8 @@ process HAPIBD {
     tag "$meta.id"
     label 'process_low'
 
-    conda "bioconda::hap-ibd=1.0.rev20May22.818"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hap-ibd:1.0.rev20May22.818--hdfd78af_0':
         'quay.io/biocontainers/hap-ibd:1.0.rev20May22.818--hdfd78af_0' }"
 
@@ -17,7 +17,7 @@ process HAPIBD {
     tuple val(meta), path("*.hbd.gz"), emit: hbd
     tuple val(meta), path("*.ibd.gz"), emit: ibd
     tuple val(meta), path("*.log")   , emit: log
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('hapibd'), eval("hap-ibd 2>&1 | sed '1!d;s/^.* version //;s/,.*//'"), topic: versions, emit: versions_hapibd
 
     when:
     task.ext.when == null || task.ext.when
@@ -41,10 +41,21 @@ process HAPIBD {
         out=${prefix} \\
         $args \\
         ${excludesamples_command}
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hapibd: \$(hap-ibd 2>&1 |head -n1 | sed 's/^hap-ibd.jar  \\[ version //; s/, /rev/; s/ \\]//')
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    def avail_mem = 3072
+    if (!task.memory) {
+        log.info '[hapibd] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
+    } else {
+        avail_mem = (task.memory.mega*0.8).intValue()
+    }
+
+    """
+    touch ${prefix}.log
+    echo "" | gzip > ${prefix}.hbd.gz
+    echo "" | gzip > ${prefix}.ibd.gz
     """
 }

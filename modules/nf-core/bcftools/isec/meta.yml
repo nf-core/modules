@@ -6,6 +6,7 @@ keywords:
   - union
   - complement
   - VCF
+  - BCF
 tools:
   - isec:
       description: |
@@ -13,37 +14,89 @@ tools:
       homepage: http://samtools.github.io/bcftools/bcftools.html
       documentation: http://www.htslib.org/doc/bcftools.html
       doi: 10.1093/bioinformatics/btp352
-      licence: ["MIT"]
+      licence:
+        - "MIT"
+      identifier: biotools:bcftools
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - vcfs:
-      type: files
-      description: |
-        List containing 2 or more vcf files
-        e.g. [ 'file1.vcf', 'file2.vcf' ]
-  - tbis:
-      type: files
-      description: |
-        List containing the tbi index files corresponding to the vcfs input files
-        e.g. [ 'file1.vcf.tbi', 'file2.vcf.tbi' ]
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcfs:
+        type: list
+        description: |
+          List containing 2 or more vcf/bcf files. These must be compressed and have an associated index.
+          e.g. [ 'file1.vcf.gz', 'file2.vcf' ]
+        pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
+          - edam: "http://edamontology.org/format_3570"
+    - tbis:
+        type: list
+        description: |
+          List containing the tbi index files corresponding to the vcf/bcf input files
+        pattern: "*.tbi"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
+    - file_list:
+        type: file
+        description: |
+          Optional text file containing the list of VCF/BCF files to be processed by bcftools isec, one per line.
+        ontologies:
+          - edam: "http://edamontology.org/format_2330"
+    - targets_file:
+        type: file
+        description: |
+          Optional file containing target regions to restrict the analysis to.
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
+          - edam: "http://edamontology.org/format_3475"
+    - regions_file:
+        type: file
+        description: |
+          Optional file containing regions to restrict the analysis to.
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
+          - edam: "http://edamontology.org/format_3475"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - results:
-      type: directory
-      description: Folder containing the set operations results perform on the vcf files
-      pattern: "${prefix}"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  results:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}:
+          type: directory
+          description: Directory containing the output files from bcftools isec
+          pattern: "${prefix}/"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016"
+            - edam: "http://edamontology.org/format_3570"
+  versions_bcftools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - bcftools --version | sed '1!d; s/^.*bcftools //':
+          type: eval
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - bcftools --version | sed '1!d; s/^.*bcftools //':
+          type: eval
+          description: The command used to generate the version of the tool
 authors:
+  - "@joseespinosa"
+  - "@drpatelh"
+maintainers:
   - "@joseespinosa"
   - "@drpatelh"

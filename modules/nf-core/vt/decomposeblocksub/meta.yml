@@ -1,0 +1,83 @@
+name: "vt_decomposeblocksub"
+description: Decomposes biallelic block substitutions into its constituent SNPs.
+keywords:
+  - decomposeblocksub
+  - multiallelic
+  - small variants
+  - snps
+  - indels
+  - block substitutions
+tools:
+  - "vt":
+      description: "A tool set for short variant discovery in genetic sequence data"
+      homepage: "https://genome.sph.umich.edu/wiki/Vt"
+      documentation: "https://genome.sph.umich.edu/wiki/Vt"
+      tool_dev_url: "https://github.com/atks/vt"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - vcf:
+        type: file
+        description: The VCF file to decompose
+        pattern: "*.vcf(.gz)?"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
+    - index:
+        type: file
+        description: The VCF file to decompose
+        pattern: "*.tbi"
+        ontologies:
+          - edam: "http://edamontology.org/format_3616"
+    - intervals:
+        type: file
+        description: The intervals of the variants of decompose
+        pattern: "*.bed"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.vcf.gz":
+          type: file
+          description: The decomposed VCF file
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016"
+            - edam: http://edamontology.org/format_3989
+  versions_vt:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vt:
+          type: string
+          description: The name of the tool
+      - 2015.11.10:
+          type: string
+          description: Version of vt (WARN - Version information not provided by
+            tool on CLI)
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vt:
+          type: string
+          description: The name of the tool
+      - 2015.11.10:
+          type: string
+          description: Version of vt (WARN - Version information not provided by
+            tool on CLI)
+authors:
+  - "@kubranarci"
+maintainers:
+  - "@kubranarci"

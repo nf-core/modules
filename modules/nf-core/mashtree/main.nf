@@ -2,8 +2,8 @@ process MASHTREE {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::mashtree=1.2.0"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mashtree:1.2.0--pl526h516909a_0' :
         'quay.io/biocontainers/mashtree:1.2.0--pl526h516909a_0' }"
 
@@ -13,7 +13,7 @@ process MASHTREE {
     output:
     tuple val(meta), path("*.dnd"), emit: tree
     tuple val(meta), path("*.tsv"), emit: matrix
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val("mashtree"), eval("mashtree --version 2>&1 | sed 's/Mashtree //'"), emit: versions_mashtree, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,15 +23,17 @@ process MASHTREE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mashtree \\
-        $args \\
-        --numcpus $task.cpus \\
+        ${args} \\
+        --numcpus ${task.cpus} \\
         --outmatrix ${prefix}.tsv \\
         --outtree ${prefix}.dnd \\
-        $seqs
+        ${seqs}
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mashtree: \$( echo \$( mashtree --version 2>&1 ) | sed 's/^.*Mashtree //' )
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.dnd
+    touch ${prefix}.tsv
     """
 }

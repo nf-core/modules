@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: fastq_align_bwa
 description: Align reads to a reference genome using bwa then sort with samtools
 keywords:
@@ -5,13 +6,15 @@ keywords:
   - fasta
   - genome
   - reference
-modules:
+components:
+  - bwa/mem
   - bwa/align
   - samtools/sort
   - samtools/index
   - samtools/stats
   - samtools/idxstats
   - samtools/flagstat
+  - bam_sort_stats_samtools
 input:
   - ch_reads:
       description: |
@@ -21,17 +24,16 @@ input:
   - ch_index:
       description: |
         BWA genome index files
-        Structure: [ val(meta2), path(index) ]
+        Structure: [ val(meta), path(index) ]
   - val_sort_bam:
       type: boolean
       description: If true bwa modules sort resulting bam files
       pattern: "true|false"
-  - ch_fasta:
+  - ch_fasta_fai:
       type: file
       description: |
-        Optional reference fasta file. This only needs to be given if val_sort_bam = true
-        Structure: [ path(fasta) ]
-
+        Optional reference fasta file and index. This only needs to be given if val_sort_bam = true.
+        Structure: [ val(meta), path(fasta), path(fai) ]
 output:
   - bam_orig:
       description: |
@@ -41,14 +43,10 @@ output:
       description: |
         BAM file ordered by samtools
         Structure: [ val(meta), path(bam) ]
-  - bai:
+  - index:
       description: |
-        BAI index of the ordered BAM file
-        Structure: [ val(meta), path(bai) ]
-  - csi:
-      description: |
-        CSI index of the ordered BAM file
-        Structure: [ val(meta), path(csi) ]
+        Index of the ordered BAM file (bai or csi)
+        Structure: [ val(meta), path(index) ]
   - stats:
       description: |
         File containing samtools stats output
@@ -61,9 +59,7 @@ output:
       description: |
         File containing samtools idxstats output
         Structure: [ val(meta), path(idxstats) ]
-  - versions:
-      description: |
-        Files containing software versions
-        Structure: [ path(versions.yml) ]
 authors:
+  - "@JoseEspinosa"
+maintainers:
   - "@JoseEspinosa"

@@ -1,0 +1,138 @@
+nextflow_process {
+
+    name "Test Process TMB_PYTMB"
+    script "../main.nf"
+    process "TMB_PYTMB"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "tmb"
+    tag "tmb/pytmb"
+
+    test("homo_sapiens - snpeff - eff_size") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotc.ann.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true),
+                    '33280000',
+                    file(params.modules_testdata_base_path + 'generic/config/pytmb_haplotc.yml', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/config/pytmb_snpeff.yml', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    file(process.out.tmb_log.get(0).get(1)).readLines()[5..-1].join('\n').md5(),
+                    path(process.out.export_vcf.get(0).get(1)).vcf.summary,
+                    path(process.out.debug_vcf.get(0).get(1)).vcf.summary,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - snpeff - eff_size - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotc.ann.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true),
+                    '33280000',
+                    file(params.modules_testdata_base_path + 'generic/config/pytmb_haplotc.yml', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/config/pytmb_snpeff.yml', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out
+                ).match() }
+            )
+        }
+
+    }
+    test("homo_sapiens - snpeff - bed") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotc.ann.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true),
+                    [],
+                    file(params.modules_testdata_base_path + 'generic/config/pytmb_haplotc.yml', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/config/pytmb_snpeff.yml', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    file(process.out.tmb_log.get(0).get(1)).readLines()[5..-1].join('\n').md5(),
+                    path(process.out.export_vcf.get(0).get(1)).vcf.summary,
+                    path(process.out.debug_vcf.get(0).get(1)).vcf.summary,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - snpeff - bed - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/haplotypecaller_calls/test_haplotc.ann.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true),
+                    [],
+                    file(params.modules_testdata_base_path + 'generic/config/pytmb_haplotc.yml', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/config/pytmb_snpeff.yml', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out
+                ).match() }
+            )
+        }
+
+    }
+}

@@ -2,10 +2,10 @@ process MINIPROT_ALIGN {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::miniprot=0.5"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/miniprot:0.5--h7132678_0':
-        'quay.io/biocontainers/miniprot:0.5--h7132678_0' }"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/miniprot:0.11--he4a0461_2':
+        'quay.io/biocontainers/miniprot:0.11--he4a0461_2' }"
 
     input:
     tuple val(meta), path(pep)
@@ -14,7 +14,7 @@ process MINIPROT_ALIGN {
     output:
     tuple val(meta), path("*.paf"), optional: true, emit: paf
     tuple val(meta), path("*.gff"), optional: true, emit: gff
-    path "versions.yml"                           , emit: versions
+    tuple val("${task.process}"), val('miniprot'), eval("miniprot --version"), topic: versions, emit: versions_miniprot
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,10 +30,12 @@ process MINIPROT_ALIGN {
         ${ref} \\
         ${pep} \\
         > ${prefix}.${extension}
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        miniprot: \$(miniprot --version 2>&1)
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def extension = args.contains("--gff") ? "gff" : "paf"
+    """
+    touch ${prefix}.${extension}
     """
 }

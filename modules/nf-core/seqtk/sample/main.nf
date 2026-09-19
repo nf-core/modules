@@ -2,17 +2,17 @@ process SEQTK_SAMPLE {
     tag "$meta.id"
     label 'process_single'
 
-    conda "bioconda::seqtk=1.3"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/seqtk:1.3--h5bf99c6_3' :
-        'quay.io/biocontainers/seqtk:1.3--h5bf99c6_3' }"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/seqtk:1.4--he4a0461_1' :
+        'quay.io/biocontainers/seqtk:1.4--he4a0461_1' }"
 
     input:
     tuple val(meta), path(reads), val(sample_size)
 
     output:
     tuple val(meta), path("*.fastq.gz"), emit: reads
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('seqtk'), eval("seqtk 2>&1 | sed -n 's/^Version: //p'"), emit: versions_seqtk, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,7 +20,7 @@ process SEQTK_SAMPLE {
     script:
     def args   = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if (!(args ==~ /.*-s[0-9]+.*/)) {
+    if (!(args ==~ /.*\ -s\ ?[0-9]+.*/)) {
         args += " -s100"
     }
     if ( !sample_size ) {
@@ -29,17 +29,21 @@ process SEQTK_SAMPLE {
     """
     printf "%s\\n" $reads | while read f;
     do
+        out=\$(basename \$f | sed 's/\\.f\\(ast\\)\\?q\\.gz\$/.fastq.gz/')
         seqtk \\
             sample \\
             $args \\
             \$f \\
             $sample_size \\
-            | gzip --no-name > ${prefix}_\$(basename \$f)
+            | gzip --no-name > ${prefix}_\${out}
     done
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqtk: \$(echo \$(seqtk 2>&1) | sed 's/^.*Version: //; s/ .*\$//')
-    END_VERSIONS
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    echo "" | gzip > ${prefix}.fastq.gz
+    """
+
 }

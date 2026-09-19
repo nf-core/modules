@@ -1,0 +1,89 @@
+name: cellrangerarc_count
+description: Module to use Cell Ranger's ARC pipelines analyze sequencing data produced
+  from Chromium Single Cell ARC. Uses the cellranger-arc count command.
+keywords:
+  - align
+  - count
+  - reference
+tools:
+  - cellrangerarc:
+      description: Cell Ranger ARC is a set of analysis pipelines that process Chromium
+        Single Cell ARC data.
+      homepage: https://support.10xgenomics.com/single-cell-multiome-atac-gex/software/pipelines/latest/what-is-cell-ranger-arc
+      documentation: https://support.10xgenomics.com/single-cell-multiome-atac-gex/software/pipelines/latest/what-is-cell-ranger-arc
+      tool_dev_url: https://support.10xgenomics.com/single-cell-multiome-atac-gex/software/pipelines/latest/what-is-cell-ranger-arc
+      licence:
+        - 10x Genomics EULA
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - sample_type:
+        type: string
+        description: The type of sample
+    - sub_sample:
+        type: string
+        description: The name of sub sample
+    - reads:
+        type: file
+        description: FASTQ files produced using Cell Ranger ARC
+        pattern: "*.fastq.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989 # GZIP format
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reference:
+        type: directory
+        description: Directory containing all the reference indices needed by Cell Ranger
+          ARC
+output:
+  outs:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "${prefix}/outs/**":
+          type: file
+          description: Files containing the outputs of Cell Ranger ARC
+          pattern: "${prefix}/outs/*"
+          ontologies: []
+  lib:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "${prefix}_lib.csv":
+          type: file
+          description: Library
+          pattern: "${prefix}_lib.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions_cellrangerarc:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cellrangerarc:
+          type: string
+          description: The name of the tool
+      - cellranger-arc --version 2>&1 | sed 's/cellranger-arc cellranger-arc-//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cellrangerarc:
+          type: string
+          description: The name of the tool
+      - cellranger-arc --version 2>&1 | sed 's/cellranger-arc cellranger-arc-//':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@ggabernet"
+  - "@edmundmiller"
+  - "@heylf"

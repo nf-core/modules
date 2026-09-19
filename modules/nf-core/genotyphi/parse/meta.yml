@@ -3,39 +3,64 @@ description: Genotype Salmonella Typhi from Mykrobe results
 keywords:
   - genotype
   - Salmonella Typhi
+  - Mykrobe
 tools:
   - "genotyphi":
-      description: "Assign genotypes to Salmonella Typhi genomes based on VCF files (mapped to Typhi CT18 reference genome)"
+      description: "Assign genotypes to Salmonella Typhi genomes based on VCF files
+        (mapped to Typhi CT18 reference genome)"
       homepage: "https://github.com/katholt/genotyphi"
       documentation: "https://github.com/katholt/genotyphi"
       tool_dev_url: "https://github.com/katholt/genotyphi"
-      licence: "['GPL v3']"
-
+      licence:
+        - "GPL v3"
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - json:
-      type: file
-      description: JSON formatted file of Mykrobe results
-      pattern: "*.json"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - json:
+        type: file
+        description: JSON formatted file of Mykrobe results
+        pattern: "*.json"
+        ontologies:
+          - edam: http://edamontology.org/format_3464 # JSON
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - tsv:
-      type: file
-      description: A tab-delimited file of predicted genotypes
-      pattern: "*.tsv"
-
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tsv":
+          type: file
+          description: A tab-delimited file of predicted genotypes
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions_genotyphi:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - genotyphi:
+          type: string
+          description: The name of the tool
+      - genotyphi --version |& sed 's/^.*GenoTyphi v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - genotyphi:
+          type: string
+          description: The name of the tool
+      - genotyphi --version |& sed 's/^.*GenoTyphi v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

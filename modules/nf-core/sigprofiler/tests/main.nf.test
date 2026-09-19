@@ -1,0 +1,135 @@
+nextflow_process {
+
+    name "Test Process SIGPROFILER"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "SIGPROFILER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "sigprofiler"
+
+    test("test_sigprofiler_single_sample") {
+        when {
+            params {
+              module_args = "[download_genome_sigprofiler:True, input_type:matrix, context_type:'96,DINUC,ID', minimum_signatures:1, maximum_signatures:2, nmf_replicates:10, min_nmf_iterations:10, max_nmf_iterations:100, nmf_test_conv:100, make_decomposition_plots:False ]"
+            }
+
+            process {
+                """
+                ch_seed = channel.of(
+                    "\tSeed",
+                    "0\t315836613344651455423314970566641622150"
+                ).collectFile(name: 'seed.txt', newLine: true, sort: false)
+
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/sigprofiler/test_GRCh38/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true),
+                ]
+                input[1] = "GRCh38"
+                input[2] = []
+                input[3] = ch_seed
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(
+                        process.out,
+                        unstablePatterns: ["**/*.pdf", "**/JOB_METADATA.txt", "**/*seqinfo.txt"], // some *seqinfo.txt are empty
+                        ignorePatterns:["**/*.err", "**/*.out"] // .err and .out have timestamp in their name
+                    ),
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+
+    // Additional error-condition tests
+    test("test_sigprofiler - invalid boolean argument") {
+        when {
+            params {
+                module_args = "[download_genome_sigprofiler:True, volume:./, input_type:matrix, context_type:'96,DINUC,ID', minimum_signatures:1, maximum_signatures:2, nmf_replicates:10, min_nmf_iterations:10, max_nmf_iterations:100, nmf_test_conv:100, make_decomposition_plots:maybe ]"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/sigprofiler/test_GRCh38/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true),
+                ]
+                input[1] = "GRCh38"
+                input[2] = []
+                input[3] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("Invalid value for 'make_decomposition_plots'") }
+            )
+        }
+    }
+
+
+    test("test_sigprofiler - download False but no genome_installed_path") {
+        when {
+            params {
+                module_args = "[download_genome_sigprofiler:False, volume:./, input_type:matrix, context_type:'96,DINUC,ID', minimum_signatures:1, maximum_signatures:2, nmf_replicates:10, min_nmf_iterations:10, max_nmf_iterations:100, nmf_test_conv:100, make_decomposition_plots:maybe ]"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/sigprofiler/test_GRCh38/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true),
+                ]
+                input[1] = "GRCh38"
+                input[2] = []
+                input[3] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("download_genome_sigprofiler is False but no genome_installed_path was provided.") }
+            )
+        }
+    }
+
+
+    test("test_sigprofiler - single_sample - stub") {
+        tag "stub"
+        options "-stub"
+        when {
+            params {
+                module_args = ""
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/sigprofiler/test_GRCh38/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true),
+                ]
+                input[1] = "GRCh38"
+                input[2] = []
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+
+}

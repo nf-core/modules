@@ -1,0 +1,58 @@
+nextflow_process {
+
+    name "Test Process AGAT_CONVERTSPGXF2GXF"
+    script "../main.nf"
+    process "AGAT_CONVERTSPGXF2GXF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "agat"
+    tag "agat/convertspgxf2gxf"
+
+    test("sarscov2 genome [gtf]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 genome [gtf] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gtf', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

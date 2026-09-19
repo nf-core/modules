@@ -11,37 +11,66 @@ tools:
       documentation: "https://gtonkinhill.github.io/panaroo/#/gettingstarted/quickstart"
       tool_dev_url: "https://github.com/gtonkinhill/panaroo"
       doi: "10.1186/s13059-020-02090-4"
-      licence: "['MIT']"
-
+      licence:
+        - "MIT"
+      identifier: biotools:panaroo
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - gff:
-      type: file
-      description: A set of GFF3 formatted files
-      pattern: "*.{gff}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - gff:
+        type: file
+        description: A set of GFF3 formatted files
+        pattern: "*.{gff}"
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - results:
-      type: directory
-      description: Directory containing Panaroo result files
-      pattern: "*/*"
-  - aln:
-      type: file
-      description: Core-genome alignment produced by Panaroo (Optional)
-      pattern: "*.{fasta}"
+  results:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/*:
+          type: directory
+          description: Directory containing Panaroo result files
+          pattern: "*/*"
+  aln:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/core_gene_alignment.aln:
+          type: file
+          description: Core-genome alignment produced by Panaroo (Optional)
+          pattern: "*.{fasta}"
+          ontologies: []
+  versions_panaroo:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - panaroo:
+          type: string
+          description: The name of the tool
+      - panaroo --version 2>&1 | sed 's/^.*panaroo //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - panaroo:
+          type: string
+          description: The name of the tool
+      - panaroo --version 2>&1 | sed 's/^.*panaroo //':
+          type: eval
+          description: The expression to obtain the version of the tool
 
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

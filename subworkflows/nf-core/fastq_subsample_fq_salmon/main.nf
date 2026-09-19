@@ -18,37 +18,41 @@ workflow FASTQ_SUBSAMPLE_FQ_SALMON {
 
     main:
 
-    ch_versions = Channel.empty()
+    ch_gtf_transcript_fasta = ch_gtf.combine(ch_transcript_fasta)
 
     //
     // Create Salmon index if required
     //
     if (make_index) {
-        ch_index = SALMON_INDEX ( ch_genome_fasta, ch_transcript_fasta ).index
-        ch_versions = ch_versions.mix(SALMON_INDEX.out.versions)
+        // genome_fasta may be an empty list (no decoys); wrap before combine() so an
+        // empty list contributes a position instead of being flattened away
+        ch_transcript_fasta
+            .combine(ch_genome_fasta.map { genome_fasta -> [genome_fasta] })
+            .map { items -> [ [:], items[0], items[1] ] }
+            .set { ch_index_input }
+
+        ch_index = SALMON_INDEX ( ch_index_input ).index
+    }
+    else {
+        ch_index = ch_index.map { index -> [ [:], index ] }
     }
 
     //
     // Sub-sample FastQ files with fq
     //
     FQ_SUBSAMPLE ( ch_reads )
-    ch_versions = ch_versions.mix(FQ_SUBSAMPLE.out.versions.first())
 
     //
     // Pseudo-alignment with Salmon
     //
-    def lib_type = 'A'
-    def alignment_mode = false
-    SALMON_QUANT ( FQ_SUBSAMPLE.out.fastq, ch_index, ch_gtf, ch_transcript_fasta, alignment_mode, lib_type )
-    ch_versions = ch_versions.mix(SALMON_QUANT.out.versions.first())
+    SALMON_QUANT ( FQ_SUBSAMPLE.out.fastq, ch_index.combine(ch_gtf_transcript_fasta) )
 
     emit:
-    index     = ch_index                   // channel: [ index ]
+    index             = ch_index                           // channel: [ val(meta), index ]
 
-    reads     = FQ_SUBSAMPLE.out.fastq     // channel: [ val(meta), fastq ]
+    reads             = FQ_SUBSAMPLE.out.fastq             // channel: [ val(meta), fastq ]
 
-    results   = SALMON_QUANT.out.results   // channel: [ val(meta), results_dir ]
-    json_info = SALMON_QUANT.out.json_info // channel: [ val(meta), json_info
-
-    versions  = ch_versions                // channel: [ versions.yml ]
+    results           = SALMON_QUANT.out.results           // channel: [ val(meta), results_dir ]
+    json_info         = SALMON_QUANT.out.json_info         // channel: [ val(meta), json_info
+    lib_format_counts = SALMON_QUANT.out.lib_format_counts // channel: [ val(meta), json_info
 }

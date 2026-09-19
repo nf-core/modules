@@ -1,47 +1,45 @@
 process MMSEQS_CREATEINDEX {
-    tag "$db"
+    tag "${meta.id}"
     label 'process_high'
+    label 'process_high_memory'
 
-    conda "bioconda::mmseqs2=14.7e284"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mmseqs2:14.7e284--pl5321hf1761c0_0':
-        'quay.io/biocontainers/mmseqs2:14.7e284--pl5321hf1761c0_0' }"
+    conda "${moduleDir}/environment.yml"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fe/fe49c17754753d6cd9a31e5894117edaf1c81e3d6053a12bf6dc8f3af1dffe23/data'
+        : 'community.wave.seqera.io/library/mmseqs2:18.8cc5c--af05c9a98d9f6139'}"
 
     input:
-    path db
+    tuple val(meta), path(db)
 
     output:
-    path(db)           , emit: db_indexed
-    path "versions.yml", emit: versions
+    tuple val(meta), path(db), emit: db_indexed
+    tuple val("${task.process}"), val('mmseqs'), eval('mmseqs version'), topic: versions, emit: versions_mmseqs
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: "*.dbtype"
     """
-    DB_PATH_NAME=\$(find -L "$db/" -name "*_seq.tsv" | sed 's/_seq\\.tsv\$//')
+    DB_INPUT_PATH_NAME=\$(find -L "${db}/" -maxdepth 1 -name "${args2}" | sed 's/\\.[^.]*\$//' |  sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' )
 
-    mmseqs createindex \\
-        \${DB_PATH_NAME} \\
+    mmseqs \\
+        createindex \\
+        \${DB_INPUT_PATH_NAME} \\
         tmp1 \\
-        $args
+        ${args} \\
+        --threads ${task.cpus} \\
+        --split-memory-limit ${(task.memory.toGiga() * 0.8) as int}G
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mmseqs: \$(mmseqs | grep 'Version' | sed 's/MMseqs2 Version: //')
-    END_VERSIONS
     """
 
     stub:
+    def args2 = task.ext.args2 ?: "*.dbtype"
     """
-    DB_PATH_NAME=\$(find -L "$db/" -name "*_seq.tsv" | sed 's/_seq\\.tsv\$//')
+    DB_INPUT_PATH_NAME=\$(find -L "${db}/" -maxdepth 1 -name "${args2}" | sed 's/\\.[^.]*\$//' |  sed -e 'N;s/^\\(.*\\).*\\n\\1.*\$/\\1\\n\\1/;D' )
 
-    touch "\${DB_PATH_NAME}.idx"
+    touch "\${DB_INPUT_PATH_NAME}.idx"
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mmseqs: \$(mmseqs | grep 'Version' | sed 's/MMseqs2 Version: //')
-    END_VERSIONS
     """
 }

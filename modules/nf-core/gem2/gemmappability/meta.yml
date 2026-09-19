@@ -1,0 +1,66 @@
+name: "gem2_gemmappability"
+description: Define the mappability of a reference
+keywords:
+  - mappability
+  - gem
+  - index
+  - reference
+tools:
+  - "gem2":
+      description: "GEM2 is a high-performance mapping tool. It also provide a unique
+        tool to evaluate mappability."
+      homepage: "https://paoloribeca.science/gem"
+      licence:
+        - "Custom"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - index:
+        type: file
+        description: The index created with gem-indexer from the reference FASTA
+        pattern: "*.gem"
+        ontologies: []
+  - read_length:
+      type: integer
+      description: The read length to define the mappability of
+output:
+  map:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.mappability":
+          type: file
+          description: The resulting mappability file
+          pattern: "*.mappability"
+          ontologies: []
+  versions_gem2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gem2:
+          type: string
+          description: The name of the tool
+      - "20200110":
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gem2:
+          type: string
+          description: The name of the tool
+      - "20200110":
+          type: string
+          description: The expression to obtain the version of the tool
+authors:
+  - "@nvnieuwk"
+maintainers:
+  - "@nvnieuwk"

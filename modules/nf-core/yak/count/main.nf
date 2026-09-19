@@ -1,0 +1,38 @@
+process YAK_COUNT {
+    tag "$meta.id"
+    label 'process_low'
+
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/yak:0.1--h577a1d6_6':
+        'quay.io/biocontainers/yak:0.1--h577a1d6_6' }"
+
+    input:
+    tuple val(meta), path(fastq)
+
+    output:
+    tuple val(meta), path("*.yak"), emit: yak
+    tuple val("${task.process}"), val('yak'), eval("yak version"), emit: versions_yak, topic: versions
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    input_command = meta.single_end ? "${fastq}" : "<(zcat ${fastq}) <(zcat ${fastq})"
+    """
+    yak \\
+        count \\
+        $args \\
+        -t${task.cpus} \\
+        -o ${prefix}.yak \\
+        $input_command
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.yak
+    """
+}

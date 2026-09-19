@@ -3,39 +3,56 @@ process FASTK_FASTK {
     label 'process_medium'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    container 'ghcr.io/nbisweden/fastk_genescopefk_merquryfk:1.2'
-
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "FASTK_FASTK module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/02/02c05b2ec421debc83883ef9a211291e3220546c12f7c54cb78e66209cb2797d/data' :
+        'community.wave.seqera.io/library/fastk:1.2--4bc70c6cd0d420bd' }"
 
     input:
     tuple val(meta), path(reads)
 
     output:
     tuple val(meta), path("*.hist")                      , emit: hist
+    tuple val(meta), path("*.log" )                      , emit: log
     tuple val(meta), path("*.ktab*", hidden: true)       , emit: ktab, optional: true
     tuple val(meta), path("*.{prof,pidx}*", hidden: true), emit: prof, optional: true
-    path "versions.yml"                                  , emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('fastk'), val('1.2'), emit: versions_fastk, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def FASTK_VERSION = 'f18a4e6d2207539f7b84461daebc54530a9559b0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    def args      = task.ext.args ?: ''
+    def prefix    = task.ext.prefix ?: "${meta.id}"
     """
     FastK \\
         $args \\
         -T$task.cpus \\
-        -N${prefix}_fk \\
-        $reads
+        -M${task.memory.toGiga()} \\
+        -N${prefix} \\
+        $reads \\
+        1>${prefix}.fastK.log 2>&1
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fastk: $FASTK_VERSION
-    END_VERSIONS
+    find . -name '*.ktab*' -exec chmod a+r {} \\;
+    """
+
+    stub:
+    def args       = task.ext.args ?: ''
+    def prefix     = task.ext.prefix ?: "${meta.id}"
+    def touch_ktab = args.contains('-t') ? "touch ${prefix}.ktab .${prefix}.ktab.1" : ''
+    def touch_prof = args.contains('-p') ? "touch ${prefix}.prof .${prefix}.pidx.1" : ''
+    """
+    touch ${prefix}.hist
+    $touch_ktab
+    $touch_prof
+
+    echo \\
+    "FastK \\
+        $args \\
+        -T$task.cpus \\
+        -M${task.memory.toGiga()} \\
+        -N${prefix}_fk \\
+        $reads" 1>${prefix}.fastK.log 2>&1
     """
 }

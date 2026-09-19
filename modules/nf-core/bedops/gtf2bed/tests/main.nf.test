@@ -1,0 +1,56 @@
+nextflow_process {
+
+    name "Test Process BEDOPS_GTF2BED"
+    script "../main.nf"
+    process "BEDOPS_GTF2BED"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bedops"
+    tag "bedops/gtf2bed"
+
+    test("homo sapiens") {
+
+        when {
+            process {
+                """
+                input[0] = [[ id:'test' ], // meta map
+                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("homo sapiens - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [[ id:'test' ], // meta map
+                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

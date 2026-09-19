@@ -1,0 +1,55 @@
+nextflow_process {
+    name 'Test Process SCDS'
+    script '../main.nf'
+    process 'SCDS'
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "scds"
+
+    test("test_scds") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file("https://github.com/nf-core/test-datasets/raw/e92fd1399f7ef839e075c09762f55cace91b8485/samples/SAMN14430801_custom_emptydrops_filter_matrix_sce.rds", checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+
+    test("test_scds - stub") {
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file("https://github.com/nf-core/test-datasets/raw/e92fd1399f7ef839e075c09762f55cace91b8485/samples/SAMN14430801_custom_emptydrops_filter_matrix_sce.rds", checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+}

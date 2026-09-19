@@ -1,0 +1,96 @@
+
+nextflow_process {
+
+    name "Test Process GAMMA_GAMMA"
+    script "../main.nf"
+    process "GAMMA_GAMMA"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gamma"
+    tag "gamma/gamma"
+
+    test("test-unzip") {
+
+        when {
+            params {
+                module_args = "--fasta"
+            }
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ],
+				    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test1.contigs.fa.gz', checkIfExists: true)
+				]
+				input[1] = [
+                    file(params.modules_testdata_base_path + 'delete_me/srst2/ResGANNCBI_20210507_srst2.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("test-gamma") {
+
+        when {
+            params {
+                module_args = "--fasta"
+            }
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ],
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+				]
+				input[1] = [
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("test-gamma -- stub") {
+        options "-stub"
+
+        when {
+            params {
+                module_args = "--fasta"
+            }
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ],
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+				]
+				input[1] = [
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/transcriptome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

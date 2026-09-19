@@ -1,0 +1,60 @@
+// nf-core modules test custom/addmostseverepli
+nextflow_process {
+
+    name "Test Process CUSTOM_ADDMOSTSEVEREPLI"
+    script "../main.nf"
+    process "CUSTOM_ADDMOSTSEVEREPLI"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "custom"
+    tag "custom/addmostseverepli"
+    config "./nextflow.config"
+
+    test("vcf") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/genmod_compound.vcf', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("vcf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/genmod_compound.vcf', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

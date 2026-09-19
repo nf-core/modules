@@ -1,0 +1,56 @@
+nextflow_process {
+
+    name "Test Process FUSIONREPORT_DOWNLOAD"
+    script "../main.nf"
+    process "FUSIONREPORT_DOWNLOAD"
+    config './nextflow.config'
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fusionreport"
+    tag "fusionreport/download"
+
+    test("Download fusionreport databases") {
+
+        when {
+            params {
+                module_args = '--no-cosmic'
+            }
+            process {
+                """
+                input[0] = [id: 'fusion_report_db']
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["fusionreport_ref"])).match() }
+            )
+        }
+    }
+
+    test("Create stub files") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--no-cosmic'
+            }
+            process {
+                """
+                input[0] = [id: 'fusion_report_db']
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

@@ -1,0 +1,84 @@
+nextflow_process {
+
+    name "Test Process CHECKV_UPDATEDATABASE"
+    script "../main.nf"
+    process "CHECKV_UPDATEDATABASE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "checkv"
+    tag "checkv/updatedatabase"
+    tag "untar"
+
+    setup {
+        run("UNTAR") {
+            script "../../../untar/main.nf"
+            process {
+                """
+                input[0] = channel.of(
+                    [
+                        [ id:'checkv_minimal_db' ],
+                        file("https://github.com/nf-core/test-datasets/raw/phageannotator/modules/nfcore/checkv/endtoend/checkv_minimal_db.tar", checkIfExists: true)
+                    ]
+                )
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - genome - genome_fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = UNTAR.out.untar.map { it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.checkv_db.collect { meta, folder ->
+                        [
+                            meta,
+                            folder[0],  // README.txt
+                            file(folder[1]).listFiles().sort().findAll { !it.name.endsWith(".log") },  // genome_db files without logs
+                            folder[2]   // hmm_db
+                        ]
+                    },
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match()},
+            )
+        }
+    }
+
+    test("sarscov2 - genome - genome_fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[1] = UNTAR.out.untar.map { it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match()}
+            )
+        }
+    }
+}

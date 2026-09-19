@@ -1,46 +1,108 @@
-include { GLIMPSE_CHUNK      } from '../../../modules/nf-core/glimpse/chunk/main'
-include { GLIMPSE_PHASE      } from '../../../modules/nf-core/glimpse/phase/main'
-include { GLIMPSE_LIGATE     } from '../../../modules/nf-core/glimpse/ligate/main'
-include { BCFTOOLS_INDEX     } from '../../../modules/nf-core/bcftools/index/main.nf'
+include { GLIMPSE_CHUNK                           } from '../../../modules/nf-core/glimpse/chunk/main'
+include { GLIMPSE_PHASE                           } from '../../../modules/nf-core/glimpse/phase/main'
+include { GLIMPSE_LIGATE                          } from '../../../modules/nf-core/glimpse/ligate/main'
+include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_PHASE  } from '../../../modules/nf-core/bcftools/index/main.nf'
+include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_LIGATE } from '../../../modules/nf-core/bcftools/index/main.nf'
 
 workflow VCF_IMPUTE_GLIMPSE {
-
     take:
-    ch_vcf      // channel (mandatory): [ meta, vcf, csi, region, sample ]
-    ch_ref      // channel (mandatory): [ meta, vcf, csi ]
-    ch_map      // channel  (optional): path to map
-    ch_infos    // channel  (optional): sample infos
+    ch_vcf    // channel (mandatory): [ meta, vcf, csi, infos ]
+    ch_ref    // channel (mandatory): [ meta, vcf, csi, region ]
+    ch_chunks // channel (optional) : [ meta, regionin, regionout ]
+    ch_map    // channel (optional) : [ meta, map ]
+    chunk     // val (optional)     : boolean to activate/deactivate chunking step
 
     main:
 
-    ch_versions = Channel.empty()
+    if (chunk == true) {
+        // Error if pre-defined chunks are provided when chunking is activated
+        ch_chunks
+            .filter { _meta, regionin, regionout -> regionin.size() > 0 || regionout.size() > 0 }
+            .subscribe {
+                error("ERROR: Cannot provide pre-defined chunks (regionin) when chunk=true. Please either set chunk=false to use provided chunks, or remove input chunks to enable automatic chunking.")
+            }
 
-    GLIMPSE_CHUNK ( ch_vcf )
-    ch_versions = ch_versions.mix(GLIMPSE_CHUNK.out.versions)
+        GLIMPSE_CHUNK(ch_ref)
 
-    chunk_output = GLIMPSE_CHUNK.out.chunk_chr
-                                .splitCsv(header: ['ID', 'Chr', 'RegionIn', 'RegionOut', 'Size1', 'Size2'], sep: "\t", skip: 0)
-                                .map { metamap, it -> [metamap, it["RegionIn"], it["RegionOut"]]}
-    phase_input = ch_vcf.map{[it[0], it[1], it[2]]}
-                            .join(chunk_output)
-                            .join(ch_ref)
-                            .join(ch_map)
-                            .join(ch_infos)
+        ch_chunks = GLIMPSE_CHUNK.out.chunk_chr
+            .splitCsv(header: ['ID', 'Chr', 'RegionIn', 'RegionOut', 'Size1', 'Size2'], sep: "\t", skip: 0)
+            .map { meta, it -> [meta, it["RegionIn"], it["RegionOut"]] }
+    }
 
-    GLIMPSE_PHASE ( phase_input ) // [meta, vcf, index, regionin, regionout, regionindex, ref, ref_index, map, sample_infos]
-    ch_versions = ch_versions.mix(GLIMPSE_PHASE.out.versions.first())
+    ch_chunks
+        .filter { _meta, regionin, regionout -> regionin.size() > 0 && regionout.size() > 0 }
+        .ifEmpty { error("ERROR: ch_chunks channel is empty. Please provide a valid channel or set chunk parameter to true.") }
 
-    ligate_input  = GLIMPSE_PHASE.out.phased_variant.groupTuple()
+    ch_chunks_counts = ch_chunks
+        .groupTuple()
+        .map { metaPC, _regionins, regionouts ->
+            [metaPC, regionouts.size()]
+        }
 
-    BCFTOOLS_INDEX ( ligate_input )
-    GLIMPSE_LIGATE ( ligate_input.join(BCFTOOLS_INDEX.out.csi.groupTuple()) )
+    ch_chunks_panel_map = ch_chunks
+        .combine(ch_ref, by: 0)
+        .combine(ch_map, by: 0)
+        .combine(ch_chunks_counts, by: 0)
 
-    ch_versions = ch_versions.mix(GLIMPSE_LIGATE.out.versions.first())
+    ch_chunks_panel_map.ifEmpty {
+        error("ERROR: join operation resulted in an empty channel. Please provide a valid ch_chunks and ch_map channel as input.")
+    }
+
+    phase_input = ch_vcf
+        .combine(ch_chunks_panel_map)
+        .map{ metaI, vcf, csi, sample, metaPC, regionin, regionout, ref, ref_index, _region, map, region_size ->
+            def chr = regionout.tokenize(':')[0]
+            def region = regionout.tokenize(':')[1]
+            def start = region.tokenize('-')[0]
+            def end = region.tokenize('-')[1]
+            def paddedStart = String.format('%010d', start as long)
+            def paddedEnd = String.format('%010d', end as long)
+            def regionoutPadded = "${chr}:${paddedStart}-${paddedEnd}"
+            [
+                metaI + metaPC + ["regionout": regionout, "regionoutPadded": regionoutPadded, "regionSize": region_size],
+                vcf, csi, sample, // target input
+                regionin, regionout, // chunks
+                ref, ref_index, map // reference panel
+            ]
+        }
+
+    GLIMPSE_PHASE(phase_input)
+
+    BCFTOOLS_INDEX_PHASE(GLIMPSE_PHASE.out.phased_variants)
+
+    // Ligate all phased files in one and index it
+    ligate_input = GLIMPSE_PHASE.out.phased_variants
+        .join(
+            BCFTOOLS_INDEX_PHASE.out.index,
+            failOnMismatch: true,
+            failOnDuplicate: true,
+        )
+        .map { meta, vcf, index ->
+            def keysToKeep = meta.keySet() - ['regionout', 'regionoutPadded', 'regionSize']
+            [
+                groupKey(meta.subMap(keysToKeep), meta.regionSize),
+                vcf, index
+            ]
+        }
+        .groupTuple()
+        .map { groupKeyObj, vcf, index ->
+            // Extract the actual meta from the groupKey
+            def meta = groupKeyObj.getGroupTarget()
+            [meta, vcf, index]
+        }
+
+    GLIMPSE_LIGATE(ligate_input)
+
+    BCFTOOLS_INDEX_LIGATE(GLIMPSE_LIGATE.out.merged_variants)
+
+    // Join imputed and index files
+    ch_vcf_index = GLIMPSE_LIGATE.out.merged_variants.join(
+        BCFTOOLS_INDEX_LIGATE.out.index,
+        failOnMismatch: true,
+        failOnDuplicate: true,
+    )
 
     emit:
-    chunk_chr        = GLIMPSE_CHUNK.out.chunk_chr           // channel: [ val(meta), txt ]
-    merged_variants  = GLIMPSE_LIGATE.out.merged_variants    // channel: [ val(meta), bcf ]
-    phased_variants  = GLIMPSE_PHASE.out.phased_variant      // channel: [ val(meta), bcf ]
-
-    versions         = ch_versions                           // channel: [ versions.yml ]
+    chunks    = ch_chunks    // channel: [ val(meta), regionin, regionout ]
+    vcf_index = ch_vcf_index // channel: [ val(meta), vcf, index ]
 }

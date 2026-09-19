@@ -1,0 +1,96 @@
+nextflow_process {
+
+    name "Test Process FCS_FCSADAPTOR"
+    script "../main.nf"
+    process "FCS_FCSADAPTOR"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fcs"
+    tag "fcs/fcsadaptor"
+
+    test("bacteroides_fragilis-genome_fna_gz") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log", "skipped_trims"])).match()},
+                { assert path(process.out.log[0][1]).text.contains('[step all_cleaned_fasta] completed success') }
+            )
+        }
+
+    }
+
+    test("sarscov2-genome_fasta-pacbio_adapters") {
+
+        when {
+            process {
+                """
+                def input_file_lines = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true).text.split('\\n')
+                def file_with_adapters = file('sarscov2_with_adapters.fasta')
+
+                def first_half = input_file_lines[0..<(input_file_lines.size()/2)]
+                def second_half = input_file_lines[(input_file_lines.size()/2)..<(input_file_lines.size())]
+
+                def combined_lines = [
+                    first_half,
+                    ['ATCTCTCTCTTTTCCTCCTCCTCCGTTGTTGTTGTTGAGAGAGAT'],
+                    second_half,
+                    ['AAAAAAAAAAAAAAAAAATTAACGGAGGAGGAGGA']
+                ].flatten()
+                file_with_adapters.text = combined_lines.join('\\n')
+
+                input[0] = [
+                    [ id: 'test' ],
+                    file_with_adapters
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log", "adaptor_report"])).match()},
+                { assert path(process.out.log[0][1]).text.contains('[step all_cleaned_fasta] completed success') },
+                { assert path(process.out.adaptor_report[0][1]).text.contains('Pacific Biosciences Blunt Adapter') },
+                { assert path(process.out.adaptor_report[0][1]).text.contains('Pacific Biosciences C2 Primer') }
+            )
+        }
+
+    }
+
+    test("bacteroides_fragilis-genome_fna_gz-stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match()}
+            )
+        }
+    }
+}

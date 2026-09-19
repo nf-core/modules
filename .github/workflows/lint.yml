@@ -1,0 +1,213 @@
+name: Run Linting
+on:
+  push:
+    branches:
+      # https://docs.renovatebot.com/key-concepts/automerge/#branch-vs-pr-automerging
+      - "renovate/**" # branches Renovate creates
+  pull_request:
+    branches: [master]
+  merge_group:
+    types: [checks_requested]
+    branches: [master]
+  workflow_dispatch:
+    inputs:
+      runners:
+        description: "Runners to test on"
+        type: choice
+        options:
+          - "ubuntu-latest"
+          - "self-hosted"
+        default: "self-hosted"
+
+# Cancel if a newer run is started
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  NXF_SINGULARITY_CACHEDIR: ${{ github.workspace }}/.singularity
+  NXF_SINGULARITY_LIBRARYDIR: ${{ github.workspace }}/.singularity
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  # renovate: datasource=github-releases depName=nextflow/nextflow versioning=semver
+  NXF_VER: "26.04.0"
+  NXF_SYNTAX_PARSER: "v2"
+
+jobs:
+  pre-commit:
+    runs-on: ${{ github.event.inputs.runners || github.run_number > 1 && 'ubuntu-latest' || 'self-hosted' }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - uses: nf-core/setup-nextflow@893c28b667aedeba26e37f296d260ccc5bc4d914 # v3
+      - name: Run prek
+        uses: j178/prek-action@4e14d07f9231acabce116ccfca13b13dd9755ece # v3.0.0
+
+  ###################
+  # nf-core linting #
+  ###################
+  # TODO Move these to pre-commit
+  # https://github.com/nf-core/tools/pull/3141
+  nf-core-changes:
+    name: nf-core-changes
+    runs-on:
+      - runs-on=${{ github.run_id }}-nf-core-changes
+      - runner=4cpu-linux-x64
+      - image=ubuntu22-full-x64
+    outputs:
+      # https://github.com/dorny/paths-filter?tab=readme-ov-file#custom-processing-of-changed-files
+      modules: ${{ steps.filter.outputs.modules }}
+      modules_files: ${{ steps.module_names.outputs.result }}
+      subworkflows: ${{ steps.filter.outputs.subworkflows }}
+      subworkflows_files: ${{ steps.subworkflow_names.outputs.result }}
+    steps:
+      - name: Clean workspace
+        run: |
+          sudo rm -rf ./* || true
+          sudo rm -rf ./.* || true
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 2 # To retrieve the preceding commit.
+
+      - uses: dorny/paths-filter@ceb8a2b8f2d89434be7ff52d3de7ec3738c5cc9d # v4
+        id: filter
+        with:
+          filters: |
+            modules:
+              - added|modified: 'modules/nf-core/**'
+            subworkflows:
+              - added|modified: 'subworkflows/nf-core/**'
+          token: ""
+          list-files: "json"
+
+      - name: Get module name
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
+        id: module_names
+        with:
+          script: |
+            return [...new Set(${{ steps.filter.outputs.modules_files }}
+              .filter(x => x.endsWith('main.nf') || x.endsWith('.nf.test.snap'))
+              .map(path => path
+                .replace('modules/nf-core/', '')
+                .replace(/\/(main\.nf|tests\/.*)$/, '')
+              )
+            )];
+      - name: Get subworkflow name
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9
+        id: subworkflow_names
+        with:
+          script: |
+            return [...new Set(${{ steps.filter.outputs.subworkflows_files }}
+              .filter(x => x.endsWith('main.nf') || x.endsWith('.nf.test.snap'))
+              .map(path => path
+                .replace('subworkflows/nf-core/', '')
+                .replace(/\/(main\.nf|tests\/.*)$/, '')
+              )
+            )];
+
+      - name: debug
+        run: |
+          echo ${{ steps.filter.outputs.modules_files }}
+          echo ${{ steps.module_names.outputs.result }}
+          echo ${{ steps.filter.outputs.subworkflows_files }}
+          echo ${{ steps.subworkflow_names.outputs.result }}
+
+  nf-core-lint-modules:
+    runs-on:
+      - runs-on=${{ github.run_id }}-nf-core-lint-modules
+      - runner=4cpu-linux-x64
+      - image=ubuntu22-full-x64
+    name: nf-core lint modules
+    needs: nf-core-changes
+    if: ${{ needs.nf-core-changes.outputs.modules_files != '[]' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        module: ${{ fromJson(needs.nf-core-changes.outputs.modules_files || '[]') }}
+    steps:
+      - name: Clean workspace
+        run: |
+          sudo rm -rf ./* || true
+          sudo rm -rf ./.* || true
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: "3.14"
+
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        id: cache-pip
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip
+          restore-keys: |
+            ${{ runner.os }}-pip
+
+      - name: Install pip
+        run: python -m pip install --upgrade pip
+
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      - name: Set up Nextflow
+        uses: nf-core/setup-nextflow@893c28b667aedeba26e37f296d260ccc5bc4d914 # v3
+
+      - name: Install nf-core tools development version
+        run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
+
+      - name: Lint module ${{ matrix.module }}
+        run: nf-core modules lint ${{ matrix.module }}
+
+  nf-core-lint-subworkflows:
+    runs-on:
+      - runs-on=${{ github.run_id }}-nf-core-lint-subworkflows
+      - runner=4cpu-linux-x64
+      - image=ubuntu22-full-x64
+    name: nf-core lint subworkflows
+    needs: nf-core-changes
+    if: ${{ needs.nf-core-changes.outputs.subworkflows_files != '[]' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        subworkflow: ${{ fromJson(needs.nf-core-changes.outputs.subworkflows_files || '[]') }}
+    steps:
+      - name: Clean workspace
+        run: |
+          sudo rm -rf ./* || true
+          sudo rm -rf ./.* || true
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        with:
+          python-version: "3.14"
+
+      - name: Set up Nextflow
+        uses: nf-core/setup-nextflow@893c28b667aedeba26e37f296d260ccc5bc4d914 # v3
+
+      - name: Install nf-core tools development version
+        run: python -m pip install --upgrade --force-reinstall git+https://github.com/nf-core/tools.git@dev
+
+      - name: Lint subworkflow ${{ matrix.subworkflow }}
+        run: nf-core subworkflows lint ${{ matrix.subworkflow }}
+
+  confirm-pass-lint:
+    runs-on:
+      - runs-on=${{ github.run_id }}-confirm-pass-lint
+      - runner=2cpu-linux-x64
+      - image=ubuntu22-full-x64
+    needs: [nf-core-lint-modules, nf-core-lint-subworkflows]
+    if: always()
+    steps:
+      - name: All tests ok
+        if: ${{ success() || !contains(needs.*.result, 'failure') }}
+        run: exit 0
+      - name: One or more tests failed
+        if: ${{ contains(needs.*.result, 'failure') }}
+        run: exit 1
+
+      - name: debug-print
+        if: always()
+        run: |
+          echo "toJSON(needs) = ${{ toJSON(needs) }}"
+          echo "toJSON(needs.*.result) = ${{ toJSON(needs.*.result) }}"

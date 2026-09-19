@@ -1,0 +1,63 @@
+name: "seqkit_fq2fa"
+description: Convert FASTQ to FASTA format
+keywords:
+  - fastq
+  - fasta
+  - convert
+tools:
+  - "seqkit":
+      description: "Cross-platform and ultrafast toolkit for FASTA/Q file manipulation,
+        written by Wei Shen."
+      homepage: "https://github.com/shenwei356/seqkit"
+      documentation: "https://bioinf.shenwei.me/seqkit/"
+      doi: "10.1371/journal.pone.0163962"
+      licence: ["MIT"]
+      identifier: biotools:seqkit
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - fastq:
+        type: file
+        description: Sequence file in fastq format
+        pattern: "*.{fastq,fq}.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+output:
+  fasta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "*.fa.gz":
+          type: file
+          description: Sequence file in fasta format
+          pattern: "*.{fasta,fa}.gz"
+          ontologies: []
+  versions_seqkit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - seqkit:
+          type: string
+          description: The name of the tool
+      - seqkit version | sed 's/^.*v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - seqkit:
+          type: string
+          description: The name of the tool
+      - seqkit version | sed 's/^.*v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@d-jch"

@@ -10,34 +10,57 @@ tools:
       homepage: https://github.com/MDU-PHL/LisSero/blob/master/README.md
       documentation: https://github.com/MDU-PHL/LisSero/blob/master/README.md
       tool_dev_url: https://github.com/MDU-PHL/lissero
-
-      licence: ["GPL v3"]
-
+      licence:
+        - "GPL v3"
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - fasta:
-      type: file
-      description: FASTA assembly file
-      pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz}"
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: FASTA assembly file
+        pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz}"
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - tsv:
-      type: file
-      description: Tab-delimited result file
-      pattern: "*.tsv"
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.tsv":
+          type: file
+          description: Tab-delimited result file
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions_lissero:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - lissero:
+          type: string
+          description: The name of the tool
+      - lissero --version 2>&1 | sed 's/.*LisSero //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - lissero:
+          type: string
+          description: The name of the tool
+      - lissero --version 2>&1 | sed 's/.*LisSero //':
+          type: eval
+          description: The expression to obtain the version of the tool
 
 authors:
+  - "@rpetit3"
+maintainers:
   - "@rpetit3"

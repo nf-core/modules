@@ -1,7 +1,9 @@
 name: "cooler_balance"
 description: Run matrix balancing on a cool file
 keywords:
-  - balance
+  - cooler/balance
+  - cooler
+  - cool
 tools:
   - "cooler":
       description: Sparse binary format for genomic interaction matrices
@@ -9,37 +11,59 @@ tools:
       documentation: https://cooler.readthedocs.io/en/latest/index.html
       tool_dev_url: https://github.com/open2c/cooler
       doi: "10.1093/bioinformatics/btz540"
-      licence: ["BSD-3-Clause"]
-
+      licence:
+        - "BSD-3-Clause"
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - cool:
-      type: file
-      description: Path to COOL file
-      pattern: "*.{cool,mcool}"
-  - resolution:
-      type: value
-      description: Resolution
-
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - cool:
+        type: file
+        description: Path to COOL file
+        pattern: "*.{cool,mcool}"
+        ontologies: []
+    - resolution:
+        type: integer
+        description: Resolution
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
-  - cool:
-      type: file
-      description: Output COOL file balancing weigths
-      pattern: "*.cool"
-
+  cool:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}.${extension}:
+          type: file
+          description: Output COOL file balancing weights
+          pattern: "*.cool"
+          ontologies: []
+  versions_cooler:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cooler:
+          type: string
+          description: The name of the tool
+      - cooler --version 2>&1 | sed "s/cooler, version //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cooler:
+          type: string
+          description: The name of the tool
+      - cooler --version 2>&1 | sed "s/cooler, version //":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
+  - "@nservant"
+  - "@muffato"
+maintainers:
   - "@nservant"
   - "@muffato"

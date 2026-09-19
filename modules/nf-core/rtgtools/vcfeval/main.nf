@@ -2,13 +2,13 @@ process RTGTOOLS_VCFEVAL {
     tag "$meta.id"
     label 'process_medium'
 
-    conda "bioconda::rtg-tools=3.12.1"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/rtg-tools:3.12.1--hdfd78af_0':
-        'quay.io/biocontainers/rtg-tools:3.12.1--hdfd78af_0' }"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/dc/dca5ba13b7ec38bf7cacf00a33517b9080067bea638745c05d50a4957c75fc2e/data':
+        'community.wave.seqera.io/library/rtg-tools:3.13--3465421f1b0be0ce' }"
 
     input:
-    tuple val(meta), path(query_vcf), path(query_vcf_tbi), path(truth_vcf), path(truth_vcf_tbi), path(truth_bed), path(evaluation_bed)
+    tuple val(meta), path(query_vcf), path(query_vcf_tbi), path(truth_vcf), path(truth_vcf_tbi), path(truth_bed), path(regions_bed)
     tuple val(meta2), path(sdf)
 
     output:
@@ -25,7 +25,8 @@ process RTGTOOLS_VCFEVAL {
     tuple val(meta), path("*.weighted_roc.tsv.gz")      , emit: weighted_roc
     tuple val(meta), path("*.summary.txt")              , emit: summary
     tuple val(meta), path("*.phasing.txt")              , emit: phasing
-    path "versions.yml"                                 , emit: versions
+    tuple val("${task.process}"), val('rtgtools'), eval("rtg version | sed 's/Product: RTG Tools //; q'"), topic: versions, emit: versions_rtgtools
+
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,8 +34,8 @@ process RTGTOOLS_VCFEVAL {
     script:
     def args = task.ext.args ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def bed_regions = truth_bed ? "--bed-regions=${truth_bed}" : ""
-    def eval_regions = evaluation_bed ? "--evaluation-regions=${evaluation_bed}" : ""
+    def bed_regions = regions_bed ? "--bed-regions=${regions_bed}" : ""
+    def eval_regions = truth_bed ? "--evaluation-regions=${truth_bed}" : ""
     def truth_index = truth_vcf_tbi ? "" : "rtg index ${truth_vcf}"
     def query_index = query_vcf_tbi ? "" : "rtg index ${query_vcf}"
     def avail_mem = task.memory.toGiga() + "G"
@@ -57,34 +58,24 @@ process RTGTOOLS_VCFEVAL {
     mv done progress ..
     for f in * ; do mv "\$f" "../${prefix}.\$f" ; done
     cd ..
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rtg-tools: \$(echo \$(rtg version | head -n 1 | awk '{print \$4}'))
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    touch ${prefix}.tp.vcf.gz
+    echo | gzip > ${prefix}.tp.vcf.gz
     touch ${prefix}.tp.vcf.gz.tbi
-    touch ${prefix}.fn.vcf.gz
+    echo | gzip > ${prefix}.fn.vcf.gz
     touch ${prefix}.fn.vcf.gz.tbi
-    touch ${prefix}.fp.vcf.gz
+    echo | gzip > ${prefix}.fp.vcf.gz
     touch ${prefix}.fp.vcf.gz.tbi
-    touch ${prefix}.tp-baseline.vcf.gz
+    echo | gzip > ${prefix}.tp-baseline.vcf.gz
     touch ${prefix}.tp-baseline.vcf.gz.tbi
-    touch ${prefix}.snp_roc.tsv.gz
-    touch ${prefix}.non_snp_roc.tsv.gz
-    touch ${prefix}.weighted_roc.tsv.gz
+    echo | gzip > ${prefix}.snp_roc.tsv.gz
+    echo | gzip > ${prefix}.non_snp_roc.tsv.gz
+    echo | gzip > ${prefix}.weighted_roc.tsv.gz
     touch ${prefix}.summary.txt
     touch ${prefix}.phasing.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rtg-tools: \$(echo \$(rtg version | head -n 1 | awk '{print \$4}'))
-    END_VERSIONS
     """
 }

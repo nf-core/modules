@@ -1,0 +1,146 @@
+nextflow_process {
+
+    name "Test Process SCANPY_SCRUBLET"
+    script "../main.nf"
+    process "SCANPY_SCRUBLET"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "scanpy"
+    tag "scanpy/scrublet"
+
+    test("Should run without failures") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                        [ id: 'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679759_filtered_matrix.h5ad', checkIfExists: true)
+                    ]
+                )
+                input[1] = 'sample'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert snapshot(
+                sanitizeOutput(process.out, unstableKeys: ["h5ad", "predictions"]),
+                process.out.versions.collect { path(it).yaml }
+            ).match() }
+            )
+        }
+
+    }
+
+    test("Should run with empty string for batch_col") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                        [ id: 'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679759_filtered_matrix.h5ad', checkIfExists: true)
+                    ]
+                )
+                input[1] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert snapshot(
+                sanitizeOutput(process.out, unstableKeys: ["h5ad", "predictions"]),
+                process.out.versions.collect { path(it).yaml }
+            ).match() }
+            )
+        }
+
+    }
+
+    test("Should run with empty array for batch_col") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                        [ id: 'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679759_filtered_matrix.h5ad', checkIfExists: true)
+                    ]
+                )
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert snapshot(
+                sanitizeOutput(process.out, unstableKeys: ["h5ad", "predictions"]),
+                process.out.versions.collect { path(it).yaml }
+            ).match() }
+            )
+        }
+
+    }
+
+
+    test("Should fail with non-existing batch_col") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                        [ id: 'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679759_filtered_matrix.h5ad', checkIfExists: true)
+                    ]
+                )
+                input[1] = 'non_existing_col'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.failed }
+            )
+        }
+
+    }
+
+    test("Should run without failures - stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                        [ id: 'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679759_filtered_matrix.h5ad', checkIfExists: true)
+                    ]
+                )
+                input[1] = 'sample'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert snapshot(
+                sanitizeOutput(process.out),
+                process.out.versions.collect { path(it).yaml }
+            ).match() }
+            )
+        }
+
+    }
+
+}

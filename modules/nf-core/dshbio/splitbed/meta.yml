@@ -2,6 +2,8 @@ name: dshbio_splitbed
 description: Split features in gzipped BED format
 keywords:
   - bed
+  - split
+  - feature
 tools:
   - dshbio:
       description: |
@@ -10,30 +12,54 @@ tools:
         or later.
       homepage: https://github.com/heuermh/dishevelled-bio
       documentation: https://github.com/heuermh/dishevelled-bio
-      licence: ["LGPL-3.0-or-later"]
+      licence:
+        - "LGPL-3.0-or-later"
+      identifier: ""
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bed:
-      type: file
-      description: Features in gzipped BED format to split
-      pattern: "*.{bed.gz}"
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bed:
+        type: file
+        description: Features in gzipped BED format to split
+        pattern: "*.{bed.gz}"
+        ontologies: []
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test', single_end:false ]
-  - bed:
-      type: file
-      description: Features in split gzipped BED formatted files
-      pattern: "*.{bed.gz}"
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+  bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bed.gz":
+          type: file
+          description: Features in split gzipped BED formatted files
+          pattern: "*.{bed.gz}"
+          ontologies: []
+  versions_dshbio:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dsh-bio:
+          type: string
+          description: The name of the tool
+      - dsh-bio --version | sed '1!d;s/dsh-bio-tools //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dsh-bio:
+          type: string
+          description: The name of the tool
+      - dsh-bio --version | sed '1!d;s/dsh-bio-tools //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
+  - "@heuermh"
+maintainers:
   - "@heuermh"
