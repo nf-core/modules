@@ -1,9 +1,16 @@
 name: "hmmer_hmmrank"
-description: R script that scores output from multiple runs of hmmer/hmmsearch
+description: |
+  Ranks hmmer/hmmsearch hits by score/e-value and, optionally, attaches per-hit domain
+  coordinates -- reading the already-parsed, already-typed Parquet table(s) hmmer/formattsv
+  + duckdb/table2parquet produce, rather than parsing raw hmmsearch tblout/domtblout text
+  itself. The ranking and domain-coordinate merge run as DuckDB SQL (window functions,
+  disk-spillable temp tables) instead of in-memory R/dplyr, so memory use no longer scales
+  with the full width of every input row held at once.
 keywords:
   - hmmer
   - hmmsearch
   - rank
+  - duckdb
 tools:
   - "hmmer":
       description: "Biosequence analysis using profile hidden Markov models"
@@ -14,49 +21,44 @@ tools:
       licence:
         - "BSD"
       identifier: ""
-  - "R":
-      description: "A Language and Environment for Statistical Computing"
-      homepage: https://www.r-project.org/
-      documentation: https://www.r-project.org/
-      licence:
-        - "GPL v2"
-      identifier: ""
-  - "Tidyverse":
-      description: "Tidyverse: R packages for data science"
-      homepage: https://www.tidyverse.org/
-      documentation: https://www.tidyverse.org/
-      tool_dev_url: https://github.com/tidyverse
-      doi: "10.21105/joss.01686"
+  - "duckdb":
+      description: "An in-process SQL OLAP database management system"
+      homepage: "https://duckdb.org"
+      documentation: "https://duckdb.org/docs/"
+      tool_dev_url: "https://github.com/duckdb/duckdb"
       licence:
         - "MIT"
-      identifier: ""
+      identifier: "biotools:duckdb"
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - tblouts:
-        type: file
-        description: per-sequence hit tables from hmmsearch (--tblout)
-        pattern: "*.tbl.gz"
-        ontologies:
-          - edam: http://edamontology.org/format_3989 # GZIP format
-    - domtblouts:
+    - tblout:
         type: file
         description: |
-          Optional per-domain hit tables from hmmsearch (--domtblout). When supplied, the
-          ranked table gains the target and profile lengths and, for each of the three
-          coordinate sets, the outer bounds of the match, the size of the union of the
-          pair's domains, and the number of separate stretches that union spans. Every
-          domain hmmsearch reported is counted, whatever its own significance: a hit can
-          clear the full-sequence threshold while each of its domains is weak in isolation,
-          and dropping those would leave exactly such hits without coordinates. Domains are
-          grouped by query name as well as by file, so an HMM file holding several models
-          searched in one go still yields one row per (sequence, model).
-        pattern: "*.domtbl.gz"
-        ontologies:
-          - edam: http://edamontology.org/format_3989 # GZIP format
+          A single Parquet table combining every hmmsearch per-sequence hit table (--tblout)
+          for this meta, as produced by hmmer/formattsv (format 'tblout') followed by
+          duckdb/table2parquet -- one profile-labelled row per hit, columns already typed.
+        pattern: "*.parquet"
+        ontologies: []
+    - domtblout:
+        type: file
+        description: |
+          Optional single Parquet table combining every hmmsearch per-domain hit table
+          (--domtblout) for this meta, as produced by hmmer/formattsv (format 'domtblout')
+          followed by duckdb/table2parquet. When supplied ([] when not), the ranked table
+          gains the target and profile lengths and, for each of the three coordinate sets,
+          the outer bounds of the match, the size of the union of the pair's domains, and
+          the number of separate stretches that union spans. Every domain hmmsearch reported
+          is counted, whatever its own significance: a hit can clear the full-sequence
+          threshold while each of its domains is weak in isolation, and dropping those would
+          leave exactly such hits without coordinates. Domains are grouped by query name as
+          well as by profile, so an HMM file holding several models searched in one go still
+          yields one row per (sequence, model).
+        pattern: "*.parquet"
+        ontologies: []
 output:
   hmmrank:
     - - meta:
@@ -70,7 +72,7 @@ output:
             TSV file with ranked hmmer results: one row per (accno, profile, profile_desc)
             combination -- profile_desc holds the query name, i.e. the model, which one file
             may hold several of -- with profile, accno, profile_desc, evalue, score and rank.
-            When domtblouts are supplied it also carries tlen and qlen, plus from, to,
+            When domtblout is supplied it also carries tlen and qlen, plus from, to,
             len and n_islands for
             each of the hmm, ali and env coordinate sets. n_islands is 1 when the domains
             merge into a single continuous stretch and rises as they scatter; coordinates
@@ -81,22 +83,52 @@ output:
           pattern: "*.hmmrank.tsv.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+  versions_duckdb:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "duckdb":
+          type: string
+          description: The name of the tool
+      - "duckdb --version | sed 's/^v//; s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "duckdb":
+          type: string
+          description: The name of the tool
+      - "duckdb --version | sed 's/^v//; s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@erikrikarddaniel"
 maintainers:
   - "@erikrikarddaniel"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/duckdb-cli:1.5.5--9759cff58ac94478
+      build_id: bd-9759cff58ac94478_1
+      scan_id: sc-d2d6d8ef62d545e0_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/duckdb-cli:1.5.5--9c6d18d9f687a45d
+      build_id: bd-9c6d18d9f687a45d_1
+      scan_id: sc-0edb2b0562f99468_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/duckdb-cli:1.5.5--f8bdd09321b4d7ab
+      build_id: bd-f8bdd09321b4d7ab_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/68/68261e24307fdf80b9988d6fd13cf3551735e6dc0e7e38003259f7d8efa84cdb/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/duckdb-cli:1.5.5--9ff691978ccb6109
+      build_id: bd-9ff691978ccb6109_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/92/92b4ee040ad1e494ed7c57b6d54b41105f49d79b50f966a2945e87c27d3fbf5e/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/hmmer/hmmrank/.conda-lock/linux_amd64-bd-9c6d18d9f687a45d_1.txt

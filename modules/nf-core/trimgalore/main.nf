@@ -1,7 +1,6 @@
 process TRIMGALORE {
     tag "${meta.id}"
     label 'process_medium'
-    label 'process_low_memory'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
@@ -14,6 +13,7 @@ process TRIMGALORE {
     output:
     tuple val(meta), path("*{3prime,5prime,trimmed,val}{,_1,_2}.fq.gz"), emit: reads
     tuple val(meta), path("*report.txt")                               , emit: log     , optional: true
+    tuple val(meta), path("*report.json")                              , emit: json    , optional: true
     tuple val(meta), path("*unpaired{,_1,_2}.fq.gz")                   , emit: unpaired, optional: true
     tuple val(meta), path("*.html")                                    , emit: html    , optional: true
     tuple val(meta), path("*.zip")                                     , emit: zip     , optional: true
@@ -73,13 +73,16 @@ process TRIMGALORE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     if (meta.single_end) {
         output_command = "echo '' | gzip > ${prefix}_trimmed.fq.gz ;"
-        output_command += "touch ${prefix}.fastq.gz_trimming_report.txt"
+        output_command += "touch ${prefix}.fastq.gz_trimming_report.txt ;"
+        output_command += "touch ${prefix}.fastq.gz_trimming_report.json"
     }
     else {
         output_command = "echo '' | gzip > ${prefix}_1_trimmed.fq.gz ;"
         output_command += "touch ${prefix}_1.fastq.gz_trimming_report.txt ;"
+        output_command += "touch ${prefix}_1.fastq.gz_trimming_report.json ;"
         output_command += "echo '' | gzip > ${prefix}_2_trimmed.fq.gz ;"
-        output_command += "touch ${prefix}_2.fastq.gz_trimming_report.txt"
+        output_command += "touch ${prefix}_2.fastq.gz_trimming_report.txt ;"
+        output_command += "touch ${prefix}_2.fastq.gz_trimming_report.json"
     }
     """
     ${output_command}
