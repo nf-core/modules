@@ -9,7 +9,6 @@ nextflow_process {
     tag "metaproviz"
     tag "metaproviz/internalstandard"
 
-    // file path to tests needs to be changed when test data is up
     test("internal standard - cellular se rds") {
 
         when {
@@ -17,7 +16,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file("\${projectDir}/input/cellline/intracell/SE.RData", checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
                     [], [], []
                 ]
                 """
@@ -28,9 +27,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert process.out.versions_internalstandard != null },
+                { assert process.out.high_var != null },
                 { assert snapshot(
                     process.out.cv_table,
-                    process.out.high_var,
                     process.out.versions_internalstandard
                   ).match() }
             )
@@ -45,9 +44,9 @@ nextflow_process {
                 input[0] = [
                     [ id:'test' ],
                     [],
-                    file("\${projectDir}/input/cellline/intracell/csv/data_matrix.csv", checkIfExists: true),
-                    file("\${projectDir}/input/cellline/intracell/csv/feature_matrix.csv", checkIfExists: true),
-                    file("\${projectDir}/input/cellline/intracell/csv/sample_matrix.csv", checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/csv/data_matrix.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/csv/feature_matrix.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/csv/sample_matrix.csv', checkIfExists: true)
                 ]
                 """
             }
@@ -57,9 +56,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert process.out.versions_internalstandard != null },
+                { assert process.out.high_var != null },
                 { assert snapshot(
                     process.out.cv_table,
-                    process.out.high_var,
                     process.out.versions_internalstandard
                   ).match() }
             )
@@ -73,7 +72,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file("\${projectDir}/input/patient/tissue/SE.RData", checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/patient/tissue/SE.RData', checkIfExists: true),
                     [], [], []
                 ]
                 """
@@ -103,7 +102,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file("\${projectDir}/input/cellline/intracell/SE.RData", checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
                     [], [], []
                 ]
                 """
