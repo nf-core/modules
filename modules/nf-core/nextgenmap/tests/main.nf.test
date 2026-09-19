@@ -15,13 +15,12 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:true ], // meta map
-				    [
-				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
-				    ]
+                    [ id:'test', single_end:true ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    ]
                 ]
-				input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 """
             }
         }
@@ -30,10 +29,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-					bam(process.out.bam[0][1]).getReadsMD5(),
-					process.out.versions
-					).match()
-				}
+                    sanitizeOutput(process.out, readsMD5Keys:["bam"])
+                    ).match()
+                }
             )
         }
     }
@@ -44,14 +42,13 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:false ], // meta map
-				    [
-				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
-				    ]
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
                 ]
-				input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 """
             }
         }
@@ -60,10 +57,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-					bam(process.out.bam[0][1]).getReadsMD5(),
-					process.out.versions
-					).match()
-				}
+                    sanitizeOutput(process.out, readsMD5Keys:["bam"])).match()
+                }
             )
         }
     }
@@ -75,13 +70,13 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:false ], // meta map
-				    [
-				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-				        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
-				    ]
+                    [ id:'test', single_end:false ], // meta map
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
                 ]
-				input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
 
                 """
             }

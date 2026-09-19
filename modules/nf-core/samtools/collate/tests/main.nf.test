@@ -25,9 +25,10 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(process.out).match()
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
         }
-
     }
 
     test("homo_sapiens - cram + fasta") {
@@ -50,13 +51,16 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(process.out).match()
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
         }
-
     }
 
-    test("sarscov2 - bam -- stub") {
+    test("sarscov2 - bam - stub") {
+
         options "-stub"
+
         when {
             process {
                 """
@@ -71,9 +75,9 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(process.out).match()
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
         }
-
     }
-
 }

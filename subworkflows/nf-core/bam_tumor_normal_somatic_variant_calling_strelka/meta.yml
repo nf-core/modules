@@ -34,10 +34,6 @@ input:
         Intervals to be used for variant calling.
         Structure: [ interval.bed.gz, interval.bed.gz.tbi, num_intervals ] or [ [], [], 0 ] if no intervals
 output:
-  - versions:
-      type: file
-      description: File containing software versions
-      pattern: "versions.yml"
   - vcf:
       type: file
       description: |

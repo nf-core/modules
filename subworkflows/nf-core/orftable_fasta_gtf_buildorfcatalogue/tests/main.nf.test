@@ -12,6 +12,8 @@ nextflow_workflow {
     tag "custom/orfmerge"
     tag "bedtools/getfasta"
     tag "seqkit/translate"
+    tag "mmseqs/easycluster"
+    tag "custom/orfcollapse"
     tag "gunzip"
 
     setup {
@@ -36,12 +38,12 @@ nextflow_workflow {
                 input[0] = channel.of(
                     [
                         [id: 'sample1'],
-                        file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.pred.txt', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.pred.txt', checkIfExists: true),
                         'ribotish'
                     ],
                     [
                         [id: 'sample1'],
-                        file('https://raw.githubusercontent.com/pinin4fjords/test-datasets/add-orf-prediction-fixtures/data/genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribocode.txt', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribocode.txt', checkIfExists: true),
                         'ribocode'
                     ]
                 )
@@ -50,6 +52,42 @@ nextflow_workflow {
                     [id: 'reference'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf', checkIfExists: true)
                 ])
+                input[3] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens [chr20] - ribotish + ribocode - collapse disabled") {
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of(
+                    [
+                        [id: 'sample1'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.pred.txt', checkIfExists: true),
+                        'ribotish'
+                    ],
+                    [
+                        [id: 'sample1'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribocode.txt', checkIfExists: true),
+                        'ribocode'
+                    ]
+                )
+                input[1] = GUNZIP.out.gunzip
+                input[2] = channel.of([
+                    [id: 'reference'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf', checkIfExists: true)
+                ])
+                input[3] = false
                 """
             }
         }

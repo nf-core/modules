@@ -18,7 +18,7 @@ process STRELKA_GERMLINE {
     tuple val(meta), path("*variants.vcf.gz.tbi"), emit: vcf_tbi
     tuple val(meta), path("*genome.vcf.gz"),       emit: genome_vcf
     tuple val(meta), path("*genome.vcf.gz.tbi"),   emit: genome_vcf_tbi
-    path "versions.yml",                           emit: versions
+    tuple val("${task.process}"), val('strelka'), eval("configureStrelkaGermlineWorkflow.py --version"), emit: versions_strelka, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -42,11 +42,6 @@ process STRELKA_GERMLINE {
     mv strelka/results/variants/genome.*.vcf.gz.tbi ${prefix}.genome.vcf.gz.tbi
     mv strelka/results/variants/variants.vcf.gz     ${prefix}.variants.vcf.gz
     mv strelka/results/variants/variants.vcf.gz.tbi ${prefix}.variants.vcf.gz.tbi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        strelka: \$( configureStrelkaGermlineWorkflow.py --version )
-    END_VERSIONS
     """
 
     stub:
@@ -56,10 +51,5 @@ process STRELKA_GERMLINE {
     touch ${prefix}.genome.vcf.gz.tbi
     echo "" | gzip > ${prefix}.variants.vcf.gz
     touch ${prefix}.variants.vcf.gz.tbi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        strelka: \$( configureStrelkaSomaticWorkflow.py --version )
-    END_VERSIONS
     """
 }

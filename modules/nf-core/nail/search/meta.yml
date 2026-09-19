@@ -1,7 +1,5 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "nail_search"
-description: nail search is a fast and scalable tool for searching protein sequences
-  against protein databases
+description: nail search is a fast and scalable tool for searching protein sequences against protein databases
 keywords:
   - alignment
   - HMM
@@ -9,13 +7,13 @@ keywords:
   - protein
 tools:
   - "nail":
-      description: "Profile Hidden Markov Model (pHMM) biological sequence alignment
-        tool"
+      description: "Profile Hidden Markov Model (pHMM) biological sequence alignment tool"
       homepage: "https://github.com/TravisWheelerLab/nail"
       documentation: "https://github.com/TravisWheelerLab/nail"
       tool_dev_url: "https://github.com/TravisWheelerLab/nail"
       doi: "10.1101/2024.01.27.577580"
-      licence: ["BSD-3-clause"]
+      licence:
+        - "BSD-3-clause"
       identifier: biotools:nail
 input:
   - - meta:
@@ -81,13 +79,29 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "*.ali"
+  versions_nail:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - nail:
+          type: string
+          description: The name of the tool
+      - nail --version 2>&1 | sed 's/^.*nail //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - nail:
+          type: string
+          description: The name of the tool
+      - nail --version 2>&1 | sed 's/^.*nail //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@vagkaratzas"
 maintainers:

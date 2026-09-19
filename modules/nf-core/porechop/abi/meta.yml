@@ -1,19 +1,18 @@
 name: "porechop_abi"
-description: Extension of Porechop whose purpose is to process adapter sequences in
-  ONT reads.
+description: Extension of Porechop whose purpose is to process adapter sequences in ONT reads.
 keywords:
   - porechop_abi
   - adapter
   - nanopore
 tools:
   - "porechop_abi":
-      description: Extension of Porechop whose purpose is to process adapter sequences
-        in ONT reads.
+      description: Extension of Porechop whose purpose is to process adapter sequences in ONT reads.
       homepage: "https://github.com/bonsai-team/Porechop_ABI"
       documentation: "https://github.com/bonsai-team/Porechop_ABI"
       tool_dev_url: "https://github.com/bonsai-team/Porechop_ABI"
       doi: "10.1101/2022.07.07.499093"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -56,13 +55,29 @@ output:
           description: Log file containing stdout information
           pattern: "*.log"
           ontologies: []
+  versions_porechop_abi:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - porechop_abi:
+          type: string
+          description: The name of the tool
+      - porechop_abi --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - porechop_abi:
+          type: string
+          description: The name of the tool
+      - porechop_abi --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@sofstam"
   - "LilyAnderssonLee"

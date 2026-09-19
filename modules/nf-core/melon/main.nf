@@ -13,10 +13,11 @@ process MELON {
     path(k2_db)
 
     output:
-    tuple val(meta), path("${prefix}/*.tsv")    , emit: tsv_output
-    tuple val(meta), path("${prefix}/*.json")   , emit: json_output
-    tuple val(meta), path("${prefix}.log")      , emit: log
-    path "versions.yml"                         , emit: versions
+    tuple val(meta), path("${prefix}/*.tsv") , emit: tsv_output
+    tuple val(meta), path("${prefix}/*.json"), emit: json_output
+    tuple val(meta), path("${prefix}.log")   , emit: log
+    tuple val("${task.process}"), val("melon"), eval("melon -v"), emit: versions_melon, topic: versions
+    tuple val("${task.process}"), val("diamond"), eval("diamond version | sed 's/.* version //'"), emit: versions_diamond, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,21 +25,16 @@ process MELON {
     script:
     def args = task.ext.args ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
-    def k2_db_arg = k2_db ? "--db-kraken $k2_db" : ''
+    def k2_db_arg = k2_db ? "--db-kraken ${k2_db}" : ''
     """
     melon \\
-        $reads \\
-        --db $database \\
+        ${reads} \\
+        --db ${database} \\
         --output ${prefix} \\
-        --threads $task.cpus \\
-        $k2_db_arg \\
-        $args \\
+        --threads ${task.cpus} \\
+        ${k2_db_arg} \\
+        ${args} \\
         2>| >(tee ${prefix}.log >&2)
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        melon: \$(melon -v)
-    END_VERSIONS
     """
 
     stub:
@@ -48,10 +44,5 @@ process MELON {
     touch ${prefix}/${prefix}.tsv
     touch ${prefix}/${prefix}.json
     touch ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        melon: \$(melon -v)
-    END_VERSIONS
     """
 }

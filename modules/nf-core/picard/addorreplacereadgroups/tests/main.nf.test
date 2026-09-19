@@ -16,7 +16,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [:], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true) ]
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true) ]
                 input[1] = [ [:], [], [] ]
                 """
             }
@@ -26,7 +26,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.bam[0][1]).name,
+                    process.out.bam.collect{meta, bam_ ->  file(bam_).name + ':readsMD5,' + bam(bam_).getReadsMD5()},
                     file(process.out.bai[0][1]).name,
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()}
@@ -40,21 +40,18 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test' ], // meta map
-                    [
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),                    ]
-                ]
+                input[0] = [ [ id:'test' ],[file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true)] ]
                 input[1] = [ [:], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true) ]
                 """
             }
         }
 
         then {
+            def fasta = 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/genome/genome.fasta'
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.cram[0][1]).name,
+                    process.out.cram.collect{meta, cram_ ->  file(cram_).name + ':readsMD5,' + cram(cram_, fasta).getReadsMD5()},
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()}
             )
@@ -67,7 +64,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ [:], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true) ]
+                input[0] = [ [id:'test'], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true) ]
                 input[1] = [ [:], [], [] ]
                 """
             }

@@ -1,0 +1,115 @@
+name: "gridss_assemble"
+description: Assemble breakend contigs for GRIDSS structural variant calling
+keywords:
+  - bam
+  - assembly
+  - structural variants
+  - gridss
+  - breakend
+  - variant calling
+tools:
+  - gridss:
+      description: "GRIDSS: the Genomic Rearrangement IDentification Software Suite"
+      homepage: "https://github.com/PapenfussLab/gridss"
+      documentation: "https://github.com/PapenfussLab/gridss/wiki/GRIDSS-Documentation"
+      tool_dev_url: "https://github.com/PapenfussLab/gridss"
+      doi: "10.1186/s13059-021-02423-x"
+      licence:
+        - "GPL v3"
+      identifier: biotools:gridss
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Input BAM file(s)
+        pattern: "*.bam"
+        ontologies:
+          - edam: http://edamontology.org/format_2572
+    - bai:
+        type: file
+        description: BAM index file(s)
+        pattern: "*.bam.bai"
+        ontologies: []
+    - preprocess_dir:
+        type: directory
+        description: GRIDSS preprocessing working directories from the
+          GRIDSS_PREPROCESS step
+        pattern: "*.gridss.working/"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference genome information
+          e.g. `[ id:'genome' ]`
+    - fasta:
+        type: file
+        description: Reference genome FASTA file
+        pattern: "*.{fasta,fa,fna}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929
+    - fasta_fai:
+        type: file
+        description: Reference genome FASTA index file
+        pattern: "*.fai"
+        ontologies: []
+    - bwa_index:
+        type: directory
+        description: Directory containing the GRIDSS/BWA index files for the
+          reference genome
+        pattern: "*"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing GRIDSS configuration information
+          e.g. `[ id:'gridss_config' ]`
+    - gridss_config:
+        type: file
+        description: Optional GRIDSS configuration file
+        pattern: "*.{properties,config}"
+        ontologies: []
+output:
+  assemble_dir:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.gridss.working":
+          type: directory
+          description: GRIDSS assembly working directory containing assembled
+            breakend contigs
+          pattern: "*.gridss.working"
+      - "*.sv.assembly.bam":
+          type: file
+          description: BAM file containing the assembled breakend contigs
+          pattern: "*.sv.assembly.bam"
+          ontologies:
+            - edam: http://edamontology.org/format_2572
+  versions_gridss:
+    - - ${task.process}:
+          type: string
+          description: The process
+      - gridss:
+          type: string
+          description: The tool name
+      - CallVariants --version 2>&1 | sed 's/-gridss//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process
+      - gridss:
+          type: string
+          description: The tool name
+      - CallVariants --version 2>&1 | sed 's/-gridss//':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@imsarath"
+maintainers:
+  - "@imsarath"

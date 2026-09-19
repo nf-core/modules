@@ -1,0 +1,70 @@
+// nf-core modules test deepmased/features
+nextflow_process {
+
+    name "Test Process DEEPMASED_FEATURES"
+    script "../main.nf"
+    process "DEEPMASED_FEATURES"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "deepmased"
+    tag "deepmased/features"
+    tag "deepmased_features"
+
+    test("sarscov2 [fasta] - paired-end sorted bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out)
+                ).match() },
+                { assert path(process.out.feature_table[0][1]).exists() },
+                { assert path(process.out.feature_table[0][1]).readLines().size() > 1 }
+            )
+        }
+
+    }
+
+    test("sarscov2 [fasta] - paired-end sorted bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out)
+                ).match() }
+            )
+        }
+
+    }
+
+}

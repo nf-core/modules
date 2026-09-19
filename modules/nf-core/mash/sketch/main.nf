@@ -1,9 +1,10 @@
 process MASH_SKETCH {
     tag "$meta.id"
     label 'process_medium'
+
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mash:2.3--he348c14_1' :
+        'https://depot.galaxyproject.org/singularity/mash:2.3--he348c14_1':
         'quay.io/biocontainers/mash:2.3--he348c14_1' }"
 
     input:
@@ -12,7 +13,7 @@ process MASH_SKETCH {
     output:
     tuple val(meta), path("*.msh")        , emit: mash
     tuple val(meta), path("*.mash_stats") , emit: stats
-    path "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val("mash"), eval("mash --version 2>&1"), emit: versions_mash, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,16 +24,11 @@ process MASH_SKETCH {
     """
     mash \\
         sketch \\
-        $args \\
-        $reads \\
-        -p $task.cpus \\
+        ${args} \\
+        ${reads} \\
+        -p ${task.cpus} \\
         -o ${prefix} \\
         2>| >(tee ${prefix}.mash_stats >&2)
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mash: \$(mash --version 2>&1)
-    END_VERSIONS
     """
 
     stub:
@@ -40,10 +36,5 @@ process MASH_SKETCH {
     """
     touch ${prefix}.msh
     touch ${prefix}.mash_stats
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mash: \$(mash --version 2>&1)
-    END_VERSIONS
     """
 }

@@ -1,0 +1,60 @@
+nextflow_process {
+
+    name "Test Process FGUMI_CODEC"
+    script "../main.nf"
+    process "FGUMI_CODEC"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fgumi"
+    tag "fgumi/codec"
+
+    test("homo_sapiens - grouped bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.umi_grouped.bam', checkIfExists: true)
+                ]
+                input[1] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam"])).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - grouped bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/umi/test.paired_end.umi_grouped.bam', checkIfExists: true)
+                ]
+                input[1] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

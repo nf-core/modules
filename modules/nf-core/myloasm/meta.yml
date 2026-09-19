@@ -25,8 +25,7 @@ input:
           e.g. `[ id:'test' ]`
     - reads:
         type: file
-        description: Input long reads in FASTQ or FASTA format (FASTQ preferred for
-          base quality information)
+        description: Input long reads in FASTQ or FASTA format (FASTQ preferred for base quality information)
         pattern: "*.{fastq,fq,fastq.gz,fq.gz,fasta,fa,fasta.gz,fa.gz}"
         ontologies:
           - edam: http://edamontology.org/format_1930 # FASTQ
@@ -48,48 +47,52 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
-      - ${prefix}/assembly_primary.fa:
+      - ${prefix}/assembly_primary.fa.gz:
           type: file
           description: Primary assembly contigs in FASTA format
-          pattern: "assembly_primary.fa"
+          pattern: "assembly_primary.fa.gz"
           ontologies:
             - edam: http://edamontology.org/format_1929 # FASTA
+            - edam: http://edamontology.org/format_3989 # GZIP
   gfa:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
-      - ${prefix}/final_contig_graph.gfa:
+      - ${prefix}/final_contig_graph.gfa.gz:
           type: file
           description: Final contig graph in GFA format
-          pattern: "final_contig_graph.gfa"
+          pattern: "final_contig_graph.gfa.gz"
           ontologies:
             - edam: http://edamontology.org/format_3975 # GFA 1
+            - edam: http://edamontology.org/format_3989 # GZIP
   contigs_alt:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
-      - ${prefix}/alternate_assemblies/assembly_alternate.fa:
+      - ${prefix}/alternate_assemblies/assembly_alternate.fa.gz:
           type: file
           description: Alternative assembly contigs in FASTA format
-          pattern: "assembly_alternate.fa"
+          pattern: "assembly_alternate.fa.gz"
           ontologies:
             - edam: http://edamontology.org/format_1929 # FASTA
+            - edam: http://edamontology.org/format_3989 # GZIP
   contigs_dup:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
-      - ${prefix}/alternate_assemblies/duplicated_contigs.fa:
+      - ${prefix}/alternate_assemblies/duplicated_contigs.fa.gz:
           type: file
           description: Duplicated contigs in FASTA format
-          pattern: "duplicated_contigs.fa"
+          pattern: "duplicated_contigs.fa.gz"
           ontologies:
             - edam: http://edamontology.org/format_1929 # FASTA
+            - edam: http://edamontology.org/format_3989 # GZIP
   mapping:
     - - meta:
           type: map
@@ -139,3 +142,17 @@ authors:
   - "@vagkaratzas"
 maintainers:
   - "@vagkaratzas"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/myloasm_findutils_gzip:154a360acd2dca07
+      build_id: bd-154a360acd2dca07_1
+      scan_id: sc-8ad31c3881a69148_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/myloasm_findutils_gzip:7b85c14dfcd70722
+      build_id: bd-7b85c14dfcd70722_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/67/67f705c8fa26ae809d73e5ee2c872c3087fe8abaad12e133bdba8ba4f8cdc553/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/myloasm/.conda-lock/linux_amd64-bd-154a360acd2dca07_1.txt

@@ -96,9 +96,10 @@ output:
       - leafcutter:
           type: string
           description: The name of the tool
-      - echo 'leafcutter 2.0.3':
-          type: eval
-          description: The expression to obtain the version of the tool
+      - 2.0.3:
+          type: string
+          description: The version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -107,9 +108,10 @@ topics:
       - leafcutter:
           type: string
           description: The name of the tool
-      - echo 'leafcutter 2.0.3':
-          type: eval
-          description: The expression to obtain the version of the tool
+      - 2.0.3:
+          type: string
+          description: The version of the tool
+
 authors:
   - "@JTL-lab"
 maintainers:

@@ -17,14 +17,13 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:false ], // meta map
+				    [ id:'test' ],
 				    [
 				        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true),
 				        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test2.gff', checkIfExists: true),
 				        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test3.gff', checkIfExists: true)
 				    ]
                 ]
-
                 """
             }
         }
@@ -32,12 +31,32 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.results }, // Very large directory with many unstable files
-                { assert snapshot(
-                    file(process.out.aln[0][1]).name, // unstable
-                    process.out.versions
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["results", "aln"])).match() }
+            )
+        }
+    }
+
+    test("test-panaroo-run -- stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+				    [ id:'test' ],
+				    [
+				        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true),
+				        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test2.gff', checkIfExists: true),
+				        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test3.gff', checkIfExists: true)
+				    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

@@ -13,7 +13,7 @@ process PBTK_PBMERGE {
     output:
     tuple val(meta), path("*.bam"), emit: bam
     tuple val(meta), path("*.pbi"), emit: pbi, optional: true
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('pbtk'), eval("pbmerge --version | head -n1 | sed 's/pbmerge //' | sed -E 's/ .+//'"), emit: versions_pbmerge, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,11 +27,6 @@ process PBTK_PBMERGE {
         -j ${task.cpus} \\
         ${args} \\
         ${bams}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pbbam: \$( pbmerge --version | head -n1 | sed 's/pbmerge //' | sed -E 's/ .+//' )
-    END_VERSIONS
     """
 
     stub:
@@ -39,10 +34,5 @@ process PBTK_PBMERGE {
     """
     touch ${prefix}.bam
     touch ${prefix}.bam.pbi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pbbam: \$( pbmerge --version | head -n1 | sed 's/pbmerge //' | sed -E 's/ .+//' )
-    END_VERSIONS
     """
 }

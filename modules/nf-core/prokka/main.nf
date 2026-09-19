@@ -3,9 +3,9 @@ process PROKKA {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3a/3af46b047c8fe84112adeaecf300878217c629b97f111f923ecf327656ddd141/data' :
-        'community.wave.seqera.io/library/prokka_openjdk:10546cadeef11472' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7b/7bc89d4083c0a4baaaca0ef9ac0ba65e0feaebd8d88fe1c16c47041cbc67f360/data'
+:         'community.wave.seqera.io/library/prokka_openjdk_parallel:f21b98bcef4c3579' }"
 
     input:
     tuple val(meta), path(fasta)

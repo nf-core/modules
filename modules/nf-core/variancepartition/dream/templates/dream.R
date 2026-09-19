@@ -340,8 +340,11 @@ fitmm <- eBayes(fitmm, proportion = opt\$proportion,
                 winsor.tail.p = winsor_tail_p_vals)
 
 results <- topTable(fitmm, coef = top_table_coef, number = Inf,
-                    adjust.method = opt\$adjust.method,
+                    sort.by = "none", adjust.method = opt\$adjust.method,
                     p.value = opt\$p.value, lfc = opt\$lfc, confint = opt\$confint)
+
+feature_order <- rownames(countMatrix)
+results <- results[feature_order[feature_order %in% rownames(results)], , drop = FALSE]
 
 results\$gene_id <- rownames(results)
 results <- results[, c("gene_id", setdiff(names(results), "gene_id"))]

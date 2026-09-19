@@ -155,8 +155,6 @@ workflow DIA_PROTEOMICS_ANALYSIS {
     ch_empirical_log_in      // Channel of path(assembly_log) to use for all inputs
 
     main:
-
-    ch_versions = channel.empty()
     (random_preanalysis, random_preanalysis_n, random_preanalysis_seed) = random_preanalysis ?: [false, null, null]
 
     //
@@ -262,7 +260,6 @@ workflow DIA_PROTEOMICS_ANALYSIS {
         }
 
     QUANTMSUTILS_DIANNCFG(ch_config_input)
-    ch_versions = ch_versions.mix(QUANTMSUTILS_DIANNCFG.out.versions)
 
     //
     // MODULE: In-silico library generation. Needs to run once for every unique config/ FASTA dataset combination.
@@ -420,7 +417,6 @@ workflow DIA_PROTEOMICS_ANALYSIS {
         .unique()
 
     QUANTMSUTILS_MZMLSTATISTICS(ch_mzml_stats_input)
-    ch_versions = ch_versions.mix(QUANTMSUTILS_MZMLSTATISTICS.out.versions)
 
     ch_statistics = QUANTMSUTILS_MZMLSTATISTICS.out.ms_statistics   // [meta_input, ms_statistics]
         .map{ tuple -> [tuple[0].experiment, tuple[1]] }             // [meta_exp_searchdb, ms_statistics]
@@ -450,10 +446,8 @@ workflow DIA_PROTEOMICS_ANALYSIS {
         }
 
     QUANTMSUTILS_DIANN2MZTAB(ch_diann2mztab_input)
-    ch_versions = ch_versions.mix(QUANTMSUTILS_DIANN2MZTAB.out.versions)
 
     emit:
-    versions                = ch_versions
     diann_report            = DIANN_FINALQUANTIFICATION.out.main_report
     diann_report_parquet    = DIANN_FINALQUANTIFICATION.out.report_parquet
     mzml_statistics         = QUANTMSUTILS_MZMLSTATISTICS.out.ms_statistics

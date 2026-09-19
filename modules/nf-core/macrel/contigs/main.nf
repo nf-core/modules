@@ -11,12 +11,13 @@ process MACREL_CONTIGS {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*/*.smorfs.faa.gz")      , emit: smorfs
-    tuple val(meta), path("*/*.all_orfs.faa.gz")    , emit: all_orfs
-    tuple val(meta), path("*/*.prediction.gz")      , emit: amp_prediction
-    tuple val(meta), path("*/*.md")                 , emit: readme_file
-    tuple val(meta), path("*/*_log.txt")            , emit: log_file
-    path "versions.yml"                             , emit: versions
+    tuple val(meta), path("*/*.smorfs.faa.gz")  , emit: smorfs
+    tuple val(meta), path("*/*.all_orfs.faa.gz"), emit: all_orfs
+    tuple val(meta), path("*/*.prediction.gz")  , emit: amp_prediction
+    tuple val(meta), path("*/*.md")             , emit: readme_file
+    tuple val(meta), path("*/*_log.txt")        , emit: log_file
+    tuple val("${task.process}"), val("macrel"), eval("macrel --version | sed 's/macrel //'"), emit: versions_macrel, topic: versions
+    tuple val("${task.process}"), val("pyrodigal"), eval("pyrodigal --version | sed 's/pyrodigal v//'"), emit: versions_pyrodigal, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,19 +27,14 @@ process MACREL_CONTIGS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     macrel contigs \\
-        $args \\
-        --fasta $fasta \\
+        ${args} \\
+        --fasta ${fasta} \\
         --output ${prefix}/ \\
         --tag ${prefix} \\
         --log-file ${prefix}/${prefix}_log.txt \\
-        --threads $task.cpus
+        --threads ${task.cpus}
 
     gzip --no-name ${prefix}/*.faa
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        macrel: \$(echo \$(macrel --version | sed 's/macrel //g'))
-    END_VERSIONS
     """
 
     stub:
@@ -47,15 +43,9 @@ process MACREL_CONTIGS {
     mkdir ${prefix}
 
     touch ${prefix}/${prefix}_log.txt
-    echo | gzip > ${prefix}/${prefix}.smorfs.faa.gz
-    echo | gzip > ${prefix}/${prefix}.all_orfs.faa.gz
-    echo | gzip > ${prefix}/${prefix}.prediction.gz
+    echo "" | gzip > ${prefix}/${prefix}.smorfs.faa.gz
+    echo "" | gzip > ${prefix}/${prefix}.all_orfs.faa.gz
+    echo "" | gzip > ${prefix}/${prefix}.prediction.gz
     touch ${prefix}/${prefix}.md
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        macrel: \$(echo \$(macrel --version | sed 's/macrel //g'))
-    END_VERSIONS
     """
 }

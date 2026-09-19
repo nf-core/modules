@@ -13,7 +13,8 @@ tools:
       documentation: "https://software-ab.cs.uni-tuebingen.de/download/megan6/welcome.html"
       tool_dev_url: "https://github.com/husonlab/megan-ce"
       doi: "10.1371/journal.pcbi.1004957"
-      licence: ["GPL >=3"]
+      licence:
+        - "GPL >=3"
       identifier: biotools:megan
 input:
   - - meta:
@@ -53,13 +54,29 @@ output:
           description: Optionally generated MEGAN summary file
           pattern: "*.megan"
           ontologies: []
+  versions_megan:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - megan:
+          type: string
+          description: The name of the tool
+      - daa2info 2>&1 | sed -n 's/.*version \([^,]*\).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - megan:
+          type: string
+          description: The name of the tool
+      - daa2info 2>&1 | sed -n 's/.*version \([^,]*\).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@jfy133"
 maintainers:
