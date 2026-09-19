@@ -29,12 +29,12 @@ process TOBIAS_BINDETECT {
     export MPLCONFIGDIR="\${PWD}/.matplotlib"
 
     TOBIAS BINDetect \\
-        --signals $signals \\
-        --motifs $motifs \\
-        --genome $fasta \\
-        --peaks $peaks \\
+        --signals ${signals} \\
+        --motifs ${motifs} \\
+        --genome ${fasta} \\
+        --peaks ${peaks} \\
         --outdir bindetect \\
-        --prefix $prefix \\
+        --prefix ${prefix} \\
         --cores ${task.cpus} \\
         $args
     """

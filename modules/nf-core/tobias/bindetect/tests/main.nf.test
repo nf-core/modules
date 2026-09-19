@@ -84,8 +84,6 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert process.out.outdir },
-                { assert process.out.results },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
