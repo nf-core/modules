@@ -1,8 +1,8 @@
 {
-    "homo_sapiens - vcf - everything": {
+    "homo_sapiens - vcf - no index - everything": {
         "content": [
-            "test.vcf.gz,variantsMD5:fdddbf25b9409b38eb6d07554bc927aa",
-            "test.vcf.gz.tbi",
+            "test_vepyr.vcf.gz,variantsMD5:fdddbf25b9409b38eb6d07554bc927aa",
+            "test_vepyr.vcf.gz.tbi",
             {
                 "versions_tabix": [
                     [
@@ -20,7 +20,34 @@
                 ]
             }
         ],
-        "timestamp": "2026-09-20T06:34:23.435618",
+        "timestamp": "2026-09-20T12:46:35.701285",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "homo_sapiens - vcf - everything": {
+        "content": [
+            "test_vepyr.vcf.gz,variantsMD5:fdddbf25b9409b38eb6d07554bc927aa",
+            "test_vepyr.vcf.gz.tbi",
+            {
+                "versions_tabix": [
+                    [
+                        "VEPYR_ANNOTATE",
+                        "tabix",
+                        "1.24"
+                    ]
+                ],
+                "versions_vepyr": [
+                    [
+                        "VEPYR_ANNOTATE",
+                        "vepyr",
+                        "0.7.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-09-20T12:46:30.11734",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
@@ -34,7 +61,7 @@
                         {
                             "id": "test"
                         },
-                        "test.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "test_vepyr.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "1": [
@@ -42,7 +69,7 @@
                         {
                             "id": "test"
                         },
-                        "test.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test_vepyr.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "2": [
@@ -64,7 +91,7 @@
                         {
                             "id": "test"
                         },
-                        "test.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test_vepyr.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "vcf": [
@@ -72,7 +99,7 @@
                         {
                             "id": "test"
                         },
-                        "test.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "test_vepyr.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "versions_tabix": [
@@ -91,7 +118,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-09-20T06:34:27.038215",
+        "timestamp": "2026-09-20T12:46:39.138716",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"

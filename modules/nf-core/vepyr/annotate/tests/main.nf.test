@@ -63,6 +63,42 @@ nextflow_process {
         }
     }
 
+    test("homo_sapiens - vcf - no index - everything") {
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/input.vcf.gz', checkIfExists: true),
+                    []
+                ])
+                input[1] = UNTAR.out.untar.collect()
+                input[2] = channel.value([
+                    [ id:'GRCh38' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/reference.fa.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/reference.fa.gz.fai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/reference.fa.gz.gzi', checkIfExists: true)
+                ])
+                input[3] = 116
+                input[4] = [[], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.vcf[0][1]).name + ",variantsMD5:" + path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    file(process.out.tbi[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+
     test("homo_sapiens - vcf - stub") {
         options "-stub"
 

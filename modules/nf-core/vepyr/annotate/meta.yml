@@ -1,5 +1,5 @@
 name: vepyr_annotate
-description: Annotate a VCF with Ensembl VEP consequences using vepyr, a Rust reimplementation of the Variant Effect Predictor. Annotation features are controlled through `task.ext.args`, except for `--fork`, which the module derives from `task.cpus` and drops to 1 when the input VCF has no index.
+description: Annotate a VCF with Ensembl VEP consequences using vepyr, a Rust reimplementation of the Variant Effect Predictor. Annotation features are controlled through `task.ext.args`, except for `--fork`, which the module derives from `task.cpus`. When the input VCF has no index the module builds one with tabix, and runs a single pipeline if the input is not bgzip-compressed.
 keywords:
   - annotation
   - vcf
@@ -40,9 +40,9 @@ input:
     - tbi:
         type: file
         description: |
-          tabix/CSI index of the input VCF (optional). Required to use more
-          than one annotation pipeline; without it the process falls back to
-          a single pipeline.
+          tabix/CSI index of the input VCF (optional). More than one
+          annotation pipeline needs it: when absent it is built with tabix,
+          and an input that is not bgzip-compressed runs a single pipeline.
         pattern: "*.{tbi,csi}"
         ontologies: []
   - - meta2:
