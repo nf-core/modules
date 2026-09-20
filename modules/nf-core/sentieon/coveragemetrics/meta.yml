@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "sentieon_coveragemetrics"
 description: Accelerated implementation of the GATK DepthOfCoverage tool.
 keywords:
@@ -12,9 +11,9 @@ tools:
         Our software improves upon BWA, STAR, Minimap2, GATK, HaplotypeCaller, Mutect, and Mutect2 based pipelines and is deployable on any generic-CPU-based computing system.
       homepage: https://www.sentieon.com/
       documentation: https://www.sentieon.com/
-      licence: ["Commercial (requires license for use; redistribution allowed)"]
+      licence:
+        - "Commercial (requires license for use; redistribution allowed)"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -91,7 +90,8 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - ${prefix}.${partitions_output}_summary:
           type: file
-          description: The summary for PARTITION_GROUP sample, aggregated over all bases.
+          description: The summary for PARTITION_GROUP sample, aggregated over all
+            bases.
           pattern: "${sample_id}.sample_summary"
           ontologies: []
   statistics:
@@ -102,7 +102,8 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - ${prefix}.${partitions_output}_interval_statistics:
           type: file
-          description: The statistics for PARTITION_GROUP library, aggregated by interval.
+          description: The statistics for PARTITION_GROUP library, aggregated by
+            interval.
           pattern: "${sample_id}_interval_statistics"
           ontologies: []
   coverage_counts:
@@ -124,8 +125,8 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - ${prefix}.${partitions_output}_cumulative_coverage_proportions:
           type: file
-          description: Contains the normalized histogram of loci with depth larger than
-            x.
+          description: Contains the normalized histogram of loci with depth larger
+            than x.
           pattern: "${sample_id}_cumulative_coverage_proportions"
           ontologies: []
   interval_summary:
@@ -136,7 +137,8 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - ${prefix}.${partitions_output}_interval_summary:
           type: file
-          description: The summary for PARTITION_GROUP library, aggregated by interval.
+          description: The summary for PARTITION_GROUP library, aggregated by
+            interval.
           pattern: "${sample_id}_interval_summary"
           ontologies: []
   versions_sentieon:
@@ -147,7 +149,7 @@ output:
           type: string
           description: The tool name
       - 'sentieon driver --version | sed "s/.*-//g"':
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 topics:
   versions:
@@ -158,7 +160,7 @@ topics:
           type: string
           description: The tool name
       - 'sentieon driver --version | sed "s/.*-//g"':
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 authors:
   - "@adamrtalbot"

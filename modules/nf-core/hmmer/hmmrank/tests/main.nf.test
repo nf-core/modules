@@ -482,6 +482,55 @@ seq1                               -   200 model_A               PF00001   200  
         }
     }
 
+    // `$(touch pwned)` surviving verbatim in the output filename proves it wasn't executed --
+    // a real expansion would vanish (touch has no stdout).
+    test("hmmrank - meta.id containing shell metacharacters doesn't get executed") {
+        when {
+            process {
+                """
+                input[0] = PARQUET_TBLOUT.out.parquet
+                    .filter { meta, parquet -> meta.id == 'nrdj' }
+                    .map { meta, parquet -> [ [ id: 'test\$(touch pwned)`echo also_pwned`' ], parquet, [] ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.hmmrank[0][1].toString().tokenize('/').last() == 'test\$(touch pwned)`echo also_pwned`.hmmrank.tsv.gz' },
+                { assert path(process.out.hmmrank[0][1]).linesGzip.size() > 1 },
+                { assert !new File(process.out.hmmrank[0][1].toString()).parentFile.toPath().resolve('pwned').toFile().exists() }
+            )
+        }
+    }
+
+    // A newline followed by the heredoc's own delimiter must not let a trailing shell command
+    // escape it -- the delimiter is randomized per task specifically to block this. The payload
+    // rides in ext.prefix (see tests/nextflow.config), not meta.id itself: a literal newline in
+    // meta.id would also hit an unrelated Nextflow issue in how it embeds the process `tag` into
+    // .command.run's own header comment, unrelated to this module's own defense.
+    test("hmmrank - ext.prefix containing a newline and the heredoc delimiter") {
+        when {
+            process {
+                """
+                input[0] = PARQUET_TBLOUT.out.parquet
+                    .filter { meta, parquet -> meta.id == 'nrdj' }
+                    .map { meta, parquet -> [ [ id: 'heredoc-forge' ], parquet, [] ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.hmmrank[0][1].toString().tokenize('/').last() == '''safe\nSQL\ntouch pwned.hmmrank.tsv.gz''' },
+                { assert path(process.out.hmmrank[0][1]).linesGzip.size() > 1 },
+                { assert !new File(process.out.hmmrank[0][1].toString()).parentFile.toPath().resolve('pwned').toFile().exists() }
+            )
+        }
+    }
+
     test("hmmrank - 16S -- stub") {
         options "-stub"
 
