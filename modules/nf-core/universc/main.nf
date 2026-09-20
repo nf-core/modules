@@ -2,7 +2,9 @@ process UNIVERSC {
     tag "$meta.id"
     label 'process_medium'
 
-    container "quay.io/nf-core/universc:1.2.5.1"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'quay.io/nf-core/universc:1.2.5.1-sif' :
+        'quay.io/nf-core/universc:1.2.5.1' }"
 
     input:
     tuple val(meta), path(reads)
