@@ -12,7 +12,7 @@ process VEPYR_ANNOTATE {
     // an upstream module using the same meta.id) never collides with -o.
     tuple val(meta), path(vcf, stageAs: 'input/*'), path(tbi, stageAs: 'input/*')
     tuple val(meta2), path(cache)
-    tuple val(meta3), path(fasta), path(fai)
+    tuple val(meta3), path(fasta), path(fai), path(gzi)
     val cache_version
     tuple val(meta4), path(plugin_cache)
 
@@ -29,9 +29,10 @@ process VEPYR_ANNOTATE {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    // vepyr opens the reference through its .fai and does not build one, so the
-    // index must be staged alongside the FASTA or --everything/--hgvsc fail. A
-    // bgzip FASTA also needs its .gzi: pass [ fai, gzi ] in the fai slot.
+    // vepyr opens the reference through its .fai, and a bgzip FASTA through its
+    // .gzi as well, and builds neither. fai and gzi are never named on the
+    // command line: they are inputs so that they are staged alongside the FASTA,
+    // without which --everything/--hgvsc fail.
     def reference = fasta ? "--fasta ${fasta}" : ''
     def version_arg = cache_version ? "--cache_version ${cache_version}" : ''
     def plugin_arg = plugin_cache ? "--plugin_cache_root ${plugin_cache}" : ''
