@@ -11,11 +11,13 @@ process DEEPVARIANT_MAKEEXAMPLES {
     tuple val(meta3), path(fai)
     tuple val(meta4), path(gzi)
     tuple val(meta5), path(par_bed)
+    val(with_phasing)
 
     output:
     tuple val(meta), path("${prefix}.examples.tfrecord-*-of-*.gz{,.example_info.json}")                , emit: examples
     tuple val(meta), path("${prefix}.gvcf.tfrecord-*-of-*.gz")                                         , emit: gvcf
-    tuple val(meta), path("${prefix}_call_variant_outputs.examples.tfrecord-*-of-*.gz",  arity: "0..*"), emit: small_model_calls
+    tuple val(meta), path("${small_model_filename}",  arity: "0..*"), emit: small_model_calls
+    tuple val(meta), path("${prefix}-read-phasing_debug-*of-*.tsv", arity: "0..*"), emit: read_phase_inputs
     tuple val("${task.process}"), val('deepvariant'), eval("/opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //'"), topic: versions, emit: versions_deepvariant
 
     when:
@@ -28,8 +30,18 @@ process DEEPVARIANT_MAKEEXAMPLES {
     }
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    split_pref = prefix.split('\\.', 2)
+    small_model_filename = ( split_pref.size() > 1
+        ? "${split_pref[0]}_call_variant_outputs.${split_pref[1]}.examples.tfrecord-*-of-*.gz"
+        : "${split_pref[0]}_call_variant_outputs.examples.tfrecord-*-of-*.gz"
+    )
     def regions = intervals ? "--regions ${intervals}" : ""
     def par_regions = par_bed ? "--par_regions_bed=${par_bed}" : ""
+
+    def phasing_args = ( with_phasing
+        ? "--phase_reads --track_ref_reads --output_phase_info --output_local_read_phasing ./${prefix}-read-phasing_debug@${task.cpus}.tsv"
+        : ''
+    )
 
     """
     export MPLCONFIGDIR=\$PWD/.matplotlib
@@ -44,11 +56,17 @@ process DEEPVARIANT_MAKEEXAMPLES {
         ${regions} \\
         ${par_regions} \\
         ${args} \\
+        ${phasing_args} \\
         --task {}
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
+    split_pref = prefix.split('\\.', 2)
+    small_model_filename = ( split_pref.size() > 1
+        ? "${split_pref[0]}_call_variant_outputs.${split_pref[1]}.examples.tfrecord-*-of-*.gz"
+        : "${split_pref[0]}_call_variant_outputs.examples.tfrecord-*-of-*.gz"
+    )
     """
     printf -v SHARD_COUNT "%04d" ${task.cpus}
     for i in \$( seq -f "%04g" 0 ${task.cpus-1} )
@@ -56,6 +74,7 @@ process DEEPVARIANT_MAKEEXAMPLES {
         echo "" | gzip > ${prefix}.examples.tfrecord-\$i-of-\$SHARD_COUNT.tfrecord.gz
         touch ${prefix}.examples.tfrecord-\$i-of-\$SHARD_COUNT.tfrecord.gz.example_info.json
         echo "" | gzip > ${prefix}.gvcf.tfrecord-\$i-of-\$SHARD_COUNT.tfrecord.gz
+        touch ${prefix}-read-phasing_debug-\$i-of-\$SHARD_COUNT.tsv
     done
     """
 }

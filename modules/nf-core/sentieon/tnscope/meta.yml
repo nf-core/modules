@@ -1,6 +1,7 @@
 name: sentieon_tnscope
-description: TNscope algorithm performs somatic variant calling on the tumor-normal
-  matched pair or the tumor only data, using a Haplotyper algorithm.
+description: TNscope algorithm performs somatic variant calling on the
+  tumor-normal matched pair or the tumor only data, using a Haplotyper
+  algorithm.
 keywords:
   - tnscope
   - sentieon
@@ -31,9 +32,10 @@ input:
         ontologies: []
     - intervals:
         type: file
-        description: bed or interval_list file containing interval in the reference
-          that will be used in the analysis. Only recommended for large WGS data, else
-          the overhead may not be worth the additional parallelisation.
+        description: bed or interval_list file containing interval in the
+          reference that will be used in the analysis. Only recommended for large
+          WGS data, else the overhead may not be worth the additional
+          parallelisation.
         pattern: "*.{bed,interval_list}"
         ontologies: []
   - - meta2:
@@ -66,7 +68,7 @@ input:
         description: Single Nucleotide Polymorphism database (dbSNP) file
         pattern: "*.vcf.gz"
         ontologies:
-          - edam: http://edamontology.org/format_3989 # GZIP format
+          - edam: http://edamontology.org/format_3989
   - - meta5:
         type: map
         description: |
@@ -74,7 +76,8 @@ input:
           e.g. [ id:'test' ]
     - dbsnp_tbi:
         type: file
-        description: Index of the Single Nucleotide Polymorphism database (dbSNP) file
+        description: Index of the Single Nucleotide Polymorphism database (dbSNP)
+          file
         pattern: "*.vcf.gz.tbi"
         ontologies: []
   - - meta6:
@@ -87,7 +90,7 @@ input:
         description: Single Nucleotide Polymorphism database (dbSNP) file
         pattern: "*.vcf.gz"
         ontologies:
-          - edam: http://edamontology.org/format_3989 # GZIP format
+          - edam: http://edamontology.org/format_3989
   - - meta7:
         type: map
         description: |
@@ -95,7 +98,8 @@ input:
           e.g. [ id:'test' ]
     - pon_tbi:
         type: file
-        description: Index of the Single Nucleotide Polymorphism database (dbSNP) file
+        description: Index of the Single Nucleotide Polymorphism database (dbSNP)
+          file
         pattern: "*.vcf.gz.tbi"
         ontologies: []
   - - meta8:
@@ -108,7 +112,7 @@ input:
         description: Catalogue of Somatic Mutations in Cancer (COSMIC) VCF file.
         pattern: "*.vcf.gz"
         ontologies:
-          - edam: http://edamontology.org/format_3989 # GZIP format
+          - edam: http://edamontology.org/format_3989
   - - meta9:
         type: map
         description: |
@@ -116,8 +120,8 @@ input:
           e.g. [ id:'test' ]
     - cosmic_tbi:
         type: file
-        description: Index of the Catalogue of Somatic Mutations in Cancer (COSMIC)
-          VCF file.
+        description: Index of the Catalogue of Somatic Mutations in Cancer
+          (COSMIC) VCF file.
         pattern: "*.vcf.gz.tbi"
         ontologies: []
 output:
@@ -151,7 +155,7 @@ output:
           type: string
           description: The tool name
       - 'sentieon driver --version | sed "s/.*-//g"':
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 topics:
   versions:
@@ -162,7 +166,7 @@ topics:
           type: string
           description: The tool name
       - 'sentieon driver --version | sed "s/.*-//g"':
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 authors:
   - "@ramprasadn"

@@ -8,7 +8,7 @@ process MCSTAGING_IMC2MC {
 
     output:
     tuple val(meta), path("*.tif"), emit: tif
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('imc2mc'), eval("python /imc2mc/scripts/imc2mc.py --version | sed 's/v//g'"), emit: versions_imc2mc, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,10 +29,6 @@ Renamed module to match the tool/subtool convention
         -o "${prefix}.tif" \
         $args
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        imc2mc: \$(python /imc2mc/scripts/imc2mc.py --version | sed 's/v//g')
-    END_VERSIONS
     """
 
     stub:
@@ -44,9 +40,5 @@ Renamed module to match the tool/subtool convention
     """
     touch ${prefix}.tif
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        imc2mc: \$(python /imc2mc/scripts/imc2mc.py --version | sed 's/v//g')
-    END_VERSIONS
     """
 }

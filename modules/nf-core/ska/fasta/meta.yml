@@ -46,14 +46,27 @@ output:
           description: File containing genome sketch
           pattern: "*.skf"
           ontologies: []
+  versions_ska:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ska:
+          type: string
+          description: The name of the tool
+      - ska version | grep Version | cut -d ' ' -f 2:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ska:
+          type: string
+          description: The name of the tool
+      - ska version | grep Version | cut -d ' ' -f 2:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@itrujnara"
 maintainers:

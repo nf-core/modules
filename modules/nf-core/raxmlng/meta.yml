@@ -1,19 +1,18 @@
 name: raxmlng
-description: RAxML-NG is a phylogenetic tree inference tool which uses maximum-likelihood
-  (ML) optimality criterion.
+description: RAxML-NG is a phylogenetic tree inference tool which uses maximum-likelihood (ML) optimality criterion.
 keywords:
   - phylogeny
   - newick
   - maximum likelihood
 tools:
   - raxmlng:
-      description: RAxML-NG is a phylogenetic tree inference tool which uses maximum-likelihood
-        (ML) optimality criterion.
+      description: RAxML-NG is a phylogenetic tree inference tool which uses maximum-likelihood (ML) optimality criterion.
       homepage: https://github.com/amkozlov/raxml-ng
       documentation: https://github.com/amkozlov/raxml-ng/wiki
       tool_dev_url: https://github.com/amkozlov/raxml-ng
       doi: 10.1093/bioinformatics/btz305
-      license: ["GPL v2-or-later"]
+      license:
+        - "GPL v2-or-later"
       identifier: ""
 input:
   - - meta:
@@ -50,13 +49,29 @@ output:
           pattern: "*.{raxml.bootstraps}"
           optional: true
           ontologies: []
+  versions_raxmlng:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - raxmlng:
+          type: string
+          description: The name of the tool
+      - raxml-ng --version 2>&1 | sed '/RAxML-NG v/!d;s/.*v. //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - raxmlng:
+          type: string
+          description: The name of the tool
+      - raxml-ng --version 2>&1 | sed '/RAxML-NG v/!d;s/.*v. //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@avantonder"
   - "@aunderwo"

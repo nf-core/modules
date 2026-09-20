@@ -1,14 +1,15 @@
 process ANARCII {
     tag "${meta.id}"
-    label 'process_single'
+    label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer']
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c5/c56cb3320588978063f0893876f4f2b6f088dadc75628f60a746ee54e72350a6/data'
         : 'community.wave.seqera.io/library/python_pip_anarcii:4e5c3ffabd22d3fc'}"
 
     input:
     tuple val(meta), path(fasta)
+    val seq_type
 
     output:
     tuple val(meta), path("*.csv"), emit: anarcii
@@ -22,7 +23,9 @@ process ANARCII {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     anarcii \\
-        ${args}\\
+        -t ${seq_type} \\
+        -n ${task.cpus} \\
+        ${args} \\
         -o ${prefix}.csv \\
         ${fasta}
     """
