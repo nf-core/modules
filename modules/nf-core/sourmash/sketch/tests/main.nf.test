@@ -95,7 +95,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    path(process.out.signatures[0][1]).text.contains('library/genome.fna.gz'),
+                    path(process.out.signatures[0][1]).text.contains('library/genome.fna'),
                     process.out.findAll { key, val -> key.startsWith('versions') },
                 ).match()}
             )
