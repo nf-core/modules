@@ -4,8 +4,8 @@ process TRGT_PLOT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/trgt:5.0.0--h9ee0642_0':
-        'quay.io/biocontainers/trgt:5.0.0--h9ee0642_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b9/b94772fdcba7aa8027797b0d092a77b272cebc8d566fec3c960a1470e20223cf/data':
+        'community.wave.seqera.io/library/trgt:5.1.0--66e3b26326e566e7' }"
 
     input:
     tuple val(meta) , path(bam), path(bai), path(vcf), path(tbi), val(repeat_id)

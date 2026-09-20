@@ -3,9 +3,9 @@ process SIMPLEAF_QUANT {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/aa/aaba033a0179fd6ccc20c677f9df1fac5d8eac2dbd1bed73c4fa9f7adb65d963/data':
-        'community.wave.seqera.io/library/simpleaf:0.25.0--b9f96d8b71a01864' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d0/d04c6d819d0712b766a7cf18aa39a15cced3ea4d79178c0811966d8a741b4db1/data'
+:         'community.wave.seqera.io/library/piscem_simpleaf:8fd648760a75594c' }"
 
     input:
     //

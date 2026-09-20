@@ -4,11 +4,11 @@ process MGNIFAM_GENERATEFAMILIES {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/aa/aa77afddce5309d57c80ddc131bb6ca7232d1227abe608f87011cb1caf36c4ff/data' :
-        'community.wave.seqera.io/library/pip_mgnifam:b23278d764db6a8f' }"
+        'https://depot.galaxyproject.org/singularity/mgnifam:3.0.0--pyhdfd78af_0' :
+        'quay.io/biocontainers/mgnifam:3.0.0--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(clusters_chunk), path(fasta_file)
+    tuple val(meta), path(clustering), path(fasta_file), path(fasta_index)
 
     output:
     tuple val(meta), path("${prefix}/seed_msa/*.sto.gz")       , emit: seed_msa  , optional: true
@@ -23,21 +23,22 @@ process MGNIFAM_GENERATEFAMILIES {
     tuple val(meta), path("${prefix}/${prefix}_discarded.csv") , emit: discarded , optional: true
     tuple val(meta), path("${prefix}/${prefix}_converged.txt") , emit: converged , optional: true
     tuple val("${task.process}"), val('mgnifam'), eval("mgnifam --version 2>&1"), topic: versions, emit: versions_mgnifam
-    tuple val("${task.process}"), val('python'), eval("python3 --version 2>&1 | sed 's/Python //'"), topic: versions, emit: versions_python
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}"
+    def args  = task.ext.args ?: ''
+    prefix    = task.ext.prefix ?: "${meta.id}"
+    def index = fasta_index ? "--fasta_index ${fasta_index}" : ''
     """
     mgnifam generate_families \\
-        --clusters_chunk ${clusters_chunk} \\
+        --clusters_chunk ${clustering} \\
         --fasta_file ${fasta_file} \\
         --output_dir ${prefix} \\
         --cpus ${task.cpus} \\
-        --chunk_num ${prefix} \\
+        --chunk_id ${prefix} \\
+        ${index} \\
         ${args}
     """
 
@@ -48,14 +49,14 @@ process MGNIFAM_GENERATEFAMILIES {
     echo $args
 
     mkdir -p ${prefix}/seed_msa ${prefix}/full_msa ${prefix}/hmm ${prefix}/rf
-    python3 -c "import gzip; gzip.open('${prefix}/seed_msa/${prefix}_1.sto.gz', 'wb').close()"
-    python3 -c "import gzip; gzip.open('${prefix}/full_msa/${prefix}_1.sto.gz', 'wb').close()"
-    python3 -c "import gzip; gzip.open('${prefix}/hmm/${prefix}_1.hmm.gz', 'wb').close()"
+    echo "" | gzip > ${prefix}/seed_msa/${prefix}_1.sto.gz
+    echo "" | gzip > ${prefix}/full_msa/${prefix}_1.sto.gz
+    echo "" | gzip > ${prefix}/hmm/${prefix}_1.hmm.gz
     touch ${prefix}/rf/${prefix}_1.txt
     touch ${prefix}/${prefix}_families.tsv
     touch ${prefix}/${prefix}_metadata.csv
     touch ${prefix}/${prefix}.log
-    python3 -c "import gzip; gzip.open('${prefix}/${prefix}_reps.fasta.gz', 'wb').close()"
+    echo "" | gzip > ${prefix}/${prefix}_reps.fasta.gz
     touch ${prefix}/${prefix}_successful.txt
     touch ${prefix}/${prefix}_discarded.csv
     touch ${prefix}/${prefix}_converged.txt

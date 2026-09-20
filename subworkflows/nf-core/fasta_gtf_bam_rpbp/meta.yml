@@ -78,14 +78,14 @@ output:
       description: |
         Per-sample selected periodic offsets.
         Structure: [ val(meta), path(*.offsets.csv.gz) ]
-  - orf_profiles:
-      description: |
-        Per-sample per-ORF P-site profile matrix.
-        Structure: [ val(meta), path(*.profiles.mtx.gz) ]
   - lengths_offsets:
       description: |
         Per-sample selected lengths/offsets actually used by extract-orf-profiles.
         Structure: [ val(meta), path(*.lengths-offsets.tsv) ]
+  - orf_profiles:
+      description: |
+        Per-sample per-ORF P-site profile matrix.
+        Structure: [ val(meta), path(*.profiles.mtx.gz) ]
   - orf_bayes:
       description: |
         Per-sample per-ORF translation Bayes factors.

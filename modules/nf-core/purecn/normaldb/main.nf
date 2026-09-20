@@ -19,7 +19,7 @@ process PURECN_NORMALDB {
     tuple val(meta), path("mapping_bias*.rds")           , emit: bias_rds,    optional: true
     tuple val(meta), path("mapping_bias_hq_sites*.bed")  , emit: bias_bed,    optional: true
     tuple val(meta), path("low_coverage_targets*.bed")   , emit: low_cov_bed, optional: true
-    path "versions.yml"                                  , emit: versions
+    tuple val("${task.process}"), val('purecn'), eval("Rscript -e 'cat(as.character(packageVersion(\"PureCN\")))'"), emit: versions_purecn, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,10 +37,6 @@ process PURECN_NORMALDB {
         ${normal_panel} \\
         $args
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        purecn: \$(Rscript -e 'packageVersion("PureCN")' | sed -n 's|\\[1\\] ‘\\(.*\\)’|\\1|p')
-    END_VERSIONS
     """
 
     stub:
@@ -56,9 +52,5 @@ process PURECN_NORMALDB {
     touch interval_weights_${prefix}_${genome}.png
     touch low_coverage_targets_${prefix}_${genome}.bed
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        purecn: \$(Rscript -e 'packageVersion("PureCN")' | sed -n 's|\\[1\\] ‘\\(.*\\)’|\\1|p')
-    END_VERSIONS
     """
 }

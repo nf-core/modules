@@ -163,8 +163,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.png":
           type: file
-          description: File with plot of bin-level log2 coverages and segmentation
-            calls
+          description: File with plot of bin-level log2 coverages and segmentation calls
           pattern: "*.{png}"
           ontologies:
             - edam: http://edamontology.org/format_3603 # PNG
@@ -228,3 +227,27 @@ maintainers:
   - "@MaxUlysse"
   - "@priesgo"
   - "@SusiJo"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/cnvkit_htslib_samtools:9cce2aad3f7d51c9
+      build_id: bd-9cce2aad3f7d51c9_1
+      scan_id: sc-e6c9df99cef76c90_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/cnvkit_htslib_samtools:10abfe6987f6efe6
+      build_id: bd-10abfe6987f6efe6_1
+      scan_id: sc-2dad66b5cf5cc548_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/cnvkit_htslib_samtools:e50cf34d5bf21b1f
+      build_id: bd-e50cf34d5bf21b1f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3c/3c127bbeb62b853e044adee5da1f788ab84bc07c2809843ffdd9154ce74b8d2a/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/cnvkit_htslib_samtools:95836d77353a3e52
+      build_id: bd-95836d77353a3e52_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/64/64ef9a3ec35c8334ee08848a75c48d1befc027bfb18aeb3f5a24c38b27efac1c/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/cnvkit/batch/.conda-lock/linux_amd64-bd-10abfe6987f6efe6_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/cnvkit/batch/.conda-lock/linux_arm64-bd-9cce2aad3f7d51c9_1.txt

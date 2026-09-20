@@ -1,0 +1,81 @@
+name: "orfm"
+description: >
+  A simple and not slow open reading frame (ORF) caller.
+  The goal is to return a FASTA file of open reading frames over a certain length
+  from a FASTA/Q file of nucleotide sequences.
+keywords:
+  - orf
+  - fasta
+  - fastq
+tools:
+  - "orfm":
+      description: "OrfM is a simple and not slow ORF caller"
+      homepage: "https://github.com/wwood/OrfM"
+      documentation: "https://github.com/wwood/OrfM"
+      tool_dev_url: "https://github.com/wwood/OrfM"
+      doi: "10.1093/bioinformatics/btw241"
+      licence:
+        - "LGPL v3-or-later"
+        - "LGPL v3"
+      identifier: biotools:orfm
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[
+          id:'sample1' ]`
+    - sequence:
+        type: file
+        description: nucleic_acid_sequence file
+        pattern: "*.{fasta,fastq,fa,fq}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929
+          - edam: http://edamontology.org/format_1930
+  - - meta2:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[
+          id:'sample1' ]`
+    - min_len:
+        type: string
+        description: The minimum length of the ORF to be reported (default - 96). The provided minimum ORF length should be in a multiple of 3.
+    - codon_table_id:
+        type: string
+        description: The codon table to use for translation (default - 1), Codon table should be a valid integer.
+output:
+  fasta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.fasta:
+          type: file
+          description: The output FASTA file containing the predicted ORFs
+          pattern: "*.fasta"
+          ontologies:
+            - edam: http://edamontology.org/format_1929
+            - edam: http://edamontology.org/format_1930
+  versions_orfm:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - orfm:
+          type: string
+          description: The name of the tool
+      - orfm --version | sed 's/orfm //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - orfm:
+          type: string
+          description: The name of the tool
+      - orfm --version | sed 's/orfm //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@khersameesh24"
+maintainers:
+  - "@khersameesh24"

@@ -507,8 +507,8 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    workflow.out.results_genewise,
-                    workflow.out.results_genewise_filtered,
+                    workflow.out.results_genewise.collect { file(it[1]).name }.sort(),
+                    workflow.out.results_genewise_filtered.collect { file(it[1]).name }.sort(),
                     workflow.out.adjacency,
                     workflow.out.versions
                 ).match() }

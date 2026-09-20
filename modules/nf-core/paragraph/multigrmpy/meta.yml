@@ -13,7 +13,8 @@ tools:
       documentation: "https://github.com/Illumina/paragraph"
       tool_dev_url: "https://github.com/Illumina/paragraph"
       doi: "10.1101/635011"
-      licence: ["Apache License 2.0"]
+      licence:
+        - "Apache License 2.0"
       identifier: biotools:Paragraph
 input:
   - - meta:
@@ -26,7 +27,7 @@ input:
         description: A VCF or JSON file containing called structural variants
         pattern: "*.{vcf,json}"
         ontologies:
-          - edam: http://edamontology.org/format_3464 # JSON
+          - edam: http://edamontology.org/format_3464
     - variants_index:
         type: file
         description: The index for the VCF file
@@ -34,8 +35,8 @@ input:
         ontologies: []
     - reads:
         type: file
-        description: BAM or CRAM file(s) to genotype against. These should be specified
-          inside the `manifest`
+        description: BAM or CRAM file(s) to genotype against. These should be
+          specified inside the `manifest`
         pattern: "*.{bam,cram}"
         ontologies: []
     - reads_index:
@@ -57,8 +58,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - fasta:
         type: file
-        description: The reference FASTA file used to generate the VCF and BAM/CRAM
-          files
+        description: The reference FASTA file used to generate the VCF and
+          BAM/CRAM files
         pattern: "*.{fa,fasta,fna}"
         ontologies: []
   - - meta3:
@@ -83,7 +84,7 @@ output:
           description: The genotyped VCF file in BGZIP format
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   json:
     - - meta:
           type: map
@@ -95,14 +96,28 @@ output:
           description: The genotyped JSON file in GZIP format
           pattern: "*.json.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
+  versions_paragraph:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - paragraph:
+          type: string
+          description: The name of the tool
+      - "2.3":
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - paragraph:
+          type: string
+          description: The name of the tool
+      - "2.3":
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:

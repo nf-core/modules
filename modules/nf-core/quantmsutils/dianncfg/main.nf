@@ -1,6 +1,6 @@
 process QUANTMSUTILS_DIANNCFG {
     tag "$meta.id"
-    label 'process_tiny'
+    label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
@@ -13,35 +13,24 @@ process QUANTMSUTILS_DIANNCFG {
     output:
     tuple val(meta), path("diann_config.cfg"), emit: diann_cfg
     path "*.log", emit: log
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('quantms-utils'), eval("quantmsutilsc --version 2>&1 | sed -n 's/quantmsutils //p'"), emit: versions_quantmsutils, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-
     """
     quantmsutilsc dianncfg \\
         --enzyme "${enzyme}" \\
         --fix_mod "${fixed_modifications}" \\
         --var_mod "${variable_modifications}" \\
         ${args} 2>&1 | tee GENERATE_DIANN_CFG.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        quantms-utils: \$(pip show quantms-utils | grep "Version" | awk -F ': ' '{print \$2}')
-    END_VERSIONS
     """
 
     stub:
     """
     echo "--cut K*,R*,!*P --fixed-mod Carbamidomethyl,57.021464,C --var-mod Oxidation,15.994915,M" > diann_config.cfg
     touch GENERATE_DIANN_CFG.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        quantms-utils: \$(pip show quantms-utils | grep "Version" | awk -F ': ' '{print \$2}')
-    END_VERSIONS
     """
 }

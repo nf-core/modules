@@ -125,16 +125,6 @@ output:
           pattern: "*.error.txt"
           ontologies:
             - edam: "http://edamontology.org/data_3671"
-  versions_rclone:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - rclone:
-          type: string
-          description: The name of the tool
-      - rclone --version | sed -n '1s/^rclone v//p':
-          type: eval
-          description: The expression to obtain the version of the tool
   exit_code:
     - - meta:
           type: map
@@ -147,6 +137,16 @@ output:
           pattern: "*.exit_code.txt"
           ontologies:
             - edam: "http://edamontology.org/data_3671"
+  versions_rclone:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rclone:
+          type: string
+          description: The name of the tool
+      - rclone --version | sed -n '1s/^rclone v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:

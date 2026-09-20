@@ -35,7 +35,10 @@ env:
 jobs:
   nf-test-changes:
     name: nf-test-changes
-    runs-on: "ubuntu-latest"
+    runs-on:
+      - runs-on=${{ github.run_id }}-nf-test-changes-gpu
+      - runner=4cpu-linux-x64
+      - image=ubuntu22-full-x64
     outputs:
       # gpu tag outputs
       gpu_paths: ${{ steps.list-gpu.outputs.components }}
@@ -59,20 +62,20 @@ jobs:
       # Detect gpu and gpu_highmem tests separately
       - name: List gpu test files
         id: list-gpu
-        uses: adamrtalbot/detect-nf-test-changes@de3c3c8e113031b4f15a3c1104b5f135e8346997 # v0.0.6
+        uses: ./.github/actions/detect-nf-test-changes
+        env:
+          NFT_VER: ${{ env.NFT_VER }}
         with:
-          head: ${{ github.sha }}
-          base: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha || 'origin/master' }}
-          n_parents: 0
+          base: origin/master
           tags: "gpu"
 
       - name: List gpu_highmem test files
         id: list-gpu-highmem
-        uses: adamrtalbot/detect-nf-test-changes@de3c3c8e113031b4f15a3c1104b5f135e8346997 # v0.0.6
+        uses: ./.github/actions/detect-nf-test-changes
+        env:
+          NFT_VER: ${{ env.NFT_VER }}
         with:
-          head: ${{ github.sha }}
-          base: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha || 'origin/master' }}
-          n_parents: 0
+          base: origin/master
           tags: "gpu_highmem"
 
       # Shard each tag independently
@@ -101,7 +104,11 @@ jobs:
   # Standard GPU tests (g4dn.xlarge - 4 vCPU, 16 GB RAM, T4 GPU)
   # Runs tests tagged "gpu" (20+ modules: parabricks, amulety, cellpose, etc.)
   nf-test-gpu:
-    runs-on: "ubuntu-latest"
+    runs-on:
+      - runs-on=${{ github.run_id }}
+      - family=g4dn.xlarge
+      - image=ubuntu24-gpu-x64
+      - volume=40gb
     name: "GPU Test | g4dn.xlarge | ${{ matrix.profile }} | ${{ matrix.shard }}"
     needs: [nf-test-changes]
     if: ${{ needs.nf-test-changes.outputs.gpu_total_shards != '0' && needs.nf-test-changes.outputs.gpu_total_shards != '' }}
@@ -139,7 +146,7 @@ jobs:
   # Runs tests tagged "gpu_highmem" (currently only parabricks/rnafq2bam,
   # which requires >16 GB system RAM)
   nf-test-gpu-highmem:
-    runs-on: "ubuntu-latest"
+    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.2xlarge/image=ubuntu24-gpu-x64"
     name: "GPU Test | g4dn.2xlarge | ${{ matrix.profile }} | ${{ matrix.shard }}"
     needs: [nf-test-changes]
     if: ${{ needs.nf-test-changes.outputs.gpu_highmem_total_shards != '0' && needs.nf-test-changes.outputs.gpu_highmem_total_shards != '' }}
@@ -174,10 +181,17 @@ jobs:
           tags: gpu_highmem
 
   confirm-pass-gpu:
-    runs-on: "ubuntu-latest"
-    needs: [nf-test-gpu, nf-test-gpu-highmem]
+    runs-on:
+      - runs-on=${{ github.run_id }}-confirm-pass-gpu
+      - runner=2cpu-linux-x64
+      - image=ubuntu22-full-x64
+    needs: [nf-test-changes, nf-test-gpu, nf-test-gpu-highmem]
     if: always()
     steps:
+      - name: Change detection did not succeed
+        if: ${{ needs.nf-test-changes.result != 'success' }}
+        run: exit 1
+
       - name: One or more tests failed
         if: ${{ contains(needs.*.result, 'failure') }}
         run: exit 1
