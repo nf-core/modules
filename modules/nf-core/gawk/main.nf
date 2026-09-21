@@ -23,7 +23,7 @@ process GAWK {
     def args  = task.ext.args  ?: '' // args is used for the main arguments of the tool
     def args2 = task.ext.args2 ?: '' // args2 is used to specify a program when no program file has been given
     prefix    = task.ext.prefix ?: "${meta.id}"
-    suffix    = task.ext.suffix ?: "${input.collect{ file -> file.getExtension()}.get(0)}" // use the first extension of the input files
+    suffix    = task.ext.suffix ?: input[0].extension // use the first extension of the input files
 
     program    = program_file ? "-f ${program_file}" : "${args2}"
     lst_gz     = input.findResults{ file -> file.getExtension().endsWith("gz") ? file.toString() : null }
@@ -51,7 +51,7 @@ process GAWK {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    suffix = task.ext.suffix ?: "${input.collect{ file -> file.getExtension()}.get(0)}"
+    suffix = task.ext.suffix ?: input[0].extension // use the first extension of the input files
     def create_cmd = suffix.endsWith("gz") ? "echo '' | gzip >" : "touch"
 
     """
