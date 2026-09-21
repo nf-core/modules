@@ -106,11 +106,10 @@ nextflow_workflow {
                 input[1] = UNTAR.out.untar.flatMap { meta, dir ->
                     def entries = []
                     dir.toFile().eachDir { d ->
-                        def origQuant = new File(d, 'quant.sf')
-                        def copyDir = new File(File.createTempDir(), d.name)
+                        def copyDir = file("\${workDir}/\${d.name}_orphan/\${d.name}")
                         copyDir.mkdirs()
-                        new File(copyDir, 'quant.sf').text = origQuant.text + "ORPHAN_TX_FIXTURE\\t500\\t450.000\\t0.000000\\t0.000\\n"
-                        entries << [[ id: d.name ], copyDir.toPath()]
+                        file("\${copyDir}/quant.sf").text = new File(d, 'quant.sf').text + "ORPHAN_TX_FIXTURE\\t500\\t450.000\\t0.000000\\t0.000\\n"
+                        entries << [[ id: d.name ], copyDir]
                     }
                     entries
                 }
