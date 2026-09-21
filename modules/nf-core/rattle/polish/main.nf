@@ -2,7 +2,7 @@ process RATTLE_POLISH {
     tag "$meta.id"
     label 'process_medium'
 
-    // RATTLE does not provide a version flag; the Bioconda release is pinned below.
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/rattle:1.0--h5ca1c30_0'
@@ -12,9 +12,10 @@ process RATTLE_POLISH {
     tuple val(meta), path(consensi)
 
     output:
-    tuple val(meta), path("${prefix}.transcriptome.fq"), emit: transcriptome
+    tuple val(meta), path("${prefix}.transcriptome.fq")  , emit: transcriptome
     tuple val(meta), path("${prefix}.polish_summary.tsv"), emit: summary, optional: true
-    tuple val(meta), path("${prefix}.log"), emit: log
+    tuple val(meta), path("${prefix}.log")               , emit: log
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     tuple val("${task.process}"), val('rattle'), val('1.0'), emit: versions_rattle, topic: versions
 
     when:

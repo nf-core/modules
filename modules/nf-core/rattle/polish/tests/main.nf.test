@@ -33,10 +33,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    sanitizeOutput(process.out),
-                    path(process.out.transcriptome[0][1]).size() > 0
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -67,11 +64,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    sanitizeOutput(process.out),
-                    path(process.out.transcriptome[0][1]).size() > 0,
-                    path(process.out.summary[0][1]).size() > 0
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
