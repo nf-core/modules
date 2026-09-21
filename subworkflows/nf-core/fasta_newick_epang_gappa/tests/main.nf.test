@@ -45,6 +45,7 @@ nextflow_workflow {
                         ]
                     ]
                 )
+                input[1] = false
                 """
             }
         }
@@ -57,6 +58,8 @@ nextflow_workflow {
                 { assert snapshot(workflow.out.grafted_phylogeny.get(0).get(1)).md5().match("hmmer.graft.placement.epa_result.newick_lines") },
                 { assert snapshot(file(workflow.out.taxonomy_profile.get(0).get(1)).name).match("hmmer.taxonomy.profile.tsv") },
                 { assert snapshot(file(workflow.out.taxonomy_per_query.get(0).get(1)).name).match("hmmer.taxonomy.per_query.tsv") },
+                { assert snapshot(file(workflow.out.epang_log.get(0)).name).match("hmmer.epa_info.log") },
+                { assert snapshot(file(workflow.out.hmmbuild_log.get(0)).name).match("hmmer.ref.hmmbuild.txt") },
             )
         }
     }
@@ -81,6 +84,7 @@ nextflow_workflow {
                         ]
                     ]
                 )
+                input[1] = false
                 """
             }
         }
@@ -117,6 +121,7 @@ nextflow_workflow {
                         ]
                     ]
                 )
+                input[1] = false
                 """
             }
         }
@@ -151,6 +156,7 @@ nextflow_workflow {
                         ]
                     ]
                 )
+                input[1] = false
                 """
             }
         }
@@ -160,6 +166,72 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert snapshot(file(workflow.out.jplace.get(0).get(1)).name).match("nucl_hmmer.epa_result.jplace.gz") },
                 { assert snapshot(file(workflow.out.grafted_phylogeny.get(0).get(1)).name).match("nucl_hmmer.graft.placement.epa_result.newick") },
+            )
+        }
+    }
+
+    test("test_fasta_newick_epang_gappa_clustalo_compressed") {
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of(
+                    [
+                        meta: [ id: "clustalo" ],
+                        data: [
+                            alignmethod:  'clustalo',
+                            queryseqfile: file("https://github.com/nf-core/test-datasets/raw/phyloplace/testdata/PF14720_3_sequences.faa", checkIfExists: true),
+                            refseqfile:   file("https://github.com/nf-core/test-datasets/raw/phyloplace/testdata/PF14720_seed.alnfaa", checkIfExists: true),
+                            refphylogeny: file("https://github.com/nf-core/test-datasets/raw/phyloplace/testdata/PF14720_seed.ft.LGCAT.newick", checkIfExists: true),
+                            model:        "LG",
+                            taxonomy:     file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/gappa/gappa_taxonomy.tsv", checkIfExists: true)
+                        ]
+                    ]
+                )
+                input[1] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(file(workflow.out.jplace.get(0).get(1)).name).match("clustalo_compressed.epa_result.jplace.gz") },
+                { assert snapshot(workflow.out.grafted_phylogeny.get(0).get(1)).md5().match("clustalo_compressed.graft.placement.epa_result.newick_lines") },
+                { assert snapshot(file(workflow.out.taxonomy_profile.get(0).get(1)).name).match("clustalo_compressed.taxonomy.profile.tsv") },
+            )
+        }
+    }
+
+    test("test_fasta_newick_epang_gappa_mafft_compressed") {
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of(
+                    [
+                        meta: [ id: "mafft" ],
+                        data: [
+                            alignmethod:  'mafft',
+                            queryseqfile: file("https://github.com/nf-core/test-datasets/raw/phyloplace/testdata/PF14720_3_sequences.faa", checkIfExists: true),
+                            refseqfile:   file("https://github.com/nf-core/test-datasets/raw/phyloplace/testdata/PF14720_seed.alnfaa", checkIfExists: true),
+                            refphylogeny: file("https://github.com/nf-core/test-datasets/raw/phyloplace/testdata/PF14720_seed.ft.LGCAT.newick", checkIfExists: true),
+                            model:        "LG",
+                            taxonomy:     file("https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/gappa/gappa_taxonomy.tsv", checkIfExists: true)
+                        ]
+                    ]
+                )
+                input[1] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(file(workflow.out.jplace.get(0).get(1)).name).match("mafft_compressed.epa_result.jplace.gz") },
+                { assert snapshot(workflow.out.grafted_phylogeny.get(0).get(1)).md5().match("mafft_compressed.graft.placement.epa_result.newick_lines") },
+                { assert snapshot(file(workflow.out.taxonomy_profile.get(0).get(1)).name).match("mafft_compressed.taxonomy.profile.tsv") },
             )
         }
     }
