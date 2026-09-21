@@ -13,9 +13,6 @@ nextflow_process {
     test("synthetic consensi - fastq") {
 
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = channel.of(
@@ -77,9 +74,6 @@ nextflow_process {
         options "-stub"
 
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = channel.of(
