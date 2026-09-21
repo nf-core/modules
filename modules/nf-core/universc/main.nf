@@ -3,7 +3,7 @@ process UNIVERSC {
     label 'process_medium'
 
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'quay.io/nf-core/universc:1.2.5.1-sif' :
+        'oras://quay.io/nf-core/universc:1.2.5.1-sif' :
         'quay.io/nf-core/universc:1.2.5.1' }"
 
     input:
