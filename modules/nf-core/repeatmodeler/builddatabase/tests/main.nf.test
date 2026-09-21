@@ -25,10 +25,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ['db']),
-                    process.out.db[0][1].findAll { ! ( "$it"[-3..-1] in [ 'nin', 'njs' ] ) }
-                    ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstablePatterns: ['**/*.nin', '**/*.njs'])).match() }
             )
         }
 
