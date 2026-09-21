@@ -36,12 +36,10 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.fasta).match("fasta") },
-                { assert snapshot(process.out.stk).match("stk") },
-                { assert file(process.out.log[0][1]).text.contains('1 families discovered.') },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() },
+                { assert file(process.out.log[0][1]).text.contains('1 families discovered.') }
             )
         }
 
@@ -63,9 +61,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
