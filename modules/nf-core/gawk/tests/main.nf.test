@@ -207,4 +207,52 @@ nextflow_process {
             assert process.errorReport.contains("Input and output names are the same, set prefix in module configuration to disambiguate!")
         }
     }
+
+    test("No input file but suffix provided") {
+        when {
+            params {
+                gawk_args2  = ""
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'hello' ],
+                    [],
+                    "tsv",
+                ]
+                input[1] = Channel.of('BEGIN {OFS="\t"} END {print "chrom", "start", "end"}').collectFile(name:"program.awk")
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
+        }
+    }
+
+    test("No input file and no suffix provided") {
+        when {
+            params {
+                gawk_args2  = ""
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'hello' ],
+                    [],
+                    "",
+                ]
+                input[1] = Channel.of('BEGIN {OFS="\t"} END {print "chrom", "start", "end"}').collectFile(name:"program.awk")
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assert process.failed
+            assert process.errorReport.contains("suffix not set and no input provided")
+        }
+    }
 }

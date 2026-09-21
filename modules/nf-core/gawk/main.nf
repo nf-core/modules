@@ -25,7 +25,11 @@ process GAWK {
     prefix    = task.ext.prefix ?: "${meta.id}"
 
     if (!suffix) {
-        suffix = input[0].extension // use the first extension of the input files
+        if (input) {
+            suffix = input[0].extension // use the first extension of the input files
+        } else {
+            error "suffix not set and no input provided"
+        }
     }
 
     program    = program_file ? "-f ${program_file}" : "${args2}"
@@ -56,7 +60,11 @@ process GAWK {
     prefix = task.ext.prefix ?: "${meta.id}"
 
     if (!suffix) {
-        suffix = input[0].extension // use the first extension of the input files
+        if (input) {
+            suffix = input[0].extension // use the first extension of the input files
+        } else {
+            error "suffix not set and no input provided"
+        }
     }
 
     def create_cmd = suffix.endsWith("gz") ? "echo '' | gzip >" : "touch"
