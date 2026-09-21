@@ -31,6 +31,9 @@ input:
           have a `.gz` extension, they will be unzipped using `zcat`.
         pattern: "*"
         ontologies: []
+    - suffix:
+        type: string
+        description: Output suffix
   - program_file:
       type: file
       description: Optional file containing logic for awk to execute. If you don't
@@ -53,8 +56,7 @@ output:
           type: file
           description: The output file - if using shell redirection, specify the
             name of this file using `ext.prefix` and the extension using
-            `ext.suffix`. Otherwise, ensure the awk program produces files with
-            the extension in `ext.suffix`.
+            `suffix` (falling back to the extension of the first input file.
           pattern: "*"
           ontologies: []
   versions_gawk:
