@@ -208,6 +208,30 @@ nextflow_process {
         }
     }
 
+    test("Suffix falls back to the input extension") {
+        when {
+            params {
+                gawk_args2  = '\'BEGIN { FS = OFS = "\t"}; { print \$1, "0", \$2 }\''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
+                    "",
+                ]
+                input[1] = []
+                input[2] = false
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
+        }
+    }
+
     test("No input file but suffix provided") {
         when {
             params {
