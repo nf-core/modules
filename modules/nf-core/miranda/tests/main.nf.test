@@ -33,7 +33,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
 					file(process.out.txt[0][1]).readLines()[3..7],
-					process.out.versions
+					process.out.findAll { key, val -> key.startsWith('versions') }
 					).match()
 				}
             )

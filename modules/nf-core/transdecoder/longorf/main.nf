@@ -16,7 +16,7 @@ process TRANSDECODER_LONGORF {
     tuple val(meta), path("${output_dir_name}/*.cds")   , emit: cds
     tuple val(meta), path("${output_dir_name}/*.dat")   , emit: dat
     path("${output_dir_name}")                          , emit: folder
-    path "versions.yml"                                 , emit: versions
+    tuple val("${task.process}"), val('transdecoder'), eval("TransDecoder.LongOrfs --version | sed 's/TransDecoder.LongOrfs //'"), emit: versions_transdecoder, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,11 +32,6 @@ process TRANSDECODER_LONGORF {
         -O $prefix \\
         -t \\
         $fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        transdecoder: \$(echo \$(TransDecoder.LongOrfs --version) | sed -e "s/TransDecoder.LongOrfs //g")
-    END_VERSIONS
     """
 
     stub:
@@ -49,10 +44,5 @@ process TRANSDECODER_LONGORF {
     touch ${output_dir_name}/longest_orfs.gff3
     touch ${output_dir_name}/longest_orfs.cds
     touch ${output_dir_name}/base_freqs.dat
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        transdecoder: \$(echo \$(TransDecoder.LongOrfs --version) | sed -e "s/TransDecoder.LongOrfs //g")
-    END_VERSIONS
     """
 }

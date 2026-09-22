@@ -1,0 +1,88 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "angsd_soapsnpcalibration"
+description: Generate ANGSD SOAPsnp genotype likelihood calibration files (counts/quality matrices) from BAM alignments.
+keywords:
+  - angsd
+  - genotype likelihood
+  - soapsnp calibration
+  - genomics
+tools:
+  - "angsd":
+      description: "ANGSD: Analysis of next generation Sequencing Data"
+      homepage: "http://www.popgen.dk/angsd/"
+      documentation: "http://www.popgen.dk/angsd/"
+      tool_dev_url: "https://github.com/ANGSD/angsd"
+      doi: "10.1186/s12859-014-0356-4"
+      licence:
+        - "GPL v3"
+        - "MIT"
+      identifier: biotools:angsd
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing population information
+          e.g. [ id:'test', population:'population id', samples:'sample IDs' ]
+    - bams:
+        type: file
+        description: A list of BAM or CRAM files.
+        pattern: "*.{bam,cram}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+          - edam: "http://edamontology.org/format_3462"
+    - bam_indices:
+        type: file
+        description: A list of BAM or CRAM indices.
+        pattern: "*.{bam.bai,cram.crai}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327"
+          - edam: "http://edamontology.org/format_3462"
+  - - reference_fasta:
+        type: file
+        description: A reference genome in FASTA format.
+        pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+    - reference_fai:
+        type: file
+        description: Index of the reference genome FASTA file.
+        pattern: "*.{fasta,fa,fasta.gz,fa.gz}.fai"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+output:
+  soapsnp_calibration:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing population information
+            e.g. [ id:'test', population:'population id', samples:'sample IDs' ]
+      - "*_calibration_matrix":
+          type: directory
+          description: Directory containing per-individual ANGSD SOAPsnp calibration files (counts and quality matrices)
+          pattern: "*_calibration_matrix"
+          ontologies: []
+  versions_angsd:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - angsd:
+          type: string
+          description: The name of the tool
+      - "angsd 2>&1 | sed '1!d;s/.*version: //;s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - angsd:
+          type: string
+          description: The name of the tool
+      - "angsd 2>&1 | sed '1!d;s/.*version: //;s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@ASendellPrice"
+maintainers:
+  - "@ASendellPrice"

@@ -16,24 +16,23 @@ process TRUST4 {
     val(umi_read)
     val(read_format)
 
-
     output:
     tuple val(meta), path("*.tsv")                  , emit: tsv
     tuple val(meta), path("*_airr.tsv")             , emit: airr_files
-    tuple val(meta), path("${meta.id}_airr.tsv")    , emit: airr_tsv
+    tuple val(meta), path("${prefix}_airr.tsv")     , emit: airr_tsv
     tuple val(meta), path("*_report.tsv")           , emit: report_tsv
     tuple val(meta), path("*.fa")                   , emit: fasta
     tuple val(meta), path("*.out")                  , emit: out
     tuple val(meta), path("*.fq")                   , emit: fq
     tuple val(meta), path("**")                     , emit: outs
-    path "versions.yml"                             , emit: versions
+    tuple val("${task.process}"), val('trust4'), eval("run-trust4 2>&1 | sed '/^TRUST4/!d; s/.*TRUST4 v//; s/ .*//'"), emit: versions_trust4, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def bam_mode = bam ? "-b ${bam}" : ''
     def single_end_mode = reads && meta.single_end ? "-u ${reads}" : ''
     // reference is optional for fastq input
@@ -80,15 +79,10 @@ process TRUST4 {
         ${reference} \\
         ${barcodeWhitelist} \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        trust4: \$(run-trust4 2>&1 | grep -o 'v[0-9.]*-r[0-9]*' | sed 's/^/TRUST4 using /' )
-    END_VERSIONS
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_airr.tsv
     touch ${prefix}_airr_align.tsv
@@ -99,10 +93,5 @@ process TRUST4 {
     touch ${prefix}_raw.out
     touch ${prefix}_final.out
     touch ${prefix}_toassemble.fq
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        trust4: \$(run-trust4 2>&1 | grep -o 'v[0-9.]*-r[0-9]*' | sed 's/^/TRUST4 using /' )
-    END_VERSIONS
     """
 }

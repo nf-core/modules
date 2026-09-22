@@ -13,7 +13,7 @@ process RASTAIR_MBIASPARSER {
     tuple val(meta), path("*.rastair_mbias_processed.pdf"),         emit: mbias_processed_pdf, optional: true
     tuple val(meta), path("*.rastair_mbias_processed.csv"),         emit: mbias_processed_csv
     tuple val(meta), env('TRIM_OT'), env('TRIM_OB'),                emit: mbias_processed_str
-    path "versions.yml",                                            emit: versions
+    tuple val("${task.process}"), val('rastair'), eval("rastair --version | sed 's/rastair //'"), topic: versions, emit: versions_rastair
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,11 +27,6 @@ process RASTAIR_MBIASPARSER {
     parse_mbias.R ${prefix}.rastair_mbias_processed.txt ${prefix}.rastair_mbias_processed.csv
     export TRIM_OT=\$(head -n 1 ${prefix}.rastair_mbias_processed.csv)
     export TRIM_OB=\$(head -n 2 ${prefix}.rastair_mbias_processed.csv | tail -n 1)
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rastair: \$(rastair --version)
-    END_VERSIONS
     """
 
     stub:
@@ -39,10 +34,7 @@ process RASTAIR_MBIASPARSER {
     """
     touch ${prefix}.rastair_mbias_processed.pdf
     touch ${prefix}.rastair_mbias_processed.csv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rastair: \$(rastair --version 2>&1 || echo "stub")
-    END_VERSIONS
+    export TRIM_OT="0"
+    export TRIM_OB="0"
     """
 }

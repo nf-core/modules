@@ -11,7 +11,7 @@ process METAPHLAN3_MERGEMETAPHLANTABLES {
 
     output:
     tuple val(meta), path("${prefix}.txt"), emit: txt
-    path "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val('metaphlan3'), eval("metaphlan --version 2>&1 | cut -d ' ' -f 3"), emit: versions_metaphlan3, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,19 +26,11 @@ process METAPHLAN3_MERGEMETAPHLANTABLES {
         -o ${prefix}.txt \\
         ${input}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        metaphlan3: \$(metaphlan --version 2>&1 | awk '{print \$3}')
-    END_VERSIONS
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.txt
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        metaphlan3: \$(metaphlan --version 2>&1 | awk '{print \$3}')
-    END_VERSIONS
     """
 }

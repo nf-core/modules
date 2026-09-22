@@ -72,7 +72,8 @@ output:
             e.g. `[ id:'test', single_end:false ]`
       - "*.txt":
           type: file
-          description: Alignment metrics related to how many reads overlap the target/bait regions.
+          description: Alignment metrics related to how many reads overlap the
+            target/bait regions.
           pattern: "*.txt"
           ontologies: []
   versions_sentieon:
@@ -83,9 +84,8 @@ output:
           type: string
           description: The tool name
       - sentieon driver --version | sed 's/.*-//g':
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -95,7 +95,7 @@ topics:
           type: string
           description: The tool name
       - sentieon driver --version | sed 's/.*-//g':
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 authors:
   - "@sppearce"

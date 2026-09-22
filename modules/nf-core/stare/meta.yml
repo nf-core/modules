@@ -1,7 +1,5 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "stare"
-description: "Framework that scores enhancer–gene interactions using the Activity-By-Contact
-  model and derives transcription factor affinities on gene level"
+description: "Framework that scores enhancer–gene interactions using the Activity-By-Contact model and derives transcription factor affinities on gene level"
 keywords:
   - enhancer
   - tf_affinity
@@ -10,13 +8,13 @@ keywords:
   - gene_regulation
 tools:
   - "stare":
-      description: "Score enhancer–gene interactions with ABC and compute TF-gene affinity
-        matrices"
+      description: "Score enhancer–gene interactions with ABC and compute TF-gene affinity matrices"
       homepage: "https://github.com/SchulzLab/STARE"
       documentation: "https://stare.readthedocs.io/en/latest/Main.html"
       tool_dev_url: "https://github.com/SchulzLab/STARE"
       doi: "10.1093/bioinformatics/btad062"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 
 input:
@@ -27,21 +25,18 @@ input:
           e.g. `[ id:'sample1' ]`
     - bed_file:
         type: file
-        description: "BED file with non-overlapping candidate regions; optional—if omitted
-          runs in promoter-mode around TSS"
+        description: "BED file with non-overlapping candidate regions; optional—if omitted runs in promoter-mode around TSS"
         pattern: "*.bed"
         optional: true
         ontologies:
           - ucsc: https://genome.ucsc.edu/FAQ/FAQformat#format1 # BED
     - contact_folder:
         type: directory
-        description: "Directory of gzipped chromatin contact files per chromosome; if
-          not provided use distance-based estimate"
+        description: "Directory of gzipped chromatin contact files per chromosome; if not provided use distance-based estimate"
         optional: true
     - existing_abc:
         type: file
-        description: "Precomputed ABC‐scoring file (must contain Ensembl ID, PeakID,
-          intergenicScore columns) to reuse interactions"
+        description: "Precomputed ABC‐scoring file (must contain Ensembl ID, PeakID, intergenicScore columns) to reuse interactions"
         pattern: "*.txt.gz"
         optional: true
         ontologies:
@@ -53,8 +48,7 @@ input:
           e.g. `[ id:'sample1' ]`
     - annotation:
         type: file
-        description: "Gene annotation file in GTF format (e.g. Gencode); full annotation
-          recommended for ABC scoring"
+        description: "Gene annotation file in GTF format (e.g. Gencode); full annotation recommended for ABC scoring"
         pattern: "*.gtf"
         ontologies:
           - bioontology: http://edamontology.org/format_2306 # GTF
@@ -76,8 +70,7 @@ input:
           e.g. `[ id:'sample1' ]`
     - psem:
         type: file
-        description: "Position Specific Energy Matrix or Count Matrix in transfac format;
-          converted automatically to PSEM using sequence background from bed_file"
+        description: "Position Specific Energy Matrix or Count Matrix in transfac format; converted automatically to PSEM using sequence background from bed_file"
         pattern: "*.transfac"
         ontologies: []
   - - meta5:
@@ -118,13 +111,29 @@ output:
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
           pattern: "${prefix}/Gene_TF_matrices/${prefix}_TF_Gene_Affinities.txt"
+  versions_stare:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - stare:
+          type: string
+          description: The name of the tool
+      - STARE.sh --version | cut -f3 -d" ":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - stare:
+          type: string
+          description: The name of the tool
+      - STARE.sh --version | cut -f3 -d" ":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@LeonHafner"
 maintainers:

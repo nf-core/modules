@@ -29,4 +29,10 @@ process PAIRTOOLS_RESTRICT {
         -o ${prefix}.pairs.gz \\
         $pairs
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.pairs.gz
+    """
 }

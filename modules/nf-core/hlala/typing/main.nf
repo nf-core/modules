@@ -21,7 +21,8 @@ process HLALA_TYPING {
     tuple val(meta), path("${prefix}/reads_per_level.txt")          , emit: reads_per_level
     tuple val(meta), path("${prefix}/remapped_with_a.bam")          , emit: remapped
     tuple val(meta), path("${prefix}/remapped_with_a.bam.bai")      , emit: remapped_index
-    tuple val("${task.process}"), val('hla-la'), eval('echo 1.0.4'), emit: versions_hlala, topic: versions
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
+    tuple val("${task.process}"), val('hla-la'), val('1.0.4'), emit: versions_hlala, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

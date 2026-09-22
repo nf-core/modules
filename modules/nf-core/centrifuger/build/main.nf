@@ -4,8 +4,8 @@ process CENTRIFUGER_BUILD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/centrifuger:1.1.0--hf426362_0':
-        'quay.io/biocontainers/centrifuger:1.1.0--hf426362_0' }"
+        'https://depot.galaxyproject.org/singularity/centrifuger:1.1.2--h3be2455_0':
+        'quay.io/biocontainers/centrifuger:1.1.2--h3be2455_0' }"
 
     input:
     tuple val(meta), path(references, stageAs: 'genomes/*')

@@ -1,0 +1,67 @@
+name: "genometester4_glistmaker"
+description: Create and count k-mer lists from nucelotide sequences.
+keywords:
+  - kmer
+  - sort
+  - alignment-free
+tools:
+  - "genometester4":
+      description: "A toolkit for performing set operations - union, intersection and
+        complement - on k-mer lists."
+      homepage: "https://github.com/bioinfo-ut/GenomeTester4"
+      documentation: "https://github.com/bioinfo-ut/GenomeTester4"
+      tool_dev_url: "https://github.com/bioinfo-ut/GenomeTester4"
+      doi: "10.1186/s13742-015-0097-y"
+      licence:
+        - "GPL v3"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: fasta file
+        pattern: "*.{fasta,fa,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+output:
+  list:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.list":
+          type: file
+          description: Compressed file containiing the list of observed k-mers and
+            their counts.
+          pattern: "*.list"
+          ontologies: []
+  versions_genometester4:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - genometester4:
+          type: string
+          description: The name of the tool
+      - "glistmaker --version | sed -e 's/glistmaker v//g' ":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - genometester4:
+          type: string
+          description: The name of the tool
+      - "glistmaker --version | sed -e 's/glistmaker v//g' ":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@snunzi"
+maintainers:
+  - "@snunzi"

@@ -17,7 +17,7 @@ process SRST2_SRST2 {
     tuple val(meta), path("*_mlst_*_results.txt")     , emit: mlst_results    , optional:true
     tuple val(meta), path("*.pileup")                 , emit: pileup
     tuple val(meta), path("*.sorted.bam")             , emit: sorted_bam
-    path "versions.yml"                               , emit: versions
+    tuple val("${task.process}"), val('srst2'), eval("srst2 --version 2>&1 | sed 's/srst2 //'"), emit: versions_srst2, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,11 +40,6 @@ process SRST2_SRST2 {
         --output ${prefix} \\
         ${database} \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        srst2: \$(echo \$(srst2 --version 2>&1) | sed 's/srst2 //' )
-    END_VERSIONS
     """
 
     stub:
@@ -61,10 +56,5 @@ process SRST2_SRST2 {
     touch ${prefix}.pileup
     touch ${prefix}.sorted.bam
     ${db_cmd}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        srst2: \$(echo \$(srst2 --version 2>&1) | sed 's/srst2 //' )
-    END_VERSIONS
     """
 }

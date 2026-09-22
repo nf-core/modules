@@ -4,7 +4,6 @@ nextflow_process {
     name "Test Process VT_NORMALIZE"
     script "../main.nf"
     process "VT_NORMALIZE"
-    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -40,8 +39,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
 					path(process.out.vcf[0][1]).vcf.variantsMD5,
-					process.out.fai,
-					process.out.versions
+                    sanitizeOutput(process.out, unstableKeys: ["vcf"])
 					).match()
 				}
             )
@@ -77,10 +75,9 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
 					path(process.out.vcf[0][1]).vcf.summary,
-					process.out.fai,
-					process.out.versions
+                    sanitizeOutput(process.out, unstableKeys: ["vcf"])
 					).match()
-				}
+			}
             )
         }
     }
@@ -111,8 +108,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
 					path(process.out.vcf[0][1]).vcf.variantsMD5,
-					process.out.fai,
-					process.out.versions
+                    sanitizeOutput(process.out, unstableKeys: ["vcf"])
 					).match()
 				}
             )
@@ -143,7 +139,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

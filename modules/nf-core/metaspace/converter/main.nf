@@ -17,7 +17,7 @@ process METASPACE_CONVERTER {
     output:
     path("AnnData_${ds_id}.h5ad")    , emit: adata_object
     path("SpatialData_${ds_id}.zarr"), emit: sdata_object
-    path("versions.yml")             , emit: versions
+    path("versions.yml")             , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

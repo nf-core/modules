@@ -28,4 +28,11 @@ process PAIRTOOLS_SELECT {
         --output-rest ${prefix}.unselected.pairs.gz \\
         ${input}
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.selected.pairs.gz
+    echo "" | gzip > ${prefix}.unselected.pairs.gz
+    """
 }

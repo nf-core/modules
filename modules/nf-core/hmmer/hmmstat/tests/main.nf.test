@@ -8,29 +8,16 @@ nextflow_process {
     tag "modules_nfcore"
     tag "hmmer"
     tag "hmmer/hmmstat"
-    tag "gunzip"
-
-    setup {
-        run("GUNZIP") {
-            script "../../../gunzip/main.nf"
-
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.hmm.gz', checkIfExists: true)
-                ]
-                """
-            }
-        }
-    }
 
     test("sarscov2 - proteome - hmm") {
 
         when {
             process {
                 """
-                input[0] = GUNZIP.out.gunzip
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.hmm.gz', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -50,7 +37,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = GUNZIP.out.gunzip
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.hmm.gz', checkIfExists: true)
+                ]
                 """
             }
         }

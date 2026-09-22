@@ -8,6 +8,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "gapseq"
     tag "gapseq/doall"
+    tag "gapseq/requestdb"
     tag "pigz"
     tag "pigz/compress"
 
@@ -23,6 +24,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'generic/csv/MM_glu.csv', checkIfExists: true)
                 ])
+                input[1] = []
                 """
             }
         }
@@ -36,12 +38,11 @@ nextflow_process {
                 { assert process.out.tbl.get(0).get(1).size() >= 2 : "Should have at least 2 .tbl files" },
                 // Validate model file exists (content is unstable so only check filename)
                 { assert process.out.model.get(0).get(1).size() > 0 : "Model file should not be empty" },
+                // Validate xml file exists (SBML format)
+                { assert process.out.xml.get(0).get(1).size() > 0 : "XML file should not be empty" },
                 {
                     assert snapshot(
-                        process.out.log.collect { meta, files -> [meta, files.collect { file(it).getName() }.sort()] },
-                        process.out.model.collect { meta, model -> [meta, (model instanceof List ? model : [model]).collect { file(it).getName() }.sort()] },
-                        process.out.tbl.collect { meta, files -> [meta, files.collect { file(it).getName() }.sort()] },
-                        [versions: process.out.versions_gapseq.collect()]
+                        sanitizeOutput(process.out, unstableKeys: ["model", "xml", "tbl", "log"])
                     ).match()
                 }
             )
@@ -60,6 +61,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true),
                     []
                 ])
+                input[1] = []
                 """
             }
         }
@@ -67,7 +69,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out.model, process.out.tbl, process.out.log, [versions: process.out.versions_gapseq.collect()]).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -75,6 +77,17 @@ nextflow_process {
     test("candidatus_portiera_aleyrodidarum proteome [fasta] + MM_glu medium - stub") {
 
         options "-stub"
+
+        setup {
+            run("GAPSEQ_REQUESTDB") {
+                script "../../requestdb/main.nf"
+                process {
+                    """
+                    input[0] = 'Bacteria'
+                    """
+                }
+            }
+        }
 
         when {
             process {
@@ -84,6 +97,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'generic/csv/MM_glu.csv', checkIfExists: true)
                 ])
+                input[1] = GAPSEQ_REQUESTDB.out.db
                 """
             }
         }
@@ -91,7 +105,7 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out.model, process.out.tbl, process.out.log, [versions: process.out.versions_gapseq.collect()]).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

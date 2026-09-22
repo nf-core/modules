@@ -16,7 +16,8 @@ process VCF2MAF {
 
     output:
     tuple val(meta), path("*.maf"), emit: maf
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('vcf2maf'), val("1.6.22"), emit: versions_vcf2maf, topic: versions
+    tuple val("${task.process}"), val('ensemblvep'), eval('vep --help 2>&1 | sed -n "s/^  ensembl-vep *: //p"'), emit: versions_ensemblvep, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -42,11 +43,6 @@ process VCF2MAF {
         --ref-fasta $fasta \\
         --input-vcf $vcf \\
         --output-maf ${prefix}.maf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vcf2maf: $VERSION\$VEP_VERSION
-    END_VERSIONS
     """
 
     stub:
@@ -60,10 +56,5 @@ process VCF2MAF {
     fi
 
     touch ${prefix}.maf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vcf2maf: $VERSION\$VEP_VERSION
-    END_VERSIONS
     """
 }

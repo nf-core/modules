@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "mdust"
-description: mdust from DFCI Gene Indices Software Tools for masking low-complexity
-  DNA sequences
+description: mdust from DFCI Gene Indices Software Tools for masking
+  low-complexity DNA sequences
 keywords:
   - genomics
   - dna
@@ -14,7 +13,8 @@ tools:
       homepage: "https://github.com/lh3/mdust"
       documentation: "https://github.com/lh3/mdust"
       tool_dev_url: "https://github.com/lh3/mdust"
-      licence: ["The Artistic License"]
+      licence:
+        - "The Artistic License"
       identifier: ""
 
 input:
@@ -42,13 +42,29 @@ output:
           pattern: "*.{fasta}"
           ontologies:
             - edam: http://edamontology.org/format_1929
+  versions_mdust:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mdust:
+          type: string
+          description: The name of the tool
+      - 2006.10.17:
+          type: string
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mdust:
+          type: string
+          description: The name of the tool
+      - 2006.10.17:
+          type: string
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@GallVp"
 maintainers:

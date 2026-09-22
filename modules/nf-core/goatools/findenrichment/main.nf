@@ -13,7 +13,7 @@ process GOATOOLS_FINDENRICHMENT {
     path(goslim)
 
     output:
-    tuple val(meta), path("*.tsv"), emit: tsv
+    tuple val(meta), path("*.tsv"), emit: tsv, optional: true
     tuple val("${task.process}"), val('goatools'), eval("goatools --version"), topic: versions, emit: versions_goatools
 
     when:

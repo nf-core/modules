@@ -16,10 +16,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:false ], // meta map
-				    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test1.contigs.fa.gz', checkIfExists: true)
-				]
-
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test1.contigs.fa.gz', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -28,14 +27,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-					process.out.smorfs,
-					path(process.out.all_orfs[0][1]).linesGzip[0],
-					process.out.amp_prediction,
-					process.out.readme_file,
-					file(process.out.log_file[0][1]).name,
-					process.out.versions
-					).match()
-				}
+                    sanitizeOutput(process.out, unstableKeys:["log_file"]),
+                    path(process.out.all_orfs[0][1]).linesGzip[0]
+                ).match()}
             )
         }
     }
@@ -47,10 +41,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:false ], // meta map
-				    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test1.contigs.fa.gz', checkIfExists: true)
-				]
-
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/illumina/fasta/test1.contigs.fa.gz', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -58,7 +51,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

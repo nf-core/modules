@@ -1,6 +1,6 @@
 name: sentieon_dnascope
-description: DNAscope algorithm performs an improved version of Haplotype variant
-  calling.
+description: DNAscope algorithm performs an improved version of Haplotype
+  variant calling.
 keywords:
   - dnascope
   - sentieon
@@ -31,8 +31,8 @@ input:
         ontologies: []
     - intervals:
         type: file
-        description: bed or interval_list file containing interval in the reference
-          that will be used in the analysis
+        description: bed or interval_list file containing interval in the
+          reference that will be used in the analysis
         pattern: "*.{bed,interval_list}"
         ontologies: []
   - - meta2:
@@ -62,14 +62,15 @@ input:
         description: Single Nucleotide Polymorphism database (dbSNP) file
         pattern: "*.vcf.gz"
         ontologies:
-          - edam: http://edamontology.org/format_3989 # GZIP format
+          - edam: http://edamontology.org/format_3989
   - - meta5:
         type: map
         description: |
           Groovy Map containing meta information for dbsnp_tbi.
     - dbsnp_tbi:
         type: file
-        description: Index of the Single Nucleotide Polymorphism database (dbSNP) file
+        description: Index of the Single Nucleotide Polymorphism database (dbSNP)
+          file
         pattern: "*.vcf.gz.tbi"
         ontologies: []
   - - meta6:
@@ -108,7 +109,7 @@ output:
           description: Compressed VCF file
           pattern: "*.unfiltered.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   vcf_tbi:
     - - meta:
           type: map
@@ -131,7 +132,7 @@ output:
           description: Compressed GVCF file
           pattern: "*.g.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   gvcf_tbi:
     - - meta:
           type: map
@@ -151,7 +152,7 @@ output:
           type: string
           description: The tool name
       - sentieon driver --version | sed "s/.*-//g":
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 topics:
   versions:
@@ -162,7 +163,7 @@ topics:
           type: string
           description: The tool name
       - sentieon driver --version | sed "s/.*-//g":
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 authors:
   - "@ramprasadn"

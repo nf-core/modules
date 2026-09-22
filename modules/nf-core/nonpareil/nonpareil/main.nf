@@ -17,7 +17,7 @@ process NONPAREIL_NONPAREIL {
     tuple val(meta), path("*.npc"), emit: npc
     tuple val(meta), path("*.npl"), emit: npl
     tuple val(meta), path("*.npo"), emit: npo
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('nonpareil'), eval('nonpareil -V 2>&1 | sed "s/Nonpareil v//"'), emit: versions_nonpareil, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,11 +35,6 @@ process NONPAREIL_NONPAREIL {
         -R ${mem_mb} \\
         -b $prefix \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        nonpareil: \$(echo \$(nonpareil -V 2>&1) | sed 's/Nonpareil v//' )
-    END_VERSIONS
     """
 
     stub:
@@ -49,10 +44,5 @@ process NONPAREIL_NONPAREIL {
     touch ${prefix}.npc
     touch ${prefix}.npl
     touch ${prefix}.npo
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        nonpareil: \$(echo \$(nonpareil -V 2>&1) | sed 's/Nonpareil v//' )
-    END_VERSIONS
     """
 }

@@ -14,6 +14,11 @@ tools:
       documentation: https://github.com/DerrickWood/kraken2/wiki/Manual
       tool_dev_url: "https://github.com/DerrickWood/kraken2"
       doi: 10.1186/s13059-019-1891-0
+      publication:
+        author: "Wood D.E., Lu J. & Langmead B."
+        year: 2019
+        title: "Improved metagenomic analysis with Kraken 2"
+        source: "Genome Biology"
       licence:
         - "MIT"
       args_id: "$args"
@@ -106,16 +111,6 @@ output:
           pattern: "*.{dmp,accession2taxid}"
           ontologies:
             - edam: http://edamontology.org/data_3028 # Taxonomy
-  versions_kraken2:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - kraken2:
-          type: string
-          description: The name of the tool
-      - kraken2 --version 2>&1 | head -1 | sed "s/^.*Kraken version //; s/ .*//":
-          type: eval
-          description: The expression to obtain the version of the tool
   unmapped:
     - - meta:
           type: map
@@ -130,6 +125,16 @@ output:
           pattern: "unmapped*.txt"
           ontologies:
             - edam: http://edamontology.org/data_2526 # Text data
+  versions_kraken2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kraken2:
+          type: string
+          description: The name of the tool
+      - kraken2 --version 2>&1 | head -1 | sed "s/^.*Kraken version //; s/ .*//":
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:

@@ -12,7 +12,7 @@ process ODGI_SORT {
 
     output:
     tuple val(meta), path("*.og"), emit: sorted_graph
-    path "versions.yml"          , emit: versions
+    tuple val("${task.process}"), val('odgi'), eval("odgi version | sed 's/^v//; s/-.*//'"), emit: versions_odgi, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,9 +27,11 @@ process ODGI_SORT {
         --idx ${graph} \\
         --out ${prefix}.og \\
         $args
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        odgi: \$(echo \$(odgi version 2>&1) | cut -f 1 -d '-' | cut -f 2 -d 'v')
-    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.og
     """
 }

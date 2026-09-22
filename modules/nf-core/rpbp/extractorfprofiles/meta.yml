@@ -1,0 +1,104 @@
+name: "rpbp_extractorfprofiles"
+description: |
+  Build a per-ORF P-site count vector for every candidate open reading
+  frame (ORF) in the catalogue. For each ORF, walks the spliced exons
+  in 3-nucleotide codon steps and counts the P-site positions
+  (read 5'-end coordinate plus the length-specific offset selected
+  upstream) that fall in each codon. Counts are summed across all read
+  lengths that passed the periodicity filter from
+  `rpbp/getperiodiclengthsoffsets`.
+
+  The resulting per-ORF vectors are the input to Bayesian translation
+  scoring in `rpbp/estimateorfbayesfactors`: a translated ORF should
+  show P-site density concentrated at codon-start positions, while a
+  non-translated region should look flat or noisy. Emitted as a sparse
+  matrix (one row per ORF, columns indexed by codon position).
+keywords:
+  - rpbp
+  - orf
+  - psite
+  - profile
+  - riboseq
+tools:
+  - "rpbp":
+      description: "Rp-Bp - Bayesian inference of ribosome profiling data for identifying translated open reading frames"
+      homepage: "https://github.com/dieterich-lab/rp-bp"
+      documentation: "https://rp-bp.readthedocs.io"
+      tool_dev_url: "https://github.com/dieterich-lab/rp-bp"
+      doi: "10.1093/nar/gkw1350"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information, e.g. `[ id:'sample1' ]`.
+    - bam:
+        type: file
+        description: Sorted Ribo-seq BAM.
+        pattern: "*.bam"
+        ontologies: []
+    - bai:
+        type: file
+        description: BAM index.
+        pattern: "*.bai"
+        ontologies: []
+    - lengths_offsets:
+        type: file
+        description: Per-read-length offsets TSV from `rpbp/getperiodiclengthsoffsets`.
+        pattern: "*.periodic_lengths_offsets.tsv"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map identifying the reference (e.g. `[ id:'reference' ]`).
+    - orfs_genomic_bed:
+        type: file
+        description: Per-ORF genomic BED from `rpbp/preparegenome`.
+        pattern: "*.orfs-genomic.annotated.bed.gz"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map identifying the reference (e.g. `[ id:'reference' ]`).
+    - exons_bed:
+        type: file
+        description: Per-ORF exons BED from `rpbp/preparegenome`.
+        pattern: "*.orfs-exons.annotated.bed.gz"
+        ontologies: []
+output:
+  profiles:
+    - - meta:
+          type: map
+          description: Groovy Map inherited from input meta.
+      - "${prefix}.mtx.gz":
+          type: file
+          description: Per-ORF P-site profile sparse matrix.
+          pattern: "*.mtx.gz"
+          ontologies: []
+  versions_rpbp:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rpbp:
+          type: string
+          description: The name of the tool
+      - python -c "import rpbp; print(rpbp.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rpbp:
+          type: string
+          description: The name of the tool
+      - python -c "import rpbp; print(rpbp.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"

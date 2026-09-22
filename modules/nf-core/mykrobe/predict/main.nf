@@ -14,7 +14,7 @@ process MYKROBE_PREDICT {
     output:
     tuple val(meta), path("${prefix}.csv") , emit: csv
     tuple val(meta), path("${prefix}.json"), emit: json
-    path "versions.yml"                    , emit: versions
+    tuple val("${task.process}"), val('mykrobe'),  eval("mykrobe --version 2>&1 | sed 's/^.*mykrobe v//'"), topic: versions, emit: versions_mykrobe
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,18 +25,13 @@ process MYKROBE_PREDICT {
     """
     mykrobe \\
         predict \\
-        $args \\
-        --species $species \\
-        --threads $task.cpus \\
-        --sample $prefix \\
+        ${args} \\
+        --species ${species} \\
+        --threads ${task.cpus} \\
+        --sample ${prefix} \\
         --format json_and_csv \\
         --output ${prefix} \\
-        --seq $seqs
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mykrobe: \$(echo \$(mykrobe --version 2>&1) | sed 's/^.*mykrobe v//' )
-    END_VERSIONS
+        --seq ${seqs}
     """
 
     stub:
@@ -44,10 +39,5 @@ process MYKROBE_PREDICT {
     """
     touch ${prefix}.csv
     touch ${prefix}.json
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mykrobe: \$(echo \$(mykrobe --version 2>&1) | sed 's/^.*mykrobe v//' )
-    END_VERSIONS
     """
 }

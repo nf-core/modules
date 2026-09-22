@@ -2,24 +2,27 @@
     "ampcombi2_parsetables - metagenome": {
         "content": [
             [
-                "sample_1",
-                false,
-                "amp_DRAMP_database",
-                {
-                    "versions_ampcombi": [
-                        [
-                            "AMPCOMBI2_PARSETABLES",
-                            "ampcombi",
-                            "3.0.0"
-                        ]
+                "sample_1"
+            ],
+            true,
+            true,
+            [
+                "amp_APD_database"
+            ],
+            {
+                "versions_ampcombi": [
+                    [
+                        "AMPCOMBI2_PARSETABLES",
+                        "ampcombi",
+                        "3.0.0"
                     ]
-                }
-            ]
+                ]
+            }
         ],
-        "timestamp": "2026-04-23T19:09:35.917379447",
+        "timestamp": "2026-06-12T15:33:40.134609032",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "25.10.4"
+            "nextflow": "26.04.3"
         }
     },
     "ampcombi2_parsetables - metagenome - stub": {
@@ -43,10 +46,18 @@
                         {
                             "id": "sample_1"
                         },
-                        "Ampcombi_parse_tables.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "sample_1_ampcombi.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "2": [
+                    [
+                        {
+                            "id": "sample_1"
+                        },
+                        "Ampcombi_parse_tables.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "3": [
                     [
                         {
                             "id": "sample_1"
@@ -67,7 +78,7 @@
                         ]
                     ]
                 ],
-                "3": [
+                "4": [
                     [
                         "AMPCOMBI2_PARSETABLES",
                         "ampcombi",
@@ -116,6 +127,14 @@
                         ]
                     ]
                 ],
+                "tsv": [
+                    [
+                        {
+                            "id": "sample_1"
+                        },
+                        "sample_1_ampcombi.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
                 "versions_ampcombi": [
                     [
                         "AMPCOMBI2_PARSETABLES",
@@ -125,10 +144,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-04-23T19:17:18.712188072",
+        "timestamp": "2026-06-12T14:49:48.909595472",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "25.10.4"
+            "nextflow": "26.04.3"
         }
     }
 }

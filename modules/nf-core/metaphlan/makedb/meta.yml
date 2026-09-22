@@ -20,13 +20,27 @@ output:
         type: directory
         description: Output directory containing the indexed METAPHLAN database
         pattern: "*/"
+  versions_metaphlan:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - metaphlan:
+          type: string
+          description: The tool name
+      - "metaphlan --version 2>&1 | cut -d ' ' -f 3":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - metaphlan:
+          type: string
+          description: The tool name
+      - "metaphlan --version 2>&1 | cut -d ' ' -f 3":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@LilyAnderssonLee"
 maintainers:

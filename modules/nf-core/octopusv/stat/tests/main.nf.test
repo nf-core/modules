@@ -10,7 +10,7 @@ nextflow_process {
     tag "octopusv"
     tag "octopusv/stat"
 
-    test("homo_sapiens - txt + html") {
+    test("legacy txt + html") {
 
         when {
             params {
@@ -29,6 +29,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert process.out.json.isEmpty() },
                 { assert file(process.out.html.get(0).get(1)).name == "test.html" },
                 { assert snapshot(
                     process.out.txt,
@@ -39,7 +40,36 @@ nextflow_process {
 
     }
 
-    test("homo_sapiens - txt - stub") {
+    test("json + html") {
+
+        when {
+            params {
+                module_args = '--json --report'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/octopusv/sk-n-as-severus-ont.svcf', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.txt.isEmpty() },
+                { assert file(process.out.html.get(0).get(1)).name == "test.html" },
+                { assert snapshot(
+                    process.out.json,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("txt - stub") {
 
         options "-stub"
 

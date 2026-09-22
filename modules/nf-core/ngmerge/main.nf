@@ -14,7 +14,7 @@ process NGMERGE {
     tuple val(meta), path("*.merged.fq.gz"), emit: merged_reads
     tuple val(meta), path("*_1.fastq.gz")  , emit: unstitched_read1
     tuple val(meta), path("*_2.fastq.gz")  , emit: unstitched_read2
-    path "versions.yml"                    , emit: versions
+    tuple val("${task.process}"), val('ngmerge'), eval("NGmerge --version 2>&1 | sed -n '1s/^NGmerge, version //p'"), emit: versions_ngmerge, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,12 +32,6 @@ process NGMERGE {
         -z \\
         -n $task.cpus \\
         $args
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        NGmerge: \$(echo \$(NGmerge --version 2>&1) | sed 's/^.*NGmerge, version //; s/ Copyright.*// ; s/: //g' ))
-    END_VERSIONS
     """
 
     stub:
@@ -45,10 +39,5 @@ process NGMERGE {
 
     """
     echo "" | gzip > ${prefix}.merged.fq.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        NGmerge: \$(echo \$(NGmerge --version 2>&1) | sed 's/^.*NGmerge, version //; s/ Copyright.*// ; s/: //g' ))
-    END_VERSIONS
     """
 }

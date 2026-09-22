@@ -28,6 +28,19 @@ input:
         ontologies:
           - edam: "http://edamontology.org/format_3016"
 output:
+  json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.json":
+          type: file
+          description: A JSON file containing the statistics of the structural
+            variants in the input VCF
+          pattern: "*.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464"
   txt:
     - - meta:
           type: map
@@ -36,8 +49,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*.txt":
           type: file
-          description: A TXT file containing the statistics of the structural
-            variants in the input VCF
+          description: Legacy text file containing structural variant statistics
           pattern: "*.txt"
           ontologies:
             - edam: "http://edamontology.org/format_2330"

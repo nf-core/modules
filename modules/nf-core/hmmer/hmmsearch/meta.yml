@@ -14,7 +14,8 @@ tools:
       doi: "10.1371/journal.pcbi.1002195"
       licence:
         - "BSD"
-      identifier: ""
+      identifier: "biotools:hmmer"
+      args_id: "$args"
 input:
   - - meta:
         type: map
@@ -25,12 +26,16 @@ input:
         type: file
         description: One or more HMM profiles created with hmmbuild
         pattern: "*.{hmm,hmm.gz}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/data_1364 # HMM
+          - edam: http://edamontology.org/format_3989 # GZIP format
     - seqdb:
         type: file
         description: Database of sequences in FASTA format
         pattern: "*.{fasta,fna,faa,fa,fasta.gz,fna.gz,faa.gz,fa.gz}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_3989 # GZIP format
     - write_align:
         type: boolean
         description: Flag to save optional alignment output. Specify with 'true'
@@ -54,7 +59,9 @@ output:
           type: file
           description: Human readable output summarizing hmmsearch results
           pattern: "*.{txt.gz}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Textual format
+            - edam: http://edamontology.org/format_3989 # GZIP format
   alignments:
     - - meta:
           type: map
@@ -66,7 +73,9 @@ output:
           description: Optional multiple sequence alignment (MSA) in Stockholm
             format
           pattern: "*.{sto.gz}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_1961 # Stockholm format
+            - edam: http://edamontology.org/format_3989 # GZIP format
   target_summary:
     - - meta:
           type: map
@@ -78,7 +87,8 @@ output:
           description: Optional tabular (space-delimited) summary of per-target
             output
           pattern: "*.{tbl.gz}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
   domain_summary:
     - - meta:
           type: map
@@ -90,7 +100,8 @@ output:
           description: Optional tabular (space-delimited) summary of per-domain
             output
           pattern: "*.{domtbl.gz}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
   versions_hmmer:
     - - ${task.process}:
           type: string

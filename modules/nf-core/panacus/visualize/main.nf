@@ -12,7 +12,7 @@ process PANACUS_VISUALIZE {
 
     output:
     tuple val(meta), path("*.{eps,jpg,jpeg,pdf,pgf,png,ps,raw,rgba,svg,svgz,tif,tiff,webp}"), emit: image
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('panacus'), eval("panacus --version | sed 's/panacus //'") , emit: versions_panacus, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,14 +38,9 @@ process PANACUS_VISUALIZE {
     def output_pipe = args.contains("--split_subfigures") ? "" : "> ${prefix}.${extension}"
     """
     panacus-visualize \\
-        $args \\
-        $tsv \\
-        $output_pipe
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        panacus: \$(echo \$(panacus --version) | sed 's/^panacus //' ))
-    END_VERSIONS
+        ${args} \\
+        ${tsv} \\
+        ${output_pipe}
     """
 
     stub:
@@ -68,10 +63,5 @@ process PANACUS_VISUALIZE {
                     "pdf"
     """
     touch ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        panacus: \$(echo \$(panacus --version) | sed 's/^panacus //' ))
-    END_VERSIONS
     """
 }

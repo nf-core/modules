@@ -29,4 +29,10 @@ process PAIRTOOLS_FLIP {
         -o ${prefix}.flip.gz \\
         $sam
     """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.flip.gz
+    """
 }

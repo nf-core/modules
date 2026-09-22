@@ -44,7 +44,7 @@ output:
           type: string
           description: The tool name
       - 'sentieon driver --version | sed "s/.*-//g"':
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 topics:
   versions:
@@ -55,7 +55,7 @@ topics:
           type: string
           description: The tool name
       - 'sentieon driver --version | sed "s/.*-//g"':
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 authors:
   - "@maxulysse"

@@ -13,7 +13,7 @@ process VT_DECOMPOSE {
 
     output:
     tuple val(meta), path("*.vcf.gz")   , emit: vcf
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('vt'), val('2015.11.10'), topic: versions, emit: versions_vt // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,14 +21,13 @@ process VT_DECOMPOSE {
     script:
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_decompose"
 
     if ("$vcf" == "${prefix}.vcf" || "$vcf" == "${prefix}.vcf.gz") {
         error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     }
 
     def bed = intervals ? "-i ${intervals}" : ""
-    def VERSION = "2015.11.10" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
     vt decompose \\
@@ -38,28 +37,16 @@ process VT_DECOMPOSE {
         ${vcf}
 
     bgzip ${args2} --threads ${task.cpus} ${prefix}.vcf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vt: ${VERSION}
-    END_VERSIONS
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_decompose"
 
     if ("$vcf" == "${prefix}.vcf" || "$vcf" == "${prefix}.vcf.gz") {
         error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     }
 
-    def VERSION = "2015.11.10" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
     """
     echo "" | gzip > ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vt: ${VERSION}
-    END_VERSIONS
     """
 }
