@@ -21,7 +21,7 @@ process VUEGEN {
     """
         # Validate quarto_check flag if using a conda environment
         if [[ "${task.conda}" != "null" ]]; then
-            QUARTO_CHECK_FLAG="--quarto_checks"
+            QUARTO_CHECK_FLAG="--quarto-checks"
         else
             QUARTO_CHECK_FLAG=""
         fi
@@ -44,10 +44,10 @@ process VUEGEN {
         # Execute VueGen based on the input type
         if [ "${input_type}" == "config" ]; then
             echo "Running VueGen with config file: ${input_path}"
-            vuegen --config ${input_path} --report_type ${report_type} \$QUARTO_CHECK_FLAG ${args}
+            vuegen --config ${input_path} --report-type ${report_type} \$QUARTO_CHECK_FLAG ${args}
         elif [ "${input_type}" == "directory" ]; then
             echo "Running VueGen with directory: ${input_path}"
-            vuegen --directory ${input_path} --report_type ${report_type} \$QUARTO_CHECK_FLAG ${args}
+            vuegen --directory ${input_path} --report-type ${report_type} \$QUARTO_CHECK_FLAG ${args}
         fi
         """
 
