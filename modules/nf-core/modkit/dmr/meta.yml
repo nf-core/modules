@@ -1,0 +1,122 @@
+name: modkit_dmr
+description: Compare regions between a pair of bedMethyl samples (e.g. two haplotypes,
+  or tumor and normal) and report differentially methylated regions
+keywords:
+  - methylation
+  - ont
+  - long-read
+  - differential methylation
+tools:
+  - "modkit":
+      description: A bioinformatics tool for working with modified bases in Oxford
+        Nanopore sequencing data
+      homepage: https://github.com/nanoporetech/modkit
+      documentation: https://github.com/nanoporetech/modkit
+      tool_dev_url: https://github.com/nanoporetech/modkit
+      licence: ["Oxford Nanopore Technologies PLC. Public License Version 1.0"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information for the first (control) input
+          e.g. `[ id:'test' ]`
+    - bedmethyl_a:
+        type: file
+        description: Bgzipped bedMethyl file for the first (control) sample, as
+          produced by modkit pileup with --bgzf
+        pattern: "*.bed.gz"
+        ontologies: []
+    - bedmethyl_a_tbi:
+        type: file
+        description: Tabix index for bedmethyl_a. Must have the same basename with
+          a .tbi extension next to bedmethyl_a
+        pattern: "*.bed.gz.tbi"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information for the second (experimental)
+          input e.g. `[ id:'test' ]`
+    - bedmethyl_b:
+        type: file
+        description: Bgzipped bedMethyl file for the second (experimental) sample,
+          as produced by modkit pileup with --bgzf
+        pattern: "*.bed.gz"
+        ontologies: []
+    - bedmethyl_b_tbi:
+        type: file
+        description: Tabix index for bedmethyl_b. Must have the same basename with
+          a .tbi extension next to bedmethyl_b
+        pattern: "*.bed.gz.tbi"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing regions information
+          e.g. `[ id:'regions' ]`
+    - regions_bed:
+        type: file
+        description: Optional BED file of regions over which to compare methylation
+          levels. When omitted, methylation levels are compared at each site instead
+        pattern: "*.bed"
+        ontologies: []
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'hg38' ]`
+    - fasta:
+        type: file
+        description: Reference sequence in FASTA format, used during pileup/alignment
+        pattern: "*.{fa,fasta}"
+        ontologies: []
+output:
+  bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.bed":
+          type: file
+          description: BED file with the score column indicating the magnitude of
+            the difference in methylation between the two samples
+          pattern: "*.bed"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*.log":
+          type: file
+          description: File for debug logs to be written to
+          pattern: "*.log"
+          ontologies: []
+  versions_modkit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - modkit:
+          type: string
+          description: The name of the tool
+      - modkit --version | sed 's/modkit //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - modkit:
+          type: string
+          description: The name of the tool
+      - modkit --version | sed 's/modkit //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@YannVRB"
+maintainers:
+  - "@YannVRB"
