@@ -211,6 +211,21 @@ output:
           pattern: "*/*_updated_delta.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
+  stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}/${prefix}_updated_stats.json:
+          type: file
+          description: Optional. MultiQC-ready summary of the run - family counts,
+            discard reasons, and histograms of full MSA size, model length and
+            representative length, plus model length change, rounds run and
+            retention. Written only after a completed run
+          pattern: "*/*_updated_stats.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
   versions_mgnifam:
     - - ${task.process}:
           type: string
