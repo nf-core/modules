@@ -24,25 +24,25 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - input_normal:
-        type: file
-        description: BAM/CRAM file from normal sample
-        pattern: "*.{bam,cram}"
-        ontologies: []
-    - index_normal:
-        type: file
-        description: Index of normal BAM/CRAM file
-        pattern: "*.{bai,crai}"
-        ontologies: []
     - input_tumor:
         type: file
-        description: BAM/CRAM file from tumor sample
-        pattern: "*.{bam,cram}"
+        description: BAM file from tumor sample
+        pattern: "*.bam"
         ontologies: []
     - index_tumor:
         type: file
-        description: Index of tumor BAM/CRAM file
-        pattern: "*.{bai,crai}"
+        description: Index of tumor BAM file
+        pattern: "*.bai"
+        ontologies: []
+    - input_normal:
+        type: file
+        description: BAM file from matched normal sample (required; tumor-only mode is not supported)
+        pattern: "*.bam"
+        ontologies: []
+    - index_normal:
+        type: file
+        description: Index of normal BAM file
+        pattern: "*.bai"
         ontologies: []
   - - meta2:
         type: map
@@ -78,7 +78,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}.vcf.gz:
+      - ${prefix}/${prefix}.vcf.gz:
           type: file
           description: Compressed VCF file
           pattern: "*.vcf.gz"
@@ -92,8 +92,8 @@ output:
       - varnet:
           type: string
           description: The name of the tool
-      - "1.5.0":
-          type: eval
+      - "1.5.3":
+          type: string
           description: The expression to obtain the version of the tool
 topics:
   versions:
@@ -103,8 +103,8 @@ topics:
       - varnet:
           type: string
           description: The name of the tool
-      - "1.5.0":
-          type: eval
+      - "1.5.3":
+          type: string
           description: The expression to obtain the version of the tool
 authors:
   - "@kiranchari"
