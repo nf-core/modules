@@ -21,7 +21,8 @@ nextflow_process {
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
-                    ]
+                    ],
+                    "",
                 ]
                 input[1] = Channel.of('FNR == NR { if (FNR == 1) next; trait1[\$2] = \$3; next } FNR == 1 { next } { print \$1, \$2, trait1[\$2], \$4 }').collectFile(name:'bivariate_phenotype.awk')
                 input[2] = false
@@ -35,7 +36,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'BinaryTrait1__BinaryTrait2' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true),
+                    "",
                 ]
                 input[1] = Channel.of('FNR == 1 { next } { print \$1, \$2, (NR % 2) + 1, (NR % 3 == 0 ? 2 : 1) }').collectFile(name:'bivariate_binary_phenotype.awk')
                 input[2] = false
@@ -49,7 +51,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'covariates_quant' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true),
+                    "",
                 ]
                 input[1] = Channel.of('FNR == 1 { next } { print \$1, \$2, \$5, \$6 }').collectFile(name:'quantitative_covariates.awk')
                 input[2] = false
@@ -63,7 +66,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'covariates_cat' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true),
+                    "",
                 ]
                 input[1] = Channel.of('FNR == 1 { next } { print \$1, \$2, \$3 }').collectFile(name:'categorical_covariates.awk')
                 input[2] = false

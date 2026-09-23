@@ -4,9 +4,9 @@ process AMULETY_ESM2 {
     label 'process_gpu'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/amulety_igblast:b2a7736f645c40e5':
-        'community.wave.seqera.io/library/amulety_igblast:659eaa872785adeb' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ae/ae2be6d5fd5a4e1024b78eb1acdfdcb6aab4326f002e98d7c2c97ef00aa979e2/data'
+:         'community.wave.seqera.io/library/amulety:1.1--5abbe5fc5e136fd3' }"
 
     input:
     tuple val(meta), path(tsv)
@@ -14,7 +14,7 @@ process AMULETY_ESM2 {
 
     output:
     tuple val(meta), path("*.tsv"), emit: embedding
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('amulety'), eval("amulety --help 2>&1 | grep -o 'version [0-9\\.]\\+' | grep -o '[0-9\\.]\\+'"), emit: versions_amulety, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
