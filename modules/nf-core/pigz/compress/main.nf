@@ -29,6 +29,6 @@ process PIGZ_COMPRESS {
     stub:
     archive = raw_file.toString() + ".gz"
     """
-    touch ${archive}
+    echo "" | gzip > ${archive}
     """
 }
