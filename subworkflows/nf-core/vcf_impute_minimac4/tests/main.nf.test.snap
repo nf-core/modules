@@ -1,58 +1,5 @@
 {
-    "homo_sapiens - empty channels - stub": {
-        "content": [
-            {
-                "vcf_index": [
-                    [
-                        {
-                            "id": "NA12878",
-                            "chr": "chr21"
-                        },
-                        "NA12878_chr21.ligate.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
-                        "NA12878_chr21.ligate.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ],
-                    [
-                        {
-                            "id": "NA12878",
-                            "chr": "chr22"
-                        },
-                        "NA12878_chr22.ligate.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
-                        "NA12878_chr22.ligate.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ]
-            }
-        ],
-        "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.3"
-        },
-        "timestamp": "2026-02-06T14:00:03.826506456"
-    },
-    "Impute with minimac4 one vcf no map, no chunks, panel as vcf": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "NA12878",
-                        "chr": "chr22"
-                    },
-                    "NA12878_chr22.ligate.vcf.gz",
-                    "NA12878_chr22.ligate.vcf.gz.csi",
-                    "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=903, phased=true, phasedAutodetect=true]",
-                    [
-                        "NA12878"
-                    ],
-                    "a0615a8a5ce53f496ac691c5fc82a44"
-                ]
-            ]
-        ],
-        "timestamp": "2026-02-06T13:59:19.018377713",
-        "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.3"
-        }
-    },
-        "Impute with minimac4 one vcf with map, chunks, panel as vcf": {
+    "Impute with minimac4 one vcf with map, chunks, panel as vcf": {
         "content": [
             [
                 [
@@ -84,6 +31,59 @@
             ]
         ],
         "timestamp": "2026-02-06T13:59:40.57579231",
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        }
+    },
+    "homo_sapiens - empty channels - stub": {
+        "content": [
+            {
+                "vcf_index": [
+                    [
+                        {
+                            "chr": "chr21",
+                            "id": "NA12878"
+                        },
+                        "NA12878_chr21.ligate.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                        "NA12878_chr21.ligate.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ],
+                    [
+                        {
+                            "chr": "chr22",
+                            "id": "NA12878"
+                        },
+                        "NA12878_chr22.ligate.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                        "NA12878_chr22.ligate.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-09-23T19:37:41.918058806",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "Impute with minimac4 one vcf no map, no chunks, panel as vcf": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "NA12878",
+                        "chr": "chr22"
+                    },
+                    "NA12878_chr22.ligate.vcf.gz",
+                    "NA12878_chr22.ligate.vcf.gz.csi",
+                    "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=903, phased=true, phasedAutodetect=true]",
+                    [
+                        "NA12878"
+                    ],
+                    "a0615a8a5ce53f496ac691c5fc82a44"
+                ]
+            ]
+        ],
+        "timestamp": "2026-02-06T13:59:19.018377713",
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.3"
