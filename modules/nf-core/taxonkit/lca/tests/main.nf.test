@@ -1,0 +1,100 @@
+nextflow_process {
+
+    name "Test Process TAXONKIT_LCA"
+    script "../main.nf"
+    process "TAXONKIT_LCA"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "untar"
+    tag "taxonkit"
+    tag "taxonkit/lca"
+
+    setup {
+        run("UNTAR"){
+            script "modules/nf-core/untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdump/taxdump.tar.gz', checkIfExists:true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("haemophilus - taxids") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    "712 724",
+                    []
+                ]
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("haemophilus - file") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of( [
+                    [ id:'test', single_end:false ], // meta map
+                    ''
+                ] ).combine( Channel.of("712 724").collectFile( name:'taxids.txt', newLine: true ) )
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("haemophilus - taxids - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    "712 724",
+                    []
+                ]
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
