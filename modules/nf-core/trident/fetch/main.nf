@@ -8,23 +8,12 @@ process TRIDENT_FETCH {
         : 'quay.io/biocontainers/poseidon-trident:2.2.2.1--hf7d7819_0'}"
 
     input:
-    tuple path(archive_dir), val(fetch_s), path(fetch_fn)
+    tuple path(archive_dir, stageAs: "archive"), val(fetch_s), path(fetch_fn)
 
     output:
-    // All outputs are optional as fetch will check if the package already exists in the provided archive directories, and skip download if so.
-    path "output_archive/*/POSEIDON.yml", emit: poseidon_yml, optional: true
-    path "output_archive/*/*.{vcf,vcf.gz}", emit: geno_vcf, optional: true
-    path "output_archive/*/*.{bed,bed.gz}", emit: geno_plink, optional: true
-    path "output_archive/*/*.{bim,bim.gz}", emit: snp_plink, optional: true
-    path "output_archive/*/*.{fam,fam.gz}", emit: ind_plink, optional: true
-    path "output_archive/*/*.{geno,geno.gz}", emit: geno_eigenstrat, optional: true
-    path "output_archive/*/*.{snp,snp.gz}", emit: snp_eigenstrat, optional: true
-    path "output_archive/*/*.{ind,ind.gz}", emit: ind_eigenstrat, optional: true
-    path "output_archive/*/*.janno", emit: janno, optional: true
-    path "output_archive/*/*.ssf", emit: ssf, optional: true
-    path "output_archive/*/*.bib", emit: bib, optional: true
-    path "output_archive/*/CHANGELOG.md", emit: changelog, optional: true
-    path "output_archive/*/README.md", emit: readme, optional: true
+    // The local archive directory given as input, if any, is emitted as an output to allow for downstream processes to use it. Defaults to "output_archive" if no archive_dir is provided as input.
+    path "${output_archive_dir}", type: 'dir', emit: local_archive, optional: true, includeInputs: true
+    path "output_archive/*", type: 'dir', emit: downloaded_packages, optional: true
     tuple val("${task.process}"), val('trident'), eval('trident --version'), emit: versions_trident, topic: versions
 
     when:
@@ -37,6 +26,7 @@ process TRIDENT_FETCH {
     // fetch will always download to the first directory provided in `-d`, but check all provided dirs for already downloaded packages.
     // Handle multiple archive directories if provided
     def archives = archive_dir ? '-d ' + archive_dir.join(" -d ") : ''
+    output_archive_dir = archive_dir ? archive_dir[0] : 'output_archive'
     """
     trident fetch\\
         -d output_archive/ \\
@@ -51,14 +41,15 @@ process TRIDENT_FETCH {
     def fetch_string = fetch_s ? "--fetchString ${fetch_s}" : ''
     def fetch_file = fetch_fn ? "--fetchFile ${fetch_fn}" : ''
     def archives = archive_dir ? archive_dir.join(" -d ") : ''
+    output_archive_dir = archive_dir ? archive_dir[0] : 'output_archive'
     """
-    echo ${archives} ${fetch_string} ${fetch_file} ${args}
+    echo trident fetch ${archives} ${fetch_string} ${fetch_file} ${args}
 
-    mkdir dummy_package_dir
-    touch dummy_package_dir/POSEIDON.yml
-    touch dummy_package_dir/dummy_package.geno
-    touch dummy_package_dir/dummy_package.snp
-    touch dummy_package_dir/dummy_package.ind
-    touch dummy_package_dir/dummy_package.janno
+    mkdir -p output_archive/dummy_package_dir
+    touch output_archive/dummy_package_dir/POSEIDON.yml
+    touch output_archive/dummy_package_dir/dummy_package.geno
+    touch output_archive/dummy_package_dir/dummy_package.snp
+    touch output_archive/dummy_package_dir/dummy_package.ind
+    touch output_archive/dummy_package_dir/dummy_package.janno
     """
 }
