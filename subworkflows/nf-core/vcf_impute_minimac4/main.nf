@@ -8,7 +8,6 @@ workflow VCF_IMPUTE_MINIMAC4 {
     take:
     ch_input   // channel (mandatory): [ [id, chr], vcf, tbi ]
     ch_panel   // channel (mandatory): [ [panel, chr], vcf, tbi ]
-    ch_posfile // channel (optional) : [ [panel, chr], sites_vcf, sites_index ]
     ch_chunks  // channel (optional) : [ [panel, chr], regionout ]
     ch_map     // channel (optional) : [ [panel, chr], map]
 
@@ -41,7 +40,6 @@ workflow VCF_IMPUTE_MINIMAC4 {
         }
 
     ch_panel_impute = ch_panel_msav
-        .combine(ch_posfile, by: 0)
         .combine(ch_chunks, by: 0)
         .combine(ch_map, by: 0)
         .combine(ch_chunks_counts, by: 0)
@@ -53,7 +51,7 @@ workflow VCF_IMPUTE_MINIMAC4 {
     // Prepare input channels for MINIMAC4
     ch_minimac4_input = ch_input
         .combine(ch_panel_impute)
-        .map { metaI, target_vcf, target_tbi, metaPC, ref_msav, sites_vcf, sites_index, regionout, map, region_size ->
+        .map { metaI, target_vcf, target_tbi, metaPC, ref_msav, regionout, map, region_size ->
             def regionoutPadded
             if (regionout.contains(':')) {
                 // Handle format like "chr22:1000-2000"
@@ -72,7 +70,6 @@ workflow VCF_IMPUTE_MINIMAC4 {
                 metaPC + metaI + ["regionout": regionout, "regionoutPadded": regionoutPadded, "regionSize": region_size],
                 target_vcf, target_tbi,
                 ref_msav,
-                sites_vcf, sites_index,
                 map,
                 regionout,
             ]

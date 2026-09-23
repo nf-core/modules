@@ -39,19 +39,6 @@ input:
           --compress-reference`
         pattern: "*.{msav}"
         ontologies: []
-    - sites_vcf:
-        type: file
-        description: Sites VCF/BCF file containing the sites to impute
-        pattern: "*.{vcf,bcf,vcf.gz}"
-        ontologies:
-          - edam: "http://edamontology.org/format_3016"
-          - edam: "http://edamontology.org/format_3020"
-    - sites_index:
-        type: file
-        description: Sites VCF/BCF file index
-        pattern: "*.{csi,tbi}"
-        ontologies:
-          - edam: "http://edamontology.org/format_3700"
     - map:
         type: file
         description: Genetic map file
