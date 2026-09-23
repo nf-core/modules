@@ -4,8 +4,8 @@ process MGNIFAM_GENERATEFAMILIES {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mgnifam:3.0.0--pyhdfd78af_0' :
-        'quay.io/biocontainers/mgnifam:3.0.0--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/mgnifam:3.1.0--pyhdfd78af_0' :
+        'quay.io/biocontainers/mgnifam:3.1.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(clustering), path(fasta_file), path(fasta_index)
@@ -22,6 +22,7 @@ process MGNIFAM_GENERATEFAMILIES {
     tuple val(meta), path("${prefix}/${prefix}_successful.txt"), emit: successful, optional: true
     tuple val(meta), path("${prefix}/${prefix}_discarded.csv") , emit: discarded , optional: true
     tuple val(meta), path("${prefix}/${prefix}_converged.txt") , emit: converged , optional: true
+    tuple val(meta), path("${prefix}/${prefix}_stats.json")    , emit: stats     , optional: true
     tuple val("${task.process}"), val('mgnifam'), eval("mgnifam --version 2>&1"), topic: versions, emit: versions_mgnifam
 
     when:
@@ -60,5 +61,6 @@ process MGNIFAM_GENERATEFAMILIES {
     touch ${prefix}/${prefix}_successful.txt
     touch ${prefix}/${prefix}_discarded.csv
     touch ${prefix}/${prefix}_converged.txt
+    touch ${prefix}/${prefix}_stats.json
     """
 }
