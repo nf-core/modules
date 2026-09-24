@@ -30,7 +30,7 @@ process SEQKIT_SAMPLE {
     }
     """
     seqkit \\
-        sample \\
+        sample2 \\
         --threads ${task.cpus} \\
         ${args} \\
         ${fastx} \\
