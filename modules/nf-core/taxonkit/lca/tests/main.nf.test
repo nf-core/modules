@@ -71,6 +71,53 @@ nextflow_process {
 
     }
 
+    test("no_input_passed-fail_with_error") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    [],
+                    []
+                ]
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.stdout.toString().contains("Error: Neither taxids nor taxidsfile provided") }
+            )
+        }
+
+    }
+
+    test("both_inputs_passed-fail_with_error") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of( [
+                    [ id:'test', single_end:false ], // meta map
+                    "712 724"
+                ] ).combine( Channel.of("712 724").collectFile( name:'taxids.txt', newLine: true ) )
+                input[1] = UNTAR.out.untar.map{ it[1] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.stdout.toString().contains("Error: Both taxids and taxidsfile provided, and only one should be passed") }
+            )
+        }
+
+    }
+
     test("haemophilus - taxids - stub") {
 
         options "-stub"
