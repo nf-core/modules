@@ -1,0 +1,10 @@
+test_name: default
+description: Run tblastx with example query and database
+tags:
+  - blasttblastx
+  - modules
+  - modules_nfcore
+params:
+  query: "tests/input/query.fasta"
+  db: "tests/input/blastdb"
+command: nextflow run ../../main.nf -entry blasttblastx -c config/nextflow.config
