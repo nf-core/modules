@@ -26,13 +26,16 @@ input:
         description: Bgzipped bedMethyl file for the first (control) sample, as
           produced by modkit pileup with --bgzf
         pattern: "*.bed.gz"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+          - edam: "http://edamontology.org/format_3989" # GZIP format
     - bedmethyl_a_tbi:
         type: file
         description: Tabix index for bedmethyl_a. Must have the same basename with
           a .tbi extension next to bedmethyl_a
         pattern: "*.bed.gz.tbi"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3700" # Tabix index format
   - - meta2:
         type: map
         description: |
@@ -43,13 +46,16 @@ input:
         description: Bgzipped bedMethyl file for the second (experimental) sample,
           as produced by modkit pileup with --bgzf
         pattern: "*.bed.gz"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+          - edam: "http://edamontology.org/format_3989" # GZIP format
     - bedmethyl_b_tbi:
         type: file
         description: Tabix index for bedmethyl_b. Must have the same basename with
           a .tbi extension next to bedmethyl_b
         pattern: "*.bed.gz.tbi"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3700" # Tabix index format
   - - meta3:
         type: map
         description: |
@@ -60,7 +66,8 @@ input:
         description: Optional BED file of regions over which to compare methylation
           levels. When omitted, methylation levels are compared at each site instead
         pattern: "*.bed"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
   - - meta4:
         type: map
         description: |
@@ -70,7 +77,8 @@ input:
         type: file
         description: Reference sequence in FASTA format, used during pileup/alignment
         pattern: "*.{fa,fasta}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
 output:
   bed:
     - - meta:
@@ -83,7 +91,8 @@ output:
           description: BED file with the score column indicating the magnitude of
             the difference in methylation between the two samples
           pattern: "*.bed"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3003" # BED
   log:
     - - meta:
           type: map
