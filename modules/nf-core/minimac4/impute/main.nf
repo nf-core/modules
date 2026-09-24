@@ -13,7 +13,7 @@ process MINIMAC4_IMPUTE {
 
     output:
     tuple val(meta), path("${prefix}.${extension}"), emit: vcf
-    tuple val(meta), path("${prefix}.sites.vcf.gz"), emit: sites
+    tuple val(meta), path("${prefix}.sites.vcf.gz"), emit: sites, optional: true
     tuple val("${task.process}"), val('minimac4'), eval("minimac4 --version |& sed '1!d ; s/minimac v//'"), emit: versions_minimac4, topic: versions
 
     when:
