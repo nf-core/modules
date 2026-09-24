@@ -46,23 +46,14 @@ nextflow_process {
                         meta, target_vcf, target_index, ref, map, "chr22"
                     ]
                 }
+                input[1] = true
                 """
             }
         }
 
         then {
             assert process.success
-            assert snapshot(
-                process.out.vcf.collect {
-                    meta, vcf -> [
-                        meta,
-                        file(vcf).name,
-                        path(vcf).vcf.summary,
-                        path(vcf).vcf.variantsMD5
-                    ]
-                },
-                process.out.findAll { key, val -> key.startsWith('versions') }
-            ).match()
+            assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf", "sites"])).match()
         }
 
     }
@@ -85,31 +76,20 @@ nextflow_process {
                         meta, target_vcf, target_index, ref, [], []
                     ]
                 }
+                input[1] = true
                 """
             }
         }
 
         then {
             assert process.success
-            assert snapshot(
-                process.out.vcf.collect {
-                    meta, vcf -> [
-                        meta,
-                        file(vcf).name,
-                        path(vcf).vcf.summary,
-                        path(vcf).vcf.variantsMD5
-                    ]
-                },
-                process.out.findAll { key, val -> key.startsWith('versions') }
-            ).match()
+            snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf", "sites"])).match()
         }
 
     }
 
     test("homo sapiens - vcf, ref, map - stub") {
-
         options "-stub"
-
         when {
             params {
                 minimac4_args = "-O usav"
@@ -122,6 +102,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi",checkIfExists:true),
                     [], [], []
                 ]
+                input[1] = true
                 """
             }
         }

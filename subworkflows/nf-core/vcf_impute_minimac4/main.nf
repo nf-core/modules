@@ -75,7 +75,7 @@ workflow VCF_IMPUTE_MINIMAC4 {
             ]
         }
     // Perform imputation
-    MINIMAC4_IMPUTE(ch_minimac4_input)
+    MINIMAC4_IMPUTE(ch_minimac4_input, false)
 
     // Index the output VCF file
     BCFTOOLS_INDEX_PHASE(MINIMAC4_IMPUTE.out.vcf)
