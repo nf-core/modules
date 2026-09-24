@@ -1,11 +1,11 @@
 process FOLDSEEK_EASYSEARCH {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/foldseek:9.427df8a--pl5321hb365157_0':
-        'quay.io/biocontainers/foldseek:9.427df8a--pl5321hb365157_0' }"
+        'https://depot.galaxyproject.org/singularity/foldseek:10.941cd33--h5021889_1':
+        'quay.io/biocontainers/foldseek:10.941cd33--h5021889_1' }"
 
     input:
     tuple val(meta) , path(pdb)
@@ -21,14 +21,15 @@ process FOLDSEEK_EASYSEARCH {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    prefix2 = task.ext.prefix2 ?: "${meta2.id}"
     """
+    DB_NAME=\$(find -L "${db}/" -maxdepth 1 -name '*.lookup' | sed 's/\\.lookup\$//')
+
     foldseek \\
         easy-search \\
         ${pdb} \\
-        ${db}/${prefix2} \\
+        \$DB_NAME \\
         ${prefix}.m8 \\
-        tmpFolder \\
+        tmp \\
         ${args}
     """
 

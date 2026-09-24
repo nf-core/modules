@@ -40,14 +40,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.aln.get(0).get(1)).readLines().contains("8tim_A\t1tim_A\t0.967\t247\t8\t0\t1\t247\t1\t247\t1.152E-43\t1523") },
+                { assert path(process.out.aln.get(0).get(1)).readLines().contains("8tim_A\t1tim_A\t0.967\t247\t8\t0\t1\t247\t1\t247\t1.152E-43\t1526") },
                 { assert snapshot(sanitizeOutput(process.out, unstableKeys : ["aln"])).match() }
             )
         }
 
     }
 
-    test("proteomics - pdb -stub") {
+    test("proteomics - pdb - stub") {
 
         options "-stub"
 
