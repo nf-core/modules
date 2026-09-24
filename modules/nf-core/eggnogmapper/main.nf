@@ -16,7 +16,8 @@ process EGGNOGMAPPER {
     tuple val(meta), path("*.emapper.annotations")   , emit: annotations
     tuple val(meta), path("*.emapper.seed_orthologs"), emit: orthologs, optional: true
     tuple val(meta), path("*.emapper.hits")          , emit: hits     , optional: true
-    tuple val("${task.process}"), val('eggnog-mapper'), eval("emapper.py --version 2>&1 | grep -o 'emapper-[0-9]\\+\\.[0-9]\\+\\.[0-9]\\+' | sed 's/emapper-//'"), topic: versions, emit: versions_eggnogmapper
+    // emapper.py --version reports the enclosing repository's git tag when the package sits inside one, as it does under conda.
+    tuple val("${task.process}"), val('eggnog-mapper'), eval('python -c "from importlib.metadata import version; import sys; print(version(sys.argv[1]))" eggnog-mapper'), topic: versions, emit: versions_eggnogmapper
 
     when:
     task.ext.when == null || task.ext.when
