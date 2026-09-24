@@ -1,0 +1,55 @@
+
+nextflow_process {
+
+    name "Test Process YALLHAP_CLASSIFY"
+    script "../main.nf"
+    process "YALLHAP_CLASSIFY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "yallhap"
+    tag "yallhap/classify"
+
+    test("homo_sapiens - chrY vcf - stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                // Create minimal stub files for testing
+                def vcf_file = file("\${workDir}/test_chrY.vcf.gz")
+                vcf_file.text = ""
+                def tbi_file = file("\${workDir}/test_chrY.vcf.gz.tbi")
+                tbi_file.text = ""
+                def tree_file = file("\${workDir}/yfull_tree.json")
+                tree_file.text = "{}"
+                def snp_db_file = file("\${workDir}/ybrowse_snps.csv")
+                snp_db_file.text = "name,grch38_pos,ancestral,derived,haplogroup"
+
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    vcf_file,
+                    tbi_file
+                ]
+                input[1] = [
+                    [ id:'yfull' ],
+                    tree_file
+                ]
+                input[2] = [
+                    [ id:'ybrowse' ],
+                    snp_db_file
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}
