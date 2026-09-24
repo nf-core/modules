@@ -1,0 +1,55 @@
+name: PRIORCONS_INTEGRATE_CONSENSUS
+description: Integrate consensus sequences using the PriorCons tool with prior
+  probabilities for improved consensus calling
+keywords:
+  - consensus
+  - integration
+  - priorcons
+  - sequencing
+  - viral
+  - genomics
+authors:
+  - "@GERMAN00VP"
+
+tools:
+  - priorcons:
+      description: "Tool for integrating consensus sequences using prior probabilities"
+      homepage: "https://github.com/GERMAN00VP/PriorCons"
+      documentation: "https://github.com/GERMAN00VP/PriorCons"
+      doi: "no DOI available"
+      licence: ["APL-1.0"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: "Groovy Map containing sample information, e.g. [ id:'sample1',
+          single_end:false ]"
+    - input_aln:
+        type: file
+        description: "Input alignment file containing reference, mapping consensus,
+          and ABACAS consensus sequences (exactly in that order)"
+        pattern: "*.{aln,fasta,fa}"
+        ontologies: []
+    - ref_id:
+        type: string
+        description: "Reference identifier for the consensus sequence"
+    - prior_parquet:
+        type: file
+        description: "Prior probabilities table in Parquet format"
+        pattern: "*.parquet"
+
+        ontologies: []
+output:
+  results:
+    - - meta:
+          type: map
+          description: "Groovy Map containing sample information"
+      - ${meta.id}_output:
+          type: directory
+          description: "Output directory containing integrated consensus and QC files"
+  versions:
+    - versions.yml:
+        type: file
+        description: "File containing software versions"
+        ontologies: []
