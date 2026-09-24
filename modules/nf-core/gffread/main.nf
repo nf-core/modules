@@ -44,7 +44,7 @@ process GFFREAD {
         $args_sorted \\
         $output
 
-    ${fasta_gz ? "rm $fasta_in ${fasta_in}.fai" : ''}
+    ${fasta_gz ? "rm -f $fasta_in ${fasta_in}.fai" : ''}
     """
 
     stub:
