@@ -1,0 +1,79 @@
+name: "khmer_uniquekmers"
+description: In-memory nucleotide sequence k-mer counting, filtering, graph traversal
+  and more
+keywords:
+  - khmer
+  - k-mer
+  - effective genome size
+tools:
+  - "khmer":
+      description: khmer k-mer counting library
+      homepage: https://github.com/dib-lab/khmer
+      documentation: https://khmer.readthedocs.io/en/latest/
+      tool_dev_url: https://github.com/dib-lab/khmer
+      doi: "10.12688/f1000research.6924.1"
+      licence: ["BSD License"]
+      identifier: biotools:khmer
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: fasta file
+        pattern: "*.{fa,fasta}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+  - kmer_size:
+      type: integer
+      description: k-mer size to use
+output:
+  report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.report.txt":
+          type: file
+          description: Text file containing unique-kmers.py execution report
+          pattern: "*.report.txt"
+          ontologies: []
+  kmers:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.kmers.txt":
+          type: file
+          description: Text file containing number of kmers
+          pattern: "*.kmers.txt"
+          ontologies: []
+  versions_khmer:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - khmer:
+          type: string
+          description: The name of the tool
+      - unique-kmers.py --version 2>&1 | grep ^khmer | sed "s/^khmer //;s/ .*$//":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - khmer:
+          type: string
+          description: The name of the tool
+      - unique-kmers.py --version 2>&1 | grep ^khmer | sed "s/^khmer //;s/ .*$//":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@JoseEspinosa"
+maintainers:
+  - "@JoseEspinosa"

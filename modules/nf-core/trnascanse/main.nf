@@ -4,8 +4,8 @@ process TRNASCANSE {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/trnascan-se:2.0.12--pl5321h7b50bb2_2'
-        : 'quay.io/biocontainers/trnascan-se:2.0.12--pl5321h7b50bb2_2'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e6/e67fae15e207274f7007314b675884186eec7d195c82db002cb04cd218f20b8f/data'
+        : 'community.wave.seqera.io/library/trnascan-se_gzip_findutils:15c0475b13b49f03'}"
 
     input:
     tuple val(meta), path(fasta)
