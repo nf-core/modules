@@ -17,6 +17,10 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
                 ]
+                input[1] = true
+                input[2] = true
+                input[3] = true
+                input[4] = true
                 """
             }
         }
@@ -46,6 +50,10 @@ nextflow_process {
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
                 ]
+                input[1] = true
+                input[2] = true
+                input[3] = true
+                input[4] = true
                 """
             }
         }
