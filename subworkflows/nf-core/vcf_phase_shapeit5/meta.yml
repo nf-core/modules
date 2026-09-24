@@ -99,6 +99,11 @@ input:
       enum:
         - recursive
         - sequential
+  - vcf_join:
+      type: boolean
+      description: |
+        Whether to join ch_vcf channel with the others (chunks, ref, scaffold, map) (i.e., `true` / `combine(, by:0)`)
+        or combine it with the joined channels (i.e., `false` / `combine()`).
 output:
   - chunks:
       description: Channel with chunks regions

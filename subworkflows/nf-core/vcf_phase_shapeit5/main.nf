@@ -13,7 +13,8 @@ workflow VCF_PHASE_SHAPEIT5 {
     ch_scaffold // channel (optional)  : [ [id, chr], vcf, index ]
     ch_map      // channel (optional)  : [ [id, chr], map]
     chunk       // val     (mandatory) : boolean to activate/deactivate chunking step
-    chunk_model // channel (mandatory) : [ model ]
+    chunk_model // val     (mandatory) : model to used for GLIMPSE2_chunk
+    vcf_join    // val     (mandatory) : boolean should the input vcf be joined with other channels
 
     main:
 
@@ -57,12 +58,25 @@ workflow VCF_PHASE_SHAPEIT5 {
         }
 
     // Make channel with all parameters
-    ch_parameters = ch_vcf
-        .combine(ch_map, by: 0)
-        .combine(ch_ref, by: 0)
-        .combine(ch_scaffold, by: 0)
-        .combine(ch_chunks, by: 0)
-        .combine(ch_chunks_counts, by: 0)
+    if (vcf_join) {
+        ch_parameters = ch_vcf
+            .combine(ch_map, by: 0)
+            .combine(ch_ref, by: 0)
+            .combine(ch_scaffold, by: 0)
+            .combine(ch_chunks, by: 0)
+            .combine(ch_chunks_counts, by: 0)
+    } else {
+        ch_parameters = ch_vcf
+            .combine(ch_map
+                .combine(ch_ref, by: 0)
+                .combine(ch_scaffold, by: 0)
+                .combine(ch_chunks, by: 0)
+                .combine(ch_chunks_counts, by: 0)
+            )
+            .map{ meta, vcf, index, pedigree, region, metaR, gmap, ref_vcf, ref_index, scaffold_vcf, scaffold_index, regionbuf, region_size -> [
+                meta + metaR, vcf, index, pedigree, region, gmap, ref_vcf, ref_index, scaffold_vcf, scaffold_index, regionbuf, region_size
+            ]}
+    }
 
     ch_parameters.ifEmpty{
         error "ERROR: join operation resulted in an empty channel. Please provide a valid ch_map, ch_ref, ch_scaffold and ch_chunks channel as input (same meta map)."
