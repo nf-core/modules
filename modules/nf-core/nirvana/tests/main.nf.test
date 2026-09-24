@@ -1,0 +1,108 @@
+nextflow_process {
+
+    name "Test Process NIRVANA"
+    script "../main.nf"
+    process "NIRVANA"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "nirvana"
+    tag "untar"
+
+    setup {
+        run("UNTAR", alias: "UNTAR_CACHE") {
+            script "../../untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'Cache' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/nirvana/Cache.tar', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        run("UNTAR", alias: "UNTAR_SA") {
+            script "../../untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'SupplementaryAnnotation' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/nirvana/SupplementaryAnnotation.tar', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - vcf") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'reference' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/nirvana/SARS-CoV-2.ASM985889v3.dat', checkIfExists: true)
+                ]
+                input[2] = UNTAR_CACHE.out.untar.map { meta, dir ->
+                    [ meta, dir, 'SARS-CoV-2' ]
+                }
+                input[3] = UNTAR_SA.out.untar
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                // Remove creationTime field from JSON and snapshot the rest
+                { assert snapshot(
+                    path(process.out.json[0][1]).linesGzip.collect {
+                        it.replaceAll(/"creationTime":"[^"]*",?/, '')
+                    }
+                ).match("json_content") },
+                // Just check JSI exists
+                { assert path(process.out.jsi[0][1]).exists() },
+                { assert snapshot(process.out.versions_nirvana).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - vcf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'reference' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/nirvana/SARS-CoV-2.ASM985889v3.dat', checkIfExists: true)
+                ]
+                input[2] = UNTAR_CACHE.out.untar.map { meta, dir ->
+                    [ meta, dir, 'SARS-CoV-2' ]
+                }
+                input[3] = UNTAR_SA.out.untar
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
