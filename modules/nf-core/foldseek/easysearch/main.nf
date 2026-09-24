@@ -22,12 +22,19 @@ process FOLDSEEK_EASYSEARCH {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    DB_NAME=\$(find -L "${db}/" -maxdepth 1 -name '*.lookup' | sed 's/\\.lookup\$//')
+    DB_NAME="${db}/${meta2.id}"
+    if [ ! -f "\${DB_NAME}.dbtype" ]; then
+        DB_NAME=\$(find -L "${db}/" -maxdepth 1 -name '*.lookup' | sed 's/\\.lookup\$//')
+        if [ "\$(printf '%s\\n' "\$DB_NAME" | grep -c .)" -ne 1 ]; then
+            echo "ERROR: ${db}/${meta2.id} not found and expected exactly one .lookup file in ${db}" >&2
+            exit 1
+        fi
+    fi
 
     foldseek \\
         easy-search \\
         ${pdb} \\
-        \$DB_NAME \\
+        "\$DB_NAME" \\
         ${prefix}.m8 \\
         tmp \\
         ${args}

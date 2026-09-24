@@ -34,12 +34,12 @@ input:
         description: |
           Groovy Map containing sample information for the foldseek db
           e.g. `[ id:'test', single_end:false ]`
+          If `${db}/${meta2.id}.dbtype` exists, `meta2.id` selects the database within the
+          directory; otherwise it is ignored and the database is auto-discovered via the
+          single `.lookup` file in the directory (fails if zero or several are found)
     - db:
         type: directory
-        description: |
-          Foldseek database directory built from protein structures
-          The main database inside the directory is auto-discovered via its `.lookup` file, so
-          its basename does not need to match `meta2.id`
+        description: Foldseek database directory built from protein structures
         pattern: "*"
 output:
   aln:
