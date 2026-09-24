@@ -22,7 +22,7 @@ workflow FASTQ_ALIGN_STAR {
     //
     // Sort, index BAM file and run samtools stats, flagstat and idxstats
     //
-    BAM_SORT_STATS_SAMTOOLS_GENOME(STAR_ALIGN.out.bam, ch_fasta_fai)
+    BAM_SORT_STATS_SAMTOOLS_GENOME(STAR_ALIGN.out.bam, ch_fasta_fai, 'bai')
 
     //
     // Sort, index BAM file and run samtools stats, flagstat and idxstats
@@ -31,7 +31,7 @@ workflow FASTQ_ALIGN_STAR {
     // STAR_ALIGN.out.bam_transcript is populated
     //
 
-    BAM_SORT_STATS_SAMTOOLS_TRANSCRIPTOME(STAR_ALIGN.out.bam_transcript, ch_transcripts_fasta_fai)
+    BAM_SORT_STATS_SAMTOOLS_TRANSCRIPTOME(STAR_ALIGN.out.bam_transcript, ch_transcripts_fasta_fai, 'bai')
 
     emit:
     orig_bam            = STAR_ALIGN.out.bam // channel: [ val(meta), path(bam)            ]
