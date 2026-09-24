@@ -13,7 +13,7 @@ process FREYJA_UPDATE {
 
     output:
     path "${db_name}/*barcodes.*"            , emit: barcodes
-    path "${db_name}/*lineages.yml"          , emit: lineages_topology
+    path "${db_name}/*lineages.yml"          , emit: lineages_topology, optional: true
     path "${db_name}/*pathogen_config.yml"   , emit: config
     path "${db_name}/*curated_lineages.json" , emit: lineages_meta, optional: true
     tuple val("${task.process}"), val('freyja'), eval("freyja --version | sed 's/.* //'"), topic: versions, emit: versions_freyja
