@@ -35,18 +35,30 @@ nextflow_process {
             script "../../../htslib/bgziptabix/main.nf"
             process {
                 """
-                // MODKIT_PILEUP --phased emits one [meta, [combined, hp1, hp2]] tuple per sample;
-                // split it into one [meta, bedgz] tuple per haplotype so each can be tabix-indexed
-                // (modkit pileup --bgzf already bgzips, but never indexes) and fed to MODKIT_DMR
-                // as its own bedmethyl_a/bedmethyl_b input, exactly like real --modkit_phased usage.
+                // MODKIT_PILEUP --phased emits one [meta, [combined, hp1, hp2]] tuple per sample
+                // ("bedgz_files" is a single Path rather than a List when only one file matches
+                // the module's output glob -- true for -stub, since modkit pileup's stub script
+                // never splits by haplotype -- so normalize via [x].flatten() first). Split into
+                // one [meta, bedgz] tuple per haplotype so each can be tabix-indexed (modkit
+                // pileup --bgzf already bgzips, but never indexes) and fed to MODKIT_DMR as its
+                // own bedmethyl_a/bedmethyl_b input, exactly like real --modkit_phased usage.
                 input[0] = MODKIT_PILEUP.out.bedgz
                     .flatMap { meta, bedgz_files ->
-                        bedgz_files
-                            .findAll { f -> f.name =~ /_hp[12]\\.bed\\.gz\$/ }
-                            .collect { f ->
+                        def files = [ bedgz_files ].flatten()
+                        def phased = files.findAll { f -> f.name =~ /_hp[12]\\.bed\\.gz\$/ }
+                        if (phased) {
+                            phased.collect { f ->
                                 def haplotype = (f.name =~ /_(hp[12])\\.bed\\.gz\$/)[0][1]
                                 [ meta + [ id: "\${meta.id}_\${haplotype}" ], f, [], [] ]
                             }
+                        } else {
+                            // -stub: modkit pileup's stub always emits one generic, unsplit file
+                            // (it never reads --phased in stub mode) -- reuse it for both
+                            // haplotypes, since MODKIT_DMR's own stub never reads its inputs.
+                            files.collectMany { f ->
+                                ['hp1', 'hp2'].collect { haplotype -> [ meta + [ id: "\${meta.id}_\${haplotype}" ], f, [], [] ] }
+                            }
+                        }
                     }
                 input[1] = "compress"
                 input[2] = true
