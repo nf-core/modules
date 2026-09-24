@@ -1,0 +1,68 @@
+nextflow_process {
+
+    name "Test Process RESEQ_ILLUMINAPE"
+    script "../main.nf"
+    process "RESEQ_ILLUMINAPE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "reseq"
+    tag "reseq/illuminape"
+
+    test("homo_sapiens - bam") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                def adaptersFile = file("adapters.fa")
+                adaptersFile.text = ">TruSeq_Read1\\nAGATCGGAAGAGCACACGTCTGAACTCCAGTCA\\n>TruSeq_Read2\\nAGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT\\n"
+                def matrixFile = file("adapter_matrix.txt")
+                matrixFile.text = "01\\n10\\n"
+
+                input[0] = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    adaptersFile,
+                    matrixFile
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    [],
+                    []
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
