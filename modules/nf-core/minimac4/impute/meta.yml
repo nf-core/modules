@@ -75,7 +75,8 @@ output:
           type: file
           description: Sites-only file (output of `--sites`)
           pattern: "${prefix}.sites.vcf.gz"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3016"
   versions_minimac4:
     - - ${task.process}:
           type: string
