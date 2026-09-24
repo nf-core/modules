@@ -30,10 +30,7 @@ nextflow_process {
                 { assert process.success },
                 { assert path(process.out.log[0][1]).readLines().first().contains("Application: tRNAscan-SE") }, // timestamped log
                 { assert path(process.out.stats[0][1]).getText().contains("scan results") }, // timestamped log
-                { assert snapshot(
-                    process.out.tsv,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
-                    ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log", "stats"])).match() }
             )
         }
 
