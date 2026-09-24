@@ -23,9 +23,11 @@ process TAXONKIT_LCA {
     def prefix = task.ext.prefix ?: "${meta.id}"
     if (!taxids && !taxidsfile) {
             error("Error: Neither taxids nor taxidsfile provided! ")
+
     }    
     if (taxids && taxidsfile) {
             error("Error: Both taxids and taxidsfile provided, and only one should be passed! ")
+
     }       
     """
     taxonkit \\
