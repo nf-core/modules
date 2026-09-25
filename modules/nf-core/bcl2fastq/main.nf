@@ -65,6 +65,8 @@ process BCL2FASTQ {
         --processing-threads ${task.cpus}
 
     cp -r ${input_dir}/InterOp .
+    #make sure that the user has permission to read and write the copied folder
+    chmod -R u+rwX InterOp
     """
 
     stub:
