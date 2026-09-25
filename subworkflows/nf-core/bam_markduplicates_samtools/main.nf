@@ -2,31 +2,22 @@
 // Collate, fixmate, sort and markdup using Samtools
 //
 
-include { SAMTOOLS_COLLATE } from '../../../modules/nf-core/samtools/collate/main'
-include { SAMTOOLS_FIXMATE } from '../../../modules/nf-core/samtools/fixmate/main'
-include { SAMTOOLS_SORT    } from '../../../modules/nf-core/samtools/sort/main'
-include { SAMTOOLS_MARKDUP } from '../../../modules/nf-core/samtools/markdup/main'
+include { SAMTOOLS_MULTICOMMAND } from '../../../modules/nf-core/samtools/multicommand/main'
 
 
 workflow BAM_MARKDUPLICATES_SAMTOOLS {
     take:
-    ch_bam // channel: [ val(meta), [ bam ] ]
+    ch_bam // channel: [ val(meta), [ bam ],  [ index ] ]
     ch_fasta_fai // channel: [ val(meta), [ fasta ], [fai] ]
 
     main:
 
-    SAMTOOLS_COLLATE(ch_bam, ch_fasta_fai)
-
-    SAMTOOLS_FIXMATE(SAMTOOLS_COLLATE.out.bam, ch_fasta_fai)
-
-    SAMTOOLS_SORT(
-        SAMTOOLS_FIXMATE.out.bam,
+    SAMTOOLS_MULTICOMMAND(
+        ch_bam,
         ch_fasta_fai,
-        '',
+        ["collate", "fixmate", "sort", "markdup"],
     )
 
-    SAMTOOLS_MARKDUP(SAMTOOLS_SORT.out.bam, ch_fasta_fai)
-
     emit:
-    bam = SAMTOOLS_MARKDUP.out.bam // channel: [ val(meta), [ bam ] ]
+    bam = SAMTOOLS_MULTICOMMAND.out.bam // channel: [ val(meta), [ bam ] ]
 }
