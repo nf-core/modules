@@ -1,0 +1,179 @@
+nextflow_process {
+
+    name "Test Process MODKIT_DMR"
+    script "../main.nf"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "modkit"
+    tag "modkit/dmr"
+    tag "modkit/pileup"
+    tag "htslib/bgziptabix"
+    process "MODKIT_DMR"
+    config "./nextflow.config"
+
+    setup {
+        run("MODKIT_PILEUP") {
+            script "../../pileup/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id: 'test_ref' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[2] = [[],[]]
+                """
+            }
+        }
+
+        run("HTSLIB_BGZIPTABIX") {
+            script "../../../htslib/bgziptabix/main.nf"
+            process {
+                """
+                // MODKIT_PILEUP --phased emits one [meta, [combined, hp1, hp2]] tuple per sample
+                // ("bedgz_files" is a single Path rather than a List when only one file matches
+                // the module's output glob -- true for -stub, since modkit pileup's stub script
+                // never splits by haplotype -- so normalize via [x].flatten() first). Split into
+                // one [meta, bedgz] tuple per haplotype so each can be tabix-indexed (modkit
+                // pileup --bgzf already bgzips, but never indexes) and fed to MODKIT_DMR as its
+                // own bedmethyl_a/bedmethyl_b input, exactly like real --modkit_phased usage.
+                input[0] = MODKIT_PILEUP.out.bedgz
+                    .flatMap { meta, bedgz_files ->
+                        def files = [ bedgz_files ].flatten()
+                        def phased = files.findAll { f -> f.name =~ /_hp[12]\\.bed\\.gz\$/ }
+                        if (phased) {
+                            phased.collect { f ->
+                                def haplotype = (f.name =~ /_(hp[12])\\.bed\\.gz\$/)[0][1]
+                                [ meta + [ id: "\${meta.id}_\${haplotype}" ], f, [], [] ]
+                            }
+                        } else {
+                            // -stub: modkit pileup's stub always emits one generic, unsplit file
+                            // (it never reads --phased in stub mode) -- reuse it for both
+                            // haplotypes, since MODKIT_DMR's own stub never reads its inputs.
+                            files.collectMany { f ->
+                                ['hp1', 'hp2'].collect { haplotype -> [ meta + [ id: "\${meta.id}_\${haplotype}" ], f, [], [] ] }
+                            }
+                        }
+                    }
+                input[1] = "compress"
+                input[2] = true
+                input[3] = []
+                """
+            }
+        }
+    }
+
+    test("[bedmethyl_a, tbi], [bedmethyl_b, tbi], regions_bed, fasta") {
+
+        when {
+            params {
+                module_args = '--base C'
+            }
+            process {
+                """
+                input[0] = HTSLIB_BGZIPTABIX.out.output
+                    .join(HTSLIB_BGZIPTABIX.out.index)
+                    .filter { meta, bedgz, tbi -> meta.id.endsWith('_hp1') }
+                    .map { meta, bedgz, tbi -> [ [ id: 'test' ], bedgz, tbi ] }
+                input[1] = HTSLIB_BGZIPTABIX.out.output
+                    .join(HTSLIB_BGZIPTABIX.out.index)
+                    .filter { meta, bedgz, tbi -> meta.id.endsWith('_hp2') }
+                    .map { meta, bedgz, tbi -> [ [ id: 'test' ], bedgz, tbi ] }
+                input[2] = Channel.of('chr22\t0\t40001')
+                    .collectFile(name: 'chr22.bed', newLine: true)
+                    .map { file -> [ [ id:'chr22' ], file ] }
+                input[3] = [
+                    [ id: 'test_ref' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("[bedmethyl_a, tbi], [bedmethyl_b, tbi], [], fasta") {
+
+        when {
+            params {
+                module_args = '--base C'
+            }
+            process {
+                """
+                input[0] = HTSLIB_BGZIPTABIX.out.output
+                    .join(HTSLIB_BGZIPTABIX.out.index)
+                    .filter { meta, bedgz, tbi -> meta.id.endsWith('_hp1') }
+                    .map { meta, bedgz, tbi -> [ [ id: 'test' ], bedgz, tbi ] }
+                input[1] = HTSLIB_BGZIPTABIX.out.output
+                    .join(HTSLIB_BGZIPTABIX.out.index)
+                    .filter { meta, bedgz, tbi -> meta.id.endsWith('_hp2') }
+                    .map { meta, bedgz, tbi -> [ [ id: 'test' ], bedgz, tbi ] }
+                input[2] = [ [ id:'regions' ], [] ]
+                input[3] = [
+                    [ id: 'test_ref' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("[bedmethyl_a, tbi], [bedmethyl_b, tbi], regions_bed, fasta - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--base C'
+            }
+            process {
+                """
+                input[0] = HTSLIB_BGZIPTABIX.out.output
+                    .join(HTSLIB_BGZIPTABIX.out.index)
+                    .filter { meta, bedgz, tbi -> meta.id.endsWith('_hp1') }
+                    .map { meta, bedgz, tbi -> [ [ id: 'test' ], bedgz, tbi ] }
+                input[1] = HTSLIB_BGZIPTABIX.out.output
+                    .join(HTSLIB_BGZIPTABIX.out.index)
+                    .filter { meta, bedgz, tbi -> meta.id.endsWith('_hp2') }
+                    .map { meta, bedgz, tbi -> [ [ id: 'test' ], bedgz, tbi ] }
+                input[2] = Channel.of('chr22\t0\t40001')
+                    .collectFile(name: 'chr22.bed', newLine: true)
+                    .map { file -> [ [ id:'chr22' ], file ] }
+                input[3] = [
+                    [ id: 'test_ref' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
