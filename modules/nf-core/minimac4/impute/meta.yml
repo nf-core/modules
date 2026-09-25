@@ -35,23 +35,9 @@ input:
           - edam: "http://edamontology.org/format_3700"
     - ref_msav:
         type: file
-        description: Reference compressed MSAV file obtain through `minimac4
-          --compress-reference`
+        description: Reference compressed MSAV file obtain through `minimac4 --compress-reference`
         pattern: "*.{msav}"
         ontologies: []
-    - sites_vcf:
-        type: file
-        description: Sites VCF/BCF file containing the sites to impute
-        pattern: "*.{vcf,bcf,vcf.gz}"
-        ontologies:
-          - edam: "http://edamontology.org/format_3016"
-          - edam: "http://edamontology.org/format_3020"
-    - sites_index:
-        type: file
-        description: Sites VCF/BCF file index
-        pattern: "*.{csi,tbi}"
-        ontologies:
-          - edam: "http://edamontology.org/format_3700"
     - map:
         type: file
         description: Genetic map file
@@ -62,6 +48,9 @@ input:
         type: string
         description: Region to perform imputation
         pattern: "(chr)?\\d*:\\d*-\\d*"
+  - write_sites:
+      type: boolean
+      description: "Write the sites-only file"
 output:
   vcf:
     - - meta:
@@ -69,13 +58,25 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - "*.{bcf,sav,vcf.gz,vcf,ubcf,usav}":
+      - "${prefix}.${extension}":
           type: file
           description: Imputed variants file
-          pattern: "*.{bcf,sav,vcf.gz,vcf,ubcf,usav}"
+          pattern: "${prefix}.${extension}"
           ontologies:
             - edam: "http://edamontology.org/format_3016"
             - edam: "http://edamontology.org/format_3020"
+  sites:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "${prefix}.sites.vcf.gz":
+          type: file
+          description: Sites-only file (output of `--sites`)
+          pattern: "${prefix}.sites.vcf.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016"
   versions_minimac4:
     - - ${task.process}:
           type: string
