@@ -41,7 +41,7 @@ process VARNET {
         ${regions} \\
         ${args}
 
-    TF_CPP_MIN_LOG_LEVEL=3 varnet-predict \\
+    varnet-predict \\
         --sample_name ${prefix} \\
         --normal_bam ${input_normal} \\
         --tumor_bam ${input_tumor} \\
