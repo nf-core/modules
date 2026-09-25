@@ -30,10 +30,7 @@ nextflow_process {
                 { assert process.success },
                 { assert bam(out).getHeader().findAll { l -> l.startsWith('@SQ') } == [ '@SQ\tSN:NZ_CP069563.1\tLN:5150703' ] },
                 { assert bam(out).getStatistics().readCount == 100000 },
-                { assert snapshot(
-                    file(out).name + ':readsMD5,' + bam(out).getReadsMD5(),
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["out"])).match() }
             )
         }
 
