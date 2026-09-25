@@ -38,14 +38,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                {
-                    assert snapshot(
-                        process.out.vcf.collect { file(it[1]).getName() },
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf"])).match() }
             )
         }
 
