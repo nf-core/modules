@@ -1,0 +1,187 @@
+name: vepyr_annotate
+description: Annotate a VCF with Ensembl VEP consequences using vepyr, a Rust reimplementation of the Variant Effect Predictor. Annotation features are controlled through `task.ext.args`, except for `--fork`, which the module derives from `task.cpus`. When the input VCF has no index the module builds one with tabix, and runs a single pipeline if the input is not bgzip-compressed.
+keywords:
+  - annotation
+  - vcf
+  - variant
+  - vep
+tools:
+  - vepyr:
+      description: |
+        vepyr (VEP Yielding Performant Results) is a Python interface to a Rust
+        reimplementation of Ensembl's Variant Effect Predictor, built on Apache
+        Arrow and DataFusion. It annotates variants against a Parquet cache
+        converted from an Ensembl VEP offline cache.
+      homepage: https://biodatageeks.org/vepyr/
+      documentation: https://biodatageeks.org/vepyr/cli/
+      tool_dev_url: https://github.com/biodatageeks/vepyr
+      licence:
+        - "Apache-2.0"
+      identifier: ""
+  - tabix:
+      description: Generic indexer for TAB-delimited genome position files.
+      homepage: https://www.htslib.org/doc/tabix.html
+      documentation: https://www.htslib.org/doc/tabix.html
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - vcf:
+        type: file
+        description: VCF to annotate
+        pattern: "*.{vcf,vcf.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_3016
+    - tbi:
+        type: file
+        description: |
+          tabix/CSI index of the input VCF (optional). More than one
+          annotation pipeline needs it: when absent it is built with tabix,
+          and an input that is not bgzip-compressed runs a single pipeline.
+        pattern: "*.{tbi,csi}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing cache information
+          e.g. [ id:'116_GRCh38_ensembl' ]
+    - cache:
+        type: directory
+        description: Parquet cache directory produced by vepyr's cache build
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'GRCh38' ]
+    - fasta:
+        type: file
+        description: |
+          reference FASTA (optional). Required when `ext.args` contains
+          `--everything`.
+        pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
+        ontologies: []
+    - fai:
+        type: file
+        description: |
+          samtools/faidx index of the reference FASTA. Required whenever the
+          FASTA is supplied: vepyr opens the reference through its index and
+          does not build one.
+        pattern: "*.fai"
+        ontologies: []
+    - gzi:
+        type: file
+        description: |
+          bgzip index of the reference FASTA (optional). Required when the
+          FASTA is bgzip-compressed: vepyr cannot open it without the `.gzi`.
+          Pass `[]` for an uncompressed FASTA.
+        pattern: "*.gzi"
+        ontologies: []
+  - cache_version:
+      type: integer
+      description: |
+        Ensembl cache version to assert against the cache metadata (optional)
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing plugin cache information
+          e.g. [ id:'plugin_cache_v0.1.1' ]
+    - plugin_cache:
+        type: directory
+        description: |
+          root of a vepyr plugin cache tree holding plugin/<name>/ directories
+          (optional)
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - ${prefix}.vcf.gz:
+          type: file
+          description: annotated VCF
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
+  tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - ${prefix}.vcf.gz.tbi:
+          type: file
+          description: tabix index of the annotated VCF
+          pattern: "*.vcf.gz.tbi"
+          ontologies: []
+  versions_vepyr:
+    - - ${task.process}:
+          type: string
+          description: The process
+      - vepyr:
+          type: string
+          description: The tool name
+      - "vepyr --version | cut -d' ' -f2":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_tabix:
+    - - ${task.process}:
+          type: string
+          description: The process
+      - tabix:
+          type: string
+          description: The tool name
+      - tabix -h 2>&1 | grep -oP 'Version:\s*\K[^\s]+':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process
+      - vepyr:
+          type: string
+          description: The tool name
+      - "vepyr --version | cut -d' ' -f2":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process
+      - tabix:
+          type: string
+          description: The tool name
+      - tabix -h 2>&1 | grep -oP 'Version:\s*\K[^\s]+':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@mwiewior"
+maintainers:
+  - "@mwiewior"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/htslib_vepyr:806fe605983a885b
+      build_id: bd-806fe605983a885b_1
+      scan_id: sc-65754e0d42798655_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/htslib_vepyr:84d01ceaf76003ed
+      build_id: bd-84d01ceaf76003ed_1
+      scan_id: sc-76592036b38d9786_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/htslib_vepyr:5872e79a887b6765
+      build_id: bd-5872e79a887b6765_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/da/dae579b8f2a3713d997875e16195f386b0fced234c8c9338549d16ed06eb9d83/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/htslib_vepyr:5282c570a1e32022
+      build_id: bd-5282c570a1e32022_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fd/fd366e2d56f4947557073d6b59a0fd326c0f4124cd17a2da075181c98397f235/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/vepyr/annotate/.conda-lock/linux_amd64-bd-84d01ceaf76003ed_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/vepyr/annotate/.conda-lock/linux_arm64-bd-806fe605983a885b_1.txt
