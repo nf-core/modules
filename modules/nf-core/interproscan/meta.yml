@@ -31,8 +31,12 @@ input:
           - edam: http://edamontology.org/format_1929 # FASTA
   - interproscan_database:
       type: directory
-      description: Path to the interproscan database (untarred
-        http://ftp.ebi.ac.uk/pub/software/unix/iprscan/5/${version_major}-${version_minor}/interproscan-${version_major}-${version_minor}-64-bit.tar.gz)
+      description: |
+        Path to the data/ folder of an InterProScan release matching the module
+        version (untarred from
+        http://ftp.ebi.ac.uk/pub/software/unix/iprscan/5/${version_major}-${version_minor}/interproscan-${version_major}-${version_minor}-64-bit.tar.gz).
+        HMMs should already be pressed (python3 setup.py -f interproscan.properties),
+        otherwise hmmpress runs in every task and parallel tasks may race.
 output:
   tsv:
     - - meta:
