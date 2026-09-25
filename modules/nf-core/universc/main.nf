@@ -15,7 +15,8 @@ process UNIVERSC {
 
     output:
     tuple val(meta), path("${prefix}/outs/*"), emit: outs
-    path "versions.yml"                      , emit: versions
+    tuple val("${task.process}"), val('cellranger'), eval('cellranger count --version 2>&1 | head -n 2 | tail -n 1 | sed "s/^.* //g" | sed "s/(//g" | sed "s/)//g"'), emit: versions_cellranger, topic: versions
+    tuple val("${task.process}"), val('universc'), eval('bash /universc/launch_universc.sh --version | grep version | grep universc | sed "s/^.* //g"'), emit: versions_universc, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -47,12 +48,6 @@ process UNIVERSC {
     echo !! > ${prefix}/outs/_invocation
     cp _log ${prefix}/outs/_log
     cp _err ${prefix}/outs/_err
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellranger:  \$(echo \$(cellranger count --version 2>&1 | head -n 2 | tail -n 1 | sed 's/^.* //g' | sed 's/(//g' | sed 's/)//g' ))
-        universc:  \$(echo \$(bash /universc/launch_universc.sh --version | grep version | grep universc  | sed 's/^.* //g' ))
-    END_VERSIONS
     """
 
 
@@ -81,22 +76,16 @@ process UNIVERSC {
 
     mkdir -p filtered_feature_bc_matrix
     touch filtered_feature_bc_matrix.h5
-    echo | gzip > filtered_feature_bc_matrix/barcodes.tsv.gz
-    echo | gzip > filtered_feature_bc_matrix/features.tsv.gz
-    echo | gzip > filtered_feature_bc_matrix/matrix.mtx.gz
+    echo "" | gzip > filtered_feature_bc_matrix/barcodes.tsv.gz
+    echo "" | gzip > filtered_feature_bc_matrix/features.tsv.gz
+    echo "" | gzip > filtered_feature_bc_matrix/matrix.mtx.gz
 
     mkdir -p raw_feature_bc_matrix
     touch raw_feature_bc_matrix.h5
-    echo | gzip > raw_feature_bc_matrix/barcodes.tsv.gz
-    echo | gzip > raw_feature_bc_matrix/features.tsv.gz
-    echo | gzip > raw_feature_bc_matrix/matrix.mtx.gz
+    echo "" | gzip > raw_feature_bc_matrix/barcodes.tsv.gz
+    echo "" | gzip > raw_feature_bc_matrix/features.tsv.gz
+    echo "" | gzip > raw_feature_bc_matrix/matrix.mtx.gz
 
     cd ../..
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellranger:  \$(echo \$(cellranger count --version 2>&1 | head -n 2 | tail -n 1 | sed 's/^.* //g' | sed 's/(//g' | sed 's/)//g' ))
-        universc:  \$(echo \$(bash /universc/launch_universc.sh --version | grep version | grep universc | sed 's/^.* //g' ))
-    END_VERSIONS
     """
 }
