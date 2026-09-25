@@ -40,14 +40,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll (
-                { assert process.success },
-                { assert snapshot(
-                    process.out.bam,
-                    file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"], readsMD5Keys:["mapped"])).match() }
             )
         }
 
@@ -70,14 +65,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll (
-                { assert process.success },
-                { assert snapshot(
-                    process.out.bam,
-                    file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"], readsMD5Keys:["mapped"])).match() }
             )
         }
 
@@ -103,14 +93,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll (
-                { assert process.success },
-                { assert snapshot(
-                    process.out.bam,
-                    file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"], readsMD5Keys:["mapped"])).match() }
             )
         }
 
@@ -136,14 +121,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll (
-                { assert process.success },
-                { assert snapshot(
-                    process.out.bam,
-                    file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"], readsMD5Keys:["mapped"])).match() }
             )
         }
 
@@ -169,14 +149,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll (
-                { assert process.success },
-                { assert snapshot(
-                    process.out.bam,
-                    file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"], readsMD5Keys:["mapped"])).match() }
             )
         }
 
@@ -204,14 +179,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll (
-                { assert process.success },
-                { assert snapshot(
-                    process.out.bam,
-                    file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"], readsMD5Keys:["mapped"])).match() }
             )
         }
     }
@@ -233,16 +203,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll (
-                { assert process.success },
-                { assert snapshot(
-                    process.out.cram,
-                    process.out.csi,
-                    process.out.crai,
-                    process.out.findAll { key, val -> key.startsWith("versions") },
-                    file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
-                ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"], readsMD5Keys:["mapped"])).match() }
             )
         }
 
