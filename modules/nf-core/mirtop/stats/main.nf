@@ -23,11 +23,17 @@ process MIRTOP_STATS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mirtop \\
-        stats \\
-        $args \\
-        --out stats \\
-        $mirtop_gff
+    mkdir -p stats
+    if grep -qv "^#" "$mirtop_gff"; then
+        mirtop \\
+            stats \\
+            $args \\
+            --out stats \\
+            $mirtop_gff
+    else
+        touch stats/mirtop_stats.txt
+        touch stats/mirtop_stats.log
+    fi
 
     mv stats/mirtop_stats.log stats/${prefix}_stats.log
     mv stats/mirtop_stats.txt stats/${prefix}_stats.txt
