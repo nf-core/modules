@@ -30,7 +30,8 @@ process VARNET {
         error "VARNET requires a matched normal BAM: tumor-only mode is not supported by this module."
     }
     """
-    TF_CPP_MIN_LOG_LEVEL=3 varnet-filter \\
+    export TF_CPP_MIN_LOG_LEVEL=3
+    varnet-filter \\
         --sample_name ${prefix} \\
         --normal_bam ${input_normal} \\
         --tumor_bam ${input_tumor} \\
