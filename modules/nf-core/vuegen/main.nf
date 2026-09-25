@@ -2,9 +2,8 @@ process VUEGEN {
     label 'process_single'
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a0/a0ff4f778cefa7ae78c684ba2b97dc4a1fac3d49ffc958c532bfe06e19e23807/data'
-:         'community.wave.seqera.io/library/python_pytinytex_quarto_r-tinytex_pruned:9eebdec0448f6563' }"
-
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ca/ca7dcac2f864cf97fe82f28ca0215bb7358fa61f23db36b8947b10d259a5ae0d/data'
+:         'community.wave.seqera.io/library/vuegen_python_pytinytex_quarto_pruned:ef7ccdacdb3d1dea' }"
     input:
     val input_type
     path input_path
@@ -22,7 +21,7 @@ process VUEGEN {
     """
         # Validate quarto_check flag if using a conda environment
         if [[ "${task.conda}" != "null" ]]; then
-            QUARTO_CHECK_FLAG="--quarto_checks"
+            QUARTO_CHECK_FLAG="--quarto-checks"
         else
             QUARTO_CHECK_FLAG=""
         fi
@@ -45,10 +44,10 @@ process VUEGEN {
         # Execute VueGen based on the input type
         if [ "${input_type}" == "config" ]; then
             echo "Running VueGen with config file: ${input_path}"
-            vuegen --config ${input_path} --report_type ${report_type} \$QUARTO_CHECK_FLAG ${args}
+            vuegen --config ${input_path} --report-type ${report_type} \$QUARTO_CHECK_FLAG ${args}
         elif [ "${input_type}" == "directory" ]; then
             echo "Running VueGen with directory: ${input_path}"
-            vuegen --directory ${input_path} --report_type ${report_type} \$QUARTO_CHECK_FLAG ${args}
+            vuegen --directory ${input_path} --report-type ${report_type} \$QUARTO_CHECK_FLAG ${args}
         fi
         """
 
