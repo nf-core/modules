@@ -1,0 +1,67 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: ubam_align_minimap2
+description: Optionally concatenate unaligned BAM files, align reads with minimap2, and run BAM statistics
+keywords:
+  - ubam
+  - bam
+  - align
+  - minimap2
+  - long-read
+components:
+  - samtools/cat
+  - minimap2/align
+  - bam_stats_samtools
+  - samtools/stats
+  - samtools/flagstat
+  - samtools/idxstats
+input:
+  - ch_ubam:
+      description: |
+        Unaligned BAM input channel.
+        Structure: [ val(meta), path(ubam) ]
+        ubam may be one BAM/uBAM file or a list of BAM/uBAM files.
+        Input files should use the .bam extension.
+  - ch_fasta_fai:
+      description: |
+        Reference FASTA and FASTA index.
+        Structure: [ val(meta2), path(fasta), path(fai) ]
+  - val_bam_index_extension:
+      description: |
+        BAM index extension created by minimap2/align
+        Typical values are "bai" or "csi".
+  - val_cigar_bam:
+      description: |
+        Whether to use minimap2 long-CIGAR BAM handling
+  - val_skip_cat:
+      description: |
+        If true, pass one uBAM directly to minimap2.
+        If false, concatenate uBAM files with samtools/cat before alignment
+output:
+  - ubam:
+      description: |
+        Concatenated uBAM file, emitted only when val_skip_cat is false
+        Structure: [ val(meta), path(bam) ]
+  - bam:
+      description: |
+        Coordinate-sorted BAM file from minimap2
+        Structure: [ val(meta), path(bam) ]
+  - index:
+      description: |
+        BAM index file.
+        Structure: [ val(meta), path(index) ]
+  - stats:
+      description: |
+        Samtools stats output from bam_stats_samtools
+        Structure: [ val(meta), path(stats) ]
+  - flagstat:
+      description: |
+        Samtools flagstat output from bam_stats_samtools
+        Structure: [ val(meta), path(flagstat) ]
+  - idxstats:
+      description: |
+        Samtools idxstats output from bam_stats_samtools
+        Structure: [ val(meta), path(idxstats) ]
+authors:
+  - "@manascripts"
+maintainers:
+  - "@manascripts"

@@ -1,0 +1,154 @@
+nextflow_workflow {
+
+    name "Test Workflow UBAM_ALIGN_MINIMAP2"
+    script "../main.nf"
+    workflow "UBAM_ALIGN_MINIMAP2"
+    config "./nextflow.config"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/ubam_align_minimap2"
+    tag "samtools/cat"
+    tag "samtools/import"
+    tag "minimap2/align"
+    tag "subworkflows/bam_stats_samtools"
+
+    setup {
+        run("SAMTOOLS_IMPORT", alias: "SAMTOOLS_IMPORT_SINGLE") {
+            script "../../../../modules/nf-core/samtools/import/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists:true)
+                ]
+                """
+            }
+        }
+
+        run("SAMTOOLS_IMPORT", alias: "SAMTOOLS_IMPORT_ONE") {
+            script "../../../../modules/nf-core/samtools/import/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test.fastq.gz', checkIfExists:true)
+                ]
+                """
+            }
+        }
+
+        run("SAMTOOLS_IMPORT", alias: "SAMTOOLS_IMPORT_TWO") {
+            script "../../../../modules/nf-core/samtools/import/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/nanopore/fastq/test_2.fastq.gz', checkIfExists:true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("nanopore ubam without concatenation") {
+        when {
+            workflow {
+                """
+                input[0] = SAMTOOLS_IMPORT_SINGLE.out.bam
+
+                input[1] = Channel.value([
+                    [ id:'sarscov2' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists:true)
+                ])
+
+                input[2] = 'bai'
+                input[3] = true
+                input[4] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert file(workflow.out.bam[0][1]).exists() },
+                { assert file(workflow.out.index[0][1]).exists() },
+                { assert snapshot(
+                    workflow.out.stats,
+                    workflow.out.flagstat,
+                    workflow.out.idxstats
+                ).match() }
+            )
+        }
+    }
+
+    test("nanopore ubams with concatenation") {
+        when {
+            workflow {
+                """
+                input[0] = SAMTOOLS_IMPORT_ONE.out.bam
+                    .join(SAMTOOLS_IMPORT_TWO.out.bam, by: 0, failOnDuplicate: true, failOnMismatch: true)
+                    .map { meta, ubam_one, ubam_two -> [ meta, [ ubam_one, ubam_two ] ] }
+
+                input[1] = Channel.value([
+                    [ id:'sarscov2' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists:true)
+                ])
+
+                input[2] = 'bai'
+                input[3] = true
+                input[4] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert file(workflow.out.ubam[0][1]).exists() },
+                { assert file(workflow.out.bam[0][1]).exists() },
+                { assert file(workflow.out.index[0][1]).exists() },
+                { assert snapshot(
+                    workflow.out.stats,
+                    workflow.out.flagstat,
+                    workflow.out.idxstats
+                ).match() }
+            )
+        }
+    }
+
+    test("nanopore ubam without concatenation - stub") {
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists:true)
+                ])
+
+                input[1] = Channel.value([
+                    [ id:'sarscov2' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists:true)
+                ])
+
+                input[2] = 'bai'
+                input[3] = true
+                input[4] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+}
