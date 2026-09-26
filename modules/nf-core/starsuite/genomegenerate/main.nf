@@ -3,8 +3,8 @@ process STARSUITE_GENOMEGENERATE {
     label 'process_high'
 
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'docker://biodepot/star-suite@sha256:153af67f1c3c915dace7f35678708a4468f05ccc4d1ea81b602d117f678a6eba' :
-        'docker.io/biodepot/star-suite@sha256:153af67f1c3c915dace7f35678708a4468f05ccc4d1ea81b602d117f678a6eba' }"
+        'docker://biodepot/star-suite@sha256:113c50c687a892e1613f8d901f5309458b8b2a29402a3d0b41e999b72f22c84e' :
+        'docker.io/biodepot/star-suite@sha256:113c50c687a892e1613f8d901f5309458b8b2a29402a3d0b41e999b72f22c84e' }"
 
     input:
     tuple val(meta),  path(fasta)
