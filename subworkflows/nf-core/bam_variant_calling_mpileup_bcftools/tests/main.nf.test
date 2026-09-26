@@ -28,10 +28,12 @@ nextflow_workflow {
                     """
                     input[0] = channel.of([
                         [panel_id: "1000GP", chr: "22"],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.posfile', checkIfExists:true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.posfile', checkIfExists:true),
+                        "txt",
                     ], [
                         [panel_id: "1000GP", chr: "21"],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr21.posfile', checkIfExists:true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr21.posfile', checkIfExists:true),
+                        "txt",
                     ])
                     input[1] = []
                     input[2] = false
@@ -96,7 +98,8 @@ nextflow_workflow {
                     """
                     input[0] = channel.of([
                         [panel_id: "1000GP", chr: "22"],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.posfile', checkIfExists:true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.posfile', checkIfExists:true),
+                        "txt",
                     ])
                     input[1] = []
                     input[2] = false
@@ -156,10 +159,12 @@ nextflow_workflow {
                     """
                     input[0] = channel.of([
                         [panel_id: "1000GP", chr: "22"],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.posfile', checkIfExists:true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.posfile', checkIfExists:true),
+                        "txt",
                     ], [
                         [panel_id: "1000GP", chr: "21"],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr21.posfile', checkIfExists:true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr21.posfile', checkIfExists:true),
+                        "txt",
                     ])
                     input[1] = []
                     input[2] = false

@@ -34,9 +34,12 @@ input:
         description: |
           Groovy Map containing sample information for the foldseek db
           e.g. `[ id:'test', single_end:false ]`
+          If `${db}/${meta2.id}.dbtype` exists, `meta2.id` selects the database within the
+          directory; otherwise it is ignored and the database is auto-discovered via the
+          single `.lookup` file in the directory (fails if zero or several are found)
     - db:
         type: directory
-        description: foldseek database from protein structures
+        description: Foldseek database directory built from protein structures
         pattern: "*"
 output:
   aln:
@@ -52,7 +55,8 @@ output:
             Query, Target, Identity, Alignment length, Mismatches, Gap openings,
             Query start, Query end, Target start, Target end, E-value, Bit score
           pattern: "*.{m8}"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_1333" # BLAST results
   versions_foldseek:
     - - ${task.process}:
           type: string
@@ -75,4 +79,6 @@ topics:
           type: eval
           description: The expression to obtain the version of the tool
 authors:
+  - "@vagkaratzas"
+maintainers:
   - "@vagkaratzas"

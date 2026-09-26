@@ -8,6 +8,8 @@ keywords:
   - fasta
 components:
   - hmmer/hmmsearch
+  - hmmer/formattsv
+  - duckdb/table2parquet
   - hmmer/hmmrank
   - seqtk/subseq
 input:
@@ -35,7 +37,7 @@ output:
         union of the pair's domains, and the number of disjoint pieces it falls into.
         Structure: [ val(meta), path(hmmrank) ]
       pattern: "*.hmmrank.tsv.gz"
-  - bai:
+  - seqfastas:
       type: file
       description: |
         Channel containing subsets of sequences

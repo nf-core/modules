@@ -19,6 +19,7 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
 
     take:
     ch_pp_data // channel: [ meta: val(meta), data: [ alignmethod: val(alignmethod), queryseqfile: file(queryseqfile), refseqfile: file(refseqfile), refphylogeny: file(refphylogeny), hmmfile: file(hmmfile), model: val(model) ] ]
+    compress_alignment // value: boolean, write the clustalo and mafft alignments gzipped
 
     main:
 
@@ -96,7 +97,7 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
         [ ],
         ch_clustalo_data.map { it -> it.data.refseqfile },
         [ ],
-        false
+        compress_alignment
     )
 
     // 2.b Split the profile alignment into reference and query parts
@@ -113,7 +114,7 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
         [ [], [] ],
         [ [], [] ],
         [ [], [] ],
-        false
+        compress_alignment
     )
 
     // 3.b Split the profile alignment into reference and query parts
@@ -165,8 +166,10 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
     emit:
     epang               = EPANG_PLACE.out.epang
     jplace              = EPANG_PLACE.out.jplace
+    epang_log           = EPANG_PLACE.out.log
     grafted_phylogeny   = GAPPA_GRAFT.out.newick
     taxonomy_profile    = GAPPA_ASSIGN.out.profile
     taxonomy_per_query  = GAPPA_ASSIGN.out.per_query
     heattree            = GAPPA_HEATTREE.out.svg
+    hmmbuild_log        = HMMER_HMMBUILD.out.hmmbuildout
 }

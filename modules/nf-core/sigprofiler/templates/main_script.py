@@ -9,6 +9,13 @@ from importlib.metadata import version
 
 import pandas as pd
 
+# Create writable directories in the Nextflow task working directory
+os.makedirs(".matplotlib", exist_ok=True)
+os.makedirs("tmp", exist_ok=True)
+
+# Tell Matplotlib to use the writable directory
+os.environ["MPLCONFIGDIR"] = os.path.abspath(".matplotlib")
+
 
 def parse_args(x):
     x = x.strip("[]")
@@ -41,8 +48,8 @@ opt.update(
         "min_nmf_iterations": 10000,
         "max_nmf_iterations": 100000,
         "nmf_test_conv": 10000,
-        "seeds": "random",
-        "volume": "./",
+        "seeds": "${seeds}",
+        "volume": os.path.abspath("tmp"),
         "make_decomposition_plots": True,
         "download_genome_sigprofiler": True,
         "genome_installed_path": "${genome_installed_path}",
@@ -69,6 +76,12 @@ for ao_k, ao_v in args_opt.items():
     else:
         opt[ao_k] = ao_v
 
+if not opt["seeds"] or opt["seeds"].strip() in {"", "None", "null"}:
+    opt["seeds"] = "random"
+
+print(f"Seeds: {opt['seeds']}", flush=True)
+print(f"Volume: {opt['volume']}", flush=True)
+print(f"MPLCONFIGDIR: {os.environ['MPLCONFIGDIR']}", flush=True)
 
 # Script
 
@@ -112,19 +125,19 @@ if __name__ == "__main__":
 
     # Conditionally install genome or use provided path
     if opt.get("download_genome_sigprofiler", True):
-        print(f"Installing genome {genome} via SigProfilerMatrixGenerator...")
+        print(f"Installing genome {genome} via SigProfilerMatrixGenerator...", flush=True)
         install_genome = f"SigProfilerMatrixGenerator install {genome} -v {opt['volume']}"
-        subprocess.run(install_genome, shell=True)
+        subprocess.run(install_genome, shell=True, check=True)
     else:
         if not opt.get("genome_installed_path"):
             raise ValueError("download_genome_sigprofiler is False but no genome_installed_path was provided.")
-        print(f"Using pre-installed genome at: {opt['genome_installed_path']}")
+        print(f"Using pre-installed genome at: {opt['genome_installed_path']}", flush=True)
 
     # Mutation counts matrix generation
     generate_count_matrix = (
         f"SigProfilerMatrixGenerator matrix_generator {prefix} {genome} {prefix} --volume {opt['volume']}"
     )
-    subprocess.run(generate_count_matrix, shell=True)
+    subprocess.run(generate_count_matrix, shell=True, check=True)
 
     matrix_files = {
         "SBS96": os.path.join("output", "SBS", f"{prefix}.SBS96.all"),
@@ -142,7 +155,7 @@ if __name__ == "__main__":
         if not os.path.isfile(input_data_path):
             continue  # Skip this mutation type
 
-        print(f"Running SigProfilerExtractor on {key} using {input_data_path}")
+        print(f"Running SigProfilerExtractor on {key} using {input_data_path}", flush=True)
 
         output_dir = os.path.join("results", key)
         context_type = context_type_map[key]
@@ -158,13 +171,14 @@ if __name__ == "__main__":
             f"--maximum_signatures {opt['maximum_signatures']} "
             f"--nmf_replicates {opt['nmf_replicates']} "
             f"--seeds {opt['seeds']} "
+            f"--volume {opt['volume']} "
             f"--min_nmf_iterations {opt['min_nmf_iterations']} "
             f"--max_nmf_iterations {opt['max_nmf_iterations']} "
             f"--nmf_test_conv {opt['nmf_test_conv']} "
             f"--make_decomposition_plots {make_plots} "
             f"matrix {output_dir} {input_data_path}"
         )
-        subprocess.run(sigprofilerextractor_run, shell=True)
+        subprocess.run(sigprofilerextractor_run, shell=True, check=True)
 
     # save the output results
     source_dir = prefix + "/"

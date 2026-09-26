@@ -1,4 +1,8 @@
 include { HMMER_HMMSEARCH } from '../../../modules/nf-core/hmmer/hmmsearch/main'
+include { HMMER_FORMATTSV as HMMER_FORMATTSV_TBLOUT       } from '../../../modules/nf-core/hmmer/formattsv/main'
+include { HMMER_FORMATTSV as HMMER_FORMATTSV_DOMTBLOUT    } from '../../../modules/nf-core/hmmer/formattsv/main'
+include { DUCKDB_TABLE2PARQUET as DUCKDB_TABLE2PARQUET_TBLOUT    } from '../../../modules/nf-core/duckdb/table2parquet/main'
+include { DUCKDB_TABLE2PARQUET as DUCKDB_TABLE2PARQUET_DOMTBLOUT } from '../../../modules/nf-core/duckdb/table2parquet/main'
 include { HMMER_HMMRANK   } from '../../../modules/nf-core/hmmer/hmmrank/main'
 include { SEQTK_SUBSEQ    } from '../../../modules/nf-core/seqtk/subseq/main'
 
@@ -18,18 +22,51 @@ workflow FASTA_HMMSEARCH_RANK_FASTAS {
 
     HMMER_HMMSEARCH ( ch_hmmsearch )
 
-    // The per-domain tables are what carry alignment coordinates, so hand them to the ranking
-    // step when hmmsearch was asked to write them. ifEmpty keeps the ranking running when it
-    // was not: an optional output leaves an empty channel, which would otherwise stall combine.
-    HMMER_HMMSEARCH.out.domain_summary
-        .collect { index -> index[1] }
-        .ifEmpty { [] }
-        .set { ch_domtblouts }
-
+    // hmmer/hmmrank ranks an already-combined, already-typed Parquet table rather than raw
+    // HMMER text; hmmer/formattsv combines every profile's own table into one (labelled by
+    // profile), and duckdb/table2parquet converts it. tblout and domtblout go through separate
+    // calls with distinct meta ids so their Parquet filenames don't collide once both are
+    // staged into the same HMMER_HMMRANK task.
+    // Sorted by id: .collect() completion order isn't deterministic, and only hmmrank's own
+    // output gets a final ORDER BY -- this intermediate one is published as-is.
     HMMER_HMMSEARCH.out.target_summary
-        .collect { index -> index[1] }
-        .map { index -> [ [ id: 'rank' ], index ] }
-        .combine(ch_domtblouts.map { index -> [ index ] })
+        .map { meta, tbl -> [ meta.id, tbl ] }
+        .collect(flat: false)
+        .map { pairs -> pairs.sort { it[0] } }
+        .map { pairs -> [ [ id: 'rank.tblout' ], pairs.collect { it[0] }, pairs.collect { it[1] } ] }
+        .set { ch_formattsv_tblout }
+
+    HMMER_FORMATTSV_TBLOUT ( ch_formattsv_tblout, 'tblout' )
+    DUCKDB_TABLE2PARQUET_TBLOUT ( HMMER_FORMATTSV_TBLOUT.out.tsv )
+
+    // The per-domain tables are what carry alignment coordinates, so hand them to the ranking
+    // step when hmmsearch was asked to write them. save_domtblout is a plain boolean known at
+    // workflow-composition time, so this if/else picks which channels get built rather than
+    // branching a dataflow at runtime; ch_domtblout_parquet ends up either a single real path
+    // or a single `[]`, matching what HMMER_HMMRANK treats as "no domtblout".
+    if (save_domtblout) {
+        // Sorted for the same reason as the tblout branch above.
+        HMMER_HMMSEARCH.out.domain_summary
+            .map { meta, domtbl -> [ meta.id, domtbl ] }
+            .collect(flat: false)
+            .map { pairs -> pairs.sort { it[0] } }
+            .map { pairs -> [ [ id: 'rank.domtblout' ], pairs.collect { it[0] }, pairs.collect { it[1] } ] }
+            .set { ch_formattsv_domtblout }
+
+        HMMER_FORMATTSV_DOMTBLOUT ( ch_formattsv_domtblout, 'domtblout' )
+        DUCKDB_TABLE2PARQUET_DOMTBLOUT ( HMMER_FORMATTSV_DOMTBLOUT.out.tsv )
+
+        ch_domtblout_parquet = DUCKDB_TABLE2PARQUET_DOMTBLOUT.out.parquet.map { meta, parquet -> parquet }
+    } else {
+        ch_domtblout_parquet = Channel.value([])
+    }
+
+    // ch_domtblout_parquet's value is combined wrapped in an extra list, same as
+    // ch_domtblouts was before this rework: combine() would otherwise treat a bare `[]`
+    // value as zero items rather than one item whose payload happens to be an empty list.
+    DUCKDB_TABLE2PARQUET_TBLOUT.out.parquet
+        .map { meta, parquet -> [ [ id: 'rank' ], parquet ] }
+        .combine(ch_domtblout_parquet.map { index -> [ index ] })
         .set { ch_hmmrank }
 
     HMMER_HMMRANK ( ch_hmmrank )

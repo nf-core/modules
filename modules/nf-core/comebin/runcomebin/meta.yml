@@ -71,24 +71,32 @@ output:
     - - meta:
           type: map
           description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
-      - ${prefix}/embeddings.tsv:
+      - ${prefix}/embeddings.npy:
           type: file
           description: |
-            TSV describing the embeddings of the contigs
-          pattern: "*.tsv"
-          ontologies:
-            - edam: http://edamontology.org/format_3475
+            NumPy array of the contig embeddings, rows in the order of `embedding_ids.txt`
+          pattern: "*.npy"
+          ontologies: []
   covembeddings:
     - - meta:
           type: map
           description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
-      - ${prefix}/covembeddings.tsv:
+      - ${prefix}/covembeddings.npy:
           type: file
           description: |
-            TSV describing the embeddings of the contigs
-          pattern: "*.tsv"
-          ontologies:
-            - edam: http://edamontology.org/format_3475
+            NumPy array of the coverage embeddings, rows in the order of `embedding_ids.txt`
+          pattern: "*.npy"
+          ontologies: []
+  embedding_ids:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - ${prefix}/embedding_ids.txt:
+          type: file
+          description: |
+            Contig identifiers, one per line, giving the row order of both embedding arrays
+          pattern: "*.txt"
+          ontologies: []
   versions_comebin:
     - - ${task.process}:
           type: string
@@ -99,6 +107,16 @@ output:
       - "run_comebin.sh -V | sed 's/COMEBin version: //'":
           type: eval
           description: The expression to obtain the version of the tool
+  versions_cuda:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cuda:
+          type: string
+          description: The name of the runtime
+      - 'python -c "import torch; print(torch.version.cuda or ''no CUDA available'')"':
+          type: eval
+          description: CUDA version bundled with the task's pytorch build, or `no CUDA available` on the non-GPU path
 topics:
   versions:
     - - ${task.process}:
@@ -110,6 +128,15 @@ topics:
       - "run_comebin.sh -V | sed 's/COMEBin version: //'":
           type: eval
           description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cuda:
+          type: string
+          description: The name of the runtime
+      - 'python -c "import torch; print(torch.version.cuda or ''no CUDA available'')"':
+          type: eval
+          description: CUDA version bundled with the task's pytorch build, or `no CUDA available` on the non-GPU path
 authors:
   - "@prototaxites"
 maintainers:

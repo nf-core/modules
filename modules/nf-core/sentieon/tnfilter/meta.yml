@@ -26,7 +26,7 @@ input:
         description: compressed vcf file from tnhaplotyper2
         pattern: "*.vcf.gz"
         ontologies:
-          - edam: http://edamontology.org/format_3989 # GZIP format
+          - edam: http://edamontology.org/format_3989
     - vcf_tbi:
         type: file
         description: Tabix index of vcf file
@@ -39,24 +39,24 @@ input:
         ontologies: []
     - contamination:
         type: file
-        description: the location and file name of the file containing the contamination
-          information produced by ContaminationModel.
+        description: the location and file name of the file containing the
+          contamination information produced by ContaminationModel.
         pattern: "*.contamination_data.tsv"
         ontologies:
-          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3475
     - segments:
         type: file
-        description: the location and file name of the file containing the tumor segments
-          information produced by ContaminationModel.
+        description: the location and file name of the file containing the tumor
+          segments information produced by ContaminationModel.
         pattern: "*.segments"
         ontologies: []
     - orientation_priors:
         type: file
-        description: the location and file name of the file containing the orientation
-          bias information produced by OrientationBias.
+        description: the location and file name of the file containing the
+          orientation bias information produced by OrientationBias.
         pattern: "*.orientation_data.tsv"
         ontologies:
-          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3475
   - - meta2:
         type: map
         description: |
@@ -84,20 +84,20 @@ output:
           description: file containing filtered tnhaplotyper2 calls.
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
       - "*.vcf.gz":
           type: file
           description: file containing filtered tnhaplotyper2 calls.
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   tbi:
     - - meta:
           type: file
           description: file containing filtered tnhaplotyper2 calls.
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
       - "*.vcf.gz.tbi":
           type: file
           description: tbi file that pairs with vcf.
@@ -109,7 +109,7 @@ output:
           description: file containing filtered tnhaplotyper2 calls.
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
       - "*.vcf.gz.stats":
           type: file
           description: file containing statistics of the tnfilter run.
@@ -123,7 +123,7 @@ output:
           type: string
           description: The tool name
       - sentieon driver --version | sed "s/.*-//g":
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 topics:
   versions:
@@ -134,7 +134,7 @@ topics:
           type: string
           description: The tool name
       - sentieon driver --version | sed "s/.*-//g":
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 authors:
   - "@asp8200"

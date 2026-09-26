@@ -176,10 +176,28 @@ nf-core provides a CLI toolkit for working with the nf-core template. The core c
 - Run tests with `nf-test test {modules|subworkflows}/{path}/tests --profile=+{docker|singularity|conda} --stop-on-first-failure`
 - If you expect the output to change (e.g. after a tool update), you **SHOULD** update the snapshot with `nf-test test {modules|subworkflows}/{path}/tests --profile=+{docker|singularity|conda} --update-snapshot`. You **MUST** regenerate snapshots on the same CPU architecture as CI.
 
+## Before starting work
+
+- Before adding or updating a module or subworkflow, you **MUST** check for existing open issues and pull requests in nf-core/modules that cover the same component.
+- If an open issue or PR already covers the same work, you **MUST** inform the user before proceeding. If the issue is assigned or the PR is stale, the user **MUST** decide how to proceed (e.g. take over, coordinate with them, or wait).
+
 ## git and branch policy
 
 - You **MUST** create a new branch with a meaningful name for each feature, whether you are working directly in the nf-core repository or on a fork.
 - If you work on multiple features in parallel, you **SHOULD** use a separate worktree for each task to prevent clobber.
+
+## Code Comments
+
+Before committing changes, always review code comments on the diff:
+
+- Default to no comment. Code shows _how_; comment only to carry _why_ — a non-obvious constraint, deliberate deviation, gotcha, or workaround.
+- Never narrate the code ("loop over users", "parse the body"), restate names/types/signatures, or mark block ends.
+- Never narrate the change ("fixed X", "updated to Y", "as requested"). A comment must read correctly to someone seeing the file fresh who never saw the diff; change context belongs in the commit message.
+- Delete by default. A comment that just restates a decision the code already reflects — "1 vCPU is deliberate", "right-sized from prod" — is dead weight even when it points to a doc: the doc is where anyone questioning it looks anyway. Keep inline only what a reader needs _at that line_ and can't get from the code — a non-obvious invariant/constraint ("timeout must stay < interval — ALB rule") or a cross-file sync obligation ("keep in sync with the router's TGs").
+- Comments must stand on their own with any link removed — encode the substance, never a pointer as a substitute for it. Banned: specs, section numbers, design docs — point-in-time artifacts that get superseded and rot ("spec §7" is the canonical case). Fine: a maintained doc/README at a stable path — and when the _why_ is a system-level narrative ("why it's built this way"), extract it there as a _pure_ extraction: not an inline block, and not a comment that merely points to the doc. What stays inline are the non-obvious local details, which reference the doc only when a reader genuinely needs it _at that line_ — a pointer-only comment generally shouldn't exist at all. Tickets, Confluence, RFCs, permalinks stay fine as trailing breadcrumbs.
+- Occam's razor on every comment you _keep_, not just the ones you delete. "Carries a real _why_" and "is worded minimally" are independent judgments — a genuine _why_ can still be 3x too long, and "it's a real why" is not license to keep the wording verbatim. Keep only the one non-obvious fact a reader needs _at that line_, in the fewest words; cut the mechanism the code already shows, where a value is consumed downstream, the consequence-of-the-consequence, and justification-of-the-justification. A 5-line block almost never survives intact — suspect it on sight; the razored answer is sometimes zero.
+- A one-line summary on a public function/endpoint is fine; inline restatement of a single clear line never is.
+- TODOs are fine and don't need issue IDs — but a TODO is a marker, not a substitute for doing the work in scope.
 
 ## Push routine
 
