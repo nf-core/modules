@@ -61,16 +61,15 @@ input:
     - fasta:
         type: file
         description: |
-          reference FASTA (optional). Required when `ext.args` contains
-          `--everything`.
+          reference FASTA. Required: vepyr annotates with `--everything`,
+          which needs it.
         pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
         ontologies: []
     - fai:
         type: file
         description: |
-          samtools/faidx index of the reference FASTA. Required whenever the
-          FASTA is supplied: vepyr opens the reference through its index and
-          does not build one.
+          samtools/faidx index of the reference FASTA. Required: vepyr opens
+          the reference through its index and does not build one.
         pattern: "*.fai"
         ontologies: []
     - gzi:

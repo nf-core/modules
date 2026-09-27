@@ -125,4 +125,30 @@ nextflow_process {
             )
         }
     }
+
+    test("homo_sapiens - vcf - no fasta - fails") {
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/input.vcf.gz', checkIfExists: true),
+                    []
+                ])
+                input[1] = channel.value([[ id:'cache' ], []])
+                input[2] = channel.value([[ id:'GRCh38' ], [], [], []])
+                input[3] = []
+                input[4] = [[], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.stdout.any { it.contains("VEPYR_ANNOTATE requires a reference FASTA") } }
+            )
+        }
+    }
 }

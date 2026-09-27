@@ -30,7 +30,9 @@ process VEPYR_ANNOTATE {
     if ("${vcf}" == "${prefix}.vcf.gz") {
         error("Input and output names are the same, set prefix in module configuration to disambiguate!")
     }
-    def reference = fasta ? "--fasta ${fasta}" : ''
+    if (!fasta) {
+        error("VEPYR_ANNOTATE requires a reference FASTA: vepyr annotates with --everything, which needs it.")
+    }
     def version_arg = cache_version ? "--cache_version ${cache_version}" : ''
     def plugin_arg = plugin_cache ? "--plugin_cache_root ${plugin_cache}" : ''
     // --fork above 1 needs a tabix/CSI index: build one when none is given, and
@@ -45,7 +47,7 @@ process VEPYR_ANNOTATE {
         -i ${vcf} \\
         -o ${prefix}.vcf.gz \\
         --dir_cache ${cache} \\
-        ${reference} \\
+        --fasta ${fasta} \\
         ${version_arg} \\
         ${plugin_arg} \\
         ${args} \\
