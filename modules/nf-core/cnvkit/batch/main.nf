@@ -3,9 +3,9 @@ process CNVKIT_BATCH {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3e/3e8542cdb0190cfe2cedd74f714f021a2ffa94be3ec2a5b95ff52610cb3e2c34/data'
-        : 'community.wave.seqera.io/library/cnvkit_htslib_samtools:86928c121163aca7'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3c/3c127bbeb62b853e044adee5da1f788ab84bc07c2809843ffdd9154ce74b8d2a/data'
+:         'community.wave.seqera.io/library/cnvkit_htslib_samtools:10abfe6987f6efe6' }"
 
     input:
     tuple val(meta), path(tumor), path(tumor_index), path(normal), path(normal_index)

@@ -14,7 +14,7 @@ process UNICYCLER {
     tuple val(meta), path('*.scaffolds.fa.gz'), emit: scaffolds
     tuple val(meta), path('*.assembly.gfa.gz'), emit: gfa
     tuple val(meta), path('*.log')            , emit: log
-    path  "versions.yml"                      , emit: versions
+    tuple val("${task.process}"), val('unicycler'), eval('TERM=xterm unicycler --version 2>&1 | sed "s/^.*Unicycler v//; s/ .*$//"'), emit: versions_unicycler, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,25 +37,15 @@ process UNICYCLER {
     mv assembly.gfa ${prefix}.assembly.gfa
     gzip -n ${prefix}.assembly.gfa
     mv unicycler.log ${prefix}.unicycler.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        unicycler: \$(echo \$(unicycler --version 2>&1) | sed 's/^.*Unicycler v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
 
-    cat "" | gzip > ${prefix}.scaffolds.fa.gz
-    cat "" | gzip >  ${prefix}.assembly.gfa.gz
+    echo "" | gzip > ${prefix}.scaffolds.fa.gz
+    echo "" | gzip >  ${prefix}.assembly.gfa.gz
     touch ${prefix}.unicycler.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        unicycler: \$(echo \$(unicycler --version 2>&1) | sed 's/^.*Unicycler v//; s/ .*\$//')
-    END_VERSIONS
     """
 
 }

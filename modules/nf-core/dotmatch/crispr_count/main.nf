@@ -4,8 +4,8 @@ process DOTMATCH_CRISPR_COUNT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/dotmatch:0.2.2--py311h13f8228_1' :
-        'quay.io/biocontainers/dotmatch:0.2.2--py311h13f8228_1' }"
+        'https://depot.galaxyproject.org/singularity/dotmatch:0.5.0--py311h13f8228_0' :
+        'biocontainers/dotmatch:0.5.0--py311h13f8228_0' }"
 
     input:
     tuple val(meta), path(reads)

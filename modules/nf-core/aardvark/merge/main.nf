@@ -53,13 +53,13 @@ process AARDVARK_MERGE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo $args
-    
+
     echo "" | gzip > ${prefix}.passing.vcf.gz
     echo "" | gzip > ${prefix}.regions.bed.gz
     echo "" | gzip > ${prefix}.failed_regions.bed.gz
     touch ${prefix}.passing.vcf.gz.tbi
     touch ${prefix}.regions.bed.gz.tbi
-    touch ${prefix}.failed_regions.bed.gz.tbi   
+    touch ${prefix}.failed_regions.bed.gz.tbi
     touch ${prefix}.summary.tsv
     touch ${prefix}.cli_settings.json
     """

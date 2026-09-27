@@ -1,0 +1,108 @@
+name: folddisco_query
+description: Search a prebuilt folddisco index for a discontinuous residue motif
+  in a query protein structure
+keywords:
+  - protein structure
+  - structural motif
+  - motif search
+  - geometric hashing
+  - query
+  - pdb
+tools:
+  - folddisco:
+      description: Fast indexing and search of discontinuous motifs in protein
+        structures.
+      homepage: https://github.com/steineggerlab/folddisco
+      documentation: https://github.com/steineggerlab/folddisco
+      tool_dev_url: https://github.com/steineggerlab/folddisco
+      doi: "10.1038/s41587-026-03162-9"
+      licence:
+        - "GPL-3.0-or-later"
+      identifier: biotools:folddisco
+      args_id: $args
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - pdb:
+        type: file
+        description: Query protein structure file the motif residues
+          are read from.
+        pattern: "*.{pdb,cif,mmcif}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1476" # PDB
+          - edam: "http://edamontology.org/format_1477" # mmCIF
+    - query:
+        type: string
+        description: Comma-separated chain+residue motif specifiers to
+          search for, e.g. 'A13,A95,A167'. Individual specifiers may include an
+          amino-acid substitution after a colon (e.g. 'A13:S') or a residue range
+          with a dash (e.g. 'A13-20').
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - index:
+        type: directory
+        description: Folddisco geometric-hashing index directory
+          produced by the folddisco/index module.
+        pattern: "*"
+        ontologies: []
+    - structures:
+        type: file
+        description: Optional. The same protein structure files (PDB or mmCIF)
+          originally passed to folddisco/index to build the index. A folddisco
+          index is not self-contained — it records the paths of the structures
+          it indexed, and folddisco query re-reads those files to compute RMSD
+          and matching residues. Omit (pass `[]`) only when `--skip-match` is
+          set in `ext.args`, which skips the PDB re-read and emits no RMSD or
+          matching residues; otherwise omitting it fails with `Failed to read
+          PDB file`.
+        pattern: "*.{pdb,cif,mmcif}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1476" # PDB
+          - edam: "http://edamontology.org/format_1477" # mmCIF
+output:
+  results:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}.tsv:
+          type: file
+          description: TSV of matching structures/motifs found in the index.
+            Columns are configurable via `--format-output` in ext.args; the
+            default columns include tid, node_count, idf, rmsd,
+            matching_residues and query_residues.
+          pattern: "*.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  versions_folddisco:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - folddisco:
+          type: string
+          description: The name of the tool
+      - folddisco version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - folddisco:
+          type: string
+          description: The name of the tool
+      - folddisco version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"

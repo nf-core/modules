@@ -1,6 +1,5 @@
 name: cnvkit_call
-description: Given segmented log2 ratio estimates (.cns), derive each segment’s
-  absolute integer copy number
+description: Given segmented log2 ratio estimates (.cns), derive each segment’s absolute integer copy number
 keywords:
   - cnvkit
   - bam
@@ -70,3 +69,25 @@ authors:
 maintainers:
   - "@adamrtalbot"
   - "@priesgo"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/cnvkit:0.9.14--2b15b9d82750b6bc
+      build_id: bd-2b15b9d82750b6bc_1
+      scan_id: sc-6428381e648fe45a_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/cnvkit:0.9.14--288e98d6210b7304
+      build_id: bd-288e98d6210b7304_1
+      scan_id: sc-443ec212095df1dc_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/cnvkit:0.9.14--8b396753927fe6da
+      build_id: bd-8b396753927fe6da_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/39/3935f8d7507f85fd20e073f0625bb6bdff8aa1b6044f4bbb720c9a8063ea0390/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/cnvkit:0.9.14--5c558b3f35d90f28
+      build_id: bd-5c558b3f35d90f28_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8e/8e36d8f28c489f4fe5a8927be4a21c3fb35aa8305548cff93edb4b51a51e4026/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/cnvkit/call/.conda-lock/linux_amd64-bd-288e98d6210b7304_1.txt

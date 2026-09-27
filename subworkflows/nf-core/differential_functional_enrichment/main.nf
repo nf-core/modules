@@ -32,9 +32,6 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
     ch_featuresheet          // [ meta, features sheet, features id, features symbol ]
 
     main:
-
-    ch_versions = channel.empty()
-
     // Add method information into meta map of ch_input
     // This information is used later to determine which method to run for each input
     // Also, reorganize the structure to match them with the modules' input organization
@@ -149,9 +146,6 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
 
     ch_session_info = GPROFILER2_GOST.out.session_info
 
-    ch_versions = ch_versions
-        .mix(PROPR_GREA.out.versions)
-
     emit:
     // here we emit the outputs that will be useful afterwards in the
     // nf-core/differentialabundance pipeline
@@ -196,5 +190,4 @@ workflow DIFFERENTIAL_FUNCTIONAL_ENRICHMENT {
 
     // tool versions
     session_info                    = ch_session_info
-    versions                        = ch_versions
 }

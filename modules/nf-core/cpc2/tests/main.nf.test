@@ -1,0 +1,63 @@
+nextflow_process {
+
+    name "Test Process CPC2"
+    script "../main.nf"
+    process "CPC2"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cpc2"
+
+    test("homo_sapiens - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith('versions')
+                    sanitizeOutput(process.out, unstableKeys: ["coding_potential"]) }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)
+                ).match() }
+            )
+        }
+
+    }
+
+}

@@ -48,7 +48,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    // Conda and docker version of bowtie2 produce different 
+                    // Conda and docker version of bowtie2 produce different
                     // hashes. Therefore, testing whether file exists and bam
                     // statistics.
                     file(process.out.bam[0][1]).name,
@@ -201,7 +201,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    // Conda and docker version of bowtie2 produce different 
+                    // Conda and docker version of bowtie2 produce different
                     // hashes. Therefore, testing whether file exists and bam
                     // statistics.
                     file(process.out.bam[0][1]).name,
@@ -257,7 +257,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    // Conda and docker version of bowtie2 produce different 
+                    // Conda and docker version of bowtie2 produce different
                     // hashes. Therefore, testing whether file exists and bam
                     // statistics.
                     file(process.out.bam[0][1]).name,
@@ -313,7 +313,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    // Conda and docker version of bowtie2 produce different 
+                    // Conda and docker version of bowtie2 produce different
                     // hashes. Therefore, testing whether file exists and bam
                     // statistics.
                     file(process.out.bam[0][1]).name,
@@ -366,7 +366,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    // Conda and docker version of bowtie2 produce different 
+                    // Conda and docker version of bowtie2 produce different
                     // hashes. Therefore, testing whether file exists and bam
                     // statistics.
                     file(process.out.bam[0][1]).name,
@@ -422,7 +422,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    // Conda and docker version of bowtie2 produce different 
+                    // Conda and docker version of bowtie2 produce different
                     // hashes. Therefore, testing whether file exists and bam
                     // statistics.
                     file(process.out.bam[0][1]).name,
@@ -458,7 +458,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [
-                        id:'test', 
+                        id:'test',
                         single_end:false,
                         fasta:'https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/genomics/sarscov2/genome/genome.fasta' ], // meta map + fasta for cram testing
                     [

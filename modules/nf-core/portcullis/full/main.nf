@@ -15,12 +15,12 @@ process PORTCULLIS_FULL {
     output:
     tuple val(meta), path("*.pass.junctions.bed"), emit: pass_junctions_bed
     tuple val(meta), path("*.pass.junctions.tab"), emit: pass_junctions_tab
-    tuple val(meta), path("*.portcullis.log"), emit: log
-    tuple val(meta), path("*.intron.gff3"), emit: intron_gff, optional: true
-    tuple val(meta), path("*.exon.gff3"), emit: exon_gff, optional: true
-    tuple val(meta), path("*.spliced.bam"), emit: spliced_bam, optional: true
-    tuple val(meta), path("*.spliced.bam.bai"), emit: spliced_bai, optional: true
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.portcullis.log")    , emit: log
+    tuple val(meta), path("*.intron.gff3")       , emit: intron_gff , optional: true
+    tuple val(meta), path("*.exon.gff3")         , emit: exon_gff   , optional: true
+    tuple val(meta), path("*.spliced.bam")       , emit: spliced_bam, optional: true
+    tuple val(meta), path("*.spliced.bam.bai")   , emit: spliced_bai, optional: true
+    tuple val("${task.process}"), val('portcullis'), eval("portcullis --version |& sed '1!d ; s/portcullis //'"), emit: versions_portcullis, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -50,11 +50,6 @@ process PORTCULLIS_FULL {
         cp ${prefix}/2-junc/*.spliced.bam.bai .
         cp ${prefix}/2-junc/*.spliced.bam .
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        portcullis: \$(portcullis --version |& sed '1!d ; s/portcullis //')
-    END_VERSIONS
     """
 
     stub:
@@ -63,10 +58,5 @@ process PORTCULLIS_FULL {
     touch ${prefix}.portcullis.log
     touch ${prefix}.pass.junctions.bed
     touch ${prefix}.pass.junctions.tab
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        portcullis: \$(portcullis --version |& sed '1!d ; s/portcullis //')
-    END_VERSIONS
     """
 }

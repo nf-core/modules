@@ -13,7 +13,7 @@ process PROPR_LOGRATIO {
     output:
     tuple val(meta), path("*.logratio.tsv")     , emit: logratio
     tuple val(meta), path("*.R_sessionInfo.log"), emit: session_info
-    path "versions.yml"                         , emit: versions
+    path "versions.yml"                         , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,7 +22,7 @@ process PROPR_LOGRATIO {
     template 'logratio.R'
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.logratio.tsv
     touch ${prefix}.R_sessionInfo.log

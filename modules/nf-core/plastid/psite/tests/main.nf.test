@@ -31,7 +31,7 @@ nextflow_process {
                 { assert path(process.out.metagene_profiles.get(0).get(1)).getText().contains('28-mers') },
                 { assert file(process.out.p_offsets_png.get(0).get(1)).exists() },
                 { assert path(process.out.p_offsets.get(0).get(1)).getText().contains("length\tp_offset") },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
     }
@@ -56,10 +56,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert file(process.out.metagene_profiles.get(0).get(1)).exists() },
-                { assert file(process.out.p_offsets_png.get(0).get(1)).exists() },
-                { assert file(process.out.p_offsets.get(0).get(1)).exists() },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(
+                    sanitizeOutput(process.out)
+                    ).match()
+                },
             )
         }
     }

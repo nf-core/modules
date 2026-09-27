@@ -23,8 +23,12 @@ process GEDI_INDEXGENOME {
     prefix   = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}
+
+    # GEDI records -s relative only when the FASTA sits beside the .fi
+    cp -L ${fasta} ${prefix}/${fasta.name}
+
     gedi -e IndexGenome \\
-        -s ${fasta} \\
+        -s ${prefix}/${fasta.name} \\
         -a ${gtf} \\
         -n ${name} \\
         -f ${prefix} \\

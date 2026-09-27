@@ -15,7 +15,8 @@ tools:
       documentation: https://portal.nersc.gov/genomad/
       tool_dev_url: https://github.com/apcamargo/genomad/
       doi: 10.1101/2023.03.05.531206
-      licence: ["Lawrence Berkeley National Labs BSD variant license"]
+      licence:
+        - "Lawrence Berkeley National Labs BSD variant license"
       identifier: biotools:genomad
 input:
   - - meta:
@@ -28,17 +29,33 @@ input:
         description: FASTA file containing contigs/scaffolds/chromosomes
         pattern: "*.{fasta,fna,fa}"
         ontologies: []
-  - genomad_db:
-      type: directory
-      description: Directory pointing to geNomad database
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - genomad_db:
+        type: directory
+        description: Directory pointing to geNomad database
 output:
+  genomad_results:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - ${prefix}/:
+          type: file
+          description: The full output directory from Genomad
+          pattern: "${prefix}/"
+          ontologies: []
   aggregated_classification:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_aggregated_classification/*_aggregated_classification.tsv":
+      - ${prefix}/*_aggregated_classification/*_aggregated_classification.tsv:
           type: file
           description: Combined classification scores for each contig/scaffold/chromosome
           pattern: "*_aggregated_classification.tsv"
@@ -50,10 +67,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_marker_classification/*_marker_classification.tsv":
+      - ${prefix}/*_marker_classification/*_marker_classification.tsv:
           type: file
-          description: Marker-based classification scores when --disable-nn-classification
-            is used
+          description: Marker-based classification scores when --disable-nn-classification is used
           pattern: "*_marker_classification.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -63,7 +79,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_annotate/*_taxonomy.tsv":
+      - ${prefix}/*_annotate/*_taxonomy.tsv:
           type: file
           description: Detailed output of geNomad's marker gene taxonomy analysis
           pattern: "*_taxonomy.tsv"
@@ -75,10 +91,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_find_proviruses/*_provirus.tsv":
+      - ${prefix}/*_find_proviruses/*_provirus.tsv:
           type: file
-          description: Detailed output of each provirus identified by geNomad's find_proviruses
-            module
+          description: Detailed output of each provirus identified by geNomad's find_proviruses module
           pattern: "*_provirus.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -88,10 +103,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_score_calibration/*_compositions.tsv":
+      - ${prefix}/*_score_calibration/*_compositions.tsv:
           type: file
-          description: OPTIONAL - Predicted sample composition when `--enable-score-calibration`
-            is used
+          description: OPTIONAL - Predicted sample composition when `--enable-score-calibration` is used
           pattern: "*_compositions.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -101,10 +115,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_score_calibration/*_calibrated_aggregated_classification.tsv":
+      - ${prefix}/*_score_calibration/*_calibrated_aggregated_classification.tsv:
           type: file
-          description: OPTIONAL - Classification scores that have been adjusted based
-            on sample composition when `--enable-score-calibration` is used`
+          description: OPTIONAL - Classification scores that have been adjusted based on sample composition when `--enable-score-calibration` is used`
           pattern: "*_calibrated_aggregated_classification.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -114,7 +127,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_summary/*_plasmid.fna.gz":
+      - ${prefix}/*_summary/*_plasmid.fna.gz:
           type: file
           description: FASTA file containing predicted plasmid sequences
           pattern: "*_plasmid.fna"
@@ -125,7 +138,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_summary/*_plasmid_genes.tsv":
+      - ${prefix}/*_summary/*_plasmid_genes.tsv:
           type: file
           description: TSV file containing predicted plasmid genes and their annotations
           pattern: "*_plasmid_genes.tsv"
@@ -137,7 +150,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_summary/*_plasmid_proteins.faa.gz":
+      - ${prefix}/*_summary/*_plasmid_proteins.faa.gz:
           type: file
           description: FASTA file containing predicted plasmid protein sequences
           pattern: "*_plasmid_proteins.faa"
@@ -148,7 +161,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_summary/*_plasmid_summary.tsv":
+      - ${prefix}/*_summary/*_plasmid_summary.tsv:
           type: file
           description: TSV file containing a summary of geNomad's plasmid predictions
           pattern: "*_plasmid_summary.tsv"
@@ -160,7 +173,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_summary/*_virus.fna.gz":
+      - ${prefix}/*_summary/*_virus.fna.gz:
           type: file
           description: FASTA file containing predicted virus sequences
           pattern: "*_virus.fna"
@@ -171,7 +184,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_summary/*_virus_genes.tsv":
+      - ${prefix}/*_summary/*_virus_genes.tsv:
           type: file
           description: TSV file containing predicted virus genes and their annotations
           pattern: "*_virus_genes.tsv"
@@ -183,7 +196,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_summary/*_virus_proteins.faa.gz":
+      - ${prefix}/*_summary/*_virus_proteins.faa.gz:
           type: file
           description: FASTA file containing predicted virus protein sequences
           pattern: "*_virus_proteins.faa"
@@ -194,38 +207,78 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_summary/*_virus_summary.tsv":
+      - ${prefix}/*_summary/*_virus_summary.tsv:
           type: file
           description: TSV file containing a summary of geNomad's virus predictions
           pattern: "*_virus_summary.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
   versions_genomad:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
       - genomad:
           type: string
           description: The name of the tool
-      - "genomad --version 2>&1 | sed 's/^.*geNomad, version //; s/ .*//'":
+      - genomad --version 2>&1 | sed 's/^.*geNomad, version //; s/ .*//':
           type: eval
           description: The expression to obtain the version of the tool
-
+  versions_genomad_db:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - genomad_db:
+          type: string
+          description: The name of the tool
+      - if [ -s ${genomad_db}/version.txt ]; then cat ${genomad_db}/version.txt; else echo 'unknown'; fi:
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
       - genomad:
           type: string
           description: The name of the tool
-      - "genomad --version 2>&1 | sed 's/^.*geNomad, version //; s/ .*//'":
+      - genomad --version 2>&1 | sed 's/^.*geNomad, version //; s/ .*//':
           type: eval
           description: The expression to obtain the version of the tool
-
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - genomad_db:
+          type: string
+          description: The name of the tool
+      - if [ -s ${genomad_db}/version.txt ]; then cat ${genomad_db}/version.txt; else echo 'unknown'; fi:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@CarsonJM"
-
 maintainers:
   - "@CarsonJM"
   - "@gallvp"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/genomad:1.12.0--faad3712d5d168cd
+      build_id: bd-faad3712d5d168cd_1
+      scan_id: sc-7a049ac1c8d6f0ed_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/genomad:1.12.0--27836e6e665e84b5
+      build_id: bd-27836e6e665e84b5_1
+      scan_id: sc-220af21a53dfb7d4_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/genomad:1.12.0--492a522b1d209f3b
+      build_id: bd-492a522b1d209f3b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fc/fcee21b42347c4de44ffe555e6a3e24c929856439a14f255576c94ee3b2ddccb/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/genomad:1.12.0--a6462035ff2ec6ae
+      build_id: bd-a6462035ff2ec6ae_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/83/83e31b082e82e714b01040adf90f865fdd229b6d9d926525b821d207271a3922/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/genomad/endtoend/.conda-lock/linux_amd64-bd-27836e6e665e84b5_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/genomad/endtoend/.conda-lock/linux_arm64-bd-faad3712d5d168cd_1.txt

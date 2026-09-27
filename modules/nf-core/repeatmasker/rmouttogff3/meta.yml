@@ -1,7 +1,5 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "repeatmasker_rmouttogff3"
-description: A utility script to assist to convert old RepeatMasker *.out files to
-  version 3 gff files.
+description: A utility script to assist to convert old RepeatMasker *.out files to version 3 gff files.
 keywords:
   - sort
   - repeatmasker
@@ -14,7 +12,8 @@ tools:
       homepage: "https://www.repeatmasker.org/"
       documentation: "https://www.repeatmasker.org/webrepeatmaskerhelp.html"
       tool_dev_url: "https://github.com/rmhubley/RepeatMasker"
-      licence: ["Open Software License v. 2.1"]
+      licence:
+        - "Open Software License v. 2.1"
       identifier: biotools:repeatmasker
 
 input:
@@ -40,13 +39,29 @@ output:
           description: Sorted BAM/CRAM/SAM file
           pattern: "*.{gff3}"
           ontologies: []
+  versions_repeatmasker:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - repeatmasker:
+          type: string
+          description: The name of the tool
+      - RepeatMasker -v | sed 's/RepeatMasker version //1':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - repeatmasker:
+          type: string
+          description: The name of the tool
+      - RepeatMasker -v | sed 's/RepeatMasker version //1':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@GallVp"
 maintainers:

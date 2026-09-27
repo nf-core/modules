@@ -6,14 +6,15 @@ keywords:
   - serotype
 tools:
   - tbprofiler:
-      description: Profiling tool for Mycobacterium tuberculosis to detect drug resistance
-        and lineage from WGS data
+      description: Profiling tool for Mycobacterium tuberculosis to detect drug resistance and lineage from WGS data
       homepage: https://github.com/jodyphelan/TBProfiler
       documentation: https://jodyphelan.gitbook.io/tb-profiler/
       tool_dev_url: https://github.com/jodyphelan/TBProfiler
       doi: "10.1186/s13073-019-0650-x"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
+
 input:
   - - meta:
         type: map
@@ -83,13 +84,29 @@ output:
           description: VCF with variant info again reference genomes
           pattern: "*.vcf"
           ontologies: []
+  versions_tb_profiler:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - tb-profiler:
+          type: string
+          description: The tool name
+      - "tb-profiler --version | sed 's/TBProfiler version //'":
+          type: eval
+          description: The version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - tb-profiler:
+          type: string
+          description: The tool name
+      - "tb-profiler --version | sed 's/TBProfiler version //'":
+          type: eval
+          description: The version of the tool
+
 authors:
   - "@rpetit3"
 maintainers:

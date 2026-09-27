@@ -1,0 +1,93 @@
+name: "custom_collectfeaturecounts"
+description: |
+  Collects one or more subread/featureCounts raw output files (typically one per sample,
+  for the same feature type/ORF caller) into a single long-format table with per-sample
+  TPM (Transcripts Per Million)  computed.
+keywords:
+  - featurecounts
+  - collect
+  - counts
+  - tpm
+tools:
+  - "collectfeaturecounts":
+      description: |
+        In-house R script that reshapes one or more raw featureCounts output files into a
+        single long-format table (one row per feature/sample), computing transcripts per million (TPMs) per sample.
+      tool_dev_url: "https://github.com/nf-core/modules/blob/master/modules/nf-core/custom/collectfeaturecounts/main.nf"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - inputfiles:
+        type: file
+        description: |
+          One or more raw featureCounts output files (as produced by `subread/featurecounts`),
+          typically one per sample against the same feature set/ORF caller. The sample name
+          is taken from each file's count column header (its BAM filename, with a trailing
+          `.sorted.bam` stripped).
+        pattern: "*.featureCounts.tsv"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+output:
+  counts:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "${prefix}.counts.tsv.gz":
+          type: file
+          description: |
+            Long-format table (`orf`, `chr`, `start`, `end`, `strand`, `length`, `sample`,
+            `count`, `tpm`) with one row per feature/sample, `count` > 0 rows only.
+          pattern: "*.counts.tsv.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: "http://edamontology.org/format_3750" # YAML
+authors:
+  - "@danilodileo"
+  - "@erikrikarddaniel"
+maintainers:
+  - "@danilodileo"
+  - "@erikrikarddaniel"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/r-base_r-data.table_r-dplyr_r-dtplyr_pruned:e289d008f8e006c5
+      build_id: bd-e289d008f8e006c5_1
+      scan_id: sc-601d91a135cd74c5_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/r-base_r-data.table_r-dplyr_r-dtplyr_pruned:e98a95795cdd7b8d
+      build_id: bd-e98a95795cdd7b8d_1
+      scan_id: sc-f9ffad43ab7d9bab_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/r-base_r-data.table_r-dplyr_r-dtplyr_pruned:cfc660db3b9f0e48
+      build_id: bd-cfc660db3b9f0e48_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bf/bfe4a872ba15a90cc12fb24aa96ddda852d5b295c214684d9c8fdf3dc02af535/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/r-base_r-data.table_r-dplyr_r-dtplyr_pruned:26dcf8d18c74568a
+      build_id: bd-26dcf8d18c74568a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e5/e52672c5c96c9a2da0c032f5603ac4a193fc02e81feeb81257e54b8ded39acf6/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/custom/collectfeaturecounts/.conda-lock/linux_amd64-bd-e289d008f8e006c5_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/custom/collectfeaturecounts/.conda-lock/linux_arm64-bd-e98a95795cdd7b8d_1.txt

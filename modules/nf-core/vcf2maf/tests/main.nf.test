@@ -47,8 +47,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     path(process.out.maf[0][1]).readLines()[5..131],
-                    process.out.versions,
-                    path(process.out.versions[0]).readLines()
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() },
             )
         }
@@ -78,7 +77,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.maf[0][1]).readLines().size() == 2 }, // no variants, only header lines
-                { assert snapshot(process.out.versions, path(process.out.versions[0]).readLines()).match() }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
     }
@@ -103,8 +102,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).readLines()
+                    sanitizeOutput(process.out)
                     ).match()
                 },
             )
@@ -132,8 +130,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).readLines()
+                    sanitizeOutput(process.out)
                     ).match()
                 },
             )

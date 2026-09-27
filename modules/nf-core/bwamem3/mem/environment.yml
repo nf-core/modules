@@ -5,8 +5,7 @@ channels:
   - bioconda
 dependencies:
   # renovate: datasource=conda depName=bioconda/bwa-mem3
-  - "bioconda::bwa-mem3=0.3.0"
-  # renovate: datasource=conda depName=bioconda/htslib
-  - "bioconda::htslib=1.23.1"
-  # renovate: datasource=conda depName=bioconda/samtools
-  - "bioconda::samtools=1.23.1"
+  - bioconda::bwa-mem3=0.8.0
+  - bioconda::htslib=1.24
+  - bioconda::samtools=1.24
+  - conda-forge::findutils=4.10.0

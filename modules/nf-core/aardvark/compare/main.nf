@@ -52,7 +52,7 @@ process AARDVARK_COMPARE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo $args
-    
+
     echo "" | gzip > ${prefix}.truth.vcf.gz
     echo "" | gzip > ${prefix}.query.vcf.gz
     echo "" | gzip > ${prefix}.region_sequences.tsv.gz

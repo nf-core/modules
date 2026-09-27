@@ -1,19 +1,18 @@
 name: "pureclip"
-description: PureCLIP is a tool to detect protein-RNA interaction footprints from
-  single-nucleotide CLIP-seq data, such as iCLIP and eCLIP.
+description: PureCLIP is a tool to detect protein-RNA interaction footprints from single-nucleotide CLIP-seq data, such as iCLIP and eCLIP.
 keywords:
   - iCLIP
   - eCLIP
   - CLIP
 tools:
   - "pureclip":
-      description: "PureCLIP is a tool to detect protein-RNA interaction footprints
-        from single-nucleotide CLIP-seq data, such as iCLIP and eCLIP."
+      description: "PureCLIP is a tool to detect protein-RNA interaction footprints from single-nucleotide CLIP-seq data, such as iCLIP and eCLIP."
       homepage: "https://github.com/skrakau/PureCLIP"
       documentation: "https://pureclip.readthedocs.io/en/latest/GettingStarted/index.html"
       tool_dev_url: "https://github.com/skrakau/PureCLIP"
       doi: "10.1186/s13059-017-1364-2"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 input:
   - - meta:
@@ -66,7 +65,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:false ]`
-      - ${crosslinks_output_name}:
+      - ${prefix}_pureclip_crosslinks.bed:
           type: file
           description: Bed file of crosslinks
           pattern: "*.{bed}"
@@ -77,18 +76,34 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test', single_end:false ]`
-      - ${peaks_output_name}:
+      - ${prefix}_pureclip_peaks.bed:
           type: file
           description: Bed file of peaks
           pattern: "*.{bed}"
           ontologies: []
+  versions_pureclip:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pureclip:
+          type: string
+          description: The name of the tool
+      - "pureclip --version 2>&1 | sed -n 's/^.*pureclip version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pureclip:
+          type: string
+          description: The name of the tool
+      - "pureclip --version 2>&1 | sed -n 's/^.*pureclip version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@charlotteanne"
   - "@marcjones"

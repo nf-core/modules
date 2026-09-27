@@ -16,7 +16,7 @@ process PARAGRAPH_MULTIGRMPY {
     output:
     tuple val(meta), path("*.vcf.gz") , emit: vcf
     tuple val(meta), path("*.json.gz"), emit: json, optional:true
-    path "versions.yml"               , emit: versions
+    tuple val("${task.process}"), val('paragraph'), val('2.3'), emit: versions_paragraph, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,8 +24,6 @@ process PARAGRAPH_MULTIGRMPY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '2.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
     def check_vcf = variants.name.endsWith(".vcf.gz") ? "variant=\$(bgzip -d --threads ${task.cpus} --stdout ${variants} | awk '/^#/ {next} {print 1;exit}' || echo 0)":
                     variants.extension == "vcf" ? "variant=\$(cat ${variants} | awk '/^#/ {next} {print 1;exit}' || echo 0)":
                     "variant=1"
@@ -51,26 +49,14 @@ process PARAGRAPH_MULTIGRMPY {
         echo "${variants} was empty, so the multigrmpy.py process was skipped."
         cp ${variants} ${prefix}.vcf.gz
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        paragraph: ${VERSION}
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '2.3' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
     if ("${variants}" == "${prefix}.vcf.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     if ("${variants}" == "${prefix}.json.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
-    echo | gzip > ${prefix}.vcf.gz
-    echo | gzip > ${prefix}.json.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        paragraph: ${VERSION}
-    END_VERSIONS
+    echo "" | gzip > ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.json.gz
     """
 }

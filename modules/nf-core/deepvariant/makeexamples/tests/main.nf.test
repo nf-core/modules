@@ -35,6 +35,7 @@ nextflow_process {
                 input[4] = [
                     [],[]
                 ]
+                input[5] = false
                 """
             }
         }
@@ -53,7 +54,9 @@ nextflow_process {
                 { assert snapshot(process.out.versions_deepvariant).match("test1-versions") },
                 { assert snapshot(
                     process.out.gvcf[0][1].collect { file(it).name }
-                ).match("test1-gvcf-filenames") }
+                ).match("test1-gvcf-filenames") },
+                { assert process.out.read_phase_inputs[0][0] == [id:'test', single_end:false] },
+                { assert process.out.read_phase_inputs[0][1] == [] }
             )
         }
     }
@@ -83,6 +86,7 @@ nextflow_process {
                 input[4] = [
                     [],[]
                 ]
+                input[5] = false
                 """
             }
         }
@@ -131,6 +135,7 @@ nextflow_process {
                 input[4] = [
                     [],[]
                 ]
+                input[5] = false
                 """
             }
         }
@@ -149,6 +154,61 @@ nextflow_process {
                 { assert snapshot(
                     process.out.gvcf[0][1].collect { file(it).name }
                 ).match("test3-gvcf-filenames") }
+            )
+        }
+    }
+
+    test("homo_sapiens - [bam, bai] - fasta - fai - phasing") {
+        config './pacbio_profile.config'
+        when {
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                      []
+                ]
+                input[1] = [
+                    [ id:'genome'],
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'genome'],
+                      file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[3] = [
+                    [],[]
+                ]
+                input[4] = [
+                    [],[]
+                ]
+                input[5] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+
+                { assert process.out.examples[0][0] == [id:'test', single_end:false] },
+                { assert process.out.gvcf[0][0] == [id:'test', single_end:false] },
+                { assert process.out.examples[0][1].size() == 4 },
+                { assert snapshot(
+                    process.out.examples[0][1].collect { file(it).name }
+                ).match("test4-examples-filenames") },
+                { assert process.out.gvcf[0][1].size() == 2 },
+                { assert snapshot(process.out.versions_deepvariant).match("test4-versions") },
+                { assert snapshot(
+                    process.out.gvcf[0][1].collect { file(it).name }
+                ).match("test4-gvcf-filenames") },
+                { assert process.out.read_phase_inputs[0][0] == [id:'test', single_end:false] },
+                { assert process.out.read_phase_inputs[0][1].size() == 2 },
+                { assert snapshot(
+                    process.out.read_phase_inputs[0][1].collect { file(it).name }
+                ).match("test4-read-phase-inputs-filenames") }
             )
         }
     }
@@ -181,6 +241,7 @@ nextflow_process {
                 input[4] = [
                     [],[]
                 ]
+                input[5] = false
                 """
             }
         }
@@ -192,12 +253,12 @@ nextflow_process {
                 { assert process.out.examples[0][1].size() == 4 },
                 { assert snapshot(
                     process.out.examples[0][1].collect { file(it).name }
-                ).match("test4-examples-filenames") },
+                ).match("test5-examples-filenames") },
                 { assert process.out.gvcf[0][1].size() == 2 },
-                { assert snapshot(process.out.versions_deepvariant).match("test4-versions") },
+                { assert snapshot(process.out.versions_deepvariant).match("test5-versions") },
                 { assert snapshot(
                     process.out.gvcf[0][1].collect { file(it).name }
-                ).match("test4-gvcf-filenames") }
+                ).match("test5-gvcf-filenames") }
             )
         }
     }

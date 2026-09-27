@@ -1,7 +1,5 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "resfinder_run"
-description: ResFinder identifies acquired antimicrobial resistance genes in total
-  or partial sequenced isolates of bacteria
+description: ResFinder identifies acquired antimicrobial resistance genes in total or partial sequenced isolates of bacteria
 keywords:
   - blastn
   - kma
@@ -10,13 +8,13 @@ keywords:
   - resistance genes
 tools:
   - "resfinder":
-      description: "ResFinder identifies acquired antimicrobial resistance genes in
-        total or partial sequenced isolates of bacteria"
+      description: "ResFinder identifies acquired antimicrobial resistance genes in total or partial sequenced isolates of bacteria"
       homepage: "https://bitbucket.org/genomicepidemiology/resfinder.git/src"
       documentation: "https://bitbucket.org/genomicepidemiology/resfinder/src/master/README.md"
       tool_dev_url: "https://bitbucket.org/genomicepidemiology/resfinder.git/src"
       doi: "10.1099/mgen.0.000748"
-      licence: ["APACHE-2.0"]
+      licence:
+        - "APACHE-2.0"
       identifier: biotools:resfinder
 
 input:
@@ -107,8 +105,7 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - PointFinder_prediction.txt:
           type: file
-          description: tab separated table; 1 is given to a predicted resistance against
-            an antibiotic class, 0 is given to not resistance detected
+          description: tab separated table; 1 is given to a predicted resistance against an antibiotic class, 0 is given to not resistance detected
           pattern: "PointFinder_prediction.txt"
           ontologies: []
   pointfinder_results:
@@ -119,8 +116,7 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - PointFinder_results.txt:
           type: file
-          description: tab separated table with predicted point mutations leading to
-            antibiotic resistance
+          description: tab separated table with predicted point mutations leading to antibiotic resistance
           pattern: "PointFinder_results.txt"
           ontologies: []
   pointfinder_table:
@@ -142,8 +138,7 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - ResFinder_Hit_in_genome_seq.fsa:
           type: file
-          description: fasta sequence of resistance gene hits found in the input data
-            (query)
+          description: fasta sequence of resistance gene hits found in the input data (query)
           pattern: "ResFinder_Hit_in_genome_seq.fsa"
           ontologies: []
   resfinder_blast:
@@ -174,8 +169,7 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - ResFinder_Resistance_gene_seq.fsa:
           type: file
-          description: fasta sequence of resistance gene hits found in the database
-            (reference)
+          description: fasta sequence of resistance gene hits found in the database (reference)
           pattern: "ResFinder_Resistance_gene_seq.fsa"
           ontologies: []
   resfinder_results_table:
@@ -208,17 +202,32 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - ResFinder_results.txt:
           type: file
-          description: predicted resistance genes grouped by antibiotic class and hit
-            alignments to reference resistance genes
+          description: predicted resistance genes grouped by antibiotic class and hit alignments to reference resistance genes
           pattern: "ResFinder_results.txt"
           ontologies: []
+  versions_resfinder:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - resfinder:
+          type: string
+          description: The name of the tool
+      - run_resfinder.py -v:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - resfinder:
+          type: string
+          description: The name of the tool
+      - run_resfinder.py -v:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@marrip"
 maintainers:

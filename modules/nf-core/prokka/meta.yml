@@ -1,6 +1,5 @@
 name: prokka
-description: Whole genome annotation of small genomes (bacterial, archeal,
-  viral)
+description: Whole genome annotation of small genomes (bacterial, archeal, viral)
 keywords:
   - annotation
   - fasta
@@ -26,8 +25,7 @@ input:
         ontologies: []
   - proteins:
       type: file
-      description: FASTA file of trusted proteins to first annotate from
-        (optional)
+      description: FASTA file of trusted proteins to first annotate from (optional)
       ontologies: []
   - prodigal_tf:
       type: file
@@ -42,8 +40,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - ${prefix}/*.gff:
           type: file
-          description: annotation in GFF3 format, containing both sequences and
-            annotations
+          description: annotation in GFF3 format, containing both sequences and annotations
           pattern: "*.{gff}"
           ontologies: []
   gbk:
@@ -54,8 +51,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - ${prefix}/*.gbk:
           type: file
-          description: annotation in GenBank format, containing both sequences and
-            annotations
+          description: annotation in GenBank format, containing both sequences and annotations
           pattern: "*.{gbk}"
           ontologies: []
   fna:
@@ -88,8 +84,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - ${prefix}/*.ffn:
           type: file
-          description: nucleotide FASTA file of all the prediction transcripts
-            (CDS, rRNA, tRNA, tmRNA, misc_RNA)
+          description: nucleotide FASTA file of all the prediction transcripts (CDS, rRNA, tRNA, tmRNA, misc_RNA)
           pattern: "*.{ffn}"
           ontologies: []
   sqn:
@@ -111,8 +106,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - ${prefix}/*.fsa:
           type: file
-          description: nucleotide FASTA file of the input contig sequences, used
-            by "tbl2asn" to create the .sqn file
+          description: nucleotide FASTA file of the input contig sequences, used by "tbl2asn" to create the .sqn file
           pattern: "*.{fsa}"
           ontologies: []
   tbl:
@@ -123,8 +117,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - ${prefix}/*.tbl:
           type: file
-          description: feature Table file, used by "tbl2asn" to create the .sqn
-            file
+          description: feature Table file, used by "tbl2asn" to create the .sqn file
           pattern: "*.{tbl}"
           ontologies: []
   err:
@@ -168,8 +161,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - ${prefix}/*.tsv:
           type: file
-          description: tab-separated file of all features
-            (locus_tag,ftype,len_bp,gene,EC_number,COG,product)
+          description: tab-separated file of all features (locus_tag,ftype,len_bp,gene,EC_number,COG,product)
           pattern: "*.{tsv}"
           ontologies:
             - edam: http://edamontology.org/format_3475
@@ -198,3 +190,27 @@ authors:
   - "@rpetit3"
 maintainers:
   - "@rpetit3"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/prokka_openjdk_parallel:f21b98bcef4c3579
+      build_id: bd-f21b98bcef4c3579_1
+      scan_id: sc-f6c02317325ec0c7_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/prokka_openjdk_parallel:2b8a3d67cd9e777a
+      build_id: bd-2b8a3d67cd9e777a_1
+      scan_id: sc-0457a5c5f64824d3_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/prokka_openjdk_parallel:f9c80fd1fb3dcd19
+      build_id: bd-f9c80fd1fb3dcd19_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7b/7bc89d4083c0a4baaaca0ef9ac0ba65e0feaebd8d88fe1c16c47041cbc67f360/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/prokka_openjdk_parallel:da4872acb14bdec7
+      build_id: bd-da4872acb14bdec7_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e9/e9240123660eb1d166ae9919c463b77183a2dd63a4c43bbcecd73ffd7a5fa471/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/prokka/.conda-lock/linux_amd64-bd-f21b98bcef4c3579_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/prokka/.conda-lock/linux_arm64-bd-2b8a3d67cd9e777a_1.txt

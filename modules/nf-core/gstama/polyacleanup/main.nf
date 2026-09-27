@@ -11,9 +11,9 @@ process GSTAMA_POLYACLEANUP {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.fa.gz")                   , emit: fasta
-    tuple val(meta), path("*_polya_flnc_report.txt.gz"), emit: report
-    tuple val(meta), path("*_tails.fa.gz")             , emit: tails
+    tuple val(meta), path("${prefix}.fa.gz")                   , emit: fasta
+    tuple val(meta), path("${prefix}_polya_flnc_report.txt.gz"), emit: report
+    tuple val(meta), path("${prefix}_tails.fa.gz")             , emit: tails
     tuple val("${task.process}"), val('gstama'), eval("tama_collapse.py -version | sed -n 's/tc_version_date_//p'"), emit: versions_gstama, topic: versions
 
     when:
@@ -21,20 +21,21 @@ process GSTAMA_POLYACLEANUP {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     if( "$fasta" == "${prefix}.fasta" | "$fasta" == "${prefix}.fa" ) error "Input and output names are the same, set prefix in module configuration"
     """
     tama_flnc_polya_cleanup.py \\
         -f $fasta \\
         -p ${prefix} \\
         $args
+
     gzip ${prefix}.fa
     gzip ${prefix}_polya_flnc_report.txt
     gzip ${prefix}_tails.fa
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}.fa.gz
     echo "" | gzip > ${prefix}_polya_flnc_report.txt.gz

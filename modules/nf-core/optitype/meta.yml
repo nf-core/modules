@@ -59,9 +59,10 @@ output:
       - optitype:
           type: string
           description: The name of the tool
-      - 'grep "Version:" $(which OptiTypePipeline.py) | sed "s/Version: //g"':
+      - 'optitype info | sed -n "s/.*OptiType version: \([0-9.]*\).*/\1/p"':
           type: eval
           description: The expression to obtain the version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -70,11 +71,26 @@ topics:
       - optitype:
           type: string
           description: The name of the tool
-      - 'grep "Version:" $(which OptiTypePipeline.py) | sed "s/Version: //g"':
+      - 'optitype info | sed -n "s/.*OptiType version: \([0-9.]*\).*/\1/p"':
           type: eval
           description: The expression to obtain the version of the tool
+
 authors:
   - "@apeltzer"
 maintainers:
   - "@apeltzer"
   - "@christopher-mohr"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/optitype_coincbc:722e52fd4495c161
+      build_id: bd-722e52fd4495c161_1
+      scan_id: sc-3f4315fffa1b381e_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/optitype_coincbc:3308fdb619aa2595
+      build_id: bd-3308fdb619aa2595_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0a/0aaca7463454e693f5646e40a31b4deb8a575f0ac5b3c853fd740ff3031cc117/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/optitype/.conda-lock/linux_amd64-bd-722e52fd4495c161_1.txt

@@ -2,21 +2,12 @@
     "homo_sapiens - pacbio - hifi - fastq - stub": {
         "content": [
             {
-                "versions_myloasm": [
-                    [
-                        "MYLOASM",
-                        "myloasm",
-                        "0.5.1"
-                    ]
-                ]
-            },
-            {
                 "contigs": [
                     [
                         {
                             "id": "test_stub"
                         },
-                        "assembly_primary.fa"
+                        "assembly_primary.fa.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "contigs_alt": [
@@ -24,7 +15,7 @@
                         {
                             "id": "test_stub"
                         },
-                        "assembly_alternate.fa"
+                        "assembly_alternate.fa.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "contigs_dup": [
@@ -32,7 +23,7 @@
                         {
                             "id": "test_stub"
                         },
-                        "duplicated_contigs.fa"
+                        "duplicated_contigs.fa.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "gfa": [
@@ -40,7 +31,7 @@
                         {
                             "id": "test_stub"
                         },
-                        "final_contig_graph.gfa"
+                        "final_contig_graph.gfa.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "log": [
@@ -48,23 +39,22 @@
                         {
                             "id": "test_stub"
                         },
-                        "myloasm_1.log"
+                        "myloasm_1.log:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "results": [
+                "versions_myloasm": [
                     [
-                        {
-                            "id": "test_stub"
-                        },
-                        "test_stub"
+                        "MYLOASM",
+                        "myloasm",
+                        "0.7.0"
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-04-14T11:56:05.451868121",
+        "timestamp": "2026-09-17T15:27:31.178273",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "25.10.4"
+            "nextflow": "26.04.6"
         }
     },
     "homo_sapiens - pacbio - hifi - fastq": {
@@ -75,7 +65,7 @@
                         {
                             "id": "test_hifi"
                         },
-                        "assembly_primary.fa:md5,eb27d6a529187b1a7f4e2734540f8dcf"
+                        "assembly_primary.fa.gz"
                     ]
                 ],
                 "contigs_alt": [
@@ -83,7 +73,15 @@
                         {
                             "id": "test_hifi"
                         },
-                        "assembly_alternate.fa:md5,6743fe2455269c845c09d0a520832001"
+                        "assembly_alternate.fa.gz"
+                    ]
+                ],
+                "contigs_dup": [
+                    [
+                        {
+                            "id": "test_hifi"
+                        },
+                        "duplicated_contigs.fa.gz"
                     ]
                 ],
                 "gfa": [
@@ -91,26 +89,22 @@
                         {
                             "id": "test_hifi"
                         },
-                        "final_contig_graph.gfa:md5,c7921565faf5abcaeb9b9880bc04f783"
+                        "final_contig_graph.gfa.gz:md5,2f5a81f99523b57a9ed80aade9bb4de9"
                     ]
                 ],
                 "versions_myloasm": [
                     [
                         "MYLOASM",
                         "myloasm",
-                        "0.5.1"
+                        "0.7.0"
                     ]
                 ]
-            },
-            11,
-            true,
-            173,
-            true
+            }
         ],
-        "timestamp": "2026-04-14T12:02:55.636228455",
+        "timestamp": "2026-09-17T15:47:12.470335",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "25.10.4"
+            "nextflow": "26.04.6"
         }
     }
 }

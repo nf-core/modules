@@ -12,28 +12,28 @@ components:
   - samtools/sort
   - samtools/markdup
 input:
-  - meta:
-      type: map
+  - ch_bam:
+      type: file
       description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test' ]`
-  - bam:
-      type: file
-      description: BAM/CRAM/SAM file
+        BAM/CRAM/SAM file.
+
+        Structure: [ val(meta), path(bam) ]
       pattern: "*.{bam,cram,sam}"
-  - fasta_fai:
+
+  - ch_fasta_fai:
       type: file
-      description: FASTA file and index
+      description: |
+        FASTA file and its index.
+
+        Structure: [ val(meta2), path(fasta), path(fai) ]
       pattern: "*.{fasta,fa,fai}"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'test' ]`
   - bam:
       type: file
-      description: Sorted and markduplicate BAM/CRAM/SAM file
+      description: |
+        Sorted and markduplicate BAM/CRAM/SAM file.
+
+        Structure: [ val(meta), path(bam) ]
       pattern: "*.{bam,cram,sam}"
 authors:
   - "@priyanka-surana"

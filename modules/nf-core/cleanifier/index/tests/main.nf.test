@@ -36,7 +36,7 @@ nextflow_process {
                     path(process.out.index[0][1]).getFileName().toString(),
                     path(process.out.info[0][1]).getFileName().toString(),
                     process.out.findAll { key, val -> key.startsWith("versions") }
-                    ).match() 
+                    ).match()
                 }
             )
         }
@@ -68,7 +68,7 @@ nextflow_process {
                     path(process.out.index[0][1]).getFileName().toString(),
                     path(process.out.info[0][1]).getFileName().toString(),
                     process.out.findAll { key, val -> key.startsWith("versions") }
-                    ).match() 
+                    ).match()
                 }
             )
         }
