@@ -98,7 +98,10 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                // log-file content includes a timestamp/runtime that varies between runs --
+                // assert existence only, and snapshot everything else.
+                { assert process.out.log.size() == 1 },
+                { assert snapshot(process.out.bed, process.out.versions_modkit).match() }
             )
         }
 
@@ -132,7 +135,10 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                // log-file content includes a timestamp/runtime that varies between runs --
+                // assert existence only, and snapshot everything else.
+                { assert process.out.log.size() == 1 },
+                { assert snapshot(process.out.bed, process.out.versions_modkit).match() }
             )
         }
 
@@ -170,7 +176,10 @@ nextflow_process {
         then {
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                // log-file content includes a timestamp/runtime that varies between runs --
+                // assert existence only, and snapshot everything else.
+                { assert process.out.log.size() == 1 },
+                { assert snapshot(process.out.bed, process.out.versions_modkit).match() }
             )
         }
 
