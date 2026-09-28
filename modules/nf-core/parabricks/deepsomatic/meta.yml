@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "parabricks_deepsomatic"
-description: NVIDIA Clara Parabricks GPU-accelerated somatic variant calling, replicating
-  deepsomatic.
+description: NVIDIA Clara Parabricks GPU-accelerated somatic variant calling,
+  replicating deepsomatic.
 keywords:
   - variant
   - somatic
@@ -45,7 +45,8 @@ input:
         ontologies: []
     - intervals:
         type: file
-        description: File or files containing genomic intervals for variant calling.
+        description: File or files containing genomic intervals for variant
+          calling.
         pattern: "*.{bed,interval_list,picard,list,intervals}"
         ontologies: []
   - - ref_meta:
@@ -58,7 +59,6 @@ input:
         description: Reference fasta - must be unzipped.
         pattern: "*.fasta"
         ontologies: []
-
 output:
   vcf:
     - - meta:
@@ -70,7 +70,8 @@ output:
           type: file
           description: VCF file created with deepsomatic, optional
           pattern: "*.vcf.gz"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
   gvcf:
     - - meta:
           type: map
@@ -83,10 +84,22 @@ output:
           pattern: "*.g.vcf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+            e.g. [ id:'tumor_vs_normal' ]
+      - "*.vcf.gz.tbi":
+          type: file
+          description: Tabix index for the VCF or gVCF file
+          pattern: "*.vcf.gz.tbi"
+          ontologies: []
   compatible_versions:
     - compatible_versions.yml:
         type: file
-        description: File containing info on compatible CPU-based software versions.
+        description: File containing info on compatible CPU-based software
+          versions.
         pattern: "compatible_versions.yml"
         ontologies:
           - edam: http://edamontology.org/format_3750 # YAML
@@ -97,10 +110,6 @@ output:
       - parabricks:
           type: string
           description: The tool name
-      - "pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'":
-          type: string
-          description: The command used to generate the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
