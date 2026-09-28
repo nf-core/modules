@@ -1,0 +1,69 @@
+nextflow_process {
+
+    name "Test Process OCTOPUSV_FILTER"
+    script "../main.nf"
+    process "OCTOPUSV_FILTER"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "octopusv"
+    tag "octopusv/filter"
+
+    test("homo_sapiens - svcf - json") {
+
+        when {
+            params {
+                module_args = '--json-summary --min-support 10'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/octopusv/sk-n-as-sniffles-ont.svcf', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.json.get(0).get(1)).json.output_records == 13 },
+                { assert snapshot(
+                    path(process.out.svcf.get(0).get(1)).vcf.summary,
+                    path(process.out.svcf.get(0).get(1)).vcf.variantsMD5,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - svcf - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--json-summary --min-support 1'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/octopusv/sk-n-as-sniffles-ont.svcf', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
