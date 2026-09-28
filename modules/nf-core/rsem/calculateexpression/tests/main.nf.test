@@ -12,8 +12,6 @@ nextflow_process {
 
     test("homo_sapiens - bam") {
 
-        config "./alignment.config"
-
         setup {
             run("RSEM_PREPAREREFERENCE") {
                 script "../../../rsem/preparereference/main.nf"
