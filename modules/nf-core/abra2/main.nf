@@ -17,7 +17,7 @@ process ABRA2 {
 
     output:
     tuple val(meta), path("*.bam"),     emit: bam
-    tuple val(meta), path("*.bam.bai"), emit: bai, optional: true
+    tuple val(meta), path("*.bai"),     emit: bai, optional: true
     tuple val("${task.process}"), val('abra2'), eval("abra2 2>&1 | sed -n 's/.*Abra version: //p'"), topic: versions, emit: versions_abra2
 
     when:
