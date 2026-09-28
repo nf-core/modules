@@ -14,7 +14,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--json-summary --min-support 1'
+                module_args = '--json-summary --min-support 10'
             }
             process {
                 """
@@ -29,7 +29,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.json.size() == 1 },
+                { assert path(process.out.json.get(0).get(1)).json.output_records == 13 },
                 { assert snapshot(
                     path(process.out.svcf.get(0).get(1)).vcf.summary,
                     path(process.out.svcf.get(0).get(1)).vcf.variantsMD5,

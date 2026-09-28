@@ -14,7 +14,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--json-summary --sample Sample --keep-empty'
+                module_args = '--json-summary --sample Sample'
             }
             process {
                 """
@@ -41,13 +41,47 @@ nextflow_process {
         }
     }
 
+    test("homo_sapiens - svcf - Sample_file") {
+
+        when {
+            params {
+                module_args = '--json-summary'
+            }
+            process {
+                """
+                def sample_file = file('samples.txt')
+                sample_file.text = 'Sample\\n'
+
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/octopusv/sk-n-as-sniffles-ont.svcf', checkIfExists: true)
+                ]
+                input[1] = [[ id:'samples' ], sample_file]
+                input[2] = [[:], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.json.size() == 1 },
+                { assert snapshot(
+                    path(process.out.svcf.get(0).get(1)).vcf.summary,
+                    path(process.out.svcf.get(0).get(1)).vcf.variantsMD5,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
     test("homo_sapiens - svcf - stub") {
 
         options "-stub"
 
         when {
             params {
-                module_args = '--json-summary --sample Sample --keep-empty'
+                module_args = '--json-summary --sample Sample'
             }
             process {
                 """
