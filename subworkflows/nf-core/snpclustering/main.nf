@@ -8,8 +8,8 @@ include { CUSTOM_CLUSTERVISUALIZATION } from '../../../modules/nf-core/custom/cl
 workflow SNPCLUSTERING {
     take:
     vcf_ch
-    _refpanel_ch
-    _genmap_ch
+    refpanel_ch
+    genmap_ch
     region
     n_pcs
     use_approx
