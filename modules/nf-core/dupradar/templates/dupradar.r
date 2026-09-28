@@ -33,7 +33,12 @@ threads <- $task.cpus
 args_opt <- parse_args('$task.ext.args')
 feature_type <- ifelse('feature_type' %in% names(args_opt), args_opt[['feature_type']], 'exon')
 tmp_dir <- ifelse('tmp_dir' %in% names(args_opt), args_opt[['tmp_dir']], '.')
-dir.create(tmp_dir, showWarnings = FALSE, recursive = TRUE)
+if (!dir.exists(tmp_dir)) {
+    dir.create(tmp_dir, recursive = TRUE)
+}
+if (!dir.exists(tmp_dir) || file.access(tmp_dir, mode = 2) != 0) {
+    stop("tmp_dir '", tmp_dir, "' does not exist or is not writable")
+}
 
 stranded <- 0
 if ('${meta.strandedness}' == 'forward') {
