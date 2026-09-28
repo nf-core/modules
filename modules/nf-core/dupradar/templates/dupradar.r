@@ -32,6 +32,7 @@ annotation_gtf <- '$gtf'
 threads <- $task.cpus
 args_opt <- parse_args('$task.ext.args')
 feature_type <- ifelse('feature_type' %in% names(args_opt), args_opt[['feature_type']], 'exon')
+tmp_dir <- ifelse('tmp_dir' %in% names(args_opt), args_opt[['tmp_dir']], '.')
 
 stranded <- 0
 if ('${meta.strandedness}' == 'forward') {
@@ -59,7 +60,7 @@ library("dupRadar")
 library("parallel")
 
 # Duplicate stats
-dm <- analyzeDuprates(input_bam, annotation_gtf, stranded, paired_end, threads, GTF.featureType = feature_type, verbose = TRUE)
+dm <- analyzeDuprates(input_bam, annotation_gtf, stranded, paired_end, threads, GTF.featureType = feature_type, verbose = TRUE, tmpDir = tmp_dir)
 write.table(dm, file=paste(output_prefix, "_dupMatrix.txt", sep=""), quote=F, row.name=F, sep="\t")
 
 # 2D density scatter plot
