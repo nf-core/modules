@@ -3,6 +3,7 @@ nextflow_process {
 
     process "VCF2MAF"
     script "../main.nf"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -25,8 +26,6 @@ nextflow_process {
 
     test("Run without VEP") {
 
-        config "./nextflow.config"
-
         when {
             params {
                 module_args = '--ncbi-build GRCh38 --species homo_sapiens --inhibit-vep'
@@ -34,9 +33,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                                [ id:'test'], // meta map
-                                file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gvcf/test.genome.vcf", checkIfExists: true)
-                            ]
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gvcf/test.genome.vcf", checkIfExists: true)
+                ]
                 input[1] = file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true)
                 input[2] = []
                 """
@@ -54,9 +53,6 @@ nextflow_process {
     }
 
     test("Run with VEP"){
-
-        config "./nextflow.config"
-
         when {
             params {
                 module_args = "--ncbi-build GRCh38 --species homo_sapiens"
@@ -64,9 +60,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                                [ id:'test'], // meta map
-                                file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gvcf/test.genome.vcf", checkIfExists: true)
-                            ]
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gvcf/test.genome.vcf", checkIfExists: true)
+                ]
                 input[1] = [ file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true) ]
                 input[2] = UNTAR.out.untar.map { it[1] }
                 """
@@ -77,7 +73,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.maf[0][1]).readLines().size() == 2 }, // no variants, only header lines
-                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -90,9 +86,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                                [ id:'test'], // meta map
-                                file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gvcf/test.genome.vcf", checkIfExists: true)
-                            ]
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gvcf/test.genome.vcf", checkIfExists: true)
+                ]
                 input[1] = [ file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true) ]
                 input[2] = []
                 """
@@ -101,10 +97,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    sanitizeOutput(process.out)
-                    ).match()
-                },
+                { assert snapshot(sanitizeOutput(process.out)).match()}
             )
         }
     }
@@ -117,9 +110,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                                [ id:'test'], // meta map
-                                file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gvcf/test.genome.vcf", checkIfExists: true)
-                            ]
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/gvcf/test.genome.vcf", checkIfExists: true)
+                ]
                 input[1] = [ file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genome.fasta", checkIfExists: true) ]
                 input[2] = UNTAR.out.untar.map { it[1] }
                 """
@@ -129,10 +122,7 @@ nextflow_process {
         then{
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    sanitizeOutput(process.out)
-                    ).match()
-                },
+                { assert snapshot(sanitizeOutput(process.out)).match()}
             )
         }
     }

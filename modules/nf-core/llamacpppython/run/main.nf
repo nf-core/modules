@@ -20,6 +20,11 @@ process LLAMACPPPYTHON_RUN {
     script:
     args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    echo ${args}
+    """
+
     template('llama-cpp-python.py')
 
     stub:

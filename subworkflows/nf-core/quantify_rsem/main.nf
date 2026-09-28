@@ -59,11 +59,11 @@ workflow QUANTIFY_RSEM {
             ch_counts_gene
                 .toSortedList { a, b -> a[1].name <=> b[1].name }
                 .filter { sorted -> sorted.size() > 0 }
-                .map { sorted -> [ ['id': 'all_samples'], sorted.collect { it[1] } ] },
+                .map { sorted -> [ ['id': 'all_samples'], sorted.collect { item -> item[1] } ] },
             ch_counts_transcript
                 .toSortedList { a, b -> a[1].name <=> b[1].name }
                 .filter { sorted -> sorted.size() > 0 }
-                .map { sorted -> sorted.collect { it[1] } }
+                .map { sorted -> sorted.collect { item -> item[1] } }
         )
         ch_merged_counts_gene       = CUSTOM_RSEMMERGECOUNTS.out.counts_gene
         ch_merged_tpm_gene          = CUSTOM_RSEMMERGECOUNTS.out.tpm_gene

@@ -41,7 +41,6 @@ process PLASMIDID {
     """
 
     stub:
-    def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}/images ${prefix}/logs ${prefix}/data ${prefix}/database ${prefix}/fasta_files ${prefix}/kmer

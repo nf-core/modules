@@ -62,7 +62,7 @@ workflow QUANT_TXIMPORT_SUMMARIZEDEXPERIMENT {
         : quant_results
             .toSortedList { a, b -> a[1].name <=> b[1].name }
             .filter { sorted -> sorted.size() > 0 }
-            .map { sorted -> [ ['id': 'all_samples'], sorted.collect { it[1] } ] }
+            .map { sorted -> [ ['id': 'all_samples'], sorted.collect { item -> item[1] } ] }
 
     TXIMETA_TXIMPORT (
         ch_tximport_input,

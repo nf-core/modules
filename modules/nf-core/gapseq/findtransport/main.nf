@@ -21,7 +21,6 @@ process GAPSEQ_FINDTRANSPORT {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     gapseq \\
         find-transport \\
@@ -32,8 +31,8 @@ process GAPSEQ_FINDTRANSPORT {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def fasta_name = fasta.getBaseName()
     """
-    touch ${prefix}_transporters.tbl
+    touch ${fasta_name}_transporters.tbl
     """
 }
