@@ -33,6 +33,7 @@ threads <- $task.cpus
 args_opt <- parse_args('$task.ext.args')
 feature_type <- ifelse('feature_type' %in% names(args_opt), args_opt[['feature_type']], 'exon')
 tmp_dir <- ifelse('tmp_dir' %in% names(args_opt), args_opt[['tmp_dir']], '.')
+dir.create(tmp_dir, showWarnings = FALSE, recursive = TRUE)
 
 stranded <- 0
 if ('${meta.strandedness}' == 'forward') {
