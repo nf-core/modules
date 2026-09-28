@@ -43,6 +43,44 @@ nextflow_process {
         }
     }
 
+    // EPA-NG reads a gzipped MSA natively -- the query and reference above are already
+    // gzipped -- but not a gzipped tree, which aborts with "Treeparsing failed!". The module
+    // decompresses that one input.
+    test("test-epang-place - gzipped reference tree") {
+
+        when {
+            process {
+                """
+                def gzipped = java.nio.file.Files.createTempDirectory('epang_tree_gz').resolve('reference.newick.gz')
+                new java.util.zip.GZIPOutputStream(gzipped.toFile().newOutputStream()).withStream { out ->
+                    out << file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/epang/reference.newick', checkIfExists: true).bytes
+                }
+
+                input[0] = [
+                    [ id:'test', model:'LG' ],
+                    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/epang/query.alnfaa.gz', checkIfExists: true),
+                    file('https://github.com/nf-core/test-datasets/raw/modules/data/delete_me/epang/reference.alnfaa.gz', checkIfExists: true),
+                    file(gzipped.toString())
+                ]
+                input[1] = []
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.jplace[0][1]).name,
+                    file(process.out.log[0]).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
     test("test-epang-place-stub") {
         options '-stub'
 

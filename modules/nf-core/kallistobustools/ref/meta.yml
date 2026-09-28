@@ -44,16 +44,6 @@ input:
         "nac", "lamanno" (obsolete)
       pattern: "{standard,lamanno,nac}"
 output:
-  versions_kallistobustools:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - kallistobustools:
-          type: string
-          description: The name of the tool
-      - kb --version 2>&1 | sed -n 's/kb_python //p':
-          type: eval
-          description: The expression to obtain the version of the tool
   index:
     - - meta:
           type: map
@@ -93,6 +83,16 @@ output:
         description: Intron transcript to capture file
         pattern: "*intron_t2c.{txt}"
         ontologies: []
+  versions_kallistobustools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kallistobustools:
+          type: string
+          description: The name of the tool
+      - kb --version 2>&1 | sed -n 's/kb_python //p':
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:

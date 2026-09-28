@@ -26,8 +26,8 @@ input:
           e.g. [ id:'test']
     - vcf:
         type: file
-        description: VCF file to be recalibrated, this should be the same file as used
-          for the first stage VariantRecalibrator.
+        description: VCF file to be recalibrated, this should be the same file as
+          used for the first stage VariantRecalibrator.
         pattern: "*.vcf"
         ontologies: []
     - vcf_tbi:
@@ -37,8 +37,8 @@ input:
         ontologies: []
     - recal:
         type: file
-        description: Recalibration file produced when the input vcf was run through
-          VariantRecalibrator in stage 1.
+        description: Recalibration file produced when the input vcf was run
+          through VariantRecalibrator in stage 1.
         pattern: "*.recal"
         ontologies: []
     - recal_index:
@@ -48,8 +48,8 @@ input:
         ontologies: []
     - tranches:
         type: file
-        description: Tranches file produced when the input vcf was run through VariantRecalibrator
-          in stage 1.
+        description: Tranches file produced when the input vcf was run through
+          VariantRecalibrator in stage 1.
         pattern: ".tranches"
         ontologies: []
   - - meta2:
@@ -84,7 +84,7 @@ output:
           description: compressed vcf file containing the recalibrated variants.
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   tbi:
     - - meta:
           type: map
@@ -104,9 +104,8 @@ output:
           type: string
           description: The tool name
       - 'sentieon driver --version | sed "s/.*-//g"':
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
-
 topics:
   versions:
     - - "${task.process}":
@@ -116,7 +115,7 @@ topics:
           type: string
           description: The tool name
       - 'sentieon driver --version | sed "s/.*-//g"':
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 authors:
   - "@assp8200"

@@ -26,13 +26,20 @@ process DUCKDB_TABLE2PARQUET {
     if ( ! delim ) {
         error("DUCKDB_TABLE2PARQUET: cannot determine a delimiter for '${table.name}' -- expected a .csv or .tsv suffix, optionally followed by .gz or .zst")
     }
+    // SQL string literals escape an embedded "'" by doubling it, not with a backslash.
+    def sqlLit = { s -> s.toString().replace("'", "''") }
+    def tableSql = sqlLit.call(table)
+    def prefixSql = sqlLit.call(prefix)
+    // Quoted heredoc: no shell expansion in the body. Delimiter is randomized per task so a
+    // real newline in a value can't forge a line that closes it early.
+    def heredocTag = "SQL_${java.util.UUID.randomUUID().toString().replace('-', '')}"
     """
-    duckdb -c "
+    duckdb <<'${heredocTag}'
         SET threads=${task.cpus};
         SET memory_limit='${task.memory.toGiga()}GB';
         SET temp_directory='.';
-        COPY (SELECT * FROM read_csv('${table}', delim='${delim}', header=true${args})) TO '${prefix}.parquet' (FORMAT PARQUET${args2});
-    "
+        COPY (SELECT * FROM read_csv('${tableSql}', delim='${delim}', header=true${args})) TO '${prefixSql}.parquet' (FORMAT PARQUET${args2});
+${heredocTag}
     """
 
     stub:

@@ -24,10 +24,21 @@ process PBMM2_ALIGN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    fasta="${fasta}"
+    if [[ \${fasta} == *.fna ]]; then
+        new_name=\${fasta%.fna}.fa
+        mv \${fasta} \${new_name}
+        fasta=\${new_name}
+    elif [[ \${fasta} == *.fna.gz ]]; then
+        new_name=\${fasta%.fna.gz}.fa.gz
+        mv \${fasta} \${new_name}
+        fasta=\${new_name}
+    fi
+
     pbmm2 \\
         align \\
         $args \\
-        $fasta \\
+        \${fasta} \\
         $bam \\
         ${prefix}.bam \\
         --num-threads ${task.cpus}

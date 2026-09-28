@@ -54,24 +54,22 @@
             "nextflow": "25.09.0"
         }
     },
-    "clustervisualization - features and clusters": {
+    "clustervisualization - features from eigenvec": {
         "content": [
             [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.umap.tsv:md5,d338c1ef0e979dbf653e21c3417e975e"
-                ]
+                "sample_id",
+                "Dim1",
+                "Dim2",
+                "cluster"
             ],
+            200,
             [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.tsne.tsv:md5,eb00f27d82530f665552b158e8e3c8ff"
-                ]
+                "sample_id",
+                "Dim1",
+                "Dim2",
+                "cluster"
             ],
+            200,
             [
                 "versions.yml:md5,a00bfbb9b1b4145177ec0e8a7406caf9"
             ],
@@ -86,10 +84,46 @@
                 }
             }
         ],
-        "timestamp": "2026-05-19T17:08:32.73077357",
+        "timestamp": "2026-09-08T15:44:25.637933809",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "25.10.2"
+            "nextflow": "26.04.6"
+        }
+    },
+    "clustervisualization - features and clusters": {
+        "content": [
+            [
+                "sample_id",
+                "Dim1",
+                "Dim2",
+                "cluster"
+            ],
+            200,
+            [
+                "sample_id",
+                "Dim1",
+                "Dim2",
+                "cluster"
+            ],
+            200,
+            [
+                "versions.yml:md5,a00bfbb9b1b4145177ec0e8a7406caf9"
+            ],
+            {
+                "CUSTOM_CLUSTERVISUALIZATION": {
+                    "python": "3.12.13",
+                    "pandas": "3.0.3",
+                    "matplotlib": "3.10.9",
+                    "seaborn": "0.13.2",
+                    "umap-learn": "0.5.12",
+                    "scikit-learn": "1.8.0"
+                }
+            }
+        ],
+        "timestamp": "2026-09-08T12:55:48.907052107",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
         }
     }
 }

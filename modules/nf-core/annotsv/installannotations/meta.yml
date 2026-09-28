@@ -14,15 +14,36 @@ tools:
       licence:
         - "GPL v3"
       identifier: biotools:AnnotSV
-input: []
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - annotsv_version:
+        type: string
+        description: |
+          The AnnotSV annotations version to install e.g. 3.5, 3.4.3
+          If left empty then exomiser_version must also be empty and
+          default versions for the version of AnnotSV tool will be used
+    - exomiser_version:
+        type: string
+        description: |
+          The Exomiser annotations version to install e.g. 2406
+          If left empty then annotsv_versions must also be empty and
+          default versions for the version of AnnotSV tool will be used
 output:
   annotations:
-    - AnnotSV_annotations:
-        type: file
-        description: A folder containing the annotations
-        pattern: "AnnotSV_annotations"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - AnnotSV_annotations:
+          type: file
+          description: A folder containing the annotations
+          pattern: "AnnotSV_annotations"
+          ontologies: []
   versions_annotsv:
     - - ${task.process}:
           type: string
