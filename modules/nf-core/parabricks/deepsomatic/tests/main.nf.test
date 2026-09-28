@@ -84,12 +84,11 @@ nextflow_process {
         when {
             params {
                 module_args = ''
-                module_prefix = 'tumor_vs_normal.g'
             }
             process {
                 """
                 input[0] = [
-                    [ id:'tumor_vs_normal' ],
+                    [ id:'tumor_vs_normal.g' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam.bai', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
@@ -156,12 +155,11 @@ nextflow_process {
         when {
             params {
                 module_args = ''
-                module_prefix = 'tumor_vs_normal.g'
             }
             process {
                 """
                 input[0] = [
-                    [ id:'tumor_vs_normal' ],
+                    [ id:'tumor_vs_normal.g' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam.bai', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
