@@ -166,6 +166,9 @@ have_partial_csv <- !have_csv && (
 if (have_se && have_csv)
   abort("Provide either --se, or all three of --data_matrix/--feature_matrix/",
         "--sample_matrix, not both.")
+if (have_se && have_partial_csv)
+  abort("--se was provided together with some of --data_matrix/--feature_matrix/",
+        "--sample_matrix; provide either --se alone, or all three of those, not a mix.")
 if (have_partial_csv)
   abort("--data_matrix, --feature_matrix, and --sample_matrix must all be ",
         "provided together.")
