@@ -1,14 +1,14 @@
 nextflow_process {
 
-    name "Test Process DOTMATCH_CRISPR_COUNT"
+    name "Test Process DOTMATCH_CRISPRCOUNT"
     script "../main.nf"
-    process "DOTMATCH_CRISPR_COUNT"
+    process "DOTMATCH_CRISPRCOUNT"
     config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
     tag "dotmatch"
-    tag "dotmatch/crispr_count"
+    tag "dotmatch/crisprcount"
 
     test("mus_musculus - fastq - hamming") {
 
