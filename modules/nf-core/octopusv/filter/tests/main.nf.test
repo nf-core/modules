@@ -29,10 +29,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert process.out.json.size() == 1 },
                 { assert snapshot(
                     path(process.out.svcf.get(0).get(1)).vcf.summary,
                     path(process.out.svcf.get(0).get(1)).vcf.variantsMD5,
-                    path(process.out.json.get(0).get(1)),
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
