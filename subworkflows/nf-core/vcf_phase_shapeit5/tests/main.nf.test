@@ -36,12 +36,11 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
                     [], // empty pedigree
-                    "chr22:16570000-16610000" // Region to chunk
                 ])
                 input[1] = channel.of([[id:'test', chr: "22"], []]) // Chunks
                 input[2] = channel.of([[id:'test', chr: "22"], [], []]) // Ref
                 input[3] = channel.of([[id:'test', chr: "22"], [], []]) // Scaffold
-                input[4] = channel.of([[id:'test', chr: "22"], []]) // Genetic map
+                input[4] = channel.of([[id:'test', chr: "22"], "chr22:16570000-16610000", []]) // Region to chunk + Genetic map
                 input[5] = true // Perform chunks
                 input[6] = "recursive" // chunk_model
                 input[7] = true
@@ -51,21 +50,12 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    workflow.out.vcf_index.collect{[
-                        it[0],
-                        path(it[1]).getFileName().toString(),
-                        path(it[2]).getFileName().toString(),
-                        path(it[1]).vcf.summary,
-                        path(it[1]).vcf.variantsMD5
-                    ]},
-                    workflow.out.chunks
-                ).match() }
+                { assert snapshot(sanitizeOutput(workflow.out, unstableKeys:["vcf_index"])).match() } // BCF file not readable
             )
         }
     }
 
-    test("homo_sapiens - target, ref, chunks - no scaffold - two chromosomes") {
+    test("homo_sapiens - target, ref, chunks - no scaffold - target split by chromosomes") {
         setup {
             run("BCFTOOLS_VIEW") {
                 script "../../../../modules/nf-core/bcftools/view/main.nf"
@@ -112,7 +102,7 @@ nextflow_workflow {
                 """
                 input[0] = BCFTOOLS_PLUGINFILLTAGS.out.vcf
                     .join(BCFTOOLS_PLUGINFILLTAGS.out.index)
-                    .combine(channel.of([[], []])) // No regions needed as chunks are provided
+                    .combine(channel.of([[]]))
                 input[1] = channel.of(
                     [[id:'NA12878', chr:"chr22"], "chr22:16570065-16597215"],
                     [[id:'NA12878', chr:"chr22"], "chr22:16587172-16609999"],
@@ -136,9 +126,11 @@ nextflow_workflow {
                 input[4] = channel.of(
                 [
                     [id:'NA12878', chr:"chr22"],
+                    [], // no regions needed as chunks are provided
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.glimpse.map", checkIfExists:true)
                 ],[
                     [id:'NA12878', chr:"chr21"],
+                    [], // no regions needed as chunks are provided
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.glimpse.map", checkIfExists:true)
                 ])
                 input[5] = false // Perform chunks
@@ -165,7 +157,7 @@ nextflow_workflow {
         }
     }
 
-    test("homo_sapiens - target, ref, chunks - no scaffold - two chromosomes / one vcf") {
+    test("homo_sapiens - target, ref, chunks - no scaffold - two chromosomes / one vcf / two individuals") {
         setup {
             run("BCFTOOLS_VIEW") {
                 script "../../../../modules/nf-core/bcftools/view/main.nf"
@@ -175,6 +167,10 @@ nextflow_workflow {
                         [id:'NA12878'],
                         file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExists: true),
                         file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExists: true),
+                    ], [
+                        [id:'NA19401'],
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA19401.chr21_22.1X.glimpse2.vcf.gz", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA19401.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExists: true),
                     ])
                     input[1] = []
                     input[2] = []
@@ -207,33 +203,35 @@ nextflow_workflow {
                 """
                 input[0] = BCFTOOLS_PLUGINFILLTAGS.out.vcf
                     .join(BCFTOOLS_PLUGINFILLTAGS.out.index)
-                    .combine(channel.of([[], []])) // No regions needed as chunks are provided
+                    .combine(channel.of([[]]))
                 input[1] = channel.of(
-                    [[id:'NA12878', chr:"chr22"], "chr22:16570065-16597215"],
-                    [[id:'NA12878', chr:"chr22"], "chr22:16587172-16609999"],
-                    [[id:'NA12878', chr:"chr21"], "chr21:16570065-16597215"],
-                    [[id:'NA12878', chr:"chr21"], "chr21:16587172-16609999"]
+                    [[panelid:'1000GP', chr:"chr22"], "chr22:16570065-16597215"],
+                    [[panelid:'1000GP', chr:"chr22"], "chr22:16587172-16609999"],
+                    [[panelid:'1000GP', chr:"chr21"], "chr21:16570065-16597215"],
+                    [[panelid:'1000GP', chr:"chr21"], "chr21:16587172-16609999"]
                 )
                 input[2] = channel.of(
                 [
-                    [id:'NA12878', chr:"chr22"],
+                    [panelid:'1000GP', chr:"chr22"],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true)
                 ],[
-                    [id:'NA12878', chr:"chr21"],
+                    [panelid:'1000GP', chr:"chr21"],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz", checkIfExists:true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz.csi", checkIfExists:true)
                 ])
                 input[3] = channel.of(
-                    [[id:'NA12878', chr:"chr22"], [], []],
-                    [[id:'NA12878', chr:"chr21"], [], []]
+                    [[panelid:'1000GP', chr:"chr22"], [], []],
+                    [[panelid:'1000GP', chr:"chr21"], [], []]
                 )
                 input[4] = channel.of(
                 [
-                    [id:'NA12878', chr:"chr22"],
+                    [panelid:'1000GP', chr:"chr22"],
+                    [], // no regions needed as chunks are provided
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.glimpse.map", checkIfExists:true)
                 ],[
-                    [id:'NA12878', chr:"chr21"],
+                    [panelid:'1000GP', chr:"chr21"],
+                    [], // no regions needed as chunks are provided
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.glimpse.map", checkIfExists:true)
                 ])
                 input[5] = false // Perform chunks
@@ -275,13 +273,12 @@ nextflow_workflow {
                     [id:'test', chr: "22"],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
-                    [],
-                    "chr22:16570065-16609999"
+                    []
                 ])
                 input[1] = channel.of([[id:'test', chr: "22"], "chr22:16570065-16597215"]) // Chunks
                 input[2] = channel.of([[id:'test', chr: "22"], [], []]) // Ref
                 input[3] = channel.of([[id:'test', chr: "22"], [], []]) // Scaffold
-                input[4] = channel.of([[id:'test', chr: "22"], []]) // Genetic map
+                input[4] = channel.of([[id:'test', chr: "22"], [], []]) // Region + Genetic map
                 input[5] = false // Perform chunks
                 input[6] = "recursive" // chunk_model
                 input[7] = true
@@ -311,13 +308,12 @@ nextflow_workflow {
                     [id:'test', chr: "22"],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
-                    [],
-                    "chr22:16570065-16609999"
+                    []
                 ])
                 input[1] = channel.of([[id:'test', chr: "22"], []]) // Chunks
                 input[2] = channel.of([[id:'test', chr: "21"], [], []]) // Ref wrong chr result in empty channel
                 input[3] = channel.of([[id:'test', chr: "22"], [], []]) // Scaffold
-                input[4] = channel.of([[id:'test', chr: "22"], []]) // Genetic map
+                input[4] = channel.of([[id:'test', chr: "22"], "chr22:16570065-16609999", []]) // Region to chunk + Genetic map
                 input[5] = true // Perform chunks
                 input[6] = "recursive" // chunk_model
                 input[7] = true
@@ -347,13 +343,12 @@ nextflow_workflow {
                     [id:'test', chr: "22"],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
-                    [],
-                    "chr22:16570065-16609999"
+                    []
                 ])
                 input[1] = channel.of([[id:'test', chr: "22"], "chr22:16570065-16597215"]) // Chunks provided
                 input[2] = channel.of([[id:'test', chr: "22"], [], []]) // Ref
                 input[3] = channel.of([[id:'test', chr: "22"], [], []]) // Scaffold
-                input[4] = channel.of([[id:'test', chr: "22"], []]) // Genetic map
+                input[4] = channel.of([[id:'test', chr: "22"], [], []]) // Region + Genetic map
                 input[5] = true // Perform chunks
                 input[6] = "recursive" // chunk_model
                 input[7] = true
@@ -383,13 +378,12 @@ nextflow_workflow {
                     [id:'test', chr: "22"],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
-                    [],
-                    "chr22:16570065-16609999"
+                    []
                 ])
                 input[1] = channel.of([[id:'test', chr: "22"], []]) // Chunks provided
                 input[2] = channel.of([[id:'test', chr: "22"], [], []]) // Ref
                 input[3] = channel.of([[id:'test', chr: "22"], [], []]) // Scaffold
-                input[4] = channel.of([[id:'test', chr: "22"], []]) // Genetic map
+                input[4] = channel.of([[id:'test', chr: "22"], "chr22:16570065-16609999", []]) // Region to chunk + Genetic map
                 input[5] = false // Perform chunks
                 input[6] = "recursive" // chunk_model
                 input[7] = true

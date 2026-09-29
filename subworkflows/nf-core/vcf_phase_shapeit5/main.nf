@@ -7,11 +7,11 @@ include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_LIGATE } from '../../../modules/nf-co
 workflow VCF_PHASE_SHAPEIT5 {
 
     take:
-    ch_vcf      // channel (mandatory) : [ [id, chr], vcf, index, pedigree, region ]
+    ch_vcf      // channel (mandatory) : [ [id, chr], vcf, index, pedigree ]
     ch_chunks   // channel (optional)  : [ [id, chr], regionout ]
     ch_ref      // channel (optional)  : [ [id, chr], vcf, index ]
     ch_scaffold // channel (optional)  : [ [id, chr], vcf, index ]
-    ch_map      // channel (optional)  : [ [id, chr], map]
+    ch_map      // channel (optional)  : [ [id, chr], region, map]
     chunk       // val     (mandatory) : boolean to activate/deactivate chunking step
     chunk_model // val     (mandatory) : model to used for GLIMPSE2_chunk
     vcf_join    // val     (mandatory) : boolean should the input vcf be joined with other channels
@@ -27,13 +27,23 @@ workflow VCF_PHASE_SHAPEIT5 {
             }
 
         // Chunk reference panel
-        ch_vcf_map = ch_vcf
-            .combine(ch_map, by: 0)
-            .map{
-                meta, vcf, index, _pedigree, region, gmap -> [
-                    meta, vcf, index, region, gmap
-                ]
-            }
+        if (vcf_join) {
+            ch_vcf_map = ch_vcf
+                .combine(ch_map)
+                .map{
+                    metaV, vcf, index, _pedigree, metaM, region, gmap -> [
+                        metaV + metaM, vcf, index, region, gmap
+                    ]
+                }
+        } else {
+            ch_vcf_map = ch_vcf
+                .combine(ch_map, by: 0)
+                .map{
+                    metaVM, vcf, index, _pedigree, region, gmap -> [
+                        metaVM, vcf, index, region, gmap
+                    ]
+                }
+        }
 
         GLIMPSE2_CHUNK ( ch_vcf_map, chunk_model )
 
@@ -53,8 +63,8 @@ workflow VCF_PHASE_SHAPEIT5 {
 
     ch_chunks_counts = ch_chunks
         .groupTuple()
-        .map { metaPC, regionouts ->
-            [metaPC, regionouts.size()]
+        .map { metaC, regionouts ->
+            [metaC, regionouts.size()]
         }
 
     // Make channel with all parameters
@@ -73,8 +83,8 @@ workflow VCF_PHASE_SHAPEIT5 {
                 .combine(ch_chunks, by: 0)
                 .combine(ch_chunks_counts, by: 0)
             )
-            .map{ meta, vcf, index, pedigree, region, metaR, gmap, ref_vcf, ref_index, scaffold_vcf, scaffold_index, regionbuf, region_size -> [
-                meta + metaR, vcf, index, pedigree, region, gmap, ref_vcf, ref_index, scaffold_vcf, scaffold_index, regionbuf, region_size
+            .map{ metaV, vcf, index, pedigree, metaMRSC, region, gmap, ref_vcf, ref_index, scaffold_vcf, scaffold_index, regionbuf, region_size -> [
+                metaV + metaMRSC, vcf, index, pedigree, region, gmap, ref_vcf, ref_index, scaffold_vcf, scaffold_index, regionbuf, region_size
             ]}
     }
 
@@ -126,15 +136,23 @@ workflow VCF_PHASE_SHAPEIT5 {
             def meta = groupKeyObj.getGroupTarget()
             [meta, vcf, index]
         }
+        .branch { meta, vcf, index ->
+            one: vcf.size() == 1
+                return [meta, vcf.get(0), index.get(0)]
+            more: vcf.size() > 1
+                return [meta, vcf, index]
+        }
 
-    SHAPEIT5_LIGATE(ch_ligate_input,'')
+    SHAPEIT5_LIGATE(ch_ligate_input.more, '')
 
     BCFTOOLS_INDEX_LIGATE(SHAPEIT5_LIGATE.out.merged_variants)
 
-    ch_vcf_index = SHAPEIT5_LIGATE.out.merged_variants
-        .join(
-            BCFTOOLS_INDEX_LIGATE.out.index,
-            failOnMismatch:true, failOnDuplicate:true
+    ch_vcf_index = ch_ligate_input.one
+        .mix(SHAPEIT5_LIGATE.out.merged_variants
+            .join(
+                BCFTOOLS_INDEX_LIGATE.out.index,
+                failOnMismatch:true, failOnDuplicate:true
+            )
         )
 
     emit:
