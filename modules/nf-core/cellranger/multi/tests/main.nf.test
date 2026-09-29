@@ -175,6 +175,9 @@ nextflow_process {
                 // references just need a path
                 ch_gex_fastqs            = [ [:], [], [:] ]
                 ch_vdj_fastqs            = [ [:], [], [:] ]
+                ch_vdj_t_fastqs          = [ [:], [], [:] ]
+                ch_vdj_t_gd_fastqs       = [ [:], [], [:] ]
+                ch_vdj_b_fastqs          = [ [:], [], [:] ]
                 ch_ab_fastqs             = [ [:], [], [:] ]
                 ch_beam_fastqs           = [ [:], [], [:] ]
                 ch_cmo_fastqs            = [ [:], [], [:] ]
@@ -209,7 +212,7 @@ nextflow_process {
                 //
                 input[0]  = [ id:'subsampled_sc5p_v2_hs_PBMC_10k', single_end:false ]
                 input[1]  = ch_gex_fastqs_10k_pbmc
-                input[2]  = ch_bcell_fastqs_10k_pbmc
+                input[2]  = ch_vdj_fastqs
                 input[3]  = ch_ab_fastqs_10k_pbmc
                 input[4]  = ch_beam_fastqs
                 input[5]  = ch_cmo_fastqs
@@ -228,6 +231,9 @@ nextflow_process {
                 input[18] = ch_frna_sampleinfo
                 input[19] = ch_ocm_barcodes
                 input[20] = false // default to false to guarantee renaming during test
+                input[21] = ch_vdj_t_fastqs
+                input[22] = ch_vdj_t_gd_fastqs
+                input[23] = ch_bcell_fastqs_10k_pbmc
                 """
             }
         }
@@ -253,9 +259,10 @@ nextflow_process {
                 { assert path(process.out.config[0][1]).text.contains('fastq_all/gex') },
                 // Flex probe-set: not used in this scenario
                 { assert !path(process.out.config[0][1]).text.contains('probe-set,') },
-                // VDJ: present for this PBMC run
+                // VDJ: present for this PBMC run, passed as an explicit VDJ-B library
                 { assert path(process.out.config[0][1]).text.contains('[vdj]') },
-                { assert path(process.out.config[0][1]).text.contains('VDJ') },
+                { assert path(process.out.config[0][1]).text.contains('fastq_all/vdj_b,,VDJ-B') },
+                { assert !path(process.out.config[0][1]).text.contains(',,VDJ\n') },
                 // Feature-barcode (ab/crispr/beam): present when antibody (ab), crispr, or beam inputs are staged
                 { assert path(process.out.config[0][1]).text.contains('[feature]') },
                 { assert path(process.out.config[0][1]).text.contains('Antibody Capture') },
@@ -317,6 +324,9 @@ nextflow_process {
                 // references just need a path
                 ch_gex_fastqs            = [ [:], [], [:] ]
                 ch_vdj_fastqs            = [ [:], [], [:] ]
+                ch_vdj_t_fastqs          = [ [:], [], [:] ]
+                ch_vdj_t_gd_fastqs       = [ [:], [], [:] ]
+                ch_vdj_b_fastqs          = [ [:], [], [:] ]
                 ch_ab_fastqs             = [ [:], [], [:] ]
                 ch_beam_fastqs           = [ [:], [], [:] ]
                 ch_cmo_fastqs            = [ [:], [], [:] ]
@@ -370,6 +380,9 @@ nextflow_process {
                 input[18] = ch_frna_sampleinfo
                 input[19] = ch_ocm_barcodes
                 input[20] = false // default to false to guarantee renaming during test
+                input[21] = ch_vdj_t_fastqs
+                input[22] = ch_vdj_t_gd_fastqs
+                input[23] = ch_vdj_b_fastqs
                 """
             }
         }
@@ -477,6 +490,9 @@ nextflow_process {
                 // references just need a path
                 ch_gex_fastqs            = [ [:], [], [:] ]
                 ch_vdj_fastqs            = [ [:], [], [:] ]
+                ch_vdj_t_fastqs          = [ [:], [], [:] ]
+                ch_vdj_t_gd_fastqs       = [ [:], [], [:] ]
+                ch_vdj_b_fastqs          = [ [:], [], [:] ]
                 ch_ab_fastqs             = [ [:], [], [:] ]
                 ch_beam_fastqs           = [ [:], [], [:] ]
                 ch_cmo_fastqs            = [ [:], [], [:] ]
@@ -530,6 +546,9 @@ nextflow_process {
                 input[18] = ch_frna_sampleinfo
                 input[19] = ch_ocm_barcodes
                 input[20] = false // default to false to guarantee renaming during test
+                input[21] = ch_vdj_t_fastqs
+                input[22] = ch_vdj_t_gd_fastqs
+                input[23] = ch_vdj_b_fastqs
                 """
             }
         }
@@ -553,9 +572,10 @@ nextflow_process {
                 { assert path(process.out.config[0][1]).text.contains('fastq_all/gex') },
                 // Flex probe-set: not used
                 { assert !path(process.out.config[0][1]).text.contains('probe-set,') },
-                // VDJ: present for this VDJ scenario
+                // VDJ: present for this VDJ scenario, with the chain type auto-detected
                 { assert path(process.out.config[0][1]).text.contains('[vdj]') },
-                { assert path(process.out.config[0][1]).text.contains('VDJ') },
+                { assert path(process.out.config[0][1]).text.contains(',,VDJ\n') },
+                { assert !path(process.out.config[0][1]).text.contains('VDJ-') },
                 // Feature-barcode (ab/crispr/beam): present when antibody (ab), crispr, or beam inputs are staged
                 { assert path(process.out.config[0][1]).text.contains('[feature]') },
                 { assert path(process.out.config[0][1]).text.contains('Antibody Capture') },
@@ -647,6 +667,9 @@ nextflow_process {
                 // references just need a path
                 ch_gex_fastqs            = [ [:], [], [:] ]
                 ch_vdj_fastqs            = [ [:], [], [:] ]
+                ch_vdj_t_fastqs          = [ [:], [], [:] ]
+                ch_vdj_t_gd_fastqs       = [ [:], [], [:] ]
+                ch_vdj_b_fastqs          = [ [:], [], [:] ]
                 ch_ab_fastqs             = [ [:], [], [:] ]
                 ch_beam_fastqs           = [ [:], [], [:] ]
                 ch_cmo_fastqs            = [ [:], [], [:] ]
@@ -700,6 +723,9 @@ nextflow_process {
                 input[18] = ch_frna_sampleinfo
                 input[19] = ch_ocm_barcodes
                 input[20] = false // default to false to guarantee renaming during test
+                input[21] = ch_vdj_t_fastqs
+                input[22] = ch_vdj_t_gd_fastqs
+                input[23] = ch_vdj_b_fastqs
                 """
             }
         }
@@ -772,6 +798,9 @@ nextflow_process {
                 // references just need a path
                 ch_gex_fastqs            = [ [:], [], [:] ]
                 ch_vdj_fastqs            = [ [:], [], [:] ]
+                ch_vdj_t_fastqs          = [ [:], [], [:] ]
+                ch_vdj_t_gd_fastqs       = [ [:], [], [:] ]
+                ch_vdj_b_fastqs          = [ [:], [], [:] ]
                 ch_ab_fastqs             = [ [:], [], [:] ]
                 ch_beam_fastqs           = [ [:], [], [:] ]
                 ch_cmo_fastqs            = [ [:], [], [:] ]
@@ -815,6 +844,9 @@ nextflow_process {
                 input[18] = ch_frna_sampleinfo
                 input[19] = ch_ocm_barcodes
                 input[20] = false // default to false to guarantee renaming during test
+                input[21] = ch_vdj_t_fastqs
+                input[22] = ch_vdj_t_gd_fastqs
+                input[23] = ch_vdj_b_fastqs
                 """
             }
         }
@@ -903,6 +935,9 @@ nextflow_process {
                 // references just need a path
                 ch_gex_fastqs            = [ [:], [], [:] ]
                 ch_vdj_fastqs            = [ [:], [], [:] ]
+                ch_vdj_t_fastqs          = [ [:], [], [:] ]
+                ch_vdj_t_gd_fastqs       = [ [:], [], [:] ]
+                ch_vdj_b_fastqs          = [ [:], [], [:] ]
                 ch_ab_fastqs             = [ [:], [], [:] ]
                 ch_beam_fastqs           = [ [:], [], [:] ]
                 ch_cmo_fastqs            = [ [:], [], [:] ]
@@ -956,6 +991,9 @@ nextflow_process {
                 input[18] = ch_frna_sampleinfo
                 input[19] = ch_ocm_barcodes
                 input[20] = false // default to false to guarantee renaming during test
+                input[21] = ch_vdj_t_fastqs
+                input[22] = ch_vdj_t_gd_fastqs
+                input[23] = ch_vdj_b_fastqs
                 """
             }
         }

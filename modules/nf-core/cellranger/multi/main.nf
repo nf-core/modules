@@ -26,6 +26,9 @@ process CELLRANGER_MULTI {
     path frna_sampleinfo       , stageAs: "references/frna/*"
     path ocm_barcodes          , stageAs: "references/ocm/barcodes/*"
     val skip_renaming
+    tuple val(meta9)           , path (vdj_t_fastqs   , stageAs: "fastqs/vdj_t/fastq_???/*")   , val(vdj_t_options)
+    tuple val(meta10)          , path (vdj_t_gd_fastqs, stageAs: "fastqs/vdj_t_gd/fastq_???/*"), val(vdj_t_gd_options)
+    tuple val(meta11)          , path (vdj_b_fastqs   , stageAs: "fastqs/vdj_b/fastq_???/*")   , val(vdj_b_options)
 
     output:
     tuple val(meta), path("cellranger_multi_config.csv"), emit: config
@@ -58,6 +61,11 @@ process CELLRANGER_MULTI {
     def has_crispr = meta7 && fb_reference
     def has_frna   = gex_frna_probeset && frna_sampleinfo
     def has_ocm    = ocm_barcodes
+
+    def has_vdj_t    = meta9 && vdj_reference
+    def has_vdj_t_gd = meta10 && vdj_reference
+    def has_vdj_b    = meta11 && vdj_reference
+    def has_any_vdj  = has_vdj || has_vdj_t || has_vdj_t_gd || has_vdj_b
 
     // Build [gene-expression] section
     def gex_section = []
@@ -106,20 +114,29 @@ process CELLRANGER_MULTI {
 
     // Build [vdj] section
     def vdj_section = []
-    if (has_vdj) {
+    if (has_any_vdj) {
         vdj_section << '[vdj]'
         vdj_section << "reference,\$PWD/${vdj_reference.name}"
         if (vdj_primer_index) {
             vdj_section << "inner-enrichment-primers,\$PWD/${vdj_primer_index.name}"
         }
-        if (vdj_options?.containsKey('r1-length')) vdj_section << "r1-length,${vdj_options['r1-length']}"
-        if (vdj_options?.containsKey('r2-length')) vdj_section << "r2-length,${vdj_options['r2-length']}"
+
+        // all VDJ libraries share one [vdj] section; the first present library's options are used
+        def vdj_opts = has_vdj      ? vdj_options      :
+                       has_vdj_t    ? vdj_t_options    :
+                       has_vdj_t_gd ? vdj_t_gd_options :
+                                      vdj_b_options
+        if (vdj_opts?.containsKey('r1-length')) vdj_section << "r1-length,${vdj_opts['r1-length']}"
+        if (vdj_opts?.containsKey('r2-length')) vdj_section << "r2-length,${vdj_opts['r2-length']}"
     }
 
     // Build [libraries] section
     def lib_section = ['[libraries]', 'fastq_id,fastqs,lanes,feature_types']
     if (has_gex) lib_section << "${meta2.id},\$PWD/fastq_all/gex,,Gene Expression"
     if (has_vdj) lib_section << "${meta3.id},\$PWD/fastq_all/vdj,,VDJ"
+    if (has_vdj_t) lib_section << "${meta9.id},\$PWD/fastq_all/vdj_t,,VDJ-T"
+    if (has_vdj_t_gd) lib_section << "${meta10.id},\$PWD/fastq_all/vdj_t_gd,,VDJ-T-GD"
+    if (has_vdj_b) lib_section << "${meta11.id},\$PWD/fastq_all/vdj_b,,VDJ-B"
     if (has_ab) lib_section << "${meta4.id},\$PWD/fastq_all/ab,,Antibody Capture"
     if (has_beam) lib_section << "${meta5.id},\$PWD/fastq_all/beam,,Antigen Capture"
     if (has_crispr) lib_section << "${meta7.id},\$PWD/fastq_all/crispr,,CRISPR Guide Capture"
@@ -156,9 +173,9 @@ process CELLRANGER_MULTI {
     # skip_renaming=false (default): rename to Cell Ranger convention \${prefix}_S1_L00N_R[12]_001.fastq.gz
     # skip_renaming=true:           keep original filenames as-is
     #
-    mkdir -p fastq_all/{gex,vdj,ab,beam,cmo,crispr}
+    mkdir -p fastq_all/{gex,vdj,vdj_t,vdj_t_gd,vdj_b,ab,beam,cmo,crispr}
 
-    for modality in gex vdj ab beam cmo crispr; do
+    for modality in gex vdj vdj_t vdj_t_gd vdj_b ab beam cmo crispr; do
         lane=1
         n_fastq_dirs=\$(find fastqs/\${modality} -maxdepth 1 -type d -name "fastq_*" | wc -l)
         if [ \$((n_fastq_dirs % 2)) -ne 0 ]; then
