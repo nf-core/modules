@@ -7,28 +7,12 @@ include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_LIGATE } from '../../../modules/nf-co
 workflow VCF_PHASE_SHAPEIT5 {
 
     take:
-    ch_vcf            // channel (mandatory) : [ [id, chr], vcf, index, pedigree ]
-    ch_chunks         // channel (optional)  : [ [chr], regionout ]
-    ch_ref            // channel (optional)  : [ [panelid, chr], vcf, index ]
-    ch_scaffold       // channel (optional)  : [ [scaffoldid, chr], vcf, index ]
-    ch_map            // channel (optional)  : [ [chr], region, map]
+    ch_input          // channel (mandatory) : [ [id, panelid, scaffoldid, chr], vcf, index, pedigree, ref, index, scaffold, index, region, gmap ]
+    ch_chunks         // channel (optional)  : [ [id, panelid, scaffoldid, chr], regionout ]
     chunk             // val     (mandatory) : boolean to activate/deactivate chunking step
     chunk_model       // val     (mandatory) : model to used for GLIMPSE2_chunk
-    array_common_meta // array   (mandatory) : list of meta keys to perform the joins on
 
     main:
-
-    ch_vcf_map = ch_vcf
-        .map { meta, vcf, index, pedigree -> [
-            meta.subMap(array_common_meta), meta, vcf, index, pedigree
-        ]}
-        .combine(
-            ch_map
-                .map { meta, region, gmap -> [
-                    meta.subMap(array_common_meta), meta, region, gmap
-                ]},
-            by: 0
-        )
 
     if ( chunk == true ){
         // Error if pre-defined chunks are provided when chunking is activated
@@ -38,9 +22,9 @@ workflow VCF_PHASE_SHAPEIT5 {
                 error "ERROR: Cannot provide pre-defined chunks (regionin) when chunk=true. Please either set chunk=false to use provided chunks, or remove input chunks to enable automatic chunking."
             }
 
-        GLIMPSE2_CHUNK ( ch_vcf_map.map{
-            _metaCommon, metaV, vcf, index, _pedigree, metaM, region, gmap -> [
-                metaM + metaV, vcf, index, region, gmap
+        GLIMPSE2_CHUNK ( ch_input.map{
+            meta, vcf, index, _pedigree, _ref, _ref_index, _scaffold, _scaffold_index, region, gmap -> [
+                meta, vcf, index, region, gmap
             ]
         }, chunk_model )
 
@@ -64,29 +48,12 @@ workflow VCF_PHASE_SHAPEIT5 {
             [meta, regionouts.size()]
         }
 
-    ch_ref_scaffold_chunks = ch_ref
-        .map { meta, vcf, index -> [
-            meta.subMap(array_common_meta), meta, vcf, index
-        ]}
-        .combine(
-            ch_scaffold
-                .map { meta, vcf, index -> [
-                    meta.subMap(array_common_meta), meta, vcf, index
-                ]},
-            by:0
-        )
-        .combine(
-            ch_chunks
-                .combine(ch_chunks_counts, by: 0)
-                .map { meta, regionbuf, region_size -> [
-                    meta.subMap(array_common_meta), meta, regionbuf, region_size
-                ]},
-            by:0
-        )
-
     // Make channel with all parameters
-    ch_parameters = ch_vcf_map
-        .combine(ch_ref_scaffold_chunks, by: 0)
+    ch_parameters = ch_input
+        .combine(
+            ch_chunks.combine(ch_chunks_counts, by: 0).view(),
+            by: 0
+        )
 
     ch_parameters.ifEmpty{
         error "ERROR: join operation resulted in an empty channel. Please provide a valid ch_map, ch_ref, ch_scaffold and ch_chunks channel as input (same meta map)."
@@ -95,7 +62,7 @@ workflow VCF_PHASE_SHAPEIT5 {
     // Rearrange channel for phasing
     ch_phase_input = ch_parameters
         .map{
-            _metaCommon, metaV, vcf, index, pedigree, _metaM, _regionout, gmap, metaR, ref_vcf, ref_index, metaS, scaffold_vcf, scaffold_index, metaC, regionbuf, region_size ->
+            meta, vcf, index, pedigree, ref_vcf, ref_index, scaffold_vcf, scaffold_index, _regionout, gmap, regionbuf, region_size ->
             def chr = regionbuf.tokenize(':')[0]
             def region = regionbuf.tokenize(':')[1]
             def start = region.tokenize('-')[0]
@@ -104,7 +71,7 @@ workflow VCF_PHASE_SHAPEIT5 {
             def paddedEnd = String.format('%010d', end as long)
             def regionoutPadded = "${chr}:${paddedStart}-${paddedEnd}"
             [
-                metaR + metaS + metaC + metaV + ["regionout": regionbuf, "regionoutPadded": regionoutPadded, "regionSize": region_size],
+                meta + ["regionout": regionbuf, "regionoutPadded": regionoutPadded, "regionSize": region_size],
                 vcf, index,
                 pedigree,
                 regionbuf,

@@ -6,14 +6,18 @@
                     [
                         {
                             "chr": "21",
-                            "id": "test"
+                            "id": "test",
+                            "panelid": "ref_panel",
+                            "scaffoldid": "scaffold"
                         },
                         "chr21:16570070-16609998"
                     ],
                     [
                         {
                             "chr": "22",
-                            "id": "test"
+                            "id": "test",
+                            "panelid": "ref_panel",
+                            "scaffoldid": "scaffold"
                         },
                         "chr22:16570065-16609999"
                     ]
@@ -42,7 +46,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-09-29T15:20:00.52525898",
+        "timestamp": "2026-09-29T15:50:51.506336446",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.3"
@@ -224,14 +228,18 @@
                     [
                         {
                             "chr": "21",
-                            "id": "test"
+                            "id": "test",
+                            "panelid": "panel",
+                            "scaffoldid": "scaffold"
                         },
                         "chr21:16570070-16609998"
                     ],
                     [
                         {
                             "chr": "22",
-                            "id": "test"
+                            "id": "test",
+                            "panelid": "panel",
+                            "scaffoldid": "scaffold"
                         },
                         "chr22:16570065-16609999"
                     ]
@@ -260,7 +268,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-09-29T13:59:28.350735021",
+        "timestamp": "2026-09-29T15:46:26.320194656",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.3"
@@ -271,10 +279,9 @@
             [
                 [
                     {
-                        "panel_id": "1000GP",
+                        "id": "NA12878",
                         "chr": "chr21",
-                        "scaffoldid": "None",
-                        "id": "NA12878"
+                        "panel_id": "1000GP"
                     },
                     "NA12878_chr21.ligate.vcf.gz",
                     "NA12878_chr21.ligate.vcf.gz.csi",
@@ -286,25 +293,9 @@
                 ],
                 [
                     {
-                        "panel_id": "1000GP",
-                        "chr": "chr21",
-                        "scaffoldid": "None",
-                        "id": "NA19401"
-                    },
-                    "NA19401_chr21.ligate.vcf.gz",
-                    "NA19401_chr21.ligate.vcf.gz.csi",
-                    "VcfFile [chromosomes=[chr21], sampleCount=1, variantCount=836, phased=true, phasedAutodetect=true]",
-                    [
-                        "NA19401"
-                    ],
-                    "1533910b53a188b77706c055228ef5dc"
-                ],
-                [
-                    {
-                        "panel_id": "1000GP",
+                        "id": "NA12878",
                         "chr": "chr22",
-                        "scaffoldid": "None",
-                        "id": "NA12878"
+                        "panel_id": "1000GP"
                     },
                     "NA12878_chr22.ligate.vcf.gz",
                     "NA12878_chr22.ligate.vcf.gz.csi",
@@ -316,10 +307,23 @@
                 ],
                 [
                     {
-                        "panel_id": "1000GP",
+                        "id": "NA19401",
+                        "chr": "chr21",
+                        "panel_id": "1000GP"
+                    },
+                    "NA19401_chr21.ligate.vcf.gz",
+                    "NA19401_chr21.ligate.vcf.gz.csi",
+                    "VcfFile [chromosomes=[chr21], sampleCount=1, variantCount=836, phased=true, phasedAutodetect=true]",
+                    [
+                        "NA19401"
+                    ],
+                    "1533910b53a188b77706c055228ef5dc"
+                ],
+                [
+                    {
+                        "id": "NA19401",
                         "chr": "chr22",
-                        "scaffoldid": "None",
-                        "id": "NA19401"
+                        "panel_id": "1000GP"
                     },
                     "NA19401_chr22.ligate.vcf.gz",
                     "NA19401_chr22.ligate.vcf.gz.csi",
@@ -333,31 +337,71 @@
             [
                 [
                     {
-                        "chr": "chr21"
+                        "id": "NA12878",
+                        "chr": "chr21",
+                        "panel_id": "1000GP"
                     },
                     "chr21:16570065-16597215"
                 ],
                 [
                     {
-                        "chr": "chr21"
+                        "id": "NA12878",
+                        "chr": "chr21",
+                        "panel_id": "1000GP"
                     },
                     "chr21:16587172-16609999"
                 ],
                 [
                     {
-                        "chr": "chr22"
+                        "id": "NA12878",
+                        "chr": "chr22",
+                        "panel_id": "1000GP"
                     },
                     "chr22:16570065-16597215"
                 ],
                 [
                     {
-                        "chr": "chr22"
+                        "id": "NA12878",
+                        "chr": "chr22",
+                        "panel_id": "1000GP"
+                    },
+                    "chr22:16587172-16609999"
+                ],
+                [
+                    {
+                        "id": "NA19401",
+                        "chr": "chr21",
+                        "panel_id": "1000GP"
+                    },
+                    "chr21:16570065-16597215"
+                ],
+                [
+                    {
+                        "id": "NA19401",
+                        "chr": "chr21",
+                        "panel_id": "1000GP"
+                    },
+                    "chr21:16587172-16609999"
+                ],
+                [
+                    {
+                        "id": "NA19401",
+                        "chr": "chr22",
+                        "panel_id": "1000GP"
+                    },
+                    "chr22:16570065-16597215"
+                ],
+                [
+                    {
+                        "id": "NA19401",
+                        "chr": "chr22",
+                        "panel_id": "1000GP"
                     },
                     "chr22:16587172-16609999"
                 ]
             ]
         ],
-        "timestamp": "2026-09-29T15:28:02.173264336",
+        "timestamp": "2026-09-29T16:08:14.24264812",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.3"
