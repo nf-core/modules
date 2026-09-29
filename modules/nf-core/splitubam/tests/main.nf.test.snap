@@ -42,33 +42,27 @@
                 ]
             }
         ],
+        "timestamp": "2026-03-20T08:44:16.711243301",
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.4"
-        },
-        "timestamp": "2026-03-20T08:44:16.711243301"
+        }
     },
     "sarscov2 - bam": {
         "content": [
-            [
-                "@HD\tVN:1.6\tSO:unsorted",
-                "@SQ\tSN:MT192765.1\tLN:29829",
-                "@RG\tID:1\tLB:lib1\tPL:ILLUMINA\tSM:test\tPU:barcode1",
-                "@PG\tID:minimap2\tPN:minimap2\tVN:2.17-r941\tCL:minimap2 -ax sr tests/data/fasta/sarscov2/GCA_011545545.1_ASM1154554v1_genomic.fna tests/data/fastq/dna/sarscov2_1.fastq.gz tests/data/fastq/dna/sarscov2_2.fastq.gz",
-                "@PG\tID:samtools\tPN:samtools\tPP:minimap2\tVN:1.11\tCL:samtools view -Sb sarscov2_aln.sam",
-                "@PG\tID:splitbam\tPN:splitbam\tVN:0.1.0\tCL:splitubam --split 2 --threads 2 test.paired_end.bam"
-            ],
-            "4933fd727ab0ca4e215dddee7de73a2c",
-            [
-                "@HD\tVN:1.6\tSO:unsorted",
-                "@SQ\tSN:MT192765.1\tLN:29829",
-                "@RG\tID:1\tLB:lib1\tPL:ILLUMINA\tSM:test\tPU:barcode1",
-                "@PG\tID:minimap2\tPN:minimap2\tVN:2.17-r941\tCL:minimap2 -ax sr tests/data/fasta/sarscov2/GCA_011545545.1_ASM1154554v1_genomic.fna tests/data/fastq/dna/sarscov2_1.fastq.gz tests/data/fastq/dna/sarscov2_2.fastq.gz",
-                "@PG\tID:samtools\tPN:samtools\tPP:minimap2\tVN:1.11\tCL:samtools view -Sb sarscov2_aln.sam",
-                "@PG\tID:splitbam\tPN:splitbam\tVN:0.1.0\tCL:splitubam --split 2 --threads 2 test.paired_end.bam"
-            ],
-            "1a9e3bfa97c43dcbeba1ed01e51a6a54",
             {
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "001.test.paired_end.bam:md5Reads,4933fd727ab0ca4e215dddee7de73a2c",
+                            "002.test.paired_end.bam:md5Reads,1a9e3bfa97c43dcbeba1ed01e51a6a54"
+                        ]
+                    ]
+                ],
                 "versions_splitubam": [
                     [
                         "SPLITUBAM",
@@ -78,10 +72,10 @@
                 ]
             }
         ],
+        "timestamp": "2026-08-25T13:17:19.407674",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.4"
-        },
-        "timestamp": "2026-03-20T08:44:11.884625063"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     }
 }

@@ -55,6 +55,14 @@ input:
         directory needs to be mounted (including all modified files from the downloading step)
         to the container as a workaround.
       pattern: "*/"
+  - gff:
+      type: file
+      description: |
+        Optional GFF3 file with gene annotations, passed to AntiSMASH with
+        --genefinding-gff3.
+      pattern: "*.{gff,gff3}"
+      ontologies:
+        - edam: "http://edamontology.org/format_1975" # GFF3
 output:
   html_accessory_files:
     - - meta:

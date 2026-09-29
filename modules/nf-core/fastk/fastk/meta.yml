@@ -40,6 +40,17 @@ output:
           description: Histogram of k-mers
           pattern: "*.hist"
           ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.log":
+          type: file
+          description: FastK command stdout/stderr log file
+          pattern: "*.log"
+          ontologies: []
   ktab:
     - - meta:
           type: map
@@ -74,17 +85,6 @@ output:
       - "1.2":
           type: string
           description: The expression to obtain the version of the tool
-  log:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.log":
-          type: file
-          description: FastK command stdout/stderr log file
-          pattern: "*.log"
-          ontologies: []
 topics:
   versions:
     - - ${task.process}:

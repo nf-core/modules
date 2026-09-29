@@ -60,10 +60,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*vcf.gz":
+      - "*.{bcf,vcf}{,.gz}":
           type: file
           description: VCF gzipped output file
-          pattern: "*.{vcf.gz}"
+          pattern: "*.{bcf,vcf}{,.gz}"
           ontologies: []
   index:
     - - meta:

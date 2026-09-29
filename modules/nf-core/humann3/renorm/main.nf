@@ -35,14 +35,11 @@ process HUMANN3_RENORM {
         $args
 
     gzip -n ${prefix}_renorm.tsv
-
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}_renorm.tsv.gz
-
     """
 }

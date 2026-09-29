@@ -50,12 +50,6 @@ output:
         Channel containing mosaic space segmentation results
         Structure: [ val(meta), path(parquet) ]
       pattern: "*.parquet"
-  - versions:
-      type: file
-      description: |
-        File containing software versions
-        Structure: [ path(versions.yml) ]
-      pattern: "versions.yml"
 authors:
   - "@mcmero"
 maintainers:

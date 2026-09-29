@@ -2,7 +2,6 @@ nextflow_process {
 
     name "Test Process ISOSEQ_CLUSTER"
     script "../main.nf"
-    config "./nextflow.config"
     process "ISOSEQ_CLUSTER"
 
     tag "modules"
@@ -10,7 +9,7 @@ nextflow_process {
     tag "isoseq"
     tag "isoseq/cluster"
 
-    test("PacBio isoseq cluster - CCS clustering test") {
+    test("PacBio isoseq cluster - CCS clustering test - deprecated") {
 
         when {
             process {
@@ -25,31 +24,8 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["transcripts", "transcriptset", "xml"])).match() }
-            )
-        }
-    }
-
-    test("PacBio isoseq cluster - CCS clustering test - stub") {
-
-        options "-stub"
-
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.bam', checkIfExists: true),
-                ]
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.") }
             )
         }
     }

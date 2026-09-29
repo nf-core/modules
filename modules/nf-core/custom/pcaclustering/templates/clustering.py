@@ -15,17 +15,41 @@ from sklearn.cluster import DBSCAN, KMeans
 
 
 def load_features(path):
-    """Read a TSV where the first column is sample IDs and the remaining
-    columns are numeric features.
+    """Read a sample-by-feature matrix.
+
+    Accepts a generic TSV/TXT (first column = sample IDs, remaining columns
+    numeric features) or a PLINK2 ``.eigenvec`` file (``#FID IID PC1 ...``).
+    PLINK family/source ID columns are dropped and ``IID`` is used as
+    ``sample_id``, so this module can consume ``plink2/pca`` output directly.
 
     Returns (sample_ids: pd.Series, features: np.ndarray).
     """
-    df = pd.read_csv(path, sep="\\t", dtype={0: str})
-    if df.shape[1] < 2:
-        raise ValueError(f"features file must have at least one feature column. Found columns: {list(df.columns)}")
-    sample_ids = df.iloc[:, 0]
-    features = df.iloc[:, 1:].to_numpy(dtype=float)
-    return sample_ids, features
+    df = pd.read_csv(path, sep=r"\\s+", engine="python", dtype=str)
+    if df.empty or df.shape[1] < 2:
+        raise ValueError(
+            f"features file must have an ID column and at least one feature column. Found columns: {list(df.columns)}"
+        )
+
+    df.columns = [str(col).lstrip("#") for col in df.columns]
+
+    ignore_cols = {"FID", "IID", "SID", "sample_id"}
+    if "IID" in df.columns:
+        sample_ids = df["IID"]
+        feature_cols = [col for col in df.columns if col not in ignore_cols]
+    elif "sample_id" in df.columns:
+        sample_ids = df["sample_id"]
+        feature_cols = [col for col in df.columns if col not in ignore_cols]
+    else:
+        sample_ids = df.iloc[:, 0]
+        feature_cols = list(df.columns[1:])
+
+    if not feature_cols:
+        raise ValueError(
+            f"no numeric feature columns left after dropping ID columns. Found columns: {list(df.columns)}"
+        )
+
+    features = df[feature_cols].apply(pd.to_numeric, errors="raise").to_numpy(dtype=float)
+    return sample_ids.astype(str), features
 
 
 def main():

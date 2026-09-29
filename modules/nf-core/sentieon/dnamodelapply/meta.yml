@@ -1,5 +1,6 @@
 name: sentieon_dnamodelapply
-description: modifies the input VCF file by adding the MLrejected FILTER to the variants
+description: modifies the input VCF file by adding the MLrejected FILTER to
+  variants that are rejected by the selected machine learning model
 keywords:
   - dnamodelapply
   - vcf
@@ -68,7 +69,7 @@ output:
             e.g. `[ id:'test', single_end:false ]`
       - "*.vcf.gz":
           type: file
-          description: INPUT VCF file
+          description: Output VCF file
           pattern: "*.{vcf,vcf.gz}"
           ontologies: []
   tbi:
@@ -79,7 +80,7 @@ output:
             e.g. `[ id:'test', single_end:false ]`
       - "*.vcf.gz.tbi":
           type: file
-          description: Index of the input VCF file
+          description: Index of the output VCF file
           pattern: "*.{tbi}"
           ontologies: []
   versions_sentieon:
@@ -90,7 +91,7 @@ output:
           type: string
           description: The tool name
       - sentieon driver --version | sed "s/.*-//g":
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 topics:
   versions:
@@ -101,7 +102,7 @@ topics:
           type: string
           description: The tool name
       - sentieon driver --version | sed "s/.*-//g":
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 authors:
   - "@ramprasadn"

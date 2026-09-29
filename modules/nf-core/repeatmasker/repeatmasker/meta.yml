@@ -1,13 +1,11 @@
 name: repeatmasker_repeatmasker
 description: |
   Screening DNA sequences for interspersed repeats and low complexity DNA sequences
-
 keywords:
   - genome
   - annotation
   - repeat
   - mask
-
 tools:
   - repeatmasker:
       description: |
@@ -16,7 +14,8 @@ tools:
       homepage: "https://www.repeatmasker.org/"
       documentation: "https://www.repeatmasker.org/webrepeatmaskerhelp.html"
       tool_dev_url: "https://github.com/rmhubley/RepeatMasker"
-      licence: ["Open Software License v. 2.1"]
+      licence:
+        - "Open Software License v. 2.1"
       identifier: biotools:repeatmasker
 
 input:
@@ -83,17 +82,32 @@ output:
           pattern: "*.{gff}"
           ontologies:
             - edam: http://edamontology.org/format_2305
+  versions_repeatmasker:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - repeatmasker:
+          type: string
+          description: The name of the tool
+      - RepeatMasker -v | sed 's/RepeatMasker version //1':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - repeatmasker:
+          type: string
+          description: The name of the tool
+      - RepeatMasker -v | sed 's/RepeatMasker version //1':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@kherronism"
   - "@gallvp"
-
 maintainers:
   - "@kherronism"
   - "@gallvp"

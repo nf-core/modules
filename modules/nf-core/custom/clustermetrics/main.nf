@@ -33,6 +33,7 @@ process CUSTOM_CLUSTERMETRICS {
     touch ${prefix}.silhouette.png
     touch ${prefix}.davies_bouldin.png
     touch ${prefix}.calinski_harabasz.png
+    touch ${prefix}.k_distance.png
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

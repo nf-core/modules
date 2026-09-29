@@ -71,24 +71,32 @@ output:
     - - meta:
           type: map
           description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
-      - ${prefix}/embeddings.tsv:
+      - ${prefix}/embeddings.npy:
           type: file
           description: |
-            TSV describing the embeddings of the contigs
-          pattern: "*.tsv"
-          ontologies:
-            - edam: http://edamontology.org/format_3475
+            NumPy array of the contig embeddings, rows in the order of `embedding_ids.txt`
+          pattern: "*.npy"
+          ontologies: []
   covembeddings:
     - - meta:
           type: map
           description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
-      - ${prefix}/covembeddings.tsv:
+      - ${prefix}/covembeddings.npy:
           type: file
           description: |
-            TSV describing the embeddings of the contigs
-          pattern: "*.tsv"
-          ontologies:
-            - edam: http://edamontology.org/format_3475
+            NumPy array of the coverage embeddings, rows in the order of `embedding_ids.txt`
+          pattern: "*.npy"
+          ontologies: []
+  embedding_ids:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - ${prefix}/embedding_ids.txt:
+          type: file
+          description: |
+            Contig identifiers, one per line, giving the row order of both embedding arrays
+          pattern: "*.txt"
+          ontologies: []
   versions_comebin:
     - - ${task.process}:
           type: string
@@ -96,9 +104,19 @@ output:
       - comebin:
           type: string
           description: The name of the tool
-      - "run_comebin.sh | sed '5!d;s/COMEBin version: //'":
+      - "run_comebin.sh -V | sed 's/COMEBin version: //'":
           type: eval
           description: The expression to obtain the version of the tool
+  versions_cuda:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cuda:
+          type: string
+          description: The name of the runtime
+      - 'python -c "import torch; print(torch.version.cuda or ''no CUDA available'')"':
+          type: eval
+          description: CUDA version bundled with the task's pytorch build, or `no CUDA available` on the non-GPU path
 topics:
   versions:
     - - ${task.process}:
@@ -107,9 +125,18 @@ topics:
       - comebin:
           type: string
           description: The name of the tool
-      - "run_comebin.sh | sed '5!d;s/COMEBin version: //'":
+      - "run_comebin.sh -V | sed 's/COMEBin version: //'":
           type: eval
           description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cuda:
+          type: string
+          description: The name of the runtime
+      - 'python -c "import torch; print(torch.version.cuda or ''no CUDA available'')"':
+          type: eval
+          description: CUDA version bundled with the task's pytorch build, or `no CUDA available` on the non-GPU path
 authors:
   - "@prototaxites"
 maintainers:
@@ -117,14 +144,14 @@ maintainers:
 containers:
   docker:
     linux/amd64:
-      name: community.wave.seqera.io/library/comebin:1.1.0--f7721f7c5a189044
-      build_id: bd-f7721f7c5a189044_1
-      scan_id: sc-52432bea18de12e1_1
+      name: community.wave.seqera.io/library/comebin_gzip_tar:818f10a274a0d480
+      build_id: bd-818f10a274a0d480_1
+      scan_id: sc-7379e2cc035e2988_1
   singularity:
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/comebin:1.1.0--a7e5189ce655fa30
-      build_id: bd-a7e5189ce655fa30_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/46/46c7be4715b72a8d91735d465c9d677cc918f2921f2bdb528dd20222d07975a0/data
+      name: oras://community.wave.seqera.io/library/comebin_gzip_tar:fbab2e380d827df7
+      build_id: bd-fbab2e380d827df7_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a7/a720950b3444c8a0d7a64618dac6864ea11e15ed25f24a522aa5ff3e5742c9ae/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/comebin/runcomebin/.conda-lock/linux_amd64-bd-f7721f7c5a189044_1.txt
+      lock_file: modules/nf-core/comebin/runcomebin/.conda-lock/linux_amd64-bd-818f10a274a0d480_1.txt

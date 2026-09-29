@@ -29,10 +29,24 @@ from sklearn.manifold import TSNE
 
 
 def load_features(path):
-    """Read a TSV of `sample_id` + numeric feature columns, indexed by sample_id."""
-    df = pd.read_csv(path, sep="\\t")
+    """Read sample-by-feature matrix, indexed by sample_id.
+
+    Accepts a TSV with a sample_id column, or a PLINK2 .eigenvec file
+    (`#FID IID PC1 ...` or `#IID PC1 ...`). FID/SID are dropped.
+    """
+    df = pd.read_csv(path, sep="\\t", dtype=str)
+    df.columns = [str(col).lstrip("#") for col in df.columns]
+
+    if "IID" in df.columns:
+        df = df.rename(columns={"IID": "sample_id"})
+
+    drop = [col for col in ("FID", "SID") if col in df.columns]
+    if drop:
+        df = df.drop(columns=drop)
+
     if "sample_id" not in df.columns:
         raise ValueError(f"features file must have a 'sample_id' column. Found: {list(df.columns)}")
+
     df["sample_id"] = df["sample_id"].astype(str)
     return df.set_index("sample_id").apply(pd.to_numeric, errors="coerce").fillna(0.0)
 
@@ -54,9 +68,9 @@ def embed(x, method, umap_neighbors, tsne_perplexity):
     """
     n = len(x)
     if method == "umap":
-        reducer = umap.UMAP(n_components=2, n_neighbors=min(umap_neighbors, max(2, n - 1)), random_state=42)
+        reducer = umap.UMAP(n_components=2, n_neighbors=min(umap_neighbors, max(2, n - 1)), n_jobs=1, random_state=42)
     elif method == "tsne":
-        reducer = TSNE(n_components=2, perplexity=min(tsne_perplexity, max(2, n - 1)), random_state=42)
+        reducer = TSNE(n_components=2, perplexity=min(tsne_perplexity, max(2, n - 1)), n_jobs=1, random_state=42)
     else:
         raise ValueError(f"Unknown method '{method}' (expected 'umap' or 'tsne')")
     return reducer.fit_transform(x)

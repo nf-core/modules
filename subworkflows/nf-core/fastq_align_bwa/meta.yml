@@ -43,14 +43,10 @@ output:
       description: |
         BAM file ordered by samtools
         Structure: [ val(meta), path(bam) ]
-  - bai:
+  - index:
       description: |
-        BAI index of the ordered BAM file
-        Structure: [ val(meta), path(bai) ]
-  - csi:
-      description: |
-        CSI index of the ordered BAM file
-        Structure: [ val(meta), path(csi) ]
+        Index of the ordered BAM file (bai or csi)
+        Structure: [ val(meta), path(index) ]
   - stats:
       description: |
         File containing samtools stats output
