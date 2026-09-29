@@ -4,8 +4,8 @@ process GATK4_DENOISEREADCOUNTS {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b9/b9822b92da68a3e7916072218082e3fa79bebc2f377947c363613adeecd56ec5/data'
-        : 'community.wave.seqera.io/library/gatk4-main_gcnvkernel:961440660027ec01'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/06/06957b3d467331a29a6d770308f17004738469a21c0aedf893d5ea0312accaea/data'
+        : 'community.wave.seqera.io/library/gatk4-main:4.7.0.0--b8e8676903b345d8'}"
 
     input:
     tuple val(meta), path(counts)
