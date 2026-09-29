@@ -12,8 +12,8 @@ process MYLOASM {
 
     output:
     tuple val(meta), path("${prefix}"), emit: results
-    tuple val(meta), path("${prefix}/assembly_primary.fa.gz"), emit: contigs
-    tuple val(meta), path("${prefix}/final_contig_graph.gfa.gz"), emit: gfa
+    tuple val(meta), path("${prefix}/${prefix}.assembly_primary.fa.gz"), emit: contigs
+    tuple val(meta), path("${prefix}/${prefix}.final_contig_graph.gfa.gz"), emit: gfa
     tuple val(meta), path("${prefix}/alternate_assemblies/assembly_alternate.fa.gz"), emit: contigs_alt
     tuple val(meta), path("${prefix}/alternate_assemblies/duplicated_contigs.fa.gz"), emit: contigs_dup
     tuple val(meta), path("${prefix}/3-mapping/map_to_unitigs.paf.gz"), emit: mapping
@@ -33,6 +33,9 @@ process MYLOASM {
         -t ${task.cpus} \\
         ${args}
 
+    mv ${prefix}/assembly_primary.fa ${prefix}/${prefix}.assembly_primary.fa
+    mv ${prefix}/final_contig_graph.gfa ${prefix}/${prefix}.final_contig_graph.gfa
+
     find ${prefix}/ -name "*.fa" -exec gzip {} \\;
     find ${prefix}/ -name "*.gfa" -exec gzip {} \\;
     find ${prefix}/ -name "*.edges" -exec gzip {} \\;
@@ -46,8 +49,8 @@ process MYLOASM {
 
     mkdir -p ${prefix}/alternate_assemblies
     mkdir -p ${prefix}/3-mapping
-    echo "" | gzip > ${prefix}/assembly_primary.fa.gz
-    echo "" | gzip > ${prefix}/final_contig_graph.gfa.gz
+    echo "" | gzip > ${prefix}/${prefix}.assembly_primary.fa.gz
+    echo "" | gzip > ${prefix}/${prefix}.final_contig_graph.gfa.gz
     echo "" | gzip > ${prefix}/alternate_assemblies/assembly_alternate.fa.gz
     echo "" | gzip > ${prefix}/alternate_assemblies/duplicated_contigs.fa.gz
     echo "" | gzip > ${prefix}/3-mapping/map_to_unitigs.paf.gz
