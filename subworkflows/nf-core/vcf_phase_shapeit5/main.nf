@@ -7,57 +7,39 @@ include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_LIGATE } from '../../../modules/nf-co
 workflow VCF_PHASE_SHAPEIT5 {
 
     take:
-    ch_input          // channel (mandatory) : [ [id, panelid, scaffoldid, chr], vcf, index, pedigree, ref, index, scaffold, index, region, gmap ]
-    ch_chunks         // channel (optional)  : [ [id, panelid, scaffoldid, chr], regionout ]
-    chunk             // val     (mandatory) : boolean to activate/deactivate chunking step
+    ch_input          // channel (mandatory) : [ [id, panelid, scaffoldid, chr], vcf, index, pedigree, ref, index, scaffold, index, region, gmap, [chunks] ]
     chunk_model       // val     (mandatory) : model to used for GLIMPSE2_chunk
 
     main:
 
-    if ( chunk == true ){
-        // Error if pre-defined chunks are provided when chunking is activated
-        ch_chunks
-            .filter { _meta, regionout -> regionout.size() > 0 }
-            .subscribe {
-                error "ERROR: Cannot provide pre-defined chunks (regionin) when chunk=true. Please either set chunk=false to use provided chunks, or remove input chunks to enable automatic chunking."
-            }
-
-        GLIMPSE2_CHUNK ( ch_input.map{
-            meta, vcf, index, _pedigree, _ref, _ref_index, _scaffold, _scaffold_index, region, gmap -> [
-                meta, vcf, index, region, gmap
-            ]
-        }, chunk_model )
-
-        ch_chunks = GLIMPSE2_CHUNK.out.chunk_chr
-            .splitCsv(header: [
-                'ID', 'Chr', 'RegionBuf', 'RegionCnk', 'WindowCm',
-                'WindowMb', 'NbTotVariants', 'NbComVariants'
-            ], sep: "\t", skip: 0)
-            .map { meta, rows -> [meta, rows["RegionBuf"]]}
+    ch_input_branch = ch_input.branch{ _meta, _vcf, _index, _pedigree, _ref, _ref_index, _scaffold, _scaffold_index, _region, _gmap, chunks ->
+        with_chunks: chunks.size() > 0
+        without_chunks: chunks.size() == 0
     }
 
-    ch_chunks
-        .filter { _meta, regionout -> regionout.size() == 0 }
-        .subscribe {
-            error "ERROR: ch_chunks channel is empty. Please provide a valid channel or set chunk parameter to true."
-        }
+    GLIMPSE2_CHUNK ( ch_input_branch.without_chunks.map{ meta, vcf, index, _pedigree, _ref, _ref_index, _scaffold, _scaffold_index, region, gmap, _chunks -> [
+        meta, vcf, index, region, gmap
+    ]}, chunk_model )
 
-    ch_chunks_counts = ch_chunks
+    ch_chunks = GLIMPSE2_CHUNK.out.chunk_chr
+        .splitCsv(header: [
+            'ID', 'Chr', 'RegionBuf', 'RegionCnk', 'WindowCm',
+            'WindowMb', 'NbTotVariants', 'NbComVariants'
+        ], sep: "\t", skip: 0)
+        .map { meta, rows -> [meta, rows["RegionBuf"]]}
         .groupTuple()
-        .map { meta, regionouts ->
-            [meta, regionouts.size()]
-        }
 
-    // Make channel with all parameters
-    ch_parameters = ch_input
-        .combine(
-            ch_chunks.combine(ch_chunks_counts, by: 0).view(),
-            by: 0
+    ch_parameters = ch_input_branch.with_chunks
+        .mix(ch_input_branch.without_chunks
+            .join(ch_chunks, failOnMismatch: true, failOnDuplicate: true)
+            .map{ meta, vcf, index, pedigree, ref, ref_index, scaffold, scaffold_index, region, gmap, _old_chunks, new_chunks -> [
+                meta, vcf, index, pedigree, ref, ref_index, scaffold, scaffold_index, region, gmap, new_chunks
+            ]}
         )
-
-    ch_parameters.ifEmpty{
-        error "ERROR: join operation resulted in an empty channel. Please provide a valid ch_map, ch_ref, ch_scaffold and ch_chunks channel as input (same meta map)."
-    }
+        .map{ meta, vcf, index, pedigree, ref_vcf, ref_index, scaffold_vcf, scaffold_index, regionout, gmap, chunks -> [
+            meta, vcf, index, pedigree, ref_vcf, ref_index, scaffold_vcf, scaffold_index, regionout, gmap, chunks, chunks.size()
+        ]}
+        .transpose(by: 10)
 
     // Rearrange channel for phasing
     ch_phase_input = ch_parameters
