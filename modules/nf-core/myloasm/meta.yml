@@ -50,7 +50,7 @@ output:
       - ${prefix}/${prefix}.assembly_primary.fa.gz:
           type: file
           description: Primary assembly contigs in FASTA format
-          pattern: "assembly_primary.fa.gz"
+          pattern: "${prefix}.assembly_primary.fa.gz"
           ontologies:
             - edam: http://edamontology.org/format_1929 # FASTA
             - edam: http://edamontology.org/format_3989 # GZIP
@@ -63,7 +63,7 @@ output:
       - ${prefix}/${prefix}.final_contig_graph.gfa.gz:
           type: file
           description: Final contig graph in GFA format
-          pattern: "final_contig_graph.gfa.gz"
+          pattern: "${prefix}.final_contig_graph.gfa.gz"
           ontologies:
             - edam: http://edamontology.org/format_3975 # GFA 1
             - edam: http://edamontology.org/format_3989 # GZIP
