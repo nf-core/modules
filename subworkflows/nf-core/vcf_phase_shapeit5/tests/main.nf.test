@@ -97,7 +97,9 @@ nextflow_workflow {
                 """
                 input[0] = BCFTOOLS_CONCAT.out.vcf
                     .join(BCFTOOLS_CONCAT.out.index)
-                    .combine(channel.of([[]]))
+                    .combine(channel.of([chr: "22"], [chr: "21"]))
+                    .map{ meta, vcf, index, chr -> [meta + chr, vcf, index, []]}
+                    .view()
                 input[1] = channel.of([[chr: "22"], []], [[chr: "21"], []]) // Chunks
                 input[2] = channel.of([[panelid:'ref_panel', chr: "22"], [], []], [[panelid:'ref_panel', chr: "21"], [], []]) // Ref
                 input[3] = channel.of([[scaffoldid:'scaffold', chr: "22"], [], []], [[scaffoldid:'scaffold', chr: "21"], [], []]) // Scaffold
@@ -277,7 +279,8 @@ nextflow_workflow {
                 """
                 input[0] = BCFTOOLS_PLUGINFILLTAGS.out.vcf
                     .join(BCFTOOLS_PLUGINFILLTAGS.out.index)
-                    .combine(channel.of([[]]))
+                    .combine(channel.of([chr: "chr22"], [chr: "chr21"]))
+                    .map{ meta, vcf, index, chr -> [meta + chr, vcf, index, []]}
                 input[1] = channel.of(
                     [[panelid:'1000GP', chr:"chr22", genome: "GRCh38"], "chr22:16570065-16597215"],
                     [[panelid:'1000GP', chr:"chr22", genome: "GRCh38"], "chr22:16587172-16609999"],

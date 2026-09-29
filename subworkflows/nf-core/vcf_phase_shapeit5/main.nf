@@ -7,7 +7,7 @@ include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_LIGATE } from '../../../modules/nf-co
 workflow VCF_PHASE_SHAPEIT5 {
 
     take:
-    ch_vcf            // channel (mandatory) : [ [id, (chr)], vcf, index, pedigree ]
+    ch_vcf            // channel (mandatory) : [ [id, chr], vcf, index, pedigree ]
     ch_chunks         // channel (optional)  : [ [chr], regionout ]
     ch_ref            // channel (optional)  : [ [panelid, chr], vcf, index ]
     ch_scaffold       // channel (optional)  : [ [scaffoldid, chr], vcf, index ]
@@ -75,7 +75,6 @@ workflow VCF_PHASE_SHAPEIT5 {
                 ]},
             by:0
         )
-        .view()
         .combine(
             ch_chunks
                 .combine(ch_chunks_counts, by: 0)
@@ -84,12 +83,10 @@ workflow VCF_PHASE_SHAPEIT5 {
                 ]},
             by:0
         )
-        .view()
 
     // Make channel with all parameters
     ch_parameters = ch_vcf_map
         .combine(ch_ref_scaffold_chunks, by: 0)
-        .view()
 
     ch_parameters.ifEmpty{
         error "ERROR: join operation resulted in an empty channel. Please provide a valid ch_map, ch_ref, ch_scaffold and ch_chunks channel as input (same meta map)."
