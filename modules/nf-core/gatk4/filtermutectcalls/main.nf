@@ -4,8 +4,8 @@ process GATK4_FILTERMUTECTCALLS {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/06/06957b3d467331a29a6d770308f17004738469a21c0aedf893d5ea0312accaea/data'
-        : 'community.wave.seqera.io/library/gatk4-main:4.7.0.0--b8e8676903b345d8'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1b/1be338209b229f0bfbddf022580e1e1d9a7ebb095bc69db67c6485dc24402959/data'
+        : 'community.wave.seqera.io/library/gatk4-main_gzip:2e707932c78d8e37'}"
 
     input:
     tuple val(meta), path(vcf), path(vcf_tbi), path(stats), path(orientationbias), path(segmentation), path(table), val(estimate)
