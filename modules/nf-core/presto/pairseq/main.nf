@@ -39,7 +39,6 @@ process PRESTO_PAIRSEQ {
     """
 
     stub:
-    def args = task.ext.args?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}-1_pair-pass.fastq.gz \\

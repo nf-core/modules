@@ -11,7 +11,7 @@ process MISOPY_INDEX {
     tuple val(meta), path(gff3)
 
     output:
-    tuple val(meta), path("index"), emit: miso_index
+    tuple val(meta), path("${prefix}"), emit: miso_index
     tuple val("${task.process}"), val('python'), eval('python --version 2>&1 | sed "s/Python //g"'), topic: versions, emit: versions_python
     tuple val("${task.process}"), val('misopy'), eval('python -c "import pkg_resources; print(pkg_resources.get_distribution(\'misopy\').version)"'), topic: versions, emit: versions_misopy
 
@@ -20,24 +20,23 @@ process MISOPY_INDEX {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     grep -v "^#" ${gff3} | \\
     awk 'BEGIN{OFS="\\t"} NF==9 && \$6~/^[0-9.]+\$/ || \$6=="." {print}' > filtered.gff3
 
     index_gff \\
         --index filtered.gff3 \\
-        "index" \\
+        ${prefix} \\
         ${args}
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo $args
-
-    mkdir -p "index"
-    touch "index/${prefix}.shelve"
+    mkdir -p ${prefix}
+    touch ${prefix}/compressed_ids_to_genes.shelve.{bak,dat,dir}
+    touch ${prefix}/genes_to_filenames.shelve.{bak,dat,dir}
+    touch ${prefix}/genes.gff
     """
 }
