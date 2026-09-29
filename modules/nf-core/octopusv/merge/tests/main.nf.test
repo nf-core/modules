@@ -79,6 +79,77 @@ nextflow_process {
 
     }
 
+    test("homo_sapiens - input list - default") {
+
+        when {
+            params {
+                module_args = '--mode caller'
+            }
+            process {
+                """
+                def sniffles_file = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/octopusv/sk-n-as-sniffles-ont.svcf', checkIfExists: true)
+                def severus_file = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/octopusv/sk-n-as-severus-ont.svcf', checkIfExists: true)
+                def input_list_file = file('input_list.txt')
+                input_list_file.text = "\${sniffles_file.name}\\tsniffles\\n\${severus_file.name}\\tseverus\\n"
+                input[0] = [
+                    [ id:'test' ],
+                    [sniffles_file, severus_file],
+                    [input_list_file],
+                    [],
+                    ''
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.svcf.get(0).get(1)).vcf.summary,
+                    path(process.out.svcf.get(0).get(1)).vcf.variantsMD5,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - specific mode - default") {
+
+        when {
+            params {
+                module_args = '--mode caller'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/octopusv/sk-n-as-sniffles-ont.svcf', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/octopusv/sk-n-as-severus-ont.svcf', checkIfExists: true)
+                    ],
+                    [],
+                    ['sk-n-as-severus-ont.svcf'],
+                    'specific'
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.svcf.get(0).get(1)).vcf.summary,
+                    path(process.out.svcf.get(0).get(1)).vcf.variantsMD5,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
     test("homo_sapiens - svcf list - stub") {
 
         options "-stub"

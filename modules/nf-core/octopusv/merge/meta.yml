@@ -23,28 +23,36 @@ input:
           e.g. `[ id:'sample1' ]`
     - svcfs:
         type: file
-        description: List of SVCF files to merge
+        description: SVCF files to stage for merging. If input_list is not supplied, these are
+          passed as --input-file. If input_list is supplied, these must include every
+          local SVCF referenced by the list, and list entries should use the staged
+          filenames (for example, `sample.svcf`).
         pattern: "*.svcf"
+        optional: true
         ontologies:
           - edam: "http://edamontology.org/format_3016"
     - input_list:
         type: file
         description: |
-          Optional text file containing one input path per line, optionally
-          followed by a tab and a caller or sample label.
+          Optional text file containing one staged SVCF filename per line, optionally
+          followed by a tab and a caller or sample label. Relative paths are resolved
+          relative to this file. Files referenced by the list must also be supplied in
+          svcfs so Nextflow stages them.
         pattern: "*.txt"
         ontologies:
           - edam: "http://edamontology.org/format_2330"
     - specific_svcfs:
-        type: file
+        type: string
         description: |
-          SVCF files supplied using --specific. Only used when strategy_flag
+          One or more of the input SVCF files to extract SVs supported by them. Only used when strategy_flag
           is specific.
         pattern: "*.svcf"
+        optional: true
         ontologies:
           - edam: "http://edamontology.org/format_3016"
     - strategy_flag:
         type: string
+        optional: true
         description: |
           Merge strategy. Valid values include union, intersect, specific,
           min-support, exact-support, max-support and expression. An empty

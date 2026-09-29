@@ -8,7 +8,7 @@ process OCTOPUSV_MERGE {
 :         'community.wave.seqera.io/library/octopusv:1.0.0--5a8c89c65098e801' }"
 
     input:
-    tuple val(meta), path(svcfs, arity: '1..*'), path(input_list), path(specific_svcfs, arity: '0..*'), val(strategy_flag)
+    tuple val(meta), path(svcfs, arity: '0..*'), path(input_list), val(specific_svcfs), val(strategy_flag)
 
     output:
     tuple val(meta), path("*.svcf"), emit: svcf
