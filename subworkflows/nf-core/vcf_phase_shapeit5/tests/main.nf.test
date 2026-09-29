@@ -21,7 +21,8 @@ nextflow_workflow {
     tag "bcftools/view"
     tag "bcftools/pluginfilltags"
 
-    test("homo_sapiens - target - no chunks, no ref, no scaffold, no map - one chromosome") {
+    test("homo_sapiens - target - no chunks, no ref, no scaffold, no map - two chromosomes in two vcf") {
+        tag "test0"
         when {
             params {
                 glimpse2_chunk_args = "--window-mb 0.1 --window-cm 0.1 --window-count 100 --buffer-mb 0.01 --buffer-cm 0.01 --buffer-count 10"
@@ -31,16 +32,25 @@ nextflow_workflow {
             }
             workflow {
                 """
-                input[0] = channel.of([
+                input[0] = channel.of(
+                [
                     [id:'test', chr: "22"],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
                     [], // empty pedigree
+                ],[
+                    [id:'test', chr: "21"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz.csi", checkIfExists:true),
+                    [], // empty pedigree
                 ])
-                input[1] = channel.of([[id:'test', chr: "22"], []]) // Chunks
-                input[2] = channel.of([[id:'test', chr: "22"], [], []]) // Ref
-                input[3] = channel.of([[id:'test', chr: "22"], [], []]) // Scaffold
-                input[4] = channel.of([[id:'test', chr: "22"], "chr22:16570000-16610000", []]) // Region to chunk + Genetic map
+                input[1] = channel.of([[panelid:'test', chr: "22"], []], [[panelid:'test', chr: "21"], []]) // Chunks
+                input[2] = channel.of([[panelid:'test', chr: "22"], [], []], [[panelid:'test', chr: "21"], [], []]) // Ref
+                input[3] = channel.of([[panelid:'test', chr: "22"], [], []], [[panelid:'test', chr: "21"], [], []]) // Scaffold
+                input[4] = channel.of(
+                    [[chr: "22"], "chr22:16570000-16610000", []],
+                    [[chr: "21"], "chr21:16570000-16610000", []]
+                ) // Region to chunk + Genetic map
                 input[5] = true // Perform chunks
                 input[6] = "recursive" // chunk_model
                 input[7] = true
@@ -55,7 +65,62 @@ nextflow_workflow {
         }
     }
 
-    test("homo_sapiens - target, ref, chunks - no scaffold - target split by chromosomes") {
+    test("homo_sapiens - target - no chunks, no ref, no scaffold, no map - two chromosomes in one vcf") {
+        tag "test1"
+        setup {
+            run("BCFTOOLS_CONCAT") {
+                script "../../../../modules/nf-core/bcftools/concat/main.nf"
+                process {
+                    """
+                    input[0] = channel.of([
+                        [id:'test'],
+                        [
+                            file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                            file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz", checkIfExists:true)
+                        ], [
+                            file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
+                            file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz.csi", checkIfExists:true)
+                        ]
+                    ])
+                    """
+                }
+            }
+        }
+        when {
+            params {
+                glimpse2_chunk_args = "--window-mb 0.1 --window-cm 0.1 --window-count 100 --buffer-mb 0.01 --buffer-cm 0.01 --buffer-count 10"
+                bcftools_pluginfilltags_args = ""
+                bcftools_pluginfilltags_args2 = ""
+                bcftools_view_args = ""
+            }
+            workflow {
+                """
+                input[0] = BCFTOOLS_CONCAT.out.vcf
+                    .join(BCFTOOLS_CONCAT.out.index)
+                    .combine(channel.of([[]]))
+                input[1] = channel.of([[panelid:'ref_panel', chr: "22"], []], [[panelid:'ref_panel', chr: "21"], []]) // Chunks
+                input[2] = channel.of([[panelid:'ref_panel', chr: "22"], [], []], [[panelid:'ref_panel', chr: "21"], [], []]) // Ref
+                input[3] = channel.of([[panelid:'ref_panel', chr: "22"], [], []], [[panelid:'ref_panel', chr: "21"], [], []]) // Scaffold
+                input[4] = channel.of(
+                    [[chr: "22"], "chr22:16570000-16610000", []],
+                    [[chr: "21"], "chr21:16570000-16610000", []]
+                ) // Region to chunk + Genetic map
+                input[5] = true // Perform chunks
+                input[6] = "recursive" // chunk_model
+                input[7] = false
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(sanitizeOutput(workflow.out, unstableKeys:["vcf_index"])).match() } // BCF file not readable
+            )
+        }
+    }
+
+    test("homo_sapiens - target, ref, chunks - no scaffold - two chromosomes in two vcf") {
+        tag "test2"
         setup {
             run("BCFTOOLS_VIEW") {
                 script "../../../../modules/nf-core/bcftools/view/main.nf"
@@ -70,6 +135,14 @@ nextflow_workflow {
                         [id:'NA12878', chr:"chr21"],
                         file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExists: true),
                         file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExists: true)
+                    ],[
+                        [id:'NA19401', chr:"chr22"],
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA19401.chr21_22.1X.glimpse2.vcf.gz", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA19401.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExists: true),
+                    ],[
+                        [id:'NA19401', chr:"chr21"],
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA19401.chr21_22.1X.glimpse2.vcf.gz", checkIfExists: true),
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA19401.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExists: true)
                     ])
                     input[1] = []
                     input[2] = []
@@ -104,32 +177,32 @@ nextflow_workflow {
                     .join(BCFTOOLS_PLUGINFILLTAGS.out.index)
                     .combine(channel.of([[]]))
                 input[1] = channel.of(
-                    [[id:'NA12878', chr:"chr22"], "chr22:16570065-16597215"],
-                    [[id:'NA12878', chr:"chr22"], "chr22:16587172-16609999"],
-                    [[id:'NA12878', chr:"chr21"], "chr21:16570065-16597215"],
-                    [[id:'NA12878', chr:"chr21"], "chr21:16587172-16609999"]
+                    [[panel_id:'1000GP', chr:"chr22"], "chr22:16570065-16597215"],
+                    [[panel_id:'1000GP', chr:"chr22"], "chr22:16587172-16609999"],
+                    [[panel_id:'1000GP', chr:"chr21"], "chr21:16570065-16597215"],
+                    [[panel_id:'1000GP', chr:"chr21"], "chr21:16587172-16609999"]
                 )
                 input[2] = channel.of(
                 [
-                    [id:'NA12878', chr:"chr22"],
+                    [panel_id:'1000GP', chr:"chr22"],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true)
                 ],[
-                    [id:'NA12878', chr:"chr21"],
+                    [panel_id:'1000GP', chr:"chr21"],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz", checkIfExists:true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz.csi", checkIfExists:true)
                 ])
                 input[3] = channel.of(
-                    [[id:'NA12878', chr:"chr22"], [], []],
-                    [[id:'NA12878', chr:"chr21"], [], []]
+                    [[panel_id:'1000GP', chr:"chr22"], [], []],
+                    [[panel_id:'1000GP', chr:"chr21"], [], []]
                 )
                 input[4] = channel.of(
                 [
-                    [id:'NA12878', chr:"chr22"],
+                    [panel_id:'1000GP', chr:"chr22"],
                     [], // no regions needed as chunks are provided
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.glimpse.map", checkIfExists:true)
                 ],[
-                    [id:'NA12878', chr:"chr21"],
+                    [panel_id:'1000GP', chr:"chr21"],
                     [], // no regions needed as chunks are provided
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.glimpse.map", checkIfExists:true)
                 ])
@@ -157,7 +230,8 @@ nextflow_workflow {
         }
     }
 
-    test("homo_sapiens - target, ref, chunks - no scaffold - two chromosomes / one vcf / two individuals") {
+    test("homo_sapiens - target, ref, chunks - no scaffold - two chromosomes in one vcf") {
+        tag "test3"
         setup {
             run("BCFTOOLS_VIEW") {
                 script "../../../../modules/nf-core/bcftools/view/main.nf"

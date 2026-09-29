@@ -29,18 +29,18 @@ workflow VCF_PHASE_SHAPEIT5 {
         // Chunk reference panel
         if (vcf_join) {
             ch_vcf_map = ch_vcf
-                .combine(ch_map)
-                .map{
-                    metaV, vcf, index, _pedigree, metaM, region, gmap -> [
-                        metaV + metaM, vcf, index, region, gmap
-                    ]
-                }
-        } else {
-            ch_vcf_map = ch_vcf
                 .combine(ch_map, by: 0)
                 .map{
                     metaVM, vcf, index, _pedigree, region, gmap -> [
                         metaVM, vcf, index, region, gmap
+                    ]
+                }
+        } else {
+            ch_vcf_map = ch_vcf
+                .combine(ch_map)
+                .map{
+                    metaV, vcf, index, _pedigree, metaM, region, gmap -> [
+                        metaV + metaM, vcf, index, region, gmap
                     ]
                 }
         }
