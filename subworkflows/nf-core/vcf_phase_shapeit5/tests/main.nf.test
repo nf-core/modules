@@ -53,7 +53,7 @@ nextflow_workflow {
                 ) // Region to chunk + Genetic map
                 input[5] = true // Perform chunks
                 input[6] = "recursive" // chunk_model
-                input[7] = true
+                input[7] = ["chr"]
                 """
             }
         }
@@ -107,7 +107,7 @@ nextflow_workflow {
                 ) // Region to chunk + Genetic map
                 input[5] = true // Perform chunks
                 input[6] = "recursive" // chunk_model
-                input[7] = false
+                input[7] = ["chr"]
                 """
             }
         }
@@ -208,7 +208,7 @@ nextflow_workflow {
                 ])
                 input[5] = false // Perform chunks
                 input[6] = "recursive" // chunk_model
-                input[7] = true
+                input[7] = ["chr"]
                 """
             }
         }
@@ -238,11 +238,11 @@ nextflow_workflow {
                 process {
                     """
                     input[0] = channel.of([
-                        [id:'NA12878'],
+                        [id:'NA12878', genome: "GRCh38"],
                         file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz", checkIfExists: true),
                         file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExists: true),
                     ], [
-                        [id:'NA19401'],
+                        [id:'NA19401', genome: "GRCh38"],
                         file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA19401.chr21_22.1X.glimpse2.vcf.gz", checkIfExists: true),
                         file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/NA19401.chr21_22.1X.glimpse2.vcf.gz.csi", checkIfExists: true),
                     ])
@@ -279,38 +279,38 @@ nextflow_workflow {
                     .join(BCFTOOLS_PLUGINFILLTAGS.out.index)
                     .combine(channel.of([[]]))
                 input[1] = channel.of(
-                    [[panelid:'1000GP', chr:"chr22"], "chr22:16570065-16597215"],
-                    [[panelid:'1000GP', chr:"chr22"], "chr22:16587172-16609999"],
-                    [[panelid:'1000GP', chr:"chr21"], "chr21:16570065-16597215"],
-                    [[panelid:'1000GP', chr:"chr21"], "chr21:16587172-16609999"]
+                    [[panelid:'1000GP', chr:"chr22", genome: "GRCh38"], "chr22:16570065-16597215"],
+                    [[panelid:'1000GP', chr:"chr22", genome: "GRCh38"], "chr22:16587172-16609999"],
+                    [[panelid:'1000GP', chr:"chr21", genome: "GRCh38"], "chr21:16570065-16597215"],
+                    [[panelid:'1000GP', chr:"chr21", genome: "GRCh38"], "chr21:16587172-16609999"]
                 )
                 input[2] = channel.of(
                 [
-                    [panelid:'1000GP', chr:"chr22"],
+                    [panelid:'1000GP', chr:"chr22", genome: "GRCh38"],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true)
                 ],[
-                    [panelid:'1000GP', chr:"chr21"],
+                    [panelid:'1000GP', chr:"chr21", genome: "GRCh38"],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz", checkIfExists:true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz.csi", checkIfExists:true)
                 ])
                 input[3] = channel.of(
-                    [[panelid:'1000GP', chr:"chr22"], [], []],
-                    [[panelid:'1000GP', chr:"chr21"], [], []]
+                    [[panelid:'1000GP', chr:"chr22", genome: "GRCh38"], [], []],
+                    [[panelid:'1000GP', chr:"chr21", genome: "GRCh38"], [], []]
                 )
                 input[4] = channel.of(
                 [
-                    [panelid:'1000GP', chr:"chr22"],
+                    [panelid:'1000GP', chr:"chr22", genome: "GRCh38"],
                     [], // no regions needed as chunks are provided
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.glimpse.map", checkIfExists:true)
                 ],[
-                    [panelid:'1000GP', chr:"chr21"],
+                    [panelid:'1000GP', chr:"chr21", genome: "GRCh38"],
                     [], // no regions needed as chunks are provided
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr21.glimpse.map", checkIfExists:true)
                 ])
                 input[5] = false // Perform chunks
                 input[6] = "recursive" // chunk_model
-                input[7] = false
+                input[7] = ["chr", "genome"]
                 """
             }
         }

@@ -7,16 +7,28 @@ include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_LIGATE } from '../../../modules/nf-co
 workflow VCF_PHASE_SHAPEIT5 {
 
     take:
-    ch_vcf      // channel (mandatory) : [ [id, chr], vcf, index, pedigree ]
-    ch_chunks   // channel (optional)  : [ [id, chr], regionout ]
-    ch_ref      // channel (optional)  : [ [id, chr], vcf, index ]
-    ch_scaffold // channel (optional)  : [ [id, chr], vcf, index ]
-    ch_map      // channel (optional)  : [ [id, chr], region, map]
-    chunk       // val     (mandatory) : boolean to activate/deactivate chunking step
-    chunk_model // val     (mandatory) : model to used for GLIMPSE2_chunk
-    vcf_join    // val     (mandatory) : boolean should the input vcf be joined with other channels
+    ch_vcf            // channel (mandatory) : [ [id, (chr)], vcf, index, pedigree ]
+    ch_chunks         // channel (optional)  : [ [id, chr], regionout ]
+    ch_ref            // channel (optional)  : [ [id, chr], vcf, index ]
+    ch_scaffold       // channel (optional)  : [ [id, chr], vcf, index ]
+    ch_map            // channel (optional)  : [ [id, chr], region, map]
+    chunk             // val     (mandatory) : boolean to activate/deactivate chunking step
+    chunk_model       // val     (mandatory) : model to used for GLIMPSE2_chunk
+    array_common_meta // array   (mandatory) : list of meta keys to perform the joins on
 
     main:
+
+    ch_vcf_map = ch_vcf
+        .map { meta, vcf, index, pedigree -> [
+            meta.subMap(array_common_meta), meta, vcf, index, pedigree
+        ]}
+        .combine(
+            ch_map
+                .map { meta, region, gmap -> [
+                    meta.subMap(array_common_meta), meta, region, gmap
+                ]},
+            by: 0
+        )
 
     if ( chunk == true ){
         // Error if pre-defined chunks are provided when chunking is activated
@@ -26,26 +38,11 @@ workflow VCF_PHASE_SHAPEIT5 {
                 error "ERROR: Cannot provide pre-defined chunks (regionin) when chunk=true. Please either set chunk=false to use provided chunks, or remove input chunks to enable automatic chunking."
             }
 
-        // Chunk reference panel
-        if (vcf_join) {
-            ch_vcf_map = ch_vcf
-                .combine(ch_map, by: 0)
-                .map{
-                    metaVM, vcf, index, _pedigree, region, gmap -> [
-                        metaVM, vcf, index, region, gmap
-                    ]
-                }
-        } else {
-            ch_vcf_map = ch_vcf
-                .combine(ch_map)
-                .map{
-                    metaV, vcf, index, _pedigree, metaM, region, gmap -> [
-                        metaV + metaM, vcf, index, region, gmap
-                    ]
-                }
-        }
-
-        GLIMPSE2_CHUNK ( ch_vcf_map, chunk_model )
+        GLIMPSE2_CHUNK ( ch_vcf_map.map{
+            _metaCommon, metaV, vcf, index, _pedigree, metaM, region, gmap -> [
+                metaM + metaV, vcf, index, region, gmap
+            ]
+        }, chunk_model )
 
         ch_chunks = GLIMPSE2_CHUNK.out.chunk_chr
             .splitCsv(header: [
@@ -63,30 +60,21 @@ workflow VCF_PHASE_SHAPEIT5 {
 
     ch_chunks_counts = ch_chunks
         .groupTuple()
-        .map { metaC, regionouts ->
-            [metaC, regionouts.size()]
+        .map { meta, regionouts ->
+            [meta, regionouts.size()]
         }
 
     // Make channel with all parameters
-    if (vcf_join) {
-        ch_parameters = ch_vcf
-            .combine(ch_map, by: 0)
-            .combine(ch_ref, by: 0)
+    ch_parameters = ch_vcf_map
+        .combine(ch_ref
             .combine(ch_scaffold, by: 0)
             .combine(ch_chunks, by: 0)
             .combine(ch_chunks_counts, by: 0)
-    } else {
-        ch_parameters = ch_vcf
-            .combine(ch_map
-                .combine(ch_ref, by: 0)
-                .combine(ch_scaffold, by: 0)
-                .combine(ch_chunks, by: 0)
-                .combine(ch_chunks_counts, by: 0)
-            )
-            .map{ metaV, vcf, index, pedigree, metaMRSC, region, gmap, ref_vcf, ref_index, scaffold_vcf, scaffold_index, regionbuf, region_size -> [
-                metaV + metaMRSC, vcf, index, pedigree, region, gmap, ref_vcf, ref_index, scaffold_vcf, scaffold_index, regionbuf, region_size
-            ]}
-    }
+            .map{ meta, ref_vcf, ref_index, scaffold_vcf, scaffold_index, regionbuf, region_size -> [
+                meta.subMap(array_common_meta), meta, ref_vcf, ref_index, scaffold_vcf, scaffold_index, regionbuf, region_size
+            ]},
+            by: 0
+        )
 
     ch_parameters.ifEmpty{
         error "ERROR: join operation resulted in an empty channel. Please provide a valid ch_map, ch_ref, ch_scaffold and ch_chunks channel as input (same meta map)."
@@ -95,7 +83,7 @@ workflow VCF_PHASE_SHAPEIT5 {
     // Rearrange channel for phasing
     ch_phase_input = ch_parameters
         .map{
-            meta, vcf, index, pedigree, _region, gmap, ref_vcf, ref_index, scaffold_vcf, scaffold_index, regionbuf, region_size ->
+            _metaCommon, metaV, vcf, index, pedigree, _metaM, _regionout, gmap, metaR, ref_vcf, ref_index, scaffold_vcf, scaffold_index, regionbuf, region_size ->
             def chr = regionbuf.tokenize(':')[0]
             def region = regionbuf.tokenize(':')[1]
             def start = region.tokenize('-')[0]
@@ -104,7 +92,7 @@ workflow VCF_PHASE_SHAPEIT5 {
             def paddedEnd = String.format('%010d', end as long)
             def regionoutPadded = "${chr}:${paddedStart}-${paddedEnd}"
             [
-                meta + ["regionout": regionbuf, "regionoutPadded": regionoutPadded, "regionSize": region_size],
+                metaR + metaV + ["regionout": regionbuf, "regionoutPadded": regionoutPadded, "regionSize": region_size],
                 vcf, index,
                 pedigree,
                 regionbuf,
