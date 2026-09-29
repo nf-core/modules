@@ -181,7 +181,8 @@ nextflow_process {
                 // log-file content includes a timestamp/runtime that varies between runs --
                 // assert existence only, and snapshot everything else.
                 { assert process.out.log.size() == 1 },
-                { assert snapshot(process.out.bed, process.out.versions_modkit).match() }
+                { assert snapshot(process.out.bed, process.out.findAll { key, val -> key.startsWith('versions') }
+).match() }
             )
         }
 
