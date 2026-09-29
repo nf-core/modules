@@ -47,7 +47,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
-      - ${prefix}/assembly_primary.fa.gz:
+      - ${prefix}/${prefix}.assembly_primary.fa.gz:
           type: file
           description: Primary assembly contigs in FASTA format
           pattern: "assembly_primary.fa.gz"
@@ -60,7 +60,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
-      - ${prefix}/final_contig_graph.gfa.gz:
+      - ${prefix}/${prefix}.final_contig_graph.gfa.gz:
           type: file
           description: Final contig graph in GFA format
           pattern: "final_contig_graph.gfa.gz"
