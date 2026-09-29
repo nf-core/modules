@@ -27,7 +27,7 @@ process VARNET {
     prefix = task.ext.prefix ?: "${meta.id}"
     def regions = intervals ? "--region_bed ${intervals}" : ""
     if (!input_normal) {
-        error "VARNET requires a matched normal BAM: tumor-only mode is not supported by this module."
+        error "VARNET requires a matched normal BAM. Tumor-only mode needs large germline resource files (dbSNP and gnomAD) that are not shipped with the conda package, so it is not supported by this module. To run tumor-only, use the VarNet Docker image directly: https://github.com/skandlab/VarNet"
     }
     """
     export TF_CPP_MIN_LOG_LEVEL=3
