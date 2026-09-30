@@ -69,7 +69,8 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf"])).match() }
+                // predictions holds raw model scores whose low-order digits vary across CPUs, so snapshot names only
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf"], unstableKeys: ["predictions"])).match() }
             )
         }
 
