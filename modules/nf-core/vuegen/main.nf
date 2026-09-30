@@ -19,42 +19,42 @@ process VUEGEN {
     script:
     def args = task.ext.args ?: ''
     """
-        # Validate quarto_check flag if using a conda environment
-        if [[ "${task.conda}" != "null" ]]; then
-            QUARTO_CHECK_FLAG="--quarto-checks"
-        else
-            QUARTO_CHECK_FLAG=""
-        fi
+    # Validate quarto_check flag if using a conda environment
+    if [[ "${task.conda}" != "null" ]]; then
+        QUARTO_CHECK_FLAG="--quarto-checks"
+    else
+        QUARTO_CHECK_FLAG=""
+    fi
 
-        # Same Quarto cache fix as modules/nf-core/quartonotebook.
-        # Fix Quarto for Apptainer (see https://community.seqera.io/t/confusion-over-why-a-tool-works-in-docker-but-fails-in-singularity-when-the-installation-doesnt-differ-i-e-using-wave-micromamba/1244)
-        # HOME is also made writable so Quarto can install TinyTeX for PDF reports.
-        # Same fix as in modules/nf-core/memote/report and modules/nf-core/bcftools/plotvcfstats.
-        mkdir -p nxf_home
-        export HOME=\$PWD/nxf_home
-        export XDG_CACHE_HOME="./.xdg_cache_home"
-        export XDG_DATA_HOME="./.xdg_data_home"
-        ENV_QUARTO=/opt/conda/etc/conda/activate.d/quarto.sh
-        set +u
-        if [ -z "\${QUARTO_DENO}" ] && [ -f "\${ENV_QUARTO}" ]; then
-            source "\${ENV_QUARTO}"
-        fi
-        set -u
+    # Same Quarto cache fix as modules/nf-core/quartonotebook.
+    # Fix Quarto for Apptainer (see https://community.seqera.io/t/confusion-over-why-a-tool-works-in-docker-but-fails-in-singularity-when-the-installation-doesnt-differ-i-e-using-wave-micromamba/1244)
+    # HOME is also made writable so Quarto can install TinyTeX for PDF reports.
+    # Same fix as in modules/nf-core/memote/report and modules/nf-core/bcftools/plotvcfstats.
+    mkdir -p nxf_home
+    export HOME=\$PWD/nxf_home
+    export XDG_CACHE_HOME="./.xdg_cache_home"
+    export XDG_DATA_HOME="./.xdg_data_home"
+    ENV_QUARTO=/opt/conda/etc/conda/activate.d/quarto.sh
+    set +u
+    if [ -z "\${QUARTO_DENO}" ] && [ -f "\${ENV_QUARTO}" ]; then
+        source "\${ENV_QUARTO}"
+    fi
+    set -u
 
-        # Execute VueGen based on the input type
-        if [ "${input_type}" == "config" ]; then
-            echo "Running VueGen with config file: ${input_path}"
-            vuegen --config ${input_path} --report-type ${report_type} \$QUARTO_CHECK_FLAG ${args}
-        elif [ "${input_type}" == "directory" ]; then
-            echo "Running VueGen with directory: ${input_path}"
-            vuegen --directory ${input_path} --report-type ${report_type} \$QUARTO_CHECK_FLAG ${args}
-        fi
-        """
+    # Execute VueGen based on the input type
+    if [ "${input_type}" == "config" ]; then
+        echo "Running VueGen with config file: ${input_path}"
+        vuegen --config ${input_path} --report-type ${report_type} \$QUARTO_CHECK_FLAG ${args}
+    elif [ "${input_type}" == "directory" ]; then
+        echo "Running VueGen with directory: ${input_path}"
+        vuegen --directory ${input_path} --report-type ${report_type} \$QUARTO_CHECK_FLAG ${args}
+    fi
+    """
 
     stub:
     """
-        echo "STUB MODE: Creating a generic report directory"
-        mkdir -p report
-        touch report/report.txt
-        """
+    echo "STUB MODE: Creating a generic report directory"
+    mkdir -p report
+    touch report/report.txt
+    """
 }
