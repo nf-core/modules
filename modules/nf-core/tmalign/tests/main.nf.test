@@ -5,7 +5,7 @@ nextflow_process {
     process "TMALIGN"
 
     tag "modules"
-    tag "modules_local"
+    tag "modules_nfcore"
     tag "tmalign"
 
     test("structural comparison against the PETase reference") {
@@ -32,7 +32,7 @@ nextflow_process {
                 // the two structures are homologous PETases: TM-score must indicate the same fold
                 { assert row[3].toDouble() > 0.5 },
                 { assert row[5].toDouble() >= 0.0 },
-                { assert snapshot(process.out.versions).match('versions') }
+                { assert snapshot(process.out.versions_tmalign).match('versions') }
             )
         }
     }

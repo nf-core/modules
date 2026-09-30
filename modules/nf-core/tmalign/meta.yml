@@ -27,10 +27,10 @@ input:
         type: file
         description: One or more predicted protein structures in PDB format
         pattern: "*.pdb"
-  - - ref_pdb:
-        type: file
-        description: Reference PETase structure, by default 6EQE (IsPETase from Ideonella sakaiensis)
-        pattern: "*.pdb"
+  - ref_pdb:
+      type: file
+      description: Reference PETase structure, by default 6EQE (IsPETase from Ideonella sakaiensis)
+      pattern: "*.pdb"
 
 output:
   results:
@@ -44,11 +44,28 @@ output:
             aligned_length, tm_score_query (normalised by query length),
             tm_score_ref (normalised by reference length), rmsd, seq_id.
           pattern: "*.tmalign.tsv"
+  versions_tmalign:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tmalign:
+          type: string
+          description: The name of the tool
+      - TMalign -v 2>&1 | grep -o 'Version [0-9]*' | head -n1 | cut -d' ' -f2:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tmalign:
+          type: string
+          description: The name of the tool
+      - TMalign -v 2>&1 | grep -o 'Version [0-9]*' | head -n1 | cut -d' ' -f2:
+          type: eval
+          description: The expression to obtain the version of the tool
 
 authors:
   - "@Bboy010"

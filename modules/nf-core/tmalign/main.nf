@@ -25,7 +25,7 @@ process TMALIGN {
 
     output:
     tuple val(meta), path("*.tmalign.tsv"), emit: results
-    path "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val('tmalign'), eval("TMalign -v 2>&1 | grep -o 'Version [0-9]*' | head -n1 | cut -d' ' -f2"), topic: versions, emit: versions_tmalign
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,8 +37,7 @@ process TMALIGN {
     // is written without any backslash escapes of its own: fields are joined
     // with OFS and each record is terminated by print's default ORS. The one
     // newline printf needs is written \\n: a real one would leave a line at
-    // column 0, which stops Nextflow stripping the script's indentation, and
-    // the END_VERSIONS terminator below is then never matched.
+    // column 0, which stops Nextflow stripping the script's indentation.
     """
     printf 'query\treference\taligned_length\ttm_score_query\ttm_score_ref\trmsd\tseq_id\\n' \
         > ${prefix}.tmalign.tsv
@@ -60,11 +59,6 @@ process TMALIGN {
                     print q, r, al, tm1, tm2, rmsd, seqid
                 }' >> ${prefix}.tmalign.tsv
     done
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tmalign: \$( TMalign -v 2>&1 | grep -o 'Version [0-9]*' | head -n1 | cut -d' ' -f2 )
-    END_VERSIONS
     """
 
     stub:
@@ -72,10 +66,5 @@ process TMALIGN {
     """
     printf 'query\treference\taligned_length\ttm_score_query\ttm_score_ref\trmsd\tseq_id\\n' \
         > ${prefix}.tmalign.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tmalign: 20240303
-    END_VERSIONS
     """
 }
