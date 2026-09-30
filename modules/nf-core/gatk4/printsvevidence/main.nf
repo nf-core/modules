@@ -4,8 +4,8 @@ process GATK4_PRINTSVEVIDENCE {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fd/fd65ba227372b7f3f62231d105427edcf5def4c4700689f77ce9536c954a22f6/data'
-        : 'community.wave.seqera.io/library/gatk4-main:4.7.0.0--6f748daadc3eeb06'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c5/c5ad1d2671d349f609383068e987b75faf2003404df3fff475ec80ba9a69c68e/data'
+        : 'community.wave.seqera.io/library/gatk4-lite:4.7.0.0--ccccf4acf9b6eba5'}"
 
     input:
     tuple val(meta), path(evidence_files), path(evidence_indices)
