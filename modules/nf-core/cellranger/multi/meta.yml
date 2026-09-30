@@ -129,7 +129,9 @@ input:
           e.g. [ id:'genome' ]
     - gex_reference:
         type: directory
-        description: Folder containing Cellranger gene expression reference
+        description: |
+          Folder containing Cellranger gene expression reference.
+          Also required for feature barcode libraries without GEX FASTQs.
   - gex_frna_probeset:
       type: file
       description: Fixed RNA profiling information containing custom probes in CSV format

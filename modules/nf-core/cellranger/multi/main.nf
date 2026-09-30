@@ -167,8 +167,9 @@ def multiConfig(
     }
 
     // Build [gene-expression] section
+    // Cell Ranger requires the transcriptome reference for feature barcode libraries, even without GEX FASTQs
     def gex_section = []
-    if (has_gex) {
+    if (has_gex || (gex_reference && (has_ab || has_crispr || has_beam))) {
         gex_section << '[gene-expression]'
         gex_section << "reference,\$PWD/${gex_reference.name}"
 

@@ -1122,6 +1122,85 @@ nextflow_process {
         }
 
     }
+    test("cellranger - multi - 10k - PBMC - vdj-t-gd + vdj-b + antibody capture without gex - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                ab_fastqs = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/5gex/5fb/subsampled_sc5p_v2_hs_PBMC_10k_5fb_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/5gex/5fb/subsampled_sc5p_v2_hs_PBMC_10k_5fb_S1_L001_R2_001.fastq.gz', checkIfExists: true)
+                ]
+                fb_reference = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/sc5p_v2_hs_PBMC_10k_multi_5gex_5fb_b_t_feature_ref.csv', checkIfExists: true)
+                vdj_b_fastqs = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/bcell/subsampled_sc5p_v2_hs_PBMC_10k_b_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/bcell/subsampled_sc5p_v2_hs_PBMC_10k_b_S1_L001_R2_001.fastq.gz', checkIfExists: true)
+                ]
+
+                // no gamma/delta test data exists, so stage empty placeholders (stubs never read FASTQ contents)
+                vdj_t_gd_fastqs = [
+                    file("${workDir}/vdj_t_gd_stub/subsampled_sc5p_v2_hs_PBMC_10k_gd_S1_L001_R1_001.fastq.gz"),
+                    file("${workDir}/vdj_t_gd_stub/subsampled_sc5p_v2_hs_PBMC_10k_gd_S1_L001_R2_001.fastq.gz")
+                ]
+                vdj_t_gd_fastqs.each { fastq -> fastq.parent.mkdirs(); fastq.text = '' }
+                vdj_primer_index = file("${workDir}/vdj_t_gd_stub/gd_primers.txt")
+                vdj_primer_index.text = ''
+                vdj_reference = file("${workDir}/vdj_reference_stub")
+                vdj_reference.mkdirs()
+
+                ch_vdj_primer_index = Channel.of( vdj_primer_index )
+                ch_vdj_reference    = Channel.of( vdj_reference )
+
+                input[0]  = [ id:'subsampled_sc5p_v2_hs_PBMC_10k', single_end:false ]
+                input[1]  = [ [:], [], [:] ]
+                input[2]  = [ [:], [], [:] ]
+                input[3]  = [ [ id:'subsampled_sc5p_v2_hs_PBMC_10k' ], ab_fastqs, [:] ]
+                input[4]  = [ [:], [], [:] ]
+                input[5]  = [ [:], [], [:] ]
+                input[6]  = [ [:], [], [:] ]
+                input[7]  = CELLRANGER_MKREF.out.reference
+                input[8]  = []
+                input[9]  = []
+                input[10] = ch_vdj_reference
+                input[11] = ch_vdj_primer_index
+                input[12] = fb_reference
+                input[13] = []
+                input[14] = []
+                input[15] = []
+                input[16] = []
+                input[17] = []
+                input[18] = []
+                input[19] = []
+                input[20] = false
+                input[21] = [ [:], [], [:] ]
+                input[22] = [ [ id:'subsampled_sc5p_v2_hs_PBMC_10k' ], vdj_t_gd_fastqs, [:] ]
+                input[23] = [ [ id:'subsampled_sc5p_v2_hs_PBMC_10k' ], vdj_b_fastqs, [:] ]
+                """
+            }
+        }
+
+        then {
+            def config = path(process.out.config[0][1])
+            def config_lines = config.readLines().collect { line -> line.replace(config.parent.toString(), '$PWD') }
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith("versions") },
+                    config_lines
+                ).match() },
+                // feature barcode libraries need the transcriptome reference even without a GEX library
+                { assert config_lines.contains('[gene-expression]') },
+                { assert config_lines.contains('reference,$PWD/references/gex/homo_sapiens_chr22_reference') },
+                { assert !config_lines.any { line -> line.endsWith(',,Gene Expression') } },
+                { assert config_lines.contains('subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/ab,,Antibody Capture') },
+                { assert config_lines.contains('subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_t_gd,,VDJ-T-GD') },
+                { assert config_lines.contains('subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_b,,VDJ-B') }
+            )
+        }
+
+    }
 
     test("cellranger - multi - 10k - PBMC - vdj-t-gd without inner enrichment primers - stub") {
 
