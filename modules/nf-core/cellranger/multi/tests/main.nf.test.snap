@@ -170,6 +170,42 @@
             "nextflow": "26.04.3"
         }
     },
+    "cellranger - multi - 10k - PBMC - vdj-t + vdj-t-gd + vdj-b - stub": {
+        "content": [
+            {
+                "versions_cellranger": [
+                    [
+                        "CELLRANGER_MULTI",
+                        "cellranger",
+                        "10.0.0"
+                    ]
+                ]
+            },
+            [
+                "[gene-expression]",
+                "reference,$PWD/references/gex/homo_sapiens_chr22_reference",
+                "chemistry,SC5P-PE",
+                "expect-cells,1000",
+                "no-secondary,true",
+                "create-bam,true",
+                "[vdj]",
+                "reference,$PWD/references/vdj/vdj_reference_stub",
+                "inner-enrichment-primers,$PWD/references/vdj/primers/gd_primers.txt",
+                "r1-length,26",
+                "[libraries]",
+                "fastq_id,fastqs,lanes,feature_types",
+                "subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/gex,,Gene Expression",
+                "subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_t,,VDJ-T",
+                "subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_t_gd,,VDJ-T-GD",
+                "subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_b,,VDJ-B"
+            ]
+        ],
+        "timestamp": "2026-09-30T13:43:45.852618288",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
     "cellranger - multi - 10k - PBMC - with vdj": {
         "content": [
             {

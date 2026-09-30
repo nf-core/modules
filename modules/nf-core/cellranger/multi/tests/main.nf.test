@@ -1038,4 +1038,159 @@ nextflow_process {
         }
 
     }
+
+    test("cellranger - multi - 10k - PBMC - vdj-t + vdj-t-gd + vdj-b - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                gex_fastqs = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/5gex/5gex/subsampled_sc5p_v2_hs_PBMC_10k_5gex_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/5gex/5gex/subsampled_sc5p_v2_hs_PBMC_10k_5gex_S1_L001_R2_001.fastq.gz', checkIfExists: true)
+                ]
+                vdj_t_fastqs = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/tcell/subsampled_sc5p_v2_hs_PBMC_10k_t_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/tcell/subsampled_sc5p_v2_hs_PBMC_10k_t_S1_L001_R2_001.fastq.gz', checkIfExists: true)
+                ]
+                vdj_b_fastqs = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/bcell/subsampled_sc5p_v2_hs_PBMC_10k_b_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/bcell/subsampled_sc5p_v2_hs_PBMC_10k_b_S1_L001_R2_001.fastq.gz', checkIfExists: true)
+                ]
+
+                // no gamma/delta test data exists, so stage empty placeholders (stubs never read FASTQ contents)
+                vdj_t_gd_fastqs = [
+                    file("${workDir}/vdj_t_gd_stub/subsampled_sc5p_v2_hs_PBMC_10k_gd_S1_L001_R1_001.fastq.gz"),
+                    file("${workDir}/vdj_t_gd_stub/subsampled_sc5p_v2_hs_PBMC_10k_gd_S1_L001_R2_001.fastq.gz")
+                ]
+                vdj_t_gd_fastqs.each { fastq -> fastq.parent.mkdirs(); fastq.text = '' }
+                vdj_primer_index = file("${workDir}/vdj_t_gd_stub/gd_primers.txt")
+                vdj_primer_index.text = ''
+                vdj_reference = file("${workDir}/vdj_reference_stub")
+                vdj_reference.mkdirs()
+
+                ch_vdj_primer_index = Channel.of( vdj_primer_index )
+                ch_vdj_reference    = Channel.of( vdj_reference )
+
+                input[0]  = [ id:'subsampled_sc5p_v2_hs_PBMC_10k', single_end:false ]
+                input[1]  = [ [ id:'subsampled_sc5p_v2_hs_PBMC_10k' ], gex_fastqs, [ "expect-cells":"1000", chemistry:"SC5P-PE", "create-bam":false, "no-secondary":true ] ]
+                input[2]  = [ [:], [], [:] ]
+                input[3]  = [ [:], [], [:] ]
+                input[4]  = [ [:], [], [:] ]
+                input[5]  = [ [:], [], [:] ]
+                input[6]  = [ [:], [], [:] ]
+                input[7]  = CELLRANGER_MKREF.out.reference
+                input[8]  = []
+                input[9]  = []
+                input[10] = ch_vdj_reference
+                input[11] = ch_vdj_primer_index
+                input[12] = []
+                input[13] = []
+                input[14] = []
+                input[15] = []
+                input[16] = []
+                input[17] = []
+                input[18] = []
+                input[19] = []
+                input[20] = false
+                input[21] = [ [ id:'subsampled_sc5p_v2_hs_PBMC_10k' ], vdj_t_fastqs, [ "r1-length":26 ] ]
+                input[22] = [ [ id:'subsampled_sc5p_v2_hs_PBMC_10k' ], vdj_t_gd_fastqs, [:] ]
+                input[23] = [ [ id:'subsampled_sc5p_v2_hs_PBMC_10k' ], vdj_b_fastqs, [:] ]
+                """
+            }
+        }
+
+        then {
+            def config = path(process.out.config[0][1])
+            def config_lines = config.readLines().collect { line -> line.replace(config.parent.toString(), '$PWD') }
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith("versions") },
+                    config_lines
+                ).match() },
+                // all three chain-specific libraries share a single [vdj] section carrying the primers
+                { assert config_lines.count('[vdj]') == 1 },
+                { assert config_lines.contains('inner-enrichment-primers,$PWD/references/vdj/primers/gd_primers.txt') },
+                { assert config_lines.contains('r1-length,26') },
+                { assert config_lines.contains('subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_t,,VDJ-T') },
+                { assert config_lines.contains('subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_t_gd,,VDJ-T-GD') },
+                { assert config_lines.contains('subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_b,,VDJ-B') },
+                { assert !config_lines.any { line -> line.endsWith(',,VDJ') } }
+            )
+        }
+
+    }
+
+    test("cellranger - multi - 10k - PBMC - vdj-t-gd without inner enrichment primers - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                gex_fastqs = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/5gex/5gex/subsampled_sc5p_v2_hs_PBMC_10k_5gex_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/5gex/5gex/subsampled_sc5p_v2_hs_PBMC_10k_5gex_S1_L001_R2_001.fastq.gz', checkIfExists: true)
+                ]
+                vdj_t_fastqs = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/tcell/subsampled_sc5p_v2_hs_PBMC_10k_t_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/tcell/subsampled_sc5p_v2_hs_PBMC_10k_t_S1_L001_R2_001.fastq.gz', checkIfExists: true)
+                ]
+                vdj_b_fastqs = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/bcell/subsampled_sc5p_v2_hs_PBMC_10k_b_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/bcell/subsampled_sc5p_v2_hs_PBMC_10k_b_S1_L001_R2_001.fastq.gz', checkIfExists: true)
+                ]
+
+                // no gamma/delta test data exists, so stage empty placeholders (stubs never read FASTQ contents)
+                vdj_t_gd_fastqs = [
+                    file("${workDir}/vdj_t_gd_stub/subsampled_sc5p_v2_hs_PBMC_10k_gd_S1_L001_R1_001.fastq.gz"),
+                    file("${workDir}/vdj_t_gd_stub/subsampled_sc5p_v2_hs_PBMC_10k_gd_S1_L001_R2_001.fastq.gz")
+                ]
+                vdj_t_gd_fastqs.each { fastq -> fastq.parent.mkdirs(); fastq.text = '' }
+                vdj_primer_index = file("${workDir}/vdj_t_gd_stub/gd_primers.txt")
+                vdj_primer_index.text = ''
+                vdj_reference = file("${workDir}/vdj_reference_stub")
+                vdj_reference.mkdirs()
+
+                ch_vdj_primer_index = Channel.of( vdj_primer_index )
+                ch_vdj_reference    = Channel.of( vdj_reference )
+
+                input[0]  = [ id:'subsampled_sc5p_v2_hs_PBMC_10k', single_end:false ]
+                input[1]  = [ [ id:'subsampled_sc5p_v2_hs_PBMC_10k' ], gex_fastqs, [ "expect-cells":"1000", chemistry:"SC5P-PE", "create-bam":false, "no-secondary":true ] ]
+                input[2]  = [ [:], [], [:] ]
+                input[3]  = [ [:], [], [:] ]
+                input[4]  = [ [:], [], [:] ]
+                input[5]  = [ [:], [], [:] ]
+                input[6]  = [ [:], [], [:] ]
+                input[7]  = CELLRANGER_MKREF.out.reference
+                input[8]  = []
+                input[9]  = []
+                input[10] = ch_vdj_reference
+                input[11] = []
+                input[12] = []
+                input[13] = []
+                input[14] = []
+                input[15] = []
+                input[16] = []
+                input[17] = []
+                input[18] = []
+                input[19] = []
+                input[20] = false
+                input[21] = [ [ id:'subsampled_sc5p_v2_hs_PBMC_10k' ], vdj_t_fastqs, [ "r1-length":26 ] ]
+                input[22] = [ [ id:'subsampled_sc5p_v2_hs_PBMC_10k' ], vdj_t_gd_fastqs, [:] ]
+                input[23] = [ [ id:'subsampled_sc5p_v2_hs_PBMC_10k' ], vdj_b_fastqs, [:] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("VDJ-T-GD libraries require inner enrichment primers") }
+            )
+        }
+
+    }
 }

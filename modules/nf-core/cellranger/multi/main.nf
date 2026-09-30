@@ -44,13 +44,108 @@ process CELLRANGER_MULTI {
         error "CELLRANGER_MULTI module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
 
+    def args   = task.ext.args   ?: ''
+    def prefix = task.ext.prefix ?: meta.id
+
+    def config_content = multiConfig(
+        meta2, gex_options, meta3, vdj_options, meta4, ab_options, meta5, meta6, cmo_options, meta7, crispr_options,
+        gex_reference, gex_frna_probeset, gex_targetpanel, vdj_reference, vdj_primer_index, fb_reference,
+        beam_antigen_panel, beam_control_panel, cmo_reference, cmo_barcodes, cmo_barcode_assignment, frna_sampleinfo,
+        ocm_barcodes, meta9, vdj_t_options, meta10, vdj_t_gd_options, meta11, vdj_b_options
+    )
+    """
+    #
+    # Symlink FASTQs into fastq_all/, maintaining R1/R2 lane-pairing order.
+    # skip_renaming=false (default): rename to Cell Ranger convention \${prefix}_S1_L00N_R[12]_001.fastq.gz
+    # skip_renaming=true:           keep original filenames as-is
+    #
+    mkdir -p fastq_all/{gex,vdj,vdj_t,vdj_t_gd,vdj_b,ab,beam,cmo,crispr}
+
+    for modality in gex vdj vdj_t vdj_t_gd vdj_b ab beam cmo crispr; do
+        lane=1
+        n_fastq_dirs=\$(find fastqs/\${modality} -maxdepth 1 -type d -name "fastq_*" | wc -l)
+        if [ \$((n_fastq_dirs % 2)) -ne 0 ]; then
+            echo "ERROR: Found an odd number (\${n_fastq_dirs}) of staged FASTQ files for modality '\${modality}'. Expected R1/R2 pairs." >&2
+            exit 1
+        fi
+        while IFS= read -r -d '' r1_dir && IFS= read -r -d '' r2_dir; do
+            if [ "${skip_renaming}" = "true" ]; then
+                r1=\$(find "\${r1_dir}" -maxdepth 1 -name "*.fastq.gz" | head -1)
+                r2=\$(find "\${r2_dir}" -maxdepth 1 -name "*.fastq.gz" | head -1)
+                [ -z "\${r1}" ] || [ -z "\${r2}" ] && continue
+                ln -sf "\$(readlink -f "\${r1}")" "fastq_all/\${modality}/\$(basename "\${r1}")"
+                ln -sf "\$(readlink -f "\${r2}")" "fastq_all/\${modality}/\$(basename "\${r2}")"
+            else
+                r1=\$(find "\${r1_dir}" -maxdepth 1 -name "*_R1_*.fastq.gz" | head -1)
+                r2=\$(find "\${r2_dir}" -maxdepth 1 -name "*_R2_*.fastq.gz" | head -1)
+                [ -z "\${r1}" ] || [ -z "\${r2}" ] && continue
+
+                r1_base="\$(basename "\${r1}")"
+                r2_base="\$(basename "\${r2}")"
+                if [ "\${r1_base/_R1_/_R2_}" != "\${r2_base}" ]; then
+                    echo "ERROR: R1 and R2 basenames do not match except for R1/R2 replacement." >&2
+                    echo "       R1: \${r1_base}" >&2
+                    echo "       R2: \${r2_base}" >&2
+                    exit 1
+                fi
+
+                ln -sf "\$(readlink -f "\${r1}")" "fastq_all/\${modality}/${prefix}_S1_L\$(printf %03d \${lane})_R1_001.fastq.gz"
+                ln -sf "\$(readlink -f "\${r2}")" "fastq_all/\${modality}/${prefix}_S1_L\$(printf %03d \${lane})_R2_001.fastq.gz"
+            fi
+            lane=\$((lane + 1))
+        done < <(find fastqs/\${modality} -maxdepth 1 -type d -name "fastq_*" | sort | xargs -n1 printf '%s\\0')
+    done
+
+    #
+    # Copy fb_reference to avoid symlink corruption
+    # Cell Ranger writes to this file during validation, which corrupts the symlinked original
+    #
+    if [ -n "${fb_reference}" ] && [ -f "${fb_reference}" ]; then
+        cp "${fb_reference}" "fb_reference_copy.csv"
+    fi
+
+    cat > cellranger_multi_config.csv <<-CONFIG_EOF
+    ${config_content}
+    CONFIG_EOF
+
+    cellranger multi \\
+        --id=${prefix} \\
+        --csv=cellranger_multi_config.csv \\
+        --localcores=${task.cpus} \\
+        --localmem=${task.memory.toGiga()} \\
+        ${args}
+    """
+
+    stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def config_content = multiConfig(
+        meta2, gex_options, meta3, vdj_options, meta4, ab_options, meta5, meta6, cmo_options, meta7, crispr_options,
+        gex_reference, gex_frna_probeset, gex_targetpanel, vdj_reference, vdj_primer_index, fb_reference,
+        beam_antigen_panel, beam_control_panel, cmo_reference, cmo_barcodes, cmo_barcode_assignment, frna_sampleinfo,
+        ocm_barcodes, meta9, vdj_t_options, meta10, vdj_t_gd_options, meta11, vdj_b_options
+    )
+    """
+    mkdir -p "${prefix}/outs/"
+    touch ${prefix}/outs/fake_file.txt
+    echo -n "" >> ${prefix}/outs/fake_file.txt
+
+    cat > cellranger_multi_config.csv <<-CONFIG_EOF
+    ${config_content}
+    CONFIG_EOF
+    """
+}
+
+// Shared by script and stub so that stub runs emit the real config
+def multiConfig(
+    meta2, gex_options, meta3, vdj_options, meta4, ab_options, meta5, meta6, cmo_options, meta7, crispr_options,
+    gex_reference, gex_frna_probeset, gex_targetpanel, vdj_reference, vdj_primer_index, fb_reference,
+    beam_antigen_panel, beam_control_panel, cmo_reference, cmo_barcodes, cmo_barcode_assignment, frna_sampleinfo,
+    ocm_barcodes, meta9, vdj_t_options, meta10, vdj_t_gd_options, meta11, vdj_b_options
+) {
     // Validate mutually exclusive barcode types
     if ([ocm_barcodes, cmo_barcodes, frna_sampleinfo].findAll().size() >= 2) {
         error "The ocm barcodes, cmo barcodes, and frna probes are mutually exclusive features. Please use only one per sample."
     }
-
-    def args   = task.ext.args   ?: ''
-    def prefix = task.ext.prefix ?: meta.id
 
     // Determine which library types are present based on FASTQs and references
     def has_gex    = meta2 && gex_reference
@@ -66,6 +161,10 @@ process CELLRANGER_MULTI {
     def has_vdj_t_gd = meta10 && vdj_reference
     def has_vdj_b    = meta11 && vdj_reference
     def has_any_vdj  = has_vdj || has_vdj_t || has_vdj_t_gd || has_vdj_b
+
+    if (has_vdj_t_gd && !vdj_primer_index) {
+        error "VDJ-T-GD libraries require inner enrichment primers. Please provide them via the vdj_primer_index input."
+    }
 
     // Build [gene-expression] section
     def gex_section = []
@@ -166,77 +265,6 @@ process CELLRANGER_MULTI {
         config_lines << '[antigen-specificity]'
         config_lines << "\$(cat ${beam_control_panel})"
     }
-    def config_content = config_lines.findAll { line -> line }.join('\n    ')
-    """
-    #
-    # Symlink FASTQs into fastq_all/, maintaining R1/R2 lane-pairing order.
-    # skip_renaming=false (default): rename to Cell Ranger convention \${prefix}_S1_L00N_R[12]_001.fastq.gz
-    # skip_renaming=true:           keep original filenames as-is
-    #
-    mkdir -p fastq_all/{gex,vdj,vdj_t,vdj_t_gd,vdj_b,ab,beam,cmo,crispr}
 
-    for modality in gex vdj vdj_t vdj_t_gd vdj_b ab beam cmo crispr; do
-        lane=1
-        n_fastq_dirs=\$(find fastqs/\${modality} -maxdepth 1 -type d -name "fastq_*" | wc -l)
-        if [ \$((n_fastq_dirs % 2)) -ne 0 ]; then
-            echo "ERROR: Found an odd number (\${n_fastq_dirs}) of staged FASTQ files for modality '\${modality}'. Expected R1/R2 pairs." >&2
-            exit 1
-        fi
-        while IFS= read -r -d '' r1_dir && IFS= read -r -d '' r2_dir; do
-            if [ "${skip_renaming}" = "true" ]; then
-                r1=\$(find "\${r1_dir}" -maxdepth 1 -name "*.fastq.gz" | head -1)
-                r2=\$(find "\${r2_dir}" -maxdepth 1 -name "*.fastq.gz" | head -1)
-                [ -z "\${r1}" ] || [ -z "\${r2}" ] && continue
-                ln -sf "\$(readlink -f "\${r1}")" "fastq_all/\${modality}/\$(basename "\${r1}")"
-                ln -sf "\$(readlink -f "\${r2}")" "fastq_all/\${modality}/\$(basename "\${r2}")"
-            else
-                r1=\$(find "\${r1_dir}" -maxdepth 1 -name "*_R1_*.fastq.gz" | head -1)
-                r2=\$(find "\${r2_dir}" -maxdepth 1 -name "*_R2_*.fastq.gz" | head -1)
-                [ -z "\${r1}" ] || [ -z "\${r2}" ] && continue
-
-                r1_base="\$(basename "\${r1}")"
-                r2_base="\$(basename "\${r2}")"
-                if [ "\${r1_base/_R1_/_R2_}" != "\${r2_base}" ]; then
-                    echo "ERROR: R1 and R2 basenames do not match except for R1/R2 replacement." >&2
-                    echo "       R1: \${r1_base}" >&2
-                    echo "       R2: \${r2_base}" >&2
-                    exit 1
-                fi
-
-                ln -sf "\$(readlink -f "\${r1}")" "fastq_all/\${modality}/${prefix}_S1_L\$(printf %03d \${lane})_R1_001.fastq.gz"
-                ln -sf "\$(readlink -f "\${r2}")" "fastq_all/\${modality}/${prefix}_S1_L\$(printf %03d \${lane})_R2_001.fastq.gz"
-            fi
-            lane=\$((lane + 1))
-        done < <(find fastqs/\${modality} -maxdepth 1 -type d -name "fastq_*" | sort | xargs -n1 printf '%s\\0')
-    done
-
-    #
-    # Copy fb_reference to avoid symlink corruption
-    # Cell Ranger writes to this file during validation, which corrupts the symlinked original
-    #
-    if [ -n "${fb_reference}" ] && [ -f "${fb_reference}" ]; then
-        cp "${fb_reference}" "fb_reference_copy.csv"
-    fi
-
-    cat > cellranger_multi_config.csv <<-CONFIG_EOF
-    ${config_content}
-    CONFIG_EOF
-
-    cellranger multi \\
-        --id=${prefix} \\
-        --csv=cellranger_multi_config.csv \\
-        --localcores=${task.cpus} \\
-        --localmem=${task.memory.toGiga()} \\
-        ${args}
-    """
-
-    stub:
-    prefix = task.ext.prefix ?: "${meta.id}"
-    """
-    mkdir -p "${prefix}/outs/"
-    touch ${prefix}/outs/fake_file.txt
-    echo -n "" >> ${prefix}/outs/fake_file.txt
-    touch cellranger_multi_config.csv
-    echo -n "" >> cellranger_multi_config.csv
-    """
+    return config_lines.findAll { line -> line }.join('\n    ')
 }
