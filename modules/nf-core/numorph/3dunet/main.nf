@@ -38,7 +38,6 @@ process NUMORPH_3DUNET {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """

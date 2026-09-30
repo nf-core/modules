@@ -109,7 +109,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     assert (meta.single_end ? sequences.size() : sequences.size() / 2) == prefixes.size()
 
     def merged_suffix = meta.single_end ? '' : '.merged'
-    def prefix_list = prefixes.collect { "'${it}'" }.join(' ')
+    def prefix_list = prefixes.collect { item -> "'${item}'" }.join(' ')
 
     """
     for PREFIX in ${prefix_list}; do
