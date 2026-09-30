@@ -72,6 +72,32 @@
             "nextflow": "26.04.6"
         }
     },
+    "cellranger - multi - 10k - PBMC - vdj-t-gd only with gex reference - stub": {
+        "content": [
+            {
+                "versions_cellranger": [
+                    [
+                        "CELLRANGER_MULTI",
+                        "cellranger",
+                        "10.0.0"
+                    ]
+                ]
+            },
+            [
+                "[vdj]",
+                "reference,$PWD/references/vdj/vdj_reference_stub",
+                "inner-enrichment-primers,$PWD/references/vdj/primers/gd_primers.txt",
+                "[libraries]",
+                "fastq_id,fastqs,lanes,feature_types",
+                "subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_t_gd,,VDJ-T-GD"
+            ]
+        ],
+        "timestamp": "2026-09-30T17:44:30.642055396",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
     "cellranger - multi - 10k - PBMC - with cmo": {
         "content": [
             {
