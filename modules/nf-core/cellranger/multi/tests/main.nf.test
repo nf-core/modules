@@ -63,6 +63,13 @@ nextflow_process {
                 ]
                 def bcell_fastq_samplename_10k_pbmc = "subsampled_sc5p_v2_hs_PBMC_10k"
 
+                // stage T cell FASTQ test data
+                tcell_fastqs_10k_pbmc = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/tcell/subsampled_sc5p_v2_hs_PBMC_10k_t_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/tcell/subsampled_sc5p_v2_hs_PBMC_10k_t_S1_L001_R2_001.fastq.gz', checkIfExists: true)
+                ]
+                def tcell_fastq_samplename_10k_pbmc = "subsampled_sc5p_v2_hs_PBMC_10k"
+
                 // stage 5' gene expression FASTQ test data
                 fivepgex_fastqs_10k_pbmc = [
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/5gex/5gex/subsampled_sc5p_v2_hs_PBMC_10k_5gex_S1_L001_R1_001.fastq.gz', checkIfExists: true),
@@ -202,6 +209,9 @@ nextflow_process {
                 ch_bcell_fastqs_10k_pbmc  = Channel.of( bcell_fastqs_10k_pbmc )
                     .collect()
                     .map { reads -> [ [ id:bcell_fastq_samplename_10k_pbmc ], reads, [:] ] }
+                ch_tcell_fastqs_10k_pbmc  = Channel.of( tcell_fastqs_10k_pbmc )
+                    .collect()
+                    .map { reads -> [ [ id:tcell_fastq_samplename_10k_pbmc ], reads, [:] ] }
                 ch_ab_fastqs_10k_pbmc  = Channel.of( ab_fastqs_10k_pbmc )
                     .collect()
                     .map { reads -> [ [ id:fivepab_fastq_samplename_10k_pbmc  ], reads, [:] ] }
@@ -231,7 +241,7 @@ nextflow_process {
                 input[18] = ch_frna_sampleinfo
                 input[19] = ch_ocm_barcodes
                 input[20] = false // default to false to guarantee renaming during test
-                input[21] = ch_vdj_t_fastqs
+                input[21] = ch_tcell_fastqs_10k_pbmc
                 input[22] = ch_vdj_t_gd_fastqs
                 input[23] = ch_bcell_fastqs_10k_pbmc
                 """
@@ -243,12 +253,14 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                 process.out.findAll { key, val -> key.startsWith("versions") },
-                process.out.outs[0][1].findAll { file(it).name == 'all_contig.fasta' },
-                process.out.outs[0][1].findAll { file(it).name == 'all_contig.fasta.fai' },
-                process.out.outs[0][1].findAll { file(it).name == 'all_contig.fastq' },
-                process.out.outs[0][1].findAll { file(it).name.contains('consensus.bam.bai') },
-                process.out.outs[0][1].findAll { file(it).name == 'regions.fa' },
-                process.out.outs[0][1].findAll { file(it).name.contains('.json') }
+                // the subsampled T cell reads are too shallow to assemble contigs, so hash only non-empty contig files
+                process.out.outs[0][1].findAll { file(it).name == 'all_contig.fasta' && file(it).size() > 0 }.sort { f -> f.toString() },
+                process.out.outs[0][1].findAll { file(it).name == 'all_contig.fasta.fai' }.sort { f -> f.toString() },
+                process.out.outs[0][1].findAll { file(it).name == 'all_contig.fastq' && file(it).size() > 0 }.sort { f -> f.toString() },
+                process.out.outs[0][1].findAll { file(it).name.contains('consensus.bam.bai') }.sort { f -> f.toString() },
+                process.out.outs[0][1].findAll { file(it).name == 'regions.fa' }.sort { f -> f.toString() },
+                process.out.outs[0][1].findAll { file(it).name.contains('.json') }.sort { f -> f.toString() },
+                process.out.outs[0][1].findAll { it.toString().contains('/outs/vdj_t/') }.collect { file(it).name }.sort()
                 ).match() },
 
                 // Canonical config checks (ordered): gene-expression, fastq links, probe-set,
@@ -259,8 +271,9 @@ nextflow_process {
                 { assert path(process.out.config[0][1]).text.contains('fastq_all/gex') },
                 // Flex probe-set: not used in this scenario
                 { assert !path(process.out.config[0][1]).text.contains('probe-set,') },
-                // VDJ: present for this PBMC run, passed as an explicit VDJ-B library
+                // VDJ: present for this PBMC run, passed as explicit VDJ-T and VDJ-B libraries
                 { assert path(process.out.config[0][1]).text.contains('[vdj]') },
+                { assert path(process.out.config[0][1]).text.contains('fastq_all/vdj_t,,VDJ-T\n') },
                 { assert path(process.out.config[0][1]).text.contains('fastq_all/vdj_b,,VDJ-B') },
                 { assert !path(process.out.config[0][1]).text.contains(',,VDJ\n') },
                 // Feature-barcode (ab/crispr/beam): present when antibody (ab), crispr, or beam inputs are staged

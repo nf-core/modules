@@ -20,6 +20,7 @@
                 "all_contig.fastq:md5,e5b0cec096f4d57981916d2247a9f9b7"
             ],
             [
+                "consensus.bam.bai:md5,125978e04496fe193a5c162603a7e6f6",
                 "consensus.bam.bai:md5,125978e04496fe193a5c162603a7e6f6"
             ],
             [
@@ -27,14 +28,25 @@
             ],
             [
                 "cell_barcodes.json:md5,d751713988987e9331980363e24189ce",
+                "cell_barcodes.json:md5,d751713988987e9331980363e24189ce",
                 "all_contig_annotations.json:md5,cf33174fc4dbbadc5e74051bc13a5bd2",
-                "reference.json:md5,384f6efabad59f6da5c89b862aee71a8"
+                "reference.json:md5,384f6efabad59f6da5c89b862aee71a8",
+                "all_contig_annotations.json:md5,d751713988987e9331980363e24189ce"
+            ],
+            [
+                "all_contig.bam",
+                "all_contig.bam.bai",
+                "all_contig.fasta",
+                "all_contig.fastq",
+                "all_contig_annotations.bed",
+                "all_contig_annotations.csv",
+                "all_contig_annotations.json"
             ]
         ],
-        "timestamp": "2026-07-07T14:41:21.918016",
+        "timestamp": "2026-09-30T18:40:35.414656594",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.3"
+            "nextflow": "26.04.6"
         }
     },
     "cellranger - multi - 10k - PBMC - with cmo - pipeline scenario where different references might be available for different samples": {
