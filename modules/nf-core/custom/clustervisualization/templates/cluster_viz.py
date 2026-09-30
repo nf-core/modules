@@ -78,7 +78,7 @@ def embed(x, method, umap_neighbors, tsne_perplexity):
 
 def plot_embedding(emb, labels, method, out_png):
     bg_figure = "#f7f7f9"  # background figure
-    bg_axes = "#eaeef5"    # background axes
+    bg_axes = "#eaeef5"  # background axes
 
     fig, ax = plt.subplots(figsize=(8, 6), facecolor=bg_figure)
     ax.set_facecolor(bg_axes)
