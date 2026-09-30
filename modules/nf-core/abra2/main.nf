@@ -49,6 +49,6 @@ process ABRA2 {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.abra.bam
-    touch ${prefix}.abra.bam.bai
+    touch ${prefix}.abra.bai
     """
 }
