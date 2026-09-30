@@ -4,8 +4,8 @@ process GATK4_ANALYZECOVARIATES {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/57/57141fe65436d371ade52d3700cc6718ab80b6ddd8a1bc8c6269c3e84b387a41/data'
-        : 'community.wave.seqera.io/library/gatk4-main_r-base_r-ggplot2_r-gplots_r-gsalib:dd924f4a430b36fc'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3e/3e7774c627086cdf0839cf0f0305ff3459b782d8db554a4421aef3815712e545/data'
+        : 'community.wave.seqera.io/library/gatk4-main_r-base_r-ggplot2_r-gplots_r-gsalib:1a636beb68963a0d'}"
 
     input:
     tuple val(meta), path(before_table), path(after_table), path(additional_table)

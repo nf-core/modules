@@ -4,8 +4,8 @@ process GATK4_CLEANSAM {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/06/06957b3d467331a29a6d770308f17004738469a21c0aedf893d5ea0312accaea/data'
-        : 'community.wave.seqera.io/library/gatk4-main:4.7.0.0--b8e8676903b345d8'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fd/fd65ba227372b7f3f62231d105427edcf5def4c4700689f77ce9536c954a22f6/data'
+        : 'community.wave.seqera.io/library/gatk4-main:4.7.0.0--6f748daadc3eeb06'}"
 
     input:
     tuple val(meta), path(bam)

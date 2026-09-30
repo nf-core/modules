@@ -4,8 +4,8 @@ process GATK4_SITEDEPTHTOBAF {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1b/1be338209b229f0bfbddf022580e1e1d9a7ebb095bc69db67c6485dc24402959/data'
-        : 'community.wave.seqera.io/library/gatk4-main_gzip:2e707932c78d8e37'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fd/fd65ba227372b7f3f62231d105427edcf5def4c4700689f77ce9536c954a22f6/data'
+        : 'community.wave.seqera.io/library/gatk4-main:4.7.0.0--6f748daadc3eeb06'}"
 
     input:
     tuple val(meta), path(site_depths), path(site_depths_indices)
