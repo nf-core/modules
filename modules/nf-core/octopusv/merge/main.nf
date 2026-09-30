@@ -21,13 +21,9 @@ process OCTOPUSV_MERGE {
     script:
     def args = (task.ext.args ?: '').trim()
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def merge_strategy = (strategy_flag ?: '').trim()
-    if (!merge_strategy) {
-        merge_strategy = 'union'
-    }
-
     def input_files_arg = input_list ? '' : svcfs.collect { svcf -> "--input-file ${svcf}" }.join(' ')
     def input_list_arg = input_list ? "--input-list ${input_list}" : ''
+    def merge_strategy = (strategy_flag ?: '').trim() ?: 'union'
     def merge_strategy_arg = merge_strategy == 'specific'
         ? specific_svcfs.collect { svcf -> "--specific ${svcf}" }.join(' ')
         : "--${merge_strategy}"
@@ -43,13 +39,9 @@ process OCTOPUSV_MERGE {
     stub:
     def args = (task.ext.args ?: '').trim()
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def merge_strategy = (strategy_flag ?: '').trim()
-    if (!merge_strategy) {
-        merge_strategy = 'union'
-    }
-
     def input_files_arg = input_list ? '' : svcfs.collect { svcf -> "--input-file ${svcf}" }.join(' ')
     def input_list_arg = input_list ? "--input-list ${input_list}" : ''
+    def merge_strategy = (strategy_flag ?: '').trim() ?: 'union'
     def merge_strategy_arg = merge_strategy == 'specific'
         ? specific_svcfs.collect { svcf -> "--specific ${svcf}" }.join(' ')
         : "--${merge_strategy}"
