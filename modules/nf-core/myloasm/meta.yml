@@ -47,10 +47,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
-      - ${prefix}/assembly_primary.fa.gz:
+      - ${prefix}/${prefix}.assembly_primary.fa.gz:
           type: file
           description: Primary assembly contigs in FASTA format
-          pattern: "assembly_primary.fa.gz"
+          pattern: "${prefix}.assembly_primary.fa.gz"
           ontologies:
             - edam: http://edamontology.org/format_1929 # FASTA
             - edam: http://edamontology.org/format_3989 # GZIP
@@ -60,10 +60,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
-      - ${prefix}/final_contig_graph.gfa.gz:
+      - ${prefix}/${prefix}.final_contig_graph.gfa.gz:
           type: file
           description: Final contig graph in GFA format
-          pattern: "final_contig_graph.gfa.gz"
+          pattern: "${prefix}.final_contig_graph.gfa.gz"
           ontologies:
             - edam: http://edamontology.org/format_3975 # GFA 1
             - edam: http://edamontology.org/format_3989 # GZIP
@@ -73,10 +73,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
-      - ${prefix}/alternate_assemblies/assembly_alternate.fa.gz:
+      - ${prefix}/alternate_assemblies/${prefix}.assembly_alternate.fa.gz:
           type: file
           description: Alternative assembly contigs in FASTA format
-          pattern: "assembly_alternate.fa.gz"
+          pattern: "${prefix}.assembly_alternate.fa.gz"
           ontologies:
             - edam: http://edamontology.org/format_1929 # FASTA
             - edam: http://edamontology.org/format_3989 # GZIP
@@ -86,10 +86,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
-      - ${prefix}/alternate_assemblies/duplicated_contigs.fa.gz:
+      - ${prefix}/alternate_assemblies/${prefix}.duplicated_contigs.fa.gz:
           type: file
           description: Duplicated contigs in FASTA format
-          pattern: "duplicated_contigs.fa.gz"
+          pattern: "${prefix}.duplicated_contigs.fa.gz"
           ontologies:
             - edam: http://edamontology.org/format_1929 # FASTA
             - edam: http://edamontology.org/format_3989 # GZIP
@@ -99,10 +99,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'test' ]`
-      - ${prefix}/3-mapping/map_to_unitigs.paf.gz:
+      - ${prefix}/3-mapping/${prefix}.map_to_unitigs.paf.gz:
           type: file
           description: Mapping of reads to unitigs in PAF format (compressed)
-          pattern: "map_to_unitigs.paf.gz"
+          pattern: "${prefix}.map_to_unitigs.paf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP
   log:
