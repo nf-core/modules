@@ -33,7 +33,7 @@ process SOURMASH_PAIRWISE {
     } else if (signatures instanceof Collection && signatures.size() > 1) {
         // multiple individual .sig files — combine into a zip first
         pairwise_input = "${prefix}_collection.zip"
-        combine_cmd = "sourmash sig cat ${signatures.sort { it.toString() }.join(' ')} -o ${prefix}_collection.zip"
+        combine_cmd = "sourmash sig cat ${signatures.sort { item -> item.toString() }.join(' ')} -o ${prefix}_collection.zip"
     } else {
         // single file (zip or sig) — use directly
         pairwise_input = signatures

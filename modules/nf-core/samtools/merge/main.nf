@@ -51,7 +51,6 @@ process SAMTOOLS_MERGE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     file_type = input_files instanceof List ? input_files[0].getExtension() : input_files.getExtension()
 

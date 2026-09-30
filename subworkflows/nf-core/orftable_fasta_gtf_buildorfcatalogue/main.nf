@@ -46,13 +46,13 @@ workflow ORFTABLE_FASTA_GTF_BUILDORFCATALOGUE {
     ch_all_beds = CUSTOM_ORFNORMALISE.out.bed12
         .map { _meta, bed -> bed }
         .collect()
-        .filter { it.size() > 0 }
+        .filter { item -> item.size() > 0 }
         .map { beds -> [ 'cohort', beds ] }
 
     ch_all_tsvs = CUSTOM_ORFNORMALISE.out.tsv
         .map { _meta, tsv -> tsv }
         .collect()
-        .filter { it.size() > 0 }
+        .filter { item -> item.size() > 0 }
         .map { tsvs -> [ 'cohort', tsvs ] }
 
     ch_merge_in = ch_all_beds
