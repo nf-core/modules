@@ -11,7 +11,7 @@ process MODKIT_DMR {
     tuple val(meta), path(bedmethyl_a), path(bedmethyl_a_tbi)
     tuple val(meta2), path(bedmethyl_b), path(bedmethyl_b_tbi)
     tuple val(meta3), path(regions_bed)
-    tuple val(meta4), path(fasta)
+    tuple val(meta4), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
@@ -25,6 +25,12 @@ process MODKIT_DMR {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def regions = regions_bed ? "-r ${regions_bed}" : ''
+    // fai is never referenced directly -- modkit dmr pair has no --fai flag and looks for
+    // <fasta>.fai next to --ref itself. Declaring it as an input only stages it alongside
+    // fasta so modkit finds and reuses it instead of building one from scratch, which for a
+    // multi-GB genome is a real, repeated cost across every task invocation. Confirmed by
+    // direct testing: with no .fai present, modkit dmr pair creates one; with one already
+    // staged next to fasta, it's read (unmodified mtime) rather than rebuilt.
     """
     modkit \\
         dmr pair \\

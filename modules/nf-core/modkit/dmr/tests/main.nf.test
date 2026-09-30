@@ -89,7 +89,8 @@ nextflow_process {
                     .map { file -> [ [ id:'chr22' ], file ] }
                 input[3] = [
                     [ id: 'test_ref' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 """
             }
@@ -127,7 +128,8 @@ nextflow_process {
                 input[2] = [ [ id:'regions' ], [] ]
                 input[3] = [
                     [ id: 'test_ref' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 """
             }
@@ -169,7 +171,8 @@ nextflow_process {
                     .map { file -> [ [ id:'chr22' ], file ] }
                 input[3] = [
                     [ id: 'test_ref' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 """
             }

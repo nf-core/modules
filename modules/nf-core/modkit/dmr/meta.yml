@@ -79,6 +79,15 @@ input:
         pattern: "*.{fa,fasta}"
         ontologies:
           - edam: "http://edamontology.org/format_1929" # FASTA
+    - fai:
+        type: file
+        description: |
+          Optional FASTA index for fasta. modkit dmr pair has no --fai flag and looks for
+          <fasta>.fai next to --ref itself; passing one here only stages it alongside fasta
+          so modkit reuses it instead of building one from scratch on every invocation, which
+          for a multi-GB genome is a real, repeated cost. Pass `[]` to omit.
+        pattern: "*.fai"
+        ontologies: []
 output:
   bed:
     - - meta:
