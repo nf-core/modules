@@ -8,16 +8,16 @@ nextflow_process {
     tag "modules_nfcore"
     tag "tmalign"
 
-    test("structural comparison against the PETase reference") {
+    test("two homologous structures (1tim vs 8tim)") {
 
         when {
             process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file("\${projectDir}/assets/testdata/structures/candidate_test.pdb", checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'proteomics/pdb/1tim.pdb', checkIfExists: true)
                 ]
-                input[1] = file("\${projectDir}/assets/testdata/structures/petase_ref_test.pdb", checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'proteomics/pdb/8tim.pdb', checkIfExists: true)
                 """
             }
         }
@@ -29,7 +29,7 @@ nextflow_process {
                 { assert process.success },
                 { assert tsv.size() == 2 },
                 { assert tsv[0].startsWith('query\treference\taligned_length') },
-                // the two structures are homologous PETases: TM-score must indicate the same fold
+                // 1tim and 8tim are both triosephosphate isomerase: TM-score must indicate the same fold
                 { assert row[3].toDouble() > 0.5 },
                 { assert row[5].toDouble() >= 0.0 },
                 { assert snapshot(process.out.versions_tmalign).match('versions') }
@@ -46,9 +46,9 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file("\${projectDir}/assets/testdata/structures/candidate_test.pdb", checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'proteomics/pdb/1tim.pdb', checkIfExists: true)
                 ]
-                input[1] = file("\${projectDir}/assets/testdata/structures/petase_ref_test.pdb", checkIfExists: true)
+                input[1] = file(params.modules_testdata_base_path + 'proteomics/pdb/8tim.pdb', checkIfExists: true)
                 """
             }
         }
