@@ -1,0 +1,63 @@
+nextflow_process {
+
+    name "Test Process TMALIGN"
+    script "../main.nf"
+    process "TMALIGN"
+
+    tag "modules"
+    tag "modules_local"
+    tag "tmalign"
+
+    test("structural comparison against the PETase reference") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file("\${projectDir}/assets/testdata/structures/candidate_test.pdb", checkIfExists: true)
+                ]
+                input[1] = file("\${projectDir}/assets/testdata/structures/petase_ref_test.pdb", checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            def tsv = path(process.out.results.get(0).get(1)).readLines()
+            def row = tsv[1].split('\t')
+            assertAll(
+                { assert process.success },
+                { assert tsv.size() == 2 },
+                { assert tsv[0].startsWith('query\treference\taligned_length') },
+                // the two structures are homologous PETases: TM-score must indicate the same fold
+                { assert row[3].toDouble() > 0.5 },
+                { assert row[5].toDouble() >= 0.0 },
+                { assert snapshot(process.out.versions).match('versions') }
+            )
+        }
+    }
+
+    test("structural comparison - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file("\${projectDir}/assets/testdata/structures/candidate_test.pdb", checkIfExists: true)
+                ]
+                input[1] = file("\${projectDir}/assets/testdata/structures/petase_ref_test.pdb", checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.results.get(0).get(1)).readLines().size() == 1 }
+            )
+        }
+    }
+}

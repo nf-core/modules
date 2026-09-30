@@ -1,0 +1,56 @@
+name: tmalign
+description: Compare predicted 3D structures against a reference PETase and report TM-score, RMSD and aligned length
+keywords:
+  - structural alignment
+  - TM-score
+  - PETase
+  - protein structure
+tools:
+  - tmalign:
+      description: |
+        TM-align performs sequence-order-independent structural alignment of
+        two protein structures and reports a TM-score, a length-independent
+        measure of fold similarity. A TM-score above 0.5 generally indicates
+        the same fold.
+      homepage: https://zhanggroup.org/TM-align/
+      doi: 10.1093/nar/gki524
+      licence: ["free for academic use"]
+      identifier: biotools:tm-align
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sample1' ]
+    - pdb_structures:
+        type: file
+        description: One or more predicted protein structures in PDB format
+        pattern: "*.pdb"
+  - - ref_pdb:
+        type: file
+        description: Reference PETase structure, by default 6EQE (IsPETase from Ideonella sakaiensis)
+        pattern: "*.pdb"
+
+output:
+  results:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.tmalign.tsv":
+          type: file
+          description: |
+            One row per query structure with columns: query, reference,
+            aligned_length, tm_score_query (normalised by query length),
+            tm_score_ref (normalised by reference length), rmsd, seq_id.
+          pattern: "*.tmalign.tsv"
+  versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+authors:
+  - "@Bboy010"
+maintainers:
+  - "@Bboy010"
