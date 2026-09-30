@@ -3,9 +3,9 @@ process OCTOPUSV_SVCF2VCF {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/83/8378c503810508764badf4504647ea1791fa1f585dc5b77ad5710237609b15ff/data'
-:         'community.wave.seqera.io/library/octopusv:1.0.0--5a8c89c65098e801' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/octopusv:0.4.1--pyhdfd78af_0':
+        'quay.io/biocontainers/octopusv:0.4.1--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(svcf)
