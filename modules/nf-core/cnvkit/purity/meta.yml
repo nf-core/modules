@@ -1,0 +1,71 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "cnvkit_purity"
+description: estimates tumor purity and ploidy from a .cnr/.cns pair, using the same grid-search likelihood model as the somatic HMM methods.
+keywords:
+  - cnvkit
+  - purity
+  - ploidy
+  - cns
+  - genomics
+tools:
+  - "cnvkit":
+      description: "Copy number variant detection from high-throughput sequencing."
+      homepage: "https://cnvkit.readthedocs.io/en/stable"
+      documentation: "https://cnvkit.readthedocs.io/en/stable"
+      tool_dev_url: "https://github.com/etal/cnvkit"
+      doi: "10.1371/journal.pcbi.1004873"
+      licence: ["Apache-2.0"]
+      identifier: biotools:cnvkit
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - cns:
+        type: file
+        description: CNVKit CNS file.
+        pattern: "*.cns"
+        ontologies: []
+    - vcf:
+        type: file
+        description: Germline VCF file for BAF.
+        pattern: "*.vcf{,.gz}"
+        ontologies: []
+
+output:
+  purity:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.purity.tsv":
+          type: file
+          description: Table with estimated tumor purity and ploidy
+          pattern: "*.purity.tsv"
+  versions_cnvkit:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "cnvkit":
+          type: string
+          description: The name of the tool
+      - cnvkit.py version | sed -e "s/cnvkit v//g":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cnvkit:
+          type: string
+          description: The name of the tool
+      - cnvkit.py version | sed -e "s/cnvkit v//g":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@aadecock"
+maintainers:
+  - "@aadecock"
