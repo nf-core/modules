@@ -4,8 +4,8 @@ process GATK4_SHIFTFASTA {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c5/c5ad1d2671d349f609383068e987b75faf2003404df3fff475ec80ba9a69c68e/data'
-        : 'community.wave.seqera.io/library/gatk4-lite:4.7.0.0--ccccf4acf9b6eba5'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ce/ce8f4142326abbb74e28b97633a200b09439c54480803343b1cf13dc19e51ae5/data'
+        : 'community.wave.seqera.io/library/gatk4-lite:4.7.0.0--79918b8b2632f4b1'}"
 
     input:
     tuple val(meta), path(fasta)
