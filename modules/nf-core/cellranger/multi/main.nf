@@ -183,7 +183,7 @@ def multiConfig(
         }
 
         // create-bam defaults to true if not specified
-        gex_section << "create-bam,${gex_options?.get('create-bam') ?: 'true'}"
+        gex_section << "create-bam,${gex_options?.get('create-bam') != null ? gex_options['create-bam'] : true}"
 
         if (gex_targetpanel) {
             gex_section << "target-panel,\$PWD/${gex_targetpanel.name}"

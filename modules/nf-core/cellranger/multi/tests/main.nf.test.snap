@@ -140,6 +140,39 @@
             "nextflow": "26.04.3"
         }
     },
+    "cellranger - multi - 10k - PBMC - vdj-t-gd + vdj-b + antibody capture without gex - stub": {
+        "content": [
+            {
+                "versions_cellranger": [
+                    [
+                        "CELLRANGER_MULTI",
+                        "cellranger",
+                        "10.0.0"
+                    ]
+                ]
+            },
+            [
+                "[gene-expression]",
+                "reference,$PWD/references/gex/homo_sapiens_chr22_reference",
+                "create-bam,true",
+                "[feature]",
+                "reference,$PWD/fb_reference_copy.csv",
+                "[vdj]",
+                "reference,$PWD/references/vdj/vdj_reference_stub",
+                "inner-enrichment-primers,$PWD/references/vdj/primers/gd_primers.txt",
+                "[libraries]",
+                "fastq_id,fastqs,lanes,feature_types",
+                "subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_t_gd,,VDJ-T-GD",
+                "subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_b,,VDJ-B",
+                "subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/ab,,Antibody Capture"
+            ]
+        ],
+        "timestamp": "2026-09-30T14:59:53.125453826",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
     "cellranger - multi - 5k - a549 - sc3 v3 - gex + crispr": {
         "content": [
             {
@@ -187,7 +220,7 @@
                 "chemistry,SC5P-PE",
                 "expect-cells,1000",
                 "no-secondary,true",
-                "create-bam,true",
+                "create-bam,false",
                 "[vdj]",
                 "reference,$PWD/references/vdj/vdj_reference_stub",
                 "inner-enrichment-primers,$PWD/references/vdj/primers/gd_primers.txt",
@@ -200,7 +233,7 @@
                 "subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_b,,VDJ-B"
             ]
         ],
-        "timestamp": "2026-09-30T13:43:45.852618288",
+        "timestamp": "2026-09-30T15:28:14.672620722",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
