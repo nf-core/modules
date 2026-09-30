@@ -30,15 +30,6 @@ suppressPackageStartupMessages({
 
 suppressPackageStartupMessages(library(MetaProViz))
 
-writeLines(
-  c(
-    '"${task.process}":',
-    paste("    r-base:", strsplit(R.version.string, " ")[[1]][3]),
-    paste("    metaproviz:", as.character(packageVersion("MetaProViz")))
-  ),
-  "versions.yml"
-)
-
 # ── PARSE PARAMETERS FROM NEXTFLOW ──────────────────────────────────────────
 nullify <- function(x) if (is.null(x) || x == "" || x == "null" || x == "[]") NULL else x
 

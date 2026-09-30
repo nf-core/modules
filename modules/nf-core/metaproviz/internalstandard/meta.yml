@@ -126,34 +126,46 @@ output:
           pattern: "*.log"
           ontologies: []
   versions_metaproviz:
-    - versions.yml:
-        type: file
-        description: File containing software versions, including MetaProViz.
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metaproviz:
+          type: string
+          description: The name of the tool
+      - 4.0.0:
+          type: string
+          description: The version of MetaProViz
   versions_r_base:
-    - versions.yml:
-        type: file
-        description: File containing software versions, including base R.
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - r-base:
+          type: string
+          description: The name of the tool
+      - 4.6.1:
+          type: string
+          description: The version of base R
 
 topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions, including MetaProViz.
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
-    - versions.yml:
-        type: file
-        description: File containing software versions, including base R.
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metaproviz:
+          type: string
+          description: The name of the tool
+      - 4.0.0:
+          type: string
+          description: The version of MetaProViz
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - r-base:
+          type: string
+          description: The name of the tool
+      - 4.6.1:
+          type: string
+          description: The version of base R
 
 authors:
   - "@christinaschmidt1"

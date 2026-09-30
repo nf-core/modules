@@ -15,8 +15,8 @@ process METAPROVIZ_INTERNALSTANDARD {
     tuple val(meta), path("*.plots.rds")         , emit: plots
     tuple val(meta), path("*.report.html")       , emit: report
     tuple val(meta), path("*.log")               , emit: log
-    path "versions.yml"                                            , emit: versions_metaproviz, topic: versions
-    path "versions.yml"                                            , emit: versions_r_base, topic: versions
+    tuple val("${task.process}"), val('metaproviz'), val('4.0.0'), emit: versions_metaproviz, topic: versions
+    tuple val("${task.process}"), val('r-base'), val('4.6.1'), emit: versions_r_base, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,11 +38,5 @@ process METAPROVIZ_INTERNALSTANDARD {
     touch ${prefix}.cv.tsv ${prefix}.high_var.txt \\
           ${prefix}.condition_cv.tsv ${prefix}.plots.rds \\
           ${prefix}.report.html ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        r-base: \$(Rscript -e 'cat(strsplit(R.version.string, " ")[[1]][3])')
-        metaproviz: \$(Rscript -e 'cat(as.character(packageVersion("MetaProViz")))')
-    END_VERSIONS
     """
 }

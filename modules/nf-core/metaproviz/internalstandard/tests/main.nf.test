@@ -30,8 +30,8 @@ nextflow_process {
                 { assert process.out.versions_r_base != null },
                 { assert process.out.high_var != null },
                 { assert snapshot(
-                    process.out.cv_table,
-                    process.out.versions_metaproviz
+                    cv_table: process.out.cv_table,
+                    versions_metaproviz: process.out.versions_metaproviz
                   ).match() }
             )
         }
@@ -60,8 +60,8 @@ nextflow_process {
                 { assert process.out.versions_r_base != null },
                 { assert process.out.high_var != null },
                 { assert snapshot(
-                    process.out.cv_table,
-                    process.out.versions_metaproviz
+                    cv_table: process.out.cv_table,
+                    versions_metaproviz: process.out.versions_metaproviz
                   ).match() }
             )
         }
