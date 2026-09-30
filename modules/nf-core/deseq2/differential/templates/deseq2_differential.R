@@ -114,7 +114,7 @@ run_results <- function(...) {
 run_shrink <- function(...) {
   lfcShrink(
     dds,
-    type = 'ashr',
+    type = opt$shrink_lfc_type,
     ...
   )
 }
@@ -162,6 +162,7 @@ opt <- list(
   minmu = 0.5,
   vs_method = 'vst', # 'rlog', 'vst', or 'rlog,vst'
   shrink_lfc = TRUE,
+  shrink_lfc_type = 'ashr',
   cores = 1,
   vs_blind = TRUE,
   vst_nsub = 1000,
