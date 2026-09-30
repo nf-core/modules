@@ -1,4 +1,4 @@
-process VARNET {
+process VARNET_FILTER {
     tag "$meta.id"
     label 'process_high_memory'
 
@@ -15,7 +15,7 @@ process VARNET {
     tuple val(meta4), path(fai)
 
     output:
-    tuple val(meta), path("${prefix}/${prefix}.vcf.gz"), emit: vcf
+    tuple val(meta), path("${prefix}/candidates"), emit: candidates
     tuple val("${task.process}"), val("varnet"), val("1.5.3"), emit: versions_varnet, topic: versions
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
@@ -27,10 +27,11 @@ process VARNET {
     prefix = task.ext.prefix ?: "${meta.id}"
     def regions = intervals ? "--region_bed ${intervals}" : ""
     if (!input_normal) {
-        error "VARNET requires a matched normal BAM. Tumor-only mode needs large germline resource files (dbSNP and gnomAD) that are not shipped with the conda package, so it is not supported by this module. To run tumor-only, use the VarNet Docker image directly: https://github.com/skandlab/VarNet"
+        error "VARNET_FILTER requires a matched normal BAM. Tumor-only mode needs large germline resource files (dbSNP and gnomAD) that are not shipped with the conda package, so it is not supported by this module. To run tumor-only, use the VarNet Docker image directly: https://github.com/skandlab/VarNet"
     }
     """
     export TF_CPP_MIN_LOG_LEVEL=3
+
     varnet-filter \\
         --sample_name ${prefix} \\
         --normal_bam ${input_normal} \\
@@ -40,21 +41,13 @@ process VARNET {
         --processes ${task.cpus} \\
         ${regions} \\
         ${args}
-
-    varnet-predict \\
-        --sample_name ${prefix} \\
-        --normal_bam ${input_normal} \\
-        --tumor_bam ${input_tumor} \\
-        --reference ${fasta} \\
-        --output_dir . \\
-        --processes ${task.cpus} \\
-        ${args}
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p ${prefix}
-    echo "" | gzip > ${prefix}/${prefix}.vcf.gz
+    mkdir -p ${prefix}/candidates/snvs ${prefix}/candidates/indels
+    touch ${prefix}/candidates/snvs/Positions.csv
+    touch ${prefix}/candidates/indels/Positions.csv
     """
 }

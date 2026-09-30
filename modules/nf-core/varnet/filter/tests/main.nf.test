@@ -1,12 +1,13 @@
 nextflow_process {
 
-    name "Test Process VARNET"
+    name "Test Process VARNET_FILTER"
     script "../main.nf"
-    process "VARNET"
+    process "VARNET_FILTER"
 
     tag "modules"
     tag "modules_nfcore"
     tag "varnet"
+    tag "varnet/filter"
     config './nextflow.config'
 
     test("tumor_normal_pair") {
@@ -40,13 +41,11 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf"])).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
     }
-
-    config './nextflow.config'
 
     test("tumor_normal_pair - stub") {
 

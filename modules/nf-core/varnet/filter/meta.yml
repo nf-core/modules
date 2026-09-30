@@ -1,8 +1,6 @@
-name: "varnet"
-description: VarNet is a deep learning-based somatic variant caller that utilizes
-  a two-stage filtering and prediction architecture. It processes aligned reads from
-  tumor and normal data to identify somatic mutations using a deep neural network
-  approach.
+name: "varnet_filter"
+description: Finds candidate somatic variants in a tumor/normal pair. This is the first
+  of VarNet's two stages; the candidates it emits are scored by varnet/predict.
 keywords:
   - variant calling
   - machine learning
@@ -72,18 +70,16 @@ input:
         pattern: "*.fai"
         ontologies: []
 output:
-  vcf:
+  candidates:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1', single_end:false ]`
-      - ${prefix}/${prefix}.vcf.gz:
-          type: file
-          description: Compressed VCF file
-          pattern: "*.vcf.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+      - ${prefix}/candidates:
+          type: directory
+          description: Directory of candidate variant positions, holding snvs/Positions.csv
+            and indels/Positions.csv. Pass this to varnet/predict.
 
   versions_varnet:
     - - ${task.process}:
