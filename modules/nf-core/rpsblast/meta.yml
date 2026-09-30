@@ -1,0 +1,54 @@
+name: rpsblast
+description: Local conserved-domain annotation against NCBI CDD, the offline equivalent of Batch CD-Search
+keywords:
+  - conserved domain
+  - CDD
+  - CD-Search
+  - RPS-BLAST
+  - protein annotation
+tools:
+  - rpsblast:
+      description: |
+        RPS-BLAST searches protein queries against position-specific scoring
+        matrices from the NCBI Conserved Domain Database. CDD distributes
+        pre-formatted RPS-BLAST databases, so Batch CD-Search results can be
+        reproduced locally without submitting sequences to NCBI.
+      homepage: https://www.ncbi.nlm.nih.gov/Structure/cdd/cdd_help.shtml
+      documentation: https://www.ncbi.nlm.nih.gov/books/NBK279684/
+      doi: 10.1093/nar/gkz991
+      licence: ["US-Government-Work"]
+      identifier: biotools:blast
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sample1' ]
+    - fasta:
+        type: file
+        description: Candidate protein sequences to annotate. May be empty, in which case a header-only table is produced.
+        pattern: "*.{fa,faa,fasta}"
+  - - cdd_db:
+        type: directory
+        description: Pre-formatted CDD RPS-BLAST database directory, as produced by CDD_DB_DOWNLOAD
+
+output:
+  hits:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.cdsearch.tsv":
+          type: file
+          description: Tab-separated domain hits (BLAST outfmt 6 plus subject title), with a header row
+          pattern: "*.cdsearch.tsv"
+  versions:
+    - "versions.yml":
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+authors:
+  - "@Bboy010"
+maintainers:
+  - "@Bboy010"
