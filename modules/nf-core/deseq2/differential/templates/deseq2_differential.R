@@ -111,10 +111,10 @@ run_results <- function(...) {
 #' @param ... Additional arguments passed to `lfcShrink()`, e.g. `coef = opt\$contrast_string`
 #'   or `contrast = c(variable, target, reference)`.
 #' @return A `DESeqResults` object with shrunken log2 fold changes.
-run_shrink <- function(...) {
+run_shrink <- function(..., shrink_type) {
   lfcShrink(
     dds,
-    type = opt$shrink_lfc_type,
+    type = shrink_type,
     ...
   )
 }
@@ -429,7 +429,7 @@ if (!is.null(opt\$contrast_string)) {
     # Direct coefficient name
     comp.results <- run_results(name = opt\$contrast_string)
     if (opt\$shrink_lfc) {
-      comp.results <- run_shrink(coef = opt\$contrast_string)
+      comp.results <- run_shrink(coef = opt\$contrast_string, shrink_type = opt\$shrink_lfc_type)
     }
   } else {
     # Parse as limma-style contrast expression
@@ -442,7 +442,7 @@ if (!is.null(opt\$contrast_string)) {
     # Run DESeq2 results with numeric contrast
     comp.results <- run_results(contrast = numeric_contrast)
     if (opt\$shrink_lfc) {
-      comp.results <- run_shrink(contrast = numeric_contrast)
+      comp.results <- run_shrink(contrast = numeric_contrast, shrink_type = opt\$shrink_lfc_type)
     }
   }
 } else {
@@ -452,7 +452,7 @@ if (!is.null(opt\$contrast_string)) {
 
   comp.results <- run_results(contrast = contrast_var_tg_ref)
   if (opt\$shrink_lfc) {
-    comp.results <- run_shrink(contrast = contrast_var_tg_ref)
+    comp.results <- run_shrink(contrast = contrast_var_tg_ref, shrink_type = opt\$shrink_lfc_type)
   }
 }
 
