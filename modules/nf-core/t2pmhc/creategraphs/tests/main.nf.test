@@ -42,10 +42,19 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out.graphs,
-                    process.out.versions_t2pmhc
-                ).match() }
+                {
+                    // The graph file is a torch pickle whose exact bytes depend on the CPU
+                    // and thread count, so it is not reproducible across machines. Snapshot
+                    // the file name only
+                    assert snapshot(
+                        process.out.graphs.collect { meta, graphs -> [meta, file(graphs).name] },
+                        process.out.versions_t2pmhc
+                    ).match()
+                },
+                {
+                    // guard against an empty graph file
+                    assert path(process.out.graphs.get(0).get(1)).size() > 0
+                }
             )
         }
 
