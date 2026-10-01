@@ -19,7 +19,7 @@ nextflow_workflow {
     tag "glimpse2"
     tag "glimpse2/ligate"
 
-    test("Impute with minimac4 one vcf no map, no posfile, no chunks, panel as vcf") {
+    test("Impute with minimac4 one vcf no map, no chunks, panel as vcf") {
         when {
             workflow {
                 """
@@ -33,9 +33,8 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true)
                 ])
-                input[2] = Channel.of([[id: "1000GP", chr: "chr22"], [], []])
-                input[3] = Channel.of([[id: "1000GP", chr: "chr22"], "chr22"])
-                input[4] = Channel.of([[id: "1000GP", chr: "chr22"], []])
+                input[2] = Channel.of([[id: "1000GP", chr: "chr22"], "chr22"])
+                input[3] = Channel.of([[id: "1000GP", chr: "chr22"], []])
                 """
             }
         }
@@ -55,7 +54,7 @@ nextflow_workflow {
         }
     }
 
-    test("Impute with minimac4 one vcf with map, posfile, chunks, panel as vcf") {
+    test("Impute with minimac4 one vcf with map, chunks, panel as vcf") {
         when {
             workflow {
                 """
@@ -75,22 +74,12 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz.csi", checkIfExists:true)
                 ])
                 input[2] = channel.of(
-                [
-                    [id: "1000GP", chr: "chr22"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz", checkIfExists:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.sites.vcf.gz.csi", checkIfExists:true)
-                ],[
-                    [id: "1000GP", chr: "chr21"],
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.sites.vcf.gz", checkIfExists:true),
-                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.sites.vcf.gz.csi", checkIfExists:true)
-                ])
-                input[3] = channel.of(
                     [[chr: "chr22", id: "1000GP"], "chr22:16570065-16592216"],
                     [[chr: "chr22", id: "1000GP"], "chr22:16592229-16609999"],
                     [[chr: "chr21", id: "1000GP"], "chr21:16570065-16592216"],
                     [[chr: "chr21", id: "1000GP"], "chr21:16592229-16609999"]
                 )
-                input[4] = channel.of([
+                input[3] = channel.of([
                     [id: "1000GP", chr: "chr22"],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.minimac.map", checkIfExists:true)
                 ],[
@@ -137,16 +126,12 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz.csi", checkIfExists:true)
                 ])
                 input[2] = channel.of(
-                    [[id: "1000GP", chr: "chr22"],[],[]],
-                    [[id: "1000GP", chr: "chr21"],[],[]]
-                )
-                input[3] = channel.of(
                     [[chr: "chr22", id: "1000GP"], "chr22:16570065-16592216"],
                     [[chr: "chr22", id: "1000GP"], "chr22:16592229-16609999"],
                     [[chr: "chr21", id: "1000GP"], "chr21:16570065-16592216"],
                     [[chr: "chr21", id: "1000GP"], "chr21:16592229-16609999"]
                 )
-                input[4] = channel.of(
+                input[3] = channel.of(
                     [[id: "1000GP", chr: "chr22"], []],
                     [[id: "1000GP", chr: "chr21"], []]
                 )
@@ -178,16 +163,12 @@ nextflow_workflow {
                     [[id: "1000GP", chr: "chr21"],[],[]]
                 )
                 input[2] = channel.of(
-                    [[id: "1000GP", chr: "chr22"],[],[]],
-                    [[id: "1000GP", chr: "chr21"],[],[]]
-                )
-                input[3] = channel.of(
                     [[chr: "chr22", id: "1000GP"], "chr22:16570065-16592216"],
                     [[chr: "chr22", id: "1000GP"], "chr22:16592229-16609999"],
                     [[chr: "chr21", id: "1000GP"], "chr21:16570065-16592216"],
                     [[chr: "chr21", id: "1000GP"], "chr21:16592229-16609999"]
                 )
-                input[4] = channel.of(
+                input[3] = channel.of(
                     [[id: "1000GP", chr: "chr22"], []],
                     [[id: "1000GP", chr: "chr21"], []]
                 )
@@ -216,21 +197,17 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true)
                 ],[
-                    [id: "1000GP", chr: "chr21"],
+                    [id: "1000GP_1", chr: "chr21"],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz", checkIfExists:true),
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr21.vcf.gz.csi", checkIfExists:true)
                 ])
                 input[2] = channel.of(
-                    [[id: "1000GP", chr: "chr22"],[],[]],
-                    [[id: "1000GP_2", chr: "chr21"],[],[]] // Wrong panel
-                )
-                input[3] = channel.of(
                     [[chr: "chr22", id: "1000GP"], "chr22:16570065-16592216"],
                     [[chr: "chr22", id: "1000GP"], "chr22:16592229-16609999"],
                     [[chr: "chr21", id: "1000GP"], "chr21:16570065-16592216"],
                     [[chr: "chr21", id: "1000GP"], "chr21:16592229-16609999"]
                 )
-                input[4] = channel.of(
+                input[3] = channel.of(
                     [[id: "1000GP_1", chr: "chr22"], []], // Wrong panel
                     [[id: "1000GP", chr: "chr21"], []]
                 )
