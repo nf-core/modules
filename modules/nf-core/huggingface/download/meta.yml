@@ -1,7 +1,13 @@
 name: huggingface_download
-description: Download a file from a Hugging Face Hub repository using the `hf` CLI
+description: |
+  Download a file or an entire Hugging Face Hub repository using the `hf` CLI.
+  Pass an empty list or empty string for hf_file to download the repository into
+  a directory named by ext.prefix (default: meta.id). Repository type, revision
+  and include/exclude filters can be supplied through ext.args, for example
+  --repo-type dataset --revision <commit> --include 'data/*'.
 keywords:
   - download
+  - dataset
   - gguf
   - huggingface
   - hub
@@ -33,7 +39,8 @@ input:
         description: |
           Path of the file to download within the repository,
           e.g. `gemma-3-1b-it-Q4_K_M.gguf`. The downloaded file is emitted
-          with this name in the task work directory.
+          with this name in the task work directory. Pass [] or an empty string
+          to download the entire repository, optionally filtered by ext.args.
 output:
   output:
     - - meta:
@@ -41,9 +48,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - hf_file:
+      - output_path:
           type: file
-          description: Downloaded file from the Hugging Face repository
+          description: |
+            Downloaded file, or the repository directory when hf_file is empty.
+            Repository directories are named by ext.prefix (default: meta.id).
+            Single-file downloads retain the path specified by hf_file.
           ontologies: []
   versions_huggingface_hub:
     - - ${task.process}:
@@ -69,6 +79,31 @@ topics:
 authors:
   - "@toniher"
   - "@lucacozzuto"
+  - "@mwiewior"
 maintainers:
   - "@toniher"
   - "@lucacozzuto"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/huggingface_hub:1.18.0--d5830d12561fd965
+      build_id: bd-d5830d12561fd965_1
+      scan_id: sc-11208a9756f8dea8_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/huggingface_hub:1.18.0--5f10f5c90bd896e0
+      build_id: bd-5f10f5c90bd896e0_1
+      scan_id: sc-3fd62e75cc737a5f_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/huggingface_hub:1.18.0--dda4191df86a01ba
+      build_id: bd-dda4191df86a01ba_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ed/ede89b6c560efe66ea1fc29f93947d4f9fe9f529de23929fb5cc55394c53bf5c/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/huggingface_hub:1.18.0--39ff147b2093f045
+      build_id: bd-39ff147b2093f045_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2a/2acc547c3aa5f09cf77fb20111e684c404972387d57bd34f67f9147a29b52152/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/huggingface/download/.conda-lock/linux_amd64-bd-d5830d12561fd965_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/huggingface/download/.conda-lock/linux_arm64-bd-5f10f5c90bd896e0_1.txt
