@@ -1,0 +1,69 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "vcf_annotate_vepyr"
+description: |
+  Optionally normalise a VCF with bcftools norm, then annotate it with Ensembl VEP
+  consequences using vepyr and return the bgzip VCF with its tabix index.
+
+  Normalisation is controlled by `val_normalize`; pipelines should default it to
+  true. What bcftools norm does comes from `BCFTOOLS_NORM`'s `ext.args`. The
+  configuration vepyr's Ensembl VEP parity tests are validated on splits
+  multiallelic records without left-aligning indels, and writes the index vepyr
+  needs to run more than one annotation pipeline:
+
+  ```
+  withName: 'BCFTOOLS_NORM' {
+      ext.args   = '--multiallelics -both --do-not-normalize --output-type z --write-index=tbi'
+      ext.prefix = { "${meta.id}.norm" }
+  }
+  ```
+
+  Keep the `BCFTOOLS_NORM` `ext.prefix` whenever `meta.id` can equal the input
+  VCF's basename (`sample.vcf.gz` with `id: 'sample'`): bcftools/norm writes
+  `${meta.id}.vcf.gz` over its own staged input, a symlink, which truncates the
+  original file. `VEPYR_ANNOTATE` writes `${meta.id}_vepyr.vcf.gz` by default
+  and needs no distinct prefix.
+keywords:
+  - vcf
+  - annotation
+  - normalisation
+  - vep
+  - vepyr
+  - bcftools
+components:
+  - bcftools/norm
+  - vepyr/annotate
+input:
+  - ch_vcf:
+      description: |
+        VCF to normalise and annotate, with its optional tabix/CSI index (pass [] for none)
+        Structure: [ val(meta), path(vcf), path(tbi) ]
+  - ch_cache:
+      description: |
+        vepyr Parquet cache directory produced by vepyr's cache build
+        Structure: [ val(meta2), path(cache) ]
+  - ch_fasta:
+      description: |
+        Reference FASTA, its samtools faidx index and, for a bgzip FASTA, its
+        .gzi index (pass [] for an uncompressed FASTA). Required: vepyr always
+        annotates with `--everything`, which needs it, and bcftools norm reads
+        it when `val_normalize` is true.
+        Structure: [ val(meta3), path(fasta), path(fai), path(gzi) ]
+  - val_cache_version:
+      type: integer
+      description: Ensembl cache version to assert against the cache metadata, or [] to skip the check
+  - ch_plugin_cache:
+      description: |
+        Root of a vepyr plugin cache tree holding plugin/<name>/ directories (optional, pass [ [], [] ])
+        Structure: [ val(meta4), path(plugin_cache) ]
+  - val_normalize:
+      type: boolean
+      description: Run BCFTOOLS_NORM before annotation. Pipelines should default this to true.
+output:
+  - vcf_tbi:
+      description: |
+        Annotated bgzip VCF and its tabix index
+        Structure: [ val(meta), path(vcf), path(tbi) ]
+authors:
+  - "@mwiewior"
+maintainers:
+  - "@mwiewior"

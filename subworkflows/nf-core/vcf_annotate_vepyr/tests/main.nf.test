@@ -1,0 +1,182 @@
+nextflow_workflow {
+
+    name "Test Subworkflow VCF_ANNOTATE_VEPYR"
+    script "../main.nf"
+    workflow "VCF_ANNOTATE_VEPYR"
+    config "./nextflow.config"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/vcf_annotate_vepyr"
+    tag "bcftools"
+    tag "bcftools/norm"
+    tag "vepyr"
+    tag "vepyr/annotate"
+    tag "untar"
+
+    // raw.githubusercontent.com serves blobs, not directory trees, so the cache
+    // is published as an archive and extracted here.
+    setup {
+        run("UNTAR") {
+            script "modules/nf-core/untar/main.nf"
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'116_GRCh38_ensembl' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/cache.tar.gz', checkIfExists: true)
+                ])
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens - vcf - normalise") {
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/input.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/input.vcf.gz.tbi', checkIfExists: true)
+                ])
+                input[1] = UNTAR.out.untar.collect()
+                input[2] = channel.value([
+                    [ id:'GRCh38' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/reference.fa.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/reference.fa.gz.fai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/reference.fa.gz.gzi', checkIfExists: true)
+                ])
+                input[3] = 116
+                input[4] = [[], []]
+                input[5] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.vcf_tbi.size() == 1 },
+                { assert file(workflow.out.vcf_tbi[0][2]).exists() },
+                { assert workflow.trace.tasks().collect { it.name.tokenize(' ')[0] }.toSet().containsAll(['VCF_ANNOTATE_VEPYR:BCFTOOLS_NORM', 'VCF_ANNOTATE_VEPYR:VEPYR_ANNOTATE']) },
+                { assert snapshot(
+                    workflow.out.vcf_tbi.collect { meta, vcf, tbi -> [ meta, file(vcf).name + ",variantsMD5:" + path(vcf).vcf.variantsMD5, file(tbi).name ] }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - vcf - normalise without index") {
+
+        when {
+            params {
+                bcftools_norm_args = '--multiallelics -both --do-not-normalize --output-type z'
+            }
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/input.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/input.vcf.gz.tbi', checkIfExists: true)
+                ])
+                input[1] = UNTAR.out.untar.collect()
+                input[2] = channel.value([
+                    [ id:'GRCh38' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/reference.fa.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/reference.fa.gz.fai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/reference.fa.gz.gzi', checkIfExists: true)
+                ])
+                input[3] = 116
+                input[4] = [[], []]
+                input[5] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.vcf_tbi.size() == 1 },
+                { assert file(workflow.out.vcf_tbi[0][2]).exists() },
+                { assert workflow.trace.tasks().collect { it.name.tokenize(' ')[0] }.toSet().containsAll(['VCF_ANNOTATE_VEPYR:BCFTOOLS_NORM', 'VCF_ANNOTATE_VEPYR:VEPYR_ANNOTATE']) },
+                { assert snapshot(
+                    workflow.out.vcf_tbi.collect { meta, vcf, tbi -> [ meta, file(vcf).name + ",variantsMD5:" + path(vcf).vcf.variantsMD5, file(tbi).name ] }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - vcf - no normalise") {
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/input.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/input.vcf.gz.tbi', checkIfExists: true)
+                ])
+                input[1] = UNTAR.out.untar.collect()
+                input[2] = channel.value([
+                    [ id:'GRCh38' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/reference.fa.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/reference.fa.gz.fai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/reference.fa.gz.gzi', checkIfExists: true)
+                ])
+                input[3] = 116
+                input[4] = [[], []]
+                input[5] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.vcf_tbi.size() == 1 },
+                { assert file(workflow.out.vcf_tbi[0][2]).exists() },
+                { assert !workflow.trace.tasks().any { it.name.startsWith('VCF_ANNOTATE_VEPYR:BCFTOOLS_NORM') } },
+                { assert snapshot(
+                    workflow.out.vcf_tbi.collect { meta, vcf, tbi -> [ meta, file(vcf).name + ",variantsMD5:" + path(vcf).vcf.variantsMD5, file(tbi).name ] }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - vcf - normalise - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/input.vcf.gz', checkIfExists: true),
+                    []
+                ])
+                input[1] = channel.value([[ id:'cache' ], []])
+                input[2] = channel.value([
+                    [ id:'GRCh38' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/reference.fa.gz', checkIfExists: true),
+                    [],
+                    []
+                ])
+                input[3] = []
+                input[4] = [[], []]
+                input[5] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.vcf_tbi.size() == 1 },
+                { assert file(workflow.out.vcf_tbi[0][2]).exists() },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+}
