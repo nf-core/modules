@@ -45,6 +45,26 @@ def calculateStrandedness(forwardFragments, reverseFragments, unstrandedFragment
 }
 
 //
+// Function to build the error message for a sample whose Salmon-inferred strandedness is undetermined
+//
+def undeterminedStrandednessMessage(sample_id, salmon_strand_analysis) {
+    def forward = salmon_strand_analysis.forwardFragments
+    def reverse = salmon_strand_analysis.reverseFragments
+    def message = "Could not determine strandedness for sample '${sample_id}' which was set to 'auto'. "
+    def assigned = (forward + reverse) as double
+    if (!Double.isNaN(assigned) && assigned > 0) {
+        message += "Of the fragments Salmon assigned, ${String.format('%.1f', forward)}% were forward and ${String.format('%.1f', reverse)}% reverse, " +
+            "which is not enough evidence for a confident call. Possible causes include a genuinely unstranded or mixed library, " +
+            "genomic DNA contamination, or a low number of assigned fragments. "
+    }
+    else {
+        message += "Salmon assigned no fragments, so there is no strand evidence. Check the mapping rate, that the reference matches " +
+            "the sample's species, and that the reads are intact and correctly paired. "
+    }
+    return message + "Set strandedness explicitly in the samplesheet for this sample and rerun with -resume."
+}
+
+//
 // Function that parses Salmon quant 'lib_format_counts.json' output file to get inferred strandedness
 //
 def getSalmonInferredStrandedness(json_file, stranded_threshold = 0.8, unstranded_threshold = 0.1) {
@@ -414,13 +434,7 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
             def strandedness = salmon_strand_analysis.inferred_strandedness
             if (strandedness == 'undetermined') {
                 if (fail_undetermined_strandedness) {
-                    def fractions = "forward ${String.format('%.1f', salmon_strand_analysis.forwardFragments)}%, " +
-                        "reverse ${String.format('%.1f', salmon_strand_analysis.reverseFragments)}%"
-                    def hint = (salmon_strand_analysis.forwardFragments + salmon_strand_analysis.reverseFragments) > 0
-                        ? "This is neither clearly stranded nor clearly unstranded, which can indicate genomic DNA contamination or a mixed library."
-                        : "Salmon assigned no stranded fragments, check that the reference matches the sample's species and the reads."
-                    error("Could not determine strandedness for sample '${meta.id}' which was set to 'auto' (Salmon inferred fractions: ${fractions}). ${hint} " +
-                        "Set strandedness explicitly in the samplesheet for this sample and rerun with -resume.")
+                    error(undeterminedStrandednessMessage(meta.id, salmon_strand_analysis))
                 }
                 strandedness = 'unstranded'
             }

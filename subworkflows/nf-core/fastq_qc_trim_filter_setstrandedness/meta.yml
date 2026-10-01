@@ -144,7 +144,10 @@ input:
       description: The difference in fraction of stranded reads assigned to 'forward' and 'reverse' below which a sample is classified as 'unstranded'.
   - fail_undetermined_strandedness:
       type: boolean
-      description: Fail when Salmon cannot determine the strandedness of an 'auto' sample, instead of treating it as 'unstranded'.
+      description: |
+        Only applies to samples with strandedness 'auto'. If true, fail when Salmon cannot confidently
+        infer strandedness; if false, such samples are assigned 'unstranded'. Explicit strandedness
+        values are unaffected.
 
 output:
   - reads:
