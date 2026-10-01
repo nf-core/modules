@@ -28,7 +28,7 @@ workflow UTILS_NFSCHEMA_PLUGIN {
 
     if(help || help_full) {
         help_options = [
-            parameter: (help instanceof String && help != "true") ? help : "",
+            parameter: (help instanceof String && help != "true") ? help : null,
             beforeText: before_text,
             afterText: after_text,
             command: command,
