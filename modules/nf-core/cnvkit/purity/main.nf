@@ -35,8 +35,6 @@ process CNVKIT_PURITY {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    echo ${args}
-
     touch ${prefix}.purity.tsv
     """
 }
