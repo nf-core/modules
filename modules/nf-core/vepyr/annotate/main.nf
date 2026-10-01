@@ -57,6 +57,9 @@ process VEPYR_ANNOTATE {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}_vepyr"
+    if ("${vcf}" == "${prefix}.vcf.gz") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
+    }
     """
     echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
