@@ -1,0 +1,83 @@
+nextflow_process {
+
+    name "Test Process T2PMHC_CREATEGRAPHS"
+    script "../main.nf"
+    process "T2PMHC_CREATEGRAPHS"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "t2pmhc"
+    tag "t2pmhc/creategraphs"
+
+    test("homo_sapiens - [tsv, [pdb, npy]] - t2pmhc-gat") {
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                def samplesheet = file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/tcrpmhcbinding/testdata-default/tcrpmhc_sample.tsv', checkIfExists: true)
+                def lines = samplesheet.readLines()
+                def header = lines[0].split('\\t')
+                def pdb_column_index = header.findIndexOf { it == 'pdb_file_path' }
+                def structure_files = lines[1..-1].collectMany { line ->
+                    def columns = line.split('\\t')
+                    def pdb_path = columns[pdb_column_index]
+                    def npy_path = pdb_path.replaceAll(/\\.pdb\$/, '_predicted_aligned_error.npy')
+                    return [file(pdb_path, checkIfExists: true), file(npy_path, checkIfExists: true)]
+                }.findAll { it && it.toString().trim() }
+
+                input[0] = [
+                    [ id:'test' ],
+                    samplesheet,
+                    structure_files
+                ]
+                input[1] = 't2pmhc-gat'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.graphs,
+                    process.out.versions_t2pmhc
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - [tsv, []] - t2pmhc-gat - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/tcrpmhcbinding/testdata-default/tcrpmhc_sample.tsv', checkIfExists: true),
+                    []
+                ]
+                input[1] = 't2pmhc-gat'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
