@@ -129,6 +129,7 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
     // Strandedness thresholds
     stranded_threshold   // float: The fraction of stranded reads that must be assigned to a strandedness for confident assignment. Must be at least 0.5
     unstranded_threshold // float: The difference in fraction of stranded reads assigned to 'forward' and 'reverse' below which a sample is classified as 'unstranded'
+    fail_undetermined_strandedness // boolean: fail instead of defaulting to 'unstranded' when Salmon cannot determine strandedness
 
     main:
 
@@ -412,6 +413,15 @@ workflow FASTQ_QC_TRIM_FILTER_SETSTRANDEDNESS {
             def salmon_strand_analysis = getSalmonInferredStrandedness(json, stranded_threshold, unstranded_threshold)
             def strandedness = salmon_strand_analysis.inferred_strandedness
             if (strandedness == 'undetermined') {
+                if (fail_undetermined_strandedness) {
+                    def fractions = "forward ${String.format('%.1f', salmon_strand_analysis.forwardFragments)}%, " +
+                        "reverse ${String.format('%.1f', salmon_strand_analysis.reverseFragments)}%"
+                    def hint = (salmon_strand_analysis.forwardFragments + salmon_strand_analysis.reverseFragments) > 0
+                        ? "This is neither clearly stranded nor clearly unstranded, which can indicate genomic DNA contamination or a mixed library."
+                        : "Salmon assigned no stranded fragments, check that the reference matches the sample's species and the reads."
+                    error("Could not determine strandedness for sample '${meta.id}' which was set to 'auto' (Salmon inferred fractions: ${fractions}). ${hint} " +
+                        "Set strandedness explicitly in the samplesheet for this sample and rerun with -resume.")
+                }
                 strandedness = 'unstranded'
             }
             return [meta + [strandedness: strandedness, salmon_strand_analysis: salmon_strand_analysis], reads]

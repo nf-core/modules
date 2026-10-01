@@ -142,6 +142,9 @@ input:
   - unstranded_threshold:
       type: float
       description: The difference in fraction of stranded reads assigned to 'forward' and 'reverse' below which a sample is classified as 'unstranded'.
+  - fail_undetermined_strandedness:
+      type: boolean
+      description: Fail when Salmon cannot determine the strandedness of an 'auto' sample, instead of treating it as 'unstranded'.
 
 output:
   - reads:
