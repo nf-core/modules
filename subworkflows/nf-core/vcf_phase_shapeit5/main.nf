@@ -12,6 +12,13 @@ workflow VCF_PHASE_SHAPEIT5 {
 
     main:
 
+    ch_input.map{ items ->
+        assert items.size() == 11 : "Input channel must contain exactly 11 elements, but got ${items.size()}"
+        assert items[0] instanceof Map: "First element of input channel must be a metadata map, but got ${items[0].getClass()}"
+        assert items[1].size() > 0: "Second element of input channel must be a non-empty VCF file path, but got ${items[1]}"
+        assert items[2].size() > 0: "Third element of input channel must be a non-empty index file path, but got ${items[2]}"
+    }
+
     ch_input_branch = ch_input.branch{ _meta, _vcf, _index, _pedigree, _ref, _ref_index, _scaffold, _scaffold_index, _region, _gmap, chunks ->
         with_chunks: chunks.size() > 0
         without_chunks: chunks.size() == 0
@@ -27,11 +34,10 @@ workflow VCF_PHASE_SHAPEIT5 {
             'WindowMb', 'NbTotVariants', 'NbComVariants'
         ], sep: "\t", skip: 0)
         .map { meta, rows -> [meta, rows["RegionBuf"]]}
-        .groupTuple()
 
     ch_parameters = ch_input_branch.with_chunks
         .mix(ch_input_branch.without_chunks
-            .join(ch_chunks, failOnMismatch: true, failOnDuplicate: true)
+            .join(ch_chunks.groupTuple(), failOnMismatch: true, failOnDuplicate: true)
             .map{ meta, vcf, index, pedigree, ref, ref_index, scaffold, scaffold_index, region, gmap, _old_chunks, new_chunks -> [
                 meta, vcf, index, pedigree, ref, ref_index, scaffold, scaffold_index, region, gmap, new_chunks
             ]}

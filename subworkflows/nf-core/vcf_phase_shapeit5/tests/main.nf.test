@@ -346,8 +346,9 @@ nextflow_workflow {
         }
     }
 
-    test("homo_sapiens - target - error: transpose fail -- stub") {
+    test("homo_sapiens - target - error: chunks not a list -- stub") {
         options "-stub"
+        tag "test"
         when {
             params {
                 glimpse2_chunk_args = ""
@@ -373,6 +374,70 @@ nextflow_workflow {
         }
         then {
             assert workflow.failed
+            assert workflow.stdout.join("\n").contains("ERROR ~ Not a valid transpose element at index: 10")
+        }
+    }
+
+    test("homo_sapiens - target - error: wrong input channel size -- stub") {
+        options "-stub"
+        tag "test"
+        when {
+            params {
+                glimpse2_chunk_args = ""
+                bcftools_pluginfilltags_args = ""
+                bcftools_pluginfilltags_args2 = ""
+                bcftools_view_args = ""
+            }
+            workflow {
+                """
+                input[0] = channel.of([
+                    [id:'test', chr: "22"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz.csi", checkIfExists:true),
+                    [], [],
+                    [], [],
+                    [], [],
+                    ["chr22:16570065-16597215"]
+                ])
+                input[1] = "" // chunk_model
+                """
+            }
+        }
+        then {
+            assert workflow.failed
+            assert workflow.stdout.join("\n").contains("ERROR ~ Input channel must contain exactly 11 elements, but got 10.")
+        }
+    }
+
+    test("homo_sapiens - target - error: empty index -- stub") {
+        options "-stub"
+        tag "test"
+        when {
+            params {
+                glimpse2_chunk_args = ""
+                bcftools_pluginfilltags_args = ""
+                bcftools_pluginfilltags_args2 = ""
+                bcftools_view_args = ""
+            }
+            workflow {
+                """
+                input[0] = channel.of([
+                    [id:'test', chr: "22"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
+                    [],
+                    [],
+                    [], [],
+                    [], [],
+                    [], [],
+                    ["chr22:16570065-16597215"]
+                ])
+                input[1] = "" // chunk_model
+                """
+            }
+        }
+        then {
+            assert workflow.failed
+            assert workflow.stdout.join("\n").contains("ERROR ~ Third element of input channel must be a non-empty index file path")
         }
     }
 }
