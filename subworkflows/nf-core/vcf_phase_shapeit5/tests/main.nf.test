@@ -348,7 +348,6 @@ nextflow_workflow {
 
     test("homo_sapiens - target - error: chunks not a list -- stub") {
         options "-stub"
-        tag "test"
         when {
             params {
                 glimpse2_chunk_args = ""
@@ -380,7 +379,6 @@ nextflow_workflow {
 
     test("homo_sapiens - target - error: wrong input channel size -- stub") {
         options "-stub"
-        tag "test"
         when {
             params {
                 glimpse2_chunk_args = ""
@@ -411,7 +409,6 @@ nextflow_workflow {
 
     test("homo_sapiens - target - error: empty index -- stub") {
         options "-stub"
-        tag "test"
         when {
             params {
                 glimpse2_chunk_args = ""
