@@ -60,14 +60,14 @@ jobs:
             modules/nf-core/spades/tests
 
       - name: Upload regenerated snapshot
-        uses: actions/upload-artifact@b7c18920e97e0f161b22737ec4ef00db0c45ba43 # v6
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: spades-snap
           path: modules/nf-core/spades/tests/main.nf.test.snap
 
       - name: Upload tap log
         if: always()
-        uses: actions/upload-artifact@b7c18920e97e0f161b22737ec4ef00db0c45ba43 # v6
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: spades-tap
           path: test.tap
