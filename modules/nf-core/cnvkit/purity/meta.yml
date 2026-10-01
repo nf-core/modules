@@ -32,7 +32,9 @@ input:
         type: file
         description: Germline VCF file for BAF.
         pattern: "*.vcf{,.gz}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3016 # VCF
+          - edam: http://edamontology.org/format_3989 # GZIP format
 
 output:
   purity:
