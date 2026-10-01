@@ -4,6 +4,23 @@ description: |
   Optionally normalise a VCF with bcftools norm, then annotate it with Ensembl VEP
   consequences using vepyr and return the bgzip VCF with its tabix index.
 
+  Use `ch_cache` for an existing cache directory, or set `val_hf_repo` to a
+  Hugging Face dataset repository such as `biodatageeks/vepyr_116_GRCh38_ensembl`.
+  When `val_hf_repo` is set, `ch_cache` is unused (pass `[[], []]`) and the
+  repository is downloaded once and shared across all samples. Pass `''` or
+  `[]` for `val_hf_repo` to use the existing cache without a download.
+
+  Configure `HUGGINGFACE_DOWNLOAD` with `ext.args = '--repo-type dataset'`.
+  Add `--revision <commit>` to pin the cache. Partial downloads require one
+  `--include` flag per pattern and must include every entity's manifest and
+  all contigs present in the VCF, for example:
+
+  ```
+  withName: 'HUGGINGFACE_DOWNLOAD' {
+      ext.args = "--repo-type dataset --revision <commit> --include '*/chr22.parquet' --include '*/chrom_manifest.json'"
+  }
+  ```
+
   Normalisation is controlled by `val_normalize`; pipelines should default it to
   true. What bcftools norm does comes from `BCFTOOLS_NORM`'s `ext.args`. The
   configuration vepyr's Ensembl VEP parity tests are validated on splits
@@ -29,8 +46,10 @@ keywords:
   - vep
   - vepyr
   - bcftools
+  - huggingface
 components:
   - bcftools/norm
+  - huggingface/download
   - vepyr/annotate
 input:
   - ch_vcf:
@@ -39,7 +58,8 @@ input:
         Structure: [ val(meta), path(vcf), path(tbi) ]
   - ch_cache:
       description: |
-        vepyr Parquet cache directory produced by vepyr's cache build
+        vepyr Parquet cache directory produced by vepyr's cache build.
+        Unused when val_hf_repo is set; pass [[], []] in that case.
         Structure: [ val(meta2), path(cache) ]
   - ch_fasta:
       description: |
@@ -58,6 +78,13 @@ input:
   - val_normalize:
       type: boolean
       description: Run BCFTOOLS_NORM before annotation. Pipelines should default this to true.
+  - val_hf_repo:
+      type: string
+      description: |
+        Hugging Face repository holding the vepyr Parquet cache. Downloaded once
+        and shared across samples when set; ch_cache is then unused. Pass '' or
+        [] to use ch_cache. Supply --repo-type dataset, revision and filters via
+        HUGGINGFACE_DOWNLOAD's ext.args.
 output:
   - vcf_tbi:
       description: |

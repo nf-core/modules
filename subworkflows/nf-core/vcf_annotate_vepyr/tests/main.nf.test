@@ -13,6 +13,8 @@ nextflow_workflow {
     tag "vepyr"
     tag "vepyr/annotate"
     tag "untar"
+    tag "huggingface"
+    tag "huggingface/download"
 
     // raw.githubusercontent.com serves blobs, not directory trees, so the cache
     // is published as an archive and extracted here.
@@ -50,6 +52,7 @@ nextflow_workflow {
                 input[3] = 116
                 input[4] = [[], []]
                 input[5] = true
+                input[6] = ''
                 """
             }
         }
@@ -57,6 +60,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
+                { assert !workflow.trace.tasks().any { it.name.contains('HUGGINGFACE_DOWNLOAD') } },
                 { assert workflow.out.vcf_tbi.size() == 1 },
                 { assert file(workflow.out.vcf_tbi[0][2]).exists() },
                 { assert workflow.trace.tasks().collect { it.name.tokenize(' ')[0] }.toSet().containsAll(['VCF_ANNOTATE_VEPYR:BCFTOOLS_NORM', 'VCF_ANNOTATE_VEPYR:VEPYR_ANNOTATE']) },
@@ -90,6 +94,7 @@ nextflow_workflow {
                 input[3] = 116
                 input[4] = [[], []]
                 input[5] = true
+                input[6] = ''
                 """
             }
         }
@@ -97,6 +102,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
+                { assert !workflow.trace.tasks().any { it.name.contains('HUGGINGFACE_DOWNLOAD') } },
                 { assert workflow.out.vcf_tbi.size() == 1 },
                 { assert file(workflow.out.vcf_tbi[0][2]).exists() },
                 { assert workflow.trace.tasks().collect { it.name.tokenize(' ')[0] }.toSet().containsAll(['VCF_ANNOTATE_VEPYR:BCFTOOLS_NORM', 'VCF_ANNOTATE_VEPYR:VEPYR_ANNOTATE']) },
@@ -127,6 +133,91 @@ nextflow_workflow {
                 input[3] = 116
                 input[4] = [[], []]
                 input[5] = false
+                input[6] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert !workflow.trace.tasks().any { it.name.contains('HUGGINGFACE_DOWNLOAD') } },
+                { assert workflow.out.vcf_tbi.size() == 1 },
+                { assert file(workflow.out.vcf_tbi[0][2]).exists() },
+                { assert !workflow.trace.tasks().any { it.name.startsWith('VCF_ANNOTATE_VEPYR:BCFTOOLS_NORM') } },
+                { assert snapshot(
+                    workflow.out.vcf_tbi.collect { meta, vcf, tbi -> [ meta, file(vcf).name + ",variantsMD5:" + path(vcf).vcf.variantsMD5, file(tbi).name ] }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - vcf - Hugging Face cache shared across samples") {
+
+        when {
+            params {
+                hf_download_args = "--repo-type dataset --revision 15a048f0585a7a40d2d40cb1c2f7806638ee500b --include '*/chr22.parquet' --include '*/chrom_manifest.json'"
+            }
+            workflow {
+                """
+                input[0] = channel.of('test', 'test2').map { id -> [
+                    [ id:id ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/input.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/input.vcf.gz.tbi', checkIfExists: true)
+                ] }
+                input[1] = [[], []]
+                input[2] = channel.value([
+                    [ id:'GRCh38' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/reference.fa.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/reference.fa.gz.fai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/reference.fa.gz.gzi', checkIfExists: true)
+                ])
+                input[3] = 116
+                input[4] = [[], []]
+                input[5] = true
+                input[6] = 'biodatageeks/vepyr_116_GRCh38_ensembl'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.vcf_tbi.size() == 2 },
+                { assert workflow.out.vcf_tbi.every { meta, vcf, tbi -> file(tbi).exists() } },
+                { assert workflow.trace.tasks().count { it.name.contains('HUGGINGFACE_DOWNLOAD') } == 1 },
+                { assert workflow.trace.tasks().count { it.name.contains('BCFTOOLS_NORM') } == 2 },
+                { assert workflow.trace.tasks().count { it.name.contains('VEPYR_ANNOTATE') } == 2 },
+                { assert snapshot(
+                    workflow.out.vcf_tbi.collect { meta, vcf, tbi -> [ meta, file(vcf).name + ",variantsMD5:" + path(vcf).vcf.variantsMD5, file(tbi).name ] }.sort { it[0].id }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - vcf - Hugging Face cache - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/input.vcf.gz', checkIfExists: true),
+                    []
+                ])
+                input[1] = [[], []]
+                input[2] = channel.value([
+                    [ id:'GRCh38' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/reference.fa.gz', checkIfExists: true),
+                    [],
+                    []
+                ])
+                input[3] = 116
+                input[4] = [[], []]
+                input[5] = true
+                input[6] = 'biodatageeks/vepyr_116_GRCh38_ensembl'
                 """
             }
         }
@@ -136,10 +227,8 @@ nextflow_workflow {
                 { assert workflow.success },
                 { assert workflow.out.vcf_tbi.size() == 1 },
                 { assert file(workflow.out.vcf_tbi[0][2]).exists() },
-                { assert !workflow.trace.tasks().any { it.name.startsWith('VCF_ANNOTATE_VEPYR:BCFTOOLS_NORM') } },
-                { assert snapshot(
-                    workflow.out.vcf_tbi.collect { meta, vcf, tbi -> [ meta, file(vcf).name + ",variantsMD5:" + path(vcf).vcf.variantsMD5, file(tbi).name ] }
-                ).match() }
+                { assert workflow.trace.tasks().count { it.name.contains('HUGGINGFACE_DOWNLOAD') } == 1 },
+                { assert snapshot(workflow.out).match() }
             )
         }
     }
@@ -166,6 +255,7 @@ nextflow_workflow {
                 input[3] = []
                 input[4] = [[], []]
                 input[5] = true
+                input[6] = ''
                 """
             }
         }
@@ -173,6 +263,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
+                { assert !workflow.trace.tasks().any { it.name.contains('HUGGINGFACE_DOWNLOAD') } },
                 { assert workflow.out.vcf_tbi.size() == 1 },
                 { assert file(workflow.out.vcf_tbi[0][2]).exists() },
                 { assert snapshot(workflow.out).match() }
