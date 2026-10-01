@@ -1,5 +1,5 @@
 name: vepyr_annotate
-description: Annotate a VCF with Ensembl VEP consequences using vepyr, a Rust reimplementation of the Variant Effect Predictor. Annotation features are controlled through `task.ext.args`, except for `--fork`, which the module derives from `task.cpus`. When the input VCF has no index the module builds one with tabix, and runs a single pipeline if the input is not bgzip-compressed.
+description: Annotate a VCF with Ensembl VEP consequences using vepyr, a Rust reimplementation of the Variant Effect Predictor. Annotation features are controlled through `task.ext.args`.
 keywords:
   - annotation
   - vcf
@@ -40,11 +40,11 @@ input:
     - tbi:
         type: file
         description: |
-          tabix/CSI index of the input VCF (optional). More than one
-          annotation pipeline needs it: when absent it is built with tabix,
-          and an input that is not bgzip-compressed runs a single pipeline.
+          tabix/CSI index of the input VCF (optional). Built with tabix when
+          absent from a bgzipped input; a plain `.vcf` runs a single pipeline.
         pattern: "*.{tbi,csi}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3616
   - - meta2:
         type: map
         description: |
@@ -61,17 +61,19 @@ input:
     - fasta:
         type: file
         description: |
-          reference FASTA. Required: vepyr annotates with `--everything`,
-          which needs it.
+          reference FASTA. Required: vepyr always annotates with
+          `--everything`, which needs it.
         pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1929
     - fai:
         type: file
         description: |
           samtools/faidx index of the reference FASTA. Required: vepyr opens
           the reference through its index and does not build one.
         pattern: "*.fai"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3475
     - gzi:
         type: file
         description: |
@@ -79,7 +81,8 @@ input:
           FASTA is bgzip-compressed: vepyr cannot open it without the `.gzi`.
           Pass `[]` for an uncompressed FASTA.
         pattern: "*.gzi"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3326
   - cache_version:
       type: integer
       description: |
@@ -115,7 +118,8 @@ output:
           type: file
           description: tabix index of the annotated VCF
           pattern: "*.vcf.gz.tbi"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3616
   versions_vepyr:
     - - ${task.process}:
           type: string
@@ -162,25 +166,25 @@ maintainers:
   - "@mwiewior"
 containers:
   docker:
-    linux/arm64:
-      name: community.wave.seqera.io/library/htslib_vepyr:806fe605983a885b
-      build_id: bd-806fe605983a885b_1
-      scan_id: sc-65754e0d42798655_1
     linux/amd64:
-      name: community.wave.seqera.io/library/htslib_vepyr:84d01ceaf76003ed
-      build_id: bd-84d01ceaf76003ed_1
-      scan_id: sc-76592036b38d9786_1
+      name: community.wave.seqera.io/library/htslib_vepyr:408f2021357958aa
+      build_id: bd-408f2021357958aa_1
+      scan_id: sc-11eca31149c24174_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/htslib_vepyr:ebb29e9a21ff05c9
+      build_id: bd-ebb29e9a21ff05c9_1
+      scan_id: sc-1f6bd919679e30b4_1
   singularity:
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/htslib_vepyr:5872e79a887b6765
-      build_id: bd-5872e79a887b6765_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/da/dae579b8f2a3713d997875e16195f386b0fced234c8c9338549d16ed06eb9d83/data
+      name: oras://community.wave.seqera.io/library/htslib_vepyr:5f4d3201731219a4
+      build_id: bd-5f4d3201731219a4_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bb/bbf0f7f5a0c6b6586735b7636b219e3b788b9c9c1a86994b776556c63892fb4b/data
     linux/arm64:
-      name: oras://community.wave.seqera.io/library/htslib_vepyr:5282c570a1e32022
-      build_id: bd-5282c570a1e32022_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fd/fd366e2d56f4947557073d6b59a0fd326c0f4124cd17a2da075181c98397f235/data
+      name: oras://community.wave.seqera.io/library/htslib_vepyr:76a3378692bb013e
+      build_id: bd-76a3378692bb013e_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/77/7737675bdbd1f3f0bf0093c28e38b80a854a04d242613b42313cb08a4d644bda/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/vepyr/annotate/.conda-lock/linux_amd64-bd-84d01ceaf76003ed_1.txt
+      lock_file: modules/nf-core/vepyr/annotate/.conda-lock/linux_amd64-bd-408f2021357958aa_1.txt
     linux/arm64:
-      lock_file: modules/nf-core/vepyr/annotate/.conda-lock/linux_arm64-bd-806fe605983a885b_1.txt
+      lock_file: modules/nf-core/vepyr/annotate/.conda-lock/linux_arm64-bd-ebb29e9a21ff05c9_1.txt

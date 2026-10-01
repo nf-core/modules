@@ -4,8 +4,8 @@ process VEPYR_ANNOTATE {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/da/dae579b8f2a3713d997875e16195f386b0fced234c8c9338549d16ed06eb9d83/data'
-        : 'community.wave.seqera.io/library/htslib_vepyr:84d01ceaf76003ed'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bb/bbf0f7f5a0c6b6586735b7636b219e3b788b9c9c1a86994b776556c63892fb4b/data'
+        : 'community.wave.seqera.io/library/htslib_vepyr:408f2021357958aa'}"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
@@ -31,17 +31,15 @@ process VEPYR_ANNOTATE {
         error("Input and output names are the same, set prefix in module configuration to disambiguate!")
     }
     if (!fasta) {
-        error("VEPYR_ANNOTATE requires a reference FASTA: vepyr annotates with --everything, which needs it.")
+        error("VEPYR_ANNOTATE requires a reference FASTA: vepyr always annotates with --everything, which needs it.")
     }
     def version_arg = cache_version ? "--cache_version ${cache_version}" : ''
     def plugin_arg = plugin_cache ? "--plugin_cache_root ${plugin_cache}" : ''
-    // --fork above 1 needs a tabix/CSI index: build one when none is given, and
-    // run a single pipeline if the input cannot be indexed (not bgzip).
-    def fork_command = tbi
-        ? "fork=${task.cpus}"
-        : "${vcf}".endsWith('.gz') ? "fork=${task.cpus}; tabix -f -p vcf ${vcf} || fork=1" : "fork=1"
+    // --fork above 1 needs a tabix/CSI index, so a plain .vcf runs one pipeline
+    def fork = tbi || "${vcf}".endsWith('.gz') ? task.cpus : 1
+    def index_command = !tbi && "${vcf}".endsWith('.gz') ? "tabix -p vcf ${vcf}" : ''
     """
-    ${fork_command}
+    ${index_command}
 
     vepyr annotate \\
         -i ${vcf} \\
@@ -51,7 +49,7 @@ process VEPYR_ANNOTATE {
         ${version_arg} \\
         ${plugin_arg} \\
         ${args} \\
-        --fork \$fork \\
+        --fork ${fork} \\
         --no_progress
 
     tabix ${args2} ${prefix}.vcf.gz
