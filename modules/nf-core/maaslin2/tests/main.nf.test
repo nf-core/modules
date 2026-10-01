@@ -1,0 +1,74 @@
+nextflow_process {
+
+    name "Test Process MAASLIN2"
+    script "../main.nf"
+    process "MAASLIN2"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "maaslin2"
+
+    test("Normal run") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_sample' ], // meta map
+                    file(params.modules_testdata_base_path + 'differentialabundance/modules_testdata/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv', checkIfExists: true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'differentialabundance/modules_testdata/SRP254919.samplesheet.sample_metadata.tsv', checkIfExists: true)
+                input[2] = "Test_output_dir"
+                input[3] = "'treatment', 'genotype'"
+                input[4] = "'treatment,mCherry'"
+                input[5] = 0.1  // min_prevalence
+                input[6] = 0.0001  // min_abundance
+                input[7] = "NONE"  // normalization
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.results[0][1]).resolve("all_results.tsv").exists() },
+                { assert path(process.out.results[0][1]).resolve("significant_results.tsv").exists() },
+                { assert snapshot(
+                    process.out.log.collect{file(it).name}, // collect only the file name (depend on structure)
+                    process.out.pdf.collect{file(it).name},
+                    process.out.residuals // left normal for stable md5sum
+                ).match() }
+            )
+        }
+    }
+
+    test("Stub run") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_sample_stub' ], // meta map
+                    file(params.modules_testdata_base_path + 'differentialabundance/modules_testdata/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv', checkIfExists: true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'differentialabundance/modules_testdata/SRP254919.samplesheet.sample_metadata.tsv', checkIfExists: true)
+                input[2] = "Test_output_dir_stub"
+                input[3] = []
+                input[4] = []
+                input[5] = []
+                input[6] = []
+                input[7] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
