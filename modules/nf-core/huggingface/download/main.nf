@@ -25,6 +25,8 @@ process HUGGINGFACE_DOWNLOAD {
     output_path = hf_file ?: prefix
     """
     export HF_HOME="\$PWD/.hf_home"
+    # Xet needs an explicit CA bundle in containers without a system trust store.
+    export SSL_CERT_FILE="\${SSL_CERT_FILE:-\$(python -m certifi)}"
 
     hf download \\
         "${hf_repo}" \\

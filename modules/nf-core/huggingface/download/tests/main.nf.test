@@ -192,6 +192,38 @@ nextflow_process {
         }
     }
 
+    test("download Xet repository - tiny-random-gpt2") {
+
+        when {
+            params {
+                module_args = "--revision 71034c5d8bde858ff824298bdedc65515b97d2b9 --include model.safetensors"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test_xet' ],
+                    "hf-internal-testing/tiny-random-gpt2",
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.output[0][1]).isDirectory() },
+                { assert snapshot(
+                    process.out.output.size(),
+                    process.out.output[0][0],
+                    file(process.out.output[0][1]).name,
+                    file(process.out.output[0][1] + "/model.safetensors"),
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
     test("download repository - demo1 - stub") {
 
         options "-stub"
