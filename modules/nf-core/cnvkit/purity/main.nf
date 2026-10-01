@@ -13,7 +13,7 @@ process CNVKIT_PURITY {
 
     output:
     tuple val(meta), path("*.purity.tsv"), emit: purity
-    tuple val("${task.process}"), val('cnvkit'), eval('cnvkit.py version | sed -e "s/cnvkit v//g"'), topic: versions, emit: versions_cnvkit
+    tuple val("${task.process}"), val('cnvkit'), eval("cnvkit.py version | sed -e 's/cnvkit v//g'"), topic: versions, emit: versions_cnvkit
 
     when:
     task.ext.when == null || task.ext.when
