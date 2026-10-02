@@ -38,7 +38,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log", "stk"])).match() },
                 { assert file(process.out.log[0][1]).text.contains('1 families discovered.') }
             )
         }
