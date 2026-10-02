@@ -5,6 +5,8 @@ description: |
   a directory named by ext.prefix (default: meta.id). Repository type, revision
   and include/exclude filters can be supplied through ext.args, for example
   --repo-type dataset --revision <commit> --include 'data/*'.
+  If SSL_CERT_FILE is unset, the certifi CA bundle is used; export SSL_CERT_FILE
+  to trust custom (e.g. proxy) certificate authorities.
 keywords:
   - download
   - dataset

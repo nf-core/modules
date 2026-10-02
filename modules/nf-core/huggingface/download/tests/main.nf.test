@@ -3,7 +3,6 @@ nextflow_process {
     name "Test Process HUGGINGFACE_DOWNLOAD"
     script "../main.nf"
     process "HUGGINGFACE_DOWNLOAD"
-    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -92,6 +91,8 @@ nextflow_process {
 
     test("download repository - demo1") {
 
+        config "./nextflow.config"
+
         when {
             params {
                 module_args = "--repo-type dataset --revision 87ecf163bedca9d80598b528940a9c4f99e14c11"
@@ -126,6 +127,8 @@ nextflow_process {
     }
 
     test("download filtered repository - demo1 - custom prefix") {
+
+        config "./nextflow.config"
 
         when {
             params {
@@ -162,6 +165,8 @@ nextflow_process {
 
     test("download nested file - demo1") {
 
+        config "./nextflow.config"
+
         when {
             params {
                 module_args = "--repo-type dataset --revision 87ecf163bedca9d80598b528940a9c4f99e14c11"
@@ -193,6 +198,8 @@ nextflow_process {
     }
 
     test("download Xet repository - tiny-random-gpt2") {
+
+        config "./nextflow.config"
 
         when {
             params {
@@ -255,6 +262,8 @@ nextflow_process {
     }
 
     test("download repository - demo1 - custom prefix - stub") {
+
+        config "./nextflow.config"
 
         options "-stub"
 
