@@ -4,15 +4,19 @@ nextflow_process {
     script "../main.nf"
     process "DESEQ2_DIFFERENTIAL"
 
+    config "./nextflow.config"
+
     tag "modules"
     tag "modules_nfcore"
     tag "deseq2"
     tag "deseq2/differential"
 
     test("RNAseq - Feature Counts - formula + comparison contrast string - interaction") {
-        config './contrasts_interaction.config'
 
         when {
+            params {
+                module_args = "--round_digits 2 --sample_id_col sample --vs_method rlog --shrink_lfc FALSE --seed 1"
+            }
             process {
                 """
                 input[0] = Channel.of([
@@ -59,9 +63,11 @@ nextflow_process {
     }
 
     test("RNAseq - Feature Counts - formula + limma contrast string - interaction") {
-        config './contrasts_interaction.config'
 
         when {
+            params {
+                module_args = "--round_digits 2 --sample_id_col sample --vs_method rlog --shrink_lfc FALSE --seed 1"
+            }
             process {
                 """
                 input[0] = Channel.of([
@@ -108,9 +114,11 @@ nextflow_process {
     }
 
     test("RNAseq - Feature Counts - formula + limma contrast string - shrunken") {
-        config './contrasts_shrink.config'
 
         when {
+            params {
+                module_args = "--round_digits 2 --sample_id_col sample --vs_method rlog --shrink_lfc TRUE --seed 1"
+            }
             process {
                 """
                 input[0] = Channel.of([
@@ -157,9 +165,11 @@ nextflow_process {
     }
 
     test("RNAseq - Feature Counts - apeglm shrinkage") {
-        config './contrasts_shrink_apeglm.config'
 
         when {
+            params {
+                module_args = "--round_digits 2 --sample_id_col sample --vs_method rlog --shrink_lfc TRUE --shrink_lfc_type apeglm --seed 1"
+            }
             process {
                 """
                 input[0] = Channel.of([
@@ -207,9 +217,10 @@ nextflow_process {
 
     test("mouse - contrasts - matrix") {
 
-        config './contrasts_matrix.config'
-
         when {
+            params {
+                module_args = "--round_digits 5 --vs_method rlog"
+            }
             process {
                 """
                 expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
@@ -256,9 +267,10 @@ nextflow_process {
 
     test("mouse - contrasts - matrix - lengths") {
 
-        config './contrasts_matrix.config'
-
         when {
+            params {
+                module_args = "--round_digits 5 --vs_method rlog"
+            }
             process {
                 """
                 expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
@@ -311,9 +323,10 @@ nextflow_process {
 
     test("mouse - contrasts - matrix - no blocking") {
 
-        config './contrasts_matrix_noblocking.config'
-
         when {
+            params {
+                module_args = "--round_digits 5 --vs_method rlog"
+            }
             process {
                 """
                 expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
@@ -360,9 +373,10 @@ nextflow_process {
 
     test("mouse - contrasts - matrix - spikes") {
 
-        config './contrasts_matrix_spikes.config'
-
         when {
+            params {
+                module_args = "--round_digits 5 --sizefactors_from_controls TRUE --vs_method rlog"
+            }
             process {
                 """
                 expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
@@ -412,9 +426,10 @@ nextflow_process {
 
     test("mouse - contrasts - matrix - strip spikes") {
 
-        config './contrasts_matrix.config'
-
         when {
+            params {
+                module_args = "--round_digits 5 --vs_method rlog"
+            }
             process {
                 """
                 expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
@@ -464,9 +479,10 @@ nextflow_process {
 
     test("mouse - contrasts - matrix - csv") {
 
-        config './contrasts_matrix.config'
-
         when {
+            params {
+                module_args = "--round_digits 5 --vs_method rlog"
+            }
             process {
                 """
                 expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
@@ -519,9 +535,10 @@ nextflow_process {
 
     test("mouse - contrasts - matrix - vst nsub") {
 
-        config './contrasts_matrix_vst_nsub.config'
-
         when {
+            params {
+                module_args = "--round_digits 5 --vs_method vst --vst_nsub 500"
+            }
             process {
                 """
                 expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
@@ -568,9 +585,10 @@ nextflow_process {
 
     test("mouse - contrasts - matrix - subset to contrast") {
 
-        config './contrasts_matrix_subset_to_contrast.config'
-
         when {
+            params {
+                module_args = "--round_digits 5 --vs_method rlog --subset_to_contrast_samples TRUE"
+            }
             process {
                 """
                 expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
@@ -617,9 +635,10 @@ nextflow_process {
 
     test("mouse - contrasts - matrix - exclude samples") {
 
-        config './contrasts_matrix_exclude_samples.config'
-
         when {
+            params {
+                module_args = "--round_digits 4 --vs_method rlog --exclude_samples_col sample_number --exclude_samples_values sample1"
+            }
             process {
                 """
                 expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
@@ -665,11 +684,12 @@ nextflow_process {
     }
     test("mouse - contrasts - matrix - stub") {
 
-        config './contrasts_matrix.config'
-
         options "-stub"
 
         when {
+            params {
+                module_args = "--round_digits 5 --vs_method rlog"
+            }
             process {
                 """
                 expression_test_data_dir = params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/'
