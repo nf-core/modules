@@ -3,7 +3,6 @@ nextflow_workflow {
     name "Test Subworkflow VCF_ANNOTATE_VEPYR"
     script "../main.nf"
     workflow "VCF_ANNOTATE_VEPYR"
-    config "./nextflow.config"
 
     tag "subworkflows"
     tag "subworkflows_nfcore"
@@ -33,6 +32,8 @@ nextflow_workflow {
     }
 
     test("homo_sapiens - vcf - normalise") {
+
+        config "./nextflow.config"
 
         when {
             workflow {
@@ -72,6 +73,8 @@ nextflow_workflow {
     }
 
     test("homo_sapiens - vcf - normalise without index") {
+
+        config "./nextflow.config"
 
         when {
             params {
@@ -154,6 +157,8 @@ nextflow_workflow {
 
     test("homo_sapiens - vcf - Hugging Face cache shared across samples") {
 
+        config "./nextflow.config"
+
         when {
             params {
                 hf_download_args = "--repo-type dataset --revision 15a048f0585a7a40d2d40cb1c2f7806638ee500b --include '*/chr22.parquet' --include '*/chrom_manifest.json'"
@@ -197,6 +202,8 @@ nextflow_workflow {
 
     test("homo_sapiens - vcf - Hugging Face cache - stub") {
 
+        config "./nextflow.config"
+
         options "-stub"
 
         when {
@@ -234,6 +241,8 @@ nextflow_workflow {
     }
 
     test("homo_sapiens - vcf - normalise - stub") {
+
+        config "./nextflow.config"
 
         options "-stub"
 
