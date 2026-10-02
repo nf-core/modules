@@ -62,6 +62,8 @@ process CELLRANGER_MULTI {
     mkdir -p fastq_all/{gex,vdj,vdj_t,vdj_t_gd,vdj_b,ab,beam,cmo,crispr}
 
     for modality in gex vdj vdj_t vdj_t_gd vdj_b ab beam cmo crispr; do
+        # absent modalities are not staged; skip them so find does not fail under pipefail
+        [ -d "fastqs/\${modality}" ] || continue
         lane=1
         n_fastq_dirs=\$(find fastqs/\${modality} -maxdepth 1 -type d -name "fastq_*" | wc -l)
         if [ \$((n_fastq_dirs % 2)) -ne 0 ]; then
