@@ -29,9 +29,9 @@ input:
         type: file
         description: Candidate protein sequences to annotate. May be empty, in which case a header-only table is produced.
         pattern: "*.{fa,faa,fasta}"
-  - - cdd_db:
-        type: directory
-        description: Pre-formatted CDD RPS-BLAST database directory, as produced by CDD_DB_DOWNLOAD
+  - cdd_db:
+      type: directory
+      description: Pre-formatted CDD RPS-BLAST database directory (NCBI CDD ships ready-made RPS-BLAST databases). An optional db_prefix.txt file inside names the database prefix; the default is Cdd.
 
 output:
   hits:

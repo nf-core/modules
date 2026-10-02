@@ -1,7 +1,7 @@
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     Module: RPSBLAST
-    Conserved-domain annotation of candidate plastizymes against NCBI CDD.
+    Conserved-domain annotation of query proteins against NCBI CDD.
 
     This is the local, offline equivalent of the NCBI Batch CD-Search web
     service: CDD ships pre-formatted RPS-BLAST profile databases, so the same
@@ -45,11 +45,10 @@ process BLAST_RPSBLAST {
 
     # printf's newline is escaped twice in the module source: escaped once,
     # Nextflow would write a real newline here, leaving a line at column 0 that
-    # stops it stripping the script's indentation - and the END_VERSIONS
-    # terminator below would never be matched.
+    # stops it stripping the script's indentation.
     printf '${header}\\n' > ${prefix}.cdsearch.tsv
 
-    # An empty candidate FASTA is a legitimate outcome upstream, not an error:
+    # An empty FASTA is a legitimate outcome upstream, not an error:
     # emit a header-only table so the channel contract still holds.
     if [ -s ${fasta} ]; then
         rpsblast \
