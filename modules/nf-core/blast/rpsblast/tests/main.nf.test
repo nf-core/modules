@@ -1,11 +1,13 @@
 nextflow_process {
 
-    name "Test Process RPSBLAST"
+    name "Test Process BLAST_RPSBLAST"
     script "../main.nf"
-    process "RPSBLAST"
+    process "BLAST_RPSBLAST"
 
     tag "modules"
-    tag "modules_local"
+    tag "modules_nfcore"
+    tag "blast"
+    tag "blast/rpsblast"
     tag "rpsblast"
 
     // A real run needs the pre-formatted CDD profiles (410 MB for the Pfam

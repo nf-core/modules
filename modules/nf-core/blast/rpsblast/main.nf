@@ -11,7 +11,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-process RPSBLAST {
+process BLAST_RPSBLAST {
     tag "${meta.id}"
     label 'process_medium'
 
