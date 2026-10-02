@@ -30,16 +30,13 @@ description: |
 
   ```
   withName: 'BCFTOOLS_NORM' {
-      ext.args   = '--multiallelics -both --do-not-normalize --output-type z --write-index=tbi'
-      ext.prefix = { "${meta.id}.norm" }
+      ext.args = '--multiallelics -both --do-not-normalize --output-type z --write-index=tbi'
   }
   ```
 
-  Keep the `BCFTOOLS_NORM` `ext.prefix` whenever `meta.id` can equal the input
-  VCF's basename (`sample.vcf.gz` with `id: 'sample'`): bcftools/norm writes
-  `${meta.id}.vcf.gz` over its own staged input, a symlink, which truncates the
-  original file. `VEPYR_ANNOTATE` writes `${meta.id}_vepyr.vcf.gz` by default
-  and needs no distinct prefix.
+  No `ext.prefix` is needed: `BCFTOOLS_NORM` and `VEPYR_ANNOTATE` default to
+  `${meta.id}_norm` and `${meta.id}_vepyr`, which cannot collide with the input
+  VCF. Both stop with an error if a custom prefix would overwrite their input.
 keywords:
   - vcf
   - annotation

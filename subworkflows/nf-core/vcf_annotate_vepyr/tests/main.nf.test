@@ -228,6 +228,60 @@ nextflow_workflow {
         }
     }
 
+    test("homo_sapiens - vcf - normalise - sample id matches input basename") {
+
+        config "./nextflow.config"
+
+        setup {
+            run("UNTAR") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [ id:'116_GRCh38_ensembl' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/cache.tar.gz', checkIfExists: true)
+                    ])
+                    """
+                }
+            }
+        }
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'input' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/input.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/input.vcf.gz.tbi', checkIfExists: true)
+                ])
+                input[1] = UNTAR.out.untar.collect()
+                input[2] = channel.value([
+                    [ id:'GRCh38' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/reference.fa.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/reference.fa.gz.fai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/reference.fa.gz.gzi', checkIfExists: true)
+                ])
+                input[3] = 116
+                input[4] = [[], []]
+                input[5] = true
+                input[6] = ''
+                """
+            }
+        }
+
+        then {
+            // The default bcftools/norm prefix keeps input.vcf.gz from being overwritten.
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.vcf_tbi.size() == 1 },
+                { assert workflow.trace.tasks().collect { it.name.tokenize(' ')[0] }.toSet().containsAll(['VCF_ANNOTATE_VEPYR:BCFTOOLS_NORM', 'VCF_ANNOTATE_VEPYR:VEPYR_ANNOTATE']) },
+                { assert snapshot(
+                    workflow.out.vcf_tbi.collect { meta, vcf, tbi -> [ meta, file(vcf).name + ",variantsMD5:" + path(vcf).vcf.variantsMD5, file(tbi).name ] }
+                ).match() }
+            )
+        }
+    }
+
     test("homo_sapiens - vcf - Hugging Face cache - stub") {
 
         config "./nextflow.config"
