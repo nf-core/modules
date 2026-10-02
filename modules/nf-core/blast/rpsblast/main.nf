@@ -26,7 +26,7 @@ process BLAST_RPSBLAST {
 
     output:
     tuple val(meta), path("*.cdsearch.tsv"), emit: hits
-    path "versions.yml"                    , emit: versions
+    tuple val("${task.process}"), val("rpsblast"), eval("rpsblast -version 2>&1 | sed -n 's/^rpsblast: //p' | sed 's/ .*//'"), topic: versions, emit: versions_rpsblast
 
     when:
     task.ext.when == null || task.ext.when
@@ -62,11 +62,6 @@ process BLAST_RPSBLAST {
     else
         echo "WARN: ${fasta} is empty — no conserved-domain search performed for ${prefix}" >&2
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rpsblast: \$( rpsblast -version 2>&1 | sed -n 's/^rpsblast: //p' | sed 's/ .*//' )
-    END_VERSIONS
     """
 
     stub:
@@ -74,10 +69,5 @@ process BLAST_RPSBLAST {
     def header = 'qseqid\tsseqid\tpident\tlength\tmismatch\tgapopen\tqstart\tqend\tsstart\tsend\tevalue\tbitscore\tstitle'
     """
     printf '${header}\\n' > ${prefix}.cdsearch.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rpsblast: 2.17.0+
-    END_VERSIONS
     """
 }
