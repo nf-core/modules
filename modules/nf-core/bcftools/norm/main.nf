@@ -31,9 +31,6 @@ process BCFTOOLS_NORM {
                 : args.contains("--output-type v") || args.contains("-Ov")
                     ? "vcf"
                     : "vcf.gz"
-    if ("${vcf}" == "${prefix}.${extension}") {
-        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
-    }
     """
     bcftools norm \\
         --fasta-ref ${fasta} \\
@@ -55,9 +52,6 @@ process BCFTOOLS_NORM {
                 : args.contains("--output-type v") || args.contains("-Ov")
                     ? "vcf"
                     : "vcf.gz"
-    if ("${vcf}" == "${prefix}.${extension}") {
-        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
-    }
     def index = ''
     if (extension in ['vcf.gz', 'bcf', 'bcf.gz']) {
         if (['--write-index=tbi', '-W=tbi'].any { arg -> args.contains(arg) } && extension == 'vcf.gz') {
