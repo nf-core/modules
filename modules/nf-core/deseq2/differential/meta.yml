@@ -7,7 +7,8 @@ keywords:
   - deseq2
 tools:
   - "deseq2":
-      description: "Differential gene expression analysis based on the negative binomial distribution"
+      description: "Differential gene expression analysis based on the negative binomial
+        distribution"
       homepage: "https://bioconductor.org/packages/release/bioc/html/DESeq2.html"
       documentation: "https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html"
       tool_dev_url: "https://github.com/mikelove/DESeq2"
@@ -40,10 +41,12 @@ input:
           should be used to derive the target samples
     - formula:
         type: string
-        description: (Optional) R formula string used for modeling, e.g. '~ treatment'.
+        description: (Optional) R formula string used for modeling, e.g. '~
+          treatment'.
     - comparison:
         type: string
-        description: (Optional, mandatory if formula is provided) Literal string for contrasts, e.g. 'treatmenthND6'.
+        description: (Optional, mandatory if formula is provided) Literal string
+          for contrasts, e.g. 'treatmenthND6'.
   - - meta2:
         type: map
         description: |
@@ -90,7 +93,8 @@ output:
             Groovy Map containing contrast information, same as input meta
       - "*.deseq2.results.tsv":
           type: file
-          description: TSV-format table of differential expression information as output by DESeq2
+          description: TSV-format table of differential expression information as
+            output by DESeq2
           pattern: "*.deseq2.results.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -210,17 +214,3 @@ authors:
   - "@pinin4fjords"
 maintainers:
   - "@pinin4fjords"
-containers:
-  docker:
-    linux/amd64:
-      name: community.wave.seqera.io/library/bioconductor-deseq2_bioconductor-limma_bioconductor-apeglm:c8cdb092451c6b29
-      build_id: bd-c8cdb092451c6b29_1
-      scan_id: sc-7580c047a1ba196f_1
-  singularity:
-    linux/amd64:
-      name: oras://community.wave.seqera.io/library/bioconductor-deseq2_bioconductor-limma_bioconductor-apeglm:968035b8726dfe00
-      build_id: bd-968035b8726dfe00_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4e/4ecb7b376b31538cd3298a6489501ec09c56a5a441fc81b7b90c630608dc49f1/data
-  conda:
-    linux/amd64:
-      lock_file: modules/nf-core/deseq2/differential/.conda-lock/linux_amd64-bd-c8cdb092451c6b29_1.txt
