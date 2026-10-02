@@ -1,8 +1,9 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "vcf_annotate_vepyr"
 description: |
-  Optionally normalise a VCF with bcftools norm, then annotate it with Ensembl VEP
-  consequences using vepyr and return the bgzip VCF with its tabix index.
+  Optionally download a vepyr cache from Hugging Face and normalise a VCF with
+  bcftools norm, then annotate it with Ensembl VEP consequences using vepyr and
+  return the bgzip VCF with its tabix index.
 
   Use `ch_cache` for an existing cache directory, or set `val_hf_repo` to a
   Hugging Face dataset repository such as `biodatageeks/vepyr_116_GRCh38_ensembl`.

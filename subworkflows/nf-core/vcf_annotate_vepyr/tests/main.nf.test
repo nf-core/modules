@@ -15,25 +15,25 @@ nextflow_workflow {
     tag "huggingface"
     tag "huggingface/download"
 
-    // raw.githubusercontent.com serves blobs, not directory trees, so the cache
-    // is published as an archive and extracted here.
-    setup {
-        run("UNTAR") {
-            script "modules/nf-core/untar/main.nf"
-            process {
-                """
-                input[0] = Channel.of([
-                    [ id:'116_GRCh38_ensembl' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/cache.tar.gz', checkIfExists: true)
-                ])
-                """
-            }
-        }
-    }
-
     test("homo_sapiens - vcf - normalise") {
 
         config "./nextflow.config"
+
+        // raw.githubusercontent.com serves blobs, not directory trees, so the cache
+        // is published as an archive and extracted here.
+        setup {
+            run("UNTAR") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [ id:'116_GRCh38_ensembl' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/cache.tar.gz', checkIfExists: true)
+                    ])
+                    """
+                }
+            }
+        }
 
         when {
             workflow {
@@ -76,6 +76,20 @@ nextflow_workflow {
 
         config "./nextflow.config"
 
+        setup {
+            run("UNTAR") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [ id:'116_GRCh38_ensembl' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/cache.tar.gz', checkIfExists: true)
+                    ])
+                    """
+                }
+            }
+        }
+
         when {
             params {
                 bcftools_norm_args = '--multiallelics -both --do-not-normalize --output-type z'
@@ -117,6 +131,20 @@ nextflow_workflow {
     }
 
     test("homo_sapiens - vcf - no normalise") {
+
+        setup {
+            run("UNTAR") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [ id:'116_GRCh38_ensembl' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/cache.tar.gz', checkIfExists: true)
+                    ])
+                    """
+                }
+            }
+        }
 
         when {
             workflow {
