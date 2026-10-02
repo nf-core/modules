@@ -228,6 +228,44 @@ nextflow_workflow {
         }
     }
 
+    test("homo_sapiens - vcf - normalise - sample id matches input basename") {
+
+        config "./nextflow.config"
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'input' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/input.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/input.vcf.gz.tbi', checkIfExists: true)
+                ])
+                input[1] = channel.value([[ id:'cache' ], []])
+                input[2] = channel.value([
+                    [ id:'GRCh38' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/reference.fa.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/reference.fa.gz.fai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/reference.fa.gz.gzi', checkIfExists: true)
+                ])
+                input[3] = 116
+                input[4] = [[], []]
+                input[5] = true
+                input[6] = ''
+                """
+            }
+        }
+
+        then {
+            // Without ext.prefix, bcftools/norm would write input.vcf.gz over its
+            // own staged input; the module must refuse instead of truncating it.
+            assertAll(
+                { assert workflow.failed },
+                { assert workflow.stdout.any { it.contains('Input and output names are the same') } },
+                { assert !workflow.trace.tasks().any { it.name.startsWith('VCF_ANNOTATE_VEPYR:VEPYR_ANNOTATE') } }
+            )
+        }
+    }
+
     test("homo_sapiens - vcf - Hugging Face cache - stub") {
 
         config "./nextflow.config"
