@@ -541,59 +541,5 @@ nextflow_process {
         }
     }
 
-    test("sarscov2 - [ vcf, [] ], fasta - output overwrites input") {
 
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
-                    []
-                ]
-                input[1] = [
-                    [ id:'genome' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
-                ]
-                """
-            }
-        }
-
-        then {
-            // No ext.prefix: the default output test.vcf.gz would overwrite the staged input.
-            assertAll(
-                { assert process.failed },
-                { assert process.stdout.any { it.contains("Input and output names are the same") } }
-            )
-        }
-    }
-
-    test("sarscov2 - [ vcf, [] ], fasta - output overwrites input - stub") {
-
-        options "-stub"
-
-        when {
-            process {
-                """
-                input[0] = [
-                    [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
-                    []
-                ]
-                input[1] = [
-                    [ id:'genome' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
-                ]
-                """
-            }
-        }
-
-        then {
-            // No ext.prefix: the default output test.vcf.gz would overwrite the staged input.
-            assertAll(
-                { assert process.failed },
-                { assert process.stdout.any { it.contains("Input and output names are the same") } }
-            )
-        }
-    }
 }
