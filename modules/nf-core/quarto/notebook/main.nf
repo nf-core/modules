@@ -64,6 +64,10 @@ process QUARTO_NOTEBOOK {
     export XDG_CACHE_HOME="./.xdg_cache_home"
     export XDG_DATA_HOME="./.xdg_data_home"
 
+    # Without a _quarto.yml here, Quarto searches parent directories for a project and can
+    # pick one outside the task (https://github.com/quarto-dev/quarto-cli/issues/14980)
+    [ -e _quarto.yml ] || printf 'project:\\n  type: default\\n' > _quarto.yml
+
     # Fix Quarto for Apptainer (see https://community.seqera.io/t/confusion-over-why-a-tool-works-in-docker-but-fails-in-singularity-when-the-installation-doesnt-differ-i-e-using-wave-micromamba/1244)
     ENV_QUARTO=/opt/conda/etc/conda/activate.d/quarto.sh
     set +u
