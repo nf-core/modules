@@ -1,0 +1,138 @@
+name: "mutserve_call"
+description: Call homoplasmic and heteroplasmic positions.
+keywords:
+  - mtDNA
+  - heteroplasmy
+  - homoplasmy
+  - genomics
+tools:
+  - "mutserve":
+      description: "Mutserve2 is a variant caller for the mitochondrial genome to detect homoplasmic and heteroplasmic sites in sequence data."
+      homepage: "https://github.com/seppinho/mutserve"
+      documentation: "https://github.com/seppinho/mutserve#readme"
+      tool_dev_url: "https://github.com/seppinho/mutserve"
+      doi: "10.1101/gr.256545.119"
+      licence:
+        - "MIT"
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - reads:
+        type: file
+        description: Sorted and indexed BAM/CRAM file
+        pattern: "*.{bam,cram}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_2573" # CRAM
+    - index:
+        type: file
+        description: Index file for the BAM/CRAM file
+        pattern: "*.{bai,csi,crai}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAI
+          - edam: "http://edamontology.org/format_3663" # CSI
+          - edam: "http://edamontology.org/format_3664" # CRAI
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'reference' ]`
+    - fasta:
+        type: file
+        description: Reference FASTA file
+        pattern: "*.fasta"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.vcf.gz":
+          type: file
+          description: VCF file containing called variants
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3017" # VCF.gz
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  raw:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.txt":
+          type: file
+          description: Tab delimited text file containing called variants
+          pattern: "*.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  fasta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.fasta":
+          type: file
+          description: FASTA file output
+          pattern: "*.fasta"
+          ontologies:
+            - edam: "http://edamontology.org/format_1929" # FASTA
+  versions_mutserve:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mutserve:
+          type: string
+          description: The name of the tool
+      - mutserve --version 2>&1 | grep -o -E 'v[0-9.]+' | tr -d 'v':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mutserve:
+          type: string
+          description: The name of the tool
+      - mutserve --version 2>&1 | grep -o -E 'v[0-9.]+' | tr -d 'v':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@matthdsm"
+  - "@seppinho"
+maintainers:
+  - "@matthdsm"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/mutserve:2.0.3--89cfd60e86e41321
+      build_id: bd-89cfd60e86e41321_1
+      scan_id: sc-ad59e600b1c3fc3c_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/mutserve:2.0.3--9082a0e022e8ba1b
+      build_id: bd-9082a0e022e8ba1b_1
+      scan_id: sc-e5db55700cc8be85_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/mutserve:2.0.3--cf5d2585524fc3b1
+      build_id: bd-cf5d2585524fc3b1_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c5/c5f31fa5275ec069d6087fbd4589edce2613e8f02afcc5f6e00788af22e7355e/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/mutserve:2.0.3--c33bdee872a83366
+      build_id: bd-c33bdee872a83366_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1a/1a035aa62136abefa90759855b37f3ff4436cf3278e0fe4108f35fc417c093d7/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/mutserve/.conda-lock/linux_amd64-bd-9082a0e022e8ba1b_1.txt

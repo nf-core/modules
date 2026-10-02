@@ -7,7 +7,9 @@ keywords:
   - profile hmm
   - clustering
   - sequence alignment
-  - proteomics
+  - metagenomics
+  - hmmer
+  - protein sequences
 tools:
   - "mgnifam":
       description: Python package for iterative HMM-based protein family generation
@@ -15,18 +17,19 @@ tools:
         new members, re-aligning, and either converging on a family or discarding the
         cluster
       homepage: "https://github.com/vagkaratzas/mgnifam"
-      documentation: "https://github.com/vagkaratzas/mgnifam"
+      documentation: "https://vagkaratzas.github.io/mgnifam/"
       tool_dev_url: "https://github.com/vagkaratzas/mgnifam"
       licence:
         - "MIT"
-      identifier: ""
+      args_id: "$args"
+      identifier: biotools:mgnifam
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - clusters_chunk:
+    - clustering:
         type: file
         description: Headerless TSV file of MMseqs2 sequence clusters, one representative-member
           pair per line (representative<TAB>member)
@@ -37,9 +40,17 @@ input:
         type: file
         description: Uncompressed FASTA file of the protein sequence database, with
           unique sequence names, referenced by the cluster members
-        pattern: "*.{fa,fasta,fna,faa}"
+        pattern: "*.{fa,fasta,faa}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
+    - fasta_index:
+        type: file
+        description: Optional. Precomputed Easel SSI index of the FASTA file, e.g.
+          from `esl-sfetch --index` (hmmer/eslsfetchindex). Used as given and never
+          rebuilt, so parallel chunk tasks can share one read-only index. Built
+          automatically when omitted
+        pattern: "*.ssi"
+        ontologies: []
 output:
   seed_msa:
     - - meta:
@@ -177,6 +188,20 @@ output:
           pattern: "*/*_converged.txt"
           ontologies:
             - edam: http://edamontology.org/format_3671 # Plain text format
+  stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}/${prefix}_mgnifam_stats.json:
+          type: file
+          description: Optional. MultiQC-ready summary of the run - family counts,
+            discard reasons, and histograms of seed and full MSA size, model length and
+            representative length. Written only after a completed run
+          pattern: "*/*_mgnifam_stats.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
   versions_mgnifam:
     - - ${task.process}:
           type: string
@@ -185,16 +210,6 @@ output:
           type: string
           description: The name of the tool
       - "mgnifam --version 2>&1":
-          type: eval
-          description: The expression to obtain the version of the tool
-  versions_python:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - python:
-          type: string
-          description: The name of the tool
-      - python3 --version 2>&1 | sed 's/Python //':
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -206,15 +221,6 @@ topics:
           type: string
           description: The name of the tool
       - "mgnifam --version 2>&1":
-          type: eval
-          description: The expression to obtain the version of the tool
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - python:
-          type: string
-          description: The name of the tool
-      - python3 --version 2>&1 | sed 's/Python //':
           type: eval
           description: The expression to obtain the version of the tool
 authors:

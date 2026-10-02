@@ -14,15 +14,17 @@ description: |
   Nat Biotechnol, doi:10.1038/s41587-022-01369-0; gencode-riboseqORFs
   collapse_cutoff 0.9), implemented here with MMseqs2 sequence-identity
   clustering rather than that tool's longest-shared-string / P-site-overlap
-  metric. Small ORFs (orf_class "smORF", i.e. aa_length <= 100) are clustered by
+  metric. Small ORFs (`aa_length` <= `--smorf-max-aa`, default 100) are clustered by
   amino-acid identity upstream and this module folds each multi-member cluster
   down to one representative.
 
-  Only smORF rows are collapsed; larger ORFs and transcript-anchored classes are
-  passed through untouched. Among the smORF members of a cluster the
-  representative is chosen by longest aa_length (ties broken by orf_id), so the
-  result does not depend on which sequence MMseqs2 labelled the cluster
-  representative. Catalogue row order is preserved; dropped members fold their
+  Only small ORFs are collapsed; larger ORFs are passed through untouched.
+  Eligibility is the catalogue's `is_smorf` flag, independent of `orf_class`, so
+  a short uORF and a short novel ORF are both candidates; `--smorf-max-aa`
+  re-derives the flag and aborts on disagreement. Among the members of a cluster
+  the representative is chosen by class specificity, then longest aa_length,
+  then orf_id, so the result does not depend on which sequence MMseqs2 labelled
+  the cluster representative. Catalogue row order is preserved; dropped members fold their
   `called_by_<caller>` / `score_<caller>` evidence, `n_samples` / `samples`
   recurrence and gene mappings into the survivor.
 keywords:

@@ -2,7 +2,7 @@ nextflow_process {
 
     name "Test Process STAR_STARSOLO"
     script "../main.nf"
-    process "STARSOLO"
+    process "STAR_STARSOLO"
 
     tag "modules"
     tag "modules_nfcore"
@@ -50,14 +50,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.counts,
-                    file(process.out.log_final[0][1]).name,
-                    file(process.out.log_out[0][1]).name,
-                    file(process.out.log_progress[0][1]).name,
-                    process.out.summary,
-                    process.out.versions
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log_final", "log_out", "log_progress"])).match() }
             )
         }
 
@@ -105,7 +98,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

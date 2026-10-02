@@ -12,24 +12,22 @@ components:
   - hostile/fetch
   - hostile/clean
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1', single_end:false ]`
-  - reads:
+  - ch_reads:
       type: file
-      description: Input FASTQ files for hostile cleaning
+      description: |
+        Input FASTQ files for hostile cleaning.
+
+        Structure: [ val(meta), [ path(reads) ] ]
       pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
-  - reference_name:
-      type: string
-      description: Name of the reference to align against and thus remove mapped reads to.
-  - reference_dir:
+  - ch_reference:
       type: directory
       description: |
-        Directory containing index file(s) corresponding to the preferred aligner (bowtie2 short reads or minimap for long reads).
-        Note that single end data is assumed to be long reads. If you have single-end short read you must supply both the BowTie2
-        indices AND explicitly specify `--aligner bowtie2`
+        Optional name of the reference to align against (and thus remove mapped reads to), together with the
+        directory containing index file(s) corresponding to the preferred aligner (bowtie2 short reads or
+        minimap for long reads). Note that single end data is assumed to be long reads. If you have single-end
+        short read you must supply both the BowTie2 indices AND explicitly specify `--aligner bowtie2`
+
+        Structure: [ val(reference_name), path(reference_dir) ]
   - index_name:
       type: string
       description: Name of the reference genome index to download for hostile fetch if the reference is not provided.

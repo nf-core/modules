@@ -60,6 +60,16 @@ output:
           description: xls file containing annotated peaks
           pattern: "*.xls"
           ontologies: []
+  versions_macs3:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - macs3:
+          type: string
+          description: The name of the tool
+      - macs3 --version | sed -e 's/macs3 //':
+          type: eval
+          description: The expression to obtain the version of the tool
   gapped:
     - - meta:
           type: map
@@ -95,16 +105,6 @@ output:
             samples
           pattern: "*.bdg"
           ontologies: []
-  versions_macs3:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - macs3:
-          type: string
-          description: The name of the tool
-      - macs3 --version | sed -e 's/macs3 //':
-          type: eval
-          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:

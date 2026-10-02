@@ -77,16 +77,6 @@ output:
           description: histogram plots obtained from individual kmer sizes
           pattern: "*.pdf"
           ontologies: []
-  versions_kmergenie:
-    - - ${task.process}:
-          type: string
-          description: The name of the process
-      - kmergenie:
-          type: string
-          description: The name of the tool
-      - kmergenie --version |& sed "1!d ; s/KmerGenie //":
-          type: eval
-          description: The expression to obtain the version of the tool
   log:
     - - meta:
           type: map
@@ -97,6 +87,16 @@ output:
           type: file
           description: log file containing the standard output and error of the kmergenie command
           pattern: "*.kmergenie.log"
+  versions_kmergenie:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kmergenie:
+          type: string
+          description: The name of the tool
+      - kmergenie --version |& sed "1!d ; s/KmerGenie //":
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:

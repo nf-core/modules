@@ -31,32 +31,20 @@ input:
       description: |
         BWA genome index files for the contamination species.
         Structure: [ val(meta3), path(contaminant_index) ]
-  - val_sort_bam:
-      type: boolean
-      description: If true sort resulting primary bam files.
-      pattern: "true|false"
-  - ch_primary_fasta_fai:
+  - ch_fasta_fai:
       type: file
       description: |
-        Optional reference fasta file for the primary genome. This only needs to be given if val_sort_bam = true
-        Structure: [ path(fasta), path(fai) ]
+        Optional reference fasta file and index for the primary genome.
+        Structure: [ val(meta4), path(fasta), path(fai) ]
 output:
   - bam:
       description: |
-        BAM file, sorted by samtools if requested
+        Filtered BAM file, sorted by samtools
         Structure: [ val(meta), path(bam) ]
-  - contaminant_bam:
+  - index:
       description: |
-        BAM file of the reads that map better to the contamination genome. Sorted by queryname.
-        Structure: [ val(meta), path(bam) ]
-  - bai:
-      description: |
-        BAI index of the ordered BAM file
-        Structure: [ val(meta), path(bai) ]
-  - csi:
-      description: |
-        CSI index of the ordered BAM file
-        Structure: [ val(meta), path(csi) ]
+        BAI, CRAI or CSI index of the sorted filtered BAM file
+        Structure: [ val(meta), path(index) ]
   - stats:
       description: |
         File containing samtools stats output
@@ -69,6 +57,18 @@ output:
       description: |
         File containing samtools idxstats output
         Structure: [ val(meta), path(idxstats) ]
+  - contaminant_bam:
+      description: |
+        BAM file of the reads that map better to the contamination genome. Sorted by queryname.
+        Structure: [ val(meta), path(bam) ]
+  - unfiltered_bam:
+      description: |
+        Primary unfiltered BAM file, sorted by samtools
+        Structure: [ val(meta), path(bam) ]
+  - unfiltered_index:
+      description: |
+        BAI, CRAI or CSI index of the sorted primary unfiltered BAM file
+        Structure: [ val(meta), path(index) ]
   - unfiltered_stats:
       description: |
         File containing samtools stats output for primary unfiltered alignment.
@@ -81,10 +81,6 @@ output:
       description: |
         File containing samtools idxstats output for primary unfiltered alignment.
         Structure: [ val(meta), path(idxstats) ]
-  - versions:
-      description: |
-        Files containing software versions
-        Structure: [ path(versions.yml) ]
 authors:
   - "@sppearce"
 maintainers:

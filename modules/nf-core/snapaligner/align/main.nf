@@ -1,14 +1,14 @@
 process SNAPALIGNER_ALIGN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/snap-aligner:2.0.5--h077b44d_2':
-        'quay.io/biocontainers/snap-aligner:2.0.5--h077b44d_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/snap-aligner:2.0.5--h077b44d_2'
+        : 'quay.io/biocontainers/snap-aligner:2.0.5--h077b44d_2'}"
 
     input:
-    tuple val(meta) , path(reads, stageAs: "?/*")
+    tuple val(meta), path(reads, stageAs: "?/*")
     tuple val(meta2), path(index)
 
     output:
@@ -33,12 +33,13 @@ process SNAPALIGNER_ALIGN {
         ${reads} \\
         -o ${prefix}.bam \\
         -t ${task.cpus} \\
-        $args
+        ${args}
     """
 
     stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch test.bam
-    touch test.bam.bai
+    touch ${prefix}.bam
+    touch ${prefix}.bam.bai
     """
 }

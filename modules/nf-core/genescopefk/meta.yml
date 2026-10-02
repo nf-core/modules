@@ -91,16 +91,6 @@ output:
           description: A GeneScope transformed log plot in PNG format
           pattern: "*_transformed_log_plot.png"
           ontologies: []
-  kmer_cov:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - KMERCOV:
-          type: float
-          description: Average kmer coverage value extracted from summary file
-          pattern: "[0-9.]+"
   log:
     - - meta:
           type: map
@@ -112,6 +102,16 @@ output:
           description: GeneScopeFK command stdout log
           pattern: "*_genescopefk.log"
           ontologies: []
+  kmer_cov:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - KMERCOV:
+          type: float
+          description: Average kmer coverage value extracted from summary file
+          pattern: "[0-9.]+"
   versions_genescopefk:
     - - ${task.process}:
           type: string

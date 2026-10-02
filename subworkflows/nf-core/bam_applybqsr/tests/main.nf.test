@@ -227,13 +227,13 @@ nextflow_workflow {
                 input[2] = channel.of([[], 0])
                 input[3] = 'cram'
                 """
-                }
             }
+        }
 
-    then {
-        assertAll(
-                { assert workflow.success },
-                { assert snapshot(sanitizeOutput(workflow.out)).match() }
+        then {
+            assertAll(
+                    { assert workflow.success },
+                    { assert snapshot(sanitizeOutput(workflow.out)).match() }
             )
         }
     }

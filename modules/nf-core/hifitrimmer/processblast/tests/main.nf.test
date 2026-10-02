@@ -44,7 +44,7 @@ nextflow_process {
                     process.out.summary.collect{ meta, summary_file ->
                         [ meta, path(summary_file).json.tap { it.remove('run_info') } ]
                     },
-                    process.out.hits,
+                    process.out.hits.collect { meta, hits_file -> [ meta, "${file(hits_file).name}:md5,${path(hits_file).readLines().sort().join('\n').md5()}" ] },
                     process.out.versions_hifitrimmer
                     ).match()
                 }

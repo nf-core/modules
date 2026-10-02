@@ -13,7 +13,7 @@ process REGTOOLS_JUNCTIONSEXTRACT {
 
     output:
     tuple val(meta), path("*.junc"), emit: junc
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('regtools'), eval("regtools --version 2>&1 | sed -n 's/Version:\t//p'"), topic: versions, emit: versions_repeatmasker
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,21 +28,11 @@ process REGTOOLS_JUNCTIONSEXTRACT {
         -s ${strand} \\
         -o ${prefix}.junc \\
         $bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        regtools: \$(regtools --version 2>&1 | grep "Version:" | sed 's/Version:\t//')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.junc
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        regtools: \$(regtools --version 2>&1 | grep "Version:" | sed 's/Version:\t//')
-    END_VERSIONS
     """
 }

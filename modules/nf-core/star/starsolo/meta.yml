@@ -1,6 +1,5 @@
-name: "starsolo"
-description: Create a counts matrix for single-cell data using STARSolo, handling
-  cell barcodes and UMI information.
+name: "star_starsolo"
+description: Create a counts matrix for single-cell data using STARSolo, handling cell barcodes and UMI information.
 keywords:
   - align
   - count
@@ -12,7 +11,8 @@ tools:
       homepage: "https://github.com/alexdobin/STAR/"
       documentation: "https://github.com/alexdobin/STAR/blob/master/docs/STARsolo.md"
       doi: "10.1101/2021.05.05.442755"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:star
 input:
   - - meta:
@@ -112,13 +112,29 @@ output:
           pattern: "*/Gene/Summary.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
+  versions_star:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - star:
+          type: string
+          description: The name of the tool
+      - STAR --version | sed -e "s/STAR_//g":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - star:
+          type: string
+          description: The name of the tool
+      - STAR --version | sed -e "s/STAR_//g":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@kevinmenden"
   - "@ggabernet"

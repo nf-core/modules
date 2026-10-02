@@ -4,8 +4,8 @@ process HIFITRIMMER_PROCESSBLAST {
 
    conda "${moduleDir}/environment.yml"
    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-      'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1b/1b30f66d13fc3da362a0a9abb9365a6b5e2b90e6aff316c59ae58471c707bdd6/data' :
-      'community.wave.seqera.io/library/hifi_trimmer:4.0.0--41f93366a6098f77' }"
+      'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/65/653461311faa0a2175b75d08405548c1a9b8e704c6b6b70b133c4970cb3d7e5c/data' :
+      'community.wave.seqera.io/library/hifi_trimmer_gzip:e72290a9b8b5d246' }"
 
    input:
    tuple val(meta), path(blast)
@@ -37,8 +37,7 @@ process HIFITRIMMER_PROCESSBLAST {
    stub:
    def prefix = task.ext.prefix ?: "${meta.id}"
    """
-   # Create deterministic gzip output (fixed mtime) so stub md5 is stable across runs.
-   python3 -c "import gzip; open('${prefix}.bed.gz','wb').write(gzip.compress(b'stub\\n', mtime=0))"
+   echo "" | gzip > ${prefix}.bed.gz
    touch ${prefix}.summary.json
    touch ${prefix}.hits
    """

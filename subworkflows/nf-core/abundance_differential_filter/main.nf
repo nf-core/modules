@@ -183,8 +183,6 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         inputs.samples_and_matrix.filter {index -> index[0].differential_method == 'propd' }
     )
 
-    ch_versions = ch_versions.mix(PROPR_PROPD.out.versions.first())
-
     // ----------------------------------------------------
     // Run DREAM
     // ----------------------------------------------------

@@ -9,6 +9,7 @@ process SOURMASH_SKETCH {
 
     input:
     tuple val(meta), path(library, stageAs: 'library/*')
+    val merge_sigs
 
     output:
     tuple val(meta), path("*.sig"), emit: signatures
@@ -21,12 +22,13 @@ process SOURMASH_SKETCH {
     // required defaults for the tool to run, but can be overridden
     def args = task.ext.args ?: "dna --param-string 'scaled=1000,k=21,k=31,k=51,abund'"
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def merge_sigs_cmd = merge_sigs ? "--merge ${prefix}" : ''
     """
     find -L library/ -type f > library.txt
 
     sourmash sketch \\
         ${args} \\
-        --merge '${prefix}' \\
+        ${merge_sigs_cmd} \\
         --output '${prefix}.sig' \\
         --from-file library.txt
     """
@@ -34,12 +36,13 @@ process SOURMASH_SKETCH {
     stub:
     def args = task.ext.args ?: "dna --param-string 'scaled=1000,k=21,k=31,k=51,abund'"
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def merge_sigs_cmd = merge_sigs ? "--merge ${prefix}" : ''
     """
     find -L library/ -type f > library.txt
 
     echo "sourmash sketch \\
         ${args} \\
-        --merge '${prefix}' \\
+        ${merge_sigs_cmd} \\
         --output '${prefix}.sig' \\
         --from-file library.txt"
 

@@ -45,12 +45,6 @@ output:
           description: BAM file
           pattern: "*.bam"
           ontologies: []
-  logs:
-    - "*_log.txt":
-        type: file
-        description: TXT file
-        pattern: "*.txt"
-        ontologies: []
   versions_deeptools:
     - - ${task.process}:
           type: string
@@ -71,6 +65,12 @@ output:
       - samtools version | sed '1!d;s/.* //':
           type: eval
           description: The expression to obtain the version of the tool
+  logs:
+    - "*_log.txt":
+        type: file
+        description: TXT file
+        pattern: "*.txt"
+        ontologies: []
 topics:
   versions:
     - - ${task.process}:

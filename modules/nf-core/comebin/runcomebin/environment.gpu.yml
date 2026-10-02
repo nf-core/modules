@@ -1,0 +1,13 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - bioconda::comebin=1.1.0
+  # CheckM's post-link script needs both to unpack its database at build time
+  - conda-forge::gzip=1.14
+  - conda-forge::tar=1.35
+  # lowest CUDA pytorch 2.13 ships on linux-64, so it runs on the widest range of hosts
+  - conda-forge::pytorch-gpu=2.13.0
+  - conda-forge::cuda-version=12.9

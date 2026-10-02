@@ -11,15 +11,17 @@ process SIGPROFILER {
     tuple val(meta), path(tsv_list, stageAs: '*.tsv')
     val(genome)                  // genome version
     path(genome_installed_path)  //optional
+    path(seeds)
 
     output:
-    tuple val(meta), path("results/*")    , emit: results_sigprofiler
-    path "versions.yml"                   , emit: versions
+    tuple val(meta), path("results/*"), emit: results_sigprofiler
+    path "versions.yml"               , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
+
     template "main_script.py"
 
     stub:

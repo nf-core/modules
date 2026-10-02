@@ -3,9 +3,9 @@ process RCLONE_COPY {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c9/c947c1a7171daf074310295417d0f0afe879275e1543fa5fc2a9711e7c2c72ab/data'
-        : 'community.wave.seqera.io/library/rclone:1.65.0--ff88b2e0040147be'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+            ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5d/5dfd28fd0090c69f57c9bd93ea3235d8df194e8f269b5cb3027b6b59bff567d5/data'
+            : 'community.wave.seqera.io/library/rclone:1.74.3--2ef33c5b9132aa97' }"
 
     input:
     tuple val(meta), val(source_path), val(destination_path), path(filter_file)
@@ -30,9 +30,12 @@ process RCLONE_COPY {
     def http_url_arg = ''
 
     if (source_string ==~ /^https?:\/\/.*/) {
-        def matcher = (source_string =~ /^(https?:\/\/[^\/]+)(\/.*)$/)
+        def matcher = (source_string =~ /^(https?:\/\/[^\/]+)(\/.*)?$/)
+        if (!matcher.matches()) {
+            throw new IllegalArgumentException("Invalid HTTP(S) source '${source_string}' for sample '${meta.id}'.")
+        }
         http_url_arg = "--http-url '${matcher[0][1]}'"
-        rclone_source = ":http:${matcher[0][2].replaceFirst('^/', '')}"
+        rclone_source = ":http:${(matcher[0][2] ?: '/').replaceFirst('^/', '')}"
     } else {
         rclone_source = source_string.replaceFirst('^([a-zA-Z][a-zA-Z0-9+.-]*)://', '$1:')
     }

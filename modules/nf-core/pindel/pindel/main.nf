@@ -24,7 +24,7 @@ process PINDEL_PINDEL {
     tuple val(meta), path("*_RP")            , emit: rp
     tuple val(meta), path("*_SI")            , emit: si
     tuple val(meta), path("*_TD")            , emit: td
-    path "versions.yml"                      , emit: versions
+    tuple val("${task.process}"), val('pindel'), eval("pindel | grep '^Pindel version' | uniq | sed 's/Pindel version //; s/, [0-9]\\+.//'"), topic: versions, emit: versions_pindel
 
     when:
     task.ext.when == null || task.ext.when
@@ -42,16 +42,18 @@ process PINDEL_PINDEL {
     echo -e "${bam}\t${args2}\t${prefix}" > pindel.cfg
 
     pindel \\
-        $args \\
-        -T $task.cpus \\
-        -o $prefix \\
-        -f $fasta \\
-        -j $bed \\
+        ${args} \\
+        -T ${task.cpus} \\
+        -o ${prefix} \\
+        -f ${fasta} \\
+        -j ${bed} \\
         -i pindel.cfg
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pindel: \$(pindel | grep '^Pindel version' | uniq | sed 's/Pindel version //; s/, [0-9]\\+.//' ))
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    touch ${prefix}_{BP,CloseEndMapped,D,INT_final,INV,LI,RP,SI,TD}
     """
 }

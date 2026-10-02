@@ -29,12 +29,13 @@ process SEQTK_SAMPLE {
     """
     printf "%s\\n" $reads | while read f;
     do
+        out=\$(basename \$f | sed 's/\\.f\\(ast\\)\\?q\\.gz\$/.fastq.gz/')
         seqtk \\
             sample \\
             $args \\
             \$f \\
             $sample_size \\
-            | gzip --no-name > ${prefix}_\$(basename \$f)
+            | gzip --no-name > ${prefix}_\${out}
     done
     """
 
