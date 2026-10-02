@@ -30,6 +30,7 @@ process UNTAR {
     if [[ \$(tar -taf ${archive} | grep -o -P "^.*?\\/" | uniq | wc -l) -eq 1 ]]; then
         tar \\
             -C ${prefix} --strip-components 1 \\
+            --no-same-owner \\
             -xavf \\
             ${args} \\
             ${archive} \\
@@ -37,6 +38,7 @@ process UNTAR {
     else
         tar \\
             -C ${prefix} \\
+            --no-same-owner \\
             -xavf \\
             ${args} \\
             ${archive} \\
