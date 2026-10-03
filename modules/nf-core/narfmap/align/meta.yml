@@ -8,8 +8,7 @@ keywords:
   - sam
 tools:
   - narfmap:
-      description: narfmap is a fork of the Dragen mapper/aligner Open Source
-        Software.
+      description: narfmap is a fork of the Dragen mapper/aligner Open Source Software.
       homepage: https://github.com/bioinformaticsorphanage/NARFMAP
       documentation: https://github.com/bioinformaticsorphanage/NARFMAP/blob/main/doc/usage.md#basic-command-line-usage
       tool_dev_url: https://github.com/bioinformaticsorphanage/NARFMAP
@@ -137,3 +136,17 @@ authors:
   - "@edmundmiller"
 maintainers:
   - "@edmundmiller"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/narfmap_pigz_samtools:e3bfa7f4d4cfb1bb
+      build_id: bd-e3bfa7f4d4cfb1bb_1
+      scan_id: sc-bc8c3d41e1125084_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/narfmap_pigz_samtools:f57078f31c711e2b
+      build_id: bd-f57078f31c711e2b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9e/9e09c4813f50c84494bc9e482c8e5ac52a0c3d5567945b7056c8c36d54aff894/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/narfmap/align/.conda-lock/linux_amd64-bd-e3bfa7f4d4cfb1bb_1.txt
