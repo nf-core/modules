@@ -1,0 +1,101 @@
+name: colabfold
+description: Predicts protein structure with AlphaFold2, taking the multiple sequence alignment from an MMseqs2 server rather than local databases
+keywords:
+  - protein structure
+  - structure prediction
+  - AlphaFold2
+  - MSA
+  - folding
+tools:
+  - colabfold:
+      description: |
+        ColabFold runs AlphaFold2 (and other folding models) while sourcing its
+        multiple sequence alignment from a remote MMseqs2 server. That removes
+        the ~2.6 TB of reference databases a local AlphaFold2 install needs,
+        which is what makes structure prediction runnable on an ordinary
+        workstation. A GPU speeds inference up but is not required.
+      homepage: https://github.com/sokrypton/ColabFold
+      documentation: https://github.com/sokrypton/ColabFold
+      doi: 10.1038/s41592-022-01488-1
+      licence: ["MIT"]
+      identifier: biotools:colabfold
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sample1' ]
+    - fasta:
+        type: file
+        description: |
+          Protein sequences to fold. May be empty — an upstream screen that
+          found no candidate is a legitimate outcome, and the module then emits
+          no structure rather than a placeholder.
+        pattern: "*.{fa,faa,fasta}"
+  - weights:
+      type: directory
+      description: |
+        AlphaFold2 parameter directory. Pass `[]` to let colabfold_batch
+        download the weights into its own cache on first use.
+
+output:
+  pdb:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - "*.colabfold.pdb":
+          type: file
+          description: Best-ranked predicted structure (rank_001), one file per query sequence
+          pattern: "*.colabfold.pdb"
+  plddt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - "*.plddt.tsv":
+          type: file
+          description: |
+            Mean per-model pLDDT, so a reader can tell a confidently folded
+            domain from a disordered tail without opening the structure.
+          pattern: "*.plddt.tsv"
+  raw:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - "raw/**":
+          type: file
+          description: colabfold_batch's full output, every model and its scores
+          pattern: "raw/**"
+  versions_colabfold:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - colabfold:
+          type: string
+          description: The name of the tool
+      - python -c 'import importlib.metadata as m; print(m.version("colabfold"))':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - colabfold:
+          type: string
+          description: The name of the tool
+      - python -c 'import importlib.metadata as m; print(m.version("colabfold"))':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@Bboy010"
+maintainers:
+  - "@Bboy010"

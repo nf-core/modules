@@ -1,0 +1,62 @@
+nextflow_process {
+
+    name "Test Process COLABFOLD"
+    script "../main.nf"
+    process "COLABFOLD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "colabfold"
+
+    // A real fold needs the ~4 GB AlphaFold2 weights, an MMseqs2 server and
+    // hours of CPU (or a GPU), which no CI runner has. What can run for real is
+    // the empty-input path: an upstream step that finds nothing to fold is a
+    // normal outcome, and the module must then emit no structure rather than
+    // fail or hand a downstream tool an empty placeholder.
+    test("empty fasta - no structure emitted") {
+
+        when {
+            process {
+                """
+                def empty = File.createTempFile('empty', '.faa')
+                empty.deleteOnExit()
+                input[0] = [ [ id:'test' ], file(empty.absolutePath) ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.pdb.size() == 0 },
+                { assert process.out.plddt.size() == 0 },
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
+            )
+        }
+    }
+
+    test("protein fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/interproscan/l_arginase.faa', checkIfExists: true)
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
