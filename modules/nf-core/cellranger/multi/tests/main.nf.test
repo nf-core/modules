@@ -63,6 +63,13 @@ nextflow_process {
                 ]
                 def bcell_fastq_samplename_10k_pbmc = "subsampled_sc5p_v2_hs_PBMC_10k"
 
+                // stage T cell FASTQ test data
+                tcell_fastqs_10k_pbmc = [
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/tcell/subsampled_sc5p_v2_hs_PBMC_10k_t_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/tcell/subsampled_sc5p_v2_hs_PBMC_10k_t_S1_L001_R2_001.fastq.gz', checkIfExists: true)
+                ]
+                def tcell_fastq_samplename_10k_pbmc = "subsampled_sc5p_v2_hs_PBMC_10k"
+
                 // stage 5' gene expression FASTQ test data
                 fivepgex_fastqs_10k_pbmc = [
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc/fastqs/5gex/5gex/subsampled_sc5p_v2_hs_PBMC_10k_5gex_S1_L001_R1_001.fastq.gz', checkIfExists: true),
@@ -175,6 +182,7 @@ nextflow_process {
                 // references just need a path
                 ch_gex_fastqs            = [ [:], [], [:] ]
                 ch_vdj_fastqs            = [ [:], [], [:] ]
+                ch_vdj_t_gd_fastqs       = [ [:], [], [:] ]
                 ch_ab_fastqs             = [ [:], [], [:] ]
                 ch_beam_fastqs           = [ [:], [], [:] ]
                 ch_cmo_fastqs            = [ [:], [], [:] ]
@@ -199,6 +207,9 @@ nextflow_process {
                 ch_bcell_fastqs_10k_pbmc  = Channel.of( bcell_fastqs_10k_pbmc )
                     .collect()
                     .map { reads -> [ [ id:bcell_fastq_samplename_10k_pbmc ], reads, [:] ] }
+                ch_tcell_fastqs_10k_pbmc  = Channel.of( tcell_fastqs_10k_pbmc )
+                    .collect()
+                    .map { reads -> [ [ id:tcell_fastq_samplename_10k_pbmc ], reads, [:] ] }
                 ch_ab_fastqs_10k_pbmc  = Channel.of( ab_fastqs_10k_pbmc )
                     .collect()
                     .map { reads -> [ [ id:fivepab_fastq_samplename_10k_pbmc  ], reads, [:] ] }
@@ -209,7 +220,7 @@ nextflow_process {
                 //
                 input[0]  = [ id:'subsampled_sc5p_v2_hs_PBMC_10k', single_end:false ]
                 input[1]  = ch_gex_fastqs_10k_pbmc
-                input[2]  = ch_bcell_fastqs_10k_pbmc
+                input[2]  = ch_vdj_fastqs
                 input[3]  = ch_ab_fastqs_10k_pbmc
                 input[4]  = ch_beam_fastqs
                 input[5]  = ch_cmo_fastqs
@@ -228,6 +239,9 @@ nextflow_process {
                 input[18] = ch_frna_sampleinfo
                 input[19] = ch_ocm_barcodes
                 input[20] = false // default to false to guarantee renaming during test
+                input[21] = ch_tcell_fastqs_10k_pbmc
+                input[22] = ch_vdj_t_gd_fastqs
+                input[23] = ch_bcell_fastqs_10k_pbmc
                 """
             }
         }
@@ -237,12 +251,14 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                 process.out.findAll { key, val -> key.startsWith("versions") },
-                process.out.outs[0][1].findAll { file(it).name == 'all_contig.fasta' },
-                process.out.outs[0][1].findAll { file(it).name == 'all_contig.fasta.fai' },
-                process.out.outs[0][1].findAll { file(it).name == 'all_contig.fastq' },
-                process.out.outs[0][1].findAll { file(it).name.contains('consensus.bam.bai') },
-                process.out.outs[0][1].findAll { file(it).name == 'regions.fa' },
-                process.out.outs[0][1].findAll { file(it).name.contains('.json') }
+                // the subsampled T cell reads produce no contigs, so hash only non-empty contig files
+                process.out.outs[0][1].findAll { file(it).name == 'all_contig.fasta' && file(it).size() > 0 }.sort { f -> f.toString() },
+                process.out.outs[0][1].findAll { file(it).name == 'all_contig.fasta.fai' }.sort { f -> f.toString() },
+                process.out.outs[0][1].findAll { file(it).name == 'all_contig.fastq' && file(it).size() > 0 }.sort { f -> f.toString() },
+                process.out.outs[0][1].findAll { file(it).name.contains('consensus.bam.bai') }.sort { f -> f.toString() },
+                process.out.outs[0][1].findAll { file(it).name == 'regions.fa' }.sort { f -> f.toString() },
+                process.out.outs[0][1].findAll { file(it).name.contains('.json') }.sort { f -> f.toString() },
+                process.out.outs[0][1].findAll { it.toString().contains('/outs/vdj_t/') }.collect { file(it).name }.sort()
                 ).match() },
 
                 // Canonical config checks (ordered): gene-expression, fastq links, probe-set,
@@ -253,9 +269,11 @@ nextflow_process {
                 { assert path(process.out.config[0][1]).text.contains('fastq_all/gex') },
                 // Flex probe-set: not used in this scenario
                 { assert !path(process.out.config[0][1]).text.contains('probe-set,') },
-                // VDJ: present for this PBMC run
+                // VDJ: present for this PBMC run, passed as explicit VDJ-T and VDJ-B libraries
                 { assert path(process.out.config[0][1]).text.contains('[vdj]') },
-                { assert path(process.out.config[0][1]).text.contains('VDJ') },
+                { assert path(process.out.config[0][1]).text.contains('fastq_all/vdj_t,,VDJ-T\n') },
+                { assert path(process.out.config[0][1]).text.contains('fastq_all/vdj_b,,VDJ-B') },
+                { assert !path(process.out.config[0][1]).text.contains(',,VDJ\n') },
                 // Feature-barcode (ab/crispr/beam): present when antibody (ab), crispr, or beam inputs are staged
                 { assert path(process.out.config[0][1]).text.contains('[feature]') },
                 { assert path(process.out.config[0][1]).text.contains('Antibody Capture') },
@@ -317,6 +335,9 @@ nextflow_process {
                 // references just need a path
                 ch_gex_fastqs            = [ [:], [], [:] ]
                 ch_vdj_fastqs            = [ [:], [], [:] ]
+                ch_vdj_t_fastqs          = [ [:], [], [:] ]
+                ch_vdj_t_gd_fastqs       = [ [:], [], [:] ]
+                ch_vdj_b_fastqs          = [ [:], [], [:] ]
                 ch_ab_fastqs             = [ [:], [], [:] ]
                 ch_beam_fastqs           = [ [:], [], [:] ]
                 ch_cmo_fastqs            = [ [:], [], [:] ]
@@ -370,6 +391,9 @@ nextflow_process {
                 input[18] = ch_frna_sampleinfo
                 input[19] = ch_ocm_barcodes
                 input[20] = false // default to false to guarantee renaming during test
+                input[21] = ch_vdj_t_fastqs
+                input[22] = ch_vdj_t_gd_fastqs
+                input[23] = ch_vdj_b_fastqs
                 """
             }
         }
@@ -477,6 +501,9 @@ nextflow_process {
                 // references just need a path
                 ch_gex_fastqs            = [ [:], [], [:] ]
                 ch_vdj_fastqs            = [ [:], [], [:] ]
+                ch_vdj_t_fastqs          = [ [:], [], [:] ]
+                ch_vdj_t_gd_fastqs       = [ [:], [], [:] ]
+                ch_vdj_b_fastqs          = [ [:], [], [:] ]
                 ch_ab_fastqs             = [ [:], [], [:] ]
                 ch_beam_fastqs           = [ [:], [], [:] ]
                 ch_cmo_fastqs            = [ [:], [], [:] ]
@@ -530,6 +557,9 @@ nextflow_process {
                 input[18] = ch_frna_sampleinfo
                 input[19] = ch_ocm_barcodes
                 input[20] = false // default to false to guarantee renaming during test
+                input[21] = ch_vdj_t_fastqs
+                input[22] = ch_vdj_t_gd_fastqs
+                input[23] = ch_vdj_b_fastqs
                 """
             }
         }
@@ -553,9 +583,10 @@ nextflow_process {
                 { assert path(process.out.config[0][1]).text.contains('fastq_all/gex') },
                 // Flex probe-set: not used
                 { assert !path(process.out.config[0][1]).text.contains('probe-set,') },
-                // VDJ: present for this VDJ scenario
+                // VDJ: present for this VDJ scenario, with the chain type auto-detected
                 { assert path(process.out.config[0][1]).text.contains('[vdj]') },
-                { assert path(process.out.config[0][1]).text.contains('VDJ') },
+                { assert path(process.out.config[0][1]).text.contains(',,VDJ\n') },
+                { assert !path(process.out.config[0][1]).text.contains('VDJ-') },
                 // Feature-barcode (ab/crispr/beam): present when antibody (ab), crispr, or beam inputs are staged
                 { assert path(process.out.config[0][1]).text.contains('[feature]') },
                 { assert path(process.out.config[0][1]).text.contains('Antibody Capture') },
@@ -647,6 +678,9 @@ nextflow_process {
                 // references just need a path
                 ch_gex_fastqs            = [ [:], [], [:] ]
                 ch_vdj_fastqs            = [ [:], [], [:] ]
+                ch_vdj_t_fastqs          = [ [:], [], [:] ]
+                ch_vdj_t_gd_fastqs       = [ [:], [], [:] ]
+                ch_vdj_b_fastqs          = [ [:], [], [:] ]
                 ch_ab_fastqs             = [ [:], [], [:] ]
                 ch_beam_fastqs           = [ [:], [], [:] ]
                 ch_cmo_fastqs            = [ [:], [], [:] ]
@@ -700,6 +734,9 @@ nextflow_process {
                 input[18] = ch_frna_sampleinfo
                 input[19] = ch_ocm_barcodes
                 input[20] = false // default to false to guarantee renaming during test
+                input[21] = ch_vdj_t_fastqs
+                input[22] = ch_vdj_t_gd_fastqs
+                input[23] = ch_vdj_b_fastqs
                 """
             }
         }
@@ -772,6 +809,9 @@ nextflow_process {
                 // references just need a path
                 ch_gex_fastqs            = [ [:], [], [:] ]
                 ch_vdj_fastqs            = [ [:], [], [:] ]
+                ch_vdj_t_fastqs          = [ [:], [], [:] ]
+                ch_vdj_t_gd_fastqs       = [ [:], [], [:] ]
+                ch_vdj_b_fastqs          = [ [:], [], [:] ]
                 ch_ab_fastqs             = [ [:], [], [:] ]
                 ch_beam_fastqs           = [ [:], [], [:] ]
                 ch_cmo_fastqs            = [ [:], [], [:] ]
@@ -815,6 +855,9 @@ nextflow_process {
                 input[18] = ch_frna_sampleinfo
                 input[19] = ch_ocm_barcodes
                 input[20] = false // default to false to guarantee renaming during test
+                input[21] = ch_vdj_t_fastqs
+                input[22] = ch_vdj_t_gd_fastqs
+                input[23] = ch_vdj_b_fastqs
                 """
             }
         }
@@ -903,6 +946,9 @@ nextflow_process {
                 // references just need a path
                 ch_gex_fastqs            = [ [:], [], [:] ]
                 ch_vdj_fastqs            = [ [:], [], [:] ]
+                ch_vdj_t_fastqs          = [ [:], [], [:] ]
+                ch_vdj_t_gd_fastqs       = [ [:], [], [:] ]
+                ch_vdj_b_fastqs          = [ [:], [], [:] ]
                 ch_ab_fastqs             = [ [:], [], [:] ]
                 ch_beam_fastqs           = [ [:], [], [:] ]
                 ch_cmo_fastqs            = [ [:], [], [:] ]
@@ -956,6 +1002,9 @@ nextflow_process {
                 input[18] = ch_frna_sampleinfo
                 input[19] = ch_ocm_barcodes
                 input[20] = false // default to false to guarantee renaming during test
+                input[21] = ch_vdj_t_fastqs
+                input[22] = ch_vdj_t_gd_fastqs
+                input[23] = ch_vdj_b_fastqs
                 """
             }
         }
@@ -996,6 +1045,237 @@ nextflow_process {
                 // [samples] and Multiplexing Capture should also be present for CMO multiplexing
                 { assert path(process.out.config[0][1]).text.contains('[samples]') },
                 { assert path(process.out.config[0][1]).text.contains('Multiplexing Capture') }
+            )
+        }
+
+    }
+
+    test("cellranger - multi - 10k - PBMC - vdj-t + vdj-t-gd + vdj-b - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                // stubs never read their inputs, so empty local placeholders stand in for test data (none exists for gamma/delta)
+                def placeholder = { name -> def placeholder_file = file("${workDir}/stub_inputs/" + name); placeholder_file.parent.mkdirs(); placeholder_file.text = ''; placeholder_file }
+                def fastq_pair  = { library -> [ 'R1', 'R2' ].collect { read -> placeholder.call(library + '_S1_L001_' + read + '_001.fastq.gz') } }
+                vdj_reference = file("${workDir}/stub_inputs/vdj_reference_stub")
+                vdj_reference.mkdirs()
+                input[0]  = [ id:'subsampled_sc5p_v2_hs_PBMC_10k', single_end:false ]
+                input[1]  = [ [ id:'subsampled_sc5p_v2_hs_PBMC_10k' ], fastq_pair.call('gex'), [ "expect-cells":"1000", chemistry:"SC5P-PE", "create-bam":false, "no-secondary":true ] ]
+                input[2]  = [ [:], [], [:] ]
+                input[3]  = [ [:], [], [:] ]
+                input[4]  = [ [:], [], [:] ]
+                input[5]  = [ [:], [], [:] ]
+                input[6]  = [ [:], [], [:] ]
+                input[7]  = CELLRANGER_MKREF.out.reference
+                input[8]  = []
+                input[9]  = []
+                input[10] = vdj_reference
+                input[11] = placeholder.call('gd_primers.txt')
+                input[12] = []
+                input[13] = []
+                input[14] = []
+                input[15] = []
+                input[16] = []
+                input[17] = []
+                input[18] = []
+                input[19] = []
+                input[20] = false
+                input[21] = [ [ id:'subsampled_sc5p_v2_hs_PBMC_10k' ], fastq_pair.call('vdj_t'), [ "r1-length":26 ] ]
+                input[22] = [ [ id:'subsampled_sc5p_v2_hs_PBMC_10k' ], fastq_pair.call('vdj_t_gd'), [:] ]
+                input[23] = [ [ id:'subsampled_sc5p_v2_hs_PBMC_10k' ], fastq_pair.call('vdj_b'), [:] ]
+                """
+            }
+        }
+
+        then {
+            def config = path(process.out.config[0][1])
+            def config_lines = config.readLines().collect { line -> line.replace(config.parent.toString(), '$PWD') }
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith("versions") },
+                    config_lines
+                ).match() },
+                // all three chain-specific libraries share a single [vdj] section carrying the primers
+                { assert config_lines.count('[vdj]') == 1 },
+                { assert config_lines.contains('inner-enrichment-primers,$PWD/references/vdj/primers/gd_primers.txt') },
+                { assert config_lines.contains('r1-length,26') },
+                { assert config_lines.contains('subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_t,,VDJ-T') },
+                { assert config_lines.contains('subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_t_gd,,VDJ-T-GD') },
+                { assert config_lines.contains('subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_b,,VDJ-B') },
+                { assert !config_lines.any { line -> line.endsWith(',,VDJ') } }
+            )
+        }
+
+    }
+
+    test("cellranger - multi - 10k - PBMC - vdj-t-gd + vdj-b + antibody capture without gex - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                // stubs never read their inputs, so empty local placeholders stand in for test data (none exists for gamma/delta)
+                def placeholder = { name -> def placeholder_file = file("${workDir}/stub_inputs/" + name); placeholder_file.parent.mkdirs(); placeholder_file.text = ''; placeholder_file }
+                def fastq_pair  = { library -> [ 'R1', 'R2' ].collect { read -> placeholder.call(library + '_S1_L001_' + read + '_001.fastq.gz') } }
+                vdj_reference = file("${workDir}/stub_inputs/vdj_reference_stub")
+                vdj_reference.mkdirs()
+                input[0]  = [ id:'subsampled_sc5p_v2_hs_PBMC_10k', single_end:false ]
+                input[1]  = [ [:], [], [:] ]
+                input[2]  = [ [:], [], [:] ]
+                input[3]  = [ [ id:'subsampled_sc5p_v2_hs_PBMC_10k' ], fastq_pair.call('ab'), [:] ]
+                input[4]  = [ [:], [], [:] ]
+                input[5]  = [ [:], [], [:] ]
+                input[6]  = [ [:], [], [:] ]
+                input[7]  = CELLRANGER_MKREF.out.reference
+                input[8]  = []
+                input[9]  = []
+                input[10] = vdj_reference
+                input[11] = placeholder.call('gd_primers.txt')
+                input[12] = placeholder.call('feature_ref.csv')
+                input[13] = []
+                input[14] = []
+                input[15] = []
+                input[16] = []
+                input[17] = []
+                input[18] = []
+                input[19] = []
+                input[20] = false
+                input[21] = [ [:], [], [:] ]
+                input[22] = [ [ id:'subsampled_sc5p_v2_hs_PBMC_10k' ], fastq_pair.call('vdj_t_gd'), [:] ]
+                input[23] = [ [ id:'subsampled_sc5p_v2_hs_PBMC_10k' ], fastq_pair.call('vdj_b'), [:] ]
+                """
+            }
+        }
+
+        then {
+            def config = path(process.out.config[0][1])
+            def config_lines = config.readLines().collect { line -> line.replace(config.parent.toString(), '$PWD') }
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith("versions") },
+                    config_lines
+                ).match() },
+                // feature barcode libraries need the transcriptome reference even without a GEX library
+                { assert config_lines.contains('[gene-expression]') },
+                { assert config_lines.contains('reference,$PWD/references/gex/homo_sapiens_chr22_reference') },
+                { assert !config_lines.any { line -> line.endsWith(',,Gene Expression') } },
+                { assert config_lines.contains('subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/ab,,Antibody Capture') },
+                { assert config_lines.contains('subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_t_gd,,VDJ-T-GD') },
+                { assert config_lines.contains('subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_b,,VDJ-B') }
+            )
+        }
+
+    }
+
+    test("cellranger - multi - 10k - PBMC - vdj-t-gd only with gex reference - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                // stubs never read their inputs, so empty local placeholders stand in for test data (none exists for gamma/delta)
+                def placeholder = { name -> def placeholder_file = file("${workDir}/stub_inputs/" + name); placeholder_file.parent.mkdirs(); placeholder_file.text = ''; placeholder_file }
+                def fastq_pair  = { library -> [ 'R1', 'R2' ].collect { read -> placeholder.call(library + '_S1_L001_' + read + '_001.fastq.gz') } }
+                vdj_reference = file("${workDir}/stub_inputs/vdj_reference_stub")
+                vdj_reference.mkdirs()
+                input[0]  = [ id:'subsampled_sc5p_v2_hs_PBMC_10k', single_end:false ]
+                input[1]  = [ [:], [], [:] ]
+                input[2]  = [ [:], [], [:] ]
+                input[3]  = [ [:], [], [:] ]
+                input[4]  = [ [:], [], [:] ]
+                input[5]  = [ [:], [], [:] ]
+                input[6]  = [ [:], [], [:] ]
+                input[7]  = CELLRANGER_MKREF.out.reference
+                input[8]  = []
+                input[9]  = []
+                input[10] = vdj_reference
+                input[11] = placeholder.call('gd_primers.txt')
+                input[12] = []
+                input[13] = []
+                input[14] = []
+                input[15] = []
+                input[16] = []
+                input[17] = []
+                input[18] = []
+                input[19] = []
+                input[20] = false
+                input[21] = [ [:], [], [:] ]
+                input[22] = [ [ id:'subsampled_sc5p_v2_hs_PBMC_10k' ], fastq_pair.call('vdj_t_gd'), [:] ]
+                input[23] = [ [:], [], [:] ]
+                """
+            }
+        }
+
+        then {
+            def config = path(process.out.config[0][1])
+            def config_lines = config.readLines().collect { line -> line.replace(config.parent.toString(), '$PWD') }
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith("versions") },
+                    config_lines
+                ).match() },
+                // a supplied GEX reference must not add [gene-expression] to V(D)J-only runs
+                { assert !config_lines.contains('[gene-expression]') },
+                { assert !config_lines.any { line -> line.endsWith(',,Gene Expression') } },
+                { assert config_lines.contains('[vdj]') },
+                { assert config_lines.contains('subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_t_gd,,VDJ-T-GD') }
+            )
+        }
+
+    }
+
+    test("cellranger - multi - 10k - PBMC - vdj-t-gd without inner enrichment primers - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                // stubs never read their inputs, so empty local placeholders stand in for test data (none exists for gamma/delta)
+                def placeholder = { name -> def placeholder_file = file("${workDir}/stub_inputs/" + name); placeholder_file.parent.mkdirs(); placeholder_file.text = ''; placeholder_file }
+                def fastq_pair  = { library -> [ 'R1', 'R2' ].collect { read -> placeholder.call(library + '_S1_L001_' + read + '_001.fastq.gz') } }
+                vdj_reference = file("${workDir}/stub_inputs/vdj_reference_stub")
+                vdj_reference.mkdirs()
+                input[0]  = [ id:'subsampled_sc5p_v2_hs_PBMC_10k', single_end:false ]
+                input[1]  = [ [:], [], [:] ]
+                input[2]  = [ [:], [], [:] ]
+                input[3]  = [ [:], [], [:] ]
+                input[4]  = [ [:], [], [:] ]
+                input[5]  = [ [:], [], [:] ]
+                input[6]  = [ [:], [], [:] ]
+                input[7]  = [ [:], [] ]
+                input[8]  = []
+                input[9]  = []
+                input[10] = vdj_reference
+                input[11] = []
+                input[12] = []
+                input[13] = []
+                input[14] = []
+                input[15] = []
+                input[16] = []
+                input[17] = []
+                input[18] = []
+                input[19] = []
+                input[20] = false
+                input[21] = [ [:], [], [:] ]
+                input[22] = [ [ id:'subsampled_sc5p_v2_hs_PBMC_10k' ], fastq_pair.call('vdj_t_gd'), [:] ]
+                input[23] = [ [:], [], [:] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("VDJ-T-GD libraries require inner enrichment primers") }
             )
         }
 
