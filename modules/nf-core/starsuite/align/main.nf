@@ -3,8 +3,8 @@ process STARSUITE_ALIGN {
     label 'process_high'
 
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'docker://biodepot/star-suite@sha256:113c50c687a892e1613f8d901f5309458b8b2a29402a3d0b41e999b72f22c84e' :
-        'docker.io/biodepot/star-suite@sha256:113c50c687a892e1613f8d901f5309458b8b2a29402a3d0b41e999b72f22c84e' }"
+        'docker://biodepot/star-suite@sha256:10b8da43b1ff4e48d2eaee5e6baebd762c64eea2228bf217e14e8ef081fd558d' :
+        'docker.io/biodepot/star-suite@sha256:10b8da43b1ff4e48d2eaee5e6baebd762c64eea2228bf217e14e8ef081fd558d' }"
 
     input:
     tuple val(meta),  path(reads, stageAs: "input*/*")
