@@ -1,5 +1,5 @@
 process DEEPTOOLS_COMPUTEMATRIX {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
@@ -27,13 +27,13 @@ process DEEPTOOLS_COMPUTEMATRIX {
 
     """
     computeMatrix \\
-        $args \\
-        --regionsFileName $bed \\
-        --scoreFileName $bigwig \\
+        ${args} \\
+        --regionsFileName ${bed} \\
+        --scoreFileName ${bigwig} \\
         --outFileName ${prefix}.computeMatrix.mat.gz \\
         --outFileNameMatrix ${prefix}.computeMatrix.vals.mat.tab \\
-        --numberOfProcessors $task.cpus \\
-        $blacklist_cmd
+        --numberOfProcessors ${task.cpus} \\
+        ${blacklist_cmd}
     """
 
     stub:
