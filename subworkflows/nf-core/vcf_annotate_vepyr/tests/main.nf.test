@@ -33,16 +33,28 @@ nextflow_workflow {
                     """
                 }
             }
+            run("BCFTOOLS_NORM", alias: "BCFTOOLS_JOIN_MULTIALLELICS") {
+                script "modules/nf-core/bcftools/norm/main.nf"
+                process {
+                    """
+                    input[0] = channel.of([
+                        [ id:'joined' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/input.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/input.vcf.gz.tbi', checkIfExists: true)
+                    ])
+                    input[1] = channel.value([
+                        [ id:'GRCh38' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/reference.fa.gz', checkIfExists: true)
+                    ])
+                    """
+                }
+            }
         }
 
         when {
             workflow {
                 """
-                input[0] = channel.of([
-                    [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/input_multiallelic.vcf.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/input_multiallelic.vcf.gz.tbi', checkIfExists: true)
-                ])
+                input[0] = BCFTOOLS_JOIN_MULTIALLELICS.out.vcf.map { _meta, vcf -> [ [ id:'test' ], vcf, [] ] }
                 input[1] = UNTAR.out.untar.collect()
                 input[2] = channel.value([
                     [ id:'GRCh38' ],
@@ -65,7 +77,7 @@ nextflow_workflow {
                 { assert workflow.out.vcf_tbi.size() == 1 },
                 { assert file(workflow.out.vcf_tbi[0][2]).exists() },
                 { assert workflow.trace.tasks().collect { it.name.tokenize(' ')[0] }.toSet().containsAll(['VCF_ANNOTATE_VEPYR:BCFTOOLS_NORM', 'VCF_ANNOTATE_VEPYR:VEPYR_ANNOTATE']) },
-                // The input has 986 records, 14 of them multiallelic.
+                // Setup joins input.vcf.gz back into 986 records, 14 of them multiallelic.
                 { assert path(workflow.out.vcf_tbi[0][1]).vcf.variants.size() == 1000 },
                 { assert path(workflow.out.vcf_tbi[0][1]).vcf.variants.every { it.alternateAlleles.size() == 1 } },
                 { assert snapshot(
@@ -91,6 +103,22 @@ nextflow_workflow {
                     """
                 }
             }
+            run("BCFTOOLS_NORM", alias: "BCFTOOLS_JOIN_MULTIALLELICS") {
+                script "modules/nf-core/bcftools/norm/main.nf"
+                process {
+                    """
+                    input[0] = channel.of([
+                        [ id:'joined' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/input.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/input.vcf.gz.tbi', checkIfExists: true)
+                    ])
+                    input[1] = channel.value([
+                        [ id:'GRCh38' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/reference.fa.gz', checkIfExists: true)
+                    ])
+                    """
+                }
+            }
         }
 
         when {
@@ -99,11 +127,7 @@ nextflow_workflow {
             }
             workflow {
                 """
-                input[0] = channel.of([
-                    [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/input_multiallelic.vcf.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/vepyr/input_multiallelic.vcf.gz.tbi', checkIfExists: true)
-                ])
+                input[0] = BCFTOOLS_JOIN_MULTIALLELICS.out.vcf.map { _meta, vcf -> [ [ id:'test' ], vcf, [] ] }
                 input[1] = UNTAR.out.untar.collect()
                 input[2] = channel.value([
                     [ id:'GRCh38' ],
@@ -126,7 +150,7 @@ nextflow_workflow {
                 { assert workflow.out.vcf_tbi.size() == 1 },
                 { assert file(workflow.out.vcf_tbi[0][2]).exists() },
                 { assert workflow.trace.tasks().collect { it.name.tokenize(' ')[0] }.toSet().containsAll(['VCF_ANNOTATE_VEPYR:BCFTOOLS_NORM', 'VCF_ANNOTATE_VEPYR:VEPYR_ANNOTATE']) },
-                // The input has 986 records, 14 of them multiallelic.
+                // Setup joins input.vcf.gz back into 986 records, 14 of them multiallelic.
                 { assert path(workflow.out.vcf_tbi[0][1]).vcf.variants.size() == 1000 },
                 { assert path(workflow.out.vcf_tbi[0][1]).vcf.variants.every { it.alternateAlleles.size() == 1 } },
                 { assert snapshot(
