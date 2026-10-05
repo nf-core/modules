@@ -40,16 +40,16 @@ nextflow_process {
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R1_001.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R2_001.fastq.gz', checkIfExists: true)
-                    ]
+                    ],
+                    [ ]
                 ])
-                input[1] = []
-                input[2] = file('./NO_FILE')
-                input[3] = STAR_GENOMEGENERATE.out.index
-                input[4] = Channel.of([
+                input[1] = file('./NO_FILE')
+                input[2] = STAR_GENOMEGENERATE.out.index
+                input[3] = Channel.of([
                     [ id:'test_gtf' ],
                     [ ]
                 ])
-                input[5] = true
+                input[4] = true
                 """
             }
         }
@@ -64,7 +64,6 @@ nextflow_process {
     }
 
     test("homo_sapiens - SmartSeq") {
-        tag "x"
         setup {
             run("STAR_GENOMEGENERATE") {
                 script "../../../star/genomegenerate/main.nf"
@@ -92,16 +91,16 @@ nextflow_process {
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R1_001.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R2_001.fastq.gz', checkIfExists: true)
-                    ]
+                    ],
+                    [ ]
                 ])
-                input[1] = []
-                input[2] = file('./NO_FILE')
-                input[3] = STAR_GENOMEGENERATE.out.index
-                input[4] = Channel.of([
+                input[1] = file('./NO_FILE')
+                input[2] = STAR_GENOMEGENERATE.out.index
+                input[3] = Channel.of([
                     [ id:'test_gtf' ],
                     [ ]
                 ])
-                input[5] = true
+                input[4] = true
                 """
             }
         }
@@ -145,16 +144,16 @@ nextflow_process {
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R1_001.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R2_001.fastq.gz', checkIfExists: true)
-                    ]
+                    ],
+                    [ ]
                 ])
-                input[1] = []
-                input[2] = file('./NO_FILE')
-                input[3] = STAR_GENOMEGENERATE.out.index
-                input[4] = Channel.of([
+                input[1] = file('./NO_FILE')
+                input[2] = STAR_GENOMEGENERATE.out.index
+                input[3] = Channel.of([
                     [ id:'test_gtf' ],
                     [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
                 ])
-                input[5] = false
+                input[4] = false
                 """
             }
         }
@@ -199,16 +198,16 @@ nextflow_process {
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R1_001.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R2_001.fastq.gz', checkIfExists: true)
-                    ]
+                    ],
+                    [ ]
                 ])
-                input[1] = []
-                input[2] = file('./NO_FILE')
-                input[3] = STAR_GENOMEGENERATE.out.index
-                input[4] = Channel.of([
+                input[1] = file('./NO_FILE')
+                input[2] = STAR_GENOMEGENERATE.out.index
+                input[3] = Channel.of([
                     [ id:'test_gtf' ],
                     [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
                 ])
-                input[5] = false
+                input[4] = false
                 """
             }
         }
