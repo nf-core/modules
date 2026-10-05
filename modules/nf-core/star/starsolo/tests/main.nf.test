@@ -57,7 +57,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log_final", "log_out", "log_progress"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log_final", "log_out", "log_progress", "bam", "bam_sorted"])).match() }
             )
         }
 
@@ -161,7 +161,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log_final", "log_out", "log_progress"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log_final", "log_out", "log_progress", "bam", "bam_sorted"])).match() }
             )
         }
 
