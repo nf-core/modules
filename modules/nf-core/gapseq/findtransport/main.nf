@@ -21,19 +21,21 @@ process GAPSEQ_FINDTRANSPORT {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    export LANG=C
+    export LC_ALL=C
+    export TZ=UTC
+    export R_LIBS_USER=
     gapseq \\
         find-transport \\
-        -b 200 \\
         -K ${task.cpus} \
-        $args \\
-        $fasta
+        ${args} \\
+        ${fasta}
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def fasta_name = fasta.getBaseName()
     """
-    touch ${prefix}_transporters.tbl
+    touch ${fasta_name}_transporters.tbl
     """
 }

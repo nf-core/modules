@@ -12,7 +12,6 @@ nextflow_process {
     test("gapseq medium prediction from draft and pathways") {
 
         when {
-            config "./nextflow.config"
             process {
                 """
                 input[0] = Channel.of([

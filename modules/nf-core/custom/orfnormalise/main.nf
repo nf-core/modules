@@ -23,6 +23,12 @@ process CUSTOM_ORFNORMALISE {
     prefix    = task.ext.prefix ?: "${meta.id}.normalised"
     sample_id = meta.id ?: 'unknown'
     args      = task.ext.args ?: ''
+
+    """
+    echo ${args}
+    echo ${sample_id}
+    """
+
     template 'orfnormalise.py'
 
     stub:
