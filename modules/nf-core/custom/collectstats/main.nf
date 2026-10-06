@@ -12,8 +12,8 @@ process CUSTOM_COLLECTSTATS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9d/9d1a8065dcebe35c513db5eb4a5237795aa4bae4756086f3c4319a820a8a647c/data'
-:         'community.wave.seqera.io/library/custom_collectstats:c1f477e6251c36bb' }"
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/40/4047b396af338ea9fa9f58d345f84b77234dfe825a1c71ae178f502d0569b62c/data'
+:         'community.wave.seqera.io/library/r-base_r-dplyr_r-purrr_r-readr_pruned:24026ac6303954f2' }"
 
     input:
     tuple val(meta), val(samples_meta), path(trimlogs), path(bblogs), path(idxstats), path(fcs), path(mergetab)
