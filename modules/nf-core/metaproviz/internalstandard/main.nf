@@ -2,7 +2,7 @@ process METAPROVIZ_INTERNALSTANDARD {
     tag "$meta.id"
     label 'process_single'
 
-    // needs to be changed to "quay.io/nf-core/metaproviz:0.0.1". We need need a core member to do this
+    // needs to be changed once new bioconda version is up
     container "ghcr.io/saezlab/metaproviz:0.0.1"
 
     input:
@@ -26,7 +26,7 @@ process METAPROVIZ_INTERNALSTANDARD {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "METAPROVIZ_INTERNALSTANDARD module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    template 'internal_standard.R'
+    template 'metaproviz_internalstandard.R'
 
     stub:
     // Exit if running this module with -profile conda / -profile mamba

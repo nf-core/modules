@@ -1,7 +1,9 @@
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "metaproviz_internalstandard"
-description: Quality-control check on internal-standard (spike-in) features — their coefficient of variation across all samples reads out LC-MS technical noise.
+description: >-
+  Quality-control check on internal-standard (spike-in) features — their coefficient of variation (CV) across the
+  samples (pool samples excluded) reads out LC-MS technical noise, overall and per condition.
 keywords:
   - metabolomics
   - quality control
@@ -26,13 +28,29 @@ input:
           e.g. `[ id:'test' ]`
     - se_rds:
         type: file
-        description: A SummarizedExperiment saved as RDS — assay holds the feature-by-sample abundance matrix (only the first assay is used if more than one is present; use NA for metabolites that weren't detected), rowData holds feature metadata, and colData holds sample metadata — a condition column (named "Conditions" by default, or whatever --conditions_col points at) splits the CV out per condition (condition_cv output), and a colData column can also be used to identify pool/QC samples to exclude before computing the CV (via --pool_metadata_col/--pool_metadata_value). Mutually exclusive with data_matrix/feature_matrix/sample_matrix — provide this alone, or the other three alone, not both.
+        description: >-
+          A SummarizedExperiment saved as RDS — assay holds the feature-by-sample abundance matrix (only the first assay
+          is used if more than one is present; use NA for metabolites that weren't detected, since zeros are treated as
+          not detected in cv_table but counted as measured values in condition_cv), rowData holds feature metadata, and
+          colData holds sample metadata. The internal standards are selected by feature name, via an explicit list
+          (`--internal_standards`), a regular expression (`--pattern`) or, by default, the common naming conventions
+          (-dN, -13CN, ISTD, IS_ prefix, _IS suffix). Pool samples are identified by an explicit list
+          (`--pool_samples`), by a colData column and value (`--pool_metadata_col`/`--pool_metadata_value`, "Pool" by
+          default) or by a pattern on the sample names (`--pool_pattern`, "pool" by default), and are excluded before
+          the CV is computed (if any are found). A condition column (named "Conditions" by default, or whatever
+          `--conditions_col` points at) splits the CV out per condition (condition_cv output). Mutually exclusive with
+          data_matrix/feature_matrix/sample_matrix — provide this alone, or the other three alone, not both.
         pattern: "*.rds"
         optional: true
         ontologies: []
     - data_matrix:
         type: file
-        description: Feature-by-sample abundance matrix (TSV/CSV), first column the feature ID. Use NA (or an empty cell) for metabolites that weren't detected. Required together with feature_matrix and sample_matrix.
+        description: >-
+          Feature-by-sample abundance matrix (TSV/CSV), first column the feature ID. Use NA (or an empty cell) for
+          metabolites that weren't detected, since zeros are treated as not detected in cv_table but counted as measured
+          values in condition_cv. The internal standards are selected by feature name, via an explicit list
+          (`--internal_standards`), a regular expression (`--pattern`) or, by default, the common naming conventions
+          (-dN, -13CN, ISTD, IS_ prefix, _IS suffix). Required together with feature_matrix and sample_matrix.
         pattern: "*.{tsv,csv}"
         optional: true
         ontologies:
@@ -40,7 +58,9 @@ input:
           - edam: http://edamontology.org/format_3752 # CSV
     - feature_matrix:
         type: file
-        description: Feature metadata (TSV/CSV), first column the feature ID matching data_matrix's rows. Required together with data_matrix and sample_matrix.
+        description: >-
+          Feature metadata (TSV/CSV), first column the feature ID matching data_matrix's rows. Required together with
+          data_matrix and sample_matrix.
         pattern: "*.{tsv,csv}"
         optional: true
         ontologies:
@@ -48,7 +68,13 @@ input:
           - edam: http://edamontology.org/format_3752 # CSV
     - sample_matrix:
         type: file
-        description: Sample metadata (TSV/CSV), first column the sample ID matching data_matrix's columns; the remaining columns become the SE's colData — a condition column (named "Conditions" by default, or whatever --conditions_col points at) splits the CV out per condition (condition_cv output), and a column can also be used to identify pool/QC samples to exclude before computing the CV (via --pool_metadata_col/--pool_metadata_value). Required together with data_matrix and feature_matrix.
+        description: >-
+          Sample metadata (TSV/CSV), first column the sample ID matching data_matrix's columns; the remaining columns
+          become the SE's colData. Pool samples are identified by an explicit list (`--pool_samples`), by a colData
+          column and value (`--pool_metadata_col`/`--pool_metadata_value`, "Pool" by default) or by a pattern on the
+          sample names (`--pool_pattern`, "pool" by default), and are excluded before the CV is computed (if any are
+          found). A condition column (named "Conditions" by default, or whatever `--conditions_col` points at) splits
+          the CV out per condition (condition_cv output). Required together with data_matrix and feature_matrix.
         pattern: "*.{tsv,csv}"
         optional: true
         ontologies:
@@ -64,7 +90,9 @@ output:
             e.g. `[ id:'test' ]`
       - "*.cv.tsv":
           type: file
-          description: Per internal-standard feature CV across samples.
+          description: >-
+            Per internal-standard feature table with the CV across the samples (in percent), the HighVar flag (CV above
+            the cutoff set with `--cutoff_cv` in task.ext.args, 30 by default) and the percentage of missing values.
           pattern: "*.cv.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -76,7 +104,7 @@ output:
             e.g. `[ id:'test' ]`
       - "*.high_var.txt":
           type: file
-          description: Internal standards exceeding the CV cutoff.
+          description: Internal standards whose CV is above the cutoff, one name per line.
           pattern: "*.high_var.txt"
           ontologies:
             - edam: http://edamontology.org/format_2330 # TXT
@@ -88,7 +116,9 @@ output:
             e.g. `[ id:'test' ]`
       - "*.condition_cv.tsv":
           type: file
-          description: Per-standard CV broken down by condition (wide format, one column per condition). Only meaningful when real condition metadata is present; header-only (just a Standard column) otherwise.
+          description: >-
+            Per-standard CV broken down by condition (wide format, one column per condition). Only meaningful when real
+            condition metadata is present; header-only (just a Standard column) otherwise.
           pattern: "*.condition_cv.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -100,7 +130,9 @@ output:
             e.g. `[ id:'test' ]`
       - "*.plots.rds":
           type: file
-          description: Saved ggplot objects.
+          description: >-
+            Saved ggplot objects, a named list with PoolEstimationStyle (PCA, CV histogram and CV violin plot) and
+            Superplot (box plots of the standards across the samples, when they can be created).
           pattern: "*.plots.rds"
           ontologies: []
   report:
@@ -111,7 +143,9 @@ output:
             e.g. `[ id:'test' ]`
       - "*.report.html":
           type: file
-          description: Self-contained HTML report.
+          description: >-
+            Self-contained HTML report with the run summary, the CV tables, the standards above the cutoff and the plots
+            embedded.
           pattern: "*.report.html"
           ontologies: []
   log:

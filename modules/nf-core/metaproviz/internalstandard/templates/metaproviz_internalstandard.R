@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 # =============================================================================
-# internal_standard.R — technical-QC check on the internal-standard spike-ins
+# metaproviz_internalstandard.R — technical-QC check on the internal-standard spike-ins
 #
 # Approach: re-use MetaProViz::pool_estimation on the SE subsetted to just the
 # IS features, with every sample flagged as "Pool" (because for IS we want the
@@ -619,8 +619,8 @@ html <- sprintf('<!DOCTYPE html><html><head><meta charset="utf-8">
 If you use results or plots from this analysis in a publication, please cite:
 </p>
 <ul>
-  <li><strong>MetaProViz:</strong> Please cite:
-  <a href="https://doi.org/10.1038/s44320-026-00231-8">Schmidt et al., Integrated metabolomics data analysis to generate mechanistic hypotheses with MetaProViz, Molecular Systems Biology 2026.</a>.</li>
+  <li><strong>MetaProViz:</strong>
+  <a href="https://doi.org/10.1038/s44320-026-00231-8">Schmidt et al., Integrated metabolomics data analysis to generate mechanistic hypotheses with MetaProViz, Molecular Systems Biology 2026.</a></li>
   <li><strong>Dependencies:</strong> None for this module.</li>
 </ul>
 
