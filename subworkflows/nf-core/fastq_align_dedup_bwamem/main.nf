@@ -13,7 +13,7 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
     use_gpu // boolean: whether to use GPU accelerated alignment
     output_fmt // string: output format for parabricks fq2bam (e.g., 'bam' or 'cram')
     interval_file // channel: [ val(meta), [ interval file ] ]
-    known_sites // channel: [ val(meta), [ known sites ] ]
+    known_sites // channel: [ val(meta), [ known sites ], [known sites index] ]
 
     main:
     ch_alignment = channel.empty()
