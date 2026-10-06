@@ -74,7 +74,6 @@ process UNIVERSC {
     local_universc="\$PWD/.local-universc/universc"
 
     # Fix UNIVERSC launcher symlink
-    rm "\$local_universc/universc"
     ln -s "\$local_universc/launch_universc.sh" "\$local_universc/universc"
 
     # Fix malformed [[ syntax in UNIVERSC
