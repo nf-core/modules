@@ -102,14 +102,13 @@ run_results <- function(...) {
     ...
   )
 }
-#' Shrink log2 fold changes via ASHR with shared settings
+#' Shrink log2 fold changes with shared settings
 #'
 #' A thin wrapper around DESeq2::lfcShrink() that injects the common parameters
-#' (type = "ashr") and the `dds` object. Use the `...` to supply the branch-
+#' and the `dds` object. Use the `...` to supply the branch-
 #' specific argument (`coef = …` or `contrast = …`).
 #'
-#' @param ... Additional arguments passed to `lfcShrink()`, e.g. `coef = opt\$contrast_string`
-#'   or `contrast = c(variable, target, reference)`.
+#' @param shrink_type Type of shrinkage estimator ('ashr' or 'apeglm').
 #' @return A `DESeqResults` object with shrunken log2 fold changes.
 run_shrink <- function(..., shrink_type) {
   lfcShrink(
@@ -441,20 +440,42 @@ if (!is.null(opt\$contrast_string)) {
 
     # Run DESeq2 results with numeric contrast
     comp.results <- run_results(contrast = numeric_contrast)
+
     if (opt\$shrink_lfc) {
-      comp.results <- run_shrink(contrast = numeric_contrast, shrink_type = opt\$shrink_lfc_type)
+      if (opt\$shrink_lfc_type == "apeglm") {
+        warning(
+          "apeglm shrinkage requires a model coefficient (coef=), but contrast '",
+          opt\$contrast_string,
+          "' is evaluated as a contrast vector. Falling back to type='ashr'."
+        )
+        comp.results <- run_shrink(contrast = numeric_contrast, shrink_type = "ashr")
+      } else {
+        comp.results <- run_shrink(contrast = numeric_contrast, shrink_type = opt\$shrink_lfc_type)
+      }
     }
   }
 } else {
+
   contrast_var_tg_ref <- c(contrast_variable,
                            opt\$target_level,
                            opt\$reference_level)
 
   comp.results <- run_results(contrast = contrast_var_tg_ref)
   if (opt\$shrink_lfc) {
-    comp.results <- run_shrink(contrast = contrast_var_tg_ref, shrink_type = opt\$shrink_lfc_type)
+    if (opt\$shrink_lfc_type == "apeglm") {
+      warning(
+        "apeglm shrinkage requires a model coefficient (coef=), but contrast '",
+        paste(contrast_var_tg_ref, collapse = ", "),
+        "' is specified as contrast=. Falling back to type='ashr'."
+      )
+      comp.results <- run_shrink(contrast = contrast_var_tg_ref, shrink_type = "ashr")
+    } else {
+      comp.results <- run_shrink(contrast = contrast_var_tg_ref, shrink_type = opt\$shrink_lfc_type)
+    }
   }
 }
+
+
 
 # See https://support.bioconductor.org/p/97676/
 
