@@ -4,8 +4,8 @@ process DEEPTOOLS_COMPUTEMATRIXOPERATIONS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-eb9e7907c7a753917c1e4d7a64384c047429618a:28424fe3aec58d2b3e4e4390025d886207657d25-0':
-        'quay.io/biocontainers/mulled-v2-eb9e7907c7a753917c1e4d7a64384c047429618a:28424fe3aec58d2b3e4e4390025d886207657d25-0' }"
+        'https://depot.galaxyproject.org/singularity/deeptools:3.5.6--pyhdfd78af_0':
+        'quay.io/biocontainers/deeptools:3.5.6--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(matrix)
