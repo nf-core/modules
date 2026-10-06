@@ -19,7 +19,7 @@ process DEEPTOOLS_COMPUTEMATRIXOPERATIONS {
 
     script:
     def args   = task.ext.args ?: ''   // controls the main command - sort, relabel etc
-    def args2  = task.ext.args2 ?: '' // accessory commands, needed to fine tune tool function 
+    def args2  = task.ext.args2 ?: '' // accessory commands, needed to fine tune tool function
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     computeMatrixOperations \\
