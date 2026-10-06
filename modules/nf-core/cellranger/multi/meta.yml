@@ -132,6 +132,50 @@ input:
         description: |
           Folder containing Cellranger gene expression reference.
           Also required for feature barcode libraries without GEX FASTQs.
+  - - meta9:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - vdj_t_fastqs:
+        type: file
+        description: T cell receptor (alpha/beta) V(D)J FASTQ files (feature type VDJ-T)
+        pattern: "*.fastq.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989
+    - vdj_t_options:
+        type: map
+        description: |
+          Optional Cell Ranger VDJ section options as a Map. See vdj_options.
+  - - meta10:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - vdj_t_gd_fastqs:
+        type: file
+        description: |
+          T cell receptor (gamma/delta) V(D)J FASTQ files (feature type VDJ-T-GD).
+          Cell Ranger requires custom inner enrichment primers (vdj_primer_index) for this library type.
+        pattern: "*.fastq.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989
+    - vdj_t_gd_options:
+        type: map
+        description: |
+          Optional Cell Ranger VDJ section options as a Map. See vdj_options.
+  - - meta11:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - vdj_b_fastqs:
+        type: file
+        description: B cell receptor V(D)J FASTQ files (feature type VDJ-B)
+        pattern: "*.fastq.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3989
+    - vdj_b_options:
+        type: map
+        description: |
+          Optional Cell Ranger VDJ section options as a Map. See vdj_options.
   - gex_frna_probeset:
       type: file
       description: Fixed RNA profiling information containing custom probes in CSV format
@@ -209,50 +253,6 @@ input:
   - skip_renaming:
       type: boolean
       description: Skip renaming
-  - - meta9:
-        type: map
-        description: |
-          Groovy Map containing sample information
-    - vdj_t_fastqs:
-        type: file
-        description: T cell receptor (alpha/beta) V(D)J FASTQ files (feature type VDJ-T)
-        pattern: "*.fastq.gz"
-        ontologies:
-          - edam: http://edamontology.org/format_3989
-    - vdj_t_options:
-        type: map
-        description: |
-          Optional Cell Ranger VDJ section options as a Map. See vdj_options.
-  - - meta10:
-        type: map
-        description: |
-          Groovy Map containing sample information
-    - vdj_t_gd_fastqs:
-        type: file
-        description: |
-          T cell receptor (gamma/delta) V(D)J FASTQ files (feature type VDJ-T-GD).
-          Cell Ranger requires custom inner enrichment primers (vdj_primer_index) for this library type.
-        pattern: "*.fastq.gz"
-        ontologies:
-          - edam: http://edamontology.org/format_3989
-    - vdj_t_gd_options:
-        type: map
-        description: |
-          Optional Cell Ranger VDJ section options as a Map. See vdj_options.
-  - - meta11:
-        type: map
-        description: |
-          Groovy Map containing sample information
-    - vdj_b_fastqs:
-        type: file
-        description: B cell receptor V(D)J FASTQ files (feature type VDJ-B)
-        pattern: "*.fastq.gz"
-        ontologies:
-          - edam: http://edamontology.org/format_3989
-    - vdj_b_options:
-        type: map
-        description: |
-          Optional Cell Ranger VDJ section options as a Map. See vdj_options.
 output:
   config:
     - - meta:

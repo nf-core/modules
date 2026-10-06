@@ -13,6 +13,9 @@ process CELLRANGER_MULTI {
     tuple val(meta6)           , path (cmo_fastqs   , stageAs: "fastqs/cmo/fastq_???/*")   , val(cmo_options)
     tuple val(meta7)           , path (crispr_fastqs, stageAs: "fastqs/crispr/fastq_???/*"), val(crispr_options)
     tuple val(meta8)           , path (gex_reference , stageAs: "references/gex/*")
+    tuple val(meta9)           , path (vdj_t_fastqs   , stageAs: "fastqs/vdj_t/fastq_???/*")   , val(vdj_t_options)
+    tuple val(meta10)          , path (vdj_t_gd_fastqs, stageAs: "fastqs/vdj_t_gd/fastq_???/*"), val(vdj_t_gd_options)
+    tuple val(meta11)          , path (vdj_b_fastqs   , stageAs: "fastqs/vdj_b/fastq_???/*")   , val(vdj_b_options)
     path gex_frna_probeset     , stageAs: "references/gex/probeset/*"
     path gex_targetpanel       , stageAs: "references/gex/targetpanel/*"
     path vdj_reference         , stageAs: "references/vdj/*"
@@ -26,9 +29,6 @@ process CELLRANGER_MULTI {
     path frna_sampleinfo       , stageAs: "references/frna/*"
     path ocm_barcodes          , stageAs: "references/ocm/barcodes/*"
     val skip_renaming
-    tuple val(meta9)           , path (vdj_t_fastqs   , stageAs: "fastqs/vdj_t/fastq_???/*")   , val(vdj_t_options)
-    tuple val(meta10)          , path (vdj_t_gd_fastqs, stageAs: "fastqs/vdj_t_gd/fastq_???/*"), val(vdj_t_gd_options)
-    tuple val(meta11)          , path (vdj_b_fastqs   , stageAs: "fastqs/vdj_b/fastq_???/*")   , val(vdj_b_options)
 
     output:
     tuple val(meta), path("cellranger_multi_config.csv"), emit: config
