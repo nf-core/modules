@@ -19,28 +19,21 @@ tools:
 input:
   - - meta:
         type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+        description: Groovy Map containing sample information e.g. [ id:'test', single_end:false ]
     - matrix:
         type: file
-        description: |
-          gzipped matrix file produced by deeptools_computematrix
-        pattern: "*.{mat.gz}"
+        description: gzipped matrix file produced by deeptools_computematrix
+        pattern: "*.mat.gz"
         ontologies: []
 output:
   matrix:
     - - meta:
           type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - matrix:
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false ]
+      - "*.mat.gz":
           type: file
-          description: |
-            modified gzipped matrix file needed by the plotHeatmap and
-            plotProfile deeptools utilities
-          pattern: "*.{mat.gz}"
+          description: modified gzipped matrix file needed by the plotHeatmap and plotProfile deeptools utilities
+          pattern: "*.mat.gz"
           ontologies: []
   versions_deeptools:
     - - ${task.process}:
