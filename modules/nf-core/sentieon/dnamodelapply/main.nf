@@ -4,9 +4,9 @@ process SENTIEON_DNAMODELAPPLY {
     label 'sentieon'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3a/3aeac96f5787ca7dc1b8ed6679094246a6089ff8faf8f2d90d96fdace514229c/data'
-        : 'community.wave.seqera.io/library/sentieon_gzip:b8170ec7a010f305'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2c/2c157e27981ec529b03e7ae5cfc88e51b6158332d2a82db399eef8dd8f2b1d5d/data'
+        : 'community.wave.seqera.io/library/sentieon:202503.03--5e34aa16344b911c' }"
 
     input:
     tuple val(meta), path(vcf), path(idx)
