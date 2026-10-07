@@ -1,0 +1,137 @@
+name: "tantan"
+description: Identify simple regions / low complexity / tandem repeats in DNA or protein sequences.
+keywords:
+  - mask
+  - repeat
+  - tandem
+  - complexity
+  - fasta
+  - low complexity
+tools:
+  - tantan:
+      description: tantan masks simple regions (low complexity & short-period tandem repeats) in biological sequences..
+      homepage: https://gitlab.com/mcfrith/tantan/-/blob/main/README.rst
+      documentation: https://gitlab.com/mcfrith/tantan/-/blob/main/README.rst
+      tool_dev_url: "https://gitlab.com/mcfrith/tantan"
+      licence:
+        - "'GPL v3-or-later"
+      identifier: biotools:tantan
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - fastx:
+        type: file
+        description: Input fasta/fastq file
+        pattern: "*.{fsa,fas,fa,fasta,fastq,fq,fsa.gz,fas.gz,fa.gz,fasta.gz,fastq.gz,fq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+output:
+  masked_fasta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.fasta.gz":
+          type: file
+          description: Masked fasta file
+          pattern: "*.fasta.gz"
+          ontologies: []
+  probabilities:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.txt":
+          type: file
+          description: Per-position repeat probabilities for tantan format 1.
+          pattern: "*.txt"
+          ontologies: []
+  counts:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.counts.txt":
+          type: file
+          description: Per-position repeat counts for tantan format 2.
+          pattern: "*.counts.txt"
+          ontologies: []
+  bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bed":
+          type: file
+          description: BED output containing genomic coordinates of detected repeats for tantan format 3.
+          pattern: "*.bed"
+          ontologies: []
+  tandem_repeats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.repeats.txt":
+          type: file
+          description: Tandem-repeat output for tantant format 4.
+          pattern: "*.repeats.txt"
+          ontologies: []
+  versions_tantan:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tantan:
+          type: string
+          description: The name of the tool
+      - tantan --version | sed -e 's/tantan //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tantan:
+          type: string
+          description: The name of the tool
+      - tantan --version | sed -e 's/tantan //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@CarsonJM"
+  - "@snunzi"
+maintainers:
+  - "@CarsonJM"
+  - "@snunzi"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/tantan:51--ad7ba29d3afed598
+      build_id: bd-ad7ba29d3afed598_1
+      scan_id: sc-729f937468aaf461_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/tantan:51--b9b1acd10f6998ca
+      build_id: bd-b9b1acd10f6998ca_1
+      scan_id: sc-c4d83cd83c81094a_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/tantan:51--6db7fae39454baf5
+      build_id: bd-6db7fae39454baf5_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1f/1f253a068cef16f420fccada7db73f3cbf959fcb03ac15d1f36cf6a260216710/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/tantan:51--76ecc1b4d2c5b714
+      build_id: bd-76ecc1b4d2c5b714_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e1/e1a8043d5f5b80b4b7af4c60f5aa09303ab22d76807542d12b4da5e5ede48678/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/tantan/.conda-lock/linux_amd64-bd-ad7ba29d3afed598_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/tantan/.conda-lock/linux_arm64-bd-b9b1acd10f6998ca_1.txt
