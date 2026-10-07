@@ -514,7 +514,10 @@ concerning: it points to a condition-specific issue (e.g. a batch effect from ho
 were handled), since a real internal standard should not care which condition a sample belongs
 to. The table is also saved as <code>%s</code>.
 </p>
-<div class="scroll-table"><table><thead><tr>%s</tr></thead><tbody>%s</tbody></table></div>',
+<div class="scroll-table"><table><thead><tr>%s</tr></thead><tbody>%s</tbody></table></div>
+<p>
+Rounded to one decimal here. The saved table has the unrounded numbers.
+</p>',
     esc(condition_cv_out), cond_header, paste(cond_rows, collapse = "")
   )
 }
@@ -530,11 +533,11 @@ is_names_html <- if (length(is_feats) > 0) {
   paste(esc(is_feats), collapse = ", ")
 } else "—"
 
-# CV column: round + add "%" to match the per-condition CV table's style,
-# instead of full-precision decimals with no unit.
+# CV and MissingValuepercentage columns (both in percent): round + add "%" to match the per-condition CV
+# table's style, instead of full-precision decimals with no unit. The saved TSV keeps the plain numbers.
 cv_rows <- apply(cv_df, 1, function(r) {
   vals <- vapply(names(r), function(col) {
-    if (col == "CV") {
+    if (col %in% c("CV", "MissingValuepercentage")) {
       v <- suppressWarnings(as.numeric(r[[col]]))
       if (!is.na(v)) sprintf("%s%%", format(round(v, 1))) else as.character(r[[col]])
     } else {
@@ -583,8 +586,8 @@ session_summary_html <- sprintf(
   <summary>Full R session info (click to expand)</summary>
   <pre>%s</pre>
 </details>
-<p>Please cite base R, MetaProViz, and its dependencies listed above if you
-use results or plots from this report.</p>',
+<p>Please cite MetaProViz, base R and the dependencies listed here and in the Citations section
+if you use results or plots from this report.</p>',
 esc(session_info_text))
 
 html <- sprintf('<!DOCTYPE html><html><head><meta charset="utf-8">
@@ -621,7 +624,12 @@ If you use results or plots from this analysis in a publication, please cite:
 <ul>
   <li><strong>MetaProViz:</strong>
   <a href="https://doi.org/10.1038/s44320-026-00231-8">Schmidt et al., Integrated metabolomics data analysis to generate mechanistic hypotheses with MetaProViz, Molecular Systems Biology 2026.</a></li>
-  <li><strong>Dependencies:</strong> None for this module.</li>
+  <li><strong>Dependencies:</strong>
+  <a href="https://www.R-project.org/">R Core Team, R: A Language and Environment for Statistical Computing, R Foundation for Statistical Computing</a>, <a href="https://doi.org/10.18129/B9.bioc.SummarizedExperiment">Morgan et al., SummarizedExperiment: A container (S4 class) for matrix-like assays, Bioconductor</a> and <a href="https://ggplot2.tidyverse.org">Wickham, ggplot2: Elegant Graphics for Data Analysis, Springer-Verlag New York 2016</a>.
+  The other R packages used are listed with their versions in the session summary at the end of this report.</li>
+  <li><strong>This module:</strong> <code>metaproviz/internalstandard</code>, an nf-core module. It has no publication of its own and is cited through the nf-core publication below. In the methods, name the module.</li>
+  <li><strong>nf-core:</strong> <a href="https://doi.org/10.1038/s41587-020-0439-x">Ewels et al., The nf-core framework for community-curated bioinformatics pipelines, Nature Biotechnology 2020.</a></li>
+  <li><strong>Nextflow:</strong> <a href="https://doi.org/10.1038/nbt.3820">Di Tommaso et al., Nextflow enables reproducible computational workflows, Nature Biotechnology 2017.</a></li>
 </ul>
 
 <h2>Description</h2>
@@ -674,6 +682,9 @@ Every internal standard\\'s CV, computed across all real samples together. The t
 saved as <code>%s</code>.
 </p>
 %s
+<p>
+Rounded to one decimal here. The saved table has the unrounded numbers.
+</p>
 
 <h2>Internal standards above the CV cutoff (%s%%)</h2>
 %s
