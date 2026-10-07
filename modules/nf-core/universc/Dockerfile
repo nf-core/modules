@@ -1,4 +1,7 @@
-FROM tomkellygenetics/cellranger_clean:3.0.2.9002
+# Dockerfile to create container with Cell Ranger
+# Push to quay.io/nf-core/universc
+
+FROM continuumio/miniconda3:latest
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -7,19 +10,34 @@ RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
         build-essential \
-        ca-certificates \
-        curl \
         git \
         git-lfs \
         gzip \
-        make \
-        nano \
         pigz \
-        python3-pip \
         rename \
+        cpio \
+        procps \
+        rpm2cpio \
+        unzip \
         wget \
+        curl \
         zsh \
+        zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*
+
+# Set different version
+ENV CELLRANGER_VER=10.1.0
+ENV CELLRANGER_HOME=/opt/cellranger-${CELLRANGER_VER}
+ENV UNIVERSC_HOME=/opt/universc
+
+# TODO Update CELLRANGE_VER and URL cellranger file
+WORKDIR /opt
+RUN wget -O cellranger-$CELLRANGER_VER.tar.gz "https://cf.10xgenomics.com/releases/cell-exp/cellranger-${CELLRANGER_VER}.tar.gz?Expires=1791420039&Key-Pair-Id=APKAI7S6A5RYOXBWRPDA&Signature=iKFpqhsq5MZZ6S~dJX0M8xi1LjO7zfcV-7tg1Hm2PL4nXE~KMf-oT15B6gkLIagps8DTditel79Gz~P09PBU~e3LStXs3bBKgloZGKwtsQJ2oSgvMaCz7kz0r1qycW2H2sgLIEC7dFW6eA3WOvaN86-llRE9A4HHFfLGlJJB7niIsKPo34VeQ8KaMmO3q3AUqyyF4QurDK3Z6zHhxSyvFhGDCDaZ~gnft-~UKk~1rS2g2P0TCc6m-CTthBlom6mgk5PBzV~lOmEaTpIjEDSGbuSyaLs4Yi1a5jT6StC2RyKqDAM0mZcViS3Iu2FIq3D0iFMlq6PxbJ61UvMA2kUw8Q__" \
+    && tar -xzf "cellranger-$CELLRANGER_VER.tar.gz" \
+    && test -x "$CELLRANGER_HOME/cellranger" \
+    && rm -f "cellranger-$CELLRANGER_VER.tar.gz"
+
+ENV PATH="${CELLRANGER_HOME}:${CELLRANGER_HOME}/bin:${UNIVERSC_HOME}:${PATH}"
 
 # Install Oh My Zsh non-interactively
 RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" \
@@ -57,19 +75,16 @@ RUN wget -q \
     && install -m 0755 STAR /usr/local/bin/STAR \
     && rm -rf /tmp/STAR-2.5.1b /tmp/STAR-2.5.1b.tar.gz
 
-# Allow Cell Ranger files to be modified
-RUN chmod -R 777 /cellranger-3.0.2.9001
-
 # Clone UniverSC, including Git LFS files
 RUN git lfs install --system \
-    && git clone https://github.com/minoda-lab/universc.git /universc \
-    && cd /universc \
+    && git clone https://github.com/minoda-lab/universc.git "${UNIVERSC_HOME}" \
+    && cd "${UNIVERSC_HOME}" \
     && git lfs pull
 
 # The launcher is now supplied by the cloned repository:
 # /universc/launch_universc.sh
 # Build the small Cell Ranger reference datasets
-RUN cd /universc/test/cellranger_reference/cellranger-tiny-ref \
+RUN cd "${UNIVERSC_HOME}/test/cellranger_reference/cellranger-tiny-ref" \
     && rm -rf 3.0.0 1.2.0 \
     && cellranger mkref \
         --genome=3.0.0 \
@@ -81,44 +96,36 @@ RUN cd /universc/test/cellranger_reference/cellranger-tiny-ref \
         --genes=genes-1.2.0.gtf
 
 # Build UniverSC references
-RUN cd /universc \
+RUN cd ${UNIVERSC_HOME} \
     && make reference
 
 # Link test FASTQ directories into the Cell Ranger installation
-RUN mkdir -p /cellranger-3.0.2.9001/cellranger-tiny-fastq \
+RUN ln -s \
+        "${UNIVERSC_HOME}/test/shared/cellranger-tiny-fastq" \
+        "${CELLRANGER_HOME}/cellranger-tiny-fastq" \
     && ln -s \
-        /universc/test/shared/cellranger-tiny-fastq/1.2.0 \
-        /cellranger-3.0.2.9001/cellranger-tiny-fastq/1.2.0 \
-    && ln -s \
-        /universc/test/shared/cellranger-tiny-fastq/3.0.0 \
-        /cellranger-3.0.2.9001/cellranger-tiny-fastq/3.0.0
-
-# Link test reference directories into the Cell Ranger installation
-RUN mkdir -p /cellranger-3.0.2.9001/cellranger-tiny-ref \
-    && ln -s \
-        /universc/test/cellranger_reference/cellranger-tiny-ref/1.2.0 \
-        /cellranger-3.0.2.9001/cellranger-tiny-ref/1.2.0 \
-    && ln -s \
-        /universc/test/cellranger_reference/cellranger-tiny-ref/3.0.0 \
-        /cellranger-3.0.2.9001/cellranger-tiny-ref/3.0.0
+        "${UNIVERSC_HOME}/test/cellranger_reference/cellranger-tiny-ref" \
+        "${CELLRANGER_HOME}/cellranger-tiny-ref"
 
 # Install the UniverSC launcher in the Cell Ranger executable directory
 RUN ln -s \
-        /universc/launch_universc.sh \
-        /cellranger-3.0.2.9001/cellranger-cs/3.0.2.9001/bin/universc \
+        "${UNIVERSC_HOME}/launch_universc.sh" \
+        "${CELLRANGER_HOME}/bin/universc" \
     && ln -s \
-        /universc/sub \
-        /cellranger-3.0.2.9001/cellranger-cs/3.0.2.9001/bin/sub \
+        "${UNIVERSC_HOME}/sub" \
+        "${CELLRANGER_HOME}/bin/sub" \
     && ln -s \
-        /universc/whitelists \
-        /cellranger-3.0.2.9001/cellranger-cs/3.0.2.9001/bin/whitelists
+        "${UNIVERSC_HOME}/whitelists" \
+        "${CELLRANGER_HOME}/bin/whitelists"
 
 # Preserve the original UniverSC compatibility workaround
 RUN cp \
-        /cellranger-3.0.2.9001/cellranger-cs/3.0.2.9001/lib/python/cellranger/chemistry.py \
-        /cellranger-3.0.2.9001/cellranger-cs/3.0.2.9001/lib/python/cellranger/check.py
+        "${CELLRANGER_HOME}/lib/python/cellranger/chemistry.py" \
+        "${CELLRANGER_HOME}/lib/python/cellranger/check.py"
+
+# FIX sed -i 's/"\$technology" == "vasa-drop"/ "\$technology" == "vasa-drop"/' "\$local_universc/universc"
 
 # Match the permissions used by the original image
-RUN chmod -R 777 \
-        /cellranger-3.0.2.9001 \
-        /universc
+RUN chmod -R a+rwX \
+    "${CELLRANGER_HOME}" \
+    "${UNIVERSC_HOME}"
