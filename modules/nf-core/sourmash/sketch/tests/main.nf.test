@@ -103,6 +103,35 @@ nextflow_process {
 
     }
 
+    test("sarscov2 - genome fasta merge signatures - prefix with space") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] =  [
+                                [ id:'test sample', single_end:false ], // meta map
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                            ]
+                input[1] =  true // merge_sigs
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.signatures[0][1]).text.contains('library/genome.fasta'),
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                ).match()}
+            )
+        }
+
+    }
+
     test("sarscov2 - genome fasta - stub") {
 
         options '-stub'
