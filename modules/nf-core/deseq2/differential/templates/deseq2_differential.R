@@ -111,6 +111,19 @@ run_results <- function(...) {
 #' @param shrink_type Type of shrinkage estimator ('ashr' or 'apeglm').
 #' @return A `DESeqResults` object with shrunken log2 fold changes.
 run_shrink <- function(..., shrink_type) {
+  dots <- list(...)
+  if (shrink_type == "apeglm" && "contrast" %in% names(dots)) {
+    contrast_name <- if (!is.null(opt\$contrast_string)) {
+      opt\$contrast_string
+    } else {
+      paste(dots\$contrast, collapse = ", ")
+    }
+    stop(
+      "apeglm shrinkage requires a model coefficient (coef=), but contrast '",
+      contrast_name,
+      "' is specified as contrast=. Please specify contrast as a model coefficient or use shrink_lfc_type='ashr'."
+    )
+  }
   lfcShrink(
     dds,
     type = shrink_type,
@@ -442,16 +455,7 @@ if (!is.null(opt\$contrast_string)) {
     comp.results <- run_results(contrast = numeric_contrast)
 
     if (opt\$shrink_lfc) {
-      if (opt\$shrink_lfc_type == "apeglm") {
-        warning(
-          "apeglm shrinkage requires a model coefficient (coef=), but contrast '",
-          opt\$contrast_string,
-          "' is evaluated as a contrast vector. Falling back to type='ashr'."
-        )
-        comp.results <- run_shrink(contrast = numeric_contrast, shrink_type = "ashr")
-      } else {
-        comp.results <- run_shrink(contrast = numeric_contrast, shrink_type = opt\$shrink_lfc_type)
-      }
+      comp.results <- run_shrink(contrast = numeric_contrast, shrink_type = opt\$shrink_lfc_type)
     }
   }
 } else {
@@ -462,20 +466,9 @@ if (!is.null(opt\$contrast_string)) {
 
   comp.results <- run_results(contrast = contrast_var_tg_ref)
   if (opt\$shrink_lfc) {
-    if (opt\$shrink_lfc_type == "apeglm") {
-      warning(
-        "apeglm shrinkage requires a model coefficient (coef=), but contrast '",
-        paste(contrast_var_tg_ref, collapse = ", "),
-        "' is specified as contrast=. Falling back to type='ashr'."
-      )
-      comp.results <- run_shrink(contrast = contrast_var_tg_ref, shrink_type = "ashr")
-    } else {
-      comp.results <- run_shrink(contrast = contrast_var_tg_ref, shrink_type = opt\$shrink_lfc_type)
-    }
+    comp.results <- run_shrink(contrast = contrast_var_tg_ref, shrink_type = opt\$shrink_lfc_type)
   }
 }
-
-
 
 # See https://support.bioconductor.org/p/97676/
 
