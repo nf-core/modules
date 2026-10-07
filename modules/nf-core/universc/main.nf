@@ -3,8 +3,8 @@ process UNIVERSC {
     label 'process_medium'
 
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'docker://wave.seqera.io/wt/9798dc70dd2e/wave/build:ac5e4fbf01375a84' :
-        'wave.seqera.io/wt/9798dc70dd2e/wave/build:ac5e4fbf01375a84' }"
+        'docker://wave.seqera.io/wt/ab4661e3aed7/wave/build:76578ce90b6e6f71' :
+        'wave.seqera.io/wt/ab4661e3aed7/wave/build:76578ce90b6e6f71' }"
 
     input:
     tuple val(meta), path(reads)
@@ -30,23 +30,6 @@ process UNIVERSC {
 
     def reference_name = reference.name
     """
-    export PATH="/opt/cellranger-10.1.0:\$PATH"
-    sed -i 's/"\$technology" == "vasa-drop"/ "\$technology" == "vasa-drop"/' "/opt/universc/launch_universc.sh"
-    sed -i 's/\$index1(\\[0\\])/"\${index1[0]}"/g'  "/opt/universc/launch_universc.sh"
-    sed -i 's/\${index2}(\\[0\\])/"\${index2[0]}"/g'  "/opt/universc/launch_universc.sh"
-    sed -i 's/\$index2(\\[0\\])/"\${index2[0]}"/g'  "/opt/universc/launch_universc.sh"
-    sed -i 's/bam="--no-bam"/bam="--create-bam=false"/' "/opt/universc/launch_universc.sh"
-    sed -i 's/bam=""/bam="--create-bam=true"/' "/opt/universc/launch_universc.sh"
-
-    sed -i '2640c\
-        if false; then
-    ' /opt/universc/launch_universc.sh
-
-    sed -i '2690c\
-        elif false; then
-    ' /opt/universc/launch_universc.sh
-    sed -n '2637,2643p' /opt/universc/launch_universc.sh
-
     export PYTHON_EGG_CACHE=\$(pwd)/.cache
     universc \\
         --id ${prefix} \\
@@ -73,23 +56,6 @@ process UNIVERSC {
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    export PATH="/opt/cellranger-10.1.0:\$PATH"
-    sed -i 's/"\$technology" == "vasa-drop"/ "\$technology" == "vasa-drop"/' "/opt/universc/launch_universc.sh"
-    sed -i 's/\$index1(\\[0\\])/"\${index1[0]}"/g'  "/opt/universc/launch_universc.sh"
-    sed -i 's/\${index2}(\\[0\\])/"\${index2[0]}"/g'  "/opt/universc/launch_universc.sh"
-    sed -i 's/\$index2(\\[0\\])/"\${index2[0]}"/g'  "/opt/universc/launch_universc.sh"
-    sed -i 's/bam="--no-bam"/bam="--create-bam=false"/' "/opt/universc/launch_universc.sh"
-    sed -i 's/bam=""/bam="--create-bam=true"/' "/opt/universc/launch_universc.sh"
-
-    sed -i '2640c\
-        if false; then
-    ' /opt/universc/launch_universc.sh
-
-    sed -i '2690c\
-        elif false; then
-    ' /opt/universc/launch_universc.sh
-    sed -n '2637,2643p' /opt/universc/launch_universc.sh
-
     mkdir -p ${prefix}/outs/
     cd ${prefix}/outs/
 

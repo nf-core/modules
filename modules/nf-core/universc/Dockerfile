@@ -123,7 +123,35 @@ RUN cp \
         "${CELLRANGER_HOME}/lib/python/cellranger/chemistry.py" \
         "${CELLRANGER_HOME}/lib/python/cellranger/check.py"
 
-# FIX sed -i 's/"\$technology" == "vasa-drop"/ "\$technology" == "vasa-drop"/' "\$local_universc/universc"
+# UniverSC 1.2.7 compatibility patches:
+# - Bash array syntax
+# - Cell Ranger 10.1.0 --create-bam syntax
+# - Disable obsolete UniverSC Cloupe MRO manipulation for Cell Ranger 10.1.0
+
+# Cell Ranger 10.1.0 changed the internal MRO structure used for
+# Cloupe generation. UniverSC 1.2.7 attempts to restore/disable the
+# legacy CLOUPE_PREPROCESS stage, which causes MRO preflight/parse
+# failures with Cell Ranger 10.1.0.
+#
+# For Cell Ranger 10.1.0, bypass UniverSC's legacy Cloupe MRO
+# manipulation. This does not disable Cell Ranger's core quantification,
+# cell calling, matrices, or other primary analysis outputs.
+RUN sed -i 's/\[\["$technology" == "vasa-drop" \]\]/\[\[ "$technology" == "vasa-drop" \]\]/' \
+        "${UNIVERSC_HOME}/launch_universc.sh" \
+    && sed -i 's/$index1(\[0\])/"${index1[0]}"/g' \
+        "${UNIVERSC_HOME}/launch_universc.sh" \
+    && sed -i 's/${index2}(\[0\])/"${index2[0]}"/g' \
+        "${UNIVERSC_HOME}/launch_universc.sh" \
+    && sed -i 's/$index2(\[0\])/"${index2[0]}"/g' \
+        "${UNIVERSC_HOME}/launch_universc.sh" \
+    && sed -i 's/bam="--no-bam"/bam="--create-bam=false"/' \
+        "${UNIVERSC_HOME}/launch_universc.sh" \
+    && sed -i 's/bam=""/bam="--create-bam=true"/' \
+        "${UNIVERSC_HOME}/launch_universc.sh" \
+    && sed -i '2640c\        if [[ $technology == "10x" ]] \&\& [[ $barcodefile == "default:10x" ]] \&\& [[ ${cellrangerversion} != "10.1.0" ]]; then' \
+        "${UNIVERSC_HOME}/launch_universc.sh" \
+    && sed -i '2684c\        elif [[ ${cellrangerversion} != "10.1.0" ]] \&\& { [[ $lastcall_p == "default:10x" ]] || [[ ! -f $lastcallfile ]]; }; then' \
+        "${UNIVERSC_HOME}/launch_universc.sh"
 
 # Match the permissions used by the original image
 RUN chmod -R a+rwX \
