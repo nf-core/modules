@@ -49,7 +49,7 @@ opt <- list(
   pool_samples        = "",
   pool_metadata_col   = "",
   pool_metadata_value = "Pool",
-  pool_pattern        = "pool",
+  pool_pattern        = "pool|qc",
   conditions_col      = "Conditions"
 )
 args_opt <- parse_args('$task.ext.args')

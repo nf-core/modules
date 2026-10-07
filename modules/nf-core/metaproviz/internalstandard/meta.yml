@@ -36,7 +36,7 @@ input:
           (`--internal_standards`), a regular expression (`--pattern`) or, by default, the common naming conventions
           (-dN, -13CN, ISTD, IS_ prefix, _IS suffix). Pool samples are identified by an explicit list
           (`--pool_samples`), by a colData column and value (`--pool_metadata_col`/`--pool_metadata_value`, "Pool" by
-          default) or by a pattern on the sample names (`--pool_pattern`, "pool" by default), and are excluded before
+          default) or by a pattern on the sample names (`--pool_pattern`, "pool|qc" by default), and are excluded before
           the CV is computed (if any are found). A condition column (named "Conditions" by default, or whatever
           `--conditions_col` points at) splits the CV out per condition (condition_cv output). Mutually exclusive with
           data_matrix/feature_matrix/sample_matrix — provide this alone, or the other three alone, not both.
@@ -72,7 +72,7 @@ input:
           Sample metadata (TSV/CSV), first column the sample ID matching data_matrix's columns; the remaining columns
           become the SE's colData. Pool samples are identified by an explicit list (`--pool_samples`), by a colData
           column and value (`--pool_metadata_col`/`--pool_metadata_value`, "Pool" by default) or by a pattern on the
-          sample names (`--pool_pattern`, "pool" by default), and are excluded before the CV is computed (if any are
+          sample names (`--pool_pattern`, "pool|qc" by default), and are excluded before the CV is computed (if any are
           found). A condition column (named "Conditions" by default, or whatever `--conditions_col` points at) splits
           the CV out per condition (condition_cv output). Required together with data_matrix and feature_matrix.
         pattern: "*.{tsv,csv}"
