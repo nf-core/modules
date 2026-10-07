@@ -30,9 +30,8 @@ process UMITOOLS_GROUP {
 
     if (create_bam && "$bam" == "${prefix}.bam") { error "Input and output names are the same, set prefix in module configuration to disambiguate!" }
 
-    if (!(args ==~ /.*--random-seed.*/)) {args += " --random-seed=100"}
     """
-    PYTHONHASHSEED=0 umi_tools \\
+    umi_tools \\
         group \\
         -I $bam \\
         $output_bam \\
