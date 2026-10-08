@@ -1,0 +1,76 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "kivvi"
+description: Calls copy number and sequence variants in large-unit variable number tandem repeats from PacBio HiFi reads
+keywords:
+  - kivvi
+  - genotyper
+  - tandem repeat
+  - vntr
+  - hifi
+tools:
+  - "kivvi":
+      description: "HiFi-based genotyper for large-unit VNTRs including KIV2 and D4Z4"
+      homepage: "https://github.com/PacificBiosciences/kivvi"
+      documentation: "https://github.com/PacificBiosciences/kivvi/blob/main/README.md"
+      tool_dev_url: "https://github.com/PacificBiosciences/kivvi"
+      doi: "10.64898/2026.04.10.717730"
+      licence:
+        ["Pacific Biosciences Software License (https://github.com/PacificBiosciences/kivvi/blob/main/LICENSE.md)"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: |
+          BAM file containing PacBio HiFi whole-genome reads aligned to GRCh38,
+          or a subset covering the target KIV2 or D4Z4 regions
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bam":
+          type: file
+          description: |
+            Reads realigned to a single repeat unit of the target KIV2 or D4Z4
+            region, with HP tags identifying repeat copies
+          pattern: "*.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+  versions_kivvi:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "kivvi":
+          type: string
+          description: The name of the tool
+      - "kivvi --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kivvi:
+          type: string
+          description: The name of the tool
+      - kivvi --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@sofiademmou"
+maintainers:
+  - "@sofiademmou"
