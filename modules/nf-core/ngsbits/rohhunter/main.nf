@@ -13,7 +13,7 @@ process NGSBITS_ROHHUNTER {
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    tuple val("${task.process}"), val('ngsbits'), eval("RohHunter --version | sed 's/RohHunter //'"), topic: versions, emit: versions_ngsbits
+    tuple val("${task.process}"), val('ngsbits'), eval("RohHunter --version | grep RohHunter | sed 's/RohHunter //'"), topic: versions, emit: versions_ngsbits
 
     when:
     task.ext.when == null || task.ext.when

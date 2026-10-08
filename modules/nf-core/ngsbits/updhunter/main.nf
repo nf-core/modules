@@ -13,7 +13,7 @@ process NGSBITS_UPDHUNTER {
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
     tuple val(meta), path("*.igv"), emit: igv
-    tuple val("${task.process}"), val('ngsbits'), eval("UpdHunter --version 2>&1 | sed 's/UpdHunter //'"), topic: versions, emit: versions_ngsbits
+    tuple val("${task.process}"), val('ngsbits'), eval("UpdHunter --version 2>&1 | grep UpdHunter | sed 's/UpdHunter //'"), topic: versions, emit: versions_ngsbits
 
     when:
     task.ext.when == null || task.ext.when
