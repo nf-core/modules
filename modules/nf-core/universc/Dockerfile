@@ -5,6 +5,14 @@ FROM continuumio/miniconda3:latest
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
+# Set different version
+ENV CELLRANGER_VER=10.1.0
+ENV UNIVERSC_VER=1.2.7
+ENV MULTIQC_VER=1.35
+ENV FASTQ_PAIR_VER=0.3
+ENV SAMTOOLS_VER=1.16.1
+ENV STAR_VER=2.5.1b
+
 # Install system dependencies
 RUN apt-get update \
     && apt-get upgrade -y \
@@ -25,8 +33,6 @@ RUN apt-get update \
         zlib1g-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Set different version
-ENV CELLRANGER_VER=10.1.0
 ENV CELLRANGER_HOME=/opt/cellranger-${CELLRANGER_VER}
 ENV UNIVERSC_HOME=/opt/universc
 
@@ -46,11 +52,15 @@ RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master
 # Install MultiQC
 RUN python3 -m pip install --no-cache-dir \
         --upgrade pip setuptools wheel \
-    && python3 -m pip install --no-cache-dir multiqc
+    && python3 -m pip install --no-cache-dir \
+        "multiqc==${MULTIQC_VER}"
 
 # Install fastq-pair
-RUN git clone https://github.com/linsalrob/fastq-pair.git /tmp/fastq-pair \
-    && cd /tmp/fastq-pair \
+RUN wget -q \
+        "https://github.com/linsalrob/fastq-pair/archive/refs/tags/v${FASTQ_PAIR_VER}.tar.gz" \
+        -O "/tmp/fastq-pair-${FASTQ_PAIR_VER}.tar.gz" \
+    && tar -xzf "/tmp/fastq-pair-${FASTQ_PAIR_VER}.tar.gz" -C /tmp \
+    && cd "/tmp/fastq-pair-${FASTQ_PAIR_VER}" \
     && mkdir build \
     && cd build \
     && gcc -std=gnu99 \
@@ -60,26 +70,30 @@ RUN git clone https://github.com/linsalrob/fastq-pair.git /tmp/fastq-pair \
         ../is_gzipped.c \
         -o fastq_pair \
     && install -m 0755 fastq_pair /usr/local/bin/fastq_pair \
-    && rm -rf /tmp/fastq-pair
+    && rm -rf \
+        "/tmp/fastq-pair-${FASTQ_PAIR_VER}" \
+        "/tmp/fastq-pair-${FASTQ_PAIR_VER}.tar.gz"
 
 # Install STAR aligner
 RUN wget -q \
-        https://github.com/alexdobin/STAR/archive/refs/tags/2.5.1b.tar.gz \
-        -O /tmp/STAR-2.5.1b.tar.gz \
-    && tar -xzf /tmp/STAR-2.5.1b.tar.gz -C /tmp \
-    && cd /tmp/STAR-2.5.1b \
+        "https://github.com/alexdobin/STAR/archive/refs/tags/${STAR_VER}.tar.gz" \
+        -O "/tmp/STAR-${STAR_VER}.tar.gz" \
+    && tar -xzf "/tmp/STAR-${STAR_VER}.tar.gz" -C /tmp \
+    && cd "/tmp/STAR-${STAR_VER}" \
     && make \
     && install -m 0755 bin/Linux_x86_64/STAR* /usr/local/bin/ \
     && cd source \
     && make \
     && install -m 0755 STAR /usr/local/bin/STAR \
-    && rm -rf /tmp/STAR-2.5.1b /tmp/STAR-2.5.1b.tar.gz
+    && rm -rf "/tmp/STAR-${STAR_VER}" "/tmp/STAR-${STAR_VER}.tar.gz"
 
 # Clone UniverSC, including Git LFS files
-RUN git lfs install --system \
-    && git clone https://github.com/minoda-lab/universc.git "${UNIVERSC_HOME}" \
-    && cd "${UNIVERSC_HOME}" \
-    && git lfs pull
+RUN wget -q \
+        "https://github.com/minoda-lab/universc/archive/refs/tags/${UNIVERSC_VER}.tar.gz" \
+        -O "/tmp/universc-${UNIVERSC_VER}.tar.gz" \
+    && tar -xzf "/tmp/universc-${UNIVERSC_VER}.tar.gz" -C /tmp \
+    && mv "/tmp/universc-${UNIVERSC_VER}" "${UNIVERSC_HOME}" \
+    && rm -f "/tmp/universc-${UNIVERSC_VER}.tar.gz"
 
 # The launcher is now supplied by the cloned repository:
 # /universc/launch_universc.sh
