@@ -37,8 +37,7 @@ input:
           e.g. [ id:'test' ]
     - fasta:
         type: file
-        description: The reference FASTA to use (mandatory when CRAM files are
-          used)
+        description: The reference FASTA to use (mandatory when CRAM files are used)
         pattern: "*.{fasta,fa,fna}"
         ontologies: []
   - - meta3:
@@ -53,8 +52,7 @@ input:
         ontologies: []
   - method:
       type: string
-      description: The method to use to define the gender (possibilities are 'xy',
-        'hetx' and 'sry')
+      description: The method to use to define the gender (possibilities are 'xy', 'hetx' and 'sry')
       pattern: "(xy|hetx|sry)"
 output:
   tsv:
@@ -65,8 +63,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.tsv":
           type: file
-          description: An output TSV file containing the results of the gender
-            prediction
+          description: An output TSV file containing the results of the gender prediction
           pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475
@@ -95,3 +92,27 @@ authors:
   - "@nvnieuwk"
 maintainers:
   - "@nvnieuwk"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/ngs-bits:2026_06--10de2f01af4c9c32
+      build_id: bd-10de2f01af4c9c32_1
+      scan_id: sc-ed9d8aa51d32d8c4_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/ngs-bits:2026_06--ded3d87a5c0a98ee
+      build_id: bd-ded3d87a5c0a98ee_1
+      scan_id: sc-f7a23e68d81b01b0_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/ngs-bits:2026_06--68b7658e81716a8e
+      build_id: bd-68b7658e81716a8e_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e8/e833a9ec91195ab6632d4f69260e788bafd42a05fbad4acd4d064e491b9091f6/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/ngs-bits:2026_06--eefe177929fb17d1
+      build_id: bd-eefe177929fb17d1_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/db/db759890fb18613dd6178305e20a588bda85a12c3d06f885899aca2f54725985/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/ngsbits/samplegender/.conda-lock/linux_amd64-bd-10de2f01af4c9c32_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/ngsbits/samplegender/.conda-lock/linux_arm64-bd-ded3d87a5c0a98ee_1.txt
