@@ -10,7 +10,8 @@ tools:
       homepage: "https://github.com/imgag/ngs-bits"
       documentation: "https://github.com/imgag/ngs-bits"
       tool_dev_url: "https://github.com/imgag/ngs-bits"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 
 input:
@@ -78,9 +79,10 @@ output:
       - ngsbits:
           type: string
           description: The name of the tool
-      - BedCoverage --version 2>&1 | sed 's/BedCoverage //':
+      - BedCoverage --version 2>&1 | grep BedCoverage | sed 's/BedCoverage //':
           type: eval
           description: The expression to obtain the version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -89,9 +91,10 @@ topics:
       - ngsbits:
           type: string
           description: The name of the tool
-      - BedCoverage --version 2>&1 | sed 's/BedCoverage //':
+      - BedCoverage --version 2>&1 | grep BedCoverage | sed 's/BedCoverage //':
           type: eval
           description: The expression to obtain the version of the tool
+
 authors:
   - "@nvnieuwk"
 maintainers:

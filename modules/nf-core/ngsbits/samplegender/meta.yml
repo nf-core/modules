@@ -66,7 +66,7 @@ output:
           description: An output TSV file containing the results of the gender prediction
           pattern: "*.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3475 # TSV
   versions_ngsbits:
     - - ${task.process}:
           type: string
@@ -74,9 +74,10 @@ output:
       - ngsbits:
           type: string
           description: The name of the tool
-      - SampleGender --version  2>&1 | sed 's/SampleGender //':
+      - SampleGender --version  2>&1 | grep SampleGender | sed 's/SampleGender //':
           type: eval
           description: The expression to obtain the version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -85,9 +86,10 @@ topics:
       - ngsbits:
           type: string
           description: The name of the tool
-      - SampleGender --version  2>&1 | sed 's/SampleGender //':
+      - SampleGender --version  2>&1 | grep SampleGender | sed 's/SampleGender //':
           type: eval
           description: The expression to obtain the version of the tool
+
 authors:
   - "@nvnieuwk"
 maintainers:
