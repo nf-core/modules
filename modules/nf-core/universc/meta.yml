@@ -60,7 +60,7 @@ output:
       - cellranger:
           type: string
           description: The name of the tool
-      - cellranger 2>&1 | sed '/^cellranger/!d;s/cellranger  (//;s/)//':
+      - cellranger --version | sed 's/cellranger //':
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -83,7 +83,7 @@ topics:
       - cellranger:
           type: string
           description: The name of the tool
-      - cellranger 2>&1 | sed '/^cellranger/!d;s/cellranger  (//;s/)//':
+      - cellranger --version | sed 's/cellranger //':
           type: eval
           description: The expression to obtain the version of the tool
 

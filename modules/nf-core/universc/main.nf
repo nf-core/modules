@@ -146,6 +146,92 @@ process UNIVERSC {
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
+    # ------------------------------------------------------------
+    # Detect Cell Ranger
+    # ------------------------------------------------------------
+
+    cr_version=\$(cellranger --version | sed 's/cellranger //')
+    img_cr="/opt/cellranger-\${cr_version}"
+
+    if [[ ! -d "\$img_cr" ]]; then
+        echo "ERROR: Cell Ranger installation not found: \$img_cr" >&2
+        exit 1
+    fi
+
+
+    # ------------------------------------------------------------
+    # Create task-local Cell Ranger installation
+    #
+    # UniverSC modifies:
+    #   lib/python
+    #   mro/rna
+    #   lib/python/cellranger/barcodes
+    #
+    # Everything else can remain in the immutable image.
+    # ------------------------------------------------------------
+
+    local_cr="\$PWD/.local-cellranger/cellranger-\${cr_version}"
+
+    mkdir -p "\$local_cr"
+
+    # Writable Cell Ranger Python code
+    mkdir -p "\$local_cr/lib"
+    cp -a "\${img_cr}/lib/python" "\$local_cr/lib/"
+
+    # Writable Cell Ranger MRO
+    mkdir -p "\$local_cr/mro"
+    cp -a "\${img_cr}/mro/rna" "\$local_cr/mro/"
+
+    # ------------------------------------------------------------
+    # Symlink everything else from the image
+    # ------------------------------------------------------------
+
+    for item in "\${img_cr}"/*; do
+        name=\$(basename "\$item")
+
+        case "\$name" in
+            cellranger|lib|mro|cellranger-cs)
+                ;;
+            *)
+                ln -s "\$item" "\$local_cr/\$name"
+                ;;
+        esac
+    done
+
+    # Remaining lib contents
+    for item in "\${img_cr}/lib"/*; do
+        name=\$(basename "\$item")
+
+        if [[ "\$name" != "python" ]]; then
+            ln -s "\$item" "\$local_cr/lib/\$name"
+        fi
+    done
+
+    # Remaining MRO contents
+    for item in "\${img_cr}/mro"/*; do
+        name=\$(basename "\$item")
+
+        if [[ "\$name" != "rna" ]]; then
+            ln -s "\$item" "\$local_cr/mro/\$name"
+        fi
+    done
+
+    # Cell Ranger executable
+    ln -s "\${img_cr}/cellranger" "\$local_cr/cellranger"
+
+    # ------------------------------------------------------------
+    # Create writable UniverSC installation
+    # ------------------------------------------------------------
+
+    mkdir -p "\$PWD/.local-universc"
+    cp -a /opt/universc "\$PWD/.local-universc/"
+
+    local_universc="\$PWD/.local-universc/universc"
+
+    ln -s "\$local_universc/launch_universc.sh" "\$local_universc/universc"
+
+    export PATH="\$local_cr:\$local_universc:\$PATH"
+
     mkdir -p ${prefix}/outs/
     cd ${prefix}/outs/
 
