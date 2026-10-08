@@ -14,7 +14,7 @@ process NGSBITS_BEDANNOTATEGC {
 
     output:
     tuple val(meta), path("*.bed"), emit: output
-    tuple val("${task.process}"), val('ngsbits'), eval("BedAnnotateGC --version 2>&1 | grep BedAnnotateGC | sed 's/BedAnnotateGC //'"), topic: versions, emit: versions_ngsbits
+    tuple val("${task.process}"), val('ngsbits'), eval("BedAnnotateGC --version 2>&1 | sed -n 's/BedAnnotateGC //p' "), topic: versions, emit: versions_ngsbits
 
     when:
     task.ext.when == null || task.ext.when

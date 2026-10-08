@@ -15,7 +15,7 @@ process NGSBITS_SAMPLEGENDER {
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    tuple val("${task.process}"), val('ngsbits'), eval("SampleGender --version  2>&1 | grep SampleGender | sed 's/SampleGender //'"), topic: versions, emit: versions_ngsbits
+    tuple val("${task.process}"), val('ngsbits'), eval("SampleGender --version  2>&1 | sed -n 's/SampleGender //p'"), topic: versions, emit: versions_ngsbits
 
     when:
     task.ext.when == null || task.ext.when

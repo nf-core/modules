@@ -63,7 +63,7 @@ output:
       - ngsbits:
           type: string
           description: The name of the tool
-      - UpdHunter --version 2>&1 | grep UpdHunter | sed 's/UpdHunter //':
+      - UpdHunter --version 2>&1 | grep UpdHunter | sed -n 's/UpdHunter //p':
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -75,7 +75,7 @@ topics:
       - ngsbits:
           type: string
           description: The name of the tool
-      - UpdHunter --version 2>&1 | grep UpdHunter | sed 's/UpdHunter //':
+      - UpdHunter --version 2>&1 | grep UpdHunter | sed -n 's/UpdHunter //p':
           type: eval
           description: The expression to obtain the version of the tool
 

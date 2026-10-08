@@ -74,7 +74,7 @@ output:
       - ngsbits:
           type: string
           description: The name of the tool
-      - SampleGender --version  2>&1 | grep SampleGender | sed 's/SampleGender //':
+      - SampleGender --version  2>&1 | sed -n 's/SampleGender //p':
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -86,7 +86,7 @@ topics:
       - ngsbits:
           type: string
           description: The name of the tool
-      - SampleGender --version  2>&1 | grep SampleGender | sed 's/SampleGender //':
+      - SampleGender --version  2>&1 | sed -n 's/SampleGender //p':
           type: eval
           description: The expression to obtain the version of the tool
 

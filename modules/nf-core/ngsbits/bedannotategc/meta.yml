@@ -65,7 +65,7 @@ output:
       - ngsbits:
           type: string
           description: The name of the tool
-      - BedAnnotateGC --version 2>&1 | grep BedAnnotateGC | sed 's/BedAnnotateGC //':
+      - "BedAnnotateGC --version 2>&1 | sed -n 's/BedAnnotateGC //p' ":
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -77,7 +77,7 @@ topics:
       - ngsbits:
           type: string
           description: The name of the tool
-      - BedAnnotateGC --version 2>&1 | grep BedAnnotateGC | sed 's/BedAnnotateGC //':
+      - "BedAnnotateGC --version 2>&1 | sed -n 's/BedAnnotateGC //p' ":
           type: eval
           description: The expression to obtain the version of the tool
 

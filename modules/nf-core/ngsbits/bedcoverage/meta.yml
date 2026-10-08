@@ -79,7 +79,7 @@ output:
       - ngsbits:
           type: string
           description: The name of the tool
-      - BedCoverage --version 2>&1 | grep BedCoverage | sed 's/BedCoverage //':
+      - BedCoverage --version 2>&1 | sed -n 's/BedCoverage //p':
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -91,7 +91,7 @@ topics:
       - ngsbits:
           type: string
           description: The name of the tool
-      - BedCoverage --version 2>&1 | grep BedCoverage | sed 's/BedCoverage //':
+      - BedCoverage --version 2>&1 | sed -n 's/BedCoverage //p':
           type: eval
           description: The expression to obtain the version of the tool
 
