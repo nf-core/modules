@@ -62,6 +62,18 @@ input:
         description: Reference FASTA index
         pattern: "*.fai"
         ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing contigs file information
+          e.g. `[ id:'contigs' ]`
+    - contigs:
+        type: file
+        description: Optional contigs list file for SAVANA to restrict analysis to specific contigs
+        pattern: "*.txt"
+        optional: true
+        ontologies:
+          - edam: "http://edamontology.org/format_2330" # TXT
 output:
   sv_breakpoints_vcf:
     - - meta:
