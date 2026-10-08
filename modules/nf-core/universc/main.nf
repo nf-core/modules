@@ -3,8 +3,8 @@ process UNIVERSC {
     label 'process_medium'
 
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'docker://wave.seqera.io/wt/ab4661e3aed7/wave/build:76578ce90b6e6f71' :
-        'wave.seqera.io/wt/ab4661e3aed7/wave/build:76578ce90b6e6f71' }"
+        'docker://wave.seqera.io/wt/31a6e5f54e99/wave/build:b9dbc80cb5dd84ee' :
+        'wave.seqera.io/wt/31a6e5f54e99/wave/build:b9dbc80cb5dd84ee' }"
 
     input:
     tuple val(meta), path(reads)
