@@ -3,8 +3,8 @@ process DDS_CREATEPROJECT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b2/b28fa2a1c9a43350fb7f7533b7663a6202040a06b4dfaf89c9b21de6e1667594/data'
-:         'community.wave.seqera.io/library/pip_python_dds-cli:da61a5f0f8c75872' }"
+    ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b2/b28fa2a1c9a43350fb7f7533b7663a6202040a06b4dfaf89c9b21de6e1667594/data'
+    : 'community.wave.seqera.io/library/pip_python_dds-cli:da61a5f0f8c75872' }"
 
     input:
     tuple val(title), val(description), val(pi)
