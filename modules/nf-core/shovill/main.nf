@@ -1,21 +1,24 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SHOVILL {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/shovill:1.1.0--0' :
-        'quay.io/biocontainers/shovill:1.1.0--0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/shovill:1.1.0--0'
+        : 'quay.io/biocontainers/shovill:1.1.0--0'}"
 
     input:
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("contigs.fa")                         , emit: contigs
-    tuple val(meta), path("shovill.corrections")                , emit: corrections
-    tuple val(meta), path("shovill.log")                        , emit: log
+    tuple val(meta), path("contigs.fa"), emit: contigs
+    tuple val(meta), path("shovill.corrections"), emit: corrections
+    tuple val(meta), path("shovill.log"), emit: log
     tuple val(meta), path("{skesa,spades,megahit,velvet}.fasta"), emit: raw_contigs
-    tuple val(meta), path("contigs.{fastg,gfa,LastGraph}")      , optional:true, emit: gfa
+    tuple val(meta), path("contigs.{fastg,gfa,LastGraph}"), optional: true, emit: gfa
     tuple val("${task.process}"), val('shovill'), eval('shovill --version 2>&1 | sed "s/^.*shovill //"'), emit: versions_shovill, topic: versions
 
     when:
@@ -28,9 +31,9 @@ process SHOVILL {
     shovill \\
         --R1 ${reads[0]} \\
         --R2 ${reads[1]} \\
-        $args \\
-        --cpus $task.cpus \\
-        --ram $memory \\
+        ${args} \\
+        --cpus ${task.cpus} \\
+        --ram ${memory} \\
         --outdir ./ \\
         --force
     """

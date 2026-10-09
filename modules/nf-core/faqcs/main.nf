@@ -1,23 +1,26 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FAQCS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/faqcs:2.10--r41h9a82719_2' :
-        'quay.io/biocontainers/faqcs:2.10--r41h9a82719_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/faqcs:2.10--r41h9a82719_2'
+        : 'quay.io/biocontainers/faqcs:2.10--r41h9a82719_2'}"
 
     input:
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path('*.trimmed.fastq.gz')           , emit: reads         , optional: true
-    tuple val(meta), path('*.stats.txt')                  , emit: stats         , optional: true
-    tuple val(meta), path('./debug')                      , emit: debug         , optional: true
-    tuple val(meta), path('*_qc_report.pdf')              , emit: statspdf      , optional: true
-    tuple val(meta), path('*.discard.fastq.gz')           , emit: reads_fail    , optional: true
-    tuple val(meta), path('*.trimmed.unpaired.fastq.gz')  , emit: reads_unpaired, optional: true
-    tuple val(meta), path('*.log')                        , emit: log
+    tuple val(meta), path('*.trimmed.fastq.gz'), emit: reads, optional: true
+    tuple val(meta), path('*.stats.txt'), emit: stats, optional: true
+    tuple val(meta), path('./debug'), emit: debug, optional: true
+    tuple val(meta), path('*_qc_report.pdf'), emit: statspdf, optional: true
+    tuple val(meta), path('*.discard.fastq.gz'), emit: reads_fail, optional: true
+    tuple val(meta), path('*.trimmed.unpaired.fastq.gz'), emit: reads_unpaired, optional: true
+    tuple val(meta), path('*.log'), emit: log
     tuple val("${task.process}"), val('faqcs'), eval("FaQCs --version 2>&1 | sed 's/^.*Version: //'"), emit: versions_faqcs, topic: versions
 
     when:
@@ -29,13 +32,13 @@ process FAQCS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     if (meta.single_end) {
         """
-        [ ! -f  ${prefix}.fastq.gz ] && ln -s $reads ${prefix}.fastq.gz
+        [ ! -f  ${prefix}.fastq.gz ] && ln -s ${reads} ${prefix}.fastq.gz
         FaQCs \\
             -d . \\
             -u ${prefix}.fastq.gz \\
             --prefix ${prefix} \\
-            -t $task.cpus \\
-            $args \\
+            -t ${task.cpus} \\
+            ${args} \\
             2>| >(tee ${prefix}.log >&2)
 
 
@@ -54,7 +57,8 @@ process FAQCS {
             mv *.{base,for_qual_histogram,length_count,quality}*.* debug
         fi
         """
-    } else {
+    }
+    else {
         """
         [ ! -f  ${prefix}_1.fastq.gz ] && ln -s ${reads[0]} ${prefix}_1.fastq.gz
         [ ! -f  ${prefix}_2.fastq.gz ] && ln -s ${reads[1]} ${prefix}_2.fastq.gz
@@ -63,8 +67,8 @@ process FAQCS {
             -1 ${prefix}_1.fastq.gz \\
             -2 ${prefix}_2.fastq.gz \\
             --prefix ${meta.id} \\
-            -t $task.cpus \\
-            $args \\
+            -t ${task.cpus} \\
+            ${args} \\
             2>| >(tee ${prefix}.log >&2)
 
         # Unpaired

@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FORCE_CUBE {
     tag "${aoi.simpleName}"
     label 'process_single'
@@ -22,18 +25,18 @@ process FORCE_CUBE {
     def args = task.ext.args ?: ''
 
     """
-    force-cube $args -o mask/ $aoi
+    force-cube ${args} -o mask/ ${aoi}
     """
 
     stub:
-    def args     = task.ext.args ?: ''
-    def matcher  = args =~ /-b\s+(\S+)/
+    def args = task.ext.args ?: ''
+    def matcher = args =~ /-b\s+(\S+)/
     def baseName = args.contains('-b') && matcher ? matcher[0][1] : aoi.getSimpleName()
 
     def tile1 = "X0000_Y0000"
     def tile2 = "X0001_Y0000"
     """
-    mkdir mask/$tile1 mask/$tile2
-    touch mask/$tile1/${baseName}.tif mask/$tile2/${baseName}.tif
+    mkdir mask/${tile1} mask/${tile2}
+    touch mask/${tile1}/${baseName}.tif mask/${tile2}/${baseName}.tif
     """
 }

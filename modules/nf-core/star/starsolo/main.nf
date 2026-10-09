@@ -1,23 +1,26 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process STAR_STARSOLO {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/26/268b4c9c6cbf8fa6606c9b7fd4fafce18bf2c931d1a809a0ce51b105ec06c89d/data' :
-        'community.wave.seqera.io/library/htslib_samtools_star_gawk:ae438e9a604351a4' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/26/268b4c9c6cbf8fa6606c9b7fd4fafce18bf2c931d1a809a0ce51b105ec06c89d/data'
+        : 'community.wave.seqera.io/library/htslib_samtools_star_gawk:ae438e9a604351a4'}"
 
     input:
     tuple val(meta), val(solotype), path(reads)
-    path(opt_whitelist)
+    path opt_whitelist
     tuple val(meta2), path(index)
 
     output:
-    tuple val(meta),  path('*.Solo.out')         , emit: counts
-    tuple val(meta),  path('*Log.final.out')     , emit: log_final
-    tuple val(meta),  path('*Log.out')           , emit: log_out
-    tuple val(meta),  path('*Log.progress.out')  , emit: log_progress
-    tuple val(meta),  path('*/Gene/Summary.csv') , emit: summary
+    tuple val(meta), path('*.Solo.out'), emit: counts
+    tuple val(meta), path('*Log.final.out'), emit: log_final
+    tuple val(meta), path('*Log.out'), emit: log_out
+    tuple val(meta), path('*Log.progress.out'), emit: log_progress
+    tuple val(meta), path('*/Gene/Summary.csv'), emit: summary
     tuple val("${task.process}"), val('star'), eval('STAR --version | sed -e "s/STAR_//g"'), topic: versions, emit: versions_star
 
     when:
@@ -27,7 +30,7 @@ process STAR_STARSOLO {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def (forward, reverse) = reads.collate(2).transpose()
-    def zcat = reads[0].getExtension() == "gz" ? "--readFilesCommand zcat": ""
+    def zcat = reads[0].getExtension() == "gz" ? "--readFilesCommand zcat" : ""
 
     // Handle solotype argument logic
     if (solotype == "CB_UMI_Simple") {
@@ -38,26 +41,28 @@ process STAR_STARSOLO {
         solotype_args = solotype_args + (meta['cb_start'] ? "--soloCBstart ${meta['cb_start']} " : "")
         solotype_args = solotype_args + (meta['barcode_len'] ? "--soloBarcodeReadLength ${meta['barcode_len']} " : "")
         solotype_args = solotype_args + (meta['barcode_mate'] ? "--soloBarcodeMate ${meta['barcode_mate']} " : "")
-    } else if (solotype == "CB_UMI_Complex") {
+    }
+    else if (solotype == "CB_UMI_Complex") {
         solotype_args = meta['cb_position'] ? "--soloCBposition ${meta['cb_position']}" : ""
         solotype_args = solotype_args + (opt_whitelist.name != 'NO_FILE' ? "--soloCBwhitelist ${opt_whitelist} " : "--soloCBwhitelist None ")
         solotype_args = solotype_args + (meta['umi_position'] ? "--soloUMIposition ${meta['umi_position']} " : "")
         solotype_args = solotype_args + (meta['adapter_seq'] ? "--soloAdapterSequence ${meta['adapter_seq']} " : "")
         solotype_args = solotype_args + (meta['max_mismatch_adapter'] ? "--soloAdapterMismatchesNmax ${meta['max_mismatch_adapter']} " : "")
-    } else {
+    }
+    else {
         log.warn("Unknown output solotype (${solotype})")
     }
 
     """
     STAR \\
-        --genomeDir $index \\
-        --readFilesIn ${reverse.join( "," )} ${forward.join( "," )} \\
-        --runThreadN $task.cpus \\
-        --outFileNamePrefix $prefix. \\
-        --soloType $solotype \\
-        $zcat \\
-        $solotype_args \\
-        $args
+        --genomeDir ${index} \\
+        --readFilesIn ${reverse.join(",")} ${forward.join(",")} \\
+        --runThreadN ${task.cpus} \\
+        --outFileNamePrefix ${prefix}. \\
+        --soloType ${solotype} \\
+        ${zcat} \\
+        ${solotype_args} \\
+        ${args}
 
     if [ -d ${prefix}.Solo.out ]; then
         find ${prefix}.Solo.out \\( -name "*.tsv" -o -name "*.mtx" \\) -exec gzip {} \\;

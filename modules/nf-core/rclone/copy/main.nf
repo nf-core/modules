@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RCLONE_COPY {
     tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-            ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5d/5dfd28fd0090c69f57c9bd93ea3235d8df194e8f269b5cb3027b6b59bff567d5/data'
-            : 'community.wave.seqera.io/library/rclone:1.74.3--2ef33c5b9132aa97' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5d/5dfd28fd0090c69f57c9bd93ea3235d8df194e8f269b5cb3027b6b59bff567d5/data'
+        : 'community.wave.seqera.io/library/rclone:1.74.3--2ef33c5b9132aa97'}"
 
     input:
     tuple val(meta), val(source_path), val(destination_path), path(filter_file)
@@ -36,7 +39,8 @@ process RCLONE_COPY {
         }
         http_url_arg = "--http-url '${matcher[0][1]}'"
         rclone_source = ":http:${(matcher[0][2] ?: '/').replaceFirst('^/', '')}"
-    } else {
+    }
+    else {
         rclone_source = source_string.replaceFirst('^([a-zA-Z][a-zA-Z0-9+.-]*)://', '$1:')
     }
 

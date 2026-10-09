@@ -1,22 +1,25 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VARSCAN_PROCESSSOMATIC {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ed/ed57a091507c62e990bbd08d532281d161d99f060316e0a991791f167d7b1daf/data':
-        'community.wave.seqera.io/library/htslib_varscan:24b3b3db2ca78de8' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ed/ed57a091507c62e990bbd08d532281d161d99f060316e0a991791f167d7b1daf/data'
+        : 'community.wave.seqera.io/library/htslib_varscan:24b3b3db2ca78de8'}"
 
     input:
     tuple val(meta), path(vcf)
 
     output:
-    tuple val(meta), path("*.Germline.vcf.gz")   , emit: germline_vcf
+    tuple val(meta), path("*.Germline.vcf.gz"), emit: germline_vcf
     tuple val(meta), path("*.Germline.hc.vcf.gz"), emit: germline_hc_vcf
-    tuple val(meta), path("*.Somatic.vcf.gz")    , emit: somatic_vcf
-    tuple val(meta), path("*.Somatic.hc.vcf.gz") , emit: somatic_hc_vcf
-    tuple val(meta), path("*.LOH.vcf.gz")        , emit: loh_vcf
-    tuple val(meta), path("*.LOH.hc.vcf.gz")     , emit: loh_hc_vcf
+    tuple val(meta), path("*.Somatic.vcf.gz"), emit: somatic_vcf
+    tuple val(meta), path("*.Somatic.hc.vcf.gz"), emit: somatic_hc_vcf
+    tuple val(meta), path("*.LOH.vcf.gz"), emit: loh_vcf
+    tuple val(meta), path("*.LOH.hc.vcf.gz"), emit: loh_hc_vcf
     tuple val("${task.process}"), val('varscan'), eval("varscan 2>&1 | sed -n 's/VarScan v//p'"), emit: versions_varscan, topic: versions
 
     when:
@@ -25,10 +28,10 @@ process VARSCAN_PROCESSSOMATIC {
     script:
     def args = task.ext.args ?: ''
     """
-    bgzip -d $vcf
+    bgzip -d ${vcf}
 
     varscan processSomatic \\
-        $args \\
+        ${args} \\
         ${vcf.baseName}
 
     bgzip *.vcf

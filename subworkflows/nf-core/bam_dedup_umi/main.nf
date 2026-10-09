@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 //
 // BAM deduplication with UMI processing
 //
@@ -123,7 +126,7 @@ workflow BAM_DEDUP_UMI {
     // Genome-side only; transcriptome stats excluded (MultiQC can't
     // disambiguate them from genome stats without extra work).
     ch_per_sample_mqc_bundle = ch_genomic_dedup_log
-        .join(UMI_DEDUP_GENOME.out.stats,    remainder: true)
+        .join(UMI_DEDUP_GENOME.out.stats, remainder: true)
         .join(UMI_DEDUP_GENOME.out.flagstat, remainder: true)
         .join(UMI_DEDUP_GENOME.out.idxstats, remainder: true)
         .map { row -> [row[0], row.drop(1).findAll { f -> f != null }.collectMany { e -> (e instanceof List) ? e : [e] }] }

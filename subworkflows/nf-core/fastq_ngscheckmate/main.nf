@@ -1,9 +1,12 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { NGSCHECKMATE_FASTQ  } from '../../../modules/nf-core/ngscheckmate/fastq/main'
 include { NGSCHECKMATE_VAFNCM } from '../../../modules/nf-core/ngscheckmate/vafncm/main'
 
 workflow FASTQ_NGSCHECKMATE {
     take:
-    ch_fastq  // channel: [ val(meta1), fastq ]
+    ch_fastq // channel: [ val(meta1), fastq ]
     ch_snp_pt // channel: [ val(meta2), snp_pt ]
 
     main:
@@ -20,8 +23,8 @@ workflow FASTQ_NGSCHECKMATE {
 
     emit:
     corr_matrix = NGSCHECKMATE_VAFNCM.out.corr_matrix // channel: [ meta, corr_matrix ]
-    matched     = NGSCHECKMATE_VAFNCM.out.matched     // channel: [ meta, matched ]
-    all         = NGSCHECKMATE_VAFNCM.out.all         // channel: [ meta, all ]
-    vaf         = NGSCHECKMATE_FASTQ.out.vaf          // channel: [ meta, vaf ]
-    pdf         = NGSCHECKMATE_VAFNCM.out.pdf         // channel: [ meta, pdf ], optional
+    matched     = NGSCHECKMATE_VAFNCM.out.matched // channel: [ meta, matched ]
+    all         = NGSCHECKMATE_VAFNCM.out.all // channel: [ meta, all ]
+    vaf         = NGSCHECKMATE_FASTQ.out.vaf // channel: [ meta, vaf ]
+    pdf         = NGSCHECKMATE_VAFNCM.out.pdf // channel: [ meta, pdf ], optional
 }

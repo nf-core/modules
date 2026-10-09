@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process WIPERTOOLS_REPORTGATHER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/wipertools:1.1.5--pyhdfd78af_0':
-        'quay.io/biocontainers/wipertools:1.1.5--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/wipertools:1.1.5--pyhdfd78af_0'
+        : 'quay.io/biocontainers/wipertools:1.1.5--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(report)
@@ -23,7 +26,7 @@ process WIPERTOOLS_REPORTGATHER {
 
     // Check if the output file name is in the list of input files
     if (report.any { file -> file.name == "${prefix}.report" }) {
-        error 'Output file name "${prefix}.report" matches one of the input files. Use \"task.ext.prefix\" to disambiguate!.'
+        error('Output file name "${prefix}.report" matches one of the input files. Use \"task.ext.prefix\" to disambiguate!.')
     }
 
     """
@@ -39,7 +42,7 @@ process WIPERTOOLS_REPORTGATHER {
 
     // Check if the output file name is in the list of input files
     if (report.any { file -> file.name == "${prefix}.report" }) {
-        error 'Output file name "${prefix}.report" matches one of the input files. Use \"task.ext.prefix\" to disambiguate!.'
+        error('Output file name "${prefix}.report" matches one of the input files. Use \"task.ext.prefix\" to disambiguate!.')
     }
 
     """

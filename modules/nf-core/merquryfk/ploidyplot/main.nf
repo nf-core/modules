@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MERQURYFK_PLOIDYPLOT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7d/7d113fd30596756ca41c1651aecff1dfde15d2f08dc34996e5b89c7eabd50ab1/data' :
-        'community.wave.seqera.io/library/fastk_merquryfk_r-argparse_r-cowplot_pruned:985041255d013130' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7d/7d113fd30596756ca41c1651aecff1dfde15d2f08dc34996e5b89c7eabd50ab1/data'
+        : 'community.wave.seqera.io/library/fastk_merquryfk_r-argparse_r-cowplot_pruned:985041255d013130'}"
 
     input:
     tuple val(meta), path(fastk_hist), path(fastk_ktab)
@@ -22,20 +25,20 @@ process MERQURYFK_PLOIDYPLOT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args            = task.ext.args ?: ''
-    def prefix          = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     PloidyPlot \\
-        $args \\
-        -T$task.cpus \\
+        ${args} \\
+        -T${task.cpus} \\
         ${fastk_ktab.find { path -> path.toString().endsWith(".ktab") }} \\
         ${prefix}
     """
 
     stub:
-    def args            = task.ext.args ?: ''
-    def prefix          = task.ext.prefix ?: "${meta.id}"
-    def outfmt          = args.contains('-pdf') ? "pdf" : "png"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def outfmt = args.contains('-pdf') ? "pdf" : "png"
     """
     touch ${prefix}.fi.${outfmt}
     touch ${prefix}.ln.${outfmt}

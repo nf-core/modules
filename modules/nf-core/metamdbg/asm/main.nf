@@ -1,19 +1,22 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process METAMDBG_ASM {
     tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/metamdbg:1.4--h3be2455_0':
-        'quay.io/biocontainers/metamdbg:1.4--h3be2455_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/metamdbg:1.4--h3be2455_0'
+        : 'quay.io/biocontainers/metamdbg:1.4--h3be2455_0'}"
 
     input:
     tuple val(meta), path(reads, arity: '1..*')
-    val(input_type)
+    val input_type
 
     output:
     tuple val(meta), path("*.contigs.fasta.gz"), emit: contigs
-    tuple val(meta), path("*.metaMDBG.log")    , emit: log
+    tuple val(meta), path("*.metaMDBG.log"), emit: log
     tuple val("${task.process}"), val('metamdbg'), eval('metaMDBG | sed -n "s/.*Version: //p"'), emit: versions_metamdbg, topic: versions
 
     when:
@@ -22,7 +25,7 @@ process METAMDBG_ASM {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if(!(input_type in ["hifi", "ont"])) {
+    if (!(input_type in ["hifi", "ont"])) {
         error("ERROR: input_type must be one of either 'hifi' or 'ont'.")
     }
     """

@@ -1,22 +1,25 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GECCO_RUN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gecco:0.10.1--pyhdfd78af_0':
-        'quay.io/biocontainers/gecco:0.10.1--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/gecco:0.10.1--pyhdfd78af_0'
+        : 'quay.io/biocontainers/gecco:0.10.1--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(input), path(hmm)
     path model_dir
 
     output:
-    tuple val(meta), path("*.genes.tsv")    , optional: true, emit: genes
-    tuple val(meta), path("*.features.tsv")                 , emit: features
-    tuple val(meta), path("*.clusters.tsv") , optional: true, emit: clusters
+    tuple val(meta), path("*.genes.tsv"), optional: true, emit: genes
+    tuple val(meta), path("*.features.tsv"), emit: features
+    tuple val(meta), path("*.clusters.tsv"), optional: true, emit: clusters
     tuple val(meta), path("*_cluster_*.gbk"), optional: true, emit: gbk
-    tuple val(meta), path("*.json")         , optional: true, emit: json
+    tuple val(meta), path("*.json"), optional: true, emit: json
     tuple val("${task.process}"), val('gecco'), eval("gecco -V |& sed 's/gecco //'"), emit: versions_gecco, topic: versions
 
     when:

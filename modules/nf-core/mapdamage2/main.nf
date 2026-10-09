@@ -1,35 +1,38 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MAPDAMAGE2 {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mapdamage2:2.2.1--pyr40_0' :
-        'quay.io/biocontainers/mapdamage2:2.2.1--pyr40_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/mapdamage2:2.2.1--pyr40_0'
+        : 'quay.io/biocontainers/mapdamage2:2.2.1--pyr40_0'}"
 
     input:
     tuple val(meta), path(bam)
-    path(fasta)
+    path fasta
 
     output:
-    tuple val(meta), path("results_*/Runtime_log.txt")                  , emit: runtime_log
-    tuple val(meta), path("results_*/Fragmisincorporation_plot.pdf")    , emit: fragmisincorporation_plot    , optional: true
-    tuple val(meta), path("results_*/Length_plot.pdf")                  , emit: length_plot                  , optional: true
-    tuple val(meta), path("results_*/misincorporation.txt")             , emit: misincorporation             , optional: true
-    tuple val(meta), path("results_*/lgdistribution.txt")               , emit: lgdistribution               , optional: true
-    tuple val(meta), path("results_*/dnacomp.txt")                      , emit: dnacomp                      , optional: true
-    tuple val(meta), path("results_*/Stats_out_MCMC_hist.pdf")          , emit: stats_out_mcmc_hist          , optional: true
-    tuple val(meta), path("results_*/Stats_out_MCMC_iter.csv")          , emit: stats_out_mcmc_iter          , optional: true
-    tuple val(meta), path("results_*/Stats_out_MCMC_trace.pdf")         , emit: stats_out_mcmc_trace         , optional: true
+    tuple val(meta), path("results_*/Runtime_log.txt"), emit: runtime_log
+    tuple val(meta), path("results_*/Fragmisincorporation_plot.pdf"), emit: fragmisincorporation_plot, optional: true
+    tuple val(meta), path("results_*/Length_plot.pdf"), emit: length_plot, optional: true
+    tuple val(meta), path("results_*/misincorporation.txt"), emit: misincorporation, optional: true
+    tuple val(meta), path("results_*/lgdistribution.txt"), emit: lgdistribution, optional: true
+    tuple val(meta), path("results_*/dnacomp.txt"), emit: dnacomp, optional: true
+    tuple val(meta), path("results_*/Stats_out_MCMC_hist.pdf"), emit: stats_out_mcmc_hist, optional: true
+    tuple val(meta), path("results_*/Stats_out_MCMC_iter.csv"), emit: stats_out_mcmc_iter, optional: true
+    tuple val(meta), path("results_*/Stats_out_MCMC_trace.pdf"), emit: stats_out_mcmc_trace, optional: true
     tuple val(meta), path("results_*/Stats_out_MCMC_iter_summ_stat.csv"), emit: stats_out_mcmc_iter_summ_stat, optional: true
-    tuple val(meta), path("results_*/Stats_out_MCMC_post_pred.pdf")     , emit: stats_out_mcmc_post_pred     , optional: true
-    tuple val(meta), path("results_*/Stats_out_MCMC_correct_prob.csv")  , emit: stats_out_mcmc_correct_prob  , optional: true
-    tuple val(meta), path("results_*/dnacomp_genome.csv")               , emit: dnacomp_genome               , optional: true
-    tuple val(meta), path("results_*/*rescaled.bam")                    , emit: rescaled                     , optional: true
-    tuple val(meta), path("results_*/5pCtoT_freq.txt")                  , emit: pctot_freq                   , optional: true
-    tuple val(meta), path("results_*/3pGtoA_freq.txt")                  , emit: pgtoa_freq                   , optional: true
-    tuple val(meta), path("results_*/*.fasta")                          , emit: fasta                        , optional: true
-    tuple val(meta), path("*/")                                         , emit: folder                       , optional: true
+    tuple val(meta), path("results_*/Stats_out_MCMC_post_pred.pdf"), emit: stats_out_mcmc_post_pred, optional: true
+    tuple val(meta), path("results_*/Stats_out_MCMC_correct_prob.csv"), emit: stats_out_mcmc_correct_prob, optional: true
+    tuple val(meta), path("results_*/dnacomp_genome.csv"), emit: dnacomp_genome, optional: true
+    tuple val(meta), path("results_*/*rescaled.bam"), emit: rescaled, optional: true
+    tuple val(meta), path("results_*/5pCtoT_freq.txt"), emit: pctot_freq, optional: true
+    tuple val(meta), path("results_*/3pGtoA_freq.txt"), emit: pgtoa_freq, optional: true
+    tuple val(meta), path("results_*/*.fasta"), emit: fasta, optional: true
+    tuple val(meta), path("*/"), emit: folder, optional: true
     tuple val("${task.process}"), val("mapdamage2"), eval("mapDamage --version"), topic: versions, emit: versions_mapdamage2
 
     when:

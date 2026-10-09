@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HUMANN3_REGROUP {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/humann:3.6.1--pyh7cba7a3_0' :
-        'quay.io/biocontainers/humann:3.6.1--pyh7cba7a3_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/humann:3.6.1--pyh7cba7a3_0'
+        : 'quay.io/biocontainers/humann:3.6.1--pyh7cba7a3_0'}"
 
     input:
     tuple val(meta), path(input)
@@ -14,9 +17,9 @@ process HUMANN3_REGROUP {
 
     output:
     tuple val(meta), path("*_regroup.tsv.gz"), emit: regroup
-    tuple val("${task.process}"), val('HUMAnN'),    eval("humann --version 2>&1 | sed 's/humann v//'"),               emit: versions_humann,    topic: versions
+    tuple val("${task.process}"), val('HUMAnN'), eval("humann --version 2>&1 | sed 's/humann v//'"), emit: versions_humann, topic: versions
     tuple val("${task.process}"), val('MetaPhlAn'), eval("metaphlan --version 2>&1 | sed 's/MetaPhlAn version //'"), emit: versions_metaphlan, topic: versions
-    tuple val("${task.process}"), val('Python'),    eval("python --version 2>&1 | sed 's/Python //'"),               emit: versions_python,    topic: versions
+    tuple val("${task.process}"), val('Python'), eval("python --version 2>&1 | sed 's/Python //'"), emit: versions_python, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,10 +28,10 @@ process HUMANN3_REGROUP {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    if [[ $input == *.gz ]]; then
-        gunzip -c $input > input.tsv
+    if [[ ${input} == *.gz ]]; then
+        gunzip -c ${input} > input.tsv
     else
-        cp $input input.tsv
+        cp ${input} input.tsv
     fi
 
     printf '%s\n' \\

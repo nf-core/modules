@@ -1,10 +1,13 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DIANN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://containers.biocontainers.pro/s3/SingImgsRepo/diann/v1.8.1_cv1/diann_v1.8.1_cv1.img' :
-        'docker.io/biocontainers/diann:v1.8.1_cv1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://containers.biocontainers.pro/s3/SingImgsRepo/diann/v1.8.1_cv1/diann_v1.8.1_cv1.img'
+        : 'docker.io/biocontainers/diann:v1.8.1_cv1'}"
 
     input:
     tuple val(meta), path(ms_files), val(ms_file_names), path(fasta), path(library), path(quant, stageAs: 'quant/*')
@@ -39,7 +42,7 @@ process DIANN {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "DIANN module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("DIANN module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}" ?: "diann"
@@ -50,9 +53,10 @@ process DIANN {
     //   to match against preprocessed .quant files in quant/ directory, avoiding unnecessary file staging
     def ms_input = ''
     if (ms_files && ms_files != []) {
-        ms_input = ms_files instanceof List ? ms_files.collect{ms_file -> "--f ${ms_file}" }.join(' ') : "--f ${ms_files}"
-    } else if (ms_file_names && ms_file_names != []) {
-        ms_input = ms_file_names instanceof List ? ms_file_names.collect{ms_file -> "--f ${ms_file}" }.join(' ') : "--f ${ms_file_names}"
+        ms_input = ms_files instanceof List ? ms_files.collect { ms_file -> "--f ${ms_file}" }.join(' ') : "--f ${ms_files}"
+    }
+    else if (ms_file_names && ms_file_names != []) {
+        ms_input = ms_file_names instanceof List ? ms_file_names.collect { ms_file -> "--f ${ms_file}" }.join(' ') : "--f ${ms_file_names}"
     }
 
     def fasta_input = fasta && fasta != [] ? "--fasta ${fasta}" : ''
@@ -77,7 +81,7 @@ process DIANN {
     stub:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "DIANN module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("DIANN module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     prefix = task.ext.prefix ?: "${meta.id}" ?: "diann"
 

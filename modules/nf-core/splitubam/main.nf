@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SPLITUBAM {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/splitubam:0.1.1--hc9368f3_0':
-        'quay.io/biocontainers/splitubam:0.1.1--hc9368f3_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/splitubam:0.1.1--hc9368f3_0'
+        : 'quay.io/biocontainers/splitubam:0.1.1--hc9368f3_0'}"
 
     input:
     tuple val(meta), path(bam)
@@ -21,9 +24,9 @@ process SPLITUBAM {
     def args = task.ext.args ?: ''
     """
     splitubam \\
-        $args \\
-        --threads $task.cpus \\
-        $bam
+        ${args} \\
+        --threads ${task.cpus} \\
+        ${bam}
     """
 
     stub:
@@ -32,12 +35,17 @@ process SPLITUBAM {
     def create_cmd = ""
     if (match) {
         def n_splits = match[0][1].toInteger()
-        create_cmd = (1..n_splits).collect { i ->
-            def formattedIteration = String.format('%03d', i)
-            "touch ${formattedIteration}.${bam}.bam"
-        }.join(" ")
-    } else { error("No `--split N` detected in args") }
+        create_cmd = (1..n_splits)
+            .collect { i ->
+                def formattedIteration = String.format('%03d', i)
+                "touch ${formattedIteration}.${bam}.bam"
+            }
+            .join(" ")
+    }
+    else {
+        error("No `--split N` detected in args")
+    }
     """
-    $create_cmd
+    ${create_cmd}
     """
 }

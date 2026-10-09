@@ -1,15 +1,19 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CADDSV_RUN {
     tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d2/d2fd85e11209001044c0b5f8cd663e8058cf006b8e6a0d8712a50857677ab664/data'
-:         'community.wave.seqera.io/library/caddsv_snakemake_pulp_bedops_pruned:799f9464989eb8fe' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d2/d2fd85e11209001044c0b5f8cd663e8058cf006b8e6a0d8712a50857677ab664/data'
+        : 'community.wave.seqera.io/library/caddsv_snakemake_pulp_bedops_pruned:799f9464989eb8fe'}"
+
     input:
     tuple val(meta), path(variants)
-    path(annotations_dir)
-    path(config)
+    path annotations_dir
+    path config
 
     output:
     tuple val(meta), path("caddsv_results/scored/*.tsv"), emit: tsv
@@ -26,7 +30,7 @@ process CADDSV_RUN {
     def is_gz = variants.extension == 'gz'
     def real_ext = is_gz ? file(variants.baseName).extension : variants.extension
     if (!(real_ext in ['bed', 'tsv'])) {
-        error "Unsupported CADD-SV input suffix: ${variants}"
+        error("Unsupported CADD-SV input suffix: ${variants}")
     }
     def run_input = "${prefix}.${real_ext}"
 

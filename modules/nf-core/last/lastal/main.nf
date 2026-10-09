@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process LAST_LASTAL {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
@@ -8,12 +11,12 @@ process LAST_LASTAL {
         : 'community.wave.seqera.io/library/last_gzip:40e65bc1d7d8624e'}"
 
     input:
-    tuple val(meta), path(fastx), path (param_file)
+    tuple val(meta), path(fastx), path(param_file)
     path index
 
     output:
     tuple val(meta), path("*.maf.gz"), emit: maf
-    tuple val(meta), path("*.tsv")   , emit: multiqc
+    tuple val(meta), path("*.tsv"), emit: multiqc
     tuple val("${task.process}"), val('last'), eval("lastal --version | sed 's/lastal //'"), emit: versions_last, topic: versions
 
     when:
@@ -22,9 +25,9 @@ process LAST_LASTAL {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def trained_params = param_file ? "-p ${param_file}"  : ''
+    def trained_params = param_file ? "-p ${param_file}" : ''
     """
-    INDEX_NAME=\$(basename \$(ls $index/*.des) .des)
+    INDEX_NAME=\$(basename \$(ls ${index}/*.des) .des)
     set -o pipefail
 
     # LAST reports genome sizes and sequence number at the beginning and end of the MAF files it outputs.
@@ -93,17 +96,17 @@ process LAST_LASTAL {
             percentIdentity       = (totalAlignmentLength > 0) ? (totalMatches / totalAlignmentLength * 100) : 0;
             percentIdentityNoGaps = (totalAlignmentLength > 0) ? (totalMatches / totalAlignedBases    * 100) : 0;
             print "Sample",  "TotalAlignmentLength", "PercentIdentity", "PercentIdentityNoGaps";  # Header for MultiQC
-            print "$meta.id", totalAlignmentLength,   percentIdentity,   percentIdentityNoGaps;   # Data in TSV format
+            print "${meta.id}", totalAlignmentLength,   percentIdentity,   percentIdentityNoGaps;   # Data in TSV format
         }'
     }
 
     # The MAF files can be really big, so we stream them in the awk functions and gzip instead of reading them each time.
     lastal \\
-        -P $task.cpus \\
-        $trained_params \\
-        $args \\
+        -P ${task.cpus} \\
+        ${trained_params} \\
+        ${args} \\
         ${index}/\$INDEX_NAME \\
-        $fastx |
+        ${fastx} |
         tee >(get_genome_stats > ${prefix}.genomestats.txt) |
         tee >(gzip --no-name   > ${prefix}.maf.gz) |
         maf-convert psl |

@@ -1,16 +1,19 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PYGENPROP_BUILD {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/02/025a1b9aa4f0042c0af7e3a8acc54635876014f2b247ac801d91874d97440c99/data':
-        'community.wave.seqera.io/library/pip_python_pygenprop:829a7d86185a9fd4' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/02/025a1b9aa4f0042c0af7e3a8acc54635876014f2b247ac801d91874d97440c99/data'
+        : 'community.wave.seqera.io/library/pip_python_pygenprop:829a7d86185a9fd4'}"
 
     input:
     tuple val(meta), path(ips)
-    path(gp_txt)
+    path gp_txt
 
     output:
     tuple val(meta), path("*.micro"), emit: meda
@@ -26,7 +29,7 @@ process PYGENPROP_BUILD {
     """
     pygenprop \\
         build \\
-        $args \\
+        ${args} \\
         -d ${gp_txt} \\
         -i ${ips} \\
         -o ${prefix}.micro
@@ -36,7 +39,7 @@ process PYGENPROP_BUILD {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo $args
+    echo ${args}
 
     touch ${prefix}.micro
     """

@@ -1,14 +1,17 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process METHBAT_PROFILE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1e/1e9081b928a80e8e37f48d53558d39d44ba3b7b05a29055abb3a8e80ca749736/data':
-        'community.wave.seqera.io/library/methbat:0.17.0--b493e12136cee7f4' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1e/1e9081b928a80e8e37f48d53558d39d44ba3b7b05a29055abb3a8e80ca749736/data'
+        : 'community.wave.seqera.io/library/methbat:0.17.0--b493e12136cee7f4'}"
 
     input:
-    tuple val(meta) , path(files)
+    tuple val(meta), path(files)
     tuple val(meta2), path(regions)
 
     output:
@@ -28,7 +31,7 @@ process METHBAT_PROFILE {
         --input-prefix ${in_prefix} \\
         --input-regions ${regions} \\
         --output-region-profile ${prefix}.tsv \\
-        $args
+        ${args}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

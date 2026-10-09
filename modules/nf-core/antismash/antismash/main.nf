@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ANTISMASH_ANTISMASH {
     tag "${meta.id}"
     label 'process_medium'
@@ -11,30 +14,30 @@ process ANTISMASH_ANTISMASH {
     path gff
 
     output:
-    tuple val(meta), path("${prefix}/{css,images,js}")                    , emit: html_accessory_files
-    tuple val(meta), path("${prefix}/*.gbk")                              , emit: gbk_input
-    tuple val(meta), path("${prefix}/*.json")                             , emit: json_results
-    tuple val(meta), path("${prefix}/*.log")                              , emit: log
-    tuple val(meta), path("${prefix}/*.zip")                              , emit: zip
-    tuple val(meta), path("${prefix}/index.html")                         , emit: html
-    tuple val(meta), path("${prefix}/regions.js")                         , emit: json_sideloading
-    tuple val(meta), path("${prefix}/clusterblast/*_c*.txt")              , emit: clusterblast_file          , optional: true
-    tuple val(meta), path("${prefix}/knownclusterblast/region*/ctg*.html"), emit: knownclusterblast_html     , optional: true
-    tuple val(meta), path("${prefix}/knownclusterblast/")                 , emit: knownclusterblast_dir      , optional: true
-    tuple val(meta), path("${prefix}/knownclusterblast/*_c*.txt")         , emit: knownclusterblast_txt      , optional: true
-    tuple val(meta), path("${prefix}/svg/clusterblast*.svg")              , emit: svg_files_clusterblast     , optional: true
-    tuple val(meta), path("${prefix}/svg/knownclusterblast*.svg")         , emit: svg_files_knownclusterblast, optional: true
-    tuple val(meta), path("${prefix}/*region*.gbk")                       , emit: gbk_results                , optional: true
-    tuple val(meta), path("${prefix}/clusterblastoutput.txt")             , emit: clusterblastoutput         , optional: true
-    tuple val(meta), path("${prefix}/knownclusterblastoutput.txt")        , emit: knownclusterblastoutput    , optional: true
+    tuple val(meta), path("${prefix}/{css,images,js}"), emit: html_accessory_files
+    tuple val(meta), path("${prefix}/*.gbk"), emit: gbk_input
+    tuple val(meta), path("${prefix}/*.json"), emit: json_results
+    tuple val(meta), path("${prefix}/*.log"), emit: log
+    tuple val(meta), path("${prefix}/*.zip"), emit: zip
+    tuple val(meta), path("${prefix}/index.html"), emit: html
+    tuple val(meta), path("${prefix}/regions.js"), emit: json_sideloading
+    tuple val(meta), path("${prefix}/clusterblast/*_c*.txt"), emit: clusterblast_file, optional: true
+    tuple val(meta), path("${prefix}/knownclusterblast/region*/ctg*.html"), emit: knownclusterblast_html, optional: true
+    tuple val(meta), path("${prefix}/knownclusterblast/"), emit: knownclusterblast_dir, optional: true
+    tuple val(meta), path("${prefix}/knownclusterblast/*_c*.txt"), emit: knownclusterblast_txt, optional: true
+    tuple val(meta), path("${prefix}/svg/clusterblast*.svg"), emit: svg_files_clusterblast, optional: true
+    tuple val(meta), path("${prefix}/svg/knownclusterblast*.svg"), emit: svg_files_knownclusterblast, optional: true
+    tuple val(meta), path("${prefix}/*region*.gbk"), emit: gbk_results, optional: true
+    tuple val(meta), path("${prefix}/clusterblastoutput.txt"), emit: clusterblastoutput, optional: true
+    tuple val(meta), path("${prefix}/knownclusterblastoutput.txt"), emit: knownclusterblastoutput, optional: true
     tuple val("${task.process}"), val('antismash'), eval("antismash --version | sed 's/antiSMASH //;s/-.*//g'"), emit: versions_antismash, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args   ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
     gff_flag = gff ? "--genefinding-gff3 ${gff}" : ""
 
     """

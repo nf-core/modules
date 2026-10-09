@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VCLUST_CLUSTER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vclust:1.3.1--py313h9ee0642_0':
-        'quay.io/biocontainers/vclust:1.3.1--py313h9ee0642_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/vclust:1.3.1--py313h9ee0642_0'
+        : 'quay.io/biocontainers/vclust:1.3.1--py313h9ee0642_0'}"
 
     input:
     tuple val(meta), path(tsv)
@@ -33,9 +36,15 @@ process VCLUST_CLUSTER {
     def metric_command = metric ? "--metric ${metric} " : ''
     def tgani_command = tani_command + gani_command + ani_command ?: ''
 
-    if ( !metric_command ) error "ERROR: The metric must be specified."
-    if ( !tgani_command ) error "ERROR: At least one of the ani thresholds must be specified: --tani, --gani, --ani."
-    if ( !tgani_command.contains("--${metric}")) error "ERROR: The metric '${metric}' must have an associated threshold."
+    if (!metric_command) {
+        error("ERROR: The metric must be specified.")
+    }
+    if (!tgani_command) {
+        error("ERROR: At least one of the ani thresholds must be specified: --tani, --gani, --ani.")
+    }
+    if (!tgani_command.contains("--${metric}")) {
+        error("ERROR: The metric '${metric}' must have an associated threshold.")
+    }
 
     """
     vclust \\
@@ -56,9 +65,15 @@ process VCLUST_CLUSTER {
     def metric_command = metric ? "--metric ${metric}" : ''
     def tgani_command = tani_command + gani_command + ani_command ?: ''
 
-    if ( !metric_command ) error "ERROR: The metric must be specified."
-    if ( !tgani_command ) error "ERROR: At least one of the ani thresholds must be specified: --tani, --gani, --ani."
-    if ( !tgani_command.contains("${metric}")) error "ERROR: The metric '${metric}' must have an associated threshold."
+    if (!metric_command) {
+        error("ERROR: The metric must be specified.")
+    }
+    if (!tgani_command) {
+        error("ERROR: At least one of the ani thresholds must be specified: --tani, --gani, --ani.")
+    }
+    if (!tgani_command.contains("${metric}")) {
+        error("ERROR: The metric '${metric}' must have an associated threshold.")
+    }
 
     """
     touch ${prefix}.clusters.tsv

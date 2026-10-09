@@ -1,17 +1,20 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VCONTACT3_PREPAREDDATABASES {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vcontact3:3.1.6--pyhdfd78af_1':
-        'quay.io/biocontainers/vcontact3:3.1.6--pyhdfd78af_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/vcontact3:3.1.6--pyhdfd78af_1'
+        : 'quay.io/biocontainers/vcontact3:3.1.6--pyhdfd78af_1'}"
 
     input:
     tuple val(meta), val(db_version)
 
     output:
-    tuple val(meta), path ("${prefix}/"), emit: database
+    tuple val(meta), path("${prefix}/"), emit: database
     tuple val("${task.process}"), val('vcontact3'), eval('vcontact3 version'), emit: versions_vcontact3, topic: versions
 
     when:

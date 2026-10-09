@@ -1,21 +1,24 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DEEPTOOLS_COMPUTEMATRIX {
     tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/deeptools:3.5.6--pyhdfd78af_0':
-        'quay.io/biocontainers/deeptools:3.5.6--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/deeptools:3.5.6--pyhdfd78af_0'
+        : 'quay.io/biocontainers/deeptools:3.5.6--pyhdfd78af_0'}"
 
     input:
-    tuple val(meta),  path(bigwig)
+    tuple val(meta), path(bigwig)
     tuple val(meta2), path(bed)
     tuple val(meta3), path(blacklist)
 
     output:
-    tuple val(meta), path("*.mat.gz") , emit: matrix
+    tuple val(meta), path("*.mat.gz"), emit: matrix
     tuple val(meta), path("*.mat.tab"), emit: table
-    tuple val("${task.process}"), val('deeptools'), eval('computeMatrix --version | sed "s/computeMatrix //g"') , emit: versions_deeptools, topic: versions
+    tuple val("${task.process}"), val('deeptools'), eval('computeMatrix --version | sed "s/computeMatrix //g"'), emit: versions_deeptools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

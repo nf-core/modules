@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SEQTK_SAMPLE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/seqtk:1.4--he4a0461_1' :
-        'quay.io/biocontainers/seqtk:1.4--he4a0461_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/seqtk:1.4--he4a0461_1'
+        : 'quay.io/biocontainers/seqtk:1.4--he4a0461_1'}"
 
     input:
     tuple val(meta), path(reads), val(sample_size)
@@ -18,23 +21,23 @@ process SEQTK_SAMPLE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     if (!(args ==~ /.*\ -s\ ?[0-9]+.*/)) {
         args += " -s100"
     }
-    if ( !sample_size ) {
-        error "SEQTK/SAMPLE must have a sample_size value included"
+    if (!sample_size) {
+        error("SEQTK/SAMPLE must have a sample_size value included")
     }
     """
-    printf "%s\\n" $reads | while read f;
+    printf "%s\\n" ${reads} | while read f;
     do
         out=\$(basename \$f | sed 's/\\.f\\(ast\\)\\?q\\.gz\$/.fastq.gz/')
         seqtk \\
             sample \\
-            $args \\
+            ${args} \\
             \$f \\
-            $sample_size \\
+            ${sample_size} \\
             | gzip --no-name > ${prefix}_\${out}
     done
     """
@@ -45,5 +48,4 @@ process SEQTK_SAMPLE {
     """
     echo "" | gzip > ${prefix}.fastq.gz
     """
-
 }

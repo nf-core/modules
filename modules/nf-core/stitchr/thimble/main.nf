@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process STITCHR_THIMBLE {
     tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6b/6b08ffe9ec48ad8e89bab8bfe16127c8de77f9bc973b567e01c61276da25ad6e/data':
-        'community.wave.seqera.io/library/pip_stitchr:9b1e4db63c6ec900' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6b/6b08ffe9ec48ad8e89bab8bfe16127c8de77f9bc973b567e01c61276da25ad6e/data'
+        : 'community.wave.seqera.io/library/pip_stitchr:9b1e4db63c6ec900'}"
 
     input:
     tuple val(meta), path(tcr_table)
@@ -31,7 +34,7 @@ process STITCHR_THIMBLE {
     export PYTHONPATH="\$PWD\${PYTHONPATH:+:\$PYTHONPATH}"
 
     thimble \\
-        $args \\
+        ${args} \\
         -in ${tcr_table} \\
         -o ${prefix}_stitchr.tsv \\
         ${codon_usage} \\

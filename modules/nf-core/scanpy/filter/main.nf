@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SCANPY_FILTER {
     tag "${meta.id}"
     label 'process_low'
@@ -18,13 +21,13 @@ process SCANPY_FILTER {
 
     output:
     tuple val(meta), path("*.{h5ad,zarr}"), emit: anndata
-    path "versions.yml"                   , emit: versions, topic: versions
+    path "versions.yml", emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    prefix     = task.ext.prefix ?: "${meta.id}_filtered"
+    prefix = task.ext.prefix ?: "${meta.id}_filtered"
     output_file = anndata.name.endsWith(".zarr") ? "${prefix}.zarr" : "${prefix}.h5ad"
     if (output_file == anndata.name) {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")

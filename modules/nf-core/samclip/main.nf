@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SAMCLIP {
     tag "${meta.id}"
     label 'process_low'
@@ -20,20 +23,29 @@ process SAMCLIP {
     task.ext.when == null || task.ext.when
 
     script:
-    def args       = task.ext.args   ?: ''   // samclip args
-    def args2      = task.ext.args2  ?: ''   // samtools sort (first, name sort) args
-    def args3      = task.ext.args3  ?: ''   // samtools fixmate args
-    def args4      = task.ext.args4  ?: ''   // samtools sort (second, coordinate sort) args
-    def prefix     = task.ext.prefix ?: "${meta.id}_samclip"
-    def extension  = args4.contains("--output-fmt cram") ? "cram" :
-                     args4.contains("-O cram")           ? "cram" :
-                     args4.contains("-O CRAM")           ? "cram" :
-                     "bam"
+    def args = task.ext.args ?: ''
+    // samclip args
+    def args2 = task.ext.args2 ?: ''
+    // samtools sort (first, name sort) args
+    def args3 = task.ext.args3 ?: ''
+    // samtools fixmate args
+    def args4 = task.ext.args4 ?: ''
+    // samtools sort (second, coordinate sort) args
+    def prefix = task.ext.prefix ?: "${meta.id}_samclip"
+    def extension = args4.contains("--output-fmt cram")
+        ? "cram"
+        : args4.contains("-O cram")
+            ? "cram"
+            : args4.contains("-O CRAM")
+                ? "cram"
+                : "bam"
     def reference_arg = extension == "cram" ? "--reference ${reference}" : ""
     def is_compressed = reference.getName().endsWith(".gz")
-    def ref_filename  = reference.getName().replaceAll(/\.gz$/, "")
+    def ref_filename = reference.getName().replaceAll(/\.gz$/, "")
 
-    if ("${bam}" == "${prefix}.${extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("${bam}" == "${prefix}.${extension}") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
     # decompress reference if gzipped
     if [ "${is_compressed}" = "true" ]; then
@@ -54,14 +66,19 @@ process SAMCLIP {
     """
 
     stub:
-    def args4     = task.ext.args4  ?: ''
-    def prefix    = task.ext.prefix ?: "${meta.id}_samclip"
-    def extension = args4.contains("--output-fmt cram") ? "cram" :
-                    args4.contains("-O cram")           ? "cram" :
-                    args4.contains("-O CRAM")           ? "cram" :
-                    "bam"
+    def args4 = task.ext.args4 ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}_samclip"
+    def extension = args4.contains("--output-fmt cram")
+        ? "cram"
+        : args4.contains("-O cram")
+            ? "cram"
+            : args4.contains("-O CRAM")
+                ? "cram"
+                : "bam"
 
-    if ("${bam}" == "${prefix}.${extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("${bam}" == "${prefix}.${extension}") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
     touch ${prefix}.${extension}
 

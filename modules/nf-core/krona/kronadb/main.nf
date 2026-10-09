@@ -1,10 +1,13 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process KRONA_KRONADB {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/krona:2.7.1--pl526_5' :
-        'quay.io/biocontainers/krona:2.7.1--pl526_5' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/krona:2.7.1--pl526_5'
+        : 'quay.io/biocontainers/krona:2.7.1--pl526_5'}"
 
     output:
     path 'taxonomy/taxonomy.tab', emit: db
@@ -20,12 +23,12 @@ process KRONA_KRONADB {
     Reason:
     This module has been superseded by the krona/ktupdatetaxonomy module.
     """
-    assert false: deprecation_message
+    assert false : deprecation_message
 
     def args = task.ext.args ?: ''
     """
     ktUpdateTaxonomy.sh \\
-        $args \\
+        ${args} \\
         taxonomy/
 
     """

@@ -1,19 +1,22 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GAPSEQ_FINDTRANSPORT {
     tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/93/933e301b11c1ec1699da6382e9e35b0e4e31edb80763eb2fa1b69ad7d6d1e5c7/data'
-:         'community.wave.seqera.io/library/gapseq:2.1.0--c32b876ebb5e5f5b' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/93/933e301b11c1ec1699da6382e9e35b0e4e31edb80763eb2fa1b69ad7d6d1e5c7/data'
+        : 'community.wave.seqera.io/library/gapseq:2.1.0--c32b876ebb5e5f5b'}"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.tbl")  , emit: tbl
-    tuple val(meta), path("*.fna")  , emit: fna      , optional: true
-    tuple val(meta), path("*.log")  , emit: log      , optional: true
+    tuple val(meta), path("*.tbl"), emit: tbl
+    tuple val(meta), path("*.fna"), emit: fna, optional: true
+    tuple val(meta), path("*.log"), emit: log, optional: true
     tuple val("${task.process}"), val('gapseq'), eval('gapseq -v 2>&1 | grep -oP "\\d+\\.\\d+\\.\\d+"'), topic: versions, emit: versions_gapseq
 
     when:

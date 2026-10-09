@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CANVAS_GERMLINE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     container "quay.io/nf-core/canvas:1.40.0"
@@ -13,10 +16,9 @@ process CANVAS_GERMLINE {
     path filter13
 
     output:
-    tuple val(meta), path("${prefix}.vcf.gz"),                          emit: vcf
+    tuple val(meta), path("${prefix}.vcf.gz"), emit: vcf
     tuple val(meta), path("${prefix}.CoverageAndVariantFrequency.txt"), emit: covandvarfreq
     tuple val("${task.process}"), val('canvas'), val('1.40.0'), topic: versions, emit: versions_canvas
-    // --version not supported by CLI, please update this manually when updating the tool
 
     when:
     task.ext.when == null || task.ext.when

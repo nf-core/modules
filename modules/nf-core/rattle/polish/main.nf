@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RATTLE_POLISH {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
@@ -12,9 +15,9 @@ process RATTLE_POLISH {
     tuple val(meta), path(consensi)
 
     output:
-    tuple val(meta), path("${prefix}.transcriptome.fq")  , emit: transcriptome
+    tuple val(meta), path("${prefix}.transcriptome.fq"), emit: transcriptome
     tuple val(meta), path("${prefix}.polish_summary.tsv"), emit: summary, optional: true
-    tuple val(meta), path("${prefix}.log")               , emit: log
+    tuple val(meta), path("${prefix}.log"), emit: log
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     tuple val("${task.process}"), val('rattle'), val('1.0'), emit: versions_rattle, topic: versions
 

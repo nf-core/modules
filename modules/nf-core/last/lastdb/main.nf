@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process LAST_LASTDB {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
@@ -24,10 +27,10 @@ process LAST_LASTDB {
     """
     mkdir lastdb
     lastdb \\
-        $args \\
-        -P $task.cpus \\
+        ${args} \\
+        -P ${task.cpus} \\
         lastdb/${prefix} \\
-        $fastx
+        ${fastx}
     """
 
     stub:

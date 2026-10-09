@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process LTRHARVEST {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ltr_harvest_parallel:1.1--hdfd78af_0':
-        'quay.io/biocontainers/ltr_harvest_parallel:1.1--hdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/ltr_harvest_parallel:1.1--hdfd78af_0'
+        : 'quay.io/biocontainers/ltr_harvest_parallel:1.1--hdfd78af_0'}"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.gff3") , emit: gff3
-    tuple val(meta), path("*.scn")  , emit: scn
+    tuple val(meta), path("*.gff3"), emit: gff3
+    tuple val(meta), path("*.scn"), emit: scn
     tuple val("${task.process}"), val("LTR_HARVEST_parallel"), eval("LTR_HARVEST_parallel -h 2>&1 | sed -n 's/Version: v//p'"), emit: versions_ltr_harvest_parallel, topic: versions
     tuple val("${task.process}"), val("genometools"), eval("gt --version | sed -n 's/gt (GenomeTools) //p'"), emit: versions_genometools, topic: versions
 

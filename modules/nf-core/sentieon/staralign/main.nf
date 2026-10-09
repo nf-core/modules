@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SENTIEON_STARALIGN {
     tag "${meta.id}"
     label 'process_high'
@@ -5,9 +8,9 @@ process SENTIEON_STARALIGN {
 
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2c/2c157e27981ec529b03e7ae5cfc88e51b6158332d2a82db399eef8dd8f2b1d5d/data'
-        : 'community.wave.seqera.io/library/sentieon:202503.03--5e34aa16344b911c' }"
+        : 'community.wave.seqera.io/library/sentieon:202503.03--5e34aa16344b911c'}"
 
     input:
     tuple val(meta), path(reads, stageAs: "input*/*")
@@ -16,22 +19,22 @@ process SENTIEON_STARALIGN {
     val star_ignore_sjdbgtf
 
     output:
-    tuple val(meta), path('*Log.final.out'),                          emit: log_final
-    tuple val(meta), path('*Log.out'),                                emit: log_out
-    tuple val(meta), path('*Log.progress.out'),                       emit: log_progress
-    tuple val(meta), path('*d.out.bam'),                              emit: bam,                optional: true
-    tuple val(meta), path("${prefix}.sortedByCoord.out.bam"),         emit: bam_sorted,         optional: true
+    tuple val(meta), path('*Log.final.out'), emit: log_final
+    tuple val(meta), path('*Log.out'), emit: log_out
+    tuple val(meta), path('*Log.progress.out'), emit: log_progress
+    tuple val(meta), path('*d.out.bam'), emit: bam, optional: true
+    tuple val(meta), path("${prefix}.sortedByCoord.out.bam"), emit: bam_sorted, optional: true
     tuple val(meta), path("${prefix}.Aligned.sortedByCoord.out.bam"), emit: bam_sorted_aligned, optional: true
-    tuple val(meta), path('*toTranscriptome.out.bam'),                emit: bam_transcript,     optional: true
-    tuple val(meta), path('*Aligned.unsort.out.bam'),                 emit: bam_unsorted,       optional: true
-    tuple val(meta), path('*fastq.gz'),                               emit: fastq,              optional: true
-    tuple val(meta), path('*.tab'),                                   emit: tab,                optional: true
-    tuple val(meta), path('*.SJ.out.tab'),                            emit: spl_junc_tab,       optional: true
-    tuple val(meta), path('*.ReadsPerGene.out.tab'),                  emit: read_per_gene_tab,  optional: true
-    tuple val(meta), path('*.out.junction'),                          emit: junction,           optional: true
-    tuple val(meta), path('*.out.sam'),                               emit: sam,                optional: true
-    tuple val(meta), path('*.wig'),                                   emit: wig,                optional: true
-    tuple val(meta), path('*.bg'),                                    emit: bedgraph,           optional: true
+    tuple val(meta), path('*toTranscriptome.out.bam'), emit: bam_transcript, optional: true
+    tuple val(meta), path('*Aligned.unsort.out.bam'), emit: bam_unsorted, optional: true
+    tuple val(meta), path('*fastq.gz'), emit: fastq, optional: true
+    tuple val(meta), path('*.tab'), emit: tab, optional: true
+    tuple val(meta), path('*.SJ.out.tab'), emit: spl_junc_tab, optional: true
+    tuple val(meta), path('*.ReadsPerGene.out.tab'), emit: read_per_gene_tab, optional: true
+    tuple val(meta), path('*.out.junction'), emit: junction, optional: true
+    tuple val(meta), path('*.out.sam'), emit: sam, optional: true
+    tuple val(meta), path('*.wig'), emit: wig, optional: true
+    tuple val(meta), path('*.bg'), emit: bedgraph, optional: true
     tuple val("${task.process}"), val('star'), eval('sentieon STAR --version | sed -e "s/STAR_//g"'), topic: versions, emit: versions_star
     tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version 2>&1 | sed -e "s/sentieon-genomics-//g"'), topic: versions, emit: versions_sentieon
 
@@ -53,7 +56,7 @@ process SENTIEON_STARALIGN {
         ? "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; "
         : ""
     """
-    $sentieonLicense
+    ${sentieonLicense}
 
     sentieon STAR \\
         --genomeDir ${index} \\

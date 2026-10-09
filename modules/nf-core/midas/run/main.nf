@@ -1,16 +1,19 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MIDAS_RUN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/midas:1.3.2--pyh7cba7a3_7':
-        'quay.io/biocontainers/midas:1.3.2--pyh7cba7a3_7' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/midas:1.3.2--pyh7cba7a3_7'
+        : 'quay.io/biocontainers/midas:1.3.2--pyh7cba7a3_7'}"
 
     input:
     tuple val(meta), path(reads)
     tuple val(meta2), path(db, stageAs: 'db/*')
-    val(mode)
+    val mode
 
     output:
     tuple val(meta), path("${prefix}/*"), emit: results
@@ -21,8 +24,8 @@ process MIDAS_RUN {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args   ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     if (meta.single_end) {
         """
@@ -34,7 +37,8 @@ process MIDAS_RUN {
             -1 ${reads[0]} \\
             -t ${task.cpus}
         """
-    } else {
+    }
+    else {
         """
         run_midas.py \\
             ${mode} \\

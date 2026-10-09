@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CANU {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/canu:2.3--h3fb4750_1':
-        'quay.io/biocontainers/canu:2.3--h3fb4750_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/canu:2.3--h3fb4750_1'
+        : 'quay.io/biocontainers/canu:2.3--h3fb4750_1'}"
 
     input:
     tuple val(meta), path(reads)
@@ -14,14 +17,14 @@ process CANU {
     val genomesize
 
     output:
-    tuple val(meta), path("*.report")                   , emit: report
-    tuple val(meta), path("*.contigs.fasta.gz")         , emit: assembly                , optional: true
-    tuple val(meta), path("*.unassembled.fasta.gz")     , emit: contigs
-    tuple val(meta), path("*.correctedReads.fasta.gz")	, emit: corrected_reads         , optional: true
-    tuple val(meta), path("*.trimmedReads.fasta.gz")	, emit: corrected_trimmed_reads , optional: true
-    tuple val(meta), path("*.contigs.layout")           , emit: metadata                , optional: true
-    tuple val(meta), path("*.contigs.layout.readToTig") , emit: contig_position         , optional: true
-    tuple val(meta), path("*.contigs.layout.tigInfo")   , emit: contig_info             , optional: true
+    tuple val(meta), path("*.report"), emit: report
+    tuple val(meta), path("*.contigs.fasta.gz"), emit: assembly, optional: true
+    tuple val(meta), path("*.unassembled.fasta.gz"), emit: contigs
+    tuple val(meta), path("*.correctedReads.fasta.gz"), emit: corrected_reads, optional: true
+    tuple val(meta), path("*.trimmedReads.fasta.gz"), emit: corrected_trimmed_reads, optional: true
+    tuple val(meta), path("*.contigs.layout"), emit: metadata, optional: true
+    tuple val(meta), path("*.contigs.layout.readToTig"), emit: contig_position, optional: true
+    tuple val(meta), path("*.contigs.layout.tigInfo"), emit: contig_info, optional: true
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('canu'), val("2.3"), emit: versions_canu, topic: versions
     tuple val("${task.process}"), val("minimap2"), eval("minimap2 --version"), emit: versions_minimap2, topic: versions
@@ -34,14 +37,16 @@ process CANU {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def valid_mode = ["-pacbio", "-nanopore", "-pacbio-hifi"]
-    if ( !valid_mode.contains(mode) )  { error "Unrecognised mode to run Canu. Options: ${valid_mode.join(', ')}" }
+    if (!valid_mode.contains(mode)) {
+        error("Unrecognised mode to run Canu. Options: ${valid_mode.join(', ')}")
+    }
     """
     canu \\
         -p ${prefix} \\
         genomeSize=${genomesize} \\
-        $args \\
-        maxThreads=$task.cpus \\
-        $mode $reads
+        ${args} \\
+        maxThreads=${task.cpus} \\
+        ${mode} ${reads}
 
     gzip *.fasta
     """

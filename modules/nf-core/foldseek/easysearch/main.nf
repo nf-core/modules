@@ -1,14 +1,17 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FOLDSEEK_EASYSEARCH {
     tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/foldseek:10.941cd33--h5021889_1':
-        'quay.io/biocontainers/foldseek:10.941cd33--h5021889_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/foldseek:10.941cd33--h5021889_1'
+        : 'quay.io/biocontainers/foldseek:10.941cd33--h5021889_1'}"
 
     input:
-    tuple val(meta) , path(pdb)
+    tuple val(meta), path(pdb)
     tuple val(meta2), path(db)
 
     output:

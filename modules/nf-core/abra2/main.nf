@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ABRA2 {
     tag "${meta.id}"
     label 'process_high'
@@ -16,22 +19,22 @@ process ABRA2 {
     tuple val(meta6), path(known_indels)
 
     output:
-    tuple val(meta), path("*.bam"),     emit: bam
-    tuple val(meta), path("*.bai"),     emit: bai, optional: true
+    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.bai"), emit: bai, optional: true
     tuple val("${task.process}"), val('abra2'), eval("abra2 2>&1 | sed -n 's/.*Abra version: //p'"), topic: versions, emit: versions_abra2
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args             = task.ext.args   ?: ''
-    def prefix           = task.ext.prefix ?: "${meta.id}"
-    def input_bams       = bams.join(",")
-    def targets_arg      = targets         ? "--targets ${targets}"     : ""
-    def gtf_arg          = gtf             ? "--gtf ${gtf}"             : ""
-    def known_indels_arg = known_indels    ? "--in-vcf ${known_indels}" : ""
-    def output_str       = bams.collect { bam -> "${prefix}.${bam.name}" }.join(",")
-    def memory_cmd       = task.memory     ? "export JAVA_TOOL_OPTIONS='-Xmx${task.memory.toGiga()}G'" : ""
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def input_bams = bams.join(",")
+    def targets_arg = targets ? "--targets ${targets}" : ""
+    def gtf_arg = gtf ? "--gtf ${gtf}" : ""
+    def known_indels_arg = known_indels ? "--in-vcf ${known_indels}" : ""
+    def output_str = bams.collect { bam -> "${prefix}.${bam.name}" }.join(",")
+    def memory_cmd = task.memory ? "export JAVA_TOOL_OPTIONS='-Xmx${task.memory.toGiga()}G'" : ""
     """
     ${memory_cmd}
     abra2 \\

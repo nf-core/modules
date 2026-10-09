@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SVTK_BAFTEST {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     //Conda is not supported at the moment: https://github.com/broadinstitute/gatk-sv/issues/787
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/svtk:0.0.20190615--py37h73a75cf_2':
-        'quay.io/biocontainers/svtk:0.0.20190615--py37h73a75cf_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/svtk:0.0.20190615--py37h73a75cf_2'
+        : 'quay.io/biocontainers/svtk:0.0.20190615--py37h73a75cf_2'}"
 
     input:
     tuple val(meta), path(bed), path(baf), path(baf_index), path(batch)
 
     output:
-    tuple val(meta), path("*.metrics")  , emit: metrics
+    tuple val(meta), path("*.metrics"), emit: metrics
     tuple val("${task.process}"), val('svtk'), val('0.0.20190615'), topic: versions, emit: versions_svtk
 
     when:

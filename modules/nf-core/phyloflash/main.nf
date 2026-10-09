@@ -1,16 +1,19 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PHYLOFLASH {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d9/d993344c3f636cb0cca9519b11fcf30faafb13fca2fd33090104e5f52d8fd643/data' :
-        'community.wave.seqera.io/library/phyloflash:3.4.2--87628969a9477d43' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d9/d993344c3f636cb0cca9519b11fcf30faafb13fca2fd33090104e5f52d8fd643/data'
+        : 'community.wave.seqera.io/library/phyloflash:3.4.2--87628969a9477d43'}"
 
     input:
     tuple val(meta), path(reads)
-    path  silva_db
-    path  univec_db
+    path silva_db
+    path univec_db
 
     output:
     tuple val(meta), path("${meta.id}*/*"), emit: results
@@ -22,9 +25,9 @@ process PHYLOFLASH {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input_reads = meta.single_end ?
-        "-read1 ${reads[0]} -interleaved" :
-        "-read1 ${reads[0]} -read2 ${reads[1]}"
+    def input_reads = meta.single_end
+        ? "-read1 ${reads[0]} -interleaved"
+        : "-read1 ${reads[0]} -read2 ${reads[1]}"
 
     """
     phyloFlash.pl \\

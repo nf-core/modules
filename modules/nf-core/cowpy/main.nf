@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process COWPY {
     tag "${meta.id}"
     label 'process_single'
@@ -13,7 +16,6 @@ process COWPY {
     output:
     tuple val(meta), path("${prefix}.txt"), emit: txt
     tuple val("${task.process}"), val('cowpy'), val("1.1.5"), emit: versions_cowpy, topic: versions
-    // WARN: Version information not provided by tool on CLI. Plaease update this string when bumping container versions.
 
     when:
     task.ext.when == null || task.ext.when

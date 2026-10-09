@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FOLDDISCO_INDEX {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/folddisco:2.9375a2d--hb42e459_0':
-        'quay.io/biocontainers/folddisco:2.9375a2d--hb42e459_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/folddisco:2.9375a2d--hb42e459_0'
+        : 'quay.io/biocontainers/folddisco:2.9375a2d--hb42e459_0'}"
 
     input:
     tuple val(meta), path(structures, stageAs: "structures/*")
@@ -27,8 +30,8 @@ process FOLDDISCO_INDEX {
         index \\
         --pdbs structures \\
         --index ${prefix}/${prefix} \\
-        --threads $task.cpus \\
-        $args
+        --threads ${task.cpus} \\
+        ${args}
     """
 
     stub:

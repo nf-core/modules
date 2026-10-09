@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DREP_DEREPLICATE {
     tag "${meta.id}"
     label 'process_medium'
@@ -16,7 +19,7 @@ process DREP_DEREPLICATE {
     tuple val(meta), path("data_tables/*.csv"), emit: summary_tables
     tuple val(meta), path("figures/*pdf"), emit: figures
     tuple val(meta), path("logger.log"), emit: log
-    tuple val("${task.process}"), val("drep"), eval("dRep | sed '2!d;s/.*v//g;s/ .*//g'"), emit:versions_drep, topic:versions
+    tuple val("${task.process}"), val("drep"), eval("dRep | sed '2!d;s/.*v//g;s/ .*//g'"), emit: versions_drep, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

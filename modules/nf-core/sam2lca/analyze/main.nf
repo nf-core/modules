@@ -1,21 +1,23 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
 
 process SAM2LCA_ANALYZE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sam2lca:1.1.4--pyhdfd78af_0':
-        'quay.io/biocontainers/sam2lca:1.1.4--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/sam2lca:1.1.4--pyhdfd78af_0'
+        : 'quay.io/biocontainers/sam2lca:1.1.4--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(bam), path(bai)
-    path(database)
+    path database
 
     output:
-    tuple val(meta), path("*.csv")  , emit: csv
-    tuple val(meta), path("*.json") , emit: json
-    tuple val(meta), path("*.bam")  , emit: bam     , optional: true
+    tuple val(meta), path("*.csv"), emit: csv
+    tuple val(meta), path("*.json"), emit: json
+    tuple val(meta), path("*.bam"), emit: bam, optional: true
     tuple val("${task.process}"), val('sam2lca'), eval("sam2lca --version | sed 's/.*version //'"), topic: versions, emit: versions_sam2lca
 
     when:
@@ -27,13 +29,13 @@ process SAM2LCA_ANALYZE {
     def make_db = database ? "" : "mkdir sam2lca_db"
     def database_path = database ? "${database}" : "sam2lca_db"
     """
-    $make_db
+    ${make_db}
     sam2lca \\
-        -d $database_path \\
+        -d ${database_path} \\
         analyze \\
-        $args \\
+        ${args} \\
         -o ${prefix} \\
-        $bam
+        ${bam}
     """
 
     stub:

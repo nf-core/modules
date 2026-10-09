@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process YAK_COUNT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/yak:0.1--h577a1d6_6':
-        'quay.io/biocontainers/yak:0.1--h577a1d6_6' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/yak:0.1--h577a1d6_6'
+        : 'quay.io/biocontainers/yak:0.1--h577a1d6_6'}"
 
     input:
     tuple val(meta), path(fastq)
@@ -24,10 +27,10 @@ process YAK_COUNT {
     """
     yak \\
         count \\
-        $args \\
+        ${args} \\
         -t${task.cpus} \\
         -o ${prefix}.yak \\
-        $input_command
+        ${input_command}
     """
 
     stub:

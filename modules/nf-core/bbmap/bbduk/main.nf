@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BBMAP_BBDUK {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5aae5977ff9de3e01ff962dc495bfa23f4304c676446b5fdf2de5c7edfa2dc4e/data' :
-        'community.wave.seqera.io/library/bbmap_pigz:07416fe99b090fa9' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5aae5977ff9de3e01ff962dc495bfa23f4304c676446b5fdf2de5c7edfa2dc4e/data'
+        : 'community.wave.seqera.io/library/bbmap_pigz:07416fe99b090fa9'}"
 
     input:
     tuple val(meta), path(reads)
@@ -13,7 +16,7 @@ process BBMAP_BBDUK {
 
     output:
     tuple val(meta), path('*.fastq.gz'), emit: reads
-    tuple val(meta), path('*.log')     , emit: log
+    tuple val(meta), path('*.log'), emit: log
     tuple val("${task.process}"), val('bbmap'), eval('bbversion.sh | grep -v "Duplicate cpuset"'), emit: versions_bbmap, topic: versions
 
     when:
@@ -22,25 +25,25 @@ process BBMAP_BBDUK {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def raw      = meta.single_end ? "in=${reads[0]}" : "in1=${reads[0]} in2=${reads[1]}"
-    def trimmed  = meta.single_end ? "out=${prefix}.fastq.gz" : "out1=${prefix}_1.fastq.gz out2=${prefix}_2.fastq.gz"
-    def contaminants_fa = contaminants ? "ref=$contaminants" : ''
+    def raw = meta.single_end ? "in=${reads[0]}" : "in1=${reads[0]} in2=${reads[1]}"
+    def trimmed = meta.single_end ? "out=${prefix}.fastq.gz" : "out1=${prefix}_1.fastq.gz out2=${prefix}_2.fastq.gz"
+    def contaminants_fa = contaminants ? "ref=${contaminants}" : ''
     """
     bbduk.sh \\
         -Xmx${task.memory.toGiga()}g \\
-        $raw \\
-        $trimmed \\
-        threads=$task.cpus \\
-        $args \\
-        $contaminants_fa \\
+        ${raw} \\
+        ${trimmed} \\
+        threads=${task.cpus} \\
+        ${args} \\
+        ${contaminants_fa} \\
         &> ${prefix}.bbduk.log
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def output_command  = meta.single_end ? "echo '' | gzip > ${prefix}.fastq.gz" : "echo '' | gzip > ${prefix}_1.fastq.gz ; echo '' | gzip > ${prefix}_2.fastq.gz"
+    def output_command = meta.single_end ? "echo '' | gzip > ${prefix}.fastq.gz" : "echo '' | gzip > ${prefix}_1.fastq.gz ; echo '' | gzip > ${prefix}_2.fastq.gz"
     """
     touch ${prefix}.bbduk.log
-    $output_command
+    ${output_command}
     """
 }

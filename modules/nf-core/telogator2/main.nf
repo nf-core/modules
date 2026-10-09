@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TELOGATOR2 {
     tag "${meta.id}"
     label 'process_medium'
@@ -5,20 +8,20 @@ process TELOGATOR2 {
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ab/ab4d9d463b2866006f8cbca9fbe6f978b1803e41f2a97d9f4d3c14ff6d97822f/data'
-        : 'community.wave.seqera.io/library/telogator2:2.2.3--01b2748e09721f3b' }"
+        : 'community.wave.seqera.io/library/telogator2:2.2.3--01b2748e09721f3b'}"
 
     input:
     tuple val(meta), path(reads), path(reads_index)
     tuple val(meta2), path(fasta), path(fai)
 
     output:
-    tuple val(meta), path("${prefix}/tlens_by_allele.tsv")  , emit: tlens
-    tuple val(meta), path("${prefix}/*.png")                , emit: plots
-    tuple val(meta), path("${prefix}/qc/cmd.txt")           , emit: cmd
-    tuple val(meta), path("${prefix}/qc/stats.txt")         , emit: stats
-    tuple val(meta), path("${prefix}/qc/qc_readlens.png")   , emit: qc_readlens
-    tuple val(meta), path("${prefix}/qc/readlens.npz")      , emit: readlens
-    tuple val(meta), path("${prefix}/qc/rng.txt")           , emit: rng
+    tuple val(meta), path("${prefix}/tlens_by_allele.tsv"), emit: tlens
+    tuple val(meta), path("${prefix}/*.png"), emit: plots
+    tuple val(meta), path("${prefix}/qc/cmd.txt"), emit: cmd
+    tuple val(meta), path("${prefix}/qc/stats.txt"), emit: stats
+    tuple val(meta), path("${prefix}/qc/qc_readlens.png"), emit: qc_readlens
+    tuple val(meta), path("${prefix}/qc/readlens.npz"), emit: readlens
+    tuple val(meta), path("${prefix}/qc/rng.txt"), emit: rng
     tuple val("${task.process}"), val('telogator2'), eval("telogator2 --version | sed 's/telogator2 //'"), emit: versions_telogator2, topic: versions
 
     when:

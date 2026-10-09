@@ -1,16 +1,19 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FAMSA_ALIGN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/famsa:2.4.1--h9ee0642_0':
-        'quay.io/biocontainers/famsa:2.4.1--h9ee0642_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/famsa:2.4.1--h9ee0642_0'
+        : 'quay.io/biocontainers/famsa:2.4.1--h9ee0642_0'}"
 
     input:
-    tuple val(meta) , path(fasta)
+    tuple val(meta), path(fasta)
     tuple val(meta2), path(tree)
-    val(compress)
+    val compress
 
     output:
     tuple val(meta), path("${prefix}.aln{.gz,}"), emit: alignment
@@ -23,21 +26,21 @@ process FAMSA_ALIGN {
     def args = task.ext.args ?: ''
     def compress_args = compress ? '-gz' : ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def options_tree = tree ? "-gt import $tree" : ""
+    def options_tree = tree ? "-gt import ${tree}" : ""
     """
-    famsa $options_tree \\
-        $compress_args \\
-        $args \\
+    famsa ${options_tree} \\
+        ${compress_args} \\
+        ${args} \\
         -t ${task.cpus} \\
         ${fasta} \\
-        ${prefix}.aln${compress ? '.gz':''}
+        ${prefix}.aln${compress ? '.gz' : ''}
     """
 
     stub:
-    def args   = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo $args
+    echo ${args}
 
     ${compress ? "echo '' | gzip > ${prefix}.aln.gz" : "touch ${prefix}.aln"}
     """

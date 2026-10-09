@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { STITCH                                  } from '../../../modules/nf-core/stitch/main'
 include { GLIMPSE2_LIGATE                         } from '../../../modules/nf-core/glimpse2/ligate/main'
 include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_PHASE  } from '../../../modules/nf-core/bcftools/index/main'
@@ -49,14 +52,20 @@ workflow BAM_IMPUTE_STITCH {
             }
             [
                 metaPC + metaI + ["regionout": regionout, "regionoutPadded": regionoutPadded, "regionSize": region_size],
-                bam, bai,
-                bampath, bamname,
+                bam,
+                bai,
+                bampath,
+                bamname,
                 posfile,
                 [],
                 gmap,
                 [],
-                chr, start, end, buffer,
-                k_val, n_gen,
+                chr,
+                start,
+                end,
+                buffer,
+                k_val,
+                n_gen,
             ]
         }
 
@@ -76,7 +85,8 @@ workflow BAM_IMPUTE_STITCH {
             def keysToKeep = meta.keySet() - ['regionout', 'regionoutPadded', 'regionSize']
             [
                 groupKey(meta.subMap(keysToKeep), meta.regionSize),
-                vcf, index,
+                vcf,
+                index,
             ]
         }
         .groupTuple()

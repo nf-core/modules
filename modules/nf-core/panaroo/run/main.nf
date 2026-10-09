@@ -1,19 +1,22 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PANAROO_RUN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/panaroo:1.6.0--pyhdfd78af_0':
-        'quay.io/biocontainers/panaroo:1.6.0--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/panaroo:1.6.0--pyhdfd78af_0'
+        : 'quay.io/biocontainers/panaroo:1.6.0--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(gff)
 
     output:
-    tuple val(meta), path("${prefix}/*")                      , emit: results
+    tuple val(meta), path("${prefix}/*"), emit: results
     tuple val(meta), path("${prefix}/core_gene_alignment.aln"), emit: aln, optional: true
-    tuple val("${task.process}"), val('panaroo'), eval("panaroo --version 2>&1 | sed 's/^.*panaroo //'") , emit: versions_panaroo, topic: versions
+    tuple val("${task.process}"), val('panaroo'), eval("panaroo --version 2>&1 | sed 's/^.*panaroo //'"), emit: versions_panaroo, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ONCOCNV {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1f/1f04dcb708961e66aade70ebd0f9faa1a2980e2eff66bdbd8c947575c8ba4f31/data':
-        'community.wave.seqera.io/library/oncocnv_r-pscbs:ffe800b4a6974d56' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1f/1f04dcb708961e66aade70ebd0f9faa1a2980e2eff66bdbd8c947575c8ba4f31/data'
+        : 'community.wave.seqera.io/library/oncocnv_r-pscbs:ffe800b4a6974d56'}"
 
     input:
     tuple val(meta), path(normal), path(normal_index), path(tumor), path(tumor_index)

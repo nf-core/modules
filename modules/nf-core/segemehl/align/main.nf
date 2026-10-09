@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SEGEMEHL_ALIGN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/segemehl:0.3.4--hc2ea5fd_5':
-        'quay.io/biocontainers/segemehl:0.3.4--hc2ea5fd_5' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/segemehl:0.3.4--hc2ea5fd_5'
+        : 'quay.io/biocontainers/segemehl:0.3.4--hc2ea5fd_5'}"
 
     input:
     tuple val(meta), path(reads)
@@ -13,9 +16,9 @@ process SEGEMEHL_ALIGN {
 
     output:
     tuple val(meta), path("${prefix}/${prefix}.${suffix}"), emit: alignment
-    tuple val(meta), path("${prefix}/${prefix}.trns.txt") , emit: trans_alignments, optional: true
-    tuple val(meta), path("${prefix}/${prefix}.mult.bed") , emit: multi_bed       , optional: true
-    tuple val(meta), path("${prefix}/${prefix}.sngl.bed") , emit: single_bed      , optional: true
+    tuple val(meta), path("${prefix}/${prefix}.trns.txt"), emit: trans_alignments, optional: true
+    tuple val(meta), path("${prefix}/${prefix}.mult.bed"), emit: multi_bed, optional: true
+    tuple val(meta), path("${prefix}/${prefix}.sngl.bed"), emit: single_bed, optional: true
     tuple val("${task.process}"), val('segemehl'), eval("segemehl.x 2>&1 | sed '/^  [0-9]\\.[0-9\\.]*/!d;s/^  //;s/ .*//'"), topic: versions, emit: versions_segemehl
 
     when:
@@ -25,7 +28,7 @@ process SEGEMEHL_ALIGN {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def reads_opt = meta.single_end ? "-q ${reads}" : "-q ${reads[0]} -p ${reads[1]}"
-    suffix = ( args.contains("-b") || args.contains("--bamabafixoida") ) ? "bam" : "sam"
+    suffix = (args.contains("-b") || args.contains("--bamabafixoida")) ? "bam" : "sam"
     """
     mkdir -p ${prefix}
 
@@ -41,7 +44,7 @@ process SEGEMEHL_ALIGN {
     stub:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    suffix = ( args.contains("-b") || args.contains("--bamabafixoida") ) ? "bam" : "sam"
+    suffix = (args.contains("-b") || args.contains("--bamabafixoida")) ? "bam" : "sam"
     """
     mkdir -p ${prefix}
     touch ${prefix}/${prefix}.${suffix}

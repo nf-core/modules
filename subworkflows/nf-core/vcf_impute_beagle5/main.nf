@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { BEAGLE5_BEAGLE                          } from '../../../modules/nf-core/beagle5/beagle'
 include { BCFTOOLS_VIEW                           } from '../../../modules/nf-core/bcftools/view'
 include { GLIMPSE2_LIGATE                         } from '../../../modules/nf-core/glimpse2/ligate'
@@ -73,7 +76,8 @@ workflow VCF_IMPUTE_BEAGLE5 {
                 def paddedStart = String.format('%010d', start as long)
                 def paddedEnd = String.format('%010d', end as long)
                 regionoutPadded = "${chr}:${paddedStart}-${paddedEnd}"
-            } else {
+            }
+            else {
                 // Handle format like "chr22" (no coordinates)
                 regionoutPadded = regionout
             }
@@ -107,7 +111,8 @@ workflow VCF_IMPUTE_BEAGLE5 {
             def keysToKeep = meta.keySet() - ['regionout', 'regionoutPadded', 'regionSize']
             [
                 groupKey(meta.subMap(keysToKeep), meta.regionSize),
-                vcf, index,
+                vcf,
+                index,
             ]
         }
         .groupTuple()

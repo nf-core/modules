@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BAMTOOLS_SPLIT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bamtools:2.5.2--hdcf5f25_2' :
-        'quay.io/biocontainers/bamtools:2.5.2--hdcf5f25_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/bamtools:2.5.2--hdcf5f25_2'
+        : 'quay.io/biocontainers/bamtools:2.5.2--hdcf5f25_2'}"
 
     input:
     tuple val(meta), path(bam)
@@ -20,15 +23,15 @@ process BAMTOOLS_SPLIT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input_list = bam.collect{ bam_file -> "-in ${bam_file}"}.join(' ')
+    def input_list = bam.collect { bam_file -> "-in ${bam_file}" }.join(' ')
     """
     bamtools \\
         merge \\
-        $input_list \\
+        ${input_list} \\
         | bamtools \\
             split \\
-            -stub $prefix \\
-            $args
+            -stub ${prefix} \\
+            ${args}
     """
 
     stub:
@@ -37,5 +40,4 @@ process BAMTOOLS_SPLIT {
     touch ${prefix}.split1.bam
     touch ${prefix}.unmapped.bam
     """
-
 }

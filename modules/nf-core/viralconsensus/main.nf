@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VIRALCONSENSUS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/viral_consensus:1.0.0--hcf1f8c1_0':
-        'quay.io/biocontainers/viral_consensus:1.0.0--hcf1f8c1_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/viral_consensus:1.0.0--hcf1f8c1_0'
+        : 'quay.io/biocontainers/viral_consensus:1.0.0--hcf1f8c1_0'}"
 
     input:
     tuple val(meta), path(bam)
@@ -31,13 +34,13 @@ process VIRALCONSENSUS {
     def ins_counts_arg = save_ins_counts ? "-oi ${prefix}.ins_counts.json" : ''
     """
     viral_consensus \\
-        -i $bam \\
-        -r $fasta \\
+        -i ${bam} \\
+        -r ${fasta} \\
         -o ${prefix}.consensus.fa \\
-        $primer_arg \\
-        $pos_counts_arg \\
-        $ins_counts_arg \\
-        $args
+        ${primer_arg} \\
+        ${pos_counts_arg} \\
+        ${ins_counts_arg} \\
+        ${args}
     """
 
     stub:
@@ -46,7 +49,7 @@ process VIRALCONSENSUS {
     def touch_ins_counts = save_ins_counts ? "touch ${prefix}.ins_counts.json" : ''
     """
     touch ${prefix}.consensus.fa
-    $touch_pos_counts
-    $touch_ins_counts
+    ${touch_pos_counts}
+    ${touch_ins_counts}
     """
 }

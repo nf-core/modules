@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DEEPMASED_FEATURES {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/deepmased:0.3.1--pyh5ca1d4c_0':
-        'quay.io/biocontainers/deepmased:0.3.1--pyh5ca1d4c_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/deepmased:0.3.1--pyh5ca1d4c_0'
+        : 'quay.io/biocontainers/deepmased:0.3.1--pyh5ca1d4c_0'}"
 
     input:
     tuple val(meta), path(bam), path(bai), path(fasta)
@@ -15,14 +18,14 @@ process DEEPMASED_FEATURES {
     tuple val(meta), path("*_feature_file_paths.tsv"), emit: feature_table
     tuple val(meta), path("*_feats.tsv{,.gz}"), emit: feature_files
     tuple val("${task.process}"), val('deepmased'), val('0.3.1'), emit: versions_deepmased, topic: versions
-    tuple val("${task.process}"), val('setuptools'), val('78.1') , emit: versions_setuptools, topic: versions
+    tuple val("${task.process}"), val('setuptools'), val('78.1'), emit: versions_setuptools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: ''
-    prefix     = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
     if (prefix == "${meta.id}_file_paths") {
         error("Input TSV filename matches output filename. Set ext.prefix differently.")
     }
@@ -40,8 +43,8 @@ process DEEPMASED_FEATURES {
     """
 
     stub:
-    prefix     = task.ext.prefix ?: "${meta.id}"
-    def args   = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
     def suffix = args.contains('--gzip') ? '.gz' : ''
     """
     touch ${prefix}_feature_file_paths.tsv

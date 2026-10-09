@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RASTAIR_MBIASPARSER {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/15/15120636da858ba73a2493281bfa418005f08c0ed09369a837c05f3f9e14a4a6/data' :
-        'community.wave.seqera.io/library/rastair:0.8.2--bf70eeab4121509c' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/15/15120636da858ba73a2493281bfa418005f08c0ed09369a837c05f3f9e14a4a6/data'
+        : 'community.wave.seqera.io/library/rastair:0.8.2--bf70eeab4121509c'}"
 
     input:
     tuple val(meta), path(rastair_mbias_txt)
 
     output:
-    tuple val(meta), path("*.rastair_mbias_processed.pdf"),         emit: mbias_processed_pdf, optional: true
-    tuple val(meta), path("*.rastair_mbias_processed.csv"),         emit: mbias_processed_csv
-    tuple val(meta), env('TRIM_OT'), env('TRIM_OB'),                emit: mbias_processed_str
+    tuple val(meta), path("*.rastair_mbias_processed.pdf"), emit: mbias_processed_pdf, optional: true
+    tuple val(meta), path("*.rastair_mbias_processed.csv"), emit: mbias_processed_csv
+    tuple val(meta), env('TRIM_OT'), env('TRIM_OB'), emit: mbias_processed_str
     tuple val("${task.process}"), val('rastair'), eval("rastair --version | sed 's/rastair //'"), topic: versions, emit: versions_rastair
 
     when:

@@ -1,25 +1,28 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CNVPYTOR_CALLCNVS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cnvpytor:1.2.1--pyhdfd78af_0':
-        'quay.io/biocontainers/cnvpytor:1.2.1--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/cnvpytor:1.2.1--pyhdfd78af_0'
+        : 'quay.io/biocontainers/cnvpytor:1.2.1--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(pytor)
     val bin_sizes
 
     output:
-    tuple val(meta), path("${pytor.baseName}.pytor")	, emit: pytor
+    tuple val(meta), path("${pytor.baseName}.pytor"), emit: pytor
     tuple val("${task.process}"), val('cnvpytor'), eval("cnvpytor --version | sed -n 's/.*CNVpytor \\(.*\\)/\\1/p'"), emit: versions_cnvpytor, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def bins_cmd = bin_sizes ? "-call $bin_sizes" : '-call 1000'
+    def bins_cmd = bin_sizes ? "-call ${bin_sizes}" : '-call 1000'
     """
     cnvpytor \\
         -root ${pytor} \\

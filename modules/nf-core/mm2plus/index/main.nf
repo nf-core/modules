@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MM2PLUS_INDEX {
     label 'process_low'
 
     // Note: the versions here need to match the versions used in mm2plus/align
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/72/7224ad076c5513325c2ef76f8788249af1d791dacaf9ee378d5b7512019e3a32/data' :
-        'community.wave.seqera.io/library/mm2plus_samtools:fe581c94b0a4dc10' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/72/7224ad076c5513325c2ef76f8788249af1d791dacaf9ee378d5b7512019e3a32/data'
+        : 'community.wave.seqera.io/library/mm2plus_samtools:fe581c94b0a4dc10'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -21,10 +24,10 @@ process MM2PLUS_INDEX {
     def args = task.ext.args ?: ''
     """
     mm2plus \\
-        -t $task.cpus \\
+        -t ${task.cpus} \\
         -d ${fasta.baseName}.mmi \\
-        $args \\
-        $fasta
+        ${args} \\
+        ${fasta}
     """
 
     stub:

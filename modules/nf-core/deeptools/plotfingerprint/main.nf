@@ -1,20 +1,23 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DEEPTOOLS_PLOTFINGERPRINT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/deeptools:3.5.6--pyhdfd78af_0':
-        'quay.io/biocontainers/deeptools:3.5.6--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/deeptools:3.5.6--pyhdfd78af_0'
+        : 'quay.io/biocontainers/deeptools:3.5.6--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(bams), path(bais)
 
     output:
-    tuple val(meta), path("*.pdf")          , emit: pdf
-    tuple val(meta), path("*.raw.txt")      , emit: matrix
+    tuple val(meta), path("*.pdf"), emit: pdf
+    tuple val(meta), path("*.raw.txt"), emit: matrix
     tuple val(meta), path("*.qcmetrics.txt"), emit: metrics
-    tuple val("${task.process}"), val('deeptools'), eval('plotFingerprint --version | sed "s/plotFingerprint //g"') , emit: versions_deeptools, topic: versions
+    tuple val("${task.process}"), val('deeptools'), eval('plotFingerprint --version | sed "s/plotFingerprint //g"'), emit: versions_deeptools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,16 +25,16 @@ process DEEPTOOLS_PLOTFINGERPRINT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def extend   = (meta.single_end && params.fragment_size > 0) ? "--extendReads ${params.fragment_size}" : ''
+    def extend = (meta.single_end && params.fragment_size > 0) ? "--extendReads ${params.fragment_size}" : ''
     """
     plotFingerprint \\
-        $args \\
-        $extend \\
+        ${args} \\
+        ${extend} \\
         --bamfiles ${bams.join(' ')} \\
         --plotFile ${prefix}.plotFingerprint.pdf \\
         --outRawCounts ${prefix}.plotFingerprint.raw.txt \\
         --outQualityMetrics ${prefix}.plotFingerprint.qcmetrics.txt \\
-        --numberOfProcessors $task.cpus
+        --numberOfProcessors ${task.cpus}
     """
 
     stub:

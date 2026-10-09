@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TELSEQ {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f2/f250a0615e10c72c13f20ba364cbe3ba15eba0b42db2de9a0b2f48e7c5cb1da6/data'
-        : 'community.wave.seqera.io/library/bamtools_samtools_telseq:428dab7df99f37d4' }"
+        : 'community.wave.seqera.io/library/bamtools_samtools_telseq:428dab7df99f37d4'}"
 
     input:
     tuple val(meta), path(bam), path(bai), path(bed)
@@ -23,7 +26,7 @@ process TELSEQ {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def exome  = bed ? " --exomebed=${bed}" : ""
+    def exome = bed ? " --exomebed=${bed}" : ""
     """
     # telseq doesn't support CRAM. See https://github.com/zd1/telseq/issues/26
     if ${bam.name.endsWith(".cram")}

@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BEAGLE5_BEAGLE {
     tag "${meta.id}"
     label 'process_high'
@@ -14,19 +17,19 @@ process BEAGLE5_BEAGLE {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    tuple val(meta), path("*.log")   , emit: log
+    tuple val(meta), path("*.log"), emit: log
     tuple val("${task.process}"), val('beagle'), eval("beagle 2>&1 | sed -n 's/.*version \\([^)]*\\).*/\\1/p'"), topic: versions, emit: versions_beagle
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}.bglout"
 
     def ref_command = refpanel ? "ref=${refpanel}" : ""
-    def map_command = genmap   ? "map=${genmap}"   : ""
-    def region_cmd  = region   ? "chrom=${region}" : ""
+    def map_command = genmap ? "map=${genmap}" : ""
+    def region_cmd = region ? "chrom=${region}" : ""
 
     def excludesamples_command = exclsamples ? "excludesamples=${exclsamples}" : ""
     def excludemarkers_command = exclmarkers ? "excludemarkers=${exclmarkers}" : ""
@@ -34,7 +37,8 @@ process BEAGLE5_BEAGLE {
     def avail_mem = 3072
     if (!task.memory) {
         log.info('[beagle] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.')
-    } else {
+    }
+    else {
         avail_mem = (task.memory.mega * 0.8).intValue()
     }
 

@@ -1,10 +1,13 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CIRI2 {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/69/693c63dc2bc67a4dc24baeee0fd6e1b3a480022c379b4ab6e33d77be917c504e/data':
-        'community.wave.seqera.io/library/ciri2_samtools:2e503c1b320bcb93' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/69/693c63dc2bc67a4dc24baeee0fd6e1b3a480022c379b4ab6e33d77be917c504e/data'
+        : 'community.wave.seqera.io/library/ciri2_samtools:2e503c1b320bcb93'}"
 
     input:
     tuple val(meta), path(input)
@@ -30,30 +33,30 @@ process CIRI2 {
     def reference = fasta ? "--ref_file ${fasta}" : "--ref_dir ${ref_dir}"
 
     if (input.getExtension() == 'cram' && !fasta) {
-      error "CIRI2 module: a reference fasta is required when input is a CRAM file"
-  }
+        error("CIRI2 module: a reference fasta is required when input is a CRAM file")
+    }
 
     def is_sam = input.getExtension() == 'sam'
     def sam_file = is_sam ? input.name : "${prefix}.sam"
-    def convert_cmd = is_sam ? '' : "samtools view -h $cram_ref $input > ${sam_file}"
+    def convert_cmd = is_sam ? '' : "samtools view -h ${cram_ref} ${input} > ${sam_file}"
     def cleanup_cmd = is_sam ? '' : "rm ${sam_file}"
     """
-    $convert_cmd
+    ${convert_cmd}
     CIRI2.pl \\
         --in ${sam_file} \\
         --out ${prefix}.txt \\
-        $reference \\
-        $anno \\
-        --thread_num $task.cpus \\
-        $args
-    $cleanup_cmd
+        ${reference} \\
+        ${anno} \\
+        --thread_num ${task.cpus} \\
+        ${args}
+    ${cleanup_cmd}
     """
 
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo $args
+    echo ${args}
     touch ${prefix}.txt
     """
 }

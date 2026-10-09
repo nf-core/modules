@@ -1,20 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CIRCULARMAPPER_REALIGNSAMFILE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/circularmapper:1.93.5--h4a94de4_1':
-        'quay.io/biocontainers/circularmapper:1.93.5--h4a94de4_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/circularmapper:1.93.5--h4a94de4_1'
+        : 'quay.io/biocontainers/circularmapper:1.93.5--h4a94de4_1'}"
 
     input:
     tuple val(meta), path(bam)
     tuple val(meta2), path(fasta)
     tuple val(meta3), val(elongation_factor)
     tuple val(meta4), path(elongated_chr_list)
-    // NOTE: The elongated_chr_list is not used in the script, but is an implicit input that realignsamfile requires when using the `-f true` option.
-    //          In its absence, when `-f true` is set, realignsamfile will remove all @SQ tags from the BAM header, breaking the bamfile.
 
     output:
     tuple val(meta), path("*_realigned.bam"), emit: bam

@@ -1,18 +1,22 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process UNTARFILES {
-    tag "$archive"
+    tag "${archive}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/88/88e03525287eaeb8bb74114aaee2c67118c1cdcfb99ee52e3ddc71a1acce35d4/data' :
-        'community.wave.seqera.io/library/grep_sed_tar:db2951cd23a1ffde' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/88/88e03525287eaeb8bb74114aaee2c67118c1cdcfb99ee52e3ddc71a1acce35d4/data'
+        : 'community.wave.seqera.io/library/grep_sed_tar:db2951cd23a1ffde'}"
 
     input:
     tuple val(meta), path(archive)
 
     output:
-    tuple val(meta), path("${prefix}/**") , emit: files
+    tuple val(meta), path("${prefix}/**"), emit: files
     tuple val("${task.process}"), val('tar'), eval("tar --version 2>&1 | sed '1s/^.*(GNU tar) //;q'"), topic: versions, emit: versions_tar
+
     when:
     task.ext.when == null || task.ext.when
 
@@ -23,20 +27,20 @@ WARNING: This module has been deprecated.
 Reason:
 This module is no longer recommended for use. It is recommended to use nf-core/modules/untar
 """
-    assert false: deprecation_message
-    def args  = task.ext.args ?: ''
+    assert false : deprecation_message
+    def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
-    prefix    = task.ext.prefix ?: ( meta.id ? "${meta.id}" : archive.baseName.toString().replaceFirst(/\.tar$/, ""))
+    prefix = task.ext.prefix ?: (meta.id ? "${meta.id}" : archive.baseName.toString().replaceFirst(/\.tar$/, ""))
 
     """
-    mkdir $prefix
+    mkdir ${prefix}
 
     tar \\
-        -C $prefix \\
+        -C ${prefix} \\
         -xavf \\
-        $args \\
-        $archive \\
-        $args2
+        ${args} \\
+        ${archive} \\
+        ${args2}
     """
 
     stub:
@@ -46,10 +50,10 @@ WARNING: This module has been deprecated.
 Reason:
 This module is no longer recommended for use. It is recommended to use nf-core/modules/untar
 """
-    assert false: deprecation_message
-    prefix    = task.ext.prefix ?: "${meta.id}"
+    assert false : deprecation_message
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir $prefix
+    mkdir ${prefix}
     touch ${prefix}/file.txt
     """
 }

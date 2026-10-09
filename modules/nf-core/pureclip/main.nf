@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PURECLIP {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pureclip:1.3.1--0':
-        'quay.io/biocontainers/pureclip:1.3.1--0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/pureclip:1.3.1--0'
+        : 'quay.io/biocontainers/pureclip:1.3.1--0'}"
 
     input:
     tuple val(meta), path(ipbam), path(controlbam)
@@ -15,7 +18,7 @@ process PURECLIP {
 
     output:
     tuple val(meta), path("${prefix}_pureclip_crosslinks.bed"), emit: crosslinks
-    tuple val(meta), path("${prefix}_pureclip_peaks.bed")     , emit: peaks
+    tuple val(meta), path("${prefix}_pureclip_peaks.bed"), emit: peaks
     tuple val("${task.process}"), val('pureclip'), eval("pureclip --version 2>&1 | sed -n 's/^.*pureclip version: //p'"), topic: versions, emit: versions_pureclip
 
     when:
@@ -25,12 +28,13 @@ process PURECLIP {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
 
-    if(input_control){
-        control_bam   = "-ibam ${controlbam}"
-        control_bai   = "-ibai ${controlbai}"
-    } else {
-        control_bam   = ""
-        control_bai   = ""
+    if (input_control) {
+        control_bam = "-ibam ${controlbam}"
+        control_bai = "-ibai ${controlbai}"
+    }
+    else {
+        control_bam = ""
+        control_bai = ""
     }
 
     """

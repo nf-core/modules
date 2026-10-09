@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TIDDIT_COV {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3e/3ebf66353bdc536851f786d7427e745c0c02f3951e08fc7828d6b86fefda64ce/data' :
-        'community.wave.seqera.io/library/tiddit:3.9.7--33e2b6c6e2f37861' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3e/3ebf66353bdc536851f786d7427e745c0c02f3951e08fc7828d6b86fefda64ce/data'
+        : 'community.wave.seqera.io/library/tiddit:3.9.7--33e2b6c6e2f37861'}"
 
     input:
     tuple val(meta), path(input), path(index)

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MEDAKA {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/medaka:2.2.2--py312h3050eb1_0' :
-        'quay.io/biocontainers/medaka:2.2.2--py312h3050eb1_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/medaka:2.2.2--py312h3050eb1_0'
+        : 'quay.io/biocontainers/medaka:2.2.2--py312h3050eb1_0'}"
 
     input:
     tuple val(meta), path(reads), path(assembly)
@@ -22,10 +25,10 @@ process MEDAKA {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     medaka_consensus \\
-        -t $task.cpus \\
-        $args \\
-        -i $reads \\
-        -d $assembly \\
+        -t ${task.cpus} \\
+        ${args} \\
+        -i ${reads} \\
+        -d ${assembly} \\
         -o ./
 
     mv consensus.fasta ${prefix}.fa

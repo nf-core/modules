@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TREERECS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/treerecs:1.2--h9f5acd7_3':
-        'quay.io/biocontainers/treerecs:1.2--h9f5acd7_3' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/treerecs:1.2--h9f5acd7_3'
+        : 'quay.io/biocontainers/treerecs:1.2--h9f5acd7_3'}"
 
     input:
     tuple val(meta), path(genetree), path(speciestree)
@@ -22,9 +25,9 @@ process TREERECS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     treerecs \\
-        $args \\
-        --genetree $genetree \\
-        --speciestree $speciestree \\
+        ${args} \\
+        --genetree ${genetree} \\
+        --speciestree ${speciestree} \\
         --outdir treerecs_tmp \\
         --output-format recphyloxml \\
         --force \\
@@ -37,7 +40,7 @@ process TREERECS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo $args
+    echo ${args}
 
     touch ${prefix}.recphylo.xml
     """

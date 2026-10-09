@@ -1,25 +1,28 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HASHEDDROPS {
     tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/43/431b27926fac88d6334ee3e8f63479f69a1a69340b305a05b70bc84083d301aa/data':
-        'community.wave.seqera.io/library/bioconductor-dropletutils_r-seurat:e1dff3a0fb7c5920' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/43/431b27926fac88d6334ee3e8f63479f69a1a69340b305a05b70bc84083d301aa/data'
+        : 'community.wave.seqera.io/library/bioconductor-dropletutils_r-seurat:e1dff3a0fb7c5920'}"
 
     input:
     tuple val(meta), path(hto_matrix), val(runEmptyDrops), path(rna_matrix)
 
     output:
-    tuple val(meta), path("*_emptyDrops.png")         , emit: empty_drops_plot
-    tuple val(meta), path("*_emptyDrops.csv")         , emit: empty_drops_csv
-    tuple val(meta), path("*_emptyDrops.rds")         , emit: empty_drops_rds
+    tuple val(meta), path("*_emptyDrops.png"), emit: empty_drops_plot
+    tuple val(meta), path("*_emptyDrops.csv"), emit: empty_drops_csv
+    tuple val(meta), path("*_emptyDrops.rds"), emit: empty_drops_rds
     tuple val(meta), path("*_results_hasheddrops.csv"), emit: results
-    tuple val(meta), path("*_id_to_hash.csv")         , emit: id_to_hash
-    tuple val(meta), path("*_hasheddrops.rds")        , emit: rds
-    tuple val(meta), path("*_plot_hasheddrops.png")   , emit: plot
-    tuple val(meta), path("*_params_hasheddrops.csv") , emit: params
-    path "versions.yml"                               , emit: versions, topic: versions
+    tuple val(meta), path("*_id_to_hash.csv"), emit: id_to_hash
+    tuple val(meta), path("*_hasheddrops.rds"), emit: rds
+    tuple val(meta), path("*_plot_hasheddrops.png"), emit: plot
+    tuple val(meta), path("*_params_hasheddrops.csv"), emit: params
+    path "versions.yml", emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

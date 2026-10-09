@@ -1,16 +1,19 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process OPT_STAT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/64/64550ef193f98ea294d70e087a80e37bbf0c5c4a5920f0a22414ed8a11c32caa/data' :
-        'community.wave.seqera.io/library/opt:0.0.1--f0b1e63f50e38ab1'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/64/64550ef193f98ea294d70e087a80e37bbf0c5c4a5920f0a22414ed8a11c32caa/data'
+        : 'community.wave.seqera.io/library/opt:0.0.1--f0b1e63f50e38ab1'}"
 
     input:
     tuple val(meta), path(probe_targets)
     tuple val(meta2), path(fwd_oriented_probes)
-    path(gene_synonyms)
+    path gene_synonyms
 
     output:
     tuple val(meta), path("${prefix}/collapsed_summary.tsv"), emit: summary
@@ -23,7 +26,7 @@ process OPT_STAT {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
 
-    def synonyms = gene_synonyms ? "-s ${gene_synonyms}": ""
+    def synonyms = gene_synonyms ? "-s ${gene_synonyms}" : ""
 
     """
     opt \\

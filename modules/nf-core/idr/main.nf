@@ -1,19 +1,22 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process IDR {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/idr:2.0.4.2--py39hcbe4a3b_5' :
-        'quay.io/biocontainers/idr:2.0.4.2--py39hcbe4a3b_5' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/idr:2.0.4.2--py39hcbe4a3b_5'
+        : 'quay.io/biocontainers/idr:2.0.4.2--py39hcbe4a3b_5'}"
 
     input:
     tuple val(meta), path(peaks), val(peak_type)
 
     output:
     tuple val(meta), path("*idrValues.txt"), emit: idr
-    tuple val(meta), path("*log.txt")      , emit: log
-    tuple val(meta), path("*.png")         , emit: png
+    tuple val(meta), path("*log.txt"), emit: log
+    tuple val(meta), path("*.png"), emit: png
     tuple val("${task.process}"), val('idr'), eval("idr --version |& sed '1!d;s/^.*IDR //'"), emit: versions_idr, topic: versions
     tuple val("${task.process}"), val('python'), eval("python --version |& sed 's/Python //'"), emit: versions_python, topic: versions
 
@@ -23,11 +26,11 @@ process IDR {
     script:
     def args = task.ext.args ?: ''
     if (peaks.toList().size < 2) {
-        log.error "[ERROR] idr needs at least two replicates only one provided."
+        log.error("[ERROR] idr needs at least two replicates only one provided.")
     }
     def peak_types = ['narrowPeak', 'broadPeak', 'bed']
     if (!peak_types.contains(peak_type)) {
-        log.error "[ERROR] Invalid option: '${peak_type}'. Valid options for 'peak_type': ${peak_types.join(', ')}."
+        log.error("[ERROR] Invalid option: '${peak_type}'. Valid options for 'peak_type': ${peak_types.join(', ')}.")
     }
     prefix = task.ext.prefix ?: "${meta.id}"
     """
@@ -42,11 +45,11 @@ process IDR {
 
     stub:
     if (peaks.toList().size < 2) {
-        log.error "[ERROR] idr needs at least two replicates only one provided."
+        log.error("[ERROR] idr needs at least two replicates only one provided.")
     }
     def peak_types = ['narrowPeak', 'broadPeak', 'bed']
     if (!peak_types.contains(peak_type)) {
-        log.error "[ERROR] Invalid option: '${peak_type}'. Valid options for 'peak_type': ${peak_types.join(', ')}."
+        log.error("[ERROR] Invalid option: '${peak_type}'. Valid options for 'peak_type': ${peak_types.join(', ')}.")
     }
     prefix = task.ext.prefix ?: "${meta.id}"
     """

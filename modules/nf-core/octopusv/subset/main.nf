@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process OCTOPUSV_SUBSET {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/octopusv:1.0.0--pyhdfd78af_0':
-        'quay.io/biocontainers/octopusv:1.0.0--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/octopusv:1.0.0--pyhdfd78af_0'
+        : 'quay.io/biocontainers/octopusv:1.0.0--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(svcf_in)
@@ -33,7 +36,7 @@ process OCTOPUSV_SUBSET {
         ${sample_file_arg} \\
         ${caller_file_arg} \\
         ${json_summary} \\
-        $args
+        ${args}
     """
 
     stub:
@@ -43,7 +46,7 @@ process OCTOPUSV_SUBSET {
     def caller_file_arg = caller_file ? "--caller-file ${caller_file}" : ''
     def touch_json = args.contains('--json-summary') ? "touch ${prefix}.json" : ""
     """
-    echo ${sample_file_arg} ${caller_file_arg} $args
+    echo ${sample_file_arg} ${caller_file_arg} ${args}
 
     touch ${prefix}.svcf
     ${touch_json}

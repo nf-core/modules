@@ -1,12 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
 
 process SEQTK_COMP {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/seqtk:1.4--h577a1d6_3':
-        'quay.io/biocontainers/seqtk:1.4--h577a1d6_3' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/seqtk:1.4--h577a1d6_3'
+        : 'quay.io/biocontainers/seqtk:1.4--h577a1d6_3'}"
 
     input:
     tuple val(meta), path(fastx)

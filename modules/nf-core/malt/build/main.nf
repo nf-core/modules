@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MALT_BUILD {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
@@ -14,7 +17,7 @@ process MALT_BUILD {
     val map_type
 
     output:
-    tuple val(meta), path("malt_index/")   , emit: index
+    tuple val(meta), path("malt_index/"), emit: index
     tuple val(meta), path("malt-build.log"), emit: log
     tuple val("${task.process}"), val("malt"), eval("malt-build --help |& sed '/version/!d;s/.*version //;s/,.*//'"), emit: versions_malt, topic: versions
 

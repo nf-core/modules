@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FREYJA_DEMIX {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/freyja:2.0.3--pyhdfd78af_0' :
-        'quay.io/biocontainers/freyja:2.0.3--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/freyja:2.0.3--pyhdfd78af_0'
+        : 'quay.io/biocontainers/freyja:2.0.3--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(variants), path(depths)
@@ -24,18 +27,18 @@ process FREYJA_DEMIX {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def meta_cmd = lineages_meta ? "--meta $lineages_meta" : ''
-    def lineage_cmd = lineages_topology ? "--lineageyml $lineages_topology" : ''
+    def meta_cmd = lineages_meta ? "--meta ${lineages_meta}" : ''
+    def lineage_cmd = lineages_topology ? "--lineageyml ${lineages_topology}" : ''
     """
     freyja \\
         demix \\
-        $args \\
+        ${args} \\
         --output ${prefix}.tsv \\
-        --barcodes $barcodes \\
-        $lineage_cmd \\
-        $meta_cmd \\
-        $variants \\
-        $depths
+        --barcodes ${barcodes} \\
+        ${lineage_cmd} \\
+        ${meta_cmd} \\
+        ${variants} \\
+        ${depths}
     """
 
     stub:
@@ -44,5 +47,4 @@ process FREYJA_DEMIX {
     touch ${prefix}.tsv
 
     """
-
 }

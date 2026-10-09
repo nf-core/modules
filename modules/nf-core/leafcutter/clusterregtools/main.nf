@@ -1,21 +1,24 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process LEAFCUTTER_CLUSTERREGTOOLS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/leafcutter:2.0.3--pyhd8ed1ab_0':
-        'quay.io/biocontainers/leafcutter:2.0.3--pyhd8ed1ab_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/leafcutter:2.0.3--pyhd8ed1ab_0'
+        : 'quay.io/biocontainers/leafcutter:2.0.3--pyhd8ed1ab_0'}"
 
     input:
     tuple val(meta), path(juncfiles)
 
     output:
-    tuple val(meta), path("*_pooled")                      , emit: pooled
-    tuple val(meta), path("*_refined")                     , emit: refined
-    tuple val(meta), path("*_sortedlibs")                  , emit: sortedlibs
-    tuple val(meta), path("*_perind*.counts.gz")           , emit: counts
-    tuple val(meta), path("*_perind_numers*.counts.gz")    , emit: numers
+    tuple val(meta), path("*_pooled"), emit: pooled
+    tuple val(meta), path("*_refined"), emit: refined
+    tuple val(meta), path("*_sortedlibs"), emit: sortedlibs
+    tuple val(meta), path("*_perind*.counts.gz"), emit: counts
+    tuple val(meta), path("*_perind_numers*.counts.gz"), emit: numers
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     tuple val("${task.process}"), val('leafcutter'), val("2.0.3"), topic: versions, emit: versions_leafcutter
 
@@ -31,8 +34,8 @@ process LEAFCUTTER_CLUSTERREGTOOLS {
     leafcutter-cluster \\
         -j juncfiles_list.txt \\
         -r ./ \\
-        -o $prefix \\
-        $args
+        -o ${prefix} \\
+        ${args}
     """
 
     stub:

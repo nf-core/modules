@@ -1,13 +1,16 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CHECKV_UPDATEDATABASE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/checkv:1.0.3--pyhdfd78af_0':
-        'quay.io/biocontainers/checkv:1.0.3--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/checkv:1.0.3--pyhdfd78af_0'
+        : 'quay.io/biocontainers/checkv:1.0.3--pyhdfd78af_0'}"
 
     input:
-    tuple val(meta), path (fasta)
+    tuple val(meta), path(fasta)
     path db
 
     output:
@@ -19,23 +22,22 @@ process CHECKV_UPDATEDATABASE {
 
     script:
     def args = task.ext.args ?: ''
-    prefix    = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     def checkv_db = db ?: ''
     def update_sequence = fasta ?: ''
     """
     checkv update_database \\
-        --threads $task.cpus \\
-        $args \\
-        $checkv_db \\
-        ./$prefix/  \\
-        $update_sequence
+        --threads ${task.cpus} \\
+        ${args} \\
+        ${checkv_db} \\
+        ./${prefix}/  \\
+        ${update_sequence}
     """
 
     stub:
-    prefix    = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}/
     touch ${prefix}/README.txt
     """
-
 }

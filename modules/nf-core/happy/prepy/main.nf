@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HAPPY_PREPY {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hap.py:0.3.15--py27hcb73b3d_0':
-        'quay.io/biocontainers/hap.py:0.3.15--py27hcb73b3d_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/hap.py:0.3.15--py27hcb73b3d_0'
+        : 'quay.io/biocontainers/hap.py:0.3.15--py27hcb73b3d_0'}"
 
     input:
     tuple val(meta), path(vcf), path(bed)
@@ -14,7 +17,7 @@ process HAPPY_PREPY {
     tuple val(meta3), path(fasta_fai)
 
     output:
-    tuple val(meta), path('*.vcf.gz')  , emit: preprocessed_vcf
+    tuple val(meta), path('*.vcf.gz'), emit: preprocessed_vcf
     tuple val("${task.process}"), val('happy'), val('0.3.15'), topic: versions, emit: versions_happy
 
     when:
@@ -23,14 +26,14 @@ process HAPPY_PREPY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def restrict_region = bed ? "-R ${bed}": ""
+    def restrict_region = bed ? "-R ${bed}" : ""
     """
     pre.py \\
-        $args \\
-        $restrict_region \\
-        --reference $fasta \\
-        --threads $task.cpus \\
-        $vcf \\
+        ${args} \\
+        ${restrict_region} \\
+        --reference ${fasta} \\
+        --threads ${task.cpus} \\
+        ${vcf} \\
         ${prefix}.vcf.gz
 
     """

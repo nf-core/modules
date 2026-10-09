@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ARTIC_ALIGNTRIM {
     tag "${meta.id}"
     label 'process_single'
@@ -12,10 +15,10 @@ process ARTIC_ALIGNTRIM {
     val sort_bam
 
     output:
-    tuple val(meta), path("*.primertrimmed*.bam"),              emit: primertrimmed_bam
-    tuple val(meta), path("*.align_trim_report.tsv"),           emit: align_trim_report
-    tuple val(meta), path("*.amp_depth_report.tsv"),            emit: amp_depth_report
-    tuple val(meta), path("*.pre-normalisation.coverage.tsv"),  emit: pre_normalisation_coverage_report
+    tuple val(meta), path("*.primertrimmed*.bam"), emit: primertrimmed_bam
+    tuple val(meta), path("*.align_trim_report.tsv"), emit: align_trim_report
+    tuple val(meta), path("*.amp_depth_report.tsv"), emit: amp_depth_report
+    tuple val(meta), path("*.pre-normalisation.coverage.tsv"), emit: pre_normalisation_coverage_report
     tuple val(meta), path("*.post-normalisation.coverage.tsv"), emit: post_normalisation_coverage_report, optional: true
     tuple val("${task.process}"), val('align_trim'), eval("align_trim --version | sed 's/align_trim //'"), emit: versions_align_trim, topic: versions
 

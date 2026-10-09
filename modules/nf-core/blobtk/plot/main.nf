@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BLOBTK_PLOT {
     // Linked to issue https://github.com/sanger-tol/genomenote/issues/184
     // Depending on the blob dataset in use, the grid option may not
@@ -8,20 +11,23 @@ process BLOBTK_PLOT {
     // runs in which the blobdir doesn't have the right data.
     errorStrategy 'ignore'
 
-    tag "$prefix"
+    tag "${prefix}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/08/08833d1b91f41024e06e2cb5a982598531199c04e6544885d42ef2cb0480de18/data' :
-        'community.wave.seqera.io/library/blobtk:0.8.0--2fe0d833a26e0cd9' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/08/08833d1b91f41024e06e2cb5a982598531199c04e6544885d42ef2cb0480de18/data'
+        : 'community.wave.seqera.io/library/blobtk:0.8.0--2fe0d833a26e0cd9'}"
 
     input:
     tuple val(meta), path(fasta)
-    path(local_path)                // Genuine path location must be a path.
-    val(online_path)                // HTTPS location needs to remain a value
-    val extra_args                  // In format [name: "", args: ""]
-    val format                      // Output format, e.g. png or svg
+    path local_path
+    // Genuine path location must be a path.
+    val online_path
+    // HTTPS location needs to remain a value
+    val extra_args
+    // In format [name: "", args: ""]
+    val format
 
     output:
     tuple val(meta), path("*.png"), optional: true, emit: png
@@ -32,27 +38,27 @@ process BLOBTK_PLOT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args    = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
 
-    if ( online_path && local_path ) {
-        error "BLOBTK_PLOT can't use both local_path and online_path, use `[]` as input for the unused channel."
+    if (online_path && local_path) {
+        error("BLOBTK_PLOT can't use both local_path and online_path, use `[]` as input for the unused channel.")
     }
 
     def resource = online_path ?: local_path
-    def legend   = extra_args.args.contains("-v snail") ? "" : "--legend full"
+    def legend = extra_args.args.contains("-v snail") ? "" : "--legend full"
 
-    prefix       = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     blobtk plot \\
         -d ${resource} \\
         -o ${prefix}.${format} \\
         ${legend} \\
-        $args
+        ${args}
     """
 
     stub:
-    prefix      = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.${format}
     """

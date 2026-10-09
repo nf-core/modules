@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process NGMASTER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ngmaster:0.5.8--pyhdfd78af_1' :
-        'quay.io/biocontainers/ngmaster:0.5.8--pyhdfd78af_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/ngmaster:0.5.8--pyhdfd78af_1'
+        : 'quay.io/biocontainers/ngmaster:0.5.8--pyhdfd78af_1'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -22,8 +25,8 @@ process NGMASTER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     ngmaster \\
-        $args \\
-        $fasta \\
+        ${args} \\
+        ${fasta} \\
         > ${prefix}.tsv
     """
 

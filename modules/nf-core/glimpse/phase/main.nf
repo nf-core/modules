@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GLIMPSE_PHASE {
     tag "${meta.id}"
     label 'process_medium'
@@ -18,11 +21,11 @@ process GLIMPSE_PHASE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_${input_region.replace(":", "_")}"
     def suffix = task.ext.suffix ?: "vcf.gz"
 
-    def map_command          = map          ? "--map ${map}"                   : ""
+    def map_command = map ? "--map ${map}" : ""
     def samples_file_command = samples_file ? "--samples-file ${samples_file}" : ""
 
     """

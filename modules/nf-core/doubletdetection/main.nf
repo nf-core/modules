@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DOUBLETDETECTION {
     tag "${meta.id}"
     label 'process_medium'
@@ -12,8 +15,8 @@ process DOUBLETDETECTION {
 
     output:
     tuple val(meta), path("*.h5ad"), emit: h5ad
-    tuple val(meta), path("*.pkl") , emit: predictions
-    path "versions.yml"            , emit: versions, topic: versions
+    tuple val(meta), path("*.pkl"), emit: predictions
+    path "versions.yml", emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

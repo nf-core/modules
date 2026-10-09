@@ -1,19 +1,22 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process NANOPLOT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/nanoplot:1.47.0--pyhdfd78af_0' :
-        'quay.io/biocontainers/nanoplot:1.47.0--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/nanoplot:1.47.0--pyhdfd78af_0'
+        : 'quay.io/biocontainers/nanoplot:1.47.0--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(ontfile)
 
     output:
-    tuple val(meta), path("*.html")                , emit: html
-    tuple val(meta), path("*.png") , optional: true, emit: png
-    tuple val(meta), path("*.txt")                 , emit: txt
+    tuple val(meta), path("*.html"), emit: html
+    tuple val(meta), path("*.png"), optional: true, emit: png
+    tuple val(meta), path("*.txt"), emit: txt
     tuple val("${task.process}"), val('NanoPlot'), eval('NanoPlot --version | sed \'s/^.*NanoPlot //; s/ .*\$//\''), emit: versions_nanoplot, topic: versions
 
     when:
@@ -21,13 +24,14 @@ process NANOPLOT {
 
     script:
     def args = task.ext.args ?: ''
-    def input_file = ("$ontfile".endsWith(".fastq.gz") || "$ontfile".endsWith(".fq.gz")) ? "--fastq ${ontfile}" :
-        ("$ontfile".endsWith(".txt")) ? "--summary ${ontfile}" : ''
+    def input_file = ("${ontfile}".endsWith(".fastq.gz") || "${ontfile}".endsWith(".fq.gz"))
+        ? "--fastq ${ontfile}"
+        : ("${ontfile}".endsWith(".txt")) ? "--summary ${ontfile}" : ''
     """
     NanoPlot \\
-        $args \\
-        -t $task.cpus \\
-        $input_file
+        ${args} \\
+        -t ${task.cpus} \\
+        ${input_file}
     """
 
     stub:

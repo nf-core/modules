@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CTATSPLICING_STARTOCANCERINTRONS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     container "quay.io/nf-core/ctatsplicing:0.0.3"
@@ -9,17 +12,17 @@ process CTATSPLICING_STARTOCANCERINTRONS {
     tuple val(meta2), path(genome_lib)
 
     output:
-    tuple val(meta), path("*.cancer_intron_reads.sorted.bam")    , emit: cancer_introns_sorted_bam, optional: true
+    tuple val(meta), path("*.cancer_intron_reads.sorted.bam"), emit: cancer_introns_sorted_bam, optional: true
     tuple val(meta), path("*.cancer_intron_reads.sorted.bam.bai"), emit: cancer_introns_sorted_bai, optional: true
-    tuple val(meta), path("*.gene_reads.sorted.sifted.bam")      , emit: gene_reads_sorted_bam    , optional: true
-    tuple val(meta), path("*.gene_reads.sorted.sifted.bam.bai")  , emit: gene_reads_sorted_bai    , optional: true
-    tuple val(meta), path("*.cancer.introns")                    , emit: cancer_introns
-    tuple val(meta), path("*.cancer.introns.prelim")             , emit: cancer_introns_prelim
-    tuple val(meta), path("*${prefix}.introns")                  , emit: introns
-    tuple val(meta), path("*.introns.for_IGV.bed")               , emit: introns_igv_bed          , optional: true
-    tuple val(meta), path("*.ctat-splicing.igv.html")            , emit: igv_html                 , optional: true
-    tuple val(meta), path("*.igv.tracks")                        , emit: igv_tracks               , optional: true
-    tuple val(meta), path("*.chckpts")                           , emit: chckpts                  , optional: true
+    tuple val(meta), path("*.gene_reads.sorted.sifted.bam"), emit: gene_reads_sorted_bam, optional: true
+    tuple val(meta), path("*.gene_reads.sorted.sifted.bam.bai"), emit: gene_reads_sorted_bai, optional: true
+    tuple val(meta), path("*.cancer.introns"), emit: cancer_introns
+    tuple val(meta), path("*.cancer.introns.prelim"), emit: cancer_introns_prelim
+    tuple val(meta), path("*${prefix}.introns"), emit: introns
+    tuple val(meta), path("*.introns.for_IGV.bed"), emit: introns_igv_bed, optional: true
+    tuple val(meta), path("*.ctat-splicing.igv.html"), emit: igv_html, optional: true
+    tuple val(meta), path("*.igv.tracks"), emit: igv_tracks, optional: true
+    tuple val(meta), path("*.chckpts"), emit: chckpts, optional: true
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('ctatsplicing'), val("0.0.3"), emit: versions_ctatsplicing, topic: versions
 
@@ -29,7 +32,7 @@ process CTATSPLICING_STARTOCANCERINTRONS {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "CTATSPLICING_STARTOCANCERINTRONS module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("CTATSPLICING_STARTOCANCERINTRONS module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"

@@ -1,19 +1,22 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VT_DECOMPOSE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vt:2015.11.10--h5ef6573_4':
-        'quay.io/biocontainers/vt:2015.11.10--h5ef6573_4' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/vt:2015.11.10--h5ef6573_4'
+        : 'quay.io/biocontainers/vt:2015.11.10--h5ef6573_4'}"
 
     input:
     tuple val(meta), path(vcf), path(intervals)
 
     output:
-    tuple val(meta), path("*.vcf.gz")   , emit: vcf
-    tuple val("${task.process}"), val('vt'), val('2015.11.10'), topic: versions, emit: versions_vt // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
+    tuple val("${task.process}"), val('vt'), val('2015.11.10'), topic: versions, emit: versions_vt
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,8 +26,8 @@ process VT_DECOMPOSE {
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_decompose"
 
-    if ("$vcf" == "${prefix}.vcf" || "$vcf" == "${prefix}.vcf.gz") {
-        error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${vcf}" == "${prefix}.vcf" || "${vcf}" == "${prefix}.vcf.gz") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
     }
 
     def bed = intervals ? "-i ${intervals}" : ""
@@ -42,8 +45,8 @@ process VT_DECOMPOSE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}_decompose"
 
-    if ("$vcf" == "${prefix}.vcf" || "$vcf" == "${prefix}.vcf.gz") {
-        error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${vcf}" == "${prefix}.vcf" || "${vcf}" == "${prefix}.vcf.gz") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
     }
 
     """

@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DASTOOL_DASTOOL {
     tag "${meta.id}"
     label 'process_medium'
@@ -12,18 +15,18 @@ process DASTOOL_DASTOOL {
     path db_directory
 
     output:
-    tuple val(meta), path("*.log")                                      , emit: log
-    tuple val(meta), path("*_summary.tsv")              , optional: true, emit: summary
-    tuple val(meta), path("*_DASTool_contig2bin.tsv")   , optional: true, emit: contig2bin
-    tuple val(meta), path("*.eval")                     , optional: true, emit: eval
-    tuple val(meta), path("*_DASTool_bins/*.fa")        , optional: true, emit: bins
-    tuple val(meta), path("*.pdf")                      , optional: true, emit: pdfs
-    tuple val(meta), path("*.candidates.faa")           , optional: true, emit: candidates_faa
-    tuple val(meta), path("*_proteins.faa")             , optional: true, emit: fasta_proteins
-    tuple val(meta), path("*.archaea.scg")              , optional: true, emit: fasta_archaea_scg
-    tuple val(meta), path("*.bacteria.scg")             , optional: true, emit: fasta_bacteria_scg
-    tuple val(meta), path("*.b6")                       , optional: true, emit: b6
-    tuple val(meta), path("*.seqlength")                , optional: true, emit: seqlength
+    tuple val(meta), path("*.log"), emit: log
+    tuple val(meta), path("*_summary.tsv"), optional: true, emit: summary
+    tuple val(meta), path("*_DASTool_contig2bin.tsv"), optional: true, emit: contig2bin
+    tuple val(meta), path("*.eval"), optional: true, emit: eval
+    tuple val(meta), path("*_DASTool_bins/*.fa"), optional: true, emit: bins
+    tuple val(meta), path("*.pdf"), optional: true, emit: pdfs
+    tuple val(meta), path("*.candidates.faa"), optional: true, emit: candidates_faa
+    tuple val(meta), path("*_proteins.faa"), optional: true, emit: fasta_proteins
+    tuple val(meta), path("*.archaea.scg"), optional: true, emit: fasta_archaea_scg
+    tuple val(meta), path("*.bacteria.scg"), optional: true, emit: fasta_bacteria_scg
+    tuple val(meta), path("*.b6"), optional: true, emit: b6
+    tuple val(meta), path("*.seqlength"), optional: true, emit: seqlength
     tuple val("${task.process}"), val('dastool'), eval('DAS_Tool --version 2>&1 | grep "DAS Tool" | sed "s/DAS Tool //"'), topic: versions, emit: versions_dastool
 
     when:

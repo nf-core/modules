@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process WGSIM {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/wgsim:1.0--h5bf99c6_4':
-        'quay.io/biocontainers/wgsim:1.0--h5bf99c6_4' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/wgsim:1.0--h5bf99c6_4'
+        : 'quay.io/biocontainers/wgsim:1.0--h5bf99c6_4'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -18,8 +21,8 @@ process WGSIM {
     task.ext.when == null || task.ext.when
 
     script:
-    def args    = task.ext.args ?: ''
-    def prefix  = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     wgsim \\
         ${args} \\
@@ -29,7 +32,7 @@ process WGSIM {
     """
 
     stub:
-    def prefix  = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_R1.fastq
     touch ${prefix}_R2.fastq

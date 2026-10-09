@@ -1,20 +1,23 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PRESTO_FILTERSEQ {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/presto:0.7.9--pyhdfd78af_0':
-        'quay.io/biocontainers/presto:0.7.9--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/presto:0.7.9--pyhdfd78af_0'
+        : 'quay.io/biocontainers/presto:0.7.9--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("*_quality-pass.fastq.gz"),  emit: reads
-    path "*_command_log.txt" , emit: logs
+    tuple val(meta), path("*_quality-pass.fastq.gz"), emit: reads
+    path "*_command_log.txt", emit: logs
     tuple val("${task.process}"), val('presto'), eval('FilterSeq.py --version | grep -o "[0-9][0-9.]*" | head -n 1'), emit: versions_presto, topic: versions
-    path "*.tab" , emit: log_tab
+    path "*.tab", emit: log_tab
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,13 +29,13 @@ process PRESTO_FILTERSEQ {
     def log_prefix = reads.simpleName
     """
     FilterSeq.py quality \\
-    -s $reads \\
+    -s ${reads} \\
     --outname ${prefix} \\
     --log ${log_prefix}.log \\
     --nproc ${task.cpus} \\
-    $args > ${prefix}_command_log.txt
+    ${args} > ${prefix}_command_log.txt
 
-    ParseLog.py -l ${log_prefix}.log $args2 -f ID QUALITY
+    ParseLog.py -l ${log_prefix}.log ${args2} -f ID QUALITY
    """
 
     stub:

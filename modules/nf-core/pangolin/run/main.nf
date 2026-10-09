@@ -1,15 +1,18 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PANGOLIN_RUN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/85/858e91f6972f0d8d71dae844bf0232656f5d91112b9a5610f559659b33414c86/data' :
-        'community.wave.seqera.io/library/pangolin-data_pangolin_snakemake-minimal:638a1eb68adff9c7' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/85/858e91f6972f0d8d71dae844bf0232656f5d91112b9a5610f559659b33414c86/data'
+        : 'community.wave.seqera.io/library/pangolin-data_pangolin_snakemake-minimal:638a1eb68adff9c7'}"
 
     input:
     tuple val(meta), path(fasta)
-    path(db)
+    path db
 
     output:
     tuple val(meta), path('*.csv'), emit: report
@@ -26,11 +29,11 @@ process PANGOLIN_RUN {
     export XDG_CACHE_HOME=/tmp/.cache
 
     pangolin \\
-        $fasta\\
-        $db_command \\
+        ${fasta}\\
+        ${db_command} \\
         --outfile ${prefix}.pangolin.csv \\
-        --threads $task.cpus \\
-        $args
+        --threads ${task.cpus} \\
+        ${args}
     """
 
     stub:

@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process NUMORPH_RESAMPLE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     container "quay.io/nf-core/numorph_analyze:1.0.0"
@@ -8,7 +11,7 @@ process NUMORPH_RESAMPLE {
     tuple val(meta), path(stitch_directory), path(parameter_file)
 
     output:
-    tuple val(meta), path("results/resampled/")                        , emit: resampled
+    tuple val(meta), path("results/resampled/"), emit: resampled
     tuple val("${task.process}"), val('numorph_resample'), val('1.0.0'), emit: versions_numorph_analyze, topic: versions
 
     when:

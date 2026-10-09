@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MODKIT_REPAIR {
     tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ont-modkit:0.6.1--hcdda2d0_0':
-        'quay.io/biocontainers/ont-modkit:0.6.1--hcdda2d0_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/ont-modkit:0.6.1--hcdda2d0_0'
+        : 'quay.io/biocontainers/ont-modkit:0.6.1--hcdda2d0_0'}"
 
     input:
     tuple val(meta), path(before_trim), path(after_trim)
@@ -21,7 +24,9 @@ process MODKIT_REPAIR {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if ("${before_trim}" == "${prefix}.bam" || "${after_trim}" == "${prefix}.bam") { error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"}
+    if ("${before_trim}" == "${prefix}.bam" || "${after_trim}" == "${prefix}.bam") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
     modkit \\
         repair \\

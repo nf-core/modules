@@ -1,24 +1,27 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MGATK_CALL {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mgatk:0.9.0--pyhdfd78af_0':
-        'quay.io/biocontainers/mgatk:0.9.0--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/mgatk:0.9.0--pyhdfd78af_0'
+        : 'quay.io/biocontainers/mgatk:0.9.0--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(bam), path(bai), path(mito_fasta)
 
     output:
-    tuple val(meta), path("*.mgatk")                         , emit: outdir
-    tuple val(meta), path("*.mgatk/final/*.rds")             , emit: rds, optional: true
-    tuple val(meta), path("*.mgatk/final/*.coverage.txt.gz") , emit: coverage, optional: true
-    tuple val(meta), path("*.mgatk/final/*.depthTable.txt")  , emit: depth_table, optional: true
-    tuple val(meta), path("*.mgatk/final/*.A.txt.gz")        , emit: counts_a, optional: true
-    tuple val(meta), path("*.mgatk/final/*.C.txt.gz")        , emit: counts_c, optional: true
-    tuple val(meta), path("*.mgatk/final/*.G.txt.gz")        , emit: counts_g, optional: true
-    tuple val(meta), path("*.mgatk/final/*.T.txt.gz")        , emit: counts_t, optional: true
+    tuple val(meta), path("*.mgatk"), emit: outdir
+    tuple val(meta), path("*.mgatk/final/*.rds"), emit: rds, optional: true
+    tuple val(meta), path("*.mgatk/final/*.coverage.txt.gz"), emit: coverage, optional: true
+    tuple val(meta), path("*.mgatk/final/*.depthTable.txt"), emit: depth_table, optional: true
+    tuple val(meta), path("*.mgatk/final/*.A.txt.gz"), emit: counts_a, optional: true
+    tuple val(meta), path("*.mgatk/final/*.C.txt.gz"), emit: counts_c, optional: true
+    tuple val(meta), path("*.mgatk/final/*.G.txt.gz"), emit: counts_g, optional: true
+    tuple val(meta), path("*.mgatk/final/*.T.txt.gz"), emit: counts_t, optional: true
     tuple val("${task.process}"), val('mgatk'), eval("mgatk --version 2>&1 | sed -E 's/.*version //'"), topic: versions, emit: versions_mgatk
     tuple val("${task.process}"), val('python'), eval("python --version 2>&1 | sed 's/Python //' | cut -d. -f1,2"), topic: versions, emit: versions_python
 
@@ -29,20 +32,20 @@ process MGATK_CALL {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    ln -s $bam ${prefix}.bam
-    if [[ "$bai" == *.csi ]]; then
-        ln -s $bai ${prefix}.bam.csi
+    ln -s ${bam} ${prefix}.bam
+    if [[ "${bai}" == *.csi ]]; then
+        ln -s ${bai} ${prefix}.bam.csi
     else
-        ln -s $bai ${prefix}.bam.bai
+        ln -s ${bai} ${prefix}.bam.bai
     fi
 
     mgatk call \\
         --input ${prefix}.bam \\
         --output ${prefix}.mgatk \\
         --name ${prefix} \\
-        --mito-genome $mito_fasta \\
+        --mito-genome ${mito_fasta} \\
         --ncores ${task.cpus} \\
-        $args
+        ${args}
     """
 
     stub:

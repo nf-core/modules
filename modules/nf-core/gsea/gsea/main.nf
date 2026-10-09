@@ -1,41 +1,43 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GSEA_GSEA {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0f/0f4fe28961396eeeaa98484cb4f2db5c79abfdf117700df132312fe5c41bff81/data':
-        'community.wave.seqera.io/library/gsea:4.3.2--a7421d7504fd7c81' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0f/0f4fe28961396eeeaa98484cb4f2db5c79abfdf117700df132312fe5c41bff81/data'
+        : 'community.wave.seqera.io/library/gsea:4.3.2--a7421d7504fd7c81'}"
 
     input:
     tuple val(meta), path(gct), path(cls), path(gene_sets)
     tuple val(reference), val(target)
-    tuple val(meta2), path(chip) // Optional identifier mapping file
+    tuple val(meta2), path(chip)
 
     output:
-    tuple val(meta), path("*.rpt")                             , emit: rpt
-    tuple val(meta), path("*index.html")                       , emit: index_html
-    tuple val(meta), path("*heat_map_corr_plot.html")          , emit: heat_map_corr_plot
-    tuple val(meta), path("*gsea_report_for_${reference}.tsv") , emit: report_tsvs_ref
+    tuple val(meta), path("*.rpt"), emit: rpt
+    tuple val(meta), path("*index.html"), emit: index_html
+    tuple val(meta), path("*heat_map_corr_plot.html"), emit: heat_map_corr_plot
+    tuple val(meta), path("*gsea_report_for_${reference}.tsv"), emit: report_tsvs_ref
     tuple val(meta), path("*gsea_report_for_${reference}.html"), emit: report_htmls_ref
-    tuple val(meta), path("*gsea_report_for_${target}.tsv")    , emit: report_tsvs_target
-    tuple val(meta), path("*gsea_report_for_${target}.html")   , emit: report_htmls_target
-    tuple val(meta), path("*ranked_gene_list*.tsv")            , emit: ranked_gene_list
-    tuple val(meta), path("*gene_set_sizes.tsv")               , emit: gene_set_sizes
-    tuple val(meta), path("*global_es_histogram.png")          , emit: histogram
-    tuple val(meta), path("*heat_map_1.png")                   , emit: heatmap
-    tuple val(meta), path("*pvalues_vs_nes_plot.png")          , emit: pvalues_vs_nes_plot
-    tuple val(meta), path("*ranked_list_corr_2.png")           , emit: ranked_list_corr
-    tuple val(meta), path("*butterfly_plot.png")               , emit: butterfly_plot  , optional: true
-    tuple val(meta), path("gene_sets_*.tsv")                   , emit: gene_set_tsv    , optional: true
-    tuple val(meta), path("gene_sets_*.html")                  , emit: gene_set_html   , optional: true
-    tuple val(meta), path("gene_sets_*.png")                   , emit: gene_set_heatmap, optional: true
-    tuple val(meta), path("*_snapshot*.html")                  , emit: snapshot        , optional: true
-    tuple val(meta), path("*enplot*.png")                      , emit: gene_set_enplot , optional: true
-    tuple val(meta), path("*gset_rnd_es_dist*.png")            , emit: gene_set_dist   , optional: true
-    tuple val(meta), path("*.zip")                             , emit: archive         , optional: true
-    tuple val("${task.process}"), val('gsea'), val('4.3.2')    , emit: versions_gsea, topic: versions // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
+    tuple val(meta), path("*gsea_report_for_${target}.tsv"), emit: report_tsvs_target
+    tuple val(meta), path("*gsea_report_for_${target}.html"), emit: report_htmls_target
+    tuple val(meta), path("*ranked_gene_list*.tsv"), emit: ranked_gene_list
+    tuple val(meta), path("*gene_set_sizes.tsv"), emit: gene_set_sizes
+    tuple val(meta), path("*global_es_histogram.png"), emit: histogram
+    tuple val(meta), path("*heat_map_1.png"), emit: heatmap
+    tuple val(meta), path("*pvalues_vs_nes_plot.png"), emit: pvalues_vs_nes_plot
+    tuple val(meta), path("*ranked_list_corr_2.png"), emit: ranked_list_corr
+    tuple val(meta), path("*butterfly_plot.png"), emit: butterfly_plot, optional: true
+    tuple val(meta), path("gene_sets_*.tsv"), emit: gene_set_tsv, optional: true
+    tuple val(meta), path("gene_sets_*.html"), emit: gene_set_html, optional: true
+    tuple val(meta), path("gene_sets_*.png"), emit: gene_set_heatmap, optional: true
+    tuple val(meta), path("*_snapshot*.html"), emit: snapshot, optional: true
+    tuple val(meta), path("*enplot*.png"), emit: gene_set_enplot, optional: true
+    tuple val(meta), path("*gset_rnd_es_dist*.png"), emit: gene_set_dist, optional: true
+    tuple val(meta), path("*.zip"), emit: archive, optional: true
+    tuple val("${task.process}"), val('gsea'), val('4.3.2'), emit: versions_gsea, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -44,7 +46,7 @@ process GSEA_GSEA {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def rpt_label = prefix.replaceAll('\\.$', '')
-    def chip_command = chip ? "-chip \"$chip\" -collapse true" : ''
+    def chip_command = chip ? "-chip \"${chip}\" -collapse true" : ''
     // gsea-cli takes a comma-delimited -gmx value to pool multiple gene set files into one run.
     def gmx = gene_sets instanceof List ? gene_sets.join(',') : gene_sets
 
@@ -52,16 +54,16 @@ process GSEA_GSEA {
     # Run GSEA
 
     gsea-cli GSEA \\
-        -res "$gct" \\
+        -res "${gct}" \\
         -cls "${cls}#${target}_versus_${reference}" \\
-        -gmx "$gmx" \\
-        $chip_command \\
+        -gmx "${gmx}" \\
+        ${chip_command} \\
         -out . \\
-        --rpt_label "$rpt_label" \\
-        $args
+        --rpt_label "${rpt_label}" \\
+        ${args}
 
     # Un-timestamp the outputs for path consistency
-    mv "$rpt_label".Gsea.*/* .
+    mv "${rpt_label}".Gsea.*/* .
     timestamp=\$(cat *.rpt | grep producer_timestamp | awk '{print \$2}')
 
     for pattern in _\${timestamp} .\${timestamp}; do
@@ -72,7 +74,7 @@ process GSEA_GSEA {
     sed -i.bak "s/[_\\.]\$timestamp//g" *.rpt *.html && rm *.bak
 
     # Prefix files that currently lack it
-    ls -p | grep -v / | grep -v "$prefix" | while read -r f; do
+    ls -p | grep -v / | grep -v "${prefix}" | while read -r f; do
         mv \$f ${prefix}\${f}
         sed -i.bak "s/\$f/${prefix}\${f}/g" *.rpt *.html && rm *.bak
     done

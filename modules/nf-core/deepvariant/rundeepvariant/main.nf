@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DEEPVARIANT_RUNDEEPVARIANT {
     tag "${meta.id}"
     label 'process_high'
@@ -16,9 +19,9 @@ process DEEPVARIANT_RUNDEEPVARIANT {
     tuple val(meta5), path(par_bed)
 
     output:
-    tuple val(meta), path("${prefix}.vcf.gz")            , emit: vcf
-    tuple val(meta), path("${prefix}.vcf.gz.{tbi,csi}")  , emit: vcf_index
-    tuple val(meta), path("${prefix}.g.vcf.gz")          , emit: gvcf
+    tuple val(meta), path("${prefix}.vcf.gz"), emit: vcf
+    tuple val(meta), path("${prefix}.vcf.gz.{tbi,csi}"), emit: vcf_index
+    tuple val(meta), path("${prefix}.g.vcf.gz"), emit: gvcf
     tuple val(meta), path("${prefix}.g.vcf.gz.{tbi,csi}"), emit: gvcf_index
     tuple val(meta), path("${prefix}.visual_report.html"), emit: report, optional: true
     tuple val("${task.process}"), val('deepvariant'), eval("/opt/deepvariant/bin/run_deepvariant --version | sed 's/^.*version //'"), topic: versions, emit: versions_deepvariant

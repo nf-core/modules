@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VCF2ZARR_CONVERT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-        container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9e/9e0bf4a8a21faa7319626812bc557404bb37b440df1af2bbc89a80771aca1f94/data':
-        'community.wave.seqera.io/library/bio2zarr:0.1.7--a742d2d9b8ee4347' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9e/9e0bf4a8a21faa7319626812bc557404bb37b440df1af2bbc89a80771aca1f94/data'
+        : 'community.wave.seqera.io/library/bio2zarr:0.1.7--a742d2d9b8ee4347'}"
 
     input:
     tuple val(meta), path(vcf)
@@ -25,7 +28,7 @@ Reason:
 The module was incorrectly named. The installed package is bio2zarr, not vcf2zarr.
 Per nf-core naming conventions, the module has been moved to bio2zarr/vcf2zarrconvert.
 """
-    assert false: deprecation_message
+    assert false : deprecation_message
 
     stub:
     def deprecation_message = """
@@ -35,5 +38,5 @@ Reason:
 The module was incorrectly named. The installed package is bio2zarr, not vcf2zarr.
 Per nf-core naming conventions, the module has been moved to bio2zarr/vcf2zarrconvert.
 """
-    assert false: deprecation_message
+    assert false : deprecation_message
 }

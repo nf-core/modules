@@ -1,21 +1,27 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process UNIVERSC {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     container "quay.io/nf-core/universc:1.2.5.1"
-    containerOptions "${ ['singularity', 'apptainer'].contains(workflow.containerEngine) ?
-        "-B /var/tmp --writable-tmpfs" : workflow.containerEngine == 'docker' ?
-        "--privileged" : workflow.containerEngine == 'podman' ?
-        "--runtime crun --userns=keep-id --systemd=always" : '' }"
+    containerOptions "${['singularity', 'apptainer'].contains(workflow.containerEngine)
+        ? "-B /var/tmp --writable-tmpfs"
+        : workflow.containerEngine == 'docker'
+            ? "--privileged"
+            : workflow.containerEngine == 'podman'
+                ? "--runtime crun --userns=keep-id --systemd=always"
+                : ''}"
 
     input:
     tuple val(meta), path(reads)
     tuple val(meta2), path(reference)
-    val(technology)
+    val technology
 
     output:
     tuple val(meta), path("${prefix}/outs/*"), emit: outs
-    path "versions.yml"                      , emit: versions
+    path "versions.yml", emit: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,11 +29,11 @@ process UNIVERSC {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "UNIVERSC module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("UNIVERSC module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
-    def args        = task.ext.args   ?: ''
-    prefix          = task.ext.prefix ?: "${meta.id}"
-    def input_reads = meta.single_end ? "--file $reads" : "-R1 ${reads[0]} -R2 ${reads[1]}"
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def input_reads = meta.single_end ? "--file ${reads}" : "-R1 ${reads[0]} -R2 ${reads[1]}"
 
     def reference_name = reference.name
     """
@@ -55,11 +61,10 @@ process UNIVERSC {
     END_VERSIONS
     """
 
-
     stub:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "UNIVERSC module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("UNIVERSC module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
 
     prefix = task.ext.prefix ?: "${meta.id}"

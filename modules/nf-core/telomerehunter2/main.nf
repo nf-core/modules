@@ -1,21 +1,24 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TELOMEREHUNTER2 {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/telomerehunter2:1.0.11--pyhdfd78af_0':
-        'quay.io/biocontainers/telomerehunter2:1.0.11--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/telomerehunter2:1.0.11--pyhdfd78af_0'
+        : 'quay.io/biocontainers/telomerehunter2:1.0.11--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(bam), path(bai), path(banding_file)
 
     output:
-    tuple val(meta), path("*.telomerehunter2_summary.tsv")        , emit: summary, optional: true
+    tuple val(meta), path("*.telomerehunter2_summary.tsv"), emit: summary, optional: true
     tuple val(meta), path("*.telomerehunter2_TVR_top_contexts.tsv"), emit: tvr_top_contexts, optional: true
-    tuple val(meta), path("*.telomerehunter2_singletons.tsv")     , emit: singletons, optional: true
-    tuple val(meta), path("*.telomerehunter2_files.txt")          , emit: file_index
-    tuple val(meta), path("*.telomerehunter2")                    , emit: outdir
+    tuple val(meta), path("*.telomerehunter2_singletons.tsv"), emit: singletons, optional: true
+    tuple val(meta), path("*.telomerehunter2_files.txt"), emit: file_index
+    tuple val(meta), path("*.telomerehunter2"), emit: outdir
     tuple val("${task.process}"), val('telomerehunter2'), eval("python -c 'import importlib.metadata; print(importlib.metadata.version(\"telomerehunter2\"))'"), topic: versions, emit: versions_telomerehunter2
 
     when:
@@ -24,15 +27,15 @@ process TELOMEREHUNTER2 {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def banding = banding_file ? "-b $banding_file" : ''
+    def banding = banding_file ? "-b ${banding_file}" : ''
     """
     telomerehunter2 \\
-        -ibt $bam \\
+        -ibt ${bam} \\
         -o ${prefix}.telomerehunter2 \\
         -p ${prefix} \\
         -c ${task.cpus} \\
-        $banding \\
-        $args
+        ${banding} \\
+        ${args}
 
     find ${prefix}.telomerehunter2 -type f | sort > ${prefix}.telomerehunter2_files.txt
     find ${prefix}.telomerehunter2 -name '*summary.tsv' -exec cp {} ${prefix}.telomerehunter2_summary.tsv \\; -quit

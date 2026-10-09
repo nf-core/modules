@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SVTOOLS_VCFTOBEDPE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/svtools:0.5.1--py_0':
-        'quay.io/biocontainers/svtools:0.5.1--py_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/svtools:0.5.1--py_0'
+        : 'quay.io/biocontainers/svtools:0.5.1--py_0'}"
 
     input:
     tuple val(meta), path(vcf)
@@ -18,12 +21,12 @@ process SVTOOLS_VCFTOBEDPE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: ""
+    def args = task.ext.args ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     svtools vcftobedpe \\
-        $args \\
-        --input $vcf \\
+        ${args} \\
+        --input ${vcf} \\
         --output ${prefix}.bedpe \\
         --tempdir ./tmp
     """

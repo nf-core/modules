@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PARAGRAPH_MULTIGRMPY {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/paragraph:2.3--h21f15d8_1':
-        'quay.io/biocontainers/paragraph:2.3--h21f15d8_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/paragraph:2.3--h21f15d8_1'
+        : 'quay.io/biocontainers/paragraph:2.3--h21f15d8_1'}"
 
     input:
     tuple val(meta), path(variants), path(variants_index), path(reads), path(reads_index), path(manifest)
@@ -14,8 +17,8 @@ process PARAGRAPH_MULTIGRMPY {
     tuple val(meta3), path(fasta_fai)
 
     output:
-    tuple val(meta), path("*.vcf.gz") , emit: vcf
-    tuple val(meta), path("*.json.gz"), emit: json, optional:true
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
+    tuple val(meta), path("*.json.gz"), emit: json, optional: true
     tuple val("${task.process}"), val('paragraph'), val('2.3'), emit: versions_paragraph, topic: versions
 
     when:
@@ -24,12 +27,18 @@ process PARAGRAPH_MULTIGRMPY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def check_vcf = variants.name.endsWith(".vcf.gz") ? "variant=\$(bgzip -d --threads ${task.cpus} --stdout ${variants} | awk '/^#/ {next} {print 1;exit}' || echo 0)":
-                    variants.extension == "vcf" ? "variant=\$(cat ${variants} | awk '/^#/ {next} {print 1;exit}' || echo 0)":
-                    "variant=1"
+    def check_vcf = variants.name.endsWith(".vcf.gz")
+        ? "variant=\$(bgzip -d --threads ${task.cpus} --stdout ${variants} | awk '/^#/ {next} {print 1;exit}' || echo 0)"
+        : variants.extension == "vcf"
+            ? "variant=\$(cat ${variants} | awk '/^#/ {next} {print 1;exit}' || echo 0)"
+            : "variant=1"
 
-    if ("${variants}" == "${prefix}.vcf.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
-    if ("${variants}" == "${prefix}.json.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${variants}" == "${prefix}.vcf.gz") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
+    }
+    if ("${variants}" == "${prefix}.json.gz") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
+    }
     """
     ${check_vcf}
 
@@ -53,8 +62,12 @@ process PARAGRAPH_MULTIGRMPY {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if ("${variants}" == "${prefix}.vcf.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
-    if ("${variants}" == "${prefix}.json.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${variants}" == "${prefix}.vcf.gz") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
+    }
+    if ("${variants}" == "${prefix}.json.gz") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
+    }
     """
     echo "" | gzip > ${prefix}.vcf.gz
     echo "" | gzip > ${prefix}.json.gz

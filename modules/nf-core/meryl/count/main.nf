@@ -1,20 +1,22 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MERYL_COUNT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/meryl:1.4.1--h4ac6f70_0':
-        'quay.io/biocontainers/meryl:1.4.1--h4ac6f70_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/meryl:1.4.1--h4ac6f70_0'
+        : 'quay.io/biocontainers/meryl:1.4.1--h4ac6f70_0'}"
 
     input:
     tuple val(meta), path(reads)
     val kvalue
 
     output:
-    tuple val(meta), path("*.meryl")    , emit: meryl_db
+    tuple val(meta), path("*.meryl"), emit: meryl_db
     tuple val("${task.process}"), val('meryl'), eval("meryl --version |& sed 's/meryl //'"), emit: versions_meryl, topic: versions
-
 
     when:
     task.ext.when == null || task.ext.when

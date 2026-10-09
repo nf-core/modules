@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CAT_CAT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pigz:2.8' :
-        'quay.io/biocontainers/pigz:2.8' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/pigz:2.8'
+        : 'quay.io/biocontainers/pigz:2.8'}"
 
     input:
     tuple val(meta), path(files_in)
 
     output:
     tuple val(meta), path("${prefix}"), emit: file_out
-    tuple val("${task.process}"), val("pigz"), eval("pigz --version 2>&1 | sed 's/pigz //g'"),  topic: versions, emit: versions_cat
+    tuple val("${task.process}"), val("pigz"), eval("pigz --version 2>&1 | sed 's/pigz //g'"), topic: versions, emit: versions_cat
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,10 +31,10 @@ process CAT_CAT {
     consistent input compression (all gzipped or all uncompressed). Also enables faster, parallel
     decompression with pigz.
     """
-    assert false: deprecation_message
+    assert false : deprecation_message
 
     def file_list = files_in.collect { file -> file.toString() }
-    prefix   = task.ext.prefix ?: "${meta.id}${getFileSuffix(file_list[0])}"
+    prefix = task.ext.prefix ?: "${meta.id}${getFileSuffix(file_list[0])}"
 
     stub:
     def deprecation_message = """
@@ -44,7 +47,7 @@ process CAT_CAT {
     consistent input compression (all gzipped or all uncompressed). Also enables faster, parallel
     decompression with pigz.
     """
-    assert false: deprecation_message
+    assert false : deprecation_message
 }
 
 // for .gz files also include the second to last extension if it is present. E.g., .fasta.gz

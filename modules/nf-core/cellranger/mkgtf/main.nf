@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CELLRANGER_MKGTF {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     container "quay.io/nf-core/cellranger:10.0.0"
@@ -17,26 +20,30 @@ process CELLRANGER_MKGTF {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "CELLRANGER_MKGTF module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("CELLRANGER_MKGTF module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     def args = task.ext.args ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}.filtered"
-    if ("${gtf}" == "${prefix}.gtf") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    prefix = task.ext.prefix ?: "${meta.id}.filtered"
+    if ("${gtf}" == "${prefix}.gtf") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
     cellranger \\
         mkgtf \\
-        $gtf \\
+        ${gtf} \\
         ${prefix}.gtf \\
-        $args
+        ${args}
     """
 
     stub:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "CELLRANGER_MKGTF module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("CELLRANGER_MKGTF module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     prefix = task.ext.prefix ?: "${meta.id}.filtered"
-    if ("${gtf}" == "${prefix}.gtf") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("${gtf}" == "${prefix}.gtf") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
     touch ${prefix}.gtf
     """

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process OPENMS_PEPTIDEINDEXER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/openms:3.5.0--h78fb946_0' :
-        'quay.io/biocontainers/openms:3.5.0--h78fb946_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/openms:3.5.0--h78fb946_0'
+        : 'quay.io/biocontainers/openms:3.5.0--h78fb946_0'}"
 
     input:
     tuple val(meta), path(idxml), path(fasta)
@@ -20,16 +23,16 @@ process OPENMS_PEPTIDEINDEXER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_indexed"
-    def fasta_file = fasta ? "-fasta ${fasta}": ""
+    def fasta_file = fasta ? "-fasta ${fasta}" : ""
 
 
     """
     PeptideIndexer \\
-        -in $idxml \\
-        $fasta_file \\
+        -in ${idxml} \\
+        ${fasta_file} \\
         -out ${prefix}.idXML \\
-        -threads $task.cpus \\
-        $args
+        -threads ${task.cpus} \\
+        ${args}
     """
 
     stub:

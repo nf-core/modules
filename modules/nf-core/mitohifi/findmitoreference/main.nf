@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MITOHIFI_FINDMITOREFERENCE {
-    tag "$species"
+    tag "${species}"
     label 'process_single'
     secret secrets.NCBI_API_KEY ? "NCBI_API_KEY" : ""
 
@@ -27,17 +30,17 @@ process MITOHIFI_FINDMITOREFERENCE {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "MitoHiFi module does not support Conda. Please use Docker / Singularity instead."
+        error("MitoHiFi module does not support Conda. Please use Docker / Singularity instead.")
     }
 
-    def args         = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
     def ncbi_api_key = secrets.NCBI_API_KEY ? "--ncbi-api-key \$NCBI_API_KEY" : ""
     """
     findMitoReference.py \\
         ${ncbi_api_key} \\
-        --species "$species" \\
+        --species "${species}" \\
         --outfolder . \\
-        $args
+        ${args}
     """
 
     stub:

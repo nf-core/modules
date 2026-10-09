@@ -1,20 +1,26 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TELESCOPE_ASSIGN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/92/9203f566b3081849549cd5c3df73fccc3dcabad4fc108f9028c8cc58646d8dea/data':
-        'community.wave.seqera.io/library/telescope:1.0.4.1--40b9d7949368a4ed' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/92/9203f566b3081849549cd5c3df73fccc3dcabad4fc108f9028c8cc58646d8dea/data'
+        : 'community.wave.seqera.io/library/telescope:1.0.4.1--40b9d7949368a4ed'}"
 
     input:
     tuple val(meta), path(bam)
     tuple val(meta2), path(gtf)
 
     output:
-    tuple val(meta), path("*{updated,other}.bam"), emit: bam, optional: true // only for --updated_sam
-    tuple val(meta), path("*{updated,other}.sam"), emit: sam, optional: true // only for --updated_sam
-    tuple val(meta), path("*.tsv"), emit: tsv, optional: true // for when there's no alignments
+    tuple val(meta), path("*{updated,other}.bam"), emit: bam, optional: true
+    // only for --updated_sam
+    tuple val(meta), path("*{updated,other}.sam"), emit: sam, optional: true
+    // only for --updated_sam
+    tuple val(meta), path("*.tsv"), emit: tsv, optional: true
+    // for when there's no alignments
     tuple val(meta), path("*.log"), emit: log, optional: true
     tuple val("${task.process}"), val('telescope'), eval("telescope --version | sed '1!d;s/.* //'"), emit: versions_telescope, topic: versions
 
@@ -29,9 +35,9 @@ process TELESCOPE_ASSIGN {
 
     telescope \\
         assign \\
-        $bam \\
-        $gtf \\
-        $args \\
+        ${bam} \\
+        ${gtf} \\
+        ${args} \\
         > telescope.log 2>&1
     """
 
@@ -40,7 +46,7 @@ process TELESCOPE_ASSIGN {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    echo $args
+    echo ${args}
 
     touch ${prefix}-updated.bam
     touch ${prefix}-other.bam

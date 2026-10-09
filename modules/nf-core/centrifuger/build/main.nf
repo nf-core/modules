@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CENTRIFUGER_BUILD {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/centrifuger:1.1.2--h3be2455_0':
-        'quay.io/biocontainers/centrifuger:1.1.2--h3be2455_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/centrifuger:1.1.2--h3be2455_0'
+        : 'quay.io/biocontainers/centrifuger:1.1.2--h3be2455_0'}"
 
     input:
     tuple val(meta), path(references, stageAs: 'genomes/*')
@@ -26,10 +29,10 @@ process CENTRIFUGER_BUILD {
 
     // check if conversion table is given.
     if (!conversion_table) {
-        error "CENTRIFUGER_BUILD module always requires a --conversion-table"
+        error("CENTRIFUGER_BUILD module always requires a --conversion-table")
     }
 
-   """
+    """
     #Create reference file from staged input file(s)
     find -L genomes/ -type f > reference_list.txt
 

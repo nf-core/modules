@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process KLED {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/kled:1.2.11--he5eddf3_0' :
-        'quay.io/biocontainers/kled:1.2.11--he5eddf3_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/kled:1.2.11--he5eddf3_0'
+        : 'quay.io/biocontainers/kled:1.2.11--he5eddf3_0'}"
 
     input:
     tuple val(meta), path(bam), path(bai)

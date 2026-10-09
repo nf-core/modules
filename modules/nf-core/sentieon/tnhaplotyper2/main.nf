@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SENTIEON_TNHAPLOTYPER2 {
     tag "${meta.id}"
     label 'process_high'
     label 'sentieon'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2c/2c157e27981ec529b03e7ae5cfc88e51b6158332d2a82db399eef8dd8f2b1d5d/data'
-        : 'community.wave.seqera.io/library/sentieon:202503.03--5e34aa16344b911c' }"
+        : 'community.wave.seqera.io/library/sentieon:202503.03--5e34aa16344b911c'}"
 
     input:
     tuple val(meta), path(input), path(input_index), path(intervals)
@@ -21,27 +24,31 @@ process SENTIEON_TNHAPLOTYPER2 {
     val emit_contamination_data
 
     output:
-    tuple val(meta), path("*.orientation_data.tsv"),   emit: orientation_data, optional: true
+    tuple val(meta), path("*.orientation_data.tsv"), emit: orientation_data, optional: true
     tuple val(meta), path("*.contamination_data.tsv"), emit: contamination_data, optional: true
-    tuple val(meta), path("*.segments"),               emit: contamination_segments, optional: true
-    tuple val(meta), path("*.stats"),                  emit: stats
-    tuple val(meta), path("*.vcf.gz"),                 emit: vcf
-    tuple val(meta), path("*.vcf.gz.tbi"),             emit: index
+    tuple val(meta), path("*.segments"), emit: contamination_segments, optional: true
+    tuple val(meta), path("*.stats"), emit: stats
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
+    tuple val(meta), path("*.vcf.gz.tbi"), emit: index
     tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: '' // options for "sentieon driver"
-    def args2 = task.ext.args2 ?: '' // options for the TNhaplotyper2 algorithm. It could be something like "--tumor_sample <tumour_id> --normal_sample <normal_id>"
-    def args3 = task.ext.args3 ?: '' // options for the OrientationBias algorithm. It could be something like "--tumor_sample <tumour_id>"
-    def args4 = task.ext.args4 ?: '' // options for the ContaminationModel algorithm. It could be something like "--tumor_sample <tumour_id> --normal_sample <normal_id>"
+    def args = task.ext.args ?: ''
+    // options for "sentieon driver"
+    def args2 = task.ext.args2 ?: ''
+    // options for the TNhaplotyper2 algorithm. It could be something like "--tumor_sample <tumour_id> --normal_sample <normal_id>"
+    def args3 = task.ext.args3 ?: ''
+    // options for the OrientationBias algorithm. It could be something like "--tumor_sample <tumour_id>"
+    def args4 = task.ext.args4 ?: ''
+    // options for the ContaminationModel algorithm. It could be something like "--tumor_sample <tumour_id> --normal_sample <normal_id>"
     def prefix = task.ext.prefix ?: "${meta.id}"
     def gr_command = germline_resource ? "--germline_vcf ${germline_resource}" : ""
     def interval_command = intervals ? "--interval ${intervals}" : ""
     def pon_command = panel_of_normals ? "--pon ${panel_of_normals}" : ""
-    def inputs = input.collect {in ->  "-i ${in}" }.join(" ")
+    def inputs = input.collect { in -> "-i ${in}" }.join(" ")
     def orientation_bias_cmd = ""
     def contamination_cmd = ""
 

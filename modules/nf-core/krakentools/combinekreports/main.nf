@@ -1,10 +1,13 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process KRAKENTOOLS_COMBINEKREPORTS {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/krakentools:1.2.1--pyh7e72e81_0':
-        'quay.io/biocontainers/krakentools:1.2.1--pyh7e72e81_0'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/krakentools:1.2.1--pyh7e72e81_0'
+        : 'quay.io/biocontainers/krakentools:1.2.1--pyh7e72e81_0'}"
 
     input:
     tuple val(meta), path(kreports)

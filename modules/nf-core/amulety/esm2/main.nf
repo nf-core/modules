@@ -1,16 +1,19 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process AMULETY_ESM2 {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
     label 'process_gpu'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ae/ae2be6d5fd5a4e1024b78eb1acdfdcb6aab4326f002e98d7c2c97ef00aa979e2/data'
-:         'community.wave.seqera.io/library/amulety:1.1--5abbe5fc5e136fd3' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ae/ae2be6d5fd5a4e1024b78eb1acdfdcb6aab4326f002e98d7c2c97ef00aa979e2/data'
+        : 'community.wave.seqera.io/library/amulety:1.1--5abbe5fc5e136fd3'}"
 
     input:
     tuple val(meta), path(tsv)
-    val(chain)
+    val chain
 
     output:
     tuple val(meta), path("*.tsv"), emit: embedding
@@ -28,7 +31,7 @@ This module is no longer fit for purpose because the syntax for amulety has been
 The new 'embed' command now covers the embedding functionality for all embeddings.
 
 """
-    assert false: deprecation_message
+    assert false : deprecation_message
 
     stub:
     def deprecation_message = """
@@ -39,5 +42,5 @@ This module is no longer fit for purpose because the syntax for amulety has been
 The new 'embed' command now covers the embedding functionality for all embeddings.
 
 """
-    assert false: deprecation_message
+    assert false : deprecation_message
 }

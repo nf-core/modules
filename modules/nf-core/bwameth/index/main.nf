@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BWAMETH_INDEX {
     tag "${fasta}"
     label 'process_high'
@@ -23,7 +26,7 @@ process BWAMETH_INDEX {
     """
     bwameth.py ${index_cmd} ${fasta}
 
-    rm $fasta
+    rm ${fasta}
     """
 
     stub:

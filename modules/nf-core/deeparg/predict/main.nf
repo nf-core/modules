@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DEEPARG_PREDICT {
     tag "${meta.id}"
     label 'process_single'
@@ -11,7 +14,7 @@ process DEEPARG_PREDICT {
     We have to force docker/singularity to mount a fake file to allow reading of a problematic file with borked read-write permissions in an upstream dependency (theanos).
     Original report: https://github.com/nf-core/funcscan/issues/23
     */
-    containerOptions "${ ['singularity', 'apptainer'].contains(workflow.containerEngine)
+    containerOptions "${['singularity', 'apptainer'].contains(workflow.containerEngine)
         ? '-B $(which bash):/usr/local/lib/python2.7/site-packages/Theano-0.8.2-py2.7.egg-info/PKG-INFO'
         : "${workflow.containerEngine}" == 'docker'
             ? '-v $(which bash):/usr/local/lib/python2.7/site-packages/Theano-0.8.2-py2.7.egg-info/PKG-INFO'

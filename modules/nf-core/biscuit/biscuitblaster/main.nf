@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BISCUIT_BLASTER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/aa/aaeb89e389e66d5353d6c5b92ecb9f237298c1a774cdd9bf515101d55433c0c8/data':
-        'community.wave.seqera.io/library/biscuit_samblaster_samtools:43a8310dd6e0bec1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/aa/aaeb89e389e66d5353d6c5b92ecb9f237298c1a774cdd9bf515101d55433c0c8/data'
+        : 'community.wave.seqera.io/library/biscuit_samblaster_samtools:43a8310dd6e0bec1'}"
 
     input:
     tuple val(meta), path(reads)
@@ -18,6 +21,7 @@ process BISCUIT_BLASTER {
     tuple val("${task.process}"), val('biscuit'), eval("biscuit version |& sed '1!d; s/^.*BISCUIT Version: //'"), emit: versions_biscuit, topic: versions
     tuple val("${task.process}"), val('samtools'), eval("samtools --version |& sed '1!d; s/^.*samtools //'"), emit: versions_samtools, topic: versions
     tuple val("${task.process}"), val('samblaster'), eval("samblaster --version |& sed 's/^.*samblaster: Version //'"), emit: versions_samblaster, topic: versions
+
     when:
     task.ext.when == null || task.ext.when
 
@@ -29,17 +33,17 @@ process BISCUIT_BLASTER {
     def biscuit_cpus = [(task.cpus * 0.9) as int, 1].max()
     def samtools_cpus = (task.cpus - biscuit_cpus < 1) ? biscuit_cpus : (task.cpus - biscuit_cpus)
     """
-    ln -sf \$(readlink $fasta) $index/$fasta
+    ln -sf \$(readlink ${fasta}) ${index}/${fasta}
 
     biscuit align \\
-        -@ $biscuit_cpus \\
-        $args \\
-        $index/$fasta\\
-        $reads \\
-        | samblaster $args2 \\
+        -@ ${biscuit_cpus} \\
+        ${args} \\
+        ${index}/${fasta}\\
+        ${reads} \\
+        | samblaster ${args2} \\
         | samtools sort \\
-            -@ $samtools_cpus \\
-            $args3 \\
+            -@ ${samtools_cpus} \\
+            ${args3} \\
             --write-index \\
             -o ${prefix}.bam -O BAM -
 
@@ -52,5 +56,4 @@ process BISCUIT_BLASTER {
     touch ${prefix}.bam
     touch ${prefix}.bam.bai
     """
-
 }

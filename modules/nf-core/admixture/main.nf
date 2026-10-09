@@ -1,16 +1,18 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ADMIXTURE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/admixture:1.3.0--0':
-        'quay.io/biocontainers/admixture:1.3.0--0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/admixture:1.3.0--0'
+        : 'quay.io/biocontainers/admixture:1.3.0--0'}"
 
     input:
-    tuple val(meta), path (bed_ped_geno), path(bim_map), path(fam)
+    tuple val(meta), path(bed_ped_geno), path(bim_map), path(fam)
     val K
-
 
     output:
     tuple val(meta), path("*.Q"), emit: ancestry_fractions
@@ -21,7 +23,7 @@ process ADMIXTURE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
     """
     admixture \\
         ${bed_ped_geno} \\

@@ -1,30 +1,33 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SPARSE_SIGNATURES {
-    tag "$meta.id"
+    tag "${meta.id}"
     label "process_long"
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-d410175e2fbd9c47aa685bb5dfb87cfad76d408b:a995bb98b7122825523ffed7ae131cb006e56cbe-0':
-        'quay.io/biocontainers/mulled-v2-d410175e2fbd9c47aa685bb5dfb87cfad76d408b:a995bb98b7122825523ffed7ae131cb006e56cbe-0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/mulled-v2-d410175e2fbd9c47aa685bb5dfb87cfad76d408b:a995bb98b7122825523ffed7ae131cb006e56cbe-0'
+        : 'quay.io/biocontainers/mulled-v2-d410175e2fbd9c47aa685bb5dfb87cfad76d408b:a995bb98b7122825523ffed7ae131cb006e56cbe-0'}"
 
     input:
-    tuple val(meta), path(tsv_join,  stageAs: '*.tsv')
-    val(genome)   // genome version
+    tuple val(meta), path(tsv_join, stageAs: '*.tsv')
+    val genome
 
     output:
-    tuple val(meta), path("*_mut_counts.rds"),            emit: signatures_mutCounts_rds
-    tuple val(meta), path("*_cv_means_mse.rds"),          emit: signatures_cv_rds
-    tuple val(meta), path("*_best_params_config.rds"),    emit: signatures_bestConf_rds
-    tuple val(meta), path("*_nmf_Lasso_out.rds"),         emit: signatures_nmfOut_rds
-    tuple val(meta), path("*_plot_all.rds"),              emit: signatures_plot_rds
-    tuple val(meta), path("*_plot_all.pdf"),              emit: signatures_plot_pdf
-    path "versions.yml",                                  emit: versions_sparsesignatures, topic: versions
+    tuple val(meta), path("*_mut_counts.rds"), emit: signatures_mutCounts_rds
+    tuple val(meta), path("*_cv_means_mse.rds"), emit: signatures_cv_rds
+    tuple val(meta), path("*_best_params_config.rds"), emit: signatures_bestConf_rds
+    tuple val(meta), path("*_nmf_Lasso_out.rds"), emit: signatures_nmfOut_rds
+    tuple val(meta), path("*_plot_all.rds"), emit: signatures_plot_rds
+    tuple val(meta), path("*_plot_all.pdf"), emit: signatures_plot_pdf
+    path "versions.yml", emit: versions_sparsesignatures, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    template "main_script.R"
+    template("main_script.R")
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"

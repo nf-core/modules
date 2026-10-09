@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process METHYLDACKEL_EXTRACT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/methyldackel:0.6.1--he4a0461_7' :
-        'quay.io/biocontainers/methyldackel:0.6.1--he4a0461_7' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/methyldackel:0.6.1--he4a0461_7'
+        : 'quay.io/biocontainers/methyldackel:0.6.1--he4a0461_7'}"
 
     input:
     tuple val(meta), path(bam), path(bai)
     tuple val(meta2), path(fasta), path(fai)
 
     output:
-    tuple val(meta), path("*.bedGraph") , optional: true, emit: bedgraph
+    tuple val(meta), path("*.bedGraph"), optional: true, emit: bedgraph
     tuple val(meta), path("*.methylKit"), optional: true, emit: methylkit
     tuple val("${task.process}"), val('methyldackel'), eval("MethylDackel --version 2>&1 | cut -f1 -d' '"), emit: versions_methyldackel, topic: versions
 

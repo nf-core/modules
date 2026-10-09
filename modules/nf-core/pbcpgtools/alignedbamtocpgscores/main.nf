@@ -1,25 +1,28 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PBCPGTOOLS_ALIGNEDBAMTOCPGSCORES {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pb-cpg-tools:3.0.0--h9ee0642_0':
-        'quay.io/biocontainers/pb-cpg-tools:3.0.0--h9ee0642_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/pb-cpg-tools:3.0.0--h9ee0642_0'
+        : 'quay.io/biocontainers/pb-cpg-tools:3.0.0--h9ee0642_0'}"
 
     input:
     tuple val(meta), path(bam), path(bai)
 
     output:
-    tuple val(meta), path("*.combined.bed.gz")    , emit: combined_bed
+    tuple val(meta), path("*.combined.bed.gz"), emit: combined_bed
     tuple val(meta), path("*.combined.bed.gz.tbi"), emit: combined_bed_index
-    tuple val(meta), path("*.combined.bw")        , emit: combined_bigwig
-    tuple val(meta), path("*.hap1.bed.gz")        , emit: hap1_bed          , optional: true
-    tuple val(meta), path("*.hap1.bed.gz.tbi")    , emit: hap1_bed_index    , optional: true
-    tuple val(meta), path("*.hap1.bw")            , emit: hap1_bigwig       , optional: true
-    tuple val(meta), path("*.hap2.bed.gz")        , emit: hap2_bed          , optional: true
-    tuple val(meta), path("*.hap2.bed.gz.tbi")    , emit: hap2_bed_index    , optional: true
-    tuple val(meta), path("*.hap2.bw")            , emit: hap2_bigwig       , optional: true
+    tuple val(meta), path("*.combined.bw"), emit: combined_bigwig
+    tuple val(meta), path("*.hap1.bed.gz"), emit: hap1_bed, optional: true
+    tuple val(meta), path("*.hap1.bed.gz.tbi"), emit: hap1_bed_index, optional: true
+    tuple val(meta), path("*.hap1.bw"), emit: hap1_bigwig, optional: true
+    tuple val(meta), path("*.hap2.bed.gz"), emit: hap2_bed, optional: true
+    tuple val(meta), path("*.hap2.bed.gz.tbi"), emit: hap2_bed_index, optional: true
+    tuple val(meta), path("*.hap2.bw"), emit: hap2_bigwig, optional: true
     tuple val("${task.process}"), val("pbcpgtools"), eval("aligned_bam_to_cpg_scores --version | sed 's/.* //'"), emit: versions_pbcpgtools, topic: versions
 
     when:

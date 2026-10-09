@@ -1,19 +1,22 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TIDK_SEARCH {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/tidk:0.2.7--h6872113_0':
-        'quay.io/biocontainers/tidk:0.2.7--h6872113_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/tidk:0.2.7--h6872113_0'
+        : 'quay.io/biocontainers/tidk:0.2.7--h6872113_0'}"
 
     input:
     tuple val(meta), path(fasta)
     val string
 
     output:
-    tuple val(meta), path("*.tsv")          , emit: tsv         , optional: true
-    tuple val(meta), path("*.bedgraph")     , emit: bedgraph    , optional: true
+    tuple val(meta), path("*.tsv"), emit: tsv, optional: true
+    tuple val(meta), path("*.bedgraph"), emit: bedgraph, optional: true
     tuple val("${task.process}"), val('tidk'), eval("tidk --version | sed 's/tidk //'"), emit: versions_tidk, topic: versions
 
     when:
@@ -25,11 +28,11 @@ process TIDK_SEARCH {
     """
     tidk \\
         search \\
-        --string $string \\
-        --output $prefix \\
+        --string ${string} \\
+        --output ${prefix} \\
         --dir tidk \\
-        $args \\
-        $fasta
+        ${args} \\
+        ${fasta}
 
     mv \\
         tidk/${prefix}_telomeric_repeat_windows.tsv \\

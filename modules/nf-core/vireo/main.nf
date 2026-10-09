@@ -1,44 +1,50 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VIREO {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vireosnp:0.5.8--pyh7cba7a3_0' :
-        'quay.io/biocontainers/vireosnp:0.5.8--pyh7cba7a3_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/vireosnp:0.5.8--pyh7cba7a3_0'
+        : 'quay.io/biocontainers/vireosnp:0.5.8--pyh7cba7a3_0'}"
 
     input:
     tuple val(meta), path(cell_data), val(n_donor), path(donor_file), path(vartrix_data)
+
     output:
-    tuple val(meta), path('*_summary.tsv')           , emit: summary
-    tuple val(meta), path('*_donor_ids.tsv')         , emit: donor_ids
-    tuple val(meta), path('*_prob_singlet.tsv.gz')   , emit: prob_singlets
-    tuple val(meta), path('*_prob_doublet.tsv.gz')   , emit: prob_doublets
-    tuple val(meta), path('*_GT_donors.vireo.vcf.gz'), emit: genotype_vcf     , optional: true
-    tuple val(meta), path('*_filtered_variants.tsv') , emit: filtered_variants, optional: true
+    tuple val(meta), path('*_summary.tsv'), emit: summary
+    tuple val(meta), path('*_donor_ids.tsv'), emit: donor_ids
+    tuple val(meta), path('*_prob_singlet.tsv.gz'), emit: prob_singlets
+    tuple val(meta), path('*_prob_doublet.tsv.gz'), emit: prob_doublets
+    tuple val(meta), path('*_GT_donors.vireo.vcf.gz'), emit: genotype_vcf, optional: true
+    tuple val(meta), path('*_filtered_variants.tsv'), emit: filtered_variants, optional: true
     tuple val("${task.process}"), val('vireo'), eval('vireo | sed "1!d ; s/Welcome to vireoSNP v//; s/\\!//"'), emit: versions_vireo, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
     // hardcode a default random seed
-    if (!(args ==~ /.*--randSeed.*/)) {args += " --randSeed 42"}
+    if (!(args ==~ /.*--randSeed.*/)) {
+        args += " --randSeed 42"
+    }
     // use the same randSeed of vireo for GTbarcode if specified in args
     def matcher = (args =~ /(--randSeed\s+\d+)/)
     def randSeed_GTbarcode = matcher ? matcher[0][1] : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input  = cell_data       ? "-c ${cell_data}" : "--vartrixData ${vartrix_data}"
+    def input = cell_data ? "-c ${cell_data}" : "--vartrixData ${vartrix_data}"
 
     """
     vireo \\
         ${input} \\
         -N ${n_donor} \\
         -d ${donor_file} \\
-        -p $task.cpus \\
+        -p ${task.cpus} \\
         -o . \\
-        $args
+        ${args}
 
     mv summary.tsv ${prefix}_summary.tsv
     mv donor_ids.tsv ${prefix}_donor_ids.tsv
@@ -51,7 +57,7 @@ process VIREO {
     """
 
     stub:
-    def args   = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def optional_files = ''
     if (args.contains('--forceLearnGT')) {

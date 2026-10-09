@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PICRUST2_PIPELINE {
     tag "${meta.id}"
     label 'process_medium'
@@ -11,10 +14,10 @@ process PICRUST2_PIPELINE {
     tuple val(meta), path(sequences), path(otu_table)
 
     output:
-    tuple val(meta), path("${prefix}/")                              , emit: output_dir
-    tuple val(meta), path("${prefix}/*_reduced.tre")                 , emit: trees
+    tuple val(meta), path("${prefix}/"), emit: output_dir
+    tuple val(meta), path("${prefix}/*_reduced.tre"), emit: trees
     tuple val(meta), path("${prefix}_metagenome_*_abundances.tsv.gz"), emit: function_abundances
-    tuple val(meta), path("${prefix}_pathway_abundances.tsv.gz")     , emit: pathway_abundances
+    tuple val(meta), path("${prefix}_pathway_abundances.tsv.gz"), emit: pathway_abundances
     tuple val("${task.process}"), val('picrust2'), eval("picrust2_pipeline.py --version | sed 's/PICRUSt2 //'"), topic: versions, emit: versions_picrust2
 
     when:

@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PAIRTOOLS_SORT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pairtools:1.1.3--py39h7a39fba_0' :
-        'quay.io/biocontainers/pairtools:1.1.3--py39h7a39fba_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/pairtools:1.1.3--py39h7a39fba_0'
+        : 'quay.io/biocontainers/pairtools:1.1.3--py39h7a39fba_0'}"
 
     input:
     tuple val(meta), path(input)
 
     output:
     tuple val(meta), path("*.pairs.gz"), emit: sorted
-    tuple val("${task.process}"), val('pairtools'), eval("pairtools --version | sed 's/.*pairtools.*version //'") , emit: versions_pairtools, topic: versions
+    tuple val("${task.process}"), val('pairtools'), eval("pairtools --version | sed 's/.*pairtools.*version //'"), emit: versions_pairtools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,11 +27,11 @@ process PAIRTOOLS_SORT {
     """
     pairtools \\
         sort \\
-        $args \\
-        --nproc $task.cpus \\
+        ${args} \\
+        --nproc ${task.cpus} \\
         --memory ${buffer}G \\
         -o ${prefix}.pairs.gz \\
-        $input
+        ${input}
     """
 
     stub:

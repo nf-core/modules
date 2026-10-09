@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SAMBLASTER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-19fa9f1a5c3966b63a24166365e81da35738c5ab:60ebac4ad9c6530c0d7bf6844f52ec6916e1e0b1-0' :
-        'quay.io/biocontainers/mulled-v2-19fa9f1a5c3966b63a24166365e81da35738c5ab:60ebac4ad9c6530c0d7bf6844f52ec6916e1e0b1-0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/mulled-v2-19fa9f1a5c3966b63a24166365e81da35738c5ab:60ebac4ad9c6530c0d7bf6844f52ec6916e1e0b1-0'
+        : 'quay.io/biocontainers/mulled-v2-19fa9f1a5c3966b63a24166365e81da35738c5ab:60ebac4ad9c6530c0d7bf6844f52ec6916e1e0b1-0'}"
 
     input:
     tuple val(meta), path(bam)
@@ -23,16 +26,20 @@ process SAMBLASTER {
     def args2 = task.ext.args2 ?: ''
     def args3 = task.ext.args3 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if( "$bam" == "${prefix}.bam" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("${bam}" == "${prefix}.bam") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
-    samtools view -h $args2 $bam | \\
-    samblaster $args | \\
-    samtools view $args3 -Sb - >${prefix}.bam
+    samtools view -h ${args2} ${bam} | \\
+    samblaster ${args} | \\
+    samtools view ${args3} -Sb - >${prefix}.bam
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if( "$bam" == "${prefix}.bam" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("${bam}" == "${prefix}.bam") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
     touch "${prefix}.bam"
     """

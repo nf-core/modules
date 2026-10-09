@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CELLRANGERATAC_COUNT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     container "quay.io/nf-core/cellranger-atac:2.1.0"
@@ -18,7 +21,7 @@ process CELLRANGERATAC_COUNT {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "CELLRANGERATAC_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("CELLRANGERATAC_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     def args = task.ext.args ?: ''
     def sample_arg = meta.samples.unique().join(",")
@@ -28,11 +31,11 @@ process CELLRANGERATAC_COUNT {
         count \\
         --id='${meta.id}' \\
         --fastqs=. \\
-        --reference=$reference_name \\
-        --sample=$sample_arg \\
-        --localcores=$task.cpus \\
+        --reference=${reference_name} \\
+        --sample=${sample_arg} \\
+        --localcores=${task.cpus} \\
         --localmem=${task.memory.toGiga()} \\
-        $args
+        ${args}
     """
 
     stub:

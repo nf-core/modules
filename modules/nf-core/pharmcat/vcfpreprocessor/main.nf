@@ -1,9 +1,12 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PHARMCAT_VCFPREPROCESSOR {
     tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e7/e7dd711a2b130b55d33e119a346ef8040191bf7834a3c393ed6e29d7d9026d5e/data'
         : 'community.wave.seqera.io/library/pharmcat3:3.2.0--5126bb296d1e59ac'}"
 
@@ -15,9 +18,9 @@ process PHARMCAT_VCFPREPROCESSOR {
     tuple val(meta5), path(pharmcat_uniallelic_positions), path(pharmcat_uniallelic_positions_index)
 
     output:
-    tuple val(meta), path("*.preprocessed.vcf.bgz"),                                                                                                    emit: preprocessed_vcf
-    tuple val(meta), path("*.missing_pgx_var.vcf"),                                                                                 optional: true,     emit: missing_pgx_var
-    tuple val("${task.process}"), val('pharmcat_vcf_preprocessor'), eval("pharmcat_vcf_preprocessor --version | cut -f4 -d ' '"),   topic: versions,    emit: versions_pharmcat_vcf_preprocessor
+    tuple val(meta), path("*.preprocessed.vcf.bgz"), emit: preprocessed_vcf
+    tuple val(meta), path("*.missing_pgx_var.vcf"), optional: true, emit: missing_pgx_var
+    tuple val("${task.process}"), val('pharmcat_vcf_preprocessor'), eval("pharmcat_vcf_preprocessor --version | cut -f4 -d ' '"), topic: versions, emit: versions_pharmcat_vcf_preprocessor
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,7 +42,7 @@ process PHARMCAT_VCFPREPROCESSOR {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo $args
+    echo ${args}
 
     touch ${prefix}.preprocessed.vcf.bgz
     touch ${prefix}.missing_pgx_var.vcf

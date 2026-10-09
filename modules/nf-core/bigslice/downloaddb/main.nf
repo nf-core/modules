@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BIGSLICE_DOWNLOADDB {
     tag "${meta.id}"
     label 'process_single'
@@ -11,7 +14,7 @@ process BIGSLICE_DOWNLOADDB {
     val meta
 
     output:
-    tuple val(meta), path ("bigslice-models")              , emit: db
+    tuple val(meta), path("bigslice-models"), emit: db
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('bigslice'), val("2.0.2"), topic: versions, emit: versions_bigslice
     tuple val("${task.process}"), val('python'), eval("python --version | sed 's/Python //'"), topic: versions, emit: versions_python

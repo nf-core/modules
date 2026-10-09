@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RHOCALL_VIZ {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7d/7dbf7021085cfea72a20cafffe57fcf47392706d9a433f1143f1e60b389b85ae/data':
-        'community.wave.seqera.io/library/rhocall:0.5.1--a7eced77e39d2b82' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7d/7dbf7021085cfea72a20cafffe57fcf47392706d9a433f1143f1e60b389b85ae/data'
+        : 'community.wave.seqera.io/library/rhocall:0.5.1--a7eced77e39d2b82'}"
 
     input:
     tuple val(meta), path(vcf)
@@ -20,15 +23,15 @@ process RHOCALL_VIZ {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     rhocall \\
         viz \\
-        $args \\
-        -r $roh \\
+        ${args} \\
+        -r ${roh} \\
         --out_dir ${prefix} \\
-        $vcf
+        ${vcf}
 
     mv ${prefix}/output.bed ${prefix}/${prefix}.bed
     mv ${prefix}/output.wig ${prefix}/${prefix}.wig

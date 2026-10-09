@@ -1,24 +1,27 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FUSIONREPORT_DETECT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/32/3240b594c095a3682b14e92571b2bc721c7925990a74f9df3b54ce82d4e05daa/data' :
-        'community.wave.seqera.io/library/fusion-report_beautifulsoup4_click_colorlog_pruned:15d1184d4eac76b8'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/32/3240b594c095a3682b14e92571b2bc721c7925990a74f9df3b54ce82d4e05daa/data'
+        : 'community.wave.seqera.io/library/fusion-report_beautifulsoup4_click_colorlog_pruned:15d1184d4eac76b8'}"
 
     input:
     tuple val(meta), path(arriba_fusions), path(starfusion_fusions), path(fusioncatcher_fusions)
     tuple val(meta2), path(fusionreport_ref)
-    val(tools_cutoff)
+    val tools_cutoff
 
     output:
-    tuple val(meta), path("*fusionreport.tsv")           , emit: fusion_list
-    tuple val(meta), path("*fusionreport_filtered.tsv")  , emit: fusion_list_filtered
-    tuple val(meta), path("*index.html")                 , emit: report
-    tuple val(meta), path("*_*.html")                    , emit: html                 , optional:true
-    tuple val(meta), path("*.csv")                       , emit: csv                  , optional:true
-    tuple val(meta), path("*.json")                      , emit: json                 , optional:true
+    tuple val(meta), path("*fusionreport.tsv"), emit: fusion_list
+    tuple val(meta), path("*fusionreport_filtered.tsv"), emit: fusion_list_filtered
+    tuple val(meta), path("*index.html"), emit: report
+    tuple val(meta), path("*_*.html"), emit: html, optional: true
+    tuple val(meta), path("*.csv"), emit: csv, optional: true
+    tuple val(meta), path("*.json"), emit: json, optional: true
     tuple val("${task.process}"), val('fusion_report'), eval("fusion_report --version |& sed 's/fusion-report //'"), topic: versions, emit: versions_fusionreport
 
     when:
@@ -27,9 +30,9 @@ process FUSIONREPORT_DETECT {
     script:
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
-    def tools = arriba_fusions        ? "--arriba ${arriba_fusions} " : ''
-    tools    += starfusion_fusions    ? "--starfusion ${starfusion_fusions} " : ''
-    tools    += fusioncatcher_fusions ? "--fusioncatcher ${fusioncatcher_fusions} " : ''
+    def tools = arriba_fusions ? "--arriba ${arriba_fusions} " : ''
+    tools += starfusion_fusions ? "--starfusion ${starfusion_fusions} " : ''
+    tools += fusioncatcher_fusions ? "--fusioncatcher ${fusioncatcher_fusions} " : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     fusion_report run ${prefix} . \\

@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GT_GFF3VALIDATOR {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/genometools-genometools:1.6.5--py310h3db02ab_0':
-        'quay.io/biocontainers/genometools-genometools:1.6.5--py310h3db02ab_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/genometools-genometools:1.6.5--py310h3db02ab_0'
+        : 'quay.io/biocontainers/genometools-genometools:1.6.5--py310h3db02ab_0'}"
 
     input:
     tuple val(meta), path(gff3)
 
     output:
-    tuple val(meta), path('*.success.log')  , emit: success_log , optional: true
-    tuple val(meta), path('*.error.log')    , emit: error_log   , optional: true
+    tuple val(meta), path('*.success.log'), emit: success_log, optional: true
+    tuple val(meta), path('*.error.log'), emit: error_log, optional: true
     tuple val("${task.process}"), val('genometools'), eval("gt --version | sed '1!d;s/.* //'"), emit: versions_gt, topic: versions
 
     when:

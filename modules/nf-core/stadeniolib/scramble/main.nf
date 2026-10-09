@@ -1,21 +1,24 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process STADENIOLIB_SCRAMBLE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/staden_io_lib:1.14.14--h0d9da7e_3' :
-        'quay.io/biocontainers/staden_io_lib:1.14.14--h0d9da7e_3' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/staden_io_lib:1.14.14--h0d9da7e_3'
+        : 'quay.io/biocontainers/staden_io_lib:1.14.14--h0d9da7e_3'}"
 
     input:
     tuple val(meta), path(reads)
-    path(fasta)
-    path(fai)
-    path(gzi)
+    path fasta
+    path fai
+    path gzi
 
     output:
-    tuple val(meta), path("*.{cram,bam}")   , emit: cram
-    path "*.gzi"                            , emit: gzi         , optional: true
+    tuple val(meta), path("*.{cram,bam}"), emit: cram
+    path "*.gzi", emit: gzi, optional: true
     tuple val("${task.process}"), val('scramble'), eval("scramble -h | head -n 1 | sed 's/^.*version //'"), emit: versions_scramble, topic: versions
 
     when:
@@ -27,30 +30,31 @@ process STADENIOLIB_SCRAMBLE {
 
     def inputformat = reads.extension
     def outputformat = "cram"
-    if ( "-O sam" in args ) {
+    if ("-O sam" in args) {
         outputformat = "sam"
-    } else if ( "-O bam" in args ) {
+    }
+    else if ("-O bam" in args) {
         outputformat = "bam"
     }
 
-    def reference = ( fasta && fai ) ? "-r ${fasta}" : ''
-    if ( outputformat == "cram" && !reference ) {
-        error "Cannot convert to CRAM without a reference"
+    def reference = (fasta && fai) ? "-r ${fasta}" : ''
+    if (outputformat == "cram" && !reference) {
+        error("Cannot convert to CRAM without a reference")
     }
 
     def gz_index = gzi ? "-g ${gzi}" : ''
 
-    if ( ( outputformat == "cram" || outputformat == "sam" ) && gz_index ) {
+    if ((outputformat == "cram" || outputformat == "sam") && gz_index) {
         gz_index = ''
-        error "Cannot use gzip index for CRAM or SAM output"
+        error("Cannot use gzip index for CRAM or SAM output")
     }
 
     """
     scramble \
-        $args \
+        ${args} \
         -I ${inputformat} \
-        $reference \
-        -t $task.cpus \
+        ${reference} \
+        -t ${task.cpus} \
         ${reads} \
         ${prefix}.${outputformat}
     """
@@ -60,22 +64,23 @@ process STADENIOLIB_SCRAMBLE {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def outputformat = "cram"
-    if ( "-O sam" in args ) {
+    if ("-O sam" in args) {
         outputformat = "sam"
-    } else if ( "-O bam" in args ) {
+    }
+    else if ("-O bam" in args) {
         outputformat = "bam"
     }
 
-    def reference = ( fasta && fai ) ? "-r ${fasta}" : ''
-    if ( outputformat == "cram" && !reference ) {
-        error "Cannot convert to CRAM without a reference"
+    def reference = (fasta && fai) ? "-r ${fasta}" : ''
+    if (outputformat == "cram" && !reference) {
+        error("Cannot convert to CRAM without a reference")
     }
 
     def gz_index = gzi ? "-g ${gzi}" : ''
 
-    if ( ( outputformat == "cram" || outputformat == "sam" ) && gz_index ) {
+    if ((outputformat == "cram" || outputformat == "sam") && gz_index) {
         gz_index = ''
-        error "Cannot use gzip index for CRAM or SAM output"
+        error("Cannot use gzip index for CRAM or SAM output")
     }
 
     """

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BEDGOVCF {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bedgovcf:0.1.1--h9ee0642_1':
-        'quay.io/biocontainers/bedgovcf:0.1.1--h9ee0642_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/bedgovcf:0.1.1--h9ee0642_1'
+        : 'quay.io/biocontainers/bedgovcf:0.1.1--h9ee0642_1'}"
 
     input:
     tuple val(meta), path(bed), path(config)
@@ -14,7 +17,7 @@ process BEDGOVCF {
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
     tuple val("${task.process}"), val("bedgovcf"), eval("bedgovcf --version 2>&1 | sed 's/^bedgovcf version //'"), emit: versions_bedgovcf, topic: versions
-    tuple val("${task.process}"), val("bgzip"), eval('bgzip --version | head -1 | sed "s/bgzip (htslib) //"')    , emit: versions_bgzip, topic: versions
+    tuple val("${task.process}"), val("bgzip"), eval('bgzip --version | head -1 | sed "s/bgzip (htslib) //"'), emit: versions_bgzip, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,11 +28,11 @@ process BEDGOVCF {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     bedgovcf \\
-        $args \\
-        --bed $bed \\
-        --fai $fai \\
-        --config $config \\
-        | bgzip --stdout --threads $task.cpus $args2 > ${prefix}.vcf.gz
+        ${args} \\
+        --bed ${bed} \\
+        --fai ${fai} \\
+        --config ${config} \\
+        | bgzip --stdout --threads ${task.cpus} ${args2} > ${prefix}.vcf.gz
     """
 
     stub:

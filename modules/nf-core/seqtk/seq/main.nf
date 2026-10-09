@@ -1,17 +1,20 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SEQTK_SEQ {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/seqtk:1.4--he4a0461_1' :
-        'quay.io/biocontainers/seqtk:1.4--he4a0461_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/seqtk:1.4--he4a0461_1'
+        : 'quay.io/biocontainers/seqtk:1.4--he4a0461_1'}"
 
     input:
     tuple val(meta), path(fastx)
 
     output:
-    tuple val(meta), path("*.gz")     , emit: fastx
+    tuple val(meta), path("*.gz"), emit: fastx
     tuple val("${task.process}"), val('seqtk'), eval("seqtk 2>&1 | sed -n 's/^Version: //p'"), emit: versions_seqtk, topic: versions
 
     when:
@@ -22,14 +25,14 @@ process SEQTK_SEQ {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def extension = "fastq"
-    if ("$fastx" ==~ /.+\.fasta|.+\.fasta.gz|.+\.fa|.+\.fa.gz|.+\.fas|.+\.fas.gz|.+\.fna|.+\.fna.gz/ || "$args" ==~ /\-[aA]/ ) {
+    if ("${fastx}" ==~ /.+\.fasta|.+\.fasta.gz|.+\.fa|.+\.fa.gz|.+\.fas|.+\.fas.gz|.+\.fna|.+\.fna.gz/ || "${args}" ==~ /\-[aA]/) {
         extension = "fasta"
     }
     """
     seqtk \\
         seq \\
-        $args \\
-        $fastx | \\
+        ${args} \\
+        ${fastx} | \\
         gzip -c > ${prefix}.seqtk-seq.${extension}.gz
     """
 
@@ -37,7 +40,7 @@ process SEQTK_SEQ {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def extension = "fastq"
-    if ("$fastx" ==~ /.+\.fasta|.+\.fasta.gz|.+\.fa|.+\.fa.gz|.+\.fas|.+\.fas.gz|.+\.fna|.+\.fna.gz/ || "$args" ==~ /\-[aA]/ ) {
+    if ("${fastx}" ==~ /.+\.fasta|.+\.fasta.gz|.+\.fa|.+\.fa.gz|.+\.fas|.+\.fas.gz|.+\.fna|.+\.fna.gz/ || "${args}" ==~ /\-[aA]/) {
         extension = "fasta"
     }
     """

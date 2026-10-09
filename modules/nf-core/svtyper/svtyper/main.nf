@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SVTYPER_SVTYPER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/svtyper:0.7.1--py_0':
-        'quay.io/biocontainers/svtyper:0.7.1--py_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/svtyper:0.7.1--py_0'
+        : 'quay.io/biocontainers/svtyper:0.7.1--py_0'}"
 
     input:
     tuple val(meta), path(bam), path(bam_index), path(vcf)
@@ -14,8 +17,8 @@ process SVTYPER_SVTYPER {
 
     output:
     tuple val(meta), path("*.json"), emit: json
-    tuple val(meta), path("*.vcf") , emit: gt_vcf
-    tuple val(meta), path("*.bam") , emit: bam
+    tuple val(meta), path("*.vcf"), emit: gt_vcf
+    tuple val(meta), path("*.bam"), emit: bam
     tuple val("${task.process}"), val('svtyper'), eval("svtyper -h 2>&1 | grep 'version:' | sed 's/^version: v//'"), emit: versions_svtyper, topic: versions
 
     when:
@@ -24,9 +27,13 @@ process SVTYPER_SVTYPER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def vcf_opt  = vcf ? "--input_vcf ${vcf}" : ""
-    if ("$vcf" == "${prefix}.vcf") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
-    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    def vcf_opt = vcf ? "--input_vcf ${vcf}" : ""
+    if ("${vcf}" == "${prefix}.vcf") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
+    }
+    if ("${bam}" == "${prefix}.bam") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
+    }
 
     """
     svtyper \\
@@ -38,6 +45,7 @@ process SVTYPER_SVTYPER {
         --write_alignment ${prefix}.bam \\
         ${args}
     """
+
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """

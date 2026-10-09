@@ -1,16 +1,19 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MCSTAGING_MACSIMA2MC {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/numpy_python_pip_macsima2mc:b42790f2c05a215a' :
-        'community.wave.seqera.io/library/numpy_python_pip_macsima2mc:3fa6bf589964777e' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'oras://community.wave.seqera.io/library/numpy_python_pip_macsima2mc:b42790f2c05a215a'
+        : 'community.wave.seqera.io/library/numpy_python_pip_macsima2mc:3fa6bf589964777e'}"
 
     input:
     tuple val(meta), path(input_dir), val(output_dir)
 
     output:
-    tuple val(meta), path("${output_dir}/*")    , emit: out_dir
+    tuple val(meta), path("${output_dir}/*"), emit: out_dir
     tuple val("${task.process}"), val('macsima2mc'), eval('python -m pip show macsima2mc | grep "Version" | sed -e "s/Version: //g"'), topic: versions, emit: versions_macsima2mc
 
     when:
@@ -19,10 +22,10 @@ process MCSTAGING_MACSIMA2MC {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "macsima2mc module in conda does not exist. Please use Docker / Singularity / Podman instead."
+        error("macsima2mc module in conda does not exist. Please use Docker / Singularity / Podman instead.")
     }
 
-    def args   = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
 
     """
     macsima2mc \
@@ -34,7 +37,7 @@ process MCSTAGING_MACSIMA2MC {
     stub:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "macsima2mc module in conda does not exist. Please use Docker / Singularity / Podman instead."
+        error("macsima2mc module in conda does not exist. Please use Docker / Singularity / Podman instead.")
     }
 
     """

@@ -1,17 +1,19 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process NUMORPH_INTENSITY {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     container "quay.io/nf-core/numorph_preprocessing:1.0.0"
-
 
     input:
     tuple val(meta), path(img_directory), path(parameter_file)
 
     output:
-    tuple val(meta), path("results/variables/")                         , emit: variables
-    tuple val(meta), path("results/samples/")                           , emit: samples
-    tuple val(meta), path("results/NM_variables.mat")                   , emit: NM_variable
+    tuple val(meta), path("results/variables/"), emit: variables
+    tuple val(meta), path("results/samples/"), emit: samples
+    tuple val(meta), path("results/NM_variables.mat"), emit: NM_variable
 
     tuple val("${task.process}"), val('numorph_intensity'), val('1.0.0'), emit: versions_numorph_intensity, topic: versions
 

@@ -1,19 +1,22 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PRESEQ_CCURVE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
     label 'error_ignore'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/preseq:3.2.0--hdcf5f25_6':
-        'quay.io/biocontainers/preseq:3.2.0--hdcf5f25_6' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/preseq:3.2.0--hdcf5f25_6'
+        : 'quay.io/biocontainers/preseq:3.2.0--hdcf5f25_6'}"
 
     input:
     tuple val(meta), path(bam)
 
     output:
     tuple val(meta), path("*.c_curve.txt"), emit: c_curve
-    tuple val(meta), path("*.log")        , emit: log
+    tuple val(meta), path("*.log"), emit: log
     tuple val("${task.process}"), val('preseq'), eval("preseq 2>&1 | sed -n 's/Version: //p'"), emit: versions_preseq, topic: versions
 
     when:

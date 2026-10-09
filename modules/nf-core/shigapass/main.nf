@@ -1,34 +1,34 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SHIGAPASS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/shigapass:1.5.0--hdfd78af_0':
-        'quay.io/biocontainers/shigapass:1.5.0--hdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/shigapass:1.5.0--hdfd78af_0'
+        : 'quay.io/biocontainers/shigapass:1.5.0--hdfd78af_0'}"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("${prefix}.tsv"),                 emit: report
-    tuple val(meta), path("*_ShigaPass_Flex_summary.tsv"),  emit: flex_tsv, optional: true
+    tuple val(meta), path("${prefix}.tsv"), emit: report
+    tuple val(meta), path("*_ShigaPass_Flex_summary.tsv"), emit: flex_tsv, optional: true
     tuple val("${task.process}"), val('shigapass'), eval("ShigaPass.sh -v 2>&1 | sed 's/^.*ShigaPass version //'"), topic: versions, emit: versions_shigapass
 
     when:
-        task.ext.when == null || task.ext.when
+    task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: ''
-    prefix    = task.ext.prefix ?: "${meta.id}"
-    def dbPath = (
-        workflow.containerEngine == 'singularity' ||
-        workflow.containerEngine == 'apptainer'
-    ) ?
-        "/usr/local/share/shigapass-1.5.0/db" :
-        "\$CONDA_PREFIX/share/shigapass-1.5.0/db"
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def dbPath = (workflow.containerEngine == 'singularity' || workflow.containerEngine == 'apptainer')
+        ? "/usr/local/share/shigapass-1.5.0/db"
+        : "\$CONDA_PREFIX/share/shigapass-1.5.0/db"
     def is_compressed = fasta.getName().endsWith(".gz")
-    def fasta_name    = fasta.getName().replace(".gz", "")
+    def fasta_name = fasta.getName().replace(".gz", "")
     """
     # Optional decompression
     if [ "${is_compressed}" == "true" ]; then
@@ -40,7 +40,7 @@ process SHIGAPASS {
 
     ShigaPass.sh \\
         -l ${fasta_name}_tmp.txt \\
-        $args \\
+        ${args} \\
         -p ${dbPath} \\
         -t ${task.cpus} \\
         -o ${prefix}

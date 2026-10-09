@@ -1,19 +1,22 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SKANI_SKETCH {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/skani:0.2.2--ha6fb395_2':
-        'quay.io/biocontainers/skani:0.2.2--ha6fb395_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/skani:0.2.2--ha6fb395_2'
+        : 'quay.io/biocontainers/skani:0.2.2--ha6fb395_2'}"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("${prefix}")                 , emit: sketch_dir
-    tuple val(meta), path("${prefix}/${fasta}.sketch") , emit: sketch
-    tuple val(meta), path("${prefix}/markers.bin")     , emit: markers
+    tuple val(meta), path("${prefix}"), emit: sketch_dir
+    tuple val(meta), path("${prefix}/${fasta}.sketch"), emit: sketch
+    tuple val(meta), path("${prefix}/markers.bin"), emit: markers
     tuple val("${task.process}"), val('skani'), eval('skani --version 2>&1 | sed "s/^.*skani //"'), emit: versions_skani, topic: versions
 
     when:

@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GENESCOPEFK {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
@@ -9,14 +12,14 @@ process GENESCOPEFK {
     tuple val(meta), path(fastk_histex_histogram)
 
     output:
-    tuple val(meta), path("*_linear_plot.png")            , emit: linear_plot
-    tuple val(meta), path("*_log_plot.png")               , emit: log_plot
-    tuple val(meta), path("*_model.txt")                  , emit: model
-    tuple val(meta), path("*_summary.txt")                , emit: summary
+    tuple val(meta), path("*_linear_plot.png"), emit: linear_plot
+    tuple val(meta), path("*_log_plot.png"), emit: log_plot
+    tuple val(meta), path("*_model.txt"), emit: model
+    tuple val(meta), path("*_summary.txt"), emit: summary
     tuple val(meta), path("*_transformed_linear_plot.png"), emit: transformed_linear_plot
-    tuple val(meta), path("*_transformed_log_plot.png")   , emit: transformed_log_plot
-    tuple val(meta), path("*_genescopefk.log")            , emit: log
-    tuple val(meta), env('KMERCOV')                       , emit: kmer_cov
+    tuple val(meta), path("*_transformed_log_plot.png"), emit: transformed_log_plot
+    tuple val(meta), path("*_genescopefk.log"), emit: log
+    tuple val(meta), env('KMERCOV'), emit: kmer_cov
     tuple val("${task.process}"), val('genescopefk'), eval("R --version | sed '1!d; s/.*version //; s/ .*//'"), emit: versions_genescopefk, topic: versions
 
     when:
@@ -25,15 +28,15 @@ process GENESCOPEFK {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "GENESCOPEFK module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("GENESCOPEFK module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
 
-    def args   = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     GeneScopeFK.R \\
-        $args \\
-        --input $fastk_histex_histogram \\
+        ${args} \\
+        --input ${fastk_histex_histogram} \\
         --output . \\
         --name_prefix ${prefix} > ${prefix}_genescopefk.log
 
@@ -53,5 +56,4 @@ process GENESCOPEFK {
 
     printf -v KMERCOV "%.2f" \$( grep "^kmercov" *_model.txt | cut -d" " -f2 )
     """
-
 }

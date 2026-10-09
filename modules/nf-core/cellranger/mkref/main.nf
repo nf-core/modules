@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CELLRANGER_MKREF {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     container "quay.io/nf-core/cellranger:10.0.0"
@@ -19,7 +22,7 @@ process CELLRANGER_MKREF {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "CELLRANGER_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("CELLRANGER_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     def args = task.ext.args ?: ''
     // --localcores is passed to the martian runtime and specifies the number of allocated jobs
@@ -28,23 +31,22 @@ process CELLRANGER_MKREF {
     """
     cellranger \\
         mkref \\
-        --genome=$reference_name \\
-        --fasta=$fasta \\
-        --genes=$gtf \\
+        --genome=${reference_name} \\
+        --fasta=${fasta} \\
+        --genes=${gtf} \\
         --localcores=${task.cpus} \\
         --localmem=${task.memory.toGiga()} \\
         --nthreads=${task.cpus} \\
-        $args
+        ${args}
     """
 
     stub:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "CELLRANGER_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("CELLRANGER_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     """
-    mkdir $reference_name
+    mkdir ${reference_name}
     touch ${reference_name}/empty_file
     """
-
 }

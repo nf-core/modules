@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { FASTQC       } from '../../../modules/nf-core/fastqc'
 include { SEQFU_CHECK  } from '../../../modules/nf-core/seqfu/check'
 include { SEQFU_STATS  } from '../../../modules/nf-core/seqfu/stats'

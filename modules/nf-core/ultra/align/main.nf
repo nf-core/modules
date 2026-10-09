@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ULTRA_ALIGN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-4b749ef583d6de806ddbf51c2d235ac8c14763c6:c2c0cd48e7ed1cf3f365b421c7389d04e6bfa812-0':
-        'quay.io/biocontainers/mulled-v2-4b749ef583d6de806ddbf51c2d235ac8c14763c6:c2c0cd48e7ed1cf3f365b421c7389d04e6bfa812-0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/mulled-v2-4b749ef583d6de806ddbf51c2d235ac8c14763c6:c2c0cd48e7ed1cf3f365b421c7389d04e6bfa812-0'
+        : 'quay.io/biocontainers/mulled-v2-4b749ef583d6de806ddbf51c2d235ac8c14763c6:c2c0cd48e7ed1cf3f365b421c7389d04e6bfa812-0'}"
 
     input:
     tuple val(meta), path(reads)
@@ -21,26 +24,26 @@ process ULTRA_ALIGN {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: ''
-    def args2  = task.ext.args2  ?: ''
+    def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     uLTRA \\
         align \\
-        --t $task.cpus \\
-        --prefix $prefix \\
+        --t ${task.cpus} \\
+        --prefix ${prefix} \\
         --index ./ \\
-        $args \\
-        $genome \\
-        $reads \\
+        ${args} \\
+        ${genome} \\
+        ${reads} \\
         ./
 
     samtools \\
         sort \\
-        --threads $task.cpus \\
+        --threads ${task.cpus} \\
         -o ${prefix}.bam \\
         -O BAM \\
-        $args2 \\
+        ${args2} \\
         ${prefix}.sam
 
     rm ${prefix}.sam

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CENTRIFUGER_CENTRIFUGER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/centrifuger:1.1.2--h3be2455_0':
-        'quay.io/biocontainers/centrifuger:1.1.2--h3be2455_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/centrifuger:1.1.2--h3be2455_0'
+        : 'quay.io/biocontainers/centrifuger:1.1.2--h3be2455_0'}"
 
     input:
     tuple val(meta), path(reads)
@@ -16,10 +19,10 @@ process CENTRIFUGER_CENTRIFUGER {
     path umi
 
     output:
-    tuple val(meta), path("*.tsv")                , emit: classification_file
-    tuple val(meta), path("*.classified*.fq.gz")  , emit: fastq_classified  , optional: true
+    tuple val(meta), path("*.tsv"), emit: classification_file
+    tuple val(meta), path("*.classified*.fq.gz"), emit: fastq_classified, optional: true
     tuple val(meta), path("*.unclassified*.fq.gz"), emit: fastq_unclassified, optional: true
-    tuple val("${task.process}"), val('centrifuger'), eval("centrifuger -v 2>&1 | sed 's/Centrifuger v//'"),emit: versions_centrifuger,  topic: versions
+    tuple val("${task.process}"), val('centrifuger'), eval("centrifuger -v 2>&1 | sed 's/Centrifuger v//'"), emit: versions_centrifuger, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -47,6 +50,7 @@ process CENTRIFUGER_CENTRIFUGER {
         -t ${task.cpus} \\
         ${args} > ${prefix}.tsv
     """
+
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"

@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TIDK_EXPLORE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/tidk:0.2.7--h6872113_0':
-        'quay.io/biocontainers/tidk:0.2.7--h6872113_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/tidk:0.2.7--h6872113_0'
+        : 'quay.io/biocontainers/tidk:0.2.7--h6872113_0'}"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.tidk.explore.tsv") , emit: explore_tsv
-    tuple val(meta), path("*.top.sequence.txt") , emit: top_sequence, optional: true
+    tuple val(meta), path("*.tidk.explore.tsv"), emit: explore_tsv
+    tuple val(meta), path("*.top.sequence.txt"), emit: top_sequence, optional: true
     tuple val("${task.process}"), val('tidk'), eval("tidk --version | sed 's/tidk //'"), emit: versions_tidk, topic: versions
 
     when:
@@ -24,8 +27,8 @@ process TIDK_EXPLORE {
     """
     tidk \\
         explore \\
-        $args \\
-        $fasta \\
+        ${args} \\
+        ${fasta} \\
         > ${prefix}.tidk.explore.tsv
 
     [[ \$(cat ${prefix}.tidk.explore.tsv | wc -l) -gt 1 ]] \\

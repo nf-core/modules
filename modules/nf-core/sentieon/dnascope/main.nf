@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SENTIEON_DNASCOPE {
     tag "${meta.id}"
     label 'process_high'
     label 'sentieon'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2c/2c157e27981ec529b03e7ae5cfc88e51b6158332d2a82db399eef8dd8f2b1d5d/data'
-        : 'community.wave.seqera.io/library/sentieon:202503.03--5e34aa16344b911c' }"
+        : 'community.wave.seqera.io/library/sentieon:202503.03--5e34aa16344b911c'}"
 
     input:
     tuple val(meta), path(bam), path(bai), path(intervals)
@@ -21,11 +24,11 @@ process SENTIEON_DNASCOPE {
 
     output:
     // added the substring ".unfiltered" in the filename of the vcf-files since without that the g.vcf.gz-files were ending up in the vcf-channel
-    tuple val(meta), path("*.unfiltered.vcf.gz"),     emit: vcf,      optional: true
-    tuple val(meta), path("*.unfiltered.vcf.gz.tbi"), emit: vcf_tbi,  optional: true
+    tuple val(meta), path("*.unfiltered.vcf.gz"), emit: vcf, optional: true
+    tuple val(meta), path("*.unfiltered.vcf.gz.tbi"), emit: vcf_tbi, optional: true
     // these output-files have to have the extension ".vcf.gz", otherwise the subsequent GATK-MergeVCFs will fail.
-    tuple val(meta), path("*.g.vcf.gz"),              emit: gvcf,     optional: true
-    tuple val(meta), path("*.g.vcf.gz.tbi"),          emit: gvcf_tbi, optional: true
+    tuple val(meta), path("*.g.vcf.gz"), emit: gvcf, optional: true
+    tuple val(meta), path("*.g.vcf.gz.tbi"), emit: gvcf_tbi, optional: true
     tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
     when:

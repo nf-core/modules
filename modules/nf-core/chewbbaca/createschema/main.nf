@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CHEWBBACA_CREATESCHEMA {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/chewbbaca:3.3.5--pyhdfd78af_0':
-        'quay.io/biocontainers/chewbbaca:3.3.5--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/chewbbaca:3.3.5--pyhdfd78af_0'
+        : 'quay.io/biocontainers/chewbbaca:3.3.5--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(fasta, stageAs: "input_genomes/*")
@@ -13,9 +16,9 @@ process CHEWBBACA_CREATESCHEMA {
     path cds
 
     output:
-    tuple val(meta), path("results/$meta.id"), emit: schema
-    path "results/cds_coordinates.tsv"       , emit: cds_coordinates
-    path "results/invalid_cds.txt"           , emit: invalid_cds
+    tuple val(meta), path("results/${meta.id}"), emit: schema
+    path "results/cds_coordinates.tsv", emit: cds_coordinates
+    path "results/invalid_cds.txt", emit: invalid_cds
     tuple val("${task.process}"), val("chewbbaca"), eval("chewie --version 2>&1 | sed 's/chewBBACA version: //'"), topic: versions, emit: versions_chewbbaca
 
     when:
@@ -35,11 +38,11 @@ process CHEWBBACA_CREATESCHEMA {
         CreateSchema \\
         -i input_genomes/ \\
         -o results \\
-        $schema \\
-        $args \\
-        $prodigal_tf_opt \\
-        $cds_opt \\
-        --cpu $task.cpus
+        ${schema} \\
+        ${args} \\
+        ${prodigal_tf_opt} \\
+        ${cds_opt} \\
+        --cpu ${task.cpus}
     """
 
     stub:

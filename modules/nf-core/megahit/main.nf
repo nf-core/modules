@@ -1,21 +1,24 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MEGAHIT {
     tag "${meta.id}"
     label 'process_high'
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f2/f2cb827988dca7067ff8096c37cb20bc841c878013da52ad47a50865d54efe83/data' :
-        'community.wave.seqera.io/library/megahit_pigz:87a590163e594224' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f2/f2cb827988dca7067ff8096c37cb20bc841c878013da52ad47a50865d54efe83/data'
+        : 'community.wave.seqera.io/library/megahit_pigz:87a590163e594224'}"
 
     input:
     tuple val(meta), path(reads1), path(reads2)
 
     output:
-    tuple val(meta), path("*.contigs.fa.gz")                            , emit: contigs
-    tuple val(meta), path("intermediate_contigs/k*.contigs.fa.gz")      , emit: k_contigs
-    tuple val(meta), path("intermediate_contigs/k*.addi.fa.gz")         , emit: addi_contigs
-    tuple val(meta), path("intermediate_contigs/k*.local.fa.gz")        , emit: local_contigs
+    tuple val(meta), path("*.contigs.fa.gz"), emit: contigs
+    tuple val(meta), path("intermediate_contigs/k*.contigs.fa.gz"), emit: k_contigs
+    tuple val(meta), path("intermediate_contigs/k*.addi.fa.gz"), emit: addi_contigs
+    tuple val(meta), path("intermediate_contigs/k*.local.fa.gz"), emit: local_contigs
     tuple val(meta), path("intermediate_contigs/k*.final.contigs.fa.gz"), emit: kfinal_contigs
-    tuple val(meta), path('*.log')                                      , emit: log
+    tuple val(meta), path('*.log'), emit: log
     tuple val("${task.process}"), val('megahit'), eval("megahit -v | sed 's/MEGAHIT v//'"), topic: versions, emit: versions_megahit
 
     when:

@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GCTA_MAKEGRMPART {
     tag "${meta.id}: part ${part_gcta_job} of ${nparts_gcta}"
     label 'process_medium'

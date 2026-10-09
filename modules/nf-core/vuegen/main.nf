@@ -1,9 +1,12 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VUEGEN {
     label 'process_single'
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a0/a0ff4f778cefa7ae78c684ba2b97dc4a1fac3d49ffc958c532bfe06e19e23807/data'
-:         'community.wave.seqera.io/library/python_pytinytex_quarto_r-tinytex_pruned:9eebdec0448f6563' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a0/a0ff4f778cefa7ae78c684ba2b97dc4a1fac3d49ffc958c532bfe06e19e23807/data'
+        : 'community.wave.seqera.io/library/python_pytinytex_quarto_r-tinytex_pruned:9eebdec0448f6563'}"
 
     input:
     val input_type

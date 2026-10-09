@@ -1,26 +1,30 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SENTIEON_RSEMCALCULATEEXPRESSION {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
     label 'sentieon'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/39/39a3e1a85912520836ad054c8ac0497b463bb5170e0e907183dbd08509dad997/data' :
-        'community.wave.seqera.io/library/rsem_sentieon:3e4315fa0b636313' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/39/39a3e1a85912520836ad054c8ac0497b463bb5170e0e907183dbd08509dad997/data'
+        : 'community.wave.seqera.io/library/rsem_sentieon:3e4315fa0b636313'}"
 
     input:
-    tuple val(meta), path(reads)  // FASTQ files or BAM file for --alignments mode
-    path  index
+    tuple val(meta), path(reads)
+    // FASTQ files or BAM file for --alignments mode
+    path index
 
     output:
-    tuple val(meta), path("*.genes.results")   , emit: counts_gene
+    tuple val(meta), path("*.genes.results"), emit: counts_gene
     tuple val(meta), path("*.isoforms.results"), emit: counts_transcript
-    tuple val(meta), path("*.stat")            , emit: stat
-    tuple val(meta), path("*.log")             , emit: logs, optional:true
+    tuple val(meta), path("*.stat"), emit: stat
+    tuple val(meta), path("*.log"), emit: logs, optional: true
 
-    tuple val(meta), path("*.STAR.genome.bam")       , optional:true, emit: bam_star
-    tuple val(meta), path("${prefix}.genome.bam")    , optional:true, emit: bam_genome
-    tuple val(meta), path("${prefix}.transcript.bam"), optional:true, emit: bam_transcript
+    tuple val(meta), path("*.STAR.genome.bam"), optional: true, emit: bam_star
+    tuple val(meta), path("${prefix}.genome.bam"), optional: true, emit: bam_genome
+    tuple val(meta), path("${prefix}.transcript.bam"), optional: true, emit: bam_transcript
 
     tuple val("${task.process}"), val('rsem'), eval('rsem-calculate-expression --version | sed -e "s/Current version: RSEM v//g"'), topic: versions, emit: versions_rsem
     tuple val("${task.process}"), val('star'), eval('STAR --version | sed -e "s/STAR_//g"'), topic: versions, emit: versions_star
@@ -30,8 +34,8 @@ process SENTIEON_RSEMCALCULATEEXPRESSION {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args   ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     if (!args.contains('--temporary-folder')) {
         args += ' --temporary-folder ./tmp/'
@@ -40,7 +44,8 @@ process SENTIEON_RSEMCALCULATEEXPRESSION {
     def strandedness = ''
     if (meta.strandedness == 'forward') {
         strandedness = '--strandedness forward'
-    } else if (meta.strandedness == 'reverse') {
+    }
+    else if (meta.strandedness == 'reverse') {
         strandedness = '--strandedness reverse'
     }
 
@@ -56,7 +61,7 @@ process SENTIEON_RSEMCALCULATEEXPRESSION {
         : ""
 
     """
-    $sentieonLicense
+    ${sentieonLicense}
 
     INDEX=`find -L ./ -name "*.grp" | sed 's/\\.grp\$//'`
 
@@ -65,25 +70,25 @@ process SENTIEON_RSEMCALCULATEEXPRESSION {
     export PATH=".:\$PATH"
 
     # Use metadata-based paired-end detection, or auto-detect if no metadata provided
-    PAIRED_END_FLAG="$paired_end"
+    PAIRED_END_FLAG="${paired_end}"
     if [ "${paired_end}" == "unknown" ]; then
         # Auto-detect only if no metadata provided
         if [ "${is_bam}" == "true" ]; then
-            samtools flagstat $reads | grep -q 'paired in sequencing' && PAIRED_END_FLAG="--paired-end"
+            samtools flagstat ${reads} | grep -q 'paired in sequencing' && PAIRED_END_FLAG="--paired-end"
         else
             [ ${reads.size()} -gt 1 ] && PAIRED_END_FLAG="--paired-end"
         fi
     fi
 
     rsem-calculate-expression \\
-        --num-threads $task.cpus \\
-        $alignment_mode \\
-        $strandedness \\
+        --num-threads ${task.cpus} \\
+        ${alignment_mode} \\
+        ${strandedness} \\
         \$PAIRED_END_FLAG \\
-        $args \\
-        $reads \\
+        ${args} \\
+        ${reads} \\
         \$INDEX \\
-        $prefix
+        ${prefix}
     """
 
     stub:

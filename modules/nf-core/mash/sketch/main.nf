@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MASH_SKETCH {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mash:2.3--he348c14_1':
-        'quay.io/biocontainers/mash:2.3--he348c14_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/mash:2.3--he348c14_1'
+        : 'quay.io/biocontainers/mash:2.3--he348c14_1'}"
 
     input:
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("*.msh")        , emit: mash
-    tuple val(meta), path("*.mash_stats") , emit: stats
+    tuple val(meta), path("*.msh"), emit: mash
+    tuple val(meta), path("*.mash_stats"), emit: stats
     tuple val("${task.process}"), val("mash"), eval("mash --version 2>&1"), emit: versions_mash, topic: versions
 
     when:

@@ -1,22 +1,25 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SNIPPY_CORE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/snippy:4.6.0--hdfd78af_2':
-        'quay.io/biocontainers/snippy:4.6.0--hdfd78af_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/snippy:4.6.0--hdfd78af_2'
+        : 'quay.io/biocontainers/snippy:4.6.0--hdfd78af_2'}"
 
     input:
     tuple val(meta), path(vcf), path(aligned_fa)
     path reference
 
     output:
-    tuple val(meta), path("${prefix}.aln")     , emit: aln
+    tuple val(meta), path("${prefix}.aln"), emit: aln
     tuple val(meta), path("${prefix}.full.aln"), emit: full_aln
-    tuple val(meta), path("${prefix}.tab")     , emit: tab
-    tuple val(meta), path("${prefix}.vcf")     , emit: vcf
-    tuple val(meta), path("${prefix}.txt")     , emit: txt
+    tuple val(meta), path("${prefix}.tab"), emit: tab
+    tuple val(meta), path("${prefix}.vcf"), emit: vcf
+    tuple val(meta), path("${prefix}.txt"), emit: txt
     tuple val("${task.process}"), val('snippy-core'), eval("snippy-core --version 2>&1 | sed 's/snippy-core //'"), emit: versions_snippy_core, topic: versions
 
     when:
@@ -28,8 +31,8 @@ process SNIPPY_CORE {
     def is_compressed = reference.getName().endsWith(".gz") ? true : false
     def reference_name = reference.getName().replace(".gz", "")
     """
-    if [ "$is_compressed" == "true" ]; then
-        gzip -c -d $reference > $reference_name
+    if [ "${is_compressed}" == "true" ]; then
+        gzip -c -d ${reference} > ${reference_name}
     fi
 
     # Collect samples into necessary folders
@@ -40,9 +43,9 @@ process SNIPPY_CORE {
 
     # Run snippy-core
     snippy-core \\
-        $args \\
-        --ref $reference_name \\
-        --prefix $prefix \\
+        ${args} \\
+        --ref ${reference_name} \\
+        --prefix ${prefix} \\
         samples/*
     """
 

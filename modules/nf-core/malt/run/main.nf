@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MALT_RUN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
@@ -12,9 +15,9 @@ process MALT_RUN {
     tuple val(meta2), path(index)
 
     output:
-    tuple val(meta), path("*.rma6")                                , emit: rma6
-    tuple val(meta), path("*.{tab,text,sam,tab.gz,text.gz,sam.gz}"), emit: alignments, optional:true
-    tuple val(meta), path("*.log")                                 , emit: log
+    tuple val(meta), path("*.rma6"), emit: rma6
+    tuple val(meta), path("*.{tab,text,sam,tab.gz,text.gz,sam.gz}"), emit: alignments, optional: true
+    tuple val(meta), path("*.log"), emit: log
     tuple val("${task.process}"), val("malt"), eval("malt-run --help |& sed '/version/!d;s/.*version //;s/,.*//'"), topic: versions, emit: versions_malt
 
     when:

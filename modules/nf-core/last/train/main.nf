@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process LAST_TRAIN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
@@ -9,12 +12,12 @@ process LAST_TRAIN {
 
     input:
     tuple val(meta), path(fastx)
-    path  index
+    path index
 
     output:
     tuple val(meta), path("*.train"), emit: param_file
-    tuple val(meta), path("*.tsv")  , emit: multiqc
-   // last-dotplot has no --version option so let's use lastal from the same suite
+    tuple val(meta), path("*.tsv"), emit: multiqc
+    // last-dotplot has no --version option so let's use lastal from the same suite
     tuple val("${task.process}"), val('last'), eval("lastal --version | sed 's/lastal //'"), emit: versions_last, topic: versions
 
     when:
@@ -24,13 +27,13 @@ process LAST_TRAIN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    INDEX_NAME=\$(basename \$(ls $index/*.des) .des)
+    INDEX_NAME=\$(basename \$(ls ${index}/*.des) .des)
 
     last-train \\
-        $args \\
-        -P $task.cpus \\
+        ${args} \\
+        -P ${task.cpus} \\
         ${index}/\$INDEX_NAME \\
-        $fastx \\
+        ${fastx} \\
         > ${prefix}.train
 
     echo "id\tsubstitution_percent_identity\tlast -t\tlast -a\tlast -A\tlast -b\tlast -B\tlast -S"         > ${prefix}.train.tsv
@@ -49,7 +52,7 @@ process LAST_TRAIN {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    INDEX_NAME=\$(basename \$(ls $index/*.des) .des)
+    INDEX_NAME=\$(basename \$(ls ${index}/*.des) .des)
     touch ${prefix}.train
     touch ${prefix}.train.tsv
     """

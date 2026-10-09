@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process INSTRAIN_PROFILE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/instrain:1.7.1--pyhdfd78af_0':
-        'quay.io/biocontainers/instrain:1.7.1--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/instrain:1.7.1--pyhdfd78af_0'
+        : 'quay.io/biocontainers/instrain:1.7.1--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(bam)
@@ -14,13 +17,13 @@ process INSTRAIN_PROFILE {
     path stb_file
 
     output:
-    tuple val(meta), path("*.IS")                               , emit: profile
-    tuple val(meta), path("*.IS/output/*.IS_SNVs.tsv")          , emit: snvs
-    tuple val(meta), path("*.IS/output/*.IS_gene_info.tsv")     , emit: gene_info       , optional: true
-    tuple val(meta), path("*.IS/output/*.IS_genome_info.tsv")   , emit: genome_info
-    tuple val(meta), path("*.IS/output/*.IS_linkage.tsv")       , emit: linkage
-    tuple val(meta), path("*.IS/output/*.IS_mapping_info.tsv")  , emit: mapping_info
-    tuple val(meta), path("*.IS/output/*.IS_scaffold_info.tsv") , emit: scaffold_info
+    tuple val(meta), path("*.IS"), emit: profile
+    tuple val(meta), path("*.IS/output/*.IS_SNVs.tsv"), emit: snvs
+    tuple val(meta), path("*.IS/output/*.IS_gene_info.tsv"), emit: gene_info, optional: true
+    tuple val(meta), path("*.IS/output/*.IS_genome_info.tsv"), emit: genome_info
+    tuple val(meta), path("*.IS/output/*.IS_linkage.tsv"), emit: linkage
+    tuple val(meta), path("*.IS/output/*.IS_mapping_info.tsv"), emit: mapping_info
+    tuple val(meta), path("*.IS/output/*.IS_scaffold_info.tsv"), emit: scaffold_info
     tuple val("${task.process}"), val('instrain'), eval("inStrain profile --version 2>&1 | sed -n 's/.*inStrain version //p'"), emit: versions_instrain, topic: versions
 
     when:
@@ -29,8 +32,8 @@ process INSTRAIN_PROFILE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def genes_args = genes_fasta ? "-g ${genes_fasta}": ''
-    def stb_args = stb_file ? "-s ${stb_file}": ''
+    def genes_args = genes_fasta ? "-g ${genes_fasta}" : ''
+    def stb_args = stb_file ? "-s ${stb_file}" : ''
     """
     inStrain \\
         profile \\

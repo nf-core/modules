@@ -1,29 +1,32 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process OATK {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/oatk:1.0':
-        'quay.io/biocontainers/oatk:1.0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/oatk:1.0'
+        : 'quay.io/biocontainers/oatk:1.0'}"
 
     input:
-    tuple val(meta) , path(reads)
+    tuple val(meta), path(reads)
     tuple val(meta2), path(mito_hmm_files)
     tuple val(meta3), path(pltd_hmm_files)
 
     output:
     tuple val(meta), path("*mito.ctg.fasta"), emit: mito_fasta, optional: true
     tuple val(meta), path("*pltd.ctg.fasta"), emit: pltd_fasta, optional: true
-    tuple val(meta), path("*mito.ctg.bed")  , emit: mito_bed, optional: true
-    tuple val(meta), path("*pltd.ctg.bed")  , emit: pltd_bed, optional: true
-    tuple val(meta), path("*mito.gfa")      , emit: mito_gfa, optional: true
-    tuple val(meta), path("*pltd.gfa")      , emit: pltd_gfa, optional: true
+    tuple val(meta), path("*mito.ctg.bed"), emit: mito_bed, optional: true
+    tuple val(meta), path("*pltd.ctg.bed"), emit: pltd_bed, optional: true
+    tuple val(meta), path("*mito.gfa"), emit: mito_gfa, optional: true
+    tuple val(meta), path("*pltd.gfa"), emit: pltd_gfa, optional: true
     tuple val(meta), path("*annot_mito.txt"), emit: annot_mito_txt, optional: true
     tuple val(meta), path("*annot_pltd.txt"), emit: annot_pltd_txt, optional: true
-    tuple val(meta), path("*utg.final.gfa") , emit: final_gfa, optional: true
-    tuple val(meta), path("*utg.gfa")       , emit: initial_gfa, optional: true
-    tuple val(meta), path("*.log")          , emit: log
+    tuple val(meta), path("*utg.final.gfa"), emit: final_gfa, optional: true
+    tuple val(meta), path("*utg.gfa"), emit: initial_gfa, optional: true
+    tuple val(meta), path("*.log"), emit: log
     tuple val("${task.process}"), val('oatk'), eval("oatk --version 2>&1"), topic: versions, emit: versions_oatk
 
     when:
@@ -36,9 +39,9 @@ process OATK {
     def pltd_hmm_arg = pltd_hmm_files ? '-p ' + pltd_hmm_files.find { hmm -> hmm.getExtension() =~ /fam|hmm/ } : ""
     """
     oatk \\
-        $args \\
-        $mito_hmm_arg \\
-        $pltd_hmm_arg \\
+        ${args} \\
+        ${mito_hmm_arg} \\
+        ${pltd_hmm_arg} \\
         -t ${task.cpus} \\
         -o ${prefix} \\
         ${reads} \\

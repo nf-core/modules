@@ -1,14 +1,17 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FUSIONCATCHER_BUILD {
     tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fusioncatcher:1.33--hdfd78af_5':
-        'quay.io/biocontainers/fusioncatcher:1.33--hdfd78af_5' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/fusioncatcher:1.33--hdfd78af_5'
+        : 'quay.io/biocontainers/fusioncatcher:1.33--hdfd78af_5'}"
 
     input:
-    val(meta)
+    val meta
 
     output:
     tuple val(meta), path("${prefix}"), emit: reference

@@ -1,28 +1,31 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VSEARCH_CLUSTER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c9/c94475a0cc7e44a967584e09e39343c138ce5fa7231ae11c6b5b72b28de58c92/data':
-        'community.wave.seqera.io/library/samtools_vsearch:8a419aba60edb7b2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c9/c94475a0cc7e44a967584e09e39343c138ce5fa7231ae11c6b5b72b28de58c92/data'
+        : 'community.wave.seqera.io/library/samtools_vsearch:8a419aba60edb7b2'}"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path('*.aln.gz')                , optional: true, emit: aln
-    tuple val(meta), path('*.biom.gz')               , optional: true, emit: biom
-    tuple val(meta), path('*.mothur.tsv.gz')         , optional: true, emit: mothur
-    tuple val(meta), path('*.otu.tsv.gz')            , optional: true, emit: otu
-    tuple val(meta), path('*.bam')                   , optional: true, emit: bam
-    tuple val(meta), path('*.out.tsv.gz')            , optional: true, emit: out
-    tuple val(meta), path('*.blast.tsv.gz')          , optional: true, emit: blast
-    tuple val(meta), path('*.uc.tsv.gz')             , optional: true, emit: uc
-    tuple val(meta), path('*.centroids.fasta.gz')    , optional: true, emit: centroids
-    tuple val(meta), path('*.clusters.fasta*.gz')    , optional: true, emit: clusters
-    tuple val(meta), path('*.profile.txt.gz')        , optional: true, emit: profile
-    tuple val(meta), path('*.msa.fasta.gz')          , optional: true, emit: msa
+    tuple val(meta), path('*.aln.gz'), optional: true, emit: aln
+    tuple val(meta), path('*.biom.gz'), optional: true, emit: biom
+    tuple val(meta), path('*.mothur.tsv.gz'), optional: true, emit: mothur
+    tuple val(meta), path('*.otu.tsv.gz'), optional: true, emit: otu
+    tuple val(meta), path('*.bam'), optional: true, emit: bam
+    tuple val(meta), path('*.out.tsv.gz'), optional: true, emit: out
+    tuple val(meta), path('*.blast.tsv.gz'), optional: true, emit: blast
+    tuple val(meta), path('*.uc.tsv.gz'), optional: true, emit: uc
+    tuple val(meta), path('*.centroids.fasta.gz'), optional: true, emit: centroids
+    tuple val(meta), path('*.clusters.fasta*.gz'), optional: true, emit: clusters
+    tuple val(meta), path('*.profile.txt.gz'), optional: true, emit: profile
+    tuple val(meta), path('*.msa.fasta.gz'), optional: true, emit: msa
     tuple val("${task.process}"), val('vsearch'), eval('vsearch --version 2>&1 | sed -n "1s/.*v\\([0-9.]*\\).*/\\\\1/p"'), emit: versions_vsearch, topic: versions
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), emit: versions_samtools, topic: versions
 
@@ -35,38 +38,52 @@ process VSEARCH_CLUSTER {
     def args3 = task.ext.args3 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    if (!args2.contains("--cluster_fast") && !args2.contains("--cluster_size") && !args2.contains("--cluster_smallmem") && !args2.contains("--cluster_unoise") ) {
-            error "Unknown clustering option provided (${args2})"
-        }
-    def out_ext = args3.contains("--alnout") ? "aln" :
-                    args3.contains("--biomout") ? "biom" :
-                    args3.contains("--blast6out") ? "blast.tsv" :
-                    args3.contains("--centroids") ? "centroids.fasta" :
-                    args3.contains("--clusters") ? "clusters.fasta" :
-                    args3.contains("--mothur_shared_out") ? "mothur.tsv" :
-                    args3.contains("--msaout") ? "msa.fasta" :
-                    args3.contains("--otutabout") ? "otu.tsv" :
-                    args3.contains("--profile") ? "profile.txt" :
-                    args3.contains("--samout") ? "sam" :
-                    args3.contains("--uc") ? "uc.tsv" :
-                    args3.contains("--userout") ? "out.tsv" :
-                    ""
-    if (out_ext == "") { error "Unknown output file format provided (${args3})" }
+    if (!args2.contains("--cluster_fast") && !args2.contains("--cluster_size") && !args2.contains("--cluster_smallmem") && !args2.contains("--cluster_unoise")) {
+        error("Unknown clustering option provided (${args2})")
+    }
+    def out_ext = args3.contains("--alnout")
+        ? "aln"
+        : args3.contains("--biomout")
+            ? "biom"
+            : args3.contains("--blast6out")
+                ? "blast.tsv"
+                : args3.contains("--centroids")
+                    ? "centroids.fasta"
+                    : args3.contains("--clusters")
+                        ? "clusters.fasta"
+                        : args3.contains("--mothur_shared_out")
+                            ? "mothur.tsv"
+                            : args3.contains("--msaout")
+                                ? "msa.fasta"
+                                : args3.contains("--otutabout")
+                                    ? "otu.tsv"
+                                    : args3.contains("--profile")
+                                        ? "profile.txt"
+                                        : args3.contains("--samout")
+                                            ? "sam"
+                                            : args3.contains("--uc")
+                                                ? "uc.tsv"
+                                                : args3.contains("--userout")
+                                                    ? "out.tsv"
+                                                    : ""
+    if (out_ext == "") {
+        error("Unknown output file format provided (${args3})")
+    }
     """
     vsearch \\
-        $args2 $fasta \\
-        $args3 ${prefix}.${out_ext} \\
-        --threads $task.cpus \\
-        $args
+        ${args2} ${fasta} \\
+        ${args3} ${prefix}.${out_ext} \\
+        --threads ${task.cpus} \\
+        ${args}
 
-    if [[ $args3 == "--clusters" ]]
+    if [[ ${args3} == "--clusters" ]]
     then
         find . -type f -name \"${prefix}.${out_ext}*[0-9]\" | xargs gzip -n
-    elif [[ $args3 != "--samout" ]]
+    elif [[ ${args3} != "--samout" ]]
     then
         gzip -n ${prefix}.${out_ext}
     else
-        samtools view -T $fasta -S -b ${prefix}.${out_ext} > ${prefix}.bam
+        samtools view -T ${fasta} -S -b ${prefix}.${out_ext} > ${prefix}.bam
     fi
     """
 
@@ -75,23 +92,37 @@ process VSEARCH_CLUSTER {
     def args3 = task.ext.args3 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    if (!args2.contains("--cluster_fast") && !args2.contains("--cluster_size") && !args2.contains("--cluster_smallmem") && !args2.contains("--cluster_unoise") ) {
-            error "Unknown clustering option provided (${args2})"
-        }
-    def out_ext = args3.contains("--alnout") ? "aln.gz" :
-                    args3.contains("--biomout") ? "biom.gz" :
-                    args3.contains("--blast6out") ? "blast.tsv.gz" :
-                    args3.contains("--centroids") ? "centroids.fasta.gz" :
-                    args3.contains("--clusters") ? "clusters.fasta.gz" :
-                    args3.contains("--mothur_shared_out") ? "mothur.tsv.gz" :
-                    args3.contains("--msaout") ? "msa.fasta.gz" :
-                    args3.contains("--otutabout") ? "otu.tsv.gz" :
-                    args3.contains("--profile") ? "profile.txt.gz" :
-                    args3.contains("--samout") ? "bam.gz" :
-                    args3.contains("--uc") ? "uc.tsv.gz" :
-                    args3.contains("--userout") ? "out.tsv.gz" :
-                    ""
-    if (out_ext == "") { error "Unknown output file format provided (${args3})" }
+    if (!args2.contains("--cluster_fast") && !args2.contains("--cluster_size") && !args2.contains("--cluster_smallmem") && !args2.contains("--cluster_unoise")) {
+        error("Unknown clustering option provided (${args2})")
+    }
+    def out_ext = args3.contains("--alnout")
+        ? "aln.gz"
+        : args3.contains("--biomout")
+            ? "biom.gz"
+            : args3.contains("--blast6out")
+                ? "blast.tsv.gz"
+                : args3.contains("--centroids")
+                    ? "centroids.fasta.gz"
+                    : args3.contains("--clusters")
+                        ? "clusters.fasta.gz"
+                        : args3.contains("--mothur_shared_out")
+                            ? "mothur.tsv.gz"
+                            : args3.contains("--msaout")
+                                ? "msa.fasta.gz"
+                                : args3.contains("--otutabout")
+                                    ? "otu.tsv.gz"
+                                    : args3.contains("--profile")
+                                        ? "profile.txt.gz"
+                                        : args3.contains("--samout")
+                                            ? "bam.gz"
+                                            : args3.contains("--uc")
+                                                ? "uc.tsv.gz"
+                                                : args3.contains("--userout")
+                                                    ? "out.tsv.gz"
+                                                    : ""
+    if (out_ext == "") {
+        error("Unknown output file format provided (${args3})")
+    }
     def output = "${prefix}.${out_ext}"
     def non_gz_out = args3.contains("--samout") ? "gunzip ${output}" : ""
     """

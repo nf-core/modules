@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MUSE_SUMP {
     tag "${meta.id}"
     label 'process_high'
@@ -11,10 +14,10 @@ process MUSE_SUMP {
     tuple val(meta), path(muse_call_txt), path(ref_vcf), path(ref_vcf_tbi)
 
     output:
-    tuple val(meta), path("*.vcf.gz"),     emit: vcf
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
     tuple val(meta), path("*.vcf.gz.tbi"), emit: tbi
-    tuple val("${task.process}"), val('muse'),  eval("MuSE --version | sed -e 's/MuSE, version //g' | sed -e 's/MuSE v//g'"), topic: versions, emit: versions_muse
-    tuple val("${task.process}"), val('bgzip'), eval("bgzip --version | sed -n 's/bgzip (htslib) \\([0-9.]*\\)/\\1/p'"),      topic: versions, emit: versions_bgzip
+    tuple val("${task.process}"), val('muse'), eval("MuSE --version | sed -e 's/MuSE, version //g' | sed -e 's/MuSE v//g'"), topic: versions, emit: versions_muse
+    tuple val("${task.process}"), val('bgzip'), eval("bgzip --version | sed -n 's/bgzip (htslib) \\([0-9.]*\\)/\\1/p'"), topic: versions, emit: versions_bgzip
 
     when:
     task.ext.when == null || task.ext.when

@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { GLIMPSE2_CHUNK                          } from '../../../modules/nf-core/glimpse2/chunk/main'
 include { GLIMPSE2_SPLITREFERENCE                 } from '../../../modules/nf-core/glimpse2/splitreference/main'
 include { GLIMPSE2_PHASE                          } from '../../../modules/nf-core/glimpse2/phase/main'
@@ -85,23 +88,21 @@ workflow BAM_VCF_IMPUTE_GLIMPSE2 {
         GLIMPSE2_SPLITREFERENCE(split_input)
 
         // Everything is provided by the bin file so no additional file
-        ch_chunks_panel_map = GLIMPSE2_SPLITREFERENCE.out.bin_ref
-            .map { meta, bin_ref -> [
+        ch_chunks_panel_map = GLIMPSE2_SPLITREFERENCE.out.bin_ref.map { meta, bin_ref ->
+            [meta, [], [], bin_ref, [], []]
+        }
+    }
+    else {
+        ch_chunks_panel_map = split_input.map { meta, ref, ref_index, regionin, regionout, gmap ->
+            [
                 meta,
-                [], [],
-                bin_ref, [],
-                []
-            ] }
-    } else {
-        ch_chunks_panel_map = split_input
-            .map { meta, ref, ref_index, regionin, regionout, gmap ->
-                [
-                    meta,
-                    regionin, regionout,
-                    ref, ref_index,
-                    gmap,
-                ]
-            }
+                regionin,
+                regionout,
+                ref,
+                ref_index,
+                gmap,
+            ]
+        }
     }
 
     ch_chunks_panel_map.ifEmpty {
@@ -113,10 +114,14 @@ workflow BAM_VCF_IMPUTE_GLIMPSE2 {
         .map { metaI, input, input_index, list, infos, metaCPM, regionin, regionout, panel, panel_index, gmap ->
             [
                 metaI + metaCPM,
-                input, input_index,
-                list, infos,
-                regionin, regionout,
-                panel, panel_index,
+                input,
+                input_index,
+                list,
+                infos,
+                regionin,
+                regionout,
+                panel,
+                panel_index,
                 gmap,
             ]
         }
@@ -138,7 +143,8 @@ workflow BAM_VCF_IMPUTE_GLIMPSE2 {
             def keysToKeep = meta.keySet() - ['regionout', 'regionoutPadded', 'regionSize']
             [
                 groupKey(meta.subMap(keysToKeep), meta.regionSize),
-                vcf, index,
+                vcf,
+                index,
             ]
         }
         .groupTuple()

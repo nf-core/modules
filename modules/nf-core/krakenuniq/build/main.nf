@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process KRAKENUNIQ_BUILD {
     tag "${meta.id}"
     label 'process_medium'
@@ -21,7 +24,9 @@ process KRAKENUNIQ_BUILD {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def run_cleanup = keep_intermediate ? "" : """
+    def run_cleanup = keep_intermediate
+        ? ""
+        : """
     find -L ${prefix} -type f \\
         -not -name "*.kdb" \\
         -not -name "*idx" \\

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SNPDISTS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/snp-dists:0.8.2--h5bf99c6_0' :
-        'quay.io/biocontainers/snp-dists:0.8.2--h5bf99c6_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/snp-dists:0.8.2--h5bf99c6_0'
+        : 'quay.io/biocontainers/snp-dists:0.8.2--h5bf99c6_0'}"
 
     input:
     tuple val(meta), path(alignment)
@@ -22,8 +25,8 @@ process SNPDISTS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     snp-dists \\
-        $args \\
-        $alignment > ${prefix}.tsv
+        ${args} \\
+        ${alignment} > ${prefix}.tsv
     """
 
     stub:

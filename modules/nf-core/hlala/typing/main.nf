@@ -1,26 +1,29 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HLALA_TYPING {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hla-la:1.0.4--h077b44d_1':
-        'quay.io/biocontainers/hla-la:1.0.4--h077b44d_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/hla-la:1.0.4--h077b44d_1'
+        : 'quay.io/biocontainers/hla-la:1.0.4--h077b44d_1'}"
 
     input:
     tuple val(meta), path(bam), path(bai), path(graph)
 
     output:
-    tuple val(meta), path("${prefix}")                              , emit: results
-    tuple val(meta), path("${prefix}/extraction.bam")               , emit: extraction
-    tuple val(meta), path("${prefix}/extraction.bam.bai")           , emit: extraction_index
-    tuple val(meta), path("${prefix}/extraction_mapped.bam")        , emit: extraction_mapped
-    tuple val(meta), path("${prefix}/extraction_unmapped.bam")      , emit: extraction_unmpapped
-    tuple val(meta), path("${prefix}/hla/*")                        , emit: hla
-    tuple val(meta), path("${prefix}/*.fastq")                      , emit: fastq
-    tuple val(meta), path("${prefix}/reads_per_level.txt")          , emit: reads_per_level
-    tuple val(meta), path("${prefix}/remapped_with_a.bam")          , emit: remapped
-    tuple val(meta), path("${prefix}/remapped_with_a.bam.bai")      , emit: remapped_index
+    tuple val(meta), path("${prefix}"), emit: results
+    tuple val(meta), path("${prefix}/extraction.bam"), emit: extraction
+    tuple val(meta), path("${prefix}/extraction.bam.bai"), emit: extraction_index
+    tuple val(meta), path("${prefix}/extraction_mapped.bam"), emit: extraction_mapped
+    tuple val(meta), path("${prefix}/extraction_unmapped.bam"), emit: extraction_unmpapped
+    tuple val(meta), path("${prefix}/hla/*"), emit: hla
+    tuple val(meta), path("${prefix}/*.fastq"), emit: fastq
+    tuple val(meta), path("${prefix}/reads_per_level.txt"), emit: reads_per_level
+    tuple val(meta), path("${prefix}/remapped_with_a.bam"), emit: remapped
+    tuple val(meta), path("${prefix}/remapped_with_a.bam.bai"), emit: remapped_index
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     tuple val("${task.process}"), val('hla-la'), val('1.0.4'), emit: versions_hlala, topic: versions
 
@@ -28,24 +31,25 @@ process HLALA_TYPING {
     task.ext.when == null || task.ext.when
 
     script:
-    args   = task.ext.args   ?: ''
+    args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
 
     def bin = ""
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        bin="\$CONDA_PREFIX/opt/hla-la/src/HLA-LA.pl"
-    } else {
-        bin="/usr/local/opt/hla-la/src/HLA-LA.pl"
+        bin = "\$CONDA_PREFIX/opt/hla-la/src/HLA-LA.pl"
+    }
+    else {
+        bin = "/usr/local/opt/hla-la/src/HLA-LA.pl"
     }
 
     """
     ${bin} \\
-        --BAM $bam \\
+        --BAM ${bam} \\
         --customGraphDir ${graph} \\
         --sampleID ${prefix} \\
         --workingDir . \\
-        --maxThreads $task.cpus \\
-        $args
+        --maxThreads ${task.cpus} \\
+        ${args}
     """
 
     stub:

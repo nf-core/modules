@@ -1,21 +1,24 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RPBP_PREPAREGENOME {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/14/146c3f15abf184a5ec13531d2a040ba7b9235c1091723aa37c7a119817411367/data' :
-        'community.wave.seqera.io/library/rpbp:4.0.1--71297b462026e13b' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/14/146c3f15abf184a5ec13531d2a040ba7b9235c1091723aa37c7a119817411367/data'
+        : 'community.wave.seqera.io/library/rpbp:4.0.1--71297b462026e13b'}"
 
     input:
     tuple val(meta), path(fasta), path(gtf)
 
     output:
-    tuple val(meta), path("${prefix}.annotated.bed.gz")             , emit: transcript_bed
+    tuple val(meta), path("${prefix}.annotated.bed.gz"), emit: transcript_bed
     tuple val(meta), path("${prefix}.orfs-genomic.annotated.bed.gz"), emit: orfs_genomic_bed
-    tuple val(meta), path("${prefix}.orfs-exons.annotated.bed.gz")  , emit: orfs_exons_bed
+    tuple val(meta), path("${prefix}.orfs-exons.annotated.bed.gz"), emit: orfs_exons_bed
     tuple val(meta), path("${prefix}.orfs-labels.annotated.tab.gz"), emit: orfs_labels
-    path "versions.yml"                                             , emit: versions_rpbp, topic: versions
+    path "versions.yml", emit: versions_rpbp, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,7 +31,7 @@ process RPBP_PREPAREGENOME {
     echo ${args}
     """
 
-    template 'prepare_rpbp_genome.py'
+    template('prepare_rpbp_genome.py')
 
     stub:
     prefix = task.ext.prefix ?: meta.id

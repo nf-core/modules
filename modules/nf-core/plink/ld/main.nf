@@ -1,22 +1,25 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PLINK_LD {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/plink:1.90b6.21--h031d066_5':
-        'quay.io/biocontainers/plink:1.90b6.21--h031d066_5' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/plink:1.90b6.21--h031d066_5'
+        : 'quay.io/biocontainers/plink:1.90b6.21--h031d066_5'}"
 
     input:
-    tuple val(meta), path(bed),  path(bim), path(fam)
+    tuple val(meta), path(bed), path(bim), path(fam)
     tuple val(meta2), path(vcf)
     tuple val(meta3), path(bcf)
     tuple val(meta4), path(snpfile)
 
     output:
-    tuple val(meta), path("*.ld")   , emit: ld
-    tuple val(meta), path("*.log")  , emit: log
-    tuple val(meta), path("*.nosex"), emit: nosex, optional:true
+    tuple val(meta), path("*.ld"), emit: ld
+    tuple val(meta), path("*.log"), emit: log
+    tuple val(meta), path("*.nosex"), emit: nosex, optional: true
     tuple val("${task.process}"), val('plink'), eval("plink --version 2>&1 | sed 's/^PLINK v//;s/ .*//'"), emit: versions_plink, topic: versions
 
     when:
@@ -29,50 +32,55 @@ process PLINK_LD {
     // define input string based on provided input files
     // in hierarchical order
     def input_command = ""
-    if (bed){
+    if (bed) {
         input_command = "--bed ${bed} --bim ${bim} --fam ${fam}"
         prefix = task.ext.prefix ?: "${meta.id}"
-    } else if (vcf) {
+    }
+    else if (vcf) {
         input_command = "--vcf ${vcf}"
         prefix = task.ext.prefix ?: "${meta2.id}"
         meta = meta2
-    } else if (bcf) {
+    }
+    else if (bcf) {
         input_command = "--bcf ${bcf}"
         prefix = task.ext.prefix ?: "${meta3.id}"
         meta = meta3
-    } else {
-        log.error 'ERROR: the input should be either plink native binary format, VCF or BCF'
+    }
+    else {
+        log.error('ERROR: the input should be either plink native binary format, VCF or BCF')
     }
 
     """
     plink \\
-        $input_command \\
-        --threads $task.cpus \\
-        $args \\
-        $snpfile \\
-        --r2 $args2 \\
-        --out $prefix
+        ${input_command} \\
+        --threads ${task.cpus} \\
+        ${args} \\
+        ${snpfile} \\
+        --r2 ${args2} \\
+        --out ${prefix}
     """
-
 
     stub:
     def prefix = ""
     // define input string based on provided input files
     // in hierarchical order
     def input_command = ""
-    if (bed){
+    if (bed) {
         input_command = "--bed ${bed} --bim ${bim} --fam ${fam}"
         prefix = task.ext.prefix ?: "${meta.id}"
-    } else if (vcf) {
+    }
+    else if (vcf) {
         input_command = "--vcf ${vcf}"
         prefix = task.ext.prefix ?: "${meta2.id}"
         meta = meta2
-    } else if (bcf) {
+    }
+    else if (bcf) {
         input_command = "--bcf ${bcf}"
         prefix = task.ext.prefix ?: "${meta3.id}"
         meta = meta3
-    } else {
-        log.error 'ERROR: the input should be either plink native binary format, VCF or BCF'
+    }
+    else {
+        log.error('ERROR: the input should be either plink native binary format, VCF or BCF')
     }
     """
     touch ${prefix}.ld

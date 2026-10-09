@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CELLRANGERARC_MKREF {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     container "quay.io/nf-core/cellranger-arc:2.0.2"
@@ -9,7 +12,7 @@ process CELLRANGERARC_MKREF {
 
     output:
     tuple val(meta), path("${prefix}"), emit: reference
-    tuple val(meta), path("config")   , emit: config
+    tuple val(meta), path("config"), emit: config
     tuple val("${task.process}"), val('cellrangerarc'), eval("cellranger-arc --version 2>&1 | sed 's/cellranger-arc cellranger-arc-//'"), emit: versions_cellrangerarc, topic: versions
 
     when:
@@ -18,7 +21,7 @@ process CELLRANGERARC_MKREF {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "CELLRANGERARC_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead."
+        exit(1, "CELLRANGERARC_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     def fasta_name = fasta.name
     def gtf_name = gtf.name
@@ -68,13 +71,13 @@ process CELLRANGERARC_MKREF {
         mkref \\
         --config=config \\
         --nthreads=${task.cpus} \\
-        $args
+        ${args}
     """
 
     stub:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "CELLRANGERARC_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead."
+        exit(1, "CELLRANGERARC_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     prefix = task.ext.prefix ?: "${meta.id}_reference"
     """

@@ -1,17 +1,20 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FMHFUNPROFILER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fmh-funprofiler:1.1.1--pyh106432d_0':
-        'quay.io/biocontainers/fmh-funprofiler:1.1.1--pyh106432d_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/fmh-funprofiler:1.1.1--pyh106432d_0'
+        : 'quay.io/biocontainers/fmh-funprofiler:1.1.1--pyh106432d_0'}"
 
     input:
     tuple val(meta), path(reads)
-    path(ko_sketch)
-    val(ksize)
-    val(scaled)
+    path ko_sketch
+    val ksize
+    val scaled
 
     output:
     tuple val(meta), path("*.csv"), emit: csv
@@ -25,11 +28,11 @@ process FMHFUNPROFILER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     funcprofiler \\
-        $args \\
-        $reads \\
-        $ko_sketch \\
-        $ksize \\
-        $scaled \\
+        ${args} \\
+        ${reads} \\
+        ${ko_sketch} \\
+        ${ksize} \\
+        ${scaled} \\
         ${prefix}.csv
     """
 

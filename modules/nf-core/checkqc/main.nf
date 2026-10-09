@@ -1,14 +1,17 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CHECKQC {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6e/6ec3d6e7260c79ecd92ff53e66337a8f1db4ca8d0a3ba561c35f21fa9acdd6ba/data':
-        'community.wave.seqera.io/library/sample-sheet_numpy_pandas_pip_pruned:0b9dc0869e46a949' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6e/6ec3d6e7260c79ecd92ff53e66337a8f1db4ca8d0a3ba561c35f21fa9acdd6ba/data'
+        : 'community.wave.seqera.io/library/sample-sheet_numpy_pandas_pip_pruned:0b9dc0869e46a949'}"
 
     input:
     tuple val(meta), path(run_dir)
-    path(checkqc_config)
+    path checkqc_config
 
     output:
     tuple val(meta), path("*checkqc_report.json"), emit: report
@@ -20,13 +23,13 @@ process CHECKQC {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "CheckQC module does not support Conda yet. Please use Docker / Singularity / Podman instead."
+        error("CheckQC module does not support Conda yet. Please use Docker / Singularity / Podman instead.")
     }
 
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def args3 = task.ext.args3 ?: ''
-    def config = checkqc_config ? "--config $checkqc_config" : ''
+    def config = checkqc_config ? "--config ${checkqc_config}" : ''
     def input_tar = run_dir.toString().endsWith(".tar.gz") ? true : false
     def input_dir = input_tar ? run_dir.toString() - '.tar.gz' : run_dir
 
@@ -57,10 +60,10 @@ process CHECKQC {
     fi
 
     checkqc \
-        $args \
-        $config \
+        ${args} \
+        ${config} \
         --json \
-        $input_dir > checkqc_report.json || true
+        ${input_dir} > checkqc_report.json || true
 
     # Check if the output JSON file is empty
     if [[ ! -s checkqc_report.json ]] ; then

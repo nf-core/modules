@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VIZGENPOSTPROCESSING_RUNSEGMENTATIONONTILE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
@@ -7,12 +10,13 @@ process VIZGENPOSTPROCESSING_RUNSEGMENTATIONONTILE {
 
     input:
     tuple val(meta), path(input_images), path(segmentation_params), val(tile_index)
-    path(algorithm_json) // Not passed as an arg; defined in segmentation parameters
-    path(custom_weights) // Optional; also defined in segmentation parameters
+    path algorithm_json
+    // Not passed as an arg; defined in segmentation parameters
+    path custom_weights
 
     output:
-    tuple val(meta), path("${prefix}/result_tiles/*.parquet")                                                                 , emit: segmented_tile
-    tuple val("${task.process}"), val('vpt'), eval("pip show vpt | sed -n 's/Version: //p'")                                 , emit: versions_vpt, topic: versions
+    tuple val(meta), path("${prefix}/result_tiles/*.parquet"), emit: segmented_tile
+    tuple val("${task.process}"), val('vpt'), eval("pip show vpt | sed -n 's/Version: //p'"), emit: versions_vpt, topic: versions
     tuple val("${task.process}"), val('vpt-plugin-cellpose2'), eval("pip show vpt-plugin-cellpose2 | sed -n 's/Version: //p'"), emit: versions_vptplugincellpose2, topic: versions
 
     when:
@@ -24,9 +28,9 @@ process VIZGENPOSTPROCESSING_RUNSEGMENTATIONONTILE {
     """
     vpt --verbose \\
         run-segmentation-on-tile \\
-        $args \\
-        --input-segmentation-parameters $segmentation_params \\
-        --tile-index $tile_index
+        ${args} \\
+        --input-segmentation-parameters ${segmentation_params} \\
+        --tile-index ${tile_index}
     """
 
     stub:

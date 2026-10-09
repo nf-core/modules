@@ -1,20 +1,23 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VRHYME_VRHYME {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vrhyme:1.1.0--pyhdfd78af_1':
-        'quay.io/biocontainers/vrhyme:1.1.0--pyhdfd78af_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/vrhyme:1.1.0--pyhdfd78af_1'
+        : 'quay.io/biocontainers/vrhyme:1.1.0--pyhdfd78af_1'}"
 
     input:
     tuple val(meta), path(reads)
     tuple val(meta2), path(fasta)
 
     output:
-    tuple val(meta), path("vRhyme_best_bins_fasta/")                , emit: bins
-    tuple val(meta), path("**/vRhyme_best_bins.*.membership.tsv")   , emit: membership
-    tuple val(meta), path("**/vRhyme_best_bins.*.summary.tsv")      , emit: summary
+    tuple val(meta), path("vRhyme_best_bins_fasta/"), emit: bins
+    tuple val(meta), path("**/vRhyme_best_bins.*.membership.tsv"), emit: membership
+    tuple val(meta), path("**/vRhyme_best_bins.*.summary.tsv"), emit: summary
     tuple val("${task.process}"), val('vrhyme'), eval("vRhyme --version 2>&1 | sed 's/^.*vRhyme v//; s/Using.*\$//'"), emit: versions_vrhyme, topic: versions
 
     when:
@@ -24,8 +27,8 @@ process VRHYME_VRHYME {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def fasta_input = fasta.toString().replaceAll(/\.gz$/, '')
-    def gunzip      = fasta.getExtension() == "gz" ? "gunzip -c ${fasta} > ${fasta_input}" : ""
-    def cleanup     = fasta.getExtension() == "gz" ? "rm ${fasta_input}" : ""
+    def gunzip = fasta.getExtension() == "gz" ? "gunzip -c ${fasta} > ${fasta_input}" : ""
+    def cleanup = fasta.getExtension() == "gz" ? "rm ${fasta_input}" : ""
     """
     ${gunzip}
 
@@ -36,7 +39,7 @@ process VRHYME_VRHYME {
         -t ${task.cpus} \\
         ${args}
 
-    mv $prefix/vRhyme_best_bins_fasta/ vRhyme_best_bins_fasta
+    mv ${prefix}/vRhyme_best_bins_fasta/ vRhyme_best_bins_fasta
 
     ${cleanup}
     """

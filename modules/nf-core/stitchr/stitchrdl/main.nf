@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process STITCHR_STITCHRDL {
     tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/76/76d0ef2c9c69e209ffda41c33934844a56e3502666ea0b1463a2da2988388120/data':
-        'community.wave.seqera.io/library/pip_python_imgtgenedl_stitchr:dfbfca531b445fc7' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/76/76d0ef2c9c69e209ffda41c33934844a56e3502666ea0b1463a2da2988388120/data'
+        : 'community.wave.seqera.io/library/pip_python_imgtgenedl_stitchr:dfbfca531b445fc7'}"
 
     input:
     tuple val(meta), val(species)
@@ -30,7 +33,7 @@ process STITCHR_STITCHRDL {
     export PYTHONPATH="\$PWD\${PYTHONPATH:+:\$PYTHONPATH}"
 
     stitchrdl \\
-        $args \\
+        ${args} \\
         -s ${species}
 
     # drop .pyc caches so the emitted Data directory is reproducible across runs

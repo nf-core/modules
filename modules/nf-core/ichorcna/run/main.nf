@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ICHORCNA_RUN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f0/f07cec06705b4443052d3d7eaccebdbd0078366f7d074bfd4a6893980c6e2c4b/data' :
-        'community.wave.seqera.io/library/r-ichorcna:0.5.1--eed4be826f05c9d4' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f0/f07cec06705b4443052d3d7eaccebdbd0078366f7d074bfd4a6893980c6e2c4b/data'
+        : 'community.wave.seqera.io/library/r-ichorcna:0.5.1--eed4be826f05c9d4'}"
 
     input:
     tuple val(meta), path(wig)
@@ -18,28 +21,28 @@ process ICHORCNA_RUN {
     path exons
 
     output:
-    tuple val(meta), path("${prefix}.RData")             , emit: rdata
-    tuple val(meta), path("${prefix}.seg")               , emit: seg
-    tuple val(meta), path("${prefix}.cna.seg")           , emit: cna_seg
-    tuple val(meta), path("${prefix}.seg.txt")           , emit: seg_txt
+    tuple val(meta), path("${prefix}.RData"), emit: rdata
+    tuple val(meta), path("${prefix}.seg"), emit: seg
+    tuple val(meta), path("${prefix}.cna.seg"), emit: cna_seg
+    tuple val(meta), path("${prefix}.seg.txt"), emit: seg_txt
     tuple val(meta), path("${prefix}.correctedDepth.txt"), emit: corrected_depth
-    tuple val(meta), path("${prefix}.params.txt")        , emit: ichorcna_params
-    tuple val(meta), path("${prefix}/*.pdf")             , emit: plots
-    tuple val(meta), path("**/${prefix}_genomeWide.pdf") , emit: genome_plot
+    tuple val(meta), path("${prefix}.params.txt"), emit: ichorcna_params
+    tuple val(meta), path("${prefix}/*.pdf"), emit: plots
+    tuple val(meta), path("**/${prefix}_genomeWide.pdf"), emit: genome_plot
     path "versions.yml", emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args       ?: ''
-    prefix = task.ext.prefix       ?: "${meta.id}"
-    def norm   = normal_wig        ? "normal_wig='${normal_wig}',"          : 'normal_wig=NULL,'
-    def pon    = normal_background ? "normal_panel='${normal_background}'," : 'normal_panel=NULL,'
-    def map    = map_wig           ? "mapWig='${map_wig}',"                 : 'mapWig=NULL,'
-    def centro = centromere        ? "centromere='${centromere}',"          : ''
-    def rep    = rep_time_wig      ? "repTimeWig='${rep_time_wig}',"        : 'repTimeWig=NULL,'
-    def exon   = exons             ? "exons.bed='${exons}',"                : ''
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def norm = normal_wig ? "normal_wig='${normal_wig}'," : 'normal_wig=NULL,'
+    def pon = normal_background ? "normal_panel='${normal_background}'," : 'normal_panel=NULL,'
+    def map = map_wig ? "mapWig='${map_wig}'," : 'mapWig=NULL,'
+    def centro = centromere ? "centromere='${centromere}'," : ''
+    def rep = rep_time_wig ? "repTimeWig='${rep_time_wig}'," : 'repTimeWig=NULL,'
+    def exon = exons ? "exons.bed='${exons}'," : ''
     """
     #!/usr/bin/env Rscript
     library("ichorCNA")
@@ -78,7 +81,7 @@ process ICHORCNA_RUN {
     """
 
     stub:
-    prefix = task.ext.prefix   ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     #!/usr/bin/env Rscript
@@ -106,5 +109,4 @@ process ICHORCNA_RUN {
     )
     writeLines(yaml_str, file("versions.yml"))
     """
-
 }

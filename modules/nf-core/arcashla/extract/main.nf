@@ -1,20 +1,23 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ARCASHLA_EXTRACT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/arcas-hla:0.5.0--hdfd78af_0':
-        'quay.io/biocontainers/arcas-hla:0.5.0--hdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/arcas-hla:0.5.0--hdfd78af_0'
+        : 'quay.io/biocontainers/arcas-hla:0.5.0--hdfd78af_0'}"
 
     input:
     tuple val(meta), path(bam)
 
     output:
-    tuple val(meta), path("*.fq.gz")                 , emit: extracted_reads_fastq
-    path "*.log"                                     , emit: log
-    tuple val(meta), path("temp_files/**.sam")       , emit: intermediate_sam       , optional: true
-    tuple val(meta), path("temp_files/**.bam")       , emit: intermediate_bam       , optional: true
+    tuple val(meta), path("*.fq.gz"), emit: extracted_reads_fastq
+    path "*.log", emit: log
+    tuple val(meta), path("temp_files/**.sam"), emit: intermediate_sam, optional: true
+    tuple val(meta), path("temp_files/**.bam"), emit: intermediate_bam, optional: true
     tuple val(meta), path("temp_files/**.sorted.bam"), emit: intermediate_sorted_bam, optional: true
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     tuple val("${task.process}"), val('arcashla'), val('0.5.0'), emit: versions_arcashla, topic: versions
@@ -23,9 +26,9 @@ process ARCASHLA_EXTRACT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def single_end  = meta.single_end ? "--single" : ""
+    def single_end = meta.single_end ? "--single" : ""
 
     """
     arcasHLA \\

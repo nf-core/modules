@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { BISMARK_ALIGN                } from '../../../modules/nf-core/bismark/align/main'
 include { BISMARK_DEDUPLICATE          } from '../../../modules/nf-core/bismark/deduplicate/main'
 include { SAMTOOLS_SORT                } from '../../../modules/nf-core/samtools/sort/main'
@@ -35,7 +38,7 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
      */
     BISMARK_ALIGN(
         ch_reads,
-        ch_fasta_fai.map{ meta, fasta, _fai -> [meta, fasta] },
+        ch_fasta_fai.map { meta, fasta, _fai -> [meta, fasta] },
         ch_bismark_index,
     )
     ch_alignments = BISMARK_ALIGN.out.bam
@@ -87,7 +90,7 @@ workflow FASTQ_ALIGN_DEDUP_BISMARK {
     if (cytosine_report) {
         BISMARK_COVERAGE2CYTOSINE(
             ch_methylation_coverage,
-            ch_fasta_fai.map{ meta, fasta, _fai -> [meta, fasta] },
+            ch_fasta_fai.map { meta, fasta, _fai -> [meta, fasta] },
             ch_bismark_index,
         )
         ch_coverage2cytosine_coverage = BISMARK_COVERAGE2CYTOSINE.out.coverage

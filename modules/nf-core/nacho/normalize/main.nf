@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process NACHO_NORMALIZE {
     tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/43/43e3f488da4c74d940f7f920a0be6c8d238e586ee14e7e08c24d6a8b4f682a1c/data'
-:         'community.wave.seqera.io/library/r-base_r-dplyr_r-fs_r-ggplot2_pruned:2bcf3b351adffd77' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/43/43e3f488da4c74d940f7f920a0be6c8d238e586ee14e7e08c24d6a8b4f682a1c/data'
+        : 'community.wave.seqera.io/library/r-base_r-dplyr_r-fs_r-ggplot2_pruned:2bcf3b351adffd77'}"
 
     input:
-    tuple val(meta) , path(rcc_files, stageAs: "input/*")
+    tuple val(meta), path(rcc_files, stageAs: "input/*")
     tuple val(meta2), path(sample_sheet)
 
     output:
-    tuple val(meta), path("${prefix}.tsv")          , emit: normalized_counts
+    tuple val(meta), path("${prefix}.tsv"), emit: normalized_counts
     tuple val(meta), path("${prefix}_wo_HKnorm.tsv"), emit: normalized_counts_wo_HK
     path "versions.yml", emit: versions, topic: versions
 
@@ -27,7 +30,7 @@ process NACHO_NORMALIZE {
     echo ${args}
     """
 
-    template 'nacho_norm.R'
+    template('nacho_norm.R')
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"

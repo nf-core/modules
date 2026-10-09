@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FINALETOOLKIT_FRAGLENGTHBINS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/34/34f01d128ed135aedc33ddb62fced3911bef6d1a909694291b7184bf83719402/data':
-        'community.wave.seqera.io/library/finaletoolkit:0.11.1--8fe5ba6ec9e2ec95' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/34/34f01d128ed135aedc33ddb62fced3911bef6d1a909694291b7184bf83719402/data'
+        : 'community.wave.seqera.io/library/finaletoolkit:0.11.1--8fe5ba6ec9e2ec95'}"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -34,7 +37,7 @@ process FINALETOOLKIT_FRAGLENGTHBINS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo $args
+    echo ${args}
 
     touch ${prefix}.frag_len.tsv
     touch ${prefix}_hist.png

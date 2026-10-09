@@ -1,17 +1,20 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ODGI_STATS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/odgi:0.9.0--py312h5e9d817_1':
-        'quay.io/biocontainers/odgi:0.9.0--py312h5e9d817_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/odgi:0.9.0--py312h5e9d817_1'
+        : 'quay.io/biocontainers/odgi:0.9.0--py312h5e9d817_1'}"
 
     input:
     tuple val(meta), path(graph)
 
     output:
-    tuple val(meta), path("*.og.stats.tsv") , optional: true, emit: tsv
+    tuple val(meta), path("*.og.stats.tsv"), optional: true, emit: tsv
     tuple val(meta), path("*.og.stats.yaml"), optional: true, emit: yaml
     tuple val("${task.process}"), val('odgi'), eval("odgi version | sed 's/^v//; s/-.*//'"), emit: versions_odgi, topic: versions
 
@@ -28,9 +31,9 @@ process ODGI_STATS {
     """
     odgi \\
         stats \\
-        --threads $task.cpus \\
+        --threads ${task.cpus} \\
         --idx ${graph} \\
-        $args > ${prefix}.$suffix
+        ${args} > ${prefix}.${suffix}
     """
 
     stub:

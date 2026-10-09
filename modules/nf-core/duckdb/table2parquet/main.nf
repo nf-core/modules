@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DUCKDB_TABLE2PARQUET {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/68/68261e24307fdf80b9988d6fd13cf3551735e6dc0e7e38003259f7d8efa84cdb/data'
-:         'community.wave.seqera.io/library/duckdb-cli:1.5.5--9c6d18d9f687a45d' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/68/68261e24307fdf80b9988d6fd13cf3551735e6dc0e7e38003259f7d8efa84cdb/data'
+        : 'community.wave.seqera.io/library/duckdb-cli:1.5.5--9c6d18d9f687a45d'}"
 
     input:
     tuple val(meta), path(table)
@@ -18,12 +21,14 @@ process DUCKDB_TABLE2PARQUET {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ? ", ${task.ext.args}"  : ''  // read_csv options
-    def args2  = task.ext.args2  ? ", ${task.ext.args2}" : ''  // Copy options
+    def args = task.ext.args ? ", ${task.ext.args}" : ''
+    // read_csv options
+    def args2 = task.ext.args2 ? ", ${task.ext.args2}" : ''
+    // Copy options
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def stem   = table.name.replaceAll(/\.(gz|zst)$/, '')
-    def delim  = stem.endsWith('.tsv') ? '\\t' : stem.endsWith('.csv') ? ',' : null
-    if ( ! delim ) {
+    def stem = table.name.replaceAll(/\.(gz|zst)$/, '')
+    def delim = stem.endsWith('.tsv') ? '\\t' : stem.endsWith('.csv') ? ',' : null
+    if (!delim) {
         error("DUCKDB_TABLE2PARQUET: cannot determine a delimiter for '${table.name}' -- expected a .csv or .tsv suffix, optionally followed by .gz or .zst")
     }
     // SQL string literals escape an embedded "'" by doubling it, not with a backslash.

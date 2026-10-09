@@ -1,14 +1,17 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PERBASE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fd/fd166ca25d396f7558faf94f3b9b508bc73379181c29dc7c134d5b4a29109a81/data':
-        'community.wave.seqera.io/library/perbase:1.4.0--9d769b8ba6979df2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fd/fd166ca25d396f7558faf94f3b9b508bc73379181c29dc7c134d5b4a29109a81/data'
+        : 'community.wave.seqera.io/library/perbase:1.4.0--9d769b8ba6979df2'}"
 
     input:
-    tuple val(meta) , path(bam)  , path(index), path(bed)
+    tuple val(meta), path(bam), path(index), path(bed)
     tuple val(meta2), path(fasta), path(fai)
 
     output:
@@ -19,18 +22,18 @@ process PERBASE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args      = task.ext.args ?: ''
-    def prefix    = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def reference = fasta ? "--ref-fasta ${fasta}" : ""
-    def region    = bed   ? "--bed-file ${bed}"    : ""
+    def region = bed ? "--bed-file ${bed}" : ""
     """
     perbase \\
         base-depth \\
-        $bam \\
-        $args \\
-        $reference \\
-        $region \\
-        --threads $task.cpus \\
+        ${bam} \\
+        ${args} \\
+        ${reference} \\
+        ${region} \\
+        --threads ${task.cpus} \\
         --bgzip \\
         --output ${prefix}.tsv.gz
     """

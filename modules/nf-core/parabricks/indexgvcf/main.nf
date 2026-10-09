@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PARABRICKS_INDEXGVCF {
     tag "${meta.id}"
     label 'process_high'
@@ -12,7 +15,7 @@ process PARABRICKS_INDEXGVCF {
 
     output:
     tuple val(meta), path("*.{idx,tbi}"), emit: gvcf_index
-    path "compatible_versions.yml",       emit: compatible_versions, optional: true
+    path "compatible_versions.yml", emit: compatible_versions, optional: true
     tuple val("${task.process}"), val('parabricks'), eval("pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'"), topic: versions, emit: versions_parabricks
 
     when:

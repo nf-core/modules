@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SENTIEON_COLLECTVCMETRICS {
     tag "${meta.id}"
     label 'process_medium'
@@ -16,7 +19,7 @@ process SENTIEON_COLLECTVCMETRICS {
     tuple val(meta5), path(interval)
 
     output:
-    tuple val(meta), path("*.variant_calling_detail_metrics"),  emit: metrics
+    tuple val(meta), path("*.variant_calling_detail_metrics"), emit: metrics
     tuple val(meta), path("*.variant_calling_summary_metrics"), emit: summary
     tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 

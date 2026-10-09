@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process METATOR_PIPELINE {
     tag "${meta.id}"
     label 'process_medium'
@@ -12,11 +15,11 @@ process METATOR_PIPELINE {
 
     output:
     tuple val(meta), path("final_bin_unscaffold/*.fa.gz"), emit: bins
-    tuple val(meta), path("bin_summary.txt")             , emit: bin_summary
-    tuple val(meta), path("binning.txt")                 , emit: contig2bin
-    tuple val(meta), path("network.txt")                 , emit: network
-    tuple val(meta), path("contig_data_final.txt")       , emit: contig_data
-    tuple val(meta), path("plot/*.png")                  , emit: plots, optional: true
+    tuple val(meta), path("bin_summary.txt"), emit: bin_summary
+    tuple val(meta), path("binning.txt"), emit: contig2bin
+    tuple val(meta), path("network.txt"), emit: network
+    tuple val(meta), path("contig_data_final.txt"), emit: contig_data
+    tuple val(meta), path("plot/*.png"), emit: plots, optional: true
     tuple val("${task.process}"), val('metator'), eval("metator -v"), topic: versions, emit: versions_metator
     tuple val("${task.process}"), val('gunzip'), eval('gunzip --version |& sed "1!d;s/^.*(gzip) //;s/ Copyright.*//"'), topic: versions, emit: versions_gunzip
     tuple val("${task.process}"), val("find"), eval("find --version | sed '1!d; s/.* //'"), topic: versions, emit: versions_find
@@ -25,7 +28,7 @@ process METATOR_PIPELINE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args  = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def args3 = task.ext.args3 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
@@ -37,7 +40,8 @@ process METATOR_PIPELINE {
     def input_type_arg = "-S fastq"
     if (hic_input[0].getExtension() == "bam") {
         input_type_arg = "-S bam"
-    } else if (hic_input[0].getName().endsWith(".pairs.gz") || hic_input[0].getName().endsWith(".pairs")) {
+    }
+    else if (hic_input[0].getName().endsWith(".pairs.gz") || hic_input[0].getName().endsWith(".pairs")) {
         input_type_arg = "-S pair"
         if (hic_input.size() > 1) {
             error("Error: Pairs file supplied to Metator but a second Hi-C file also supplied. Please only supply a pairs file.")
@@ -45,8 +49,7 @@ process METATOR_PIPELINE {
     }
 
     // Set up input file args
-    def input_arg = "--forward ${hic_input[0]}" +
-        (hic_input.size() == 2 ? " --reverse ${hic_input[1]}" : "")
+    def input_arg = "--forward ${hic_input[0]}" + (hic_input.size() == 2 ? " --reverse ${hic_input[1]}" : "")
     """
     ${gunzip}
 

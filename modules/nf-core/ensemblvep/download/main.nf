@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ENSEMBLVEP_DOWNLOAD {
     tag "${meta.id}"
     label 'process_medium'
@@ -9,7 +12,7 @@ process ENSEMBLVEP_DOWNLOAD {
 
     input:
     tuple val(meta), val(assembly), val(species), val(cache_version)
-    val(preflight_check)
+    val preflight_check
 
     output:
     tuple val(meta), path(prefix), emit: cache

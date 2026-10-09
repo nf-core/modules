@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PARABRICKS_MUTECTCALLER {
     tag "${meta.id}"
     label 'process_high'
@@ -14,9 +17,9 @@ process PARABRICKS_MUTECTCALLER {
     path panel_of_normals_index
 
     output:
-    tuple val(meta), path("*.vcf.gz"),       emit: vcf
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
     tuple val(meta), path("*.vcf.gz.stats"), emit: stats
-    path "compatible_versions.yml",          emit: compatible_versions, optional: true
+    path "compatible_versions.yml", emit: compatible_versions, optional: true
     tuple val("${task.process}"), val('parabricks'), eval("pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'"), topic: versions, emit: versions_parabricks
 
     when:
@@ -31,11 +34,11 @@ process PARABRICKS_MUTECTCALLER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def intervals_command  = intervals     ? (intervals instanceof List ? intervals.collect { interval -> "--interval-file ${interval}" }.join(' ') : "--interval-file ${intervals}") : ""
+    def intervals_command = intervals ? (intervals instanceof List ? intervals.collect { interval -> "--interval-file ${interval}" }.join(' ') : "--interval-file ${intervals}") : ""
     def prepon_command = panel_of_normals ? "cp -L ${panel_of_normals_index} `readlink -f ${panel_of_normals}`.tbi && pbrun prepon --in-pon-file ${panel_of_normals}" : ""
     // pbrun postpon requires uncompressed .vcf input; output uncompressed when PON is provided
-    def mutect_out     = panel_of_normals ? "${prefix}.vcf"    : "${prefix}.vcf.gz"
-    def stats_rename   = panel_of_normals ? "mv ${prefix}.vcf.stats ${prefix}.vcf.gz.stats" : ""
+    def mutect_out = panel_of_normals ? "${prefix}.vcf" : "${prefix}.vcf.gz"
+    def stats_rename = panel_of_normals ? "mv ${prefix}.vcf.stats ${prefix}.vcf.gz.stats" : ""
     def postpon_command = panel_of_normals ? "pbrun postpon --in-vcf ${prefix}.vcf --in-pon-file ${panel_of_normals} --out-vcf ${prefix}.vcf.gz" : ""
 
     def num_gpus = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ""

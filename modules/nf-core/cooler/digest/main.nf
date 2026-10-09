@@ -1,16 +1,19 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process COOLER_DIGEST {
-    tag "$fasta"
+    tag "${fasta}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cooler:0.10.4--pyhdfd78af_0' :
-        'quay.io/biocontainers/cooler:0.10.4--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/cooler:0.10.4--pyhdfd78af_0'
+        : 'quay.io/biocontainers/cooler:0.10.4--pyhdfd78af_0'}"
 
     input:
     path fasta
     path chromsizes
-    val  enzyme
+    val enzyme
 
     output:
     path "*.bed", emit: bed
@@ -23,11 +26,11 @@ process COOLER_DIGEST {
     def args = task.ext.args ?: ''
     """
     cooler digest \\
-        $args \\
+        ${args} \\
         -o "${fasta.baseName}_${enzyme.replaceAll(/[^0-9a-zA-Z]+/, '_')}.bed" \\
-        $chromsizes \\
-        $fasta \\
-        $enzyme
+        ${chromsizes} \\
+        ${fasta} \\
+        ${enzyme}
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

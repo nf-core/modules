@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VAMB_BIN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
     label 'process_gpu'
 
@@ -16,15 +19,15 @@ process VAMB_BIN {
     tuple val(meta), path(assembly), path(abundance_tsv), path(bams, stageAs: "bams/*"), path(taxonomy)
 
     output:
-    tuple val(meta), path("${prefix}/bins/*.fna.gz")             , emit: bins             , optional: true
+    tuple val(meta), path("${prefix}/bins/*.fna.gz"), emit: bins, optional: true
     tuple val(meta), path("${prefix}/vae*_clusters_metadata.tsv"), emit: clusters_metadata
-    tuple val(meta), path("${prefix}/vae*_clusters_split.tsv")   , emit: clusters_split   , optional: true
-    tuple val(meta), path("${prefix}/vae*_clusters_unsplit.tsv") , emit: clusters_unsplit
-    tuple val(meta), path("${prefix}/results_taxometer.tsv")     , emit: taxometer_results, optional: true
-    tuple val(meta), path("${prefix}/latent.npz")                , emit: latent_encoding  , optional: true
-    tuple val(meta), path("${prefix}/abundance.npz")             , emit: abundance
-    tuple val(meta), path("${prefix}/composition.npz")           , emit: composition
-    tuple val(meta), path("${prefix}/log.txt")                   , emit: log
+    tuple val(meta), path("${prefix}/vae*_clusters_split.tsv"), emit: clusters_split, optional: true
+    tuple val(meta), path("${prefix}/vae*_clusters_unsplit.tsv"), emit: clusters_unsplit
+    tuple val(meta), path("${prefix}/results_taxometer.tsv"), emit: taxometer_results, optional: true
+    tuple val(meta), path("${prefix}/latent.npz"), emit: latent_encoding, optional: true
+    tuple val(meta), path("${prefix}/abundance.npz"), emit: abundance
+    tuple val(meta), path("${prefix}/composition.npz"), emit: composition
+    tuple val(meta), path("${prefix}/log.txt"), emit: log
     tuple val("${task.process}"), val('vamb'), eval("vamb --version | sed 's/Vamb //'"), emit: versions_vamb, topic: versions
     tuple val("${task.process}"), val('cuda'), eval('python -c "import torch; print(torch.version.cuda or \'no CUDA available\')"'), emit: versions_cuda, topic: versions
 
@@ -32,15 +35,15 @@ process VAMB_BIN {
     task.ext.when == null || task.ext.when
 
     script:
-    if(bams && abundance_tsv) {
+    if (bams && abundance_tsv) {
         error("ERROR: Both bams and abundance TSV supplied to Vamb! Please only supply one.")
     }
-    def args    = task.ext.args ?: ''
-    prefix      = task.ext.prefix ?: "${meta.id}"
-    def mode    = taxonomy ? "taxvamb" : "default"
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def mode = taxonomy ? "taxvamb" : "default"
     depth_input = abundance_tsv ? "--abundance_tsv ${abundance_tsv}" : "--bamdir bams/"
-    tax_input   = taxonomy ? "--taxonomy ${taxonomy}" : ""
-    def device  = task.accelerator ? '--cuda' : ''
+    tax_input = taxonomy ? "--taxonomy ${taxonomy}" : ""
+    def device = task.accelerator ? '--cuda' : ''
     """
     vamb bin \\
         ${mode} \\
@@ -62,10 +65,10 @@ process VAMB_BIN {
     """
 
     stub:
-    if(bams && abundance_tsv) {
+    if (bams && abundance_tsv) {
         error("ERROR: Both bams and abundance TSV supplied to Vamb! Please only supply one.")
     }
-    prefix   = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}/bins
 

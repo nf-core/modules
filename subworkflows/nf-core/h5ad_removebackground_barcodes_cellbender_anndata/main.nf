@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 //
 // Apply cellbender and anndata to h5ad for background and empty droplet removal
 //
@@ -5,7 +8,6 @@ include { CELLBENDER_REMOVEBACKGROUND } from '../../../modules/nf-core/cellbende
 include { ANNDATA_BARCODES            } from '../../../modules/nf-core/anndata/barcodes'
 
 workflow H5AD_REMOVEBACKGROUND_BARCODES_CELLBENDER_ANNDATA {
-
     take:
     ch_unfiltered // channel: [mandatory] meta, h5ad
 
@@ -15,5 +17,5 @@ workflow H5AD_REMOVEBACKGROUND_BARCODES_CELLBENDER_ANNDATA {
     ANNDATA_BARCODES(ch_unfiltered.join(CELLBENDER_REMOVEBACKGROUND.out.barcodes))
 
     emit:
-    h5ad = ANNDATA_BARCODES.out.h5ad  // channel: [ val(meta), path(h5ad) ]
+    h5ad = ANNDATA_BARCODES.out.h5ad // channel: [ val(meta), path(h5ad) ]
 }

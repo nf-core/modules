@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FUSIONCATCHER_FUSIONCATCHER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fusioncatcher:1.33--hdfd78af_5':
-        'quay.io/biocontainers/fusioncatcher:1.33--hdfd78af_5' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/fusioncatcher:1.33--hdfd78af_5'
+        : 'quay.io/biocontainers/fusioncatcher:1.33--hdfd78af_5'}"
 
     input:
     tuple val(meta), path(fastqs)
@@ -13,8 +16,8 @@ process FUSIONCATCHER_FUSIONCATCHER {
 
     output:
     tuple val(meta), path("*.fusion-genes.txt"), emit: fusions, optional: true
-    tuple val(meta), path("*.summary.txt")     , emit: summary, optional: true
-    tuple val(meta), path("*.log")             , emit: log
+    tuple val(meta), path("*.summary.txt"), emit: summary, optional: true
+    tuple val(meta), path("*.log"), emit: log
     tuple val("${task.process}"), val('fusioncatcher'), eval("fusioncatcher --version |& sed 's/.* //'"), topic: versions, emit: versions_fusioncatcher
 
     when:
@@ -27,9 +30,10 @@ process FUSIONCATCHER_FUSIONCATCHER {
 
     def avail_mem = 3072
     if (!task.memory) {
-        log.info '[FusionCatcher] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
-    } else {
-        avail_mem = (task.memory.mega*0.8).intValue()
+        log.info('[FusionCatcher] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.')
+    }
+    else {
+        avail_mem = (task.memory.mega * 0.8).intValue()
     }
     """
     fusioncatcher \\

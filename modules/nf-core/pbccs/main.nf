@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PBCCS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pbccs:6.4.0--h9ee0642_0' :
-        'quay.io/biocontainers/pbccs:6.4.0--h9ee0642_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/pbccs:6.4.0--h9ee0642_0'
+        : 'quay.io/biocontainers/pbccs:6.4.0--h9ee0642_0'}"
 
     input:
     tuple val(meta), path(bam), path(pbi)
@@ -13,10 +16,10 @@ process PBCCS {
     val chunk_on
 
     output:
-    tuple val(meta), path("*.chunk*.bam")     , emit: bam
-    tuple val(meta), path("*.chunk*.bam.pbi") , emit: pbi
-    tuple val(meta), path("*.report.txt" )    , emit: report_txt
-    tuple val(meta), path("*.report.json" )   , emit: report_json
+    tuple val(meta), path("*.chunk*.bam"), emit: bam
+    tuple val(meta), path("*.chunk*.bam.pbi"), emit: pbi
+    tuple val(meta), path("*.report.txt"), emit: report_txt
+    tuple val(meta), path("*.report.json"), emit: report_json
     tuple val(meta), path("*.metrics.json.gz"), emit: metrics
     tuple val("${task.process}"), val('pbccs'), eval("ccs --version 2>&1 | sed '1!d;s/^.*ccs //; s/ .*//'"), topic: versions, emit: versions_pbccs
 

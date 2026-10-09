@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 // DISCLAIMER:
 // This subworkflow is just to test the functions and the schema
 // It should not be used in any pipeline
@@ -15,17 +18,19 @@ workflow UTILS_REFERENCES {
     basepath
 
     main:
-    references = channel.fromList(samplesheetToList(
-        yaml_reference,
-        "${projectDir}/subworkflows/nf-core/utils_references/schema_references.json"
-    ))
+    references = channel.fromList(
+        samplesheetToList(
+            yaml_reference,
+            "${projectDir}/subworkflows/nf-core/utils_references/schema_references.json",
+        )
+    )
 
     // GIVING up writing a test for the functions, so writing a subworkflow to test it
     references_file = get_references_file(references, param_file, attribute_file, basepath)
     references_value = get_references_value(references, param_value, attribute_value)
 
     emit:
-    references_file = references_file
+    references_file  = references_file
     references_value = references_value
 }
 // You can delete everything before this line (including this line)

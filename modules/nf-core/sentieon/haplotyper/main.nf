@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SENTIEON_HAPLOTYPER {
     tag "${meta.id}"
     label 'process_medium'
     label 'sentieon'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2c/2c157e27981ec529b03e7ae5cfc88e51b6158332d2a82db399eef8dd8f2b1d5d/data'
-        : 'community.wave.seqera.io/library/sentieon:202503.03--5e34aa16344b911c' }"
+        : 'community.wave.seqera.io/library/sentieon:202503.03--5e34aa16344b911c'}"
 
     input:
     tuple val(meta), path(input), path(input_index), path(intervals), path(recal_table)
@@ -19,22 +22,25 @@ process SENTIEON_HAPLOTYPER {
 
     output:
     // added the substring ".unfiltered" in the filename of the vcf-files since without that the g.vcf.gz-files were ending up in the vcf-channel
-    tuple val(meta), path("*.unfiltered.vcf.gz"),     emit: vcf,      optional: true
-    tuple val(meta), path("*.unfiltered.vcf.gz.tbi"), emit: vcf_tbi,  optional: true
+    tuple val(meta), path("*.unfiltered.vcf.gz"), emit: vcf, optional: true
+    tuple val(meta), path("*.unfiltered.vcf.gz.tbi"), emit: vcf_tbi, optional: true
     // these output-files have to have the extension ".vcf.gz", otherwise the subsequent GATK-MergeVCFs will fail.
-    tuple val(meta), path("*.g.vcf.gz"),              emit: gvcf,     optional: true
-    tuple val(meta), path("*.g.vcf.gz.tbi"),          emit: gvcf_tbi, optional: true
+    tuple val(meta), path("*.g.vcf.gz"), emit: gvcf, optional: true
+    tuple val(meta), path("*.g.vcf.gz.tbi"), emit: gvcf_tbi, optional: true
     tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: '' // options for the driver
-    def args2 = task.ext.args2 ?: '' // options for the vcf generation
-    def args3 = task.ext.args3 ?: '' // options for the gvcf generation
+    def args = task.ext.args ?: ''
+    // options for the driver
+    def args2 = task.ext.args2 ?: ''
+    // options for the vcf generation
+    def args3 = task.ext.args3 ?: ''
+    // options for the gvcf generation
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input_list = input instanceof List ? input.collect {in -> "-i ${in}" }.join(' ') : "-i ${input}"
+    def input_list = input instanceof List ? input.collect { in -> "-i ${in}" }.join(' ') : "-i ${input}"
     def dbsnp_command = dbsnp ? "-d ${dbsnp} " : ""
     def interval_command = intervals ? "--interval ${intervals}" : ""
     def recal_table_command = recal_table ? "-q ${recal_table}" : ""

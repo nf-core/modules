@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SENTIEON_GVCFTYPER {
     tag "${meta.id}"
     label 'process_high'
     label 'sentieon'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2c/2c157e27981ec529b03e7ae5cfc88e51b6158332d2a82db399eef8dd8f2b1d5d/data'
-        : 'community.wave.seqera.io/library/sentieon:202503.03--5e34aa16344b911c' }"
+        : 'community.wave.seqera.io/library/sentieon:202503.03--5e34aa16344b911c'}"
 
     input:
     tuple val(meta), path(gvcfs), path(tbis), path(intervals)
@@ -16,7 +19,7 @@ process SENTIEON_GVCFTYPER {
     tuple val(meta5), path(dbsnp_tbi)
 
     output:
-    tuple val(meta), path("*.vcf.gz"),     emit: vcf_gz
+    tuple val(meta), path("*.vcf.gz"), emit: vcf_gz
     tuple val(meta), path("*.vcf.gz.tbi"), emit: vcf_gz_tbi
     tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 

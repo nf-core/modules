@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ELPREP_SPLIT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/elprep:5.1.3--he881be0_1':
-        'quay.io/biocontainers/elprep:5.1.3--he881be0_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/elprep:5.1.3--he881be0_1'
+        : 'quay.io/biocontainers/elprep:5.1.3--he881be0_1'}"
 
     input:
     tuple val(meta), path(bam)
@@ -18,9 +21,9 @@ process ELPREP_SPLIT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args        = task.ext.args ?: ''
-    def prefix      = task.ext.prefix ?: "${meta.id}"
-    def single_end  = meta.single_end ? " --single-end": ""
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def single_end = meta.single_end ? " --single-end" : ""
 
     """
     # create directory and move all input so elprep can find and merge them before splitting
@@ -33,17 +36,17 @@ process ELPREP_SPLIT {
     elprep split \\
         input \\
         output/ \\
-        $args \\
-        $single_end \\
-        --nr-of-threads $task.cpus \\
+        ${args} \\
+        ${single_end} \\
+        --nr-of-threads ${task.cpus} \\
         --log-path ./logs \\
-        --output-prefix $prefix
+        --output-prefix ${prefix}
     """
 
     stub:
-    def args        = task.ext.args ?: ''
-    def prefix      = task.ext.prefix ?: "${meta.id}"
-    def out_type    = args.contains('--output-type bam') ? 'bam' : 'sam'
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def out_type = args.contains('--output-type bam') ? 'bam' : 'sam'
 
     """
     mkdir -p output

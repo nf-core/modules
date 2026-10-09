@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GATK_REALIGNERTARGETCREATOR {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gatk:3.5--hdfd78af_11':
-        'quay.io/biocontainers/gatk:3.5--hdfd78af_11' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/gatk:3.5--hdfd78af_11'
+        : 'quay.io/biocontainers/gatk:3.5--hdfd78af_11'}"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -25,13 +28,16 @@ process GATK_REALIGNERTARGETCREATOR {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def known = known_vcf ? "-known ${known_vcf}" : ""
-    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${bam}" == "${prefix}.bam") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
+    }
 
     def avail_mem = 3072
     if (!task.memory) {
-        log.info '[GATK RealignerTargetCreator] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
-    } else {
-        avail_mem = (task.memory.mega*0.8).intValue()
+        log.info('[GATK RealignerTargetCreator] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.')
+    }
+    else {
+        avail_mem = (task.memory.mega * 0.8).intValue()
     }
 
     """
@@ -43,7 +49,7 @@ process GATK_REALIGNERTARGETCREATOR {
         -R ${fasta} \\
         -o ${prefix}.intervals \\
         ${known} \\
-        $args
+        ${args}
 
     """
 }

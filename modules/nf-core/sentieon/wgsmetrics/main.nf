@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SENTIEON_WGSMETRICS {
     tag "${meta.id}"
     label 'process_medium'
@@ -25,7 +28,7 @@ process SENTIEON_WGSMETRICS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def interval = intervals_list ? "--interval ${intervals_list}" : ""
-    def input = bam.sort().collect {in -> "-i ${in}" }.join(' ')
+    def input = bam.sort().collect { in -> "-i ${in}" }.join(' ')
     def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64
         ? "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; "
         : ""

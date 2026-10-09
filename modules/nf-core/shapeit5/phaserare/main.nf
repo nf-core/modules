@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SHAPEIT5_PHASERARE {
     tag "${meta.id}"
     label 'process_low'
@@ -19,7 +22,7 @@ process SHAPEIT5_PHASERARE {
 
     input:
     tuple val(meta), path(input), path(input_index), path(pedigree), val(input_region), path(scaffold), path(scaffold_index), val(scaffold_region), path(map)
-    val(output_suffix)
+    val output_suffix
 
     output:
     tuple val(meta), path("*.{vcf,bcf,vcf.gz,bcf.gz}"), emit: phased_variant
@@ -40,7 +43,7 @@ process SHAPEIT5_PHASERARE {
         error("Scaffold and output names are the same, set prefix in module configuration to disambiguate!")
     }
 
-    def map_command      = map      ? "--map ${map}"           : ""
+    def map_command = map ? "--map ${map}" : ""
     def pedigree_command = pedigree ? "--pedigree ${pedigree}" : ""
 
     """

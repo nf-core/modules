@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PRETEXTSNAPSHOT {
     tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fd/fde9c7892c9878e4aa8cbcb744039045a182efabac3e311a7fdb1e43b1fbb4d6/data':
-        'community.wave.seqera.io/library/pretextsnapshot:0.0.7--9470b2ea6b8991c8' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fd/fde9c7892c9878e4aa8cbcb744039045a182efabac3e311a7fdb1e43b1fbb4d6/data'
+        : 'community.wave.seqera.io/library/pretextsnapshot:0.0.7--9470b2ea6b8991c8'}"
 
     input:
     tuple val(meta), path(pretext_map), path(order_file)
@@ -25,11 +28,10 @@ process PRETEXTSNAPSHOT {
     PretextSnapshot \\
         ${args} \\
         ${order_arg} \\
-        --map $pretext_map \\
-        --prefix $prefix \\
+        --map ${pretext_map} \\
+        --prefix ${prefix} \\
         --folder .
     """
-
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}_"

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HMMER_ESLSFETCHINDEX {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f2/f2c9b2c2ded44fc2076629da06a841d3bd8a9f847f6d6e4b6a3aac38897870bc/data' :
-        'community.wave.seqera.io/library/coreutils_hmmer:4d607118d1d3ddb5' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f2/f2c9b2c2ded44fc2076629da06a841d3bd8a9f847f6d6e4b6a3aac38897870bc/data'
+        : 'community.wave.seqera.io/library/coreutils_hmmer:4d607118d1d3ddb5'}"
 
     input:
     tuple val(meta), path(seqfile)
@@ -21,7 +24,7 @@ process HMMER_ESLSFETCHINDEX {
 
     script:
     """
-    esl-sfetch --index $seqfile
+    esl-sfetch --index ${seqfile}
     """
 
     stub:

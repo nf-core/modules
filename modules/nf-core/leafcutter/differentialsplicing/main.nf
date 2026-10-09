@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process LEAFCUTTER_DIFFERENTIALSPLICING {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/leafcutter:2.0.3--pyhd8ed1ab_0':
-        'quay.io/biocontainers/leafcutter:2.0.3--pyhd8ed1ab_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/leafcutter:2.0.3--pyhd8ed1ab_0'
+        : 'quay.io/biocontainers/leafcutter:2.0.3--pyhd8ed1ab_0'}"
 
     input:
     tuple val(meta), path(counts), path(groups)
 
     output:
     tuple val(meta), path("*_cluster_significance.txt"), emit: cluster_significance
-    tuple val(meta), path("*_effect_sizes.txt")        , emit: effect_sizes
+    tuple val(meta), path("*_effect_sizes.txt"), emit: effect_sizes
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     tuple val("${task.process}"), val('leafcutter'), val("2.0.3"), topic: versions, emit: versions_leafcutter
 
@@ -27,11 +30,11 @@ process LEAFCUTTER_DIFFERENTIALSPLICING {
     export PYTHONHASHSEED=0
 
     leafcutter-ds \\
-        $counts \\
-        $groups \\
+        ${counts} \\
+        ${groups} \\
         --output_prefix ${prefix} \\
-        --num_threads $task.cpus \\
-        $args
+        --num_threads ${task.cpus} \\
+        ${args}
     """
 
     stub:

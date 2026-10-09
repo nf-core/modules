@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process LONGSTITCH {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/longstitch:1.0.5--hdfd78af_0':
-        'quay.io/biocontainers/longstitch:1.0.5--hdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/longstitch:1.0.5--hdfd78af_0'
+        : 'quay.io/biocontainers/longstitch:1.0.5--hdfd78af_0'}"
 
     input:
     tuple val(meta), path(assembly)
@@ -16,30 +19,30 @@ process LONGSTITCH {
     val longmap
 
     output:
-    tuple val(meta), path("*.tigmint-ntLink.fa"),                                           emit: tigmint_ntLink_fasta,                 optional: true
-    tuple val(meta), path("*.tigmint-ntLink-arks.fa"),                                      emit: tigmint_ntLink_arcs_fasta,            optional: true
-    tuple val(meta), path("*.ntLink-arks.fa"),                                              emit: ntLink_arcs_fasta,                    optional: true
-    tuple val(meta), path("*k*.w*.z*.n*.scaffold.dot"),                                     emit: scaffold_dot,                         optional: true
-    tuple val(meta), path("*k*.w*.z*.ntLink.scaffolds_*.dist.gv"),                          emit: links_scaffolds_dist_gv,              optional: true
-    tuple val(meta), path("*k*.w*.z*.ntLink.scaffolds_*_l*.assembly_correspondence.tsv"),   emit: links_assembly_correspondence_tsv,    optional: true
-    tuple val(meta), path("*k*.w*.z*.ntLink.scaffolds_*_l*.gv"),                            emit: links_gv,                             optional: true
-    tuple val(meta), path("*k*.w*.z*.ntLink.scaffolds_*_l*.log"),                           emit: links_log,                            optional: true
-    tuple val(meta), path("*k*.w*.z*.ntLink.scaffolds_*_l*.scaffolds"),                     emit: links_scaffolds,                      optional: true
-    tuple val(meta), path("*k*.w*.z*.ntLink.scaffolds_*_l*.scaffolds.fa"),                  emit: links_scaffolds_fa,                   optional: true
-    tuple val(meta), path("*k*.w*.z*.ntLink.scaffolds_*_l*.*.tigpair_checkpoint.tsv"),      emit: links_checkpoint_tsv,                 optional: true
-    tuple val(meta), path("*k*.w*.z*.ntLink.scaffolds_*_main.tsv"),                         emit: arcs_tsv,                             optional: true
-    tuple val(meta), path("*k*.w*.z*.ntLink.scaffolds_*_original.gv"),                      emit: arcs_gv,                              optional: true
-    tuple val(meta), path("*k*.w*.z*.ntLink.scaffolds_*.tigpair_checkpoint.tsv"),           emit: arcs_checkpoint_tsv,                  optional: true
-    tuple val(meta), path("*k*.w*.z*.ntLink.scaffolds.fa"),                                 emit: arcs_scaffolds_fa,                    optional: true
-    tuple val(meta), path("*k*.w*.z*.ntLink.scaffolds.renamed.fa"),                         emit: arcs_scaffolds_renamed,               optional: true
-    tuple val(meta), path("*k*.w*.z*.stitch.abyss-scaffold.fa"),                            emit: abyss_scaffolds_fa,                   optional: true
-    tuple val(meta), path("*k*.w*.z*.stitch.path"),                                         emit: stitch_path,                          optional: true
-    tuple val(meta), path("*k*.w*.z*.trimmed_scafs.agp"),                                   emit: trimmed_scaffolds_agp,                optional: true
-    tuple val(meta), path("*k*.w*.z*.trimmed_scafs.fa"),                                    emit: trimmed_scaffolds_fasta,              optional: true
-    tuple val(meta), path("*k*.w*.z*.trimmed_scafs.path"),                                  emit: trimmed_scaffolds_path,               optional: true
-    tuple val(meta), path("*k*.w*.z*.trimmed_scafs.tsv"),                                   emit: trimmed_scaffolds_tsv,                optional: true
-    tuple val(meta), path("*k*.w*.z*.verbose_mapping.tsv"),                                 emit: verbose_mapping_tsv,                  optional: true
-    tuple val(meta), path("*.k*.w???.tsv"),                                                 emit: tsv,                                  optional: true
+    tuple val(meta), path("*.tigmint-ntLink.fa"), emit: tigmint_ntLink_fasta, optional: true
+    tuple val(meta), path("*.tigmint-ntLink-arks.fa"), emit: tigmint_ntLink_arcs_fasta, optional: true
+    tuple val(meta), path("*.ntLink-arks.fa"), emit: ntLink_arcs_fasta, optional: true
+    tuple val(meta), path("*k*.w*.z*.n*.scaffold.dot"), emit: scaffold_dot, optional: true
+    tuple val(meta), path("*k*.w*.z*.ntLink.scaffolds_*.dist.gv"), emit: links_scaffolds_dist_gv, optional: true
+    tuple val(meta), path("*k*.w*.z*.ntLink.scaffolds_*_l*.assembly_correspondence.tsv"), emit: links_assembly_correspondence_tsv, optional: true
+    tuple val(meta), path("*k*.w*.z*.ntLink.scaffolds_*_l*.gv"), emit: links_gv, optional: true
+    tuple val(meta), path("*k*.w*.z*.ntLink.scaffolds_*_l*.log"), emit: links_log, optional: true
+    tuple val(meta), path("*k*.w*.z*.ntLink.scaffolds_*_l*.scaffolds"), emit: links_scaffolds, optional: true
+    tuple val(meta), path("*k*.w*.z*.ntLink.scaffolds_*_l*.scaffolds.fa"), emit: links_scaffolds_fa, optional: true
+    tuple val(meta), path("*k*.w*.z*.ntLink.scaffolds_*_l*.*.tigpair_checkpoint.tsv"), emit: links_checkpoint_tsv, optional: true
+    tuple val(meta), path("*k*.w*.z*.ntLink.scaffolds_*_main.tsv"), emit: arcs_tsv, optional: true
+    tuple val(meta), path("*k*.w*.z*.ntLink.scaffolds_*_original.gv"), emit: arcs_gv, optional: true
+    tuple val(meta), path("*k*.w*.z*.ntLink.scaffolds_*.tigpair_checkpoint.tsv"), emit: arcs_checkpoint_tsv, optional: true
+    tuple val(meta), path("*k*.w*.z*.ntLink.scaffolds.fa"), emit: arcs_scaffolds_fa, optional: true
+    tuple val(meta), path("*k*.w*.z*.ntLink.scaffolds.renamed.fa"), emit: arcs_scaffolds_renamed, optional: true
+    tuple val(meta), path("*k*.w*.z*.stitch.abyss-scaffold.fa"), emit: abyss_scaffolds_fa, optional: true
+    tuple val(meta), path("*k*.w*.z*.stitch.path"), emit: stitch_path, optional: true
+    tuple val(meta), path("*k*.w*.z*.trimmed_scafs.agp"), emit: trimmed_scaffolds_agp, optional: true
+    tuple val(meta), path("*k*.w*.z*.trimmed_scafs.fa"), emit: trimmed_scaffolds_fasta, optional: true
+    tuple val(meta), path("*k*.w*.z*.trimmed_scafs.path"), emit: trimmed_scaffolds_path, optional: true
+    tuple val(meta), path("*k*.w*.z*.trimmed_scafs.tsv"), emit: trimmed_scaffolds_tsv, optional: true
+    tuple val(meta), path("*k*.w*.z*.verbose_mapping.tsv"), emit: verbose_mapping_tsv, optional: true
+    tuple val(meta), path("*.k*.w???.tsv"), emit: tsv, optional: true
     tuple val("${task.process}"), val("longstitch"), eval("longstitch | sed -n 's/LongStitch v//p'"), emit: versions_longstitch, topic: versions
 
     when:
@@ -47,8 +50,9 @@ process LONGSTITCH {
 
     script:
     // defs need to happen before ifs; https://github.com/nextflow-io/nextflow/issues/804
-    def valid_commands = ["run", "tigmint-ntLink-arks", "tigmint-ntLink", "ntLink-arks"] // run is equivalent to tigmint-ntLink
-    def valid_longmaps = [ "ont", "pb", "hifi" ]
+    def valid_commands = ["run", "tigmint-ntLink-arks", "tigmint-ntLink", "ntLink-arks"]
+    // run is equivalent to tigmint-ntLink
+    def valid_longmaps = ["ont", "pb", "hifi"]
     def longmap_val = longmap ? longmap : "ont"
     def arg_longmap = "longmap=${longmap_val}"
     def arg_span = span ? "span=${span}" : ""
@@ -56,9 +60,15 @@ process LONGSTITCH {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    if ( !valid_longmaps.contains(longmap_val) ) { error "Unrecognised longmap option. Options: ${valid_longmaps.join(', ')}" }
-    if ( !span && !genomesize ) { error "longstitch requires either span or genomesize" }
-    if ( !valid_commands.contains(command) )  { error "Unrecognised command to run longstitch. Options: ${valid_commands.join(', ')}" }
+    if (!valid_longmaps.contains(longmap_val)) {
+        error("Unrecognised longmap option. Options: ${valid_longmaps.join(', ')}")
+    }
+    if (!span && !genomesize) {
+        error("longstitch requires either span or genomesize")
+    }
+    if (!valid_commands.contains(command)) {
+        error("Unrecognised command to run longstitch. Options: ${valid_commands.join(', ')}")
+    }
 
     """
     if [[ ${assembly} == *.gz ]]; then

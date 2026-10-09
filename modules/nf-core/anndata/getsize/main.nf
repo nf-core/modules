@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ANNDATA_GETSIZE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/04/04529821c1eff131c79f1f867fd9e8465a53ea5473bc6e4ac9405d2b9965d976/data':
-        'community.wave.seqera.io/library/anndata:0.10.9--1eab54e300e1e584' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/04/04529821c1eff131c79f1f867fd9e8465a53ea5473bc6e4ac9405d2b9965d976/data'
+        : 'community.wave.seqera.io/library/anndata:0.10.9--1eab54e300e1e584'}"
 
     input:
     tuple val(meta), path(h5ad)
@@ -13,15 +16,14 @@ process ANNDATA_GETSIZE {
 
     output:
     tuple val(meta), path("*.txt"), emit: size
-    path "versions.yml"           , emit: versions_anndata, topic: versions
-
+    path "versions.yml", emit: versions_anndata, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"
-    template 'getsize.py'
+    template('getsize.py')
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"

@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { BWAMETH_ALIGN                                 } from '../../../modules/nf-core/bwameth/align/main'
 include { PARABRICKS_FQ2BAMMETH                         } from '../../../modules/nf-core/parabricks/fq2bammeth/main'
 include { SAMTOOLS_SORT                                 } from '../../../modules/nf-core/samtools/sort/main'
@@ -19,9 +22,9 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
     ch_alignment = channel.empty()
     ch_alignment_index = channel.empty()
     ch_samtools_flagstat = channel.empty()
-    ch_samtools_stats    = channel.empty()
-    ch_picard_metrics    = channel.empty()
-    ch_multiqc_files     = channel.empty()
+    ch_samtools_stats = channel.empty()
+    ch_picard_metrics = channel.empty()
+    ch_multiqc_files = channel.empty()
 
     /*
      * Align with bwameth
@@ -32,7 +35,7 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
         */
         PARABRICKS_FQ2BAMMETH(
             ch_reads,
-            ch_fasta_fai.map{ meta, fasta, _fai -> [meta, fasta] },
+            ch_fasta_fai.map { meta, fasta, _fai -> [meta, fasta] },
             ch_bwameth_index,
             [],
         )
@@ -44,7 +47,7 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
         */
         BWAMETH_ALIGN(
             ch_reads,
-            ch_fasta_fai.map{ meta, fasta, _fai -> [meta, fasta] },
+            ch_fasta_fai.map { meta, fasta, _fai -> [meta, fasta] },
             ch_bwameth_index,
         )
         ch_alignment = BWAMETH_ALIGN.out.bam
@@ -113,10 +116,10 @@ workflow FASTQ_ALIGN_DEDUP_BWAMETH {
         .mix(ch_samtools_stats.collect { _meta, stats -> stats })
 
     emit:
-    bam               = ch_alignment                     // channel: [ val(meta), [ bam ]       ]
-    bai               = ch_alignment_index               // channel: [ val(meta), [ bai ]       ]
-    samtools_flagstat = ch_samtools_flagstat             // channel: [ val(meta), [ flagstat ]  ]
-    samtools_stats    = ch_samtools_stats                // channel: [ val(meta), [ stats ]     ]
-    picard_metrics    = ch_picard_metrics                // channel: [ val(meta), [ metrics ]   ]
-    multiqc           = ch_multiqc_files                 // channel: [ *{html,txt}              ]
+    bam               = ch_alignment // channel: [ val(meta), [ bam ]       ]
+    bai               = ch_alignment_index // channel: [ val(meta), [ bai ]       ]
+    samtools_flagstat = ch_samtools_flagstat // channel: [ val(meta), [ flagstat ]  ]
+    samtools_stats    = ch_samtools_stats // channel: [ val(meta), [ stats ]     ]
+    picard_metrics    = ch_picard_metrics // channel: [ val(meta), [ metrics ]   ]
+    multiqc           = ch_multiqc_files // channel: [ *{html,txt}              ]
 }

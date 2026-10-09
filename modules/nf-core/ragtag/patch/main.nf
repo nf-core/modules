@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RAGTAG_PATCH {
     tag "${meta.id}"
     label 'process_medium'
@@ -14,17 +17,16 @@ process RAGTAG_PATCH {
     tuple val(meta4), path(skip)
 
     output:
-    tuple val(meta), path("*.patch.fasta"),         emit: patch_fasta
-    tuple val(meta), path("*.patch.agp"),           emit: patch_agp
-    tuple val(meta), path("*.comps.fasta"),         emit: patch_components_fasta
-    tuple val(meta), path("*.ragtag.patch.asm.*"),  emit: assembly_alignments,      optional: true
-    tuple val(meta), path("*.ctg.agp"),             emit: target_splits_agp
-    tuple val(meta), path("*.ctg.fasta"),           emit: target_splits_fasta
-    tuple val(meta), path("*.rename.agp"),          emit: qry_rename_agp,           optional: true
-    tuple val(meta), path("*.rename.fasta"),        emit: qry_rename_fasta,         optional: true
-    tuple val(meta), path("*.patch.err"),           emit: stderr
+    tuple val(meta), path("*.patch.fasta"), emit: patch_fasta
+    tuple val(meta), path("*.patch.agp"), emit: patch_agp
+    tuple val(meta), path("*.comps.fasta"), emit: patch_components_fasta
+    tuple val(meta), path("*.ragtag.patch.asm.*"), emit: assembly_alignments, optional: true
+    tuple val(meta), path("*.ctg.agp"), emit: target_splits_agp
+    tuple val(meta), path("*.ctg.fasta"), emit: target_splits_fasta
+    tuple val(meta), path("*.rename.agp"), emit: qry_rename_agp, optional: true
+    tuple val(meta), path("*.rename.fasta"), emit: qry_rename_fasta, optional: true
+    tuple val(meta), path("*.patch.err"), emit: stderr
     tuple val("${task.process}"), val('ragtag'), eval("ragtag.py -v | sed 's/v//'"), emit: versions_ragtag, topic: versions
-
 
     when:
     task.ext.when == null || task.ext.when

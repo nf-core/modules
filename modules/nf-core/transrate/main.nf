@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TRANSRATE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c3/c3f7b24e30eab0cde846c0d31556293afc7818492d016e6770a1fef561042405/data'
-:         'community.wave.seqera.io/library/transrate_blast:092d9b5f119b9733' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c3/c3f7b24e30eab0cde846c0d31556293afc7818492d016e6770a1fef561042405/data'
+        : 'community.wave.seqera.io/library/transrate_blast:092d9b5f119b9733'}"
 
     input:
     tuple val(meta), path(assembly), path(reference)
 
     output:
-    tuple val(meta), path("*.assemblies.csv")                                       , emit: assemblies
-    tuple val(meta), path("*.contigs.csv")                                          , emit: contigs
+    tuple val(meta), path("*.assemblies.csv"), emit: assemblies
+    tuple val(meta), path("*.contigs.csv"), emit: contigs
     tuple val("${task.process}"), val('transrate'), eval("transrate --version"), topic: versions, emit: versions_transrate
 
     when:
@@ -24,9 +27,9 @@ process TRANSRATE {
     def reference_arg = reference ? "--reference ${reference}" : ''
     """
     transrate \\
-        $args \\
-        --threads $task.cpus \\
-        --assembly $assembly \\
+        ${args} \\
+        --threads ${task.cpus} \\
+        --assembly ${assembly} \\
         ${reference_arg} \\
         --output .
 

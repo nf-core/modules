@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CELLRANGERARC_MKGTF {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     container "quay.io/nf-core/cellranger-arc:2.0.2"
@@ -17,10 +20,10 @@ process CELLRANGERARC_MKGTF {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "CELLRANGERARC_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
+        exit(1, "CELLRANGERARC_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     def args = task.ext.args ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}.filtered"
+    prefix = task.ext.prefix ?: "${meta.id}.filtered"
     """
     cellranger-arc \\
         mkgtf \\
@@ -32,7 +35,7 @@ process CELLRANGERARC_MKGTF {
     stub:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "CELLRANGERARC_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
+        exit(1, "CELLRANGERARC_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     prefix = task.ext.prefix ?: "${meta.id}.filtered"
     """

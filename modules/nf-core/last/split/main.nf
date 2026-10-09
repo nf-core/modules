@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process LAST_SPLIT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
@@ -12,7 +15,7 @@ process LAST_SPLIT {
 
     output:
     tuple val(meta), path("*.maf.gz"), emit: maf
-    tuple val(meta), path("*.tsv")   , emit: multiqc
+    tuple val(meta), path("*.tsv"), emit: multiqc
     // last-dotplot has no --version option so let's use lastal from the same suite
     tuple val("${task.process}"), val('last'), eval("lastal --version | sed 's/lastal //'"), emit: versions_last, topic: versions
 
@@ -22,7 +25,9 @@ process LAST_SPLIT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if( "$maf" == "${prefix}.maf.gz" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("${maf}" == "${prefix}.maf.gz") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
     set -o pipefail
 
@@ -92,13 +97,13 @@ process LAST_SPLIT {
             percentIdentity       = (totalAlignmentLength > 0) ? (totalMatches / totalAlignmentLength * 100) : 0;
             percentIdentityNoGaps = (totalAlignmentLength > 0) ? (totalMatches / totalAlignedBases    * 100) : 0;
             print "Sample",  "TotalAlignmentLength", "PercentIdentity", "PercentIdentityNoGaps";  # Header for MultiQC
-            print "$meta.id", totalAlignmentLength,   percentIdentity,   percentIdentityNoGaps;   # Data in TSV format
+            print "${meta.id}", totalAlignmentLength,   percentIdentity,   percentIdentityNoGaps;   # Data in TSV format
         }'
     }
 
     # The MAF files can be really big, so we stream them in the awk functions and gzip instead of reading them each time.
-    zcat < $maf |
-        last-split $args |
+    zcat < ${maf} |
+        last-split ${args} |
         tee >(get_genome_stats > ${prefix}.genomestats.txt) |
         tee >(gzip --no-name   > ${prefix}.maf.gz) |
         maf-convert psl |
@@ -110,7 +115,9 @@ process LAST_SPLIT {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if( "$maf" == "${prefix}.maf.gz" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("${maf}" == "${prefix}.maf.gz") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
     echo "" | gzip > ${prefix}.maf.gz
     touch ${prefix}.tsv

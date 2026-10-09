@@ -1,19 +1,22 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CELLBENDER_MERGE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c4/c472f392e7bbfc26dca0088c3bd2349aad10f41b002d1288f6b5958c0951d8df/data':
-        'community.wave.seqera.io/library/cellbender_python_webcolors:286b10a91af05a58' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c4/c472f392e7bbfc26dca0088c3bd2349aad10f41b002d1288f6b5958c0951d8df/data'
+        : 'community.wave.seqera.io/library/cellbender_python_webcolors:286b10a91af05a58'}"
 
     input:
     tuple val(meta), path(filtered), path(unfiltered), path(cellbender_h5)
-    val(output_layer_name)
+    val output_layer_name
 
     output:
     tuple val(meta), path("${prefix}.h5ad"), emit: h5ad
-    path "versions.yml"                    , emit: versions_cellbender, topic: versions
+    path "versions.yml", emit: versions_cellbender, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,7 +29,7 @@ process CELLBENDER_MERGE {
     echo ${output_layer}
     """
 
-    template 'merge.py'
+    template('merge.py')
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"

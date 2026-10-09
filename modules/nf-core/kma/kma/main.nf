@@ -1,26 +1,34 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process KMA_KMA {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4f/4fc6c961562aef21c24b4f2330d9cd7e9bbda162b0d584a5cd5428e0b725e0d6/data':
-        'community.wave.seqera.io/library/kma:1.5.0--eb093e0381fb59ea' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4f/4fc6c961562aef21c24b4f2330d9cd7e9bbda162b0d584a5cd5428e0b725e0d6/data'
+        : 'community.wave.seqera.io/library/kma:1.5.0--eb093e0381fb59ea'}"
 
     input:
     tuple val(meta), path(reads)
     tuple val(meta2), path(index)
-    val (interleaved)
+    val interleaved
 
     output:
-    tuple val(meta), path("*.res")    , optional: true, emit: res     // Results overview
-    tuple val(meta), path("*.fsa")    , optional: true, emit: fsa     // Consensus sequences (disabled via '-nc')
-    tuple val(meta), path("*.aln")    , optional: true, emit: aln     // Consensus alignments (disabled via '-na')
-    tuple val(meta), path("*.frag.gz"), optional: true, emit: frag    // Read mapping information (disabled via '-nf')
-    tuple val(meta), path("*.mat.gz") , optional: true, emit: matrix  // Base counts (only if -matrix is enabled)
-    tuple val(meta), path("*.vcf.gz") , optional: true, emit: vcf
-    tuple val(meta), path("*.sam")    , optional: true, emit: sam
-    tuple val(meta), path("*.spa")    , optional: true, emit: spa
+    tuple val(meta), path("*.res"), optional: true, emit: res
+    // Results overview
+    tuple val(meta), path("*.fsa"), optional: true, emit: fsa
+    // Consensus sequences (disabled via '-nc')
+    tuple val(meta), path("*.aln"), optional: true, emit: aln
+    // Consensus alignments (disabled via '-na')
+    tuple val(meta), path("*.frag.gz"), optional: true, emit: frag
+    // Read mapping information (disabled via '-nf')
+    tuple val(meta), path("*.mat.gz"), optional: true, emit: matrix
+    // Base counts (only if -matrix is enabled)
+    tuple val(meta), path("*.vcf.gz"), optional: true, emit: vcf
+    tuple val(meta), path("*.sam"), optional: true, emit: sam
+    tuple val(meta), path("*.spa"), optional: true, emit: spa
     tuple val("${task.process}"), val('kma'), eval('kma -v 2>&1 | sed "s/^KMA-//"'), emit: versions_kma, topic: versions
 
     when:
@@ -60,17 +68,17 @@ process KMA_KMA {
         ${read_command} \\
         -o ${prefix} \\
         -t_db \$INDEX_BASE \\
-        $args \\
-        $sam_output || [ \$? -eq 95 ]
+        ${args} \\
+        ${sam_output} || [ \$? -eq 95 ]
 
     """
 
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def create_alignments = args.contains('-Sparse') ?
-        "touch ${prefix}.spa" :
-        "touch ${prefix}.res; touch ${prefix}.fsa; touch ${prefix}.aln; echo \"\" | gzip > ${prefix}.frag.gz"
+    def create_alignments = args.contains('-Sparse')
+        ? "touch ${prefix}.spa"
+        : "touch ${prefix}.res; touch ${prefix}.fsa; touch ${prefix}.aln; echo \"\" | gzip > ${prefix}.frag.gz"
     def create_mat = args.contains('-mat') ? "echo \"\" | gzip > ${prefix}.mat.gz" : ""
     def create_vcf = args.contains('-vcf') ? "echo \"\" | gzip > ${prefix}.vcf.gz" : ""
     def create_sam = args.contains('-sam') ? "touch ${prefix}.sam" : ""

@@ -1,22 +1,23 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FQTK {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ce/ce6bfc05e95d0c7fe4acf5a6e58a546940527cbb82bfd80ddac0e17d00bc9f1e/data' :
-        'community.wave.seqera.io/library/fqtk_gzip:8f4e4f93941dcf35' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ce/ce6bfc05e95d0c7fe4acf5a6e58a546940527cbb82bfd80ddac0e17d00bc9f1e/data'
+        : 'community.wave.seqera.io/library/fqtk_gzip:8f4e4f93941dcf35'}"
 
     input:
     tuple val(meta), path(sample_sheet), path(fastq_folder, stageAs: "input"), val(fastq_readstructure_pairs)
-    // fastq_readstructure_pairs example:
-    // [[<fastq name: string>, <read structure: string>], [example_R1.fastq.gz, 150T]]
 
     output:
     // Demultiplexed file name changes depending on the arg '--output-types'
-    tuple val(meta), path('output/*.fq.gz')                         , emit: sample_fastq
-    tuple val(meta), path('output/demux-metrics.txt')               , emit: metrics
-    tuple val(meta), path('output/unmatched*.fq.gz')                , emit: most_frequent_unmatched
+    tuple val(meta), path('output/*.fq.gz'), emit: sample_fastq
+    tuple val(meta), path('output/demux-metrics.txt'), emit: metrics
+    tuple val(meta), path('output/unmatched*.fq.gz'), emit: most_frequent_unmatched
     tuple val("${task.process}"), val('fqtk'), eval('fqtk --version 2>&1 | cut -d " " -f2'), emit: versions_fqtk, topic: versions
 
     when:
@@ -25,9 +26,9 @@ process FQTK {
     script:
     def args = task.ext.args ?: ''
     // Join the absolute path from UNTAR.out.untar to the fastq file names
-    fastqs = fastq_readstructure_pairs.collect{ fastq, _structure -> "input/" + fastq }.join(" ")
+    fastqs = fastq_readstructure_pairs.collect { fastq, _structure -> "input/" + fastq }.join(" ")
     // Create a list of read structures, Example: 8B 8B 150T
-    read_structures = fastq_readstructure_pairs.collect{ _fastq, structure -> structure }.join(" ")
+    read_structures = fastq_readstructure_pairs.collect { _fastq, structure -> structure }.join(" ")
 
     """
     mkdir output
@@ -47,7 +48,7 @@ process FQTK {
     echo "" | gzip > output/unmatched_R1.fq.gz
     echo "" | gzip > output/unmatched_R2.fq.gz
 
-    awk 'NR>1 {print \$1}' $sample_sheet | while read sample_id; do
+    awk 'NR>1 {print \$1}' ${sample_sheet} | while read sample_id; do
         echo "\${sample_id}"
         echo "" | gzip >  output/"\${sample_id}.R1.fq.gz"
         echo "" | gzip >  output/"\${sample_id}.R2.fq.gz"
