@@ -4,8 +4,8 @@ process CHOPPER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f4/f4a12f8d5bb8a08aa9a0a14377465521422e7274bcb6be56daa6a06f30ac0bf7/data':
-        'community.wave.seqera.io/library/chopper:0.12.0b--f39108dd84394289' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b2/b21cace9a3bd19a10af876ac9f628117d1a16264ded6b76c3da0b762d2e78cb5/data':
+        'community.wave.seqera.io/library/chopper_pigz:26723dce47edae8f' }"
 
     input:
     tuple val(meta), path(fastq)
