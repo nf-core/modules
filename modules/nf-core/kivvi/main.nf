@@ -21,26 +21,20 @@ process KIVVI {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def outdir = task.ext.outdir ?: "."
     def threads = command == "d4z4" ? "--threads $task.cpus" : ""
     """
     kivvi \\
         $args \\
         --prefix ${prefix} \\
-        --out $outdir \\
+        --out ./ \\
         --bam $bam \\
         $command \\
         $threads
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def outdir = task.ext.outdir ?: "."
     """
-    echo $args
-    echo $outdir
-
-    touch ${outdir}/${prefix}.bam
+    touch ${prefix}.bam
     """
 }

@@ -1,6 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "kivvi"
-description: Calls copy number and sequence variants in large-unit variable number tandem repeats from PacBio HiFi reads
+description: Calls copy number and sequence variants in large-unit variable
+  number tandem repeats from PacBio HiFi reads
 keywords:
   - kivvi
   - genotyper
@@ -15,9 +15,8 @@ tools:
       tool_dev_url: "https://github.com/PacificBiosciences/kivvi"
       doi: "10.64898/2026.04.10.717730"
       licence:
-        ["Pacific Biosciences Software License (https://github.com/PacificBiosciences/kivvi/blob/main/LICENSE.md)"]
+        - "Pacific Biosciences Software License (https://github.com/PacificBiosciences/kivvi/blob/main/LICENSE.md)"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -31,8 +30,18 @@ input:
           or a subset covering the target KIV2 or D4Z4 regions
         pattern: "*.bam"
         ontologies:
-          - edam: "http://edamontology.org/format_2572" # BAM
-
+          - edam: "http://edamontology.org/format_2572"
+    - bai:
+        type: file
+        description: |
+          BAI index file corresponding to the BAM file
+        pattern: "*.bai"
+        ontologies:
+          - edam: "http://edamontology.org/format_2573"
+  - command:
+      type: string
+      description: The command used to run the tool, i.e. kiv2 (LPA KIV2 repeat)
+        or d4z4 (D4Z4 repeat)
 output:
   bam:
     - - meta:
@@ -47,18 +56,17 @@ output:
             region, with HP tags identifying repeat copies
           pattern: "*.bam"
           ontologies:
-            - edam: "http://edamontology.org/format_2572" # BAM
+            - edam: "http://edamontology.org/format_2572"
   versions_kivvi:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "kivvi":
+      - kivvi:
           type: string
           description: The name of the tool
-      - "kivvi --version":
+      - kivvi --version | sed 's/.* //g':
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -67,7 +75,7 @@ topics:
       - kivvi:
           type: string
           description: The name of the tool
-      - kivvi --version:
+      - kivvi --version | sed 's/.* //g':
           type: eval
           description: The expression to obtain the version of the tool
 authors:
