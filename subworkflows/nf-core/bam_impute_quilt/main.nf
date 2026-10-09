@@ -5,7 +5,7 @@ include { BCFTOOLS_INDEX  } from '../../../modules/nf-core/bcftools/index'
 workflow BAM_IMPUTE_QUILT {
     take:
     ch_input // channel (mandatory):   [ [id], [bam], [bai], bampaths, bamnames ]
-    ch_hap_legend_posfile // channel (mandatory):   [ [panel, chr], hap, legend, posfile ]
+    ch_reference_panel // channel (mandatory):   [ [panel, chr], hap, legend ]
     ch_chunks // channel (optional) :   [ [panel, chr], chr, start, end ]
     ch_map // channel (optional) :   [ [panel, chr], map ]
     ch_fasta // channel (optional) :   [ [genome], fa, fai ]
@@ -21,7 +21,7 @@ workflow BAM_IMPUTE_QUILT {
             [metaPC, chr.size()]
         }
 
-    ch_parameters = ch_hap_legend_posfile
+    ch_parameters = ch_reference_panel
         .combine(ch_map, by: 0)
         .combine(ch_chunks, by: 0)
         .combine(ch_chunks_counts, by: 0)
@@ -32,7 +32,7 @@ workflow BAM_IMPUTE_QUILT {
 
     ch_bam_params = ch_input
         .combine(ch_parameters)
-        .map { metaI, bam, bai, bampath, bamname, metaPC, hap, legend, posfile, gmap, chr, start, end, region_size ->
+        .map { metaI, bam, bai, bampath, bamname, metaPC, hap, legend, gmap, chr, start, end, region_size ->
             def regionout = "${chr}"
             def regionoutPadded = "${chr}"
             if (start != [] && end != []) {
@@ -46,8 +46,7 @@ workflow BAM_IMPUTE_QUILT {
                 bam, bai,
                 bampath, bamname,
                 hap, legend,
-                posfile,
-                [], [],
+                [], [], [],
                 chr, start, end,
                 n_gen, buffer,
                 gmap,

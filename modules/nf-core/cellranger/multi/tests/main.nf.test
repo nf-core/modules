@@ -496,6 +496,9 @@ nextflow_process {
                 /*** end stage VDJ reference ***/
                 /*******************************/
 
+                // pipelines may pass a Flex probe set to every sample, including V(D)J ones
+                probeset = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/references/flex/Chromium_Human_Transcriptome_Probe_Set_v1.1.0_GRCh38-2024-A.chr22.csv', checkIfExists: true)
+
                 // create empty channels to fill unused cellranger multi arguments
                 // fastqs need a [ meta, ref ] structure
                 // references just need a path
@@ -508,7 +511,6 @@ nextflow_process {
                 ch_beam_fastqs           = [ [:], [], [:] ]
                 ch_cmo_fastqs            = [ [:], [], [:] ]
                 ch_crispr_fastqs         = [ [:], [], [:] ]
-                ch_gex_frna_probeset     = []
                 ch_gex_targetpanel       = []
                 ch_vdj_primer_index      = []
                 ch_fb_reference          = []
@@ -547,7 +549,7 @@ nextflow_process {
                 input[8]  = ch_vdj_t_fastqs
                 input[9]  = ch_vdj_t_gd_fastqs
                 input[10] = ch_vdj_b_fastqs
-                input[11] = ch_gex_frna_probeset
+                input[11] = probeset
                 input[12] = ch_gex_targetpanel
                 input[13] = ch_vdj_reference
                 input[14] = ch_vdj_primer_index
@@ -581,7 +583,7 @@ nextflow_process {
                 { assert path(process.out.config[0][1]).text.contains('[gene-expression]') },
                 // GEX links
                 { assert path(process.out.config[0][1]).text.contains('fastq_all/gex') },
-                // Flex probe-set: not used
+                // Flex probe-set: supplied but omitted, since Cell Ranger rejects Flex with V(D)J libraries
                 { assert !path(process.out.config[0][1]).text.contains('probe-set,') },
                 // VDJ: present for this VDJ scenario, with the chain type auto-detected
                 { assert path(process.out.config[0][1]).text.contains('[vdj]') },
@@ -1073,7 +1075,7 @@ nextflow_process {
                 input[8]  = [ [ id:'subsampled_sc5p_v2_hs_PBMC_10k' ], fastq_pair.call('vdj_t'), [ "r1-length":26 ] ]
                 input[9]  = [ [ id:'subsampled_sc5p_v2_hs_PBMC_10k' ], fastq_pair.call('vdj_t_gd'), [:] ]
                 input[10] = [ [ id:'subsampled_sc5p_v2_hs_PBMC_10k' ], fastq_pair.call('vdj_b'), [:] ]
-                input[11] = []
+                input[11] = placeholder.call('probeset.csv')
                 input[12] = []
                 input[13] = vdj_reference
                 input[14] = placeholder.call('gd_primers.txt')
@@ -1106,7 +1108,9 @@ nextflow_process {
                 { assert config_lines.contains('subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_t,,VDJ-T') },
                 { assert config_lines.contains('subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_t_gd,,VDJ-T-GD') },
                 { assert config_lines.contains('subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_b,,VDJ-B') },
-                { assert !config_lines.any { line -> line.endsWith(',,VDJ') } }
+                { assert !config_lines.any { line -> line.endsWith(',,VDJ') } },
+                // Cell Ranger rejects Flex with V(D)J libraries, so the supplied probe set is omitted
+                { assert !config_lines.any { line -> line.startsWith('probe-set,') } }
             )
         }
 
