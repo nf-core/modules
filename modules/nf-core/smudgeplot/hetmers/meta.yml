@@ -1,9 +1,11 @@
 name: "smudgeplot_hetmers"
-description: Generating smudgeplot kmer counts
+description: Inference of ploidy and heterozygosity structure using whole genome sequencing data using FASTK databases
 keywords:
   - Smudgeplot
   - reference-free
   - kmer
+  - ploidy
+  - genomics
 tools:
   - "smudgeplot":
       description: "Generating smudgeplot kmer counts"
@@ -43,7 +45,7 @@ output:
       - smudgeplot:
           type: string
           description: The name of the tool
-      - smudgeplot -v |& sed "s/.*v//":
+      - smudgeplot -v |& grep "smudgeplot" | sed "s/.*v//":
           type: string
           description: The expression to obtain the version of the tool
   versions_fastk:
@@ -65,7 +67,7 @@ topics:
       - smudgeplot:
           type: string
           description: The name of the tool
-      - smudgeplot -v |& sed "s/.*v//":
+      - smudgeplot -v |& grep "smudgeplot" | sed "s/.*v//":
           type: string
           description: The expression to obtain the version of the tool
     - - ${task.process}:

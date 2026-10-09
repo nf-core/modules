@@ -40,6 +40,9 @@ process SMUDGEPLOT_ALL {
     stub:
     def prefix  = task.ext.prefix   ?: "${meta.id}"
     """
-    touch ${prefix}.smu
+    touch ${prefix}.png
+    touch ${prefix}_centralities.txt
+    touch ${prefix}.smudge_report.tsv
+    touch ${prefix}.sma
     """
 }

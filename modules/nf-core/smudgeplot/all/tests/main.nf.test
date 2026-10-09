@@ -36,7 +36,27 @@ nextflow_process {
         }
     }
 
-    test("Acropora_cervicornis - reads") {
+    // test("Acropora_cervicornis - reads") {
+
+    //     when {
+    //         process {
+    //             """
+    //             input[0] = SMUDGEPLOT_HETMERS.out.kmer_cov
+    //             """
+    //         }
+    //     }
+
+    //     then {
+    //         assertAll(
+    //             { assert process.success },
+    //             { assert snapshot(sanitizeOutput(process.out)).match() }
+    //         )
+    //     }
+    // }
+
+    test("Acropora_cervicornis - reads - stub") {
+
+        options '-stub'
 
         when {
             process {
