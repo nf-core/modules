@@ -102,19 +102,33 @@ run_results <- function(...) {
     ...
   )
 }
-#' Shrink log2 fold changes via ASHR with shared settings
+#' Shrink log2 fold changes with shared settings
 #'
 #' A thin wrapper around DESeq2::lfcShrink() that injects the common parameters
-#' (type = "ashr") and the `dds` object. Use the `...` to supply the branch-
-#' specific argument (`coef = …` or `contrast = …`).
+#' and the `dds` object. Use the `...` to supply the branch-specific argument
+#' (`coef = …` or `contrast = …`).
 #'
 #' @param ... Additional arguments passed to `lfcShrink()`, e.g. `coef = opt\$contrast_string`
 #'   or `contrast = c(variable, target, reference)`.
+#' @param shrink_type Type of shrinkage estimator ('ashr' or 'apeglm').
+#' @param contrast_name Optional label of the contrast for error messages.
 #' @return A `DESeqResults` object with shrunken log2 fold changes.
-run_shrink <- function(...) {
+run_shrink <- function(..., shrink_type, contrast_name = NULL) {
+  dots <- list(...)
+  if (shrink_type == "apeglm" && "contrast" %in% names(dots)) {
+    if (is.null(contrast_name)) {
+      contrast_name <- paste(dots\$contrast, collapse = ", ")
+    }
+    stop(
+      "apeglm shrinkage requires a model coefficient (coef=), but contrast '",
+      contrast_name,
+      "' is not one. Use a formula with an intercept and a coefficient name from resultsNames() ",
+      "as the comparison, or use --shrink_lfc_type ashr."
+    )
+  }
   lfcShrink(
     dds,
-    type = 'ashr',
+    type = shrink_type,
     ...
   )
 }
@@ -162,6 +176,7 @@ opt <- list(
   minmu = 0.5,
   vs_method = 'vst', # 'rlog', 'vst', or 'rlog,vst'
   shrink_lfc = TRUE,
+  shrink_lfc_type = 'ashr',
   cores = 1,
   vs_blind = TRUE,
   vst_nsub = 1000,
@@ -209,6 +224,14 @@ missing <- required_opts[!unlist(lapply(opt[required_opts], is_valid_string)) | 
 
 if (length(missing) > 0){
   stop(paste("Missing required options:", paste(missing, collapse=', ')))
+}
+
+if (opt\$shrink_lfc && opt\$shrink_lfc_type == 'apeglm' && is.null(opt\$contrast_string)) {
+  stop(
+    "apeglm shrinkage requires a model coefficient, but variable/reference/target contrasts use a ",
+    "'~ 0 + ...' design with no such coefficient. Use a formula with an intercept and a coefficient ",
+    "name from resultsNames() as the comparison, or use --shrink_lfc_type ashr."
+  )
 }
 
 # Check file inputs are valid
@@ -428,7 +451,7 @@ if (!is.null(opt\$contrast_string)) {
     # Direct coefficient name
     comp.results <- run_results(name = opt\$contrast_string)
     if (opt\$shrink_lfc) {
-      comp.results <- run_shrink(coef = opt\$contrast_string)
+      comp.results <- run_shrink(coef = opt\$contrast_string, shrink_type = opt\$shrink_lfc_type)
     }
   } else {
     # Parse as limma-style contrast expression
@@ -441,7 +464,11 @@ if (!is.null(opt\$contrast_string)) {
     # Run DESeq2 results with numeric contrast
     comp.results <- run_results(contrast = numeric_contrast)
     if (opt\$shrink_lfc) {
-      comp.results <- run_shrink(contrast = numeric_contrast)
+      comp.results <- run_shrink(
+        contrast      = numeric_contrast,
+        shrink_type   = opt\$shrink_lfc_type,
+        contrast_name = opt\$contrast_string
+      )
     }
   }
 } else {
@@ -451,7 +478,7 @@ if (!is.null(opt\$contrast_string)) {
 
   comp.results <- run_results(contrast = contrast_var_tg_ref)
   if (opt\$shrink_lfc) {
-    comp.results <- run_shrink(contrast = contrast_var_tg_ref)
+    comp.results <- run_shrink(contrast = contrast_var_tg_ref, shrink_type = opt\$shrink_lfc_type)
   }
 }
 

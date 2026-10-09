@@ -32,8 +32,8 @@ workflow FASTA_HMMSEARCH_RANK_FASTAS {
     HMMER_HMMSEARCH.out.target_summary
         .map { meta, tbl -> [ meta.id, tbl ] }
         .collect(flat: false)
-        .map { pairs -> pairs.sort { it[0] } }
-        .map { pairs -> [ [ id: 'rank.tblout' ], pairs.collect { it[0] }, pairs.collect { it[1] } ] }
+        .map { pairs -> pairs.sort { item -> item[0] } }
+        .map { pairs -> [ [ id: 'rank.tblout' ], pairs.collect { item -> item[0] }, pairs.collect { item -> item[1] } ] }
         .set { ch_formattsv_tblout }
 
     HMMER_FORMATTSV_TBLOUT ( ch_formattsv_tblout, 'tblout' )
@@ -49,23 +49,23 @@ workflow FASTA_HMMSEARCH_RANK_FASTAS {
         HMMER_HMMSEARCH.out.domain_summary
             .map { meta, domtbl -> [ meta.id, domtbl ] }
             .collect(flat: false)
-            .map { pairs -> pairs.sort { it[0] } }
-            .map { pairs -> [ [ id: 'rank.domtblout' ], pairs.collect { it[0] }, pairs.collect { it[1] } ] }
+            .map { pairs -> pairs.sort { item -> item[0] } }
+            .map { pairs -> [ [ id: 'rank.domtblout' ], pairs.collect { item -> item[0] }, pairs.collect { item -> item[1] } ] }
             .set { ch_formattsv_domtblout }
 
         HMMER_FORMATTSV_DOMTBLOUT ( ch_formattsv_domtblout, 'domtblout' )
         DUCKDB_TABLE2PARQUET_DOMTBLOUT ( HMMER_FORMATTSV_DOMTBLOUT.out.tsv )
 
-        ch_domtblout_parquet = DUCKDB_TABLE2PARQUET_DOMTBLOUT.out.parquet.map { meta, parquet -> parquet }
+        ch_domtblout_parquet = DUCKDB_TABLE2PARQUET_DOMTBLOUT.out.parquet.map { _meta, parquet -> parquet }
     } else {
-        ch_domtblout_parquet = Channel.value([])
+        ch_domtblout_parquet = channel.value([])
     }
 
     // ch_domtblout_parquet's value is combined wrapped in an extra list, same as
     // ch_domtblouts was before this rework: combine() would otherwise treat a bare `[]`
     // value as zero items rather than one item whose payload happens to be an empty list.
     DUCKDB_TABLE2PARQUET_TBLOUT.out.parquet
-        .map { meta, parquet -> [ [ id: 'rank' ], parquet ] }
+        .map { _meta, parquet -> [ [ id: 'rank' ], parquet ] }
         .combine(ch_domtblout_parquet.map { index -> [ index ] })
         .set { ch_hmmrank }
 
