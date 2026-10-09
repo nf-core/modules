@@ -1,0 +1,107 @@
+nextflow_process {
+
+    name "Test Process OCTOPUSV_SUBSET"
+    script "../main.nf"
+    process "OCTOPUSV_SUBSET"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "octopusv"
+    tag "octopusv/subset"
+
+    test("homo_sapiens - svcf - json - Sample") {
+
+        when {
+            params {
+                module_args = '--json-summary --sample Sample'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/octopusv/sk-n-as-sniffles-ont.svcf', checkIfExists: true)
+                ]
+                input[1] = [[:], []]
+                input[2] = [[:], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.json.size() == 1 },
+                { assert snapshot(
+                    path(process.out.svcf.get(0).get(1)).vcf.summary,
+                    path(process.out.svcf.get(0).get(1)).vcf.variantsMD5,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - svcf - Sample_file") {
+
+        when {
+            params {
+                module_args = '--json-summary'
+            }
+            process {
+                """
+                def sample_file = file('samples.txt')
+                sample_file.text = 'Sample\\n'
+
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/octopusv/sk-n-as-sniffles-ont.svcf', checkIfExists: true)
+                ]
+                input[1] = [[ id:'samples' ], sample_file]
+                input[2] = [[:], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.json.size() == 1 },
+                { assert snapshot(
+                    path(process.out.svcf.get(0).get(1)).vcf.summary,
+                    path(process.out.svcf.get(0).get(1)).vcf.variantsMD5,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - svcf - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--json-summary --sample Sample'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/octopusv/sk-n-as-sniffles-ont.svcf', checkIfExists: true)
+                ]
+                input[1] = [[:], []]
+                input[2] = [[:], []]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

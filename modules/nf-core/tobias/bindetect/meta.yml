@@ -1,0 +1,128 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "tobias_bindetect"
+description: Estimate transcription factor binding and differential binding from ATAC-seq footprint BigWig tracks with TOBIAS BINDetect
+keywords:
+  - ATAC-seq
+  - footprinting
+  - transcription factors
+  - differential binding
+tools:
+  - tobias:
+      description: "Transcription factor Occupancy prediction By Investigation of ATAC-seq Signal"
+      homepage: "https://github.com/loosolab/TOBIAS"
+      documentation: "https://github.com/loosolab/TOBIAS/wiki"
+      tool_dev_url: "https://github.com/loosolab/TOBIAS"
+      doi: "10.1038/s41467-020-18035-1"
+      licence: ["MIT"]
+      identifier: "biotools:tobias"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing analysis information
+          e.g. `[ id:'all_samples' ]`
+    - signals:
+        type: file
+        description: One or more BigWig tracks containing TOBIAS footprint scores, one per condition or sample
+        pattern: "*.bw"
+        ontologies:
+          - edam: "http://edamontology.org/format_3006"
+    - peaks:
+        type: file
+        description: BED file containing the consensus open-chromatin regions
+        pattern: "*.bed"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
+    - motifs:
+        type: file
+        description: One or more transcription factor motif files in supported TOBIAS formats
+        pattern: "*"
+        ontologies: []
+    - fasta:
+        type: file
+        description: Reference genome FASTA file
+        pattern: "*.{fa,fasta,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+output:
+  outdir:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing analysis information
+            e.g. `[ id:'all_samples' ]`
+      - "bindetect":
+          type: directory
+          description: Complete TOBIAS BINDetect output directory, including motif-specific results
+          pattern: "bindetect"
+          ontologies: []
+  results:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing analysis information
+            e.g. `[ id:'all_samples' ]`
+      - "bindetect/*_results.txt":
+          type: file
+          description: Tab-delimited global transcription factor binding results
+          pattern: "*_results.txt"
+          ontologies: []
+  results_xlsx:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing analysis information
+            e.g. `[ id:'all_samples' ]`
+      - "bindetect/*_results.xlsx":
+          type: file
+          description: Excel global transcription factor binding results
+          pattern: "*_results.xlsx"
+          ontologies: []
+  distances:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing analysis information
+            e.g. `[ id:'all_samples' ]`
+      - "bindetect/*_distances.txt":
+          type: file
+          description: Transcription factor motif-distance summary table
+          pattern: "*_distances.txt"
+          ontologies: []
+  figures:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing analysis information
+            e.g. `[ id:'all_samples' ]`
+      - "bindetect/*_figures.pdf":
+          type: file
+          description: TOBIAS BINDetect summary figure PDF
+          pattern: "*_figures.pdf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3508"
+  versions_tobias:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tobias:
+          type: string
+          description: The name of the tool
+      - TOBIAS --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tobias:
+          type: string
+          description: The name of the tool
+      - TOBIAS --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@PFRoux"
+maintainers:
+  - "@PFRoux"

@@ -1,0 +1,82 @@
+name: "taxonkit_lca"
+description: Compute lowest common ancestor (LCA) for taxonids
+keywords:
+  - taxonomy
+  - taxids
+  - lca
+tools:
+  - "taxonkit":
+      description: "A Cross-platform and Efficient NCBI Taxonomy Toolkit"
+      homepage: "https://bioinf.shenwei.me/taxonkit/"
+      documentation: "https://bioinf.shenwei.me/taxonkit/usage/#lca"
+      tool_dev_url: "https://github.com/shenwei356/taxonkit"
+      doi: "10.1016/j.jgg.2021.03.006"
+      licence:
+        - "MIT"
+      identifier: biotools:taxonkit
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - taxids:
+        type: string
+        description: |
+          Taxon ids to consider
+          (provide either this or taxidsfile, not both)
+    - taxidsfile:
+        type: file
+        description: |
+          File with space separated list of taxon ids to look up
+          with all ids being on the same line
+          (provide either this or name, not both)
+        ontologies: []
+  - taxdb:
+      type: file
+      description: Taxonomy database unpacked from
+        ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz
+      ontologies: []
+output:
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.tsv":
+          type: file
+          description: |
+            TSV file with passed ids in the first column and
+            the LCA tax id in the second
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions_taxonkit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - taxonkit:
+          type: string
+          description: The name of the tool
+      - taxonkit version | sed 's/.* v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - taxonkit:
+          type: string
+          description: The name of the tool
+      - taxonkit version | sed 's/.* v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@jcbioinformatics"
+maintainers:
+  - "@jcbioinformatics"
