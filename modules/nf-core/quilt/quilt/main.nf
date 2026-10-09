@@ -83,7 +83,7 @@ process QUILT_QUILT {
     def n_seek_its    = args.contains("--n_seek_its=")    ? args.split("--n_seek_its=")[1].split(" ")[0]    : 3
 
     """
-    echo '' | gzip > ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
     if [ "${save_ref}" == true ]
     then
