@@ -1,0 +1,95 @@
+name: grimer
+description: |
+  Generates an interactive HTML dashboard integrating taxonomy,
+  annotation, and metadata to detect contamination in metagenomic
+  and amplicon sequencing datasets. GRIMER is independent of
+  quantification methods and directly analyses contingency tables.
+keywords:
+  - metagenomics
+  - contamination
+  - visualisation
+  - taxonomy
+  - viromics
+  - microbiome
+  - dashboard
+tools:
+  - grimer:
+      description: |
+        GRIMER performs automated contamination analysis and generates
+        portable interactive dashboards from contingency tables,
+        integrating taxonomy, annotation and metadata.
+      homepage: https://github.com/pirovc/grimer
+      documentation: https://pirovc.github.io/grimer/
+      tool_dev_url: https://github.com/pirovc/grimer
+      doi: "10.1101/2021.06.22.449360"
+      licence:
+        - "MIT"
+      identifier: biotools:grimer
+      args_id: "$args"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information.
+          e.g. [ id:'sample1' ]
+    - input_table:
+        type: file
+        description: |
+          Tab-separated count/observation table or .biom file.
+          Rows are observations; columns are samples.
+        pattern: "*.{tsv,biom}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
+          - edam: http://edamontology.org/format_3746
+  - sample_metadata:
+      type: file
+      description: Tab-separated metadata file. Rows are samples; columns are
+        metadata fields. Optional, pass [] to omit.
+      pattern: "*.tsv"
+      ontologies:
+        - edam: http://edamontology.org/format_3475
+  - config:
+      type: file
+      description: |
+        YAML configuration file defining external tool references,
+        controls, and annotations. Optional, pass [] to omit.
+      pattern: "*.{yml,yaml}"
+      ontologies:
+        - edam: http://edamontology.org/format_3750
+output:
+  report:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information.
+      - "*.html":
+          type: file
+          description: |
+            Interactive HTML dashboard report integrating taxonomy,
+            contamination analysis, heatmaps, and correlation plots.
+          pattern: "*.html"
+          ontologies: []
+  versions_grimer:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - grimer:
+          type: string
+          description: The name of the tool
+      - grimer --version 2>&1 | tail -1 | sed "s/grimer //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - grimer:
+          type: string
+          description: The name of the tool
+      - grimer --version 2>&1 | tail -1 | sed "s/grimer //":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@Jonahnki"
+maintainers:
+  - "@Jonahnki"

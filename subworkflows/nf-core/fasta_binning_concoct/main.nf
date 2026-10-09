@@ -11,8 +11,6 @@ workflow FASTA_BINNING_CONCOCT {
     ch_bam   // channel (mandatory): [ val(meta), [ bam ], [bai]] (bam files of original FASTQ Files mapped back to each contig. meta must correspond to ch_fasta)
 
     main:
-    ch_versions = channel.empty()
-
     // required to create bedfile due to coverage table
     produce_bedfile = true
 
@@ -46,5 +44,4 @@ workflow FASTA_BINNING_CONCOCT {
     cluster_table       = CONCOCT_MERGECUTUPCLUSTERING.out.csv     // channel: [ val(meta), [ csv ] ]
     bins                = CONCOCT_EXTRACTFASTABINS.out.fasta       // channel: [ val(meta), [ fasta ] ]
 
-    versions = ch_versions                                         // channel: [ versions.yml ]
 }

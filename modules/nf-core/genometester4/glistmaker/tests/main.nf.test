@@ -1,0 +1,63 @@
+nextflow_process {
+
+    name "Test Process GENOMETESTER4_GLISTMAKER"
+    script "../main.nf"
+    process "GENOMETESTER4_GLISTMAKER"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "genometester4"
+    tag "genometester4/glistmaker"
+
+    test("sarscov2 - fasta") {
+
+        when {
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.list,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

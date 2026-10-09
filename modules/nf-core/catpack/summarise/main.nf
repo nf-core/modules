@@ -4,8 +4,8 @@ process CATPACK_SUMMARISE {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/cat:6.0.1--hdfd78af_1'
-        : 'quay.io/biocontainers/cat:6.0.1--hdfd78af_1'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/15/15bcec1eccda12562504e88d44abc8a29742c6b600ae178cc9579fedc3a69062/data'
+        : 'community.wave.seqera.io/library/cat_gzip:0ab95a62b35744c9'}"
 
     input:
     tuple val(meta), path(classification)

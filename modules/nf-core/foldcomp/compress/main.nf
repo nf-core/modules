@@ -11,8 +11,8 @@ process FOLDCOMP_COMPRESS {
     tuple val(meta), path(pdb)
 
     output:
-    tuple val(meta), path("*fcz"), emit: fcz
-    path "versions.yml"          , emit: versions
+    tuple val(meta), path("*fcz")                                                            , emit: fcz
+    tuple val("${task.process}"), val('foldcomp'), eval("foldcomp --version | cut -d' ' -f2"), emit: versions_foldcomp, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,21 +28,11 @@ process FOLDCOMP_COMPRESS {
         ${pdb} \\
         ${prefix}${ext} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        foldcomp: \$(foldcomp --version)
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.fcz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        foldcomp: \$(foldcomp --version)
-    END_VERSIONS
     """
 }

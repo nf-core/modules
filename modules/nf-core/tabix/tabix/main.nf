@@ -8,28 +8,32 @@ process TABIX_TABIX {
         'community.wave.seqera.io/library/htslib:1.21--ff8e28a189fbecaa' }"
 
     input:
-    tuple val(meta), path(tab)
+    tuple val(meta),  path(tab), path(tai), path(regions)
 
     output:
-    tuple val(meta), path("*.{tbi,csi}"), emit: index
-    tuple val("${task.process}"), val('tabix'), eval("tabix -h 2>&1 | grep -oP 'Version:\\s*\\K[^\\s]+'")   , topic: versions   , emit: versions_tabix
+    tuple val(meta), path("*.{tbi,csi}"), emit: index    , optional: true
+    tuple val(meta), path("output.*gz") , emit: extracted, optional: true
+    tuple val("${task.process}"), val('tabix'), eval("tabix -h 2>&1 | grep -oP 'Version:\\s*\\K[^\\s]+'"), topic: versions, emit: versions_tabix
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    """
-    tabix \\
-        --threads $task.cpus \\
-        $args \\
-        $tab
+    def deprecation_message = """
+    WARNING: This module has been deprecated. Please use HTSLIB/BGZIPTABIX instead.
 
-    """
+    Reason:
+    This module is duplicative of HTSLIB/BGZIPTABIX. The HTSLIB/BGZIPTABIX module is the canonical replacement and provides equivalent functionality through HTSlib with a more predictable behavior and better interface.
+    """.stripIndent()
+    assert false: deprecation_message
+
     stub:
-    def args = task.ext.args ?: ''
-    def index = args.contains("-C ") || args.contains("--csi") ? "csi" : "tbi"
-    """
-    touch ${tab}.${index}
-    """
+    def deprecation_message = """
+    WARNING: This module has been deprecated. Please use HTSLIB/BGZIPTABIX instead.
+
+    Reason:
+    This module is duplicative of HTSLIB/BGZIPTABIX. The HTSLIB/BGZIPTABIX module is the canonical replacement and provides equivalent functionality through HTSlib with a more predictable behavior and better interface.
+    """.stripIndent()
+    assert false: deprecation_message
+
 }

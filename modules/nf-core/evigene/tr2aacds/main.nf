@@ -13,7 +13,7 @@ process EVIGENE_TR2AACDS {
     output:
     tuple val(meta), path("dropset")    , emit: dropset
     tuple val(meta), path("okayset")    , emit: okayset
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('tr2aacds'), eval("\$EVIGENEHOME/scripts/prot/tr2aacds.pl 2>&1 | sed '1!d;s/.*VERSION //'"), emit: versions_tr2aacds, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -57,11 +57,6 @@ process EVIGENE_TR2AACDS {
             -type f \\
             -exec sh -c 'mv "\$1" "\$(echo \$1 | sed s/$simple_name/$prefix/)"' sh {} \\;
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tr2aacds: \$(cat \$EVIGENEHOME/scripts/prot/tr2aacds.pl | sed -n 's/use constant VERSION =>  \\([^;]*\\);.*/\\1/p')
-    END_VERSIONS
     """
 
     stub:
@@ -99,10 +94,5 @@ process EVIGENE_TR2AACDS {
     touch okayset/${prefix}.pubids
     touch okayset/${prefix}.pubids.old
     touch okayset/${prefix}.pubids.realt.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tr2aacds: \$(cat \$EVIGENEHOME/scripts/prot/tr2aacds.pl | sed -n 's/use constant VERSION =>  \\([^;]*\\);.*/\\1/p')
-    END_VERSIONS
     """
 }

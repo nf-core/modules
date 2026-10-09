@@ -10,7 +10,8 @@ tools:
       homepage: "https://cbio.mskcc.org/miRNA2003/miranda.html"
       documentation: "https://cbio.mskcc.org/miRNA2003/miranda.html"
       doi: "10.1186/gb-2003-5-1-r1"
-      licence: ["GNU Public License"]
+      licence:
+        - "GNU Public License"
       identifier: ""
 input:
   - - meta:
@@ -40,13 +41,27 @@ output:
           description: Reformatted TXT file containing microRNA targets
           pattern: "*.{txt}"
           ontologies: []
+  versions_miranda:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - miranda:
+          type: string
+          description: The name of the tool
+      - miranda -v | grep 'miranda v' | sed 's/.*v\([0-9]\.[0-9][a-z]\).*/\1/':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - miranda:
+          type: string
+          description: The name of the tool
+      - miranda -v | grep 'miranda v' | sed 's/.*v\([0-9]\.[0-9][a-z]\).*/\1/':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@BarryDigby"
 maintainers:

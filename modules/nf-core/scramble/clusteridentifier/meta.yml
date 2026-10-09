@@ -10,7 +10,8 @@ tools:
       homepage: "https://github.com/GeneDx/scramble"
       documentation: "https://github.com/GeneDx/scramble"
       tool_dev_url: "https://github.com/GeneDx/scramble"
-      licence: ["CC"]
+      licence:
+        - "CC"
       identifier: ""
 input:
   - - meta:
@@ -50,13 +51,29 @@ output:
           description: Tab-delimited file containing the soft-clipped clusters
           pattern: "*.clusters.txt"
           ontologies: []
+  versions_scramble:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - scramble:
+          type: string
+          description: The tool name
+      - "1.0.2":
+          type: string
+          description: The version of the tool (hardcoded, not available via CLI)
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - scramble:
+          type: string
+          description: The tool name
+      - "1.0.2":
+          type: string
+          description: The version of the tool (hardcoded, not available via CLI)
+
 authors:
   - "@nvnieuwk"
 maintainers:

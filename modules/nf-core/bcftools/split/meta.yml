@@ -11,7 +11,8 @@ tools:
       documentation: http://www.htslib.org/doc/bcftools.html
       tool_dev_url: https://github.com/samtools/bcftools
       doi: "10.1093/bioinformatics/btp352"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:bcftools
 input:
   - - meta:
@@ -24,7 +25,7 @@ input:
         description: Compressed vcf file
         pattern: "*.vcf.gz"
         ontologies:
-          - edam: http://edamontology.org/format_3989 # GZIP format
+          - edam: http://edamontology.org/format_3989
     - tbi:
         type: file
         description: Compressed vcf file index
@@ -42,7 +43,7 @@ output:
           description: Compressed vcf files per chromosome
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   versions_bcftools:
     - - ${task.process}:
           type: string
@@ -51,7 +52,7 @@ output:
           type: string
           description: The tool name
       - "bcftools --version | sed '1!d; s/^.*bcftools //'":
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 topics:
   versions:
@@ -62,7 +63,7 @@ topics:
           type: string
           description: The tool name
       - "bcftools --version | sed '1!d; s/^.*bcftools //'":
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 authors:
   - "@matthdsm"

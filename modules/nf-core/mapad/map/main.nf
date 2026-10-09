@@ -20,7 +20,7 @@ process MAPAD_MAP {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val("mapad"), eval("mapad --version | sed 's/^mapAD //'"), topic: versions, emit: versions_mapad
 
     when:
     task.ext.when == null || task.ext.when
@@ -48,10 +48,11 @@ process MAPAD_MAP {
         -d ${deam_rate_double_stranded} \\
         -s ${deam_rate_single_stranded} \\
         -i ${indel_rate}
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mapad: \$(echo \$(mapad --version) | sed 's/^mapAD //' )
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.bam
     """
 }

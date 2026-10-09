@@ -32,8 +32,7 @@ nextflow_workflow {
             assertAll(
                 { assert snapshot(
                     file(workflow.out.filtered_reads[0][1]).name, // unstable
-                    workflow.out.logfile[0][1],
-                    workflow.out.versions.collect { path(it).yaml }
+                    workflow.out.logfile[0][1]
                 ).match()}
             )
         }
@@ -60,8 +59,7 @@ nextflow_workflow {
             assertAll(
                 { assert snapshot(
                     workflow.out.filtered_reads[0][1],
-                    workflow.out.multiqc_files.collect { file(it[1]).name },
-                    workflow.out.versions.collect { path(it).yaml }
+                    workflow.out.multiqc_files.collect { file(it[1]).name }
                 ).match()}
             )
         }
@@ -87,8 +85,7 @@ nextflow_workflow {
                     workflow.out.filtered_reads[0][1],
                     path(workflow.out.logfile[0][1]).readLines().size(),
                     path(workflow.out.report[0][1]).readLines().size(),
-                    workflow.out.multiqc_files[0][1],
-                    workflow.out.versions.collect { path(it).yaml }
+                    workflow.out.multiqc_files[0][1]
                 ).match()}
             )
         }
@@ -113,8 +110,7 @@ nextflow_workflow {
             assert workflow.success
             assertAll(
                 { assert snapshot(
-                    workflow.out,
-                    workflow.out.versions.collect { path(it).yaml }
+                    workflow.out
                 ).match()}
             )
         }

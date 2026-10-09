@@ -1,0 +1,538 @@
+nextflow_process {
+
+    name "Test Process HMMER_FORMATTSV"
+    script "../main.nf"
+    process "HMMER_FORMATTSV"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hmmer"
+    tag "hmmer/formattsv"
+
+    // Real hmmsearch output (curated NrdJ/NrdJm1 excerpts, also used by hmmer/hmmrank's own
+    // test). Both fixtures' dash/alignment header rows have no gap after "#" (HMMER glues it
+    // onto the first column's dashes); the gapped form is exercised by the synthetic tests
+    // below instead, since no gapped real fixture is available.
+    test("real HMMER output -- NrdJ + NrdJm1 tblout, concatenated") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [ 'NrdJ', 'NrdJm1' ],
+                    [
+                        file(params.phyloplace_testdata_base_path + 'hmmrank/NrdJ.tbl.gz', checkIfExists: true),
+                        file(params.phyloplace_testdata_base_path + 'hmmrank/NrdJm1.tbl.gz', checkIfExists: true)
+                    ],
+                ]
+                input[1] = 'tblout'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    path(process.out.tsv[0][1]).linesGzip,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() },
+                { assert path(process.out.tsv[0][1]).linesGzip.findAll { it.startsWith('NrdJ\t') }.size() == 4 },
+                { assert path(process.out.tsv[0][1]).linesGzip.findAll { it.startsWith('NrdJm1\t') }.size() == 5 },
+                // every row has exactly 20 tab-separated fields (profile + HMMER's 19), even
+                // though the free-text description itself often contains many spaces
+                { assert path(process.out.tsv[0][1]).linesGzip[1..-1].every { it.tokenize('\t').size() == 20 } }
+            )
+        }
+    }
+
+    test("real HMMER output -- NrdJ + NrdJm1 domtblout, concatenated") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [ 'NrdJ', 'NrdJm1' ],
+                    [
+                        file(params.phyloplace_testdata_base_path + 'hmmrank/NrdJ.domtbl.gz', checkIfExists: true),
+                        file(params.phyloplace_testdata_base_path + 'hmmrank/NrdJm1.domtbl.gz', checkIfExists: true)
+                    ],
+                ]
+                input[1] = 'domtblout'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    path(process.out.tsv[0][1]).linesGzip,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() },
+                { assert path(process.out.tsv[0][1]).linesGzip.findAll { it.startsWith('NrdJ\t') }.size() == 16 },
+                { assert path(process.out.tsv[0][1]).linesGzip.findAll { it.startsWith('NrdJm1\t') }.size() == 12 },
+                { assert path(process.out.tsv[0][1]).linesGzip[1..-1].every { it.tokenize('\t').size() == 24 } }
+            )
+        }
+    }
+
+    // Synthetic cases below isolate what the real fixtures above can't cleanly prove alone:
+    // the profile column comes from the explicit `labels` list, not the input filename (these
+    // temp files are named randomly).
+    test("2 tblout files -- concatenated, profile column from labels not filenames") {
+
+        when {
+            process {
+                """
+                def tblout1 = File.createTempFile('profileA', '.tbl')
+                tblout1.text = '''#                                                                           --- full sequence ---- --- best 1 domain ---- --- domain number estimation ----
+# target name                    accession  query name           accession    E-value  score  bias   E-value  score  bias   exp reg clu  ov env dom rep inc description of target
+#            ------------------- ---------- -------------------- ---------- --------- ------ ----- --------- ------ -----   --- --- --- --- --- --- --- --- ---------------------
+seq1                               -          model_A               PF00001       1e-10   50.0   0.1      2e-10   49.0   0.1   1.0   1   0   0   1   1   1   1 a multi word description
+seq2                               -          model_A               PF00001       3e-08   40.2   0.0      4e-08   39.9   0.0   1.0   1   0   0   1   1   1   1 another one
+'''
+
+                def tblout2 = File.createTempFile('profileB', '.tbl')
+                tblout2.text = '''#                                                                           --- full sequence ---- --- best 1 domain ---- --- domain number estimation ----
+# target name                       accession  query name           accession    E-value  score  bias   E-value  score  bias   exp reg clu  ov env dom rep inc description of target
+#            ---------------------- ---------- -------------------- ---------- --------- ------ ----- --------- ------ -----   --- --- --- --- --- --- --- --- ---------------------
+seq3_with_a_longer_name              -          model_B               PF00002       5e-20   99.9   1.2      6e-20   99.0   1.2   1.0   1   0   0   1   1   1   1 third hit, single word desc
+'''
+
+                input[0] = [
+                    [ id:'test' ],
+                    [ 'profileA', 'profileB' ],
+                    [ file(tblout1.toString()), file(tblout2.toString()) ],
+                ]
+                input[1] = 'tblout'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    path(process.out.tsv[0][1]).linesGzip,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() },
+                // Labels come from the explicit list, not either temp file's name, and the
+                // wider profileB header doesn't shift parsing of its own row.
+                { assert path(process.out.tsv[0][1]).linesGzip.findAll { it.startsWith('profileA\t') }.size() == 2 },
+                { assert path(process.out.tsv[0][1]).linesGzip.findAll { it.startsWith('profileB\t') }.size() == 1 },
+                { assert path(process.out.tsv[0][1]).linesGzip.any { it.contains('a multi word description') } }
+            )
+        }
+    }
+
+    test("2 domtblout files -- domain columns, differing header widths, multi-word description merged") {
+
+        when {
+            process {
+                """
+                def domtblout1 = File.createTempFile('profileC', '.domtbl')
+                domtblout1.text = '''#                                                                                        --- full sequence --- -------------- this domain -------------   hmm coord   ali coord   env coord
+# target name                    accession   tlen query name           accession   qlen   E-value  score  bias   #  of  c-Evalue  i-Evalue  score  bias  from    to  from    to  from    to  acc description of target
+#            ------------------- ---------- ----- -------------------- ---------- ----- --------- ------ ----- --- --- --------- --------- ------ ----- ----- ----- ----- ----- ----- ----- ---- ---------------------
+seq1                               -           500 model_A               PF00001     480     1e-10   50.0   0.1   1   1     2e-10   3e-10   49.0   0.1     5   480     3   478     2   479 0.95 a domtblout description with spaces
+'''
+
+                // Same columns, but a much longer target name widens the dash run under it --
+                // this is the case that matters: N is derived per file, not just from the first.
+                def domtblout2 = File.createTempFile('profileD', '.domtbl')
+                domtblout2.text = '''#                                                                                                            --- full sequence --- -------------- this domain -------------   hmm coord   ali coord   env coord
+# target name                                        accession   tlen query name           accession   qlen   E-value  score  bias   #  of  c-Evalue  i-Evalue  score  bias  from    to  from    to  from    to  acc description of target
+#            ----------------------------------- ---------- ----- -------------------- ---------- ----- --------- ------ ----- --- --- --------- --------- ------ ----- ----- ----- ----- ----- ----- ----- ---- ---------------------
+seq4_with_a_much_longer_identifier   -           620 model_D               PF00004     600     2e-15   80.0   0.2   1   1     3e-15   4e-15   79.0   0.2    10   600     8   598     6   601 0.91 a second file description
+'''
+
+                input[0] = [
+                    [ id:'test' ],
+                    [ 'profileC', 'profileD' ],
+                    [ file(domtblout1.toString()), file(domtblout2.toString()) ],
+                ]
+                input[1] = 'domtblout'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    path(process.out.tsv[0][1]).linesGzip,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() },
+                { assert path(process.out.tsv[0][1]).linesGzip[0].tokenize('\t').size() == 24 },
+                { assert path(process.out.tsv[0][1]).linesGzip.findAll { it.startsWith('profileC\t') }.size() == 1 },
+                { assert path(process.out.tsv[0][1]).linesGzip.findAll { it.startsWith('profileD\t') }.size() == 1 },
+                { assert path(process.out.tsv[0][1]).linesGzip.any { it.contains('a domtblout description with spaces') } },
+                { assert path(process.out.tsv[0][1]).linesGzip.any { it.contains('a second file description') } },
+                // profileD's row must still have exactly 24 tab-separated fields despite the
+                // much wider header -- confirms width variation doesn't shift the field count.
+                { assert path(process.out.tsv[0][1]).linesGzip.find { it.startsWith('profileD\t') }.tokenize('\t').size() == 24 }
+            )
+        }
+    }
+
+    test("label containing a space -- quoted, doesn't misalign the label/file pairing") {
+
+        when {
+            process {
+                """
+                def tblout1 = File.createTempFile('profileA', '.tbl')
+                tblout1.text = '''#                                                                           --- full sequence ---- --- best 1 domain ---- --- domain number estimation ----
+# target name                    accession  query name           accession    E-value  score  bias   E-value  score  bias   exp reg clu  ov env dom rep inc description of target
+#            ------------------- ---------- -------------------- ---------- --------- ------ ----- --------- ------ -----   --- --- --- --- --- --- --- --- ---------------------
+seq1                               -          model_A               PF00001       1e-10   50.0   0.1      2e-10   49.0   0.1   1.0   1   0   0   1   1   1   1 a multi word description
+'''
+
+                def tblout2 = File.createTempFile('profileB', '.tbl')
+                tblout2.text = '''#                                                                           --- full sequence ---- --- best 1 domain ---- --- domain number estimation ----
+# target name                    accession  query name           accession    E-value  score  bias   E-value  score  bias   exp reg clu  ov env dom rep inc description of target
+#            ------------------- ---------- -------------------- ---------- --------- ------ ----- --------- ------ -----   --- --- --- --- --- --- --- --- ---------------------
+seq2                               -          model_B               PF00002       3e-08   40.2   0.0      4e-08   39.9   0.0   1.0   1   0   0   1   1   1   1 another one
+'''
+
+                input[0] = [
+                    [ id:'test' ],
+                    [ 'profile A', 'profileB' ],
+                    [ file(tblout1.toString()), file(tblout2.toString()) ],
+                ]
+                input[1] = 'tblout'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert path(process.out.tsv[0][1]).linesGzip.any { it.startsWith('profile A\t') && it.contains('a multi word description') } },
+                { assert path(process.out.tsv[0][1]).linesGzip.any { it.startsWith('profileB\t') && it.contains('another one') } }
+            )
+        }
+    }
+
+    test("no header row in input -- fails rather than silently emitting an empty table") {
+
+        when {
+            process {
+                """
+                def tblout1 = File.createTempFile('profileA', '.tbl')
+                tblout1.text = '''seq1                               -          model_A               PF00001       1e-10   50.0   0.1      2e-10   49.0   0.1   1.0   1   0   0   1   1   1   1 a multi word description
+'''
+
+                input[0] = [
+                    [ id:'test' ],
+                    [ 'profileA' ],
+                    [ file(tblout1.toString()) ],
+                ]
+                input[1] = 'tblout'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains('column-count header') }
+            )
+        }
+    }
+
+    test("tblout with a different column count (e.g. nhmmer) -- fails rather than mislabeling columns") {
+
+        when {
+            process {
+                """
+                def tblout1 = File.createTempFile('profileA', '.tbl')
+                tblout1.text = '''#target name  accession query name  accession   hmmfrom  hmm to alifrom ali to envfrom  env to  modlen strand   E-value  score  bias description of target
+#------------ --------- ------------ --------- ------- ------- ------- ------- ------- ------- ------- ------ --------- ------ ----- ---------------------
+seq1          -         model_A      -             1     100       1     100       1     100     100      +     1e-10   50.0   0.1 a description
+'''
+
+                input[0] = [
+                    [ id:'test' ],
+                    [ 'profileA' ],
+                    [ file(tblout1.toString()) ],
+                ]
+                input[1] = 'tblout'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains('expected 19 tblout columns') }
+            )
+        }
+    }
+
+    test("real hmmsearch footer -- trailing # Program:/# Date:/# [ok] lines don't leak into the table") {
+
+        when {
+            process {
+                """
+                // Uncurated hmmsearch --tblout always ends with a run of "#"-prefixed
+                // run-metadata lines, the last being "# [ok]" -- unlike the curated test
+                // fixtures used above, which have this footer trimmed off. All of it is
+                // "#"-prefixed, same as the header, so it should be skipped the same way.
+                def tblout1 = File.createTempFile('profileA', '.tbl')
+                tblout1.text = '''#                                                                           --- full sequence ---- --- best 1 domain ---- --- domain number estimation ----
+# target name                    accession  query name           accession    E-value  score  bias   E-value  score  bias   exp reg clu  ov env dom rep inc description of target
+#            ------------------- ---------- -------------------- ---------- --------- ------ ----- --------- ------ -----   --- --- --- --- --- --- --- --- ---------------------
+seq1                               -          model_A               PF00001       1e-10   50.0   0.1      2e-10   49.0   0.1   1.0   1   0   0   1   1   1   1 a multi word description
+#
+# Program:         hmmsearch
+# Version:         3.4 (Aug 2023)
+# Pipeline mode:   SEARCH
+# Query file:      model_A.hmm
+# Target file:     all.faa.gz
+# Date:            Sun Sep 13 14:01:33 2026
+# [ok]
+'''
+
+                input[0] = [
+                    [ id:'test' ],
+                    [ 'profileA' ],
+                    [ file(tblout1.toString()) ],
+                ]
+                input[1] = 'tblout'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                // header line + exactly the one real hit -- no stray row from the footer
+                { assert path(process.out.tsv[0][1]).linesGzip.size() == 2 },
+                { assert path(process.out.tsv[0][1]).linesGzip.any { it.startsWith('profileA\t') && it.contains('a multi word description') } }
+            )
+        }
+    }
+
+    test("two HMMER runs' output concatenated into one file -- fails rather than silently dropping the second run") {
+
+        when {
+            process {
+                """
+                // Two runs' tblout concatenated together -- used to be silently swallowed after
+                // the first run's footer "#" sentinel line.
+                def tblout1 = File.createTempFile('profileA', '.tbl')
+                tblout1.text = '''#                                                                           --- full sequence ---- --- best 1 domain ---- --- domain number estimation ----
+# target name                    accession  query name           accession    E-value  score  bias   E-value  score  bias   exp reg clu  ov env dom rep inc description of target
+#            ------------------- ---------- -------------------- ---------- --------- ------ ----- --------- ------ -----   --- --- --- --- --- --- --- --- ---------------------
+seq1                               -          model_A               PF00001       1e-10   50.0   0.1      2e-10   49.0   0.1   1.0   1   0   0   1   1   1   1 first run's hit
+#
+# Program:         hmmsearch
+# Version:         3.4 (Aug 2023)
+# Pipeline mode:   SEARCH
+# Query file:      model_A.hmm
+# Target file:     all.faa.gz
+# Date:            Sun Sep 13 14:01:33 2026
+# [ok]
+#                                                                           --- full sequence ---- --- best 1 domain ---- --- domain number estimation ----
+# target name                    accession  query name           accession    E-value  score  bias   E-value  score  bias   exp reg clu  ov env dom rep inc description of target
+#            ------------------- ---------- -------------------- ---------- --------- ------ ----- --------- ------ -----   --- --- --- --- --- --- --- --- ---------------------
+seq2                               -          model_B               PF00002       2e-10   49.0   0.1      3e-10   48.0   0.1   1.0   1   0   0   1   1   1   1 second run's hit
+#
+# Program:         hmmsearch
+# [ok]
+'''
+
+                input[0] = [
+                    [ id:'test' ],
+                    [ 'profileA' ],
+                    [ file(tblout1.toString()) ],
+                ]
+                input[1] = 'tblout'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains('more than one HMMER run') }
+            )
+        }
+    }
+
+    test("trailing blank line after the footer -- still a single run, not mistaken for a second one") {
+
+        when {
+            process {
+                """
+                // A trailing blank line after the footer must stay a no-op, not trip the guard
+                // above.
+                def tblout1 = File.createTempFile('profileA', '.tbl')
+                tblout1.text = '''#                                                                           --- full sequence ---- --- best 1 domain ---- --- domain number estimation ----
+# target name                    accession  query name           accession    E-value  score  bias   E-value  score  bias   exp reg clu  ov env dom rep inc description of target
+#            ------------------- ---------- -------------------- ---------- --------- ------ ----- --------- ------ -----   --- --- --- --- --- --- --- --- ---------------------
+seq1                               -          model_A               PF00001       1e-10   50.0   0.1      2e-10   49.0   0.1   1.0   1   0   0   1   1   1   1 a description
+#
+# Program:         hmmsearch
+# [ok]
+
+'''
+
+                input[0] = [
+                    [ id:'test' ],
+                    [ 'profileA' ],
+                    [ file(tblout1.toString()) ],
+                ]
+                input[1] = 'tblout'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(path(process.out.tsv[0][1]).linesGzip).match() }
+            )
+        }
+    }
+
+    test("zero-hit tblout -- header with no data rows succeeds, not treated as a missing header") {
+
+        when {
+            process {
+                """
+                def tblout1 = File.createTempFile('profileA', '.tbl')
+                tblout1.text = '''#                                                                           --- full sequence ---- --- best 1 domain ---- --- domain number estimation ----
+# target name                    accession  query name           accession    E-value  score  bias   E-value  score  bias   exp reg clu  ov env dom rep inc description of target
+#            ------------------- ---------- -------------------- ---------- --------- ------ ----- --------- ------ -----   --- --- --- --- --- --- --- --- ---------------------
+#
+# [ok]
+'''
+
+                input[0] = [
+                    [ id:'test' ],
+                    [ 'profileA' ],
+                    [ file(tblout1.toString()) ],
+                ]
+                input[1] = 'tblout'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                // header line only -- a real, valid "no hits" result, not an error
+                { assert path(process.out.tsv[0][1]).linesGzip.size() == 1 }
+            )
+        }
+    }
+
+    test("data row target name starting with '#' -- kept as data, not mistaken for the footer") {
+
+        when {
+            process {
+                """
+                // Nothing in the FASTA/HMMER format forbids a sequence ID starting with
+                // "#". Only the exact sentinel line "#" (nothing else) marks the start of
+                // the run-metadata footer -- anything else starting with "#" mid-stream,
+                // once a header has already been found, is data.
+                def tblout1 = File.createTempFile('profileA', '.tbl')
+                tblout1.text = '''#                                                                           --- full sequence ---- --- best 1 domain ---- --- domain number estimation ----
+# target name                    accession  query name           accession    E-value  score  bias   E-value  score  bias   exp reg clu  ov env dom rep inc description of target
+#            ------------------- ---------- -------------------- ---------- --------- ------ ----- --------- ------ -----   --- --- --- --- --- --- --- --- ---------------------
+seq1                               -          model_A               PF00001       1e-10   50.0   0.1      2e-10   49.0   0.1   1.0   1   0   0   1   1   1   1 first hit
+#weird_id                          -          model_A               PF00001       2e-10   49.0   0.1      3e-10   48.0   0.1   1.0   1   0   0   1   1   1   1 hash-prefixed id
+#
+# Program:         hmmsearch
+# [ok]
+'''
+
+                input[0] = [
+                    [ id:'test' ],
+                    [ 'profileA' ],
+                    [ file(tblout1.toString()) ],
+                ]
+                input[1] = 'tblout'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                // header line + the two real hits -- footer still correctly excluded
+                { assert path(process.out.tsv[0][1]).linesGzip.size() == 3 },
+                { assert path(process.out.tsv[0][1]).linesGzip.any { it.startsWith('profileA\t#weird_id\t') } }
+            )
+        }
+    }
+
+    test("CRLF line endings -- header still detected, no stray carriage return in the output") {
+
+        when {
+            process {
+                """
+                def tblout1 = File.createTempFile('profileA', '.tbl')
+                tblout1.bytes = ([
+                    '#                                                                           --- full sequence ---- --- best 1 domain ---- --- domain number estimation ----',
+                    '# target name                    accession  query name           accession    E-value  score  bias   E-value  score  bias   exp reg clu  ov env dom rep inc description of target',
+                    '#            ------------------- ---------- -------------------- ---------- --------- ------ ----- --------- ------ -----   --- --- --- --- --- --- --- --- ---------------------',
+                    'seq1                               -          model_A               PF00001       1e-10   50.0   0.1      2e-10   49.0   0.1   1.0   1   0   0   1   1   1   1 a description'
+                ].collect { it + '\\r' }.join('\\n') + '\\r\\n').bytes
+
+                input[0] = [
+                    [ id:'test' ],
+                    [ 'profileA' ],
+                    [ file(tblout1.toString()) ],
+                ]
+                input[1] = 'tblout'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert path(process.out.tsv[0][1]).linesGzip.size() == 2 },
+                { assert path(process.out.tsv[0][1]).linesGzip.every { !it.contains('\r') } },
+                { assert path(process.out.tsv[0][1]).linesGzip.any { it.startsWith('profileA\t') && it.contains('a description') } }
+            )
+        }
+    }
+
+    test("2 tblout files -- stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                // Nextflow stages path inputs (symlinks them) even in stub mode, though the
+                // script itself is never run -- content is irrelevant here, but the files
+                // must actually exist.
+                def tblout1 = File.createTempFile('profileA', '.tbl')
+                def tblout2 = File.createTempFile('profileB', '.tbl')
+
+                input[0] = [
+                    [ id:'test' ],
+                    [ 'profileA', 'profileB' ],
+                    [ file(tblout1.toString()), file(tblout2.toString()) ],
+                ]
+                input[1] = 'tblout'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

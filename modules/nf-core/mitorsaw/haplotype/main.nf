@@ -4,8 +4,8 @@ process MITORSAW_HAPLOTYPE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mitorsaw:0.2.7--h9ee0642_0':
-        'quay.io/biocontainers/mitorsaw:0.2.7--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/mitorsaw:0.2.9--h9ee0642_0':
+        'quay.io/biocontainers/mitorsaw:0.2.9--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -69,7 +69,7 @@ process MITORSAW_HAPLOTYPE {
     """
     echo $args
 
-    echo | gzip > ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
     ${touch_hap_stats}
     ${mkdir_debug}

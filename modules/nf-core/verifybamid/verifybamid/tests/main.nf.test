@@ -4,7 +4,6 @@ nextflow_process {
     name "Test Process VERIFYBAMID_VERIFYBAMID"
     script "../main.nf"
     process "VERIFYBAMID_VERIFYBAMID"
-    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -27,18 +26,35 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    file(process.out.log[0][1]).name,
-                    process.out.depthrg,
-                    process.out.depthsm,
-                    process.out.selfrg,
-                    process.out.selfsm,
-                    process.out.versions,
-                    ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
             )
         }
     }
+
+    test("test-verifybamid-verifybamid - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true)
+				]
+				input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/genmod.vcf.gz', checkIfExists: true)
+
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
 
 }

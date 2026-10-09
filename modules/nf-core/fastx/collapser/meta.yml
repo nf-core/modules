@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "fastx_collapser"
 description: Collapses identical sequences in a FASTQ/A file into a single sequence
   (while maintaining reads counts)
@@ -14,11 +13,10 @@ tools:
       homepage: "http://hannonlab.cshl.edu/fastx_toolkit/"
       documentation: "http://hannonlab.cshl.edu/fastx_toolkit/commandline.html"
       tool_dev_url: "https://github.com/agordon/fastx_toolkit"
-      licence: ["AGPL"]
+      licence:
+        - "AGPL"
       identifier: ""
-
 input:
-  # Only when we have meta
   - - meta:
         type: map
         description: |
@@ -29,7 +27,7 @@ input:
         description: Decompressed FASTA/FASTQ input file
         pattern: "*.{fastq,fasta}"
         ontologies:
-          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_1930
 output:
   fasta:
     - - meta:
@@ -42,13 +40,27 @@ output:
           description: Collapsed FASTA file
           pattern: "*.fasta"
           ontologies: []
+  versions_fastx:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fastx:
+          type: string
+          description: The name of the tool
+      - fastx_collapser -h 2>&1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fastx:
+          type: string
+          description: The name of the tool
+      - fastx_collapser -h 2>&1 | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jvfe"
 maintainers:

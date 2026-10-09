@@ -199,8 +199,7 @@ nextflow_process {
             )
         }
     }
-    test("mus_musculus - tsv -- stub") {
-        tag "stub"
+    test("mus_musculus - tsv - stub") {
         options "-stub"
         when {
             params {
@@ -220,7 +219,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
+                    sanitizeOutput(process.out),
                     path(process.out.versions[0]).yaml
                 ).match() }
             )

@@ -60,12 +60,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.txt_gz,
-                    process.out.megan.collect{ file(it[1]).name }, // Test only the name due to timestamp
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["megan"])).match() }
             )
         }
     }
@@ -86,10 +81,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0])
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

@@ -57,10 +57,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--low-memory'
-                // Ref: https://forums.developer.nvidia.com/t/problem-with-gpu/256825/6
-                // Parabricks’s fq2bam requires 24GB of memory.
-                // Using --low-memory for testing
+                module_args = ''
                 bwa_prefix = 'genome.fa'
             }
             process {
@@ -77,7 +74,7 @@ nextflow_process {
                 ])
 				input[2] = BWA_INDEX.out.index
                 input[3] = [ [], [] ]
-                input[4] = [ [], [] ]
+                input[4] = [ [], [], [] ]
                 input[5] = 'bam'
                 """
             }
@@ -118,7 +115,7 @@ nextflow_process {
                 ])
 				input[2] = BWA_INDEX.out.index
                 input[3] = [ [], [] ]
-                input[4] = [ [], [] ]
+                input[4] = [ [], [], [] ]
                 input[5] = 'bam'
                 """
             }
@@ -139,10 +136,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--low-memory'
-                // Ref: https://forums.developer.nvidia.com/t/problem-with-gpu/256825/6
-                // Parabricks’s fq2bam requires 24GB of memory.
-                // Using --low-memory for testing
+                module_args = ''
                 bwa_prefix = 'genome.fasta'
             }
             process {
@@ -160,7 +154,7 @@ nextflow_process {
                 ])
                 input[2] = BWA_INDEX_PE.out.index
                 input[3] = [ [], [] ]
-                input[4] = [ [], [] ]
+                input[4] = [ [], [], [] ]
                 input[5] = 'bam'
                 """
             }
@@ -203,7 +197,7 @@ nextflow_process {
                 ])
                 input[2] = BWA_INDEX_PE.out.index
                 input[3] = [ [], [] ]
-                input[4] = [ [], [] ]
+                input[4] = [ [], [], [] ]
                 input[5] = 'bam'
                 """
             }
@@ -225,10 +219,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--low-memory'
-                // Ref: https://forums.developer.nvidia.com/t/problem-with-gpu/256825/6
-                // Parabricks’s fq2bam requires 24GB of memory.
-                // Using --low-memory for testing
+                module_args = ''
                 bwa_prefix = 'genome.fasta'
             }
             process {
@@ -242,7 +233,7 @@ nextflow_process {
                 input[1] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
                 input[2] = BWA_INDEX_CRAM.out.index
                 input[3] = [ [], [] ]
-                input[4] = [ [], [] ]
+                input[4] = [ [], [], [] ]
                 input[5] = 'cram'
                 """
             }
@@ -289,7 +280,7 @@ nextflow_process {
                 ])
                 input[2] = BWA_INDEX_PE.out.index
                 input[3] = [ [], [] ]
-                input[4] = [ [], [] ]
+                input[4] = [ [], [], [] ]
                 input[5] = 'cram'
                 """
             }

@@ -28,4 +28,10 @@ process ZIP {
         $args \\
         "${prefix}.zip" ./inputs/*
     """
+
+    stub:
+    prefix = task.ext.prefix ?: ( meta.id ? "${meta.id}" : 'zipped_files')
+    """
+    touch ${prefix}.zip
+    """
 }

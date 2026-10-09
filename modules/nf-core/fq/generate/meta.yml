@@ -12,7 +12,8 @@ tools:
       homepage: "https://github.com/stjude-rust-labs/fq"
       documentation: "https://github.com/stjude-rust-labs/fq"
       tool_dev_url: "https://github.com/stjude-rust-labs/fq"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - meta:
@@ -32,14 +33,28 @@ output:
           description: Random generated FASTQ files.
           pattern: "*_R[12].fastq.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989 # GZIP
+  versions_fq:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fq:
+          type: string
+          description: The name of the tool
+      - fq generate --version | sed 's/fq-generate //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fq:
+          type: string
+          description: The name of the tool
+      - fq generate --version | sed 's/fq-generate //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@adamrtalbot"
 maintainers:

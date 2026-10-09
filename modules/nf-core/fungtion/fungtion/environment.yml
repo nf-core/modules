@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - conda-forge::python=3.10.0
+  # Build with Wave using `--conda-base-image mambaorg/micromamba:2.0.5`: the default Wave
+  # community base (Amazon Linux 2023) lacks /usr/bin/which, so these R packages fail to load.
+  - r-base=4.4
+  - r-caret=7.0_1
+  - r-e1071=1.7_17
+  - r-optparse=1.8.2
+  - conda-forge::pytorch=2.11.0=cpu* # CPU-only torch (no CUDA) satisfying fungtion's torch>=2.11.0, so pip won't pull the CUDA-bundled PyPI wheel
+  - pip:
+      - fungtion==1.0.0

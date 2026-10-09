@@ -21,23 +21,30 @@ process KRAKENUNIQ_BUILD {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    custom_db = custom_library_dir ? "mkdir ${prefix} && mv library taxonomy ${custom_seqid2taxid} ${prefix}" : ""
-    run_cleanup = keep_intermediate ? "" : "find -L ${prefix} -type f -not -name \"*.kdb\" -type f -not -name \"*idx\" -not -name \"taxDB\" -not -name \"*.counts\" -delete"
+    def run_cleanup = keep_intermediate ? "" : """
+    find -L ${prefix} -type f \\
+        -not -name "*.kdb" \\
+        -not -name "*idx" \\
+        -not -name "taxDB" \\
+        -not -name "*.counts" \\
+        -delete && \\
+    find -type d -empty -delete
+    """
 
     """
-    ${custom_db}
+    mkdir ${prefix} && cp -r library taxonomy ${custom_seqid2taxid} ${prefix}
 
     krakenuniq-build \\
         ${args} \\
         --threads ${task.cpus} \\
         --db ${prefix}
 
+    rm -r ${prefix}/{library,taxonomy,${custom_seqid2taxid}}
     ${run_cleanup}
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    run_cleanup = keep_intermediate ? "" : "find -L ${prefix} -type f -not -name \"*.kdb\" -type f -not -name \"*idx\" -not -name \"taxDB\" -delete"
     """
     mkdir ${prefix}/
     touch ${prefix}/database-build.log

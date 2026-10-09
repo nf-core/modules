@@ -1,0 +1,79 @@
+name: "rpbp_estimatemetagenebayesfactors"
+description: |
+  Score how strongly each per-read-length metagene profile shows the
+  3-nucleotide periodicity expected of actively translating ribosomes.
+  For each candidate (read length, P-site offset) pair, Rp-Bp fits two
+  competing Bayesian models to the count window around annotated start
+  codons: a "periodic" model whose signal repeats every three
+  nucleotides, and a "non-periodic" background model. The Bayes factor
+  (ratio of the two marginal likelihoods) quantifies how much the data
+  prefer the periodic explanation.
+
+  Returns one row per (length, offset) pair with the mean and variance of
+  the log Bayes factor across MCMC samples. Downstream,
+  `rpbp/selectperiodicoffsets` picks the best offset per length from
+  this table, and `rpbp/getperiodiclengthsoffsets` filters to the
+  high-confidence pairs that drive ORF-level scoring.
+
+  Uses the Stan models bundled inside the rpbp Python package.
+keywords:
+  - rpbp
+  - metagene
+  - bayes
+  - orf
+  - riboseq
+tools:
+  - "rpbp":
+      description: "Rp-Bp - Bayesian inference of ribosome profiling data for identifying translated open reading frames"
+      homepage: "https://github.com/dieterich-lab/rp-bp"
+      documentation: "https://rp-bp.readthedocs.io"
+      tool_dev_url: "https://github.com/dieterich-lab/rp-bp"
+      doi: "10.1093/nar/gkw1350"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information, e.g. `[ id:'sample1' ]`.
+    - profile_csv:
+        type: file
+        description: Metagene profile CSV produced by `rpbp/extractmetageneprofiles`.
+        pattern: "*.metagene-profile.csv.gz"
+        ontologies: []
+output:
+  bayes_factors:
+    - - meta:
+          type: map
+          description: Groovy Map inherited from input meta.
+      - "${prefix}.csv.gz":
+          type: file
+          description: Per-read-length metagene periodicity Bayes factors.
+          pattern: "*.csv.gz"
+          ontologies: []
+  versions_rpbp:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rpbp:
+          type: string
+          description: The name of the tool
+      - python -c "import rpbp; print(rpbp.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rpbp:
+          type: string
+          description: The name of the tool
+      - python -c "import rpbp; print(rpbp.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"

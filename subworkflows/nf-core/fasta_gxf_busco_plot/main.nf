@@ -1,8 +1,8 @@
 include { BUSCO_BUSCO as BUSCO_ASSEMBLY         } from '../../../modules/nf-core/busco/busco/main'
-include { BUSCO_GENERATEPLOT as PLOT_ASSEMBLY   } from '../../../modules/nf-core/busco/generateplot/main'
+include { BUSCO_PLOT as PLOT_ASSEMBLY           } from '../../../modules/nf-core/busco/plot/main'
 include { GFFREAD as EXTRACT_PROTEINS           } from '../../../modules/nf-core/gffread/main'
 include { BUSCO_BUSCO as BUSCO_ANNOTATION       } from '../../../modules/nf-core/busco/busco/main'
-include { BUSCO_GENERATEPLOT as PLOT_ANNOTATION } from '../../../modules/nf-core/busco/generateplot/main'
+include { BUSCO_PLOT as PLOT_ANNOTATION         } from '../../../modules/nf-core/busco/plot/main'
 
 workflow FASTA_GXF_BUSCO_PLOT {
 
@@ -26,7 +26,6 @@ workflow FASTA_GXF_BUSCO_PLOT {
     val_busco_cleanup                           // val(boolean); Set to true to remove BUSCO intermediate files
 
     main:
-    ch_versions                                 = channel.empty()
     ch_db_path                                  = val_busco_lineages_path
                                                 ? channel.of(file(val_busco_lineages_path, checkIfExists: true))
                                                 : channel.of( [ [] ] )
@@ -81,13 +80,13 @@ workflow FASTA_GXF_BUSCO_PLOT {
     ch_assembly_short_summaries_json            = BUSCO_ASSEMBLY.out.short_summaries_json
     ch_assembly_full_table                      = BUSCO_ASSEMBLY.out.full_table
 
-    // MODULE: BUSCO_GENERATEPLOT as PLOT_ASSEMBLY
-    ch_assembly_plot_summary                    = ch_assembly_short_summaries_txt
-                                                | map { meta, txt ->
+    // MODULE: BUSCO_PLOT as PLOT_ASSEMBLY
+    ch_assembly_plot_summary                    = ch_assembly_short_summaries_json
+                                                | map { meta, json ->
                                                     def lineage_name = meta.lineage - ~/'_odb[0-9]+$'/
                                                     [
-                                                        "short_summary.specific.${meta.lineage}.${meta.id}_${lineage_name}.txt",
-                                                        txt.text
+                                                        "short_summary.specific.${meta.lineage}.${meta.id}_${lineage_name}.json",
+                                                        json.text
                                                     ]
                                                 }
                                                 | collectFile
@@ -161,13 +160,13 @@ workflow FASTA_GXF_BUSCO_PLOT {
     ch_annotation_short_summaries_json          = BUSCO_ANNOTATION.out.short_summaries_json
     ch_annotation_full_table                    = BUSCO_ANNOTATION.out.full_table
 
-    // MODULE: BUSCO_GENERATEPLOT as PLOT_ANNOTATION
-    ch_annotation_plot_summary                  = ch_annotation_short_summaries_txt
-                                                | map { meta, txt ->
+    // MODULE: BUSCO_PLOT as PLOT_ANNOTATION
+    ch_annotation_plot_summary                  = ch_annotation_short_summaries_json
+                                                | map { meta, json ->
                                                     def lineage_name = meta.lineage - ~/'_odb[0-9]+$'/
                                                     [
-                                                        "short_summary.specific.${meta.lineage}.${meta.id}_${lineage_name}.proteins.txt",
-                                                        txt.text
+                                                        "short_summary.specific.${meta.lineage}.${meta.id}_${lineage_name}.proteins.json",
+                                                        json.text
                                                     ]
                                                 }
                                                 | collectFile
@@ -182,13 +181,12 @@ workflow FASTA_GXF_BUSCO_PLOT {
     assembly_short_summaries_txt                = ch_assembly_short_summaries_txt       // channel: [ meta3, txt ]
     assembly_short_summaries_json               = ch_assembly_short_summaries_json      // channel: [ meta3, json ]
     assembly_full_table                         = ch_assembly_full_table                // channel: [ meta3, tsv ]
-    assembly_plot_summary_txt                   = ch_assembly_plot_summary              // channel: [ text ]
+    assembly_plot_summary_json                  = ch_assembly_plot_summary              // channel: [ json ]
     assembly_png                                = ch_assembly_png                       // channel: [ png ]
     annotation_batch_summary                    = ch_annotation_batch_summary           // channel: [ meta3, txt ]
     annotation_short_summaries_txt              = ch_annotation_short_summaries_txt     // channel: [ meta3, txt ]
     annotation_short_summaries_json             = ch_annotation_short_summaries_json    // channel: [ meta3, json ]
     annotation_full_table                       = ch_annotation_full_table              // channel: [ meta3, tsv ]
-    annotation_plot_summary_txt                 = ch_annotation_plot_summary            // channel: [ txt ]
+    annotation_plot_summary_json                = ch_annotation_plot_summary            // channel: [ json ]
     annotation_png                              = ch_annotation_png                     // channel: [ png ]
-    versions                                    = ch_versions                           // channel: [ versions.yml ]
 }

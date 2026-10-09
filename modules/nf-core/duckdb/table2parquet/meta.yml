@@ -1,0 +1,91 @@
+name: "duckdb_table2parquet"
+description: Convert a delimited text table (CSV or TSV, gzipped or not) to Parquet
+keywords:
+  - parquet
+  - csv
+  - tsv
+  - conversion
+tools:
+  - "duckdb":
+      description: "An in-process SQL OLAP database management system"
+      homepage: "https://duckdb.org"
+      documentation: "https://duckdb.org/docs/"
+      tool_dev_url: "https://github.com/duckdb/duckdb"
+      licence:
+        - "MIT"
+      identifier: "biotools:duckdb"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - table:
+        type: file
+        description: A delimited text table to convert. The delimiter is picked from the filename -- `.tsv`/`.tsv.gz`/`.tsv.zst` for tab, `.csv`/`.csv.gz`/`.csv.zst` for comma; any other suffix is an error.
+        pattern: "*.{csv,csv.gz,csv.zst,tsv,tsv.gz,tsv.zst}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3752" # CSV
+          - edam: "http://edamontology.org/format_3475" # TSV
+output:
+  parquet:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.parquet":
+          type: file
+          description: The input table, converted to Parquet
+          pattern: "*.parquet"
+          ontologies: []
+  versions_duckdb:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "duckdb":
+          type: string
+          description: The name of the tool
+      - "duckdb --version | sed 's/^v//; s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "duckdb":
+          type: string
+          description: The name of the tool
+      - "duckdb --version | sed 's/^v//; s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@erikrikarddaniel"
+maintainers:
+  - "@erikrikarddaniel"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/duckdb-cli:1.5.5--9759cff58ac94478
+      build_id: bd-9759cff58ac94478_1
+      scan_id: sc-d2d6d8ef62d545e0_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/duckdb-cli:1.5.5--9c6d18d9f687a45d
+      build_id: bd-9c6d18d9f687a45d_1
+      scan_id: sc-0edb2b0562f99468_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/duckdb-cli:1.5.5--f8bdd09321b4d7ab
+      build_id: bd-f8bdd09321b4d7ab_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/68/68261e24307fdf80b9988d6fd13cf3551735e6dc0e7e38003259f7d8efa84cdb/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/duckdb-cli:1.5.5--9ff691978ccb6109
+      build_id: bd-9ff691978ccb6109_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/92/92b4ee040ad1e494ed7c57b6d54b41105f49d79b50f966a2945e87c27d3fbf5e/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/duckdb/table2parquet/.conda-lock/linux_amd64-bd-9c6d18d9f687a45d_1.txt

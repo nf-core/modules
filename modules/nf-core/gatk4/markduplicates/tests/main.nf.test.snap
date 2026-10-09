@@ -2,13 +2,7 @@
     "sarscov2 - bam": {
         "content": [
             [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test.bam:md5,a9994ba43be93769a06d4814e95928cd"
-                ]
+                "test.bam:readsMD5,894549ee3ced6b5ca2eed2563a985217"
             ],
             [
                 [
@@ -25,7 +19,7 @@
                     [
                         "GATK4_MARKDUPLICATES",
                         "gatk4",
-                        "4.6.2.0"
+                        "4.7.0.0"
                     ]
                 ],
                 "versions_samtools": [
@@ -37,22 +31,16 @@
                 ]
             }
         ],
+        "timestamp": "2026-08-19T09:33:32.821723",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.3"
-        },
-        "timestamp": "2026-02-05T16:39:06.851947547"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     },
     "homo_sapiens - multiple bam": {
         "content": [
             [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test.bam:md5,6fee419d69f55f53b5a0d0334a5f9615"
-                ]
+                "test.bam:readsMD5,c4525b95f05075208347295e6a1fb232"
             ],
             [
                 [
@@ -69,7 +57,7 @@
                     [
                         "GATK4_MARKDUPLICATES",
                         "gatk4",
-                        "4.6.2.0"
+                        "4.7.0.0"
                     ]
                 ],
                 "versions_samtools": [
@@ -81,15 +69,17 @@
                 ]
             }
         ],
+        "timestamp": "2026-08-19T09:33:46.249898",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.3"
-        },
-        "timestamp": "2026-02-05T16:39:14.928475242"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     },
     "homo_sapiens - multiple cram": {
         "content": [
-            "test.cram",
+            [
+                "test.cram:readsMD5,c4525b95f05075208347295e6a1fb232"
+            ],
             "test.cram.crai",
             "test.cram.metrics",
             {
@@ -97,7 +87,7 @@
                     [
                         "GATK4_MARKDUPLICATES",
                         "gatk4",
-                        "4.6.2.0"
+                        "4.7.0.0"
                     ]
                 ],
                 "versions_samtools": [
@@ -109,10 +99,10 @@
                 ]
             }
         ],
+        "timestamp": "2026-08-19T09:34:01.362211",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.3"
-        },
-        "timestamp": "2026-02-05T16:39:23.543842929"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     }
 }

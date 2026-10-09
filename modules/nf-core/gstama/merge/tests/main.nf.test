@@ -4,7 +4,6 @@ nextflow_process {
     name "Test Process GSTAMA_MERGE"
     script "../main.nf"
     process "GSTAMA_MERGE"
-    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -17,14 +16,13 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:false ], // meta map
-				    [
-				        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bed/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.singletons.merged.aligned_tc.bed', checkIfExists: true),
-				        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bed/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.singletons.merged.aligned_tc.2.bed', checkIfExists: true)
-				    ]
+                    [ id:'test_all' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bed/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.singletons.merged.aligned_tc.bed', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bed/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.singletons.merged.aligned_tc.2.bed', checkIfExists: true)
+                    ]
                 ]
-				input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/txt/filelist.txt', checkIfExists: true)
-
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/txt/filelist.txt', checkIfExists: true)
                 """
             }
         }
@@ -32,14 +30,32 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-					process.out.bed,
-					file(process.out.gene_report[0][1]).readLines()[3..7],
-					file(process.out.merge[0][1]).readLines()[3..7],
-					file(process.out.trans_report[0][1]).readLines()[3..7],
-					process.out.versions
-					).match()
-				}
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("test-gstama-merge -- stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_all' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bed/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.singletons.merged.aligned_tc.bed', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bed/alz.ccs.fl.NEB_5p--NEB_Clontech_3p.flnc.clustered.singletons.merged.aligned_tc.2.bed', checkIfExists: true)
+                    ]
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/txt/filelist.txt', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

@@ -38,13 +38,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.ms_statistics.collect{meta, file_it -> [meta, file(file_it).name]},
-                    process.out.log.collect{meta, file_it -> [meta, file(file_it).name]},
-                    process.out.versions
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log", "ms_statistics"])).match() }
             )
         }
     }
@@ -65,8 +61,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }

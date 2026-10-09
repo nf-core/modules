@@ -8,7 +8,7 @@ process CHROMAP_INDEX {
         'community.wave.seqera.io/library/chromap:0.3.2--4ec4bca51cd82195' }"
 
     input:
-    tuple val(meta), path(fasta), path(fai)
+    tuple val(meta), path(fasta)
 
     output:
     tuple val(meta), path ("*.index"), emit: index

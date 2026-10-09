@@ -45,6 +45,9 @@ def parse_ext_args(args_string: str):
     )
     parser.add_argument("--features_id_col", type=str, default="gene_id", help="Column name for feature IDs")
     parser.add_argument("--features_symbol_col", type=str, default="gene_name", help="Column name for feature symbols")
+    parser.add_argument(
+        "--round_digits", type=int, default=None, help="Number of digits to round numeric output columns"
+    )
     return parser.parse_args(args_list)
 
 
@@ -88,10 +91,15 @@ results = dc.decouple(mat=mat, net=net, methods=methods, **parsedargs)
 
 for result in results:
     # Save table
-    results[result].to_csv("${task.ext.prefix}" + "_" + result + "_decoupler.tsv", sep="\t")
-    contrast_name = results[result].index[0]
+    result_df = results[result].copy()
+    if parsed_args.round_digits is not None:
+        numeric_columns = result_df.select_dtypes(include="number").columns
+        result_df[numeric_columns] = result_df[numeric_columns].round(parsed_args.round_digits)
+
+    result_df.to_csv("${task.ext.prefix}" + "_" + result + "_decoupler.tsv", sep="\t")
+    contrast_name = result_df.index[0]
     plt.figure(figsize=(8, 6))
-    dc.plot_barplot(results[result], contrast_name, top=25, vertical=False)
+    dc.plot_barplot(result_df, contrast_name, top=25, vertical=False)
     plt.savefig("${task.ext.prefix}" + "_" + result + "_decoupler_plot.png", dpi=300, bbox_inches="tight")
     plt.close()
 

@@ -16,7 +16,7 @@ process HAMRONIZATION_ABRICATE {
     output:
     tuple val(meta), path("*.json"), optional: true, emit: json
     tuple val(meta), path("*.tsv"), optional: true, emit: tsv
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('hamronization'), eval("hamronize --version 2>&1 | sed 's/hamronize //'"), topic: versions, emit: versions_hamronization
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,21 +33,11 @@ process HAMRONIZATION_ABRICATE {
         --analysis_software_version ${software_version} \\
         --reference_database_version ${reference_db_version} \\
         > ${prefix}.${format}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hamronization: \$(echo \$(hamronize --version 2>&1) | cut -f 2 -d ' ' )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.${format}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hamronization: \$(echo \$(hamronize --version 2>&1) | cut -f 2 -d ' ' )
-    END_VERSIONS
     """
 }

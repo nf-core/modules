@@ -18,7 +18,7 @@ process FAQCS {
     tuple val(meta), path('*.discard.fastq.gz')           , emit: reads_fail    , optional: true
     tuple val(meta), path('*.trimmed.unpaired.fastq.gz')  , emit: reads_unpaired, optional: true
     tuple val(meta), path('*.log')                        , emit: log
-    path "versions.yml"                                   , emit: versions
+    tuple val("${task.process}"), val('faqcs'), eval("FaQCs --version 2>&1 | sed 's/^.*Version: //'"), emit: versions_faqcs, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -53,11 +53,6 @@ process FAQCS {
             mkdir debug
             mv *.{base,for_qual_histogram,length_count,quality}*.* debug
         fi
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            faqcs: \$(echo \$(FaQCs --version 2>&1) | sed 's/^.*Version: //;' )
-        END_VERSIONS
         """
     } else {
         """
@@ -106,29 +101,19 @@ process FAQCS {
             mkdir debug
             mv *.{base,for_qual_histogram,length_count,quality}*.* debug
         fi
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            faqcs: \$(echo \$(FaQCs --version 2>&1) | sed 's/^.*Version: //;' )
-        END_VERSIONS
         """
     }
 
     stub:
     def prefix = task.ext.prefix ?: meta.id
     """
-    echo "" | gzip > "${prefix}.trimmed.fastq.gz"
-    touch "${prefix}.stats.txt"
-    touch "${prefix}_qc_report.pdf"
-    touch "${prefix}.log"
-    echo "" | gzip > "${prefix}.discard.fastq.gz"
-    echo "" | gzip > "${prefix}.trimmed.unpaired.fastq.gz"
+    echo "" | gzip > ${prefix}.trimmed.fastq.gz
+    touch ${prefix}.stats.txt
+    touch ${prefix}_qc_report.pdf
+    touch ${prefix}.log
+    echo "" | gzip > ${prefix}.discard.fastq.gz
+    echo "" | gzip > ${prefix}.trimmed.unpaired.fastq.gz
     mkdir debug
-    touch "debug/${prefix}.for_qual_histogram.txt"
-
-    cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            faqcs: \$(echo \$(FaQCs --version 2>&1) | sed 's/^.*Version: //;' )
-        END_VERSIONS
+    touch debug/${prefix}.for_qual_histogram.txt
     """
 }

@@ -13,14 +13,12 @@ workflow FASTQ_COMPLEXITY_FILTER {
     ch_log           = channel.empty()
     ch_report        = channel.empty()
     ch_multiqc_files = channel.empty()
-    ch_versions      = channel.empty()
 
     if (val_complexity_filter_tool == "prinseqplusplus") {
         PRINSEQPLUSPLUS( ch_reads )
 
         ch_filtered_reads = PRINSEQPLUSPLUS.out.good_reads
         ch_log            = PRINSEQPLUSPLUS.out.log
-        ch_versions       = ch_versions.mix(PRINSEQPLUSPLUS.out.versions.first())
     } else if (val_complexity_filter_tool == "bbduk") {
         BBMAP_BBDUK( ch_reads, [] )
 
@@ -47,5 +45,4 @@ workflow FASTQ_COMPLEXITY_FILTER {
     logfile        = ch_log            // channel: [ val(meta), [ {txt} ] ]
     report         = ch_report         // channel: [ val(meta), [ {html} ] ]
     multiqc_files  = ch_multiqc_files
-    versions       = ch_versions       // channel: [ versions.yml ]
 }

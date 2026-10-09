@@ -75,9 +75,10 @@ output:
       - cafe:
           type: string
           description: The name of the tool
-      - echo 5.1.0:
-          type: eval
-          description: The expression to obtain the version of the tool
+      - 5.1.0:
+          type: string
+          description: The version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -86,9 +87,10 @@ topics:
       - cafe:
           type: string
           description: The name of the tool
-      - echo 5.1.0:
-          type: eval
-          description: The expression to obtain the version of the tool
+      - 5.1.0:
+          type: string
+          description: The version of the tool
+
 authors:
   - "@chriswyatt1"
 maintainers:

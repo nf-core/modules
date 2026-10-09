@@ -13,6 +13,7 @@ workflow VCF_ANNOTATE_ENSEMBLVEP {
     val_cache_version   //   value: cache version to use
     ch_cache            // channel: [ val(meta3), path(cache) ] (optional)
     ch_extra_files      // channel: [ path(file1), path(file2)... ] (optional)
+    ch_gtf              // channel: [ path(gtf), path(gtf_tbi) ] (optional) -- mutually exclusive with ch_cache
 
     main:
     ENSEMBLVEP_VEP(
@@ -23,6 +24,7 @@ workflow VCF_ANNOTATE_ENSEMBLVEP {
         ch_cache,
         ch_fasta,
         ch_extra_files,
+        ch_gtf,
     )
 
     ch_vcf_tbi = ENSEMBLVEP_VEP.out.vcf.join(ENSEMBLVEP_VEP.out.tbi, failOnDuplicate: true, failOnMismatch: true)

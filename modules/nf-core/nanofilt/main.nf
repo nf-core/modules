@@ -14,7 +14,7 @@ process NANOFILT {
     output:
     tuple val(meta), path("*.fastq.gz"), emit: filtreads
     path "*.log"                       , optional: true, emit: log_file
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('nanofilt'), eval('NanoFilt -v | sed "s/NanoFilt //"'), emit: versions_nanofilt, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,10 +31,6 @@ process NANOFILT {
         $args \\
         | gzip > ${prefix}.fastq.gz
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        nanofilt: \$(NanoFilt -v | sed 's/NanoFilt //')
-    END_VERSIONS
     """
 
     stub:
@@ -43,9 +39,5 @@ process NANOFILT {
     echo "" | gzip > ${prefix}.fastq.gz
     touch ${prefix}.log
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        nanofilt: \$(NanoFilt -v | sed 's/NanoFilt //')
-    END_VERSIONS
     """
 }

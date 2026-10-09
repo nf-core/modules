@@ -3,9 +3,9 @@ process SNIFFLES {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/73/73397171642c8f96d79b94a16d5142eee4b389473aba7a04ca4493e62aa6e4ac/data' :
-        'community.wave.seqera.io/library/sniffles:2.7.3--4d6ef29e260d91be' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6d/6de188cc5ba7548d54fc6d257336c8c6f57c9b403823b7ccc9978ca08d8d1945/data'
+:         'community.wave.seqera.io/library/sniffles:2.8.1--b8c26c44b42620c5' }"
 
     input:
     tuple val(meta), path(input), path(index)

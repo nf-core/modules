@@ -4,8 +4,8 @@ process VG_DECONSTRUCT {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vg:1.43.0--h9ee0642_0' :
-        'quay.io/biocontainers/vg:1.43.0--h9ee0642_0' }"
+        'https://depot.galaxyproject.org/singularity/vg:1.73.0--h9ee0642_0' :
+        'quay.io/biocontainers/vg:1.73.0--h9ee0642_0' }"
 
     input:
     tuple val(meta), path(gfa)
@@ -14,7 +14,7 @@ process VG_DECONSTRUCT {
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('vg'), eval("vg 2>&1 | sed -n 's/.*version v\\([0-9.]*\\).*/\\1/p'"), topic: versions, emit: versions_vg
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,10 +31,11 @@ process VG_DECONSTRUCT {
         $snarls \\
         $gbwt_arg \\
         $gfa > ${prefix}.vcf
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vg: \$(vg version 2>&1 | grep -o 'vg .*' | cut -f3 -d ' ' | cut -f2 -d 'v')
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.vcf
     """
 }

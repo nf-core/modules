@@ -13,7 +13,7 @@ process GRAPHTYPER_VCFCONCATENATE {
     output:
     tuple val(meta), path("${prefix}.vcf.gz")    , emit: vcf
     tuple val(meta), path("${prefix}.vcf.gz.tbi"), emit: tbi
-    path "versions.yml"                          , emit: versions
+    tuple val("${task.process}"), val('graphtyper'), eval("graphtyper --help | tail -1 | sed 's/.* //'"), emit: versions_graphtyper, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -41,11 +41,6 @@ process GRAPHTYPER_VCFCONCATENATE {
 
     # Delete batch VCFs
     rm ${prefix}_subset_*.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        graphtyper: \$(graphtyper --help | tail -n 1 | sed 's/^   //')
-    END_VERSIONS
     """
 
     stub:
@@ -54,12 +49,7 @@ process GRAPHTYPER_VCFCONCATENATE {
         error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     }
     """
-    echo | gzip > ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        graphtyper: \$(graphtyper --help | tail -n 1 | sed 's/^   //')
-    END_VERSIONS
     """
 }

@@ -129,6 +129,46 @@ nextflow_process {
 
     }
 
+    test("MerquryFK - Synthetic trio data - multiple haps - no trio") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = FASTK_FASTK.out.hist.join(FASTK_FASTK.out.ktab).map { meta, hist, ktab ->
+                        [
+                            meta,
+                            hist,
+                            ktab,
+                            file(params.modules_testdata_base_path + 'delete_me/merquryfk/Hap1.fasta.gz', checkIfExists: true),
+                            [
+                                file(params.modules_testdata_base_path + 'delete_me/merquryfk/Hap2.fasta.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/eukaryotes/Pipistrellus_nathusii/genome/test.fasta.gz', checkIfExists: true),
+                            ]
+                        ]
+                    }
+                input[1] = [[:], []]
+                input[2] = [[:], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.stats,
+                    process.out.qv,
+                    process.out.assembly_qv,
+                    process.out.images.collect { meta, images -> [ meta, images.collect { img -> file(img).name } ] },
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() }
+            )
+        }
+
+    }
+
     test("MerquryFK - Synthetic trio data - both haps - trio") {
 
         config "./nextflow.config"
@@ -200,7 +240,5 @@ nextflow_process {
         }
 
     }
-
-
 
 }

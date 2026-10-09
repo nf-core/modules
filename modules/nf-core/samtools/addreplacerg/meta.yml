@@ -90,38 +90,16 @@ output:
           description: SAM file with updated RG tags
           pattern: "${prefix}.sam"
           ontologies: []
-  bai:
+  index:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "${prefix}.bam.bai":
+      - "${prefix}.${file_type}.{crai,csi,bai}":
           type: file
-          description: BAM index file
-          pattern: "${prefix}.bam.bai"
-          ontologies: []
-  csi:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "${prefix}.bam.csi":
-          type: file
-          description: BAM CSI index file
-          pattern: "${prefix}.bam.csi"
-          ontologies: []
-  crai:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "${prefix}.cram.crai":
-          type: file
-          description: CRAM index file
-          pattern: "${prefix}.cram.crai"
+          description: Index file for BAM/CRAM/SAM
+          pattern: "${prefix}.${file_type}.{crai,csi,bai}"
           ontologies: []
   versions_samtools:
     - - ${task.process}:
@@ -148,3 +126,4 @@ authors:
   - "@sainsachiko"
 maintainers:
   - "@sainsachiko"
+  - "@matthdsm"

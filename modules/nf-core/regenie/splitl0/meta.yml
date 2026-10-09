@@ -1,0 +1,154 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "regenie_splitl0"
+description: Split REGENIE step 1 level-0 ridge-regression blocks into parallel jobs
+keywords:
+  - regenie
+  - gwas
+  - genome-wide association study
+  - association
+  - genomics
+  - parallel
+tools:
+  - "regenie":
+      description: "Regenie is a C++ program for whole genome regression modelling of large genome-wide association studies (GWAS)."
+      homepage: "https://rgcgithub.github.io/regenie/"
+      documentation: "https://rgcgithub.github.io/regenie/options/"
+      tool_dev_url: "https://github.com/rgcgithub/regenie"
+      doi: "10.1038/s41588-021-00870-7"
+      licence: ["MIT"]
+      identifier: "biotools:regenie"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing genotype information
+          Keep only the genotype analysis identifier in this map
+          REGENIE consumes the staged basename of `plink_genotype_file` as the `--bed` or `--pgen` prefix, so the `.bed/.bim/.fam` or `.pgen/.pvar/.psam` files must share one basename
+          e.g. `[ id:'cohort' ]`
+    - plink_genotype_file:
+        type: file
+        description: PLINK primary genotype file in BED or PGEN format
+        pattern: "*.{bed,pgen}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003" # BED
+    - plink_variant_file:
+        type: file
+        description: PLINK variant metadata file in BIM or PVAR format
+        pattern: "*.{bim,pvar,zst}"
+        ontologies: []
+    - plink_sample_file:
+        type: file
+        description: PLINK sample metadata file in FAM or PSAM format
+        pattern: "*.{fam,psam}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing genotype/sample information associated with the phenotype file input
+          Use the same phenotype file and phenotype-selection arguments for all `regenie/splitl0`, `regenie/runl0`, and `regenie/runl1` jobs in the same chunked step 1 analysis
+          e.g. `[ id:'plink_simulated' ]`
+    - pheno:
+        type: file
+        description: Phenotype file passed to `--phenoFile`
+        pattern: "*.{phe,pheno,txt,tsv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing genotype/sample information associated with the covariate input
+          Use compatible covariate inputs for all stages in the same chunked step 1 analysis
+          e.g. `[ id:'plink_simulated' ]`
+    - covar:
+        type: file
+        optional: true
+        description: Optional covariate file passed to `--covarFile`; provide `[]` when absent
+        pattern: "*.{covar,cov,txt,tsv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+  - bsize:
+      type: integer
+      description: Optional block size passed to `--bsize`; pass `[]` to use the module default of `1000`
+  - n_jobs:
+      type: integer
+      description: Number of level-0 jobs requested with `--split-l0`
+
+output:
+  master:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing genotype/sample information
+            e.g. `[ id:'plink_simulated' ]`
+      - "*.master":
+          type: file
+          description: REGENIE split level-0 master file
+          pattern: "*.master"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Text
+  snplists:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing genotype/sample information
+            e.g. `[ id:'plink_simulated' ]`
+      - "*_job*.snplist":
+          type: file
+          description: REGENIE per-job variant list files referenced by the master file
+          pattern: "*_job*.snplist"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Text
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing genotype information
+            e.g. `[ id:'plink_simulated' ]`
+      - "*.log":
+          type: file
+          description: REGENIE split level-0 log file
+          pattern: "*.log"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Text
+  versions_regenie:
+    - - "${task.process}":
+          type: string
+          description: The process the versions were collected from
+      - "regenie":
+          type: string
+          description: The tool name
+      - 'regenie --version 2>&1 | sed -n "1{s/^v//;s/\.gz$//;p}"':
+          type: eval
+          description: The command used to generate the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - regenie:
+          type: string
+          description: The tool name
+      - 'regenie --version 2>&1 | sed -n "1{s/^v//;s/\.gz$//;p}"':
+          type: eval
+          description: The command used to generate the version of the tool
+
+notes: |
+  `task.ext.args` is passed directly to REGENIE and can be used for stage-consistent options such as `--phenoColList`, `--bt`, `--loocv`, or `--keep-l0`.
+  The same phenotype file, phenotype-selection arguments, trait mode arguments such as `--bt`, and compatible genotype/covariate inputs must be used across `regenie/splitl0`, every matching `regenie/runl0` job, and `regenie/runl1`.
+authors:
+  - "@lyh970817"
+maintainers:
+  - "@lyh970817"
+containers:
+  docker:
+    linux_amd64:
+      build_id: "bd-5d361f9fcb2f85cf_1"
+      name: "community.wave.seqera.io/library/regenie:4.1.2--5d361f9fcb2f85cf"
+      scanId: "sc-cc9eb5ed5eb381dd_2"
+  singularity:
+    linux_amd64:
+      build_id: "bd-7c121fb4ecd57890_1"
+      name: "oras://community.wave.seqera.io/library/regenie:4.1.2--7c121fb4ecd57890"
+      https: "https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7a/7a05bf71ea09adc5ebf9f0c656c9b326c0f16ba8e4966914972e58313469a466/data"

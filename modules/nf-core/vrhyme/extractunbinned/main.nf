@@ -13,7 +13,7 @@ process VRHYME_EXTRACTUNBINNED {
 
     output:
     tuple val(meta), path("${prefix}.fasta") , emit: unbinned_sequences
-    path "versions.yml"                      , emit: versions
+    tuple val("${task.process}"), val('vrhyme'), eval("vRhyme --version 2>&1 | sed 's/^.*vRhyme v//; s/Using.*\$//'"), emit: versions_vrhyme, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,17 +29,12 @@ process VRHYME_EXTRACTUNBINNED {
     ${gunzip}
 
     extract_unbinned_sequences.py \\
-        -i $membership \\
-        -f $fasta_input \\
+        -i ${membership} \\
+        -f ${fasta_input} \\
         -o ${prefix}.fasta \\
-        $args
+        ${args}
 
     ${cleanup}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vrhyme: \$(echo \$(vRhyme --version 2>&1) | sed 's/^.*vRhyme v//; s/Using.*\$//' )
-    END_VERSIONS
     """
 
     stub:
@@ -48,10 +43,5 @@ process VRHYME_EXTRACTUNBINNED {
     if( "$fasta_input" == "${prefix}.fasta" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     touch ${prefix}.fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vrhyme: \$(echo \$(vRhyme --version 2>&1) | sed 's/^.*vRhyme v//; s/Using.*\$//' )
-    END_VERSIONS
     """
 }

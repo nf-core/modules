@@ -35,7 +35,7 @@ nextflow_process {
                 process {
                     """
                     input[0] = BCFTOOLS_VIEW.out.vcf
-                        .join(BCFTOOLS_VIEW.out.csi)
+                        .join(BCFTOOLS_VIEW.out.index)
                     input[1] = [
                         [id: "hg38"],
                         [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]

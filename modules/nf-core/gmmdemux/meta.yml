@@ -1,6 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "gmmdemux"
-
 description: GMM-Demux is a Gaussian-Mixture-Model-based software for processing sample
   barcoding data (cell hashing and MULTI-seq).
 keywords:
@@ -15,9 +13,9 @@ tools:
       documentation: "https://github.com/CHPGenetics/GMM-Demux"
       tool_dev_url: "https://github.com/CHPGenetics/GMM-demux"
       doi: "10.1186/s13059-020-02084-2"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -63,6 +61,8 @@ output:
           description: |
             barcodes tsv file with removed cell-hashing-identifiable multiplets
           pattern: "barcodes.tsv.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
   matrix:
     - - meta:
           type: map
@@ -74,6 +74,8 @@ output:
           description: |
             matrix mtx.tsv file with removed cell-hashing-identifiable multiplets
           pattern: "matrix.mtx.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP
   features:
     - - meta:
           type: map
@@ -85,6 +87,8 @@ output:
           description: |
             features tsv file with removed cell-hashing-identifiable multiplets
           pattern: "features.tsv.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
   classification_report:
     - - meta:
           type: map
@@ -96,6 +100,8 @@ output:
           description: |
             full or simplified classification report
           pattern: "GMM_*.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
   config_report:
     - - meta:
           type: map
@@ -107,6 +113,8 @@ output:
           description: |
             Configuration report mapping the results obtained by the tool to the respective names of the HTOs in the classification report.
           pattern: "GMM_*.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
   summary_report:
     - - meta:
           type: map
@@ -119,13 +127,27 @@ output:
             summary report, optional output
           pattern: "test/summary_report_*.txt"
           ontologies: []
+  versions_gmmdemux:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - GMM-Demux:
+          type: string
+          description: The name of the tool
+      - 0.2.2.3:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - GMM-Demux:
+          type: string
+          description: The name of the tool
+      - 0.2.2.3:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@mari-ga"
   - "@maxozo"

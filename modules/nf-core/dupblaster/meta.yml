@@ -1,0 +1,80 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "dupblaster"
+description: Streaming duplicate marking for NGS alignments with dupblaster; for maximum throughput it can also run inline in the alignment pipe (aligner | dupblaster | sort) rather than as a standalone step
+keywords:
+  - duplicates
+  - markduplicates
+  - bam
+  - alignment
+tools:
+  - "dupblaster":
+      description: "Blazingly fast, streaming duplicate detection for NGS data."
+      homepage: "https://github.com/fulcrumgenomics/dupblaster"
+      documentation: "https://github.com/fulcrumgenomics/dupblaster"
+      tool_dev_url: "https://github.com/fulcrumgenomics/dupblaster"
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: |
+          Query-grouped SAM/BAM (all alignments for the same read name adjacent,
+          e.g. straight from the aligner). Must NOT be coordinate-sorted.
+        pattern: "*.{bam,sam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_2573" # SAM
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.bam":
+          type: file
+          description: BAM with duplicates marked
+          pattern: "*.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+  stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.tsv":
+          type: file
+          description: Duplicate-marking statistics (TSV)
+          pattern: "*.tsv"
+          ontologies: []
+  versions_dupblaster:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "dupblaster":
+          type: string
+          description: The name of the tool
+      - "dupblaster --version | sed 's/^dupblaster //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dupblaster:
+          type: string
+          description: The name of the tool
+      - dupblaster --version | sed 's/^dupblaster //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@nh13"
+maintainers:
+  - "@nh13"

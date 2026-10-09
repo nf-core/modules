@@ -15,7 +15,7 @@ process PICRUST2_PIPELINE {
     tuple val(meta), path("${prefix}/*_reduced.tre")                 , emit: trees
     tuple val(meta), path("${prefix}_metagenome_*_abundances.tsv.gz"), emit: function_abundances
     tuple val(meta), path("${prefix}_pathway_abundances.tsv.gz")     , emit: pathway_abundances
-    path 'versions.yml', emit: versions
+    tuple val("${task.process}"), val('picrust2'), eval("picrust2_pipeline.py --version | sed 's/PICRUSt2 //'"), topic: versions, emit: versions_picrust2
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,27 +37,14 @@ process PICRUST2_PIPELINE {
         func_type=\$(basename \$metagenome_dir _metagenome_out)
         cp \${metagenome_dir}/pred_metagenome_unstrat.tsv.gz ${prefix}_metagenome_\${func_type}_abundances.tsv.gz
     done
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        picrust2: \$( picrust2_pipeline.py --version | sed 's/PICRUSt2 //' )
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo ${args}
-
     mkdir -p ${prefix}
     touch ${prefix}/bac_reduced.tre
-    echo '' | gzip -c > ${prefix}_metagenome_EC_abundances.tsv.gz
-    echo '' | gzip -c > ${prefix}_pathway_abundances.tsv.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        picrust2: \$( picrust2_pipeline.py --version | sed 's/PICRUSt2 //' )
-    END_VERSIONS
+    echo "" | gzip > ${prefix}_metagenome_EC_abundances.tsv.gz
+    echo "" | gzip > ${prefix}_pathway_abundances.tsv.gz
     """
 }

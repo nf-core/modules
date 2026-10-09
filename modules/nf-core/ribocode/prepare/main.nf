@@ -27,6 +27,11 @@ process RIBOCODE_PREPARE {
         -f ${fasta} \\
         -o annotation \\
         $args
+
+    # Pre-build the pyfasta .gdx/.flat sidecars by instantiating RiboCode's own GenomeSeq -
+    # so the published annotation is complete and downstream readers don't trigger pyfasta's
+    # lazy first-read index write.
+    python -c "from RiboCode.prepare_transcripts import GenomeSeq; GenomeSeq('annotation/transcripts_sequence.fa')"
     """
 
     stub:
@@ -36,6 +41,8 @@ process RIBOCODE_PREPARE {
 
     touch annotation/transcripts_cds.txt
     touch annotation/transcripts_sequence.fa
+    touch annotation/transcripts_sequence.fa.gdx
+    touch annotation/transcripts_sequence.fa.flat
     touch annotation/transcripts.pickle
     """
 }

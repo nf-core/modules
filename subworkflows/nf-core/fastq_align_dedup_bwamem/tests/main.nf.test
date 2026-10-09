@@ -57,7 +57,7 @@ nextflow_workflow {
                 input[4] = false            // use_gpu
                 input[5] = "bam"            // output_fmt
                 input[6] = [[:], [] ]       // interval_file
-                input[7] = [[:], [] ]       // known_sites
+                input[7] = [[:], [], [] ]   // known_sites
                 """
             }
         }
@@ -86,8 +86,10 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                             [ id:'test', single_end:false ],
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                            ]
                 ])
                 input[1] = Channel.of([
                             [:],
@@ -99,7 +101,7 @@ nextflow_workflow {
                 input[4] = false            // use_gpu
                 input[5] = "bam"            // output_fmt
                 input[6] = [[:], [] ]       // interval_file
-                input[7] = [[:], [] ]       // known_sites
+                input[7] = [[:], [], [] ]   // known_sites
                 """
             }
         }
@@ -128,8 +130,10 @@ nextflow_workflow {
                 """
                 input[0] = Channel.of([
                             [ id:'test', single_end:false ],
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                            [
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                            ]
                 ])
                 input[1] = Channel.of([
                             [:],
@@ -141,7 +145,7 @@ nextflow_workflow {
                 input[4] = false            // use_gpu
                 input[5] = "bam"            // output_fmt
                 input[6] = [[:], [] ]       // interval_file
-                input[7] = [[:], [] ]       // known_sites
+                input[7] = [[:], [], [] ]   // known_sites
                 """
             }
         }
@@ -182,7 +186,7 @@ nextflow_workflow {
                 input[4] = false            // use_gpu
                 input[5] = "bam"            // output_fmt
                 input[6] = [[:], [] ]       // interval_file
-                input[7] = [[:], [] ]       // known_sites
+                input[7] = [[:], [], [] ]   // known_sites
                 """
             }
         }

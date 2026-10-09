@@ -18,7 +18,7 @@ process MAFFT_ALIGN {
 
     output:
     tuple val(meta), path("*.fas{.gz,}"), emit: fas
-    tuple val("${task.process}"), val("mafft"), eval("mafft --version 2>&1 | sed 's/ (.*) //g'"), topic: versions, emit: versions_mafft
+    tuple val("${task.process}"), val("mafft"), eval("mafft --version 2>&1 | sed 's/v//;s/ .*//'"), topic: versions, emit: versions_mafft
     tuple val("${task.process}"), val("pigz"), eval("pigz --version 2>&1 | sed 's/pigz //g'")   , topic: versions, emit: versions_pigz
 
     when:
@@ -33,7 +33,8 @@ process MAFFT_ALIGN {
     def addprofile_opt   = addprofile      ? "--addprofile <(unpigz -cdf ${addprofile})"     : ''
     def addlong_opt      = addlong         ? "--addlong <(unpigz -cdf ${addlong})"           : ''
     def write_output     = compress ? " | pigz -cp ${task.cpus} > ${prefix}.fas.gz" : "> ${prefix}.fas"
-    // this will not preserve MAFFTs return value, but mafft crashes when it receives a process substitution
+    // Piping the output loses MAFFT's return value, but MAFFT cannot write into a process
+    // substitution. Reading from one is fine, which is how the gzip-capable inputs work.
     if ("$fasta" == "${prefix}.fas" ) error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     mafft \\
@@ -44,19 +45,16 @@ process MAFFT_ALIGN {
         ${addprofile_opt} \\
         ${addlong_opt} \\
         ${args} \\
-        ${fasta} \\
+        <(unpigz -cdf ${fasta}) \\
         ${write_output}
     """
 
     stub:
-    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if ("$fasta" == "${prefix}.fas" ) error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${fasta}" == "${prefix}.fas" ) error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
-    echo ${args}
-
-    if [[ "$compress" == "true" ]]; then
-        echo "" | pigz -cp ${task.cpus} > ${prefix}.fas.gz
+    if [[ "${compress}" == "true" ]]; then
+        echo "" | gzip > ${prefix}.fas.gz
     else
         touch ${prefix}.fas
     fi

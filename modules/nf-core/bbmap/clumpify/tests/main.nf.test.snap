@@ -1,20 +1,28 @@
 {
     "test-bbmap-clumpify-paired-end": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    [
-                        "test_1.clumped.fastq.gz:md5,27e51643262c1ef3905c4be184c3814c",
-                        "test_2.clumped.fastq.gz:md5,c70ab7bbd44d6b6fadd6a1a79ef1648f"
-                    ]
-                ]
-            ],
-            "test.clumpify.log",
             {
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.clumpify.log"
+                    ]
+                ],
+                "reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test_1.clumped.fastq.gz:md5,27e51643262c1ef3905c4be184c3814c",
+                            "test_2.clumped.fastq.gz:md5,c70ab7bbd44d6b6fadd6a1a79ef1648f"
+                        ]
+                    ]
+                ],
                 "versions_bbmap": [
                     [
                         "BBMAP_CLUMPIFY",
@@ -24,25 +32,33 @@
                 ]
             }
         ],
-        "timestamp": "2026-03-11T13:50:50.67389917",
+        "timestamp": "2026-06-12T13:45:10.280022778",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
         }
     },
     "test-bbmap-clumpify-single-end": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": true
-                    },
-                    "test.clumped.fastq.gz:md5,27e51643262c1ef3905c4be184c3814c"
-                ]
-            ],
-            "test.clumpify.log",
             {
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.clumpify.log"
+                    ]
+                ],
+                "reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.clumped.fastq.gz:md5,27e51643262c1ef3905c4be184c3814c"
+                    ]
+                ],
                 "versions_bbmap": [
                     [
                         "BBMAP_CLUMPIFY",
@@ -52,10 +68,85 @@
                 ]
             }
         ],
-        "timestamp": "2026-03-11T13:50:43.591887248",
+        "timestamp": "2026-06-12T13:45:03.743249724",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
+    },
+    "test-bbmap-clumpify-single-end - stub": {
+        "content": [
+            {
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.clumpify.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.clumped.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions_bbmap": [
+                    [
+                        "BBMAP_CLUMPIFY",
+                        "bbmap",
+                        "39.18"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-06-12T13:45:15.652095723",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
+    },
+    "test-bbmap-clumpify-paired-end - stub": {
+        "content": [
+            {
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.clumpify.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test_1.clumped.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "test_2.clumped.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        ]
+                    ]
+                ],
+                "versions_bbmap": [
+                    [
+                        "BBMAP_CLUMPIFY",
+                        "bbmap",
+                        "39.18"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-06-12T13:45:20.572814339",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
         }
     }
 }

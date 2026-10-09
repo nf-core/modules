@@ -14,11 +14,12 @@ process GAMMA_GAMMA {
     path(db)
 
     output:
-    tuple val(meta), path("*.gamma")                , emit: gamma
-    tuple val(meta), path("*.psl")                  , emit: psl
-    tuple val(meta), path("*.gff")  , optional:true , emit: gff
-    tuple val(meta), path("*.fasta"), optional:true , emit: fasta
-    path "versions.yml"                             , emit: versions
+    tuple val(meta), path("*.gamma")                      , emit: gamma
+    tuple val(meta), path("*.psl")                        , emit: psl
+    tuple val(meta), path("*.gff")  , optional:true       , emit: gff
+    tuple val(meta), path("*.fasta"), optional:true       , emit: fasta
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('gamma'), val("2.1"), emit: versions_gamma, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,27 +27,31 @@ process GAMMA_GAMMA {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '2.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     if [[ ${fasta} == *.gz ]]
     then
         FNAME=\$(basename ${fasta} .gz)
         gunzip -f ${fasta}
         GAMMA.py \\
-        $args \\
+        ${args} \\
         "\${FNAME}" \\
-        $db \\
-        $prefix
+        ${db} \\
+        ${prefix}
     else
         GAMMA.py \\
-        $args \\
-        $fasta \\
-        $db \\
-        $prefix
+        ${args} \\
+        ${fasta} \\
+        ${db} \\
+        ${prefix}
     fi
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gamma: $VERSION
-    END_VERSIONS
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.gamma
+    touch ${prefix}.psl
+    touch ${prefix}.gff
+    touch ${prefix}.fasta
     """
 }

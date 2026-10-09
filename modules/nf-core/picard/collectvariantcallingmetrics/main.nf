@@ -4,8 +4,8 @@ process PICARD_COLLECTVARIANTCALLINGMETRICS {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/picard:3.4.0--hdfd78af_0'
-        : 'quay.io/biocontainers/picard:3.4.0--hdfd78af_0'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b4/b474c6f12c0502377b95062b75ef4b7778864b1353c7fc1d5a3b1f3b3017fd2e/data'
+        : 'community.wave.seqera.io/library/picard:3.5.0--842d4c70c98af9b4'}"
 
     input:
     tuple val(meta), path(vcf), path(index), path(intervals_file), path(fasta), path(dict), path(dbsnp), path(dbsnp_index)

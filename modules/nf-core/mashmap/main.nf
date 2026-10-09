@@ -13,7 +13,7 @@ process MASHMAP {
 
     output:
     tuple val(meta), path("*.paf"), emit: paf
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val("mashmap"), eval("mashmap --version 2>&1"), emit: versions_mashmap, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,25 +23,15 @@ process MASHMAP {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mashmap -q ${fasta} \\
-    -r ${reference} \\
-    -t ${task.cpus} \\
-    -o ${prefix}.paf \\
-    ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mashmap: \$(mashmap --version 2>&1)
-    END_VERSIONS
+        -r ${reference} \\
+        -t ${task.cpus} \\
+        -o ${prefix}.paf \\
+        ${args}
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.paf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mashmap: \$(mashmap --version 2>&1)
-    END_VERSIONS
     """
 }

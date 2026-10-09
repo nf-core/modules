@@ -3,6 +3,7 @@ nextflow_process {
 
     name "Test Process CELLRANGER_MKGTF"
     script "../main.nf"
+    config "./nextflow.config"
     process "CELLRANGER_MKGTF"
 
     tag "modules"
@@ -15,16 +16,17 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                input[0] = [
+                    [id: 'homo_sapiens'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match() }
-            )
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
 
     }
@@ -36,19 +38,42 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                input[0] = [
+                    [id: 'homo_sapiens'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
-                ).match() }
-            )
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
+        }
+
+    }
+
+    test("homo_sapiens - identical input output names - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_prefix = 'genome'
+            }
+            process {
+                """
+                input[0] = [
+                    [id: 'homo_sapiens'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.failed
+            assert process.errorReport.contains("Input and output names are the same")
         }
 
     }

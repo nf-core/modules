@@ -16,7 +16,7 @@ process RTN_TNI {
     tuple val(meta), path("tni_permutated.rds")    , emit: tni_perm
     tuple val(meta), path("tni_bootstrapped.rds")  , emit: tni_bootstrap
     tuple val(meta), path("tni_filtered.rds")      , emit: tni_filtered
-    path "versions.yml"                            , emit: versions
+    path "versions.yml"                            , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

@@ -15,7 +15,7 @@ process SKA_DISTANCE {
     tuple val(meta), path("*clusters.tsv") , emit: cluster_list , optional: true
     tuple val(meta), path("*cluster*.txt") , emit: cluster_files, optional: true
     tuple val(meta), path("*.dot")         , emit: dot          , optional: true
-    path "versions.yml"                    , emit: versions
+    tuple val("${task.process}"), val('ska'), eval("ska --version | sed -n 's/Version: //p'"), emit: versions_ska, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,11 +31,6 @@ process SKA_DISTANCE {
         $arg_list \\
         -o ${prefix} \\
         $sketch_files
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ska: \$(ska --version | grep Version |& sed '1!d ; s/Version: //')
-    END_VERSIONS
     """
 
     stub:
@@ -53,10 +48,5 @@ process SKA_DISTANCE {
         touch ${prefix}.cluster\${i}.txt
     done
     $output_dot
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ska: \$(ska --version | grep Version |& sed '1!d ; s/Version: //')
-    END_VERSIONS
     """
 }

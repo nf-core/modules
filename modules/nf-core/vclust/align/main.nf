@@ -16,7 +16,7 @@ process VCLUST_ALIGN {
     tuple val(meta), path("${prefix}.tsv"), emit: tsv
     tuple val(meta), path("*.ids.tsv")    , emit: ids
     tuple val(meta), path("*.aln.tsv")    , emit: aln, optional: true
-    path "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val('vclust'), eval("vclust --version | sed 's/v//'"), topic: versions, emit: versions_vclust
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,11 +35,6 @@ process VCLUST_ALIGN {
         -t $task.cpus \\
         -i ${fasta} \\
         -o ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vclust: \$(vclust --version)
-    END_VERSIONS
     """
 
     stub:
@@ -48,10 +43,5 @@ process VCLUST_ALIGN {
     touch ${prefix}.tsv
     touch ${prefix}.ids.tsv
     touch ${prefix}.aln.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vclust: \$(vclust --version)
-    END_VERSIONS
     """
 }

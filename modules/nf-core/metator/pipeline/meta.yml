@@ -1,0 +1,186 @@
+name: "metator_pipeline"
+description: Metagenomic Tridimensional Organisation-based Reassembly - A set of
+  scripts that streamlines the processing and binning of metagenomic metaHiC
+  datasets.
+keywords:
+  - hic
+  - binning
+  - metagenomics
+tools:
+  - "metator":
+      description: "Metagenomic binning based on Hi-C data."
+      homepage: "https://github.com/koszullab/metaTOR/blob/v1.3.7/README.md"
+      documentation: "https://github.com/koszullab/metaTOR/blob/v1.3.7/README.md"
+      tool_dev_url: "https://github.com/koszullab/metator"
+      doi: "10.3389/fgene.2019.00753"
+      licence:
+        - "GPL v3-or-later"
+      identifier: biotools:MetaTOR
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - contigs:
+        type: file
+        description: Reference assembly to bin, in FASTA format
+        pattern: "*.{fa,fa.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+    - hic_input:
+        type: file
+        description: |
+          One of:
+            - a list of two PE read FASTQ files ([R1, R2])
+            - a list of two BAM files ([R1, R2]), with forward and reverse reads mapped independently to the reference
+            - a single pairs file
+        pattern: "*.{fastq,fastq.gz,fq,fq.gz,bam,pairs,pairs.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTQ
+          - edam: http://edamontology.org/format_2572 # BAM
+    - depths:
+        type: file
+        description: |
+          (optional) A TSV file describing the coverages of each input contig,
+          as created by jgi_summarize_bam_contig_depths
+        pattern: "*.{txt,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+output:
+  bins:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "final_bin_unscaffold/*.fa.gz":
+          type: file
+          description: Output bins
+          pattern: "*.fa.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+            - edam: http://edamontology.org/format_3989 # GZIP
+  bin_summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - bin_summary.txt:
+          type: file
+          description: Summary TSV of bins
+          pattern: bin_summary.txt
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  contig2bin:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - binning.txt:
+          type: file
+          description: Contig-to-bin mapping for bins
+          pattern: binning.txt
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  network:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - network.txt:
+          type: file
+          description: TSV describing Hi-C network
+          pattern: network.txt
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  contig_data:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - contig_data_final.txt:
+          type: file
+          description: TSV describing input contigs
+          pattern: contig_data_final.txt
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  plots:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - plot/*.png:
+          type: file
+          description: Plots summarising binning process
+          pattern: "*.png"
+          ontologies:
+            - edam: http://edamontology.org/format_3603 # PNG
+  versions_metator:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metator:
+          type: string
+          description: The name of the tool
+      - metator -v:
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_gunzip:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gunzip:
+          type: string
+          description: The name of the tool
+      - gunzip --version |& sed "1!d;s/^.*(gzip) //;s/ Copyright.*//":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_find:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - find:
+          type: string
+          description: The name of the tool
+      - find --version | sed '1!d; s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metator:
+          type: string
+          description: The name of the tool
+      - metator -v:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gunzip:
+          type: string
+          description: The name of the tool
+      - gunzip --version |& sed "1!d;s/^.*(gzip) //;s/ Copyright.*//":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - find:
+          type: string
+          description: The name of the tool
+      - find --version | sed '1!d; s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@prototaxites"
+maintainers:
+  - "@prototaxites"

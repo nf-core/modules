@@ -2,20 +2,6 @@
     "sarscov2-gff3-invalid": {
         "content": [
             {
-                "0": [
-                    
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.error.log:md5,31e6117c516f936ec403f792c732bc76"
-                    ]
-                ],
-                "2": [
-                    "versions.yml:md5,9753770dd19a2a306dcf16d4aaf049eb"
-                ],
                 "error_log": [
                     [
                         {
@@ -27,30 +13,24 @@
                 "gt_gff3": [
                     
                 ],
-                "versions": [
-                    "versions.yml:md5,9753770dd19a2a306dcf16d4aaf049eb"
+                "versions_gt": [
+                    [
+                        "GT_GFF3",
+                        "genometools",
+                        "1.6.5"
+                    ]
                 ]
             }
         ],
-        "timestamp": "2023-11-29T10:42:11.408352"
+        "timestamp": "2026-05-12T11:50:29.085339901",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.03.2"
+        }
     },
     "sarscov2-gff3-valid": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.gt.gff3:md5,2ae900237ace415557b8735fac088b85"
-                    ]
-                ],
-                "1": [
-                    
-                ],
-                "2": [
-                    "versions.yml:md5,9753770dd19a2a306dcf16d4aaf049eb"
-                ],
                 "error_log": [
                     
                 ],
@@ -62,11 +42,53 @@
                         "test.gt.gff3:md5,2ae900237ace415557b8735fac088b85"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,9753770dd19a2a306dcf16d4aaf049eb"
+                "versions_gt": [
+                    [
+                        "GT_GFF3",
+                        "genometools",
+                        "1.6.5"
+                    ]
                 ]
             }
         ],
-        "timestamp": "2023-11-29T10:42:07.817894"
+        "timestamp": "2026-05-12T11:51:30.87179653",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.03.2"
+        }
+    },
+    "sarscov2-gff3-valid -- stub": {
+        "content": [
+            {
+                "error_log": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.error.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "gt_gff3": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.gt.gff3:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_gt": [
+                    [
+                        "GT_GFF3",
+                        "genometools",
+                        "1.6.5"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-05-12T11:46:28.575720785",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.03.2"
+        }
     }
 }

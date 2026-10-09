@@ -1,6 +1,6 @@
 name: "vg_construct"
-description: Constructs a graph from a reference and variant calls or a multiple sequence
-  alignment file
+description: Constructs a graph from a reference and variant calls or a multiple
+  sequence alignment file
 keywords:
   - vg
   - graph
@@ -15,7 +15,8 @@ tools:
         and variant calling methods.
       homepage: https://github.com/vgteam/vg
       documentation: https://github.com/vgteam/vg/wiki
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -34,8 +35,8 @@ input:
         pattern: "*.tbi"
     - insertions_fasta:
         type: file
-        description: A FASTA file containing insertion sequences (referred to in the
-          VCF file(s))
+        description: A FASTA file containing insertion sequences (referred to in
+          the VCF file(s))
         pattern: "*.{fa,fasta,fna}"
         ontologies: []
   - - meta2:
@@ -45,8 +46,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - fasta:
         type: file
-        description: The reference FASTA file (cannot be used in combination with `msa`,
-          but is required when using `vcfs`)
+        description: The reference FASTA file (cannot be used in combination with
+          `msa`, but is required when using `vcfs`)
         pattern: "*.{fa,fasta,fna}"
         ontologies: []
   - - meta3:
@@ -71,13 +72,27 @@ output:
           description: The constructed graph
           pattern: "*.vg"
           ontologies: []
+  versions_vg:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vg:
+          type: string
+          description: The name of the tool
+      - vg 2>&1 | sed -n 's/.*version v\([0-9.]*\).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vg:
+          type: string
+          description: The name of the tool
+      - vg 2>&1 | sed -n 's/.*version v\([0-9.]*\).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:

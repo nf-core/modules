@@ -1,0 +1,113 @@
+name: "fgumi_clip"
+description: Clip overlapping reads in a BAM file with fgumi
+keywords:
+  - clip
+  - bam
+  - overlapping
+  - UMIs
+tools:
+  - "fgumi":
+      description: "High-performance tools for UMI-tagged sequencing data."
+      homepage: "https://github.com/fulcrumgenomics/fgumi"
+      documentation: "https://fgumi.readthedocs.io/"
+      tool_dev_url: "https://github.com/fulcrumgenomics/fgumi"
+      licence:
+        - "MIT"
+      identifier: biotools:fgumi
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Queryname-sorted or query-grouped BAM file
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'genome' ]`
+    - fasta:
+        type: file
+        description: Reference genome FASTA file (for tag regeneration)
+        pattern: "*.{fa,fasta,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/data_2044"
+          - edam: "http://edamontology.org/format_1929"
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bam":
+          type: file
+          description: Clipped BAM file
+          pattern: "*.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572"
+  metrics:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.metrics.txt":
+          type: file
+          description: Optional clipping metrics (TSV)
+          pattern: "*.metrics.txt"
+          ontologies: []
+  versions_fgumi:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fgumi:
+          type: string
+          description: The name of the tool
+      - fgumi --version | sed "s/^fgumi //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fgumi:
+          type: string
+          description: The name of the tool
+      - fgumi --version | sed "s/^fgumi //":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@nh13"
+maintainers:
+  - "@nh13"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/fgumi:0.7.0--d91f99b4cd4aae5a
+      build_id: bd-d91f99b4cd4aae5a_1
+      scan_id: sc-760abd46b15b110e_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/fgumi:0.7.0--595c95b71b3df5bb
+      build_id: bd-595c95b71b3df5bb_1
+      scan_id: sc-61ac7030bb5e32a9_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/fgumi:0.7.0--e2a3aedc6034aa55
+      build_id: bd-e2a3aedc6034aa55_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/99/99c92db2efcbcc4d20f2541060e09ed0f5a4338927f4a2ae3ab683de585efeb6/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/fgumi:0.7.0--72ed3ddc0a890f6b
+      build_id: bd-72ed3ddc0a890f6b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a8/a8a09ab5b500dc5a4ff93fe835b6e8afa4e3636b8075771b1e011bc2dad16aa0/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/fgumi/clip/.conda-lock/linux_amd64-bd-d91f99b4cd4aae5a_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/fgumi/clip/.conda-lock/linux_arm64-bd-595c95b71b3df5bb_1.txt

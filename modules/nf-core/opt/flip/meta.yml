@@ -1,6 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "opt_flip"
-description: "flip corrects probes that are aligning to the opposite strand of their intended target genes by reverse complementing them"
+description: "flip corrects probes that are aligning to the opposite strand of their
+  intended target genes by reverse complementing them"
 keywords:
   - opt
   - opt flip
@@ -9,12 +9,14 @@ keywords:
   - align probes
 tools:
   - "opt":
-      description: "opt is a simple program that aligns probe sequences to transcript sequences to detect potential off-target probe activity"
+      description: "opt is a simple program that aligns probe sequences to transcript
+        sequences to detect potential off-target probe activity"
       homepage: "https://github.com/JEFworks-Lab/off-target-probe-tracker"
       documentation: "https://github.com/JEFworks-Lab/off-target-probe-tracker/blob/main/README.md"
       tool_dev_url: "https://github.com/JEFworks-Lab/off-target-probe-tracker"
-      licence: [GPL-3.0 license]
-
+      licence:
+        - GPL-3.0 license
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -23,7 +25,8 @@ input:
           e.g. `[ id:'breast_cancer_probe_panel_sequences' ]`
     - probes_fasta:
         type: file
-        description: Fasta file for the probe sequences used in the xenium experiment
+        description: Fasta file for the probe sequences used in the xenium
+          experiment
         pattern: "*.fasta"
         ontologies: []
   - - meta2:
@@ -41,7 +44,6 @@ input:
         description: Reference annotations in fasta format
         pattern: "*.fa"
         ontologies: []
-
 output:
   fwd_oriented_fa:
     - - meta:
@@ -49,19 +51,34 @@ output:
           description: |
             Groovy Map containing information of the forward oriented fasta generated with the probes panel sequences 'opt flip'
             e.g. `[ id:'breast_cancer_probe_panel_sequences' ]`
-      - "${meta.id}/fwd_oriented.fa":
+      - ${prefix}/fwd_oriented.fa:
           type: file
-          description: The forward oriented fasta file
-          pattern: "*.fa"
-          ontologies: []
+          description: Fasta file for the forward oriented probe sequences
+            generated with 'opt flip'
+          pattern: "*fwd_oriented.fa"
+          ontologies:
+            - edam: http://edamontology.org/format_1929
+  versions_opt:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - opt:
+          type: string
+          description: The name of the tool
+      - opt --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
-
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - opt:
+          type: string
+          description: The name of the tool
+      - opt --version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@khersameesh24"
 maintainers:

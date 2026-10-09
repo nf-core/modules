@@ -184,8 +184,7 @@ nextflow_workflow {
                 { assert snapshot(
                     workflow.out.processed_reads[0][1],
                     workflow.out.discarded_reads.collect { file(it[1]).name },
-                    workflow.out.multiqc_files.collect { file(it[1]).name },
-                    workflow.out.versions.collect { path(it).yaml }
+                    workflow.out.multiqc_files.collect { file(it[1]).name }
                 ).match()}
             )
         }
@@ -220,8 +219,7 @@ nextflow_workflow {
                     workflow.out.discarded_reads[0][1],
                     path(workflow.out.logfile[0][1]).readLines().size(),
                     path(workflow.out.report[0][1]).readLines().size(),
-                    workflow.out.multiqc_files.collect { file(it[1]).name },
-                    workflow.out.versions.collect { path(it).yaml }
+                    workflow.out.multiqc_files.collect { file(it[1]).name }
                 ).match()}
             )
         }
@@ -258,7 +256,6 @@ nextflow_workflow {
                 { assert snapshot(
                     path(workflow.out.processed_reads[0][1]).linesGzip.size(),
                     workflow.out.discarded_reads.collect { file(it[1]).name },
-                    workflow.out.findAll { key, val -> key.startsWith("versions")},
                     workflow.out.multiqc_files.collect { file(it[1]).name }
                 ).match()}
             )

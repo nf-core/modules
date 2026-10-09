@@ -7,66 +7,65 @@ include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_LIGATE } from '../../../modules/nf-co
 workflow VCF_PHASE_SHAPEIT5 {
 
     take:
-    ch_vcf      // channel (mandatory) : [ [id, chr], vcf, index, pedigree, region ]
-    ch_chunks   // channel (optional)  : [ [id, chr], regionout ]
-    ch_ref      // channel (optional)  : [ [id, chr], vcf, index ]
-    ch_scaffold // channel (optional)  : [ [id, chr], vcf, index ]
-    ch_map      // channel (optional)  : [ [id, chr], map]
-    chunk       // val     (mandatory) : boolean to activate/deactivate chunking step
-    chunk_model // channel (mandatory) : [ model ]
+    ch_input          // channel (mandatory) : [ [id, panelid, scaffoldid, chr], vcf, index, pedigree, ref, index, scaffold, index, region, gmap, [chunks] ]
+    chunk_model       // val     (mandatory) : model to used for GLIMPSE2_chunk
 
     main:
 
-    if ( chunk == true ){
-        // Error if pre-defined chunks are provided when chunking is activated
-        ch_chunks
-            .filter { _meta, regionout -> regionout.size() > 0 }
-            .subscribe {
-                error "ERROR: Cannot provide pre-defined chunks (regionin) when chunk=true. Please either set chunk=false to use provided chunks, or remove input chunks to enable automatic chunking."
-            }
-
-        // Chunk reference panel
-        ch_vcf_map = ch_vcf
-            .combine(ch_map, by: 0)
-            .map{
-                meta, vcf, index, _pedigree, region, gmap -> [
-                    meta, vcf, index, region, gmap
-                ]
-            }
-
-        GLIMPSE2_CHUNK ( ch_vcf_map, chunk_model )
-
-        ch_chunks = GLIMPSE2_CHUNK.out.chunk_chr
-            .splitCsv(header: [
-                'ID', 'Chr', 'RegionBuf', 'RegionCnk', 'WindowCm',
-                'WindowMb', 'NbTotVariants', 'NbComVariants'
-            ], sep: "\t", skip: 0)
-            .map { meta, rows -> [meta, rows["RegionBuf"]]}
+    ch_input.map{ items ->
+        assert items.size() == 11 : "Input channel must contain exactly 11 elements, but got ${items.size()}"
+        assert items[0] instanceof Map: "First element of input channel must be a metadata map, but got ${items[0].getClass()}"
+        assert items[1].size() > 0: "Second element of input channel must be a non-empty VCF file path, but got ${items[1]}"
+        assert items[2].size() > 0: "Third element of input channel must be a non-empty index file path, but got ${items[2]}"
     }
 
-    ch_chunks
-        .filter { _meta, regionout -> regionout.size() == 0 }
-        .subscribe {
-            error "ERROR: ch_chunks channel is empty. Please provide a valid channel or set chunk parameter to true."
-        }
-
-    // Make channel with all parameters
-    ch_parameters = ch_vcf
-        .combine(ch_map, by: 0)
-        .combine(ch_ref, by: 0)
-        .combine(ch_scaffold, by: 0)
-        .combine(ch_chunks, by: 0)
-
-    ch_parameters.ifEmpty{
-        error "ERROR: join operation resulted in an empty channel. Please provide a valid ch_map, ch_ref, ch_scaffold and ch_chunks channel as input (same meta map)."
+    ch_input_branch = ch_input.branch{ _meta, _vcf, _index, _pedigree, _ref, _ref_index, _scaffold, _scaffold_index, _region, _gmap, chunks ->
+        with_chunks: chunks.size() > 0
+        without_chunks: chunks.size() == 0
     }
+
+    GLIMPSE2_CHUNK ( ch_input_branch.without_chunks.map{ meta, vcf, index, _pedigree, _ref, _ref_index, _scaffold, _scaffold_index, region, gmap, _chunks -> [
+        meta, vcf, index, region, gmap
+    ]}, chunk_model )
+
+    ch_chunks = GLIMPSE2_CHUNK.out.chunk_chr
+        .splitCsv(header: [
+            'ID', 'Chr', 'RegionBuf', 'RegionCnk', 'WindowCm',
+            'WindowMb', 'NbTotVariants', 'NbComVariants'
+        ], sep: "\t", skip: 0)
+        .map { meta, rows -> [meta, rows["RegionBuf"]]}
+
+    ch_parameters = ch_input_branch.with_chunks
+        .mix(ch_input_branch.without_chunks
+            .join(ch_chunks.groupTuple(), failOnMismatch: true, failOnDuplicate: true)
+            .map{ meta, vcf, index, pedigree, ref, ref_index, scaffold, scaffold_index, region, gmap, _old_chunks, new_chunks -> [
+                meta, vcf, index, pedigree, ref, ref_index, scaffold, scaffold_index, region, gmap, new_chunks
+            ]}
+        )
+        .map{ meta, vcf, index, pedigree, ref_vcf, ref_index, scaffold_vcf, scaffold_index, regionout, gmap, chunks -> [
+            meta, vcf, index, pedigree, ref_vcf, ref_index, scaffold_vcf, scaffold_index, regionout, gmap, chunks, chunks.size()
+        ]}
+        .transpose(by: 10)
 
     // Rearrange channel for phasing
     ch_phase_input = ch_parameters
         .map{
-            meta, vcf, index, pedigree, _region, gmap, ref_vcf, ref_index, scaffold_vcf, scaffold_index, regionbuf -> [
-                meta + ["regionout": regionbuf], vcf, index, pedigree, regionbuf,
-                ref_vcf, ref_index, scaffold_vcf, scaffold_index, gmap
+            meta, vcf, index, pedigree, ref_vcf, ref_index, scaffold_vcf, scaffold_index, _regionout, gmap, regionbuf, region_size ->
+            def chr = regionbuf.tokenize(':')[0]
+            def region = regionbuf.tokenize(':')[1]
+            def start = region.tokenize('-')[0]
+            def end = region.tokenize('-')[1]
+            def paddedStart = String.format('%010d', start as long)
+            def paddedEnd = String.format('%010d', end as long)
+            def regionoutPadded = "${chr}:${paddedStart}-${paddedEnd}"
+            [
+                meta + ["regionout": regionbuf, "regionoutPadded": regionoutPadded, "regionSize": region_size],
+                vcf, index,
+                pedigree,
+                regionbuf,
+                ref_vcf, ref_index,
+                scaffold_vcf, scaffold_index,
+                gmap
             ]
         }
 
@@ -76,26 +75,42 @@ workflow VCF_PHASE_SHAPEIT5 {
 
     ch_ligate_input = SHAPEIT5_PHASECOMMON.out.phased_variant
         .join(
-            BCFTOOLS_INDEX_PHASE.out.tbi.mix(BCFTOOLS_INDEX_PHASE.out.csi),
+            BCFTOOLS_INDEX_PHASE.out.index,
             failOnMismatch:true, failOnDuplicate:true
         )
-        .map{ meta, vcf, index ->
-            def keysToKeep = meta.keySet() - ['regionout']
-            [ meta.subMap(keysToKeep), vcf, index ]
+        .map { meta, vcf, index ->
+            def keysToKeep = meta.keySet() - ['regionout', 'regionoutPadded', 'regionSize']
+            [
+                groupKey(meta.subMap(keysToKeep), meta.regionSize),
+                vcf, index
+            ]
         }
         .groupTuple()
+        .map { groupKeyObj, vcf, index ->
+            // Extract the actual meta from the groupKey
+            def meta = groupKeyObj.getGroupTarget()
+            [meta, vcf, index]
+        }
+        .branch { meta, vcf, index ->
+            one: vcf.size() == 1
+                return [meta, vcf.get(0), index.get(0)]
+            more: vcf.size() > 1
+                return [meta, vcf, index]
+        }
 
-    SHAPEIT5_LIGATE(ch_ligate_input,'')
+    SHAPEIT5_LIGATE(ch_ligate_input.more, '')
 
     BCFTOOLS_INDEX_LIGATE(SHAPEIT5_LIGATE.out.merged_variants)
 
-    ch_vcf_index = SHAPEIT5_LIGATE.out.merged_variants
-        .join(
-            BCFTOOLS_INDEX_LIGATE.out.tbi.mix(BCFTOOLS_INDEX_LIGATE.out.csi),
-            failOnMismatch:true, failOnDuplicate:true
+    ch_vcf_index = ch_ligate_input.one
+        .mix(SHAPEIT5_LIGATE.out.merged_variants
+            .join(
+                BCFTOOLS_INDEX_LIGATE.out.index,
+                failOnMismatch:true, failOnDuplicate:true
+            )
         )
 
     emit:
     chunks    = ch_chunks    // channel: [ [id, chr], regionout]
-    vcf_index = ch_vcf_index // channel: [ [id, chr], vcf, csi ]
+    vcf_index = ch_vcf_index // channel: [ [id, chr], vcf, index ]
 }

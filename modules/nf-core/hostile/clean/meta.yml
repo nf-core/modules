@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "hostile_clean"
 description: Removes host reads from short- and long-read FASTQ sequencing files
 keywords:
@@ -14,9 +13,9 @@ tools:
       documentation: "https://github.com/bede/hostile"
       tool_dev_url: "https://github.com/bede/hostile"
       doi: "10.1093/bioinformatics/btad728"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:hostile
-
 input:
   - - meta:
         type: map
@@ -41,7 +40,6 @@ input:
           indices AND explicitly specify `--aligner bowtie2`
         ontologies:
           - edam: "http://edamontology.org/data_1049"
-
 output:
   fastq:
     - - meta:
@@ -69,13 +67,27 @@ output:
           pattern: "*.json"
           ontologies:
             - edam: "http://edamontology.org/format_3464"
+  versions_hostile:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hostile:
+          type: string
+          description: The name of the tool
+      - hostile --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hostile:
+          type: string
+          description: The name of the tool
+      - hostile --version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:

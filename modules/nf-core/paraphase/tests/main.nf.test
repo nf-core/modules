@@ -8,17 +8,22 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "paraphase"
-    tag "tabix/bgzip"
+    tag "htslib/bgziptabix"
 
     setup {
-        run("TABIX_BGZIP") {
-            script "../../tabix/bgzip/main.nf"
+        run("HTSLIB_BGZIPTABIX") {
+            script "../../htslib/bgziptabix/main.nf"
             process {
                 """
                 input[0] = [
                     [ id:'test_ref' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22_chr22_KI270734v1_random/sequence/genome.fa.gz', checkIfExists: true),
+                    [],
+                    []
                 ]
+                input[1] = "decompress"
+                input[2] = false
+                input[3] = "fa"
                 """
             }
         }
@@ -37,7 +42,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true),
                 ]
-                input[1] = TABIX_BGZIP.out.output
+                input[1] = HTSLIB_BGZIPTABIX.out.output
                 input[2] = [
                     [:],
                     []
@@ -77,7 +82,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true),
                 ]
-                input[1] = TABIX_BGZIP.out.output
+                input[1] = HTSLIB_BGZIPTABIX.out.output
                 input[2] = [
                     [ id:'test_config' ],
                     file(params.modules_testdata_base_path + 'generic/config/paraphase_config.yaml', checkIfExists: true),
@@ -116,7 +121,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true),
                 ]
-                input[1] = TABIX_BGZIP.out.output
+                input[1] = HTSLIB_BGZIPTABIX.out.output
                 input[2] = [
                     [ id:'test_config' ],
                     file(params.modules_testdata_base_path + 'generic/config/paraphase_config.yaml', checkIfExists: true),
@@ -156,7 +161,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true),
                 ]
-                input[1] = TABIX_BGZIP.out.output
+                input[1] = HTSLIB_BGZIPTABIX.out.output
                 input[2] = [
                     [ id:'test_config' ],
                     file(params.modules_testdata_base_path + 'generic/config/paraphase_config.yaml', checkIfExists: true),
@@ -197,7 +202,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true),
                 ]
-                input[1] = TABIX_BGZIP.out.output
+                input[1] = HTSLIB_BGZIPTABIX.out.output
                 input[2] = [
                     [:],
                     []
@@ -229,7 +234,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true),
                 ]
-                input[1] = TABIX_BGZIP.out.output
+                input[1] = HTSLIB_BGZIPTABIX.out.output
                 input[2] = [
                     [ id:'test_config' ],
                     file(params.modules_testdata_base_path + 'generic/config/paraphase_config.yaml', checkIfExists: true),
@@ -262,7 +267,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true),
                 ]
-                input[1] = TABIX_BGZIP.out.output
+                input[1] = HTSLIB_BGZIPTABIX.out.output
                 input[2] = [
                     [ id:'test_config' ],
                     file(params.modules_testdata_base_path + 'generic/config/paraphase_config.yaml', checkIfExists: true),

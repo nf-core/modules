@@ -1,0 +1,112 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "gcta_remlldms"
+description: Run REML-LDMS heritability estimation with an MGRM manifest
+keywords:
+  - gcta
+  - genome-wide complex trait analysis
+  - reml
+  - restricted maximum likelihood
+  - ldms
+  - linkage disequilibrium and minor allele frequency stratification
+  - grm
+  - genetic relationship matrix
+  - genetics
+tools:
+  - "gcta":
+      description: "Genome-wide Complex Trait Analysis (GCTA) estimates genetic relationships, variance components, and association statistics from genome-wide data."
+      homepage: "https://yanglab.westlake.edu.cn/software/gcta/"
+      documentation: "https://yanglab.westlake.edu.cn/software/gcta/static/gcta_doc_latest.pdf"
+      tool_dev_url: "https://yanglab.westlake.edu.cn/software/gcta/"
+      licence: ["GPL-3.0-only"]
+      identifier: "biotools:gcta"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy map containing MGRM metadata
+          `meta.id` should match the MGRM manifest basename, for example
+          `plink_simulated_ldms` for `plink_simulated_ldms.mgrm`
+    - mgrm_file:
+        type: file
+        description: MGRM manifest file
+        pattern: "*.mgrm"
+        ontologies:
+          - edam: "http://edamontology.org/format_2330"
+    - grm_files:
+        type: file
+        description: GRM bundles referenced by `mgrm_file`; each manifest entry
+          should have matching `*.grm.{id,bin,N.bin}` files in this bundle
+        pattern: "*.grm.*"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy map containing phenotype metadata; should carry the same sample
+          identity as `meta`, for example `[ id:'plink_simulated_ldms' ]`
+    - phenotypes_file:
+        type: file
+        description: Phenotype file passed to `--pheno`
+        pattern: "*.{phe,pheno,txt,tsv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
+  - - meta3:
+        type: map
+        description: |
+          Groovy map containing quantitative covariate metadata; should carry the
+          same sample identity as `meta`, for example `[ id:'plink_simulated_ldms' ]`
+    - quant_covariates_file:
+        type: file
+        description: Quantitative covariates file, pass `[]` when absent
+        pattern: "*.{covar,cov,txt,tsv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
+  - - meta4:
+        type: map
+        description: |
+          Groovy map containing categorical covariate metadata; should carry the
+          same sample identity as `meta`, for example `[ id:'plink_simulated_ldms' ]`
+    - cat_covariates_file:
+        type: file
+        description: Categorical covariates file, pass `[]` when absent
+        pattern: "*.{covar,cov,txt,tsv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
+output:
+  reml_results:
+    - - meta:
+          type: map
+          description: |
+            Groovy map containing MGRM metadata
+            `meta.id` should match the MGRM manifest basename, for example
+            `plink_simulated_ldms` for `plink_simulated_ldms.mgrm`
+      - "*.hsq":
+          type: file
+          description: REML-LDMS result file
+          pattern: "*.{hsq}"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330"
+  versions_gcta:
+    - - "${task.process}":
+          type: string
+          description: The process the version was collected from
+      - "gcta":
+          type: string
+          description: The tool name
+      - "gcta --version | sed -En 's/^[*] version v([0-9.]*).*/\\1/p'":
+          type: eval
+          description: The command used to retrieve the GCTA version
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - gcta:
+          type: string
+          description: The tool name
+      - "gcta --version | sed -En 's/^[*] version v([0-9.]*).*/\\1/p'":
+          type: eval
+          description: The command used to retrieve the GCTA version
+authors:
+  - "@lyh970817"
+maintainers:
+  - "@lyh970817"

@@ -12,7 +12,7 @@ process PAIRIX {
 
     output:
     tuple val(meta), path(pair), path("*.px2"), emit: index
-    path "versions.yml"                       , emit: versions
+    tuple val("${task.process}"), val('pairix'), eval("pairix --help 2>&1 | sed -n 's/^Version: //p'"), topic: versions, emit: versions_pairix
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,10 +23,10 @@ process PAIRIX {
     pairix \\
         $args \\
         $pair
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pairix: \$(echo \$(pairix --help 2>&1) | sed 's/^.*Version: //; s/Usage.*\$//')
-    END_VERSIONS
+    stub:
+    """
+    touch ${pair}.px2
     """
 }

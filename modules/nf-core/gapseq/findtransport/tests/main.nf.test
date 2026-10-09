@@ -1,0 +1,60 @@
+nextflow_process {
+
+    name "Test Process GAPSEQ_FINDTRANSPORT"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "GAPSEQ_FINDTRANSPORT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gapseq"
+    tag "gapseq/findtransport"
+
+    test("candidatus_portiera_aleyrodidarum proteome [fasta]") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                // Validate transporter.tbl structure
+                { assert process.out.tbl.get(0).get(1).size() > 0 : "Transporter file should not be empty" },
+                { assert path(process.out.tbl.get(0).get(1)).readLines().size() > 5 : "Transporter file should have at least 5 lines" },
+                { assert path(process.out.tbl.get(0).get(1)).readLines().get(3) ==~ /^id\ttc\tsub.*/ : "Transporter file should have expected header" },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["log"], tableMD5Keys:["tbl"], tableRemoveComments: true)).match() }
+            )
+        }
+    }
+
+    test("candidatus_portiera_aleyrodidarum proteome [fasta] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

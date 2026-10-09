@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "t1k_run"
 description: write your description here
 keywords:
@@ -8,8 +7,7 @@ keywords:
   - Kir
 tools:
   - "t1k":
-      description: "T1K is a versatile methods to genotype highly polymorphic genes
-        (e.g. KIR, HLA) with RNA-seq, WGS or WES data."
+      description: "T1K is a versatile methods to genotype highly polymorphic genes (e.g. KIR, HLA) with RNA-seq, WGS or WES data."
       homepage: "https://github.com/mourisl/T1K/blob/v1.0.8/README.md"
       documentation: "https://github.com/mourisl/T1K/blob/v1.0.8/README.md"
       tool_dev_url: "https://github.com/mourisl/T1K"
@@ -38,8 +36,7 @@ input:
           - edam: http://edamontology.org/format_1929 # FASTA
     - cordinates:
         type: file
-        description: A fasta file with the coordinates of the gene alleles in the
-          header as created form the t1k/build
+        description: A fasta file with the coordinates of the gene alleles in the header as created form the t1k/build
         pattern: "*.fa"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
@@ -65,8 +62,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*_genotype.tsv":
           type: file
-          description: Genotyping file where the allele for each gene has its own
-            line.
+          description: Genotyping file where the allele for each gene has its own line.
           pattern: "*_genotype.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 #TSV
@@ -78,8 +74,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*_allele.tsv":
           type: file
-          description: File with the representative alleles and their quality
-            scores.
+          description: File with the representative alleles and their quality scores.
           pattern: "*_allele.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -102,8 +97,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*_candidate*.fq":
           type: file
-          description: Fastq file containing candidate reads extracted from raw
-            data for genotyping.
+          description: Fastq file containing candidate reads extracted from raw data for genotyping.
           ontologies:
             - edam: http://edamontology.org/format_1930 # FASTQ
   aligned_reads_single:
@@ -138,8 +132,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*_barcode_expr.tsv":
           type: file
-          description: Data matrix where rows are the barcodes and columns are the
-            allele abundances.
+          description: Data matrix where rows are the barcodes and columns are the allele abundances.
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
   barcode_candidate:
@@ -191,3 +184,27 @@ authors:
   - "@georgiakes"
 maintainers:
   - "@georgiakes"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/t1k:1.0.10--35c476de36986302
+      build_id: bd-35c476de36986302_1
+      scan_id: sc-7928fab76c8681ac_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/t1k:1.0.10--c5ee69646579b5cd
+      build_id: bd-c5ee69646579b5cd_1
+      scan_id: sc-d272b86fc87046b1_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/t1k:1.0.10--3f4861669acd8d30
+      build_id: bd-3f4861669acd8d30_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/db/db0ceb6240d9a8827941a8c914a60cc4199bd4f5f9cc472d7d9f43c334680f34/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/t1k:1.0.10--6b0d2d0ed2acc8e2
+      build_id: bd-6b0d2d0ed2acc8e2_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9b/9b67510eb3f479e57143afe58aa6fc86880d7f2631753b61bb00437d8e1d6088/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/t1k/run/.conda-lock/linux_amd64-bd-35c476de36986302_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/t1k/run/.conda-lock/linux_arm64-bd-c5ee69646579b5cd_1.txt

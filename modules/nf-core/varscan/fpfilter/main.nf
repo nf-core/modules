@@ -13,7 +13,7 @@ process VARSCAN_FPFILTER {
     output:
     tuple val(meta), path("*.pass.vcf.gz"), emit: pass_vcf
     tuple val(meta), path("*.fail.vcf.gz"), emit: fail_vcf
-    path "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val('varscan'), eval("varscan 2>&1 | sed -n 's/VarScan v//p'"), emit: versions_varscan, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,11 +34,6 @@ process VARSCAN_FPFILTER {
 
     bgzip ${prefix}.pass.vcf
     bgzip ${prefix}.fail.vcf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        varscan: \$(varscan 2>&1 | grep VarScan | head -n 1 | sed 's/VarScan //g' | sed 's/,.*//g' | sed 's/^v//' | sed 's/_.*//')
-    END_VERSIONS
     """
 
     stub:
@@ -49,10 +44,5 @@ process VARSCAN_FPFILTER {
 
     echo "" | gzip > ${prefix}.pass.vcf.gz
     echo "" | gzip > ${prefix}.fail.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        varscan: \$(varscan 2>&1 | grep VarScan | head -n 1 | sed 's/VarScan //g' | sed 's/,.*//g' | sed 's/^v//' | sed 's/_.*//')
-    END_VERSIONS
     """
 }

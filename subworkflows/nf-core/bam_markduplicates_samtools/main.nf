@@ -17,7 +17,7 @@ workflow BAM_MARKDUPLICATES_SAMTOOLS {
 
     SAMTOOLS_COLLATE(ch_bam, ch_fasta_fai)
 
-    SAMTOOLS_FIXMATE(SAMTOOLS_COLLATE.out.bam)
+    SAMTOOLS_FIXMATE(SAMTOOLS_COLLATE.out.bam, ch_fasta_fai)
 
     SAMTOOLS_SORT(
         SAMTOOLS_FIXMATE.out.bam,

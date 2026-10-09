@@ -3,9 +3,9 @@ process AMPCOMBI2_PARSETABLES {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ampcombi:3.0.0--pyhdfd78af_0':
-        'quay.io/biocontainers/ampcombi:3.0.0--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/ampcombi:3.0.0--pyhdfd78af_0'
+        : 'quay.io/biocontainers/ampcombi:3.0.0--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(amp_input)
@@ -16,18 +16,19 @@ process AMPCOMBI2_PARSETABLES {
     path opt_interproscan
 
     output:
-    tuple val(meta), path("${prefix}/")                            , emit: sample_dir
-    tuple val(meta), path("Ampcombi_parse_tables.log")             , emit: full_log   , optional:true
-    tuple val(meta), path("amp_${opt_amp_db}_database/")           , emit: db         , optional:true
+    tuple val(meta), path("${prefix}/"), emit: sample_dir
+    tuple val(meta), path("${prefix}/${prefix}_ampcombi.tsv"), emit: tsv, optional: true
+    tuple val(meta), path("Ampcombi_parse_tables.log"), emit: full_log, optional: true
+    tuple val(meta), path("amp_${opt_amp_db}_database/"), emit: db, optional: true
     tuple val("${task.process}"), val('ampcombi'), eval("ampcombi --version | sed 's/ampcombi //'"), emit: versions_ampcombi, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: ''
-    prefix     = task.ext.prefix ?: "${meta.id}"
-    def db_dir = opt_amp_db_dir  ? "--amp_database_dir ${opt_amp_db_dir}" : ""
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def db_dir = opt_amp_db_dir ? "--amp_database_dir ${opt_amp_db_dir}" : ""
     def interpro = opt_interproscan ? "--interproscan_output ${opt_interproscan}" : ""
 
     """

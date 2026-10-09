@@ -13,7 +13,7 @@ process VARIANTBAM {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('VariantBam'), val('1.4.4a'), emit: versions_variant, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,27 +21,15 @@ process VARIANTBAM {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.4.4a' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     variant \\
         $bam \\
         -o ${prefix}.bam \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        variantbam: $VERSION
-    END_VERSIONS
     """
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.4.4a' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        variantbam: $VERSION
-    END_VERSIONS
     """
 }

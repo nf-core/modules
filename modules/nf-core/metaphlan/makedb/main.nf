@@ -8,7 +8,7 @@ process METAPHLAN_MAKEDB {
 
     output:
     path "metaphlan_db_latest"      , emit: db
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('metaphlan'), eval("metaphlan --version 2>&1 | cut -d ' ' -f 3"), emit: versions_metaphlan, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,10 +23,6 @@ process METAPHLAN_MAKEDB {
         --bowtie2db metaphlan_db_latest \\
         ${args}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        metaphlan: \$(metaphlan --version 2>&1 | awk '{print \$3}')
-    END_VERSIONS
     """
 
     stub:
@@ -44,9 +40,5 @@ process METAPHLAN_MAKEDB {
     touch metaphlan_db_latest/mpa_v31_CHOCOPhlAn_201901.rev.2.bt2
     touch metaphlan_db_latest/mpa_v31_CHOCOPhlAn_201901.tar
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        metaphlan: \$(metaphlan --version 2>&1 | awk '{print \$3}')
-    END_VERSIONS
     """
 }

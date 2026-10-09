@@ -9,11 +9,11 @@ process LEVIOSAM2_LIFT {
 
     input:
     tuple val(meta), path(input)
-    tuple val(meta_ref), path(clft)
+    tuple val(meta2), path(clft)
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('leviosam2'), eval("leviosam2 --version"), emit: versions_leviosam2, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,21 +30,11 @@ process LEVIOSAM2_LIFT {
         -p ${prefix} \\
         -O bam \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        leviosam2: \$(leviosam2 --version)
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        leviosam2: \$(leviosam2 --version)
-    END_VERSIONS
     """
 }

@@ -32,12 +32,9 @@ nextflow_workflow {
         }
 
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success},
-                { assert snapshot(
-                    workflow.out,
-                    workflow.out.versions.collect{ path(it).yaml }
-                ).match()}
+                { assert snapshot(sanitizeOutput(workflow.out)).match()}
             )
         }
     }
@@ -63,12 +60,9 @@ nextflow_workflow {
         }
 
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success},
-                { assert snapshot(
-                    workflow.out,
-                    workflow.out.versions.collect{ path(it).yaml }
-                ).match()}
+                { assert snapshot(sanitizeOutput(workflow.out)).match()}
             )
         }
     }

@@ -1,0 +1,67 @@
+name: "bio2zarr_vcf2zarrconvert"
+description: Convert VCF data to the VCF Zarr specification reliably, in parallel or distributed over a cluster.
+keywords:
+  - vcf
+  - zarr
+  - convert
+  - genomics
+tools:
+  - "vcf2zarr":
+      description: "Convert bioinformatics data to Zarr"
+      homepage: "https://sgkit-dev.github.io/bio2zarr/vcf2zarr/overview.html"
+      documentation: "https://sgkit-dev.github.io/bio2zarr/"
+      tool_dev_url: "https://github.com/sgkit-dev/bio2zarr"
+      doi: "10.1101/2024.06.11.598241"
+      licence:
+        - "Apache-2.0"
+      identifier: biotools:bio2zarr
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - vcf:
+        type: file
+        description: Input VCF/BCF file to convert
+        pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016" # VCF
+          - edam: "http://edamontology.org/format_3020" # BCF
+output:
+  vcz:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.vcz":
+          type: directory
+          description: Output VCF Zarr store directory
+          pattern: "*.vcz"
+          ontologies: []
+  versions_vcf2zarr:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vcf2zarr:
+          type: string
+          description: The name of the tool
+      - vcf2zarr --version |& sed -n "s/.* //p":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vcf2zarr:
+          type: string
+          description: The name of the tool
+      - vcf2zarr --version |& sed -n "s/.* //p":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@camlloyd"
+maintainers:
+  - "@camlloyd"

@@ -14,7 +14,7 @@ process GEM2_GEMINDEXER {
     output:
     tuple val(meta), path("*.gem"), emit: index
     tuple val(meta), path("*.log"), emit: log
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('gem2'), val("20200110"), emit: versions_gem2, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,7 +22,6 @@ process GEM2_GEMINDEXER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '20200110' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     gem-indexer \\
         -i ${fasta} \\
@@ -30,24 +29,12 @@ process GEM2_GEMINDEXER {
         --threads ${task.cpus} \\
         --mm-tmp-prefix ./tmp \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gem2: $VERSION
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '20200110' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
     """
     touch ${prefix}.gem
     touch ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gem2: $VERSION
-    END_VERSIONS
     """
 }

@@ -14,7 +14,8 @@ process MCRONI {
     output:
     tuple val(meta), path("*.tsv")               , emit: tsv
     tuple val(meta), path("*.fa"), optional: true, emit: fa
-    path "versions.yml"                          , emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('mcroni'), val('1.0.4'), topic: versions, emit: versions_mcroni
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,33 +25,21 @@ process MCRONI {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def is_compressed = fasta.getName().endsWith(".gz") ? true : false
     def fasta_name = fasta.getName().replace(".gz", "")
-    def VERSION = '1.0.4' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    if [ "$is_compressed" == "true" ]; then
-        gzip -c -d $fasta > $fasta_name
+    if [ "${is_compressed}" == "true" ]; then
+        gzip -c -d ${fasta} > ${fasta_name}
     fi
 
     mcroni \\
-        $args \\
-        --output $prefix \\
-        --fasta $fasta_name
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mcroni: $VERSION
-    END_VERSIONS
+        ${args} \\
+        --output ${prefix} \\
+        --fasta ${fasta_name}
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.0.4' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}.tsv
     touch ${prefix}.fa
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mcroni: $VERSION
-    END_VERSIONS
     """
 }

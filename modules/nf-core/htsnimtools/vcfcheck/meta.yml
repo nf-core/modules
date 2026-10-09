@@ -1,7 +1,7 @@
 name: "htsnimtools_vcfcheck"
-description: This tools takes a background VCF, such as gnomad, that has full genome
-  (though in some cases, users will instead want whole exome) coverage and uses that
-  as an expectation of variants.
+description: This tools takes a background VCF, such as gnomad, that has full
+  genome (though in some cases, users will instead want whole exome) coverage
+  and uses that as an expectation of variants.
 keywords:
   - validation
   - check
@@ -12,9 +12,9 @@ tools:
       homepage: "https://github.com/brentp/hts-nim-tools"
       documentation: "https://github.com/brentp/hts-nim-tools"
       tool_dev_url: "https://github.com/brentp/hts-nim-tools"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -55,18 +55,32 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.tsv":
           type: file
-          description: A tab-delimited file comparing the variant count of each region
-            in the query VCF and background VCF
+          description: A tab-delimited file comparing the variant count of each
+            region in the query VCF and background VCF
           pattern: "*.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
+  versions_htsnimtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - htsnimtools:
+          type: string
+          description: The name of the tool
+      - "hts_nim_tools | sed -n 's/version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - htsnimtools:
+          type: string
+          description: The name of the tool
+      - "hts_nim_tools | sed -n 's/version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:

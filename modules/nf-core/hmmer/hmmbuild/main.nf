@@ -4,8 +4,8 @@ process HMMER_HMMBUILD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/07/07c4cbd91c4459dc86b13b5cd799cacba96b27d66c276485550d299c7a4c6f8a/data' :
-        'community.wave.seqera.io/library/hmmer:3.4--cb5d2dd2e85974ca' }"
+        'https://depot.galaxyproject.org/singularity/hmmer:3.4--hb6cb901_4' :
+        'quay.io/biocontainers/hmmer:3.4--hb6cb901_4' }"
 
     input:
     tuple val(meta), path(alignment)
@@ -14,7 +14,7 @@ process HMMER_HMMBUILD {
     output:
     tuple val(meta), path("*.hmm.gz"), emit: hmm
     path "*.hmmbuild.txt",             emit: hmmbuildout
-    path "versions.yml",               emit: versions
+    tuple val("${task.process}"), val('hmmer'), eval("hmmsearch -h | sed '2!d;s/^# HMMER *//;s/ .*//'"), emit: versions_hmmer, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,22 +35,12 @@ process HMMER_HMMBUILD {
         $alignment
 
     gzip ${prefix}.hmm
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hmmer: \$(echo \$(hmmbuild -h | grep HMMER | sed 's/# HMMER //' | sed 's/ .*//' 2>&1))
-    END_VERSIONS
     """
 
     stub:
     def prefix    = task.ext.prefix ?: "${meta.id}"
     """
-    echo | gzip > ${prefix}.hmm.gz
+    echo "" | gzip > ${prefix}.hmm.gz
     touch ${prefix}.hmmbuild.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hmmer: \$(echo \$(hmmbuild -h | grep HMMER | sed 's/# HMMER //' | sed 's/ .*//' 2>&1))
-    END_VERSIONS
     """
 }

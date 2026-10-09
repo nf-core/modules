@@ -15,7 +15,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta', checkIfExists: true),
                     []
                 ]
@@ -27,13 +27,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.genes +
-                    process.out.features +
-                    process.out.clusters +
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() },
-                { assert path(process.out.gbk.get(0).get(1)).text.contains("MVKNDIDILILGGGCTGLSLAYYLSFLPNTVRIFLIENKFIYNND") }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["gbk"])).match() },
+                { assert path(process.out.gbk[0][1]).text.contains("MVKNDIDILILGGGCTGLSLAYYLSFLPNTVRIFLIENKFIYNND") }
             )
         }
 
@@ -47,7 +42,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta', checkIfExists: true),
                     []
                 ]
@@ -59,10 +54,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

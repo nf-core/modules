@@ -13,7 +13,7 @@ process VARSCAN_SOMATIC {
     output:
     tuple val(meta), path("*.snvs.vcf.gz")  , emit: vcf_snvs
     tuple val(meta), path("*.indels.vcf.gz"), emit: vcf_indels
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('varscan'), eval("varscan 2>&1 | sed -n 's/VarScan v//p'"), emit: versions_varscan, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,11 +37,6 @@ process VARSCAN_SOMATIC {
 
     bgzip ${prefix}.snvs.vcf
     bgzip ${prefix}.indels.vcf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        varscan: \$(varscan 2>&1 | grep VarScan | head -n 1 | sed 's/VarScan //g' | sed 's/,.*//g' | sed 's/^v//' | sed 's/_.*//')
-    END_VERSIONS
     """
 
     stub:
@@ -52,10 +47,5 @@ process VARSCAN_SOMATIC {
 
     echo "" | gzip > ${prefix}.snvs.vcf.gz
     echo "" | gzip > ${prefix}.indels.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        varscan: \$(varscan 2>&1 | grep VarScan | head -n 1 | sed 's/VarScan //g' | sed 's/,.*//g' | sed 's/^v//' | sed 's/_.*//')
-    END_VERSIONS
     """
 }

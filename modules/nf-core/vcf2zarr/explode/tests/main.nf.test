@@ -26,36 +26,36 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.success },
-                { snapshot(sanitizeOutput(process.out)).match() }
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.")}
             )
         }
 
     }
 
-    test("sarscov2 - vcf - stub") {
+    // test("sarscov2 - vcf - stub") {
 
-        options "-stub"
+    //     options "-stub"
 
-        when {
-            process {
-                """
+    //     when {
+    //         process {
+    //             """
 
-                input[0] = [
-                    [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
-                ]
-                """
-            }
-        }
+    //             input[0] = [
+    //                 [ id:'test' ], // meta map
+    //                 file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+    //             ]
+    //             """
+    //         }
+    //     }
 
-        then {
-            assertAll(
-                { assert process.success },
-                { snapshot(sanitizeOutput(process.out)).match() }
-            )
-        }
+    //     then {
+    //         assertAll(
+    //             { assert process.success },
+    //             { snapshot(sanitizeOutput(process.out)).match() }
+    //         )
+    //     }
 
-    }
+    // }
 
 }

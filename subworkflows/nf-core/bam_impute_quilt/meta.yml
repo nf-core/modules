@@ -2,7 +2,9 @@
 name: "BAM_IMPUTE_QUILT"
 description: |
   Subworkflow to impute BAM files using QUILT software.
-  Variants location to impute are obtain through the tsv file given
+  Variants location to impute are obtain through the tsv file given.
+  "regionout", "regionoutPadded", "regionSize" keys will be added to the meta map to distinguish
+  the different files before ligation and therefore should not be used.
 keywords:
   - BAM
   - imputation
@@ -39,7 +41,7 @@ input:
               File containing the sample names of each BAM files listed in bampaths.
               One file per line.
             pattern: "*.{txt,tsv}"
-  - ch_hap_legend:
+  - ch_hap_legend_posfile:
       description: Channel with reference panel variants data
       structure:
         - meta:

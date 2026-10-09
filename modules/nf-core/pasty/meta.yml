@@ -11,7 +11,8 @@ tools:
       homepage: "https://github.com/rpetit3/pasty"
       documentation: "https://github.com/rpetit3/pasty"
       tool_dev_url: "https://github.com/rpetit3/pasty"
-      licence: ["Apache-2.0"]
+      licence:
+        - "Apache-2.0"
       identifier: ""
 input:
   - - meta:
@@ -61,13 +62,29 @@ output:
           pattern: "*.details.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
+  versions_pasty:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pasty:
+          type: string
+          description: The name of the tool
+      - pasty --version 2>&1 | sed 's/^.*pasty, version //;':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pasty:
+          type: string
+          description: The name of the tool
+      - pasty --version 2>&1 | sed 's/^.*pasty, version //;':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@rpetit3"
 maintainers:

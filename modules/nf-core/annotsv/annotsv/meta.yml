@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "annotsv_annotsv"
 description: Annotation and Ranking of Structural Variation
 keywords:
@@ -91,7 +92,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.tsv":
+      - "${prefix}.tsv":
           type: file
           description: A TSV file containing the annotated variants
           pattern: "*.tsv"
@@ -103,7 +104,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.unannotated.tsv":
+      - "${prefix}.unannotated.tsv":
           type: file
           description: OPTIONAL - TSV file containing the unannotated variants
           pattern: "*.unannotated.tsv"

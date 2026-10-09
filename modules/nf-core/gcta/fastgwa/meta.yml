@@ -1,0 +1,136 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "gcta_fastgwa"
+description: Run GCTA fastGWA mixed linear model association analysis with PLINK genotype inputs
+keywords:
+  - gcta
+  - genome-wide complex trait analysis
+  - fastgwa
+  - fast genome-wide association
+  - gwas
+  - genome-wide association study
+  - genetics
+tools:
+  - "gcta":
+      description: "Genome-wide Complex Trait Analysis (GCTA) estimates genetic relationships, variance components, and association statistics from genome-wide data."
+      homepage: "https://yanglab.westlake.edu.cn/software/gcta/"
+      documentation: "https://yanglab.westlake.edu.cn/software/gcta/static/gcta_doc_latest.pdf"
+      tool_dev_url: "https://yanglab.westlake.edu.cn/software/gcta/"
+      licence: ["GPL-3.0-only"]
+      identifier: "biotools:gcta"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy map containing PLINK genotype metadata
+          e.g. `[ id:'plink_simulated' ]`
+    - bed_pgen:
+        type: file
+        description: PLINK primary genotype file, either `.bed` or `.pgen`
+        pattern: "*.{bed,pgen}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
+    - bim_pvar:
+        type: file
+        description: PLINK variant sidecar file, either `.bim` or `.pvar`
+        pattern: "*.{bim,pvar}"
+        ontologies: []
+    - fam_psam:
+        type: file
+        description: PLINK sample sidecar file, either `.fam` or `.psam`
+        pattern: "*.{fam,psam}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy map containing genotype/sample information associated with the phenotype input
+          Keep only the shared genotype/sample identifier in this map
+          e.g. `[ id:'plink_simulated' ]`
+    - phenotype_file:
+        type: file
+        description: Phenotype file
+        pattern: "*.{phe,pheno,txt,tsv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
+  - - meta3:
+        type: map
+        description: |
+          Groovy map containing genotype/sample information associated with the quantitative covariate input
+          e.g. `[ id:'plink_simulated' ]`
+    - quant_covariates_file:
+        type: file
+        description: Quantitative covariates file, pass `[]` when absent
+        pattern: "*.{covar,cov,txt,tsv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
+  - - meta4:
+        type: map
+        description: |
+          Groovy map containing genotype/sample information associated with the categorical covariate input
+          e.g. `[ id:'plink_simulated' ]`
+    - cat_covariates_file:
+        type: file
+        description: Categorical covariates file, pass `[]` when absent
+        pattern: "*.{covar,cov,txt,tsv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
+  - - meta5:
+        type: map
+        description: |
+          Groovy map containing sparse GRM metadata
+          e.g. `[ id:'plink_simulated_sp' ]`
+          Used as the sparse GRM basename for `--grm-sparse` when sparse GRM files are supplied
+    - sparse_grm_files:
+        type: file
+        description: Sparse GRM sidecar files
+        pattern: "*.grm.{id,sp}"
+        ontologies: []
+output:
+  results:
+    - - meta:
+          type: map
+          description: |
+            Groovy map containing PLINK genotype metadata
+            e.g. `[ id:'plink_simulated' ]`
+      - "*.fastGWA":
+          type: file
+          description: FastGWA association results
+          pattern: "*.fastGWA"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330"
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy map containing PLINK genotype metadata
+            e.g. `[ id:'plink_simulated' ]`
+      - "*.log":
+          type: file
+          description: GCTA fastGWA log file
+          pattern: "*.log"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330"
+  versions_gcta:
+    - - "${task.process}":
+          type: string
+          description: The process the version was collected from
+      - "gcta":
+          type: string
+          description: The tool name
+      - "gcta --version | sed -En 's/^[*] version v([0-9.]*).*/\\1/p'":
+          type: eval
+          description: The command used to retrieve the GCTA version
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - gcta:
+          type: string
+          description: The tool name
+      - "gcta --version | sed -En 's/^[*] version v([0-9.]*).*/\\1/p'":
+          type: eval
+          description: The command used to retrieve the GCTA version
+authors:
+  - "@lyh970817"
+maintainers:
+  - "@lyh970817"

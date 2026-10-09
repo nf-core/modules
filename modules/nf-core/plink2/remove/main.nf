@@ -18,7 +18,7 @@ process PLINK2_REMOVE {
     tuple val(meta), path("*.pgen"), emit: remove_pgen, optional: true
     tuple val(meta), path("*.psam"), emit: remove_psam, optional: true
     tuple val(meta), path("*.pvar"), emit: remove_pvar, optional: true
-    path "versions.yml"            , emit: versions
+    tuple val("${task.process}"), val('plink2'), eval("plink2 --version 2>&1 | sed 's/^PLINK v//; s/ 64.*\$//'"), topic: versions, emit: versions_plink2
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,11 +39,6 @@ process PLINK2_REMOVE {
         --remove $sample_exclude_list \\
         $outtype \\
         --out $prefix
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        plink2: \$(plink2 --version 2>&1 | sed 's/^PLINK v//; s/ 64.*\$//' )
-    END_VERSIONS
     """
 
     stub:
@@ -54,10 +49,5 @@ process PLINK2_REMOVE {
 
     """
     touch ${trio}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        plink2: \$(plink2 --version 2>&1 | sed 's/^PLINK v//; s/ 64.*\$//' )
-    END_VERSIONS
     """
 }

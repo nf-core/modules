@@ -1,0 +1,486 @@
+nextflow_process {
+
+    name "Test Process CUSTOM_ORFNORMALISE"
+    script "../main.nf"
+    process "CUSTOM_ORFNORMALISE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "custom"
+    tag "custom/orfnormalise"
+
+    config "./nextflow.config"
+
+    test("homo_sapiens [chr20] - ribocode") {
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                    [id: 'sample1'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribocode.txt', checkIfExists: true),
+                    'ribocode'
+                ])
+                input[1] = channel.of([
+                    [id: 'reference'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            def all_lines = path(process.out.tsv[0][1]).text.readLines()
+            def lines = all_lines.findAll { !it.startsWith('#') }
+            def cols  = lines[0].split('\t') as List
+            def rows  = lines.drop(1).collect { it.split('\t') }
+            def parser_columns_line = all_lines.find { it.startsWith('# parser_columns:') }
+            def aa    = cols.indexOf('aa_length')
+            def score = cols.indexOf('score')
+            def cls   = cols.indexOf('orf_class')
+            def smorf = cols.indexOf('is_smorf')
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                // every ORF must span a whole number of codons (frame guard)
+                { assert path(process.out.bed12[0][1]).text.readLines().findAll { it.trim() }.every { it.split('\t')[10].split(',').findAll { s -> s }.collect { s -> s.toInteger() }.sum() % 3 == 0 } },
+                { assert rows.size() > 0 },
+                { assert rows.every { it[aa].toInteger() > 0 } },
+                { assert rows.every { it[score] && it[score] != '' } },
+                { assert rows.collect { it[cls] }.toSet().any { it != 'other' } },
+                { assert parser_columns_line != null },
+                { assert parser_columns_line.contains('caller=ribocode') },
+                { assert parser_columns_line.contains('score=pval_combined') },
+                // Exact-token classification: no native label may go unmapped,
+                // otherwise those rows silently landed in `other`.
+                { assert parser_columns_line.contains('unmapped_orf_type=0') },
+                // orf_class is positional only; length lives in is_smorf.
+                { assert rows.every { it[cls] != 'smORF' } },
+                { assert rows.every { (it[smorf] == '1') == (it[aa].toInteger() in 1..100) } }
+            )
+        }
+    }
+
+    test("homo_sapiens [chr20] - ribotish") {
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                    [id: 'sample1'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.pred.txt', checkIfExists: true),
+                    'ribotish'
+                ])
+                input[1] = channel.of([
+                    [id: 'reference'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            def all_lines = path(process.out.tsv[0][1]).text.readLines()
+            def lines = all_lines.findAll { !it.startsWith('#') }
+            def cols  = lines[0].split('\t') as List
+            def rows  = lines.drop(1).collect { it.split('\t') }
+            def parser_columns_line = all_lines.find { it.startsWith('# parser_columns:') }
+            def aa    = cols.indexOf('aa_length')
+            def score = cols.indexOf('score')
+            def cls   = cols.indexOf('orf_class')
+            def smorf = cols.indexOf('is_smorf')
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                // every ORF must span a whole number of codons (frame guard)
+                { assert path(process.out.bed12[0][1]).text.readLines().findAll { it.trim() }.every { it.split('\t')[10].split(',').findAll { s -> s }.collect { s -> s.toInteger() }.sum() % 3 == 0 } },
+                { assert rows.size() > 0 },
+                { assert rows.every { it[aa].toInteger() > 0 } },
+                { assert rows.every { it[score] && it[score] != '' } },
+                { assert rows.collect { it[cls] }.toSet().any { it != 'other' } },
+                { assert parser_columns_line.contains('unmapped_orf_type=0') },
+                { assert rows.every { it[cls] != 'smORF' } },
+                { assert rows.every { (it[smorf] == '1') == (it[aa].toInteger() in 1..100) } }
+            )
+        }
+    }
+
+    test("homo_sapiens [chr20] - ribotricer") {
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                    [id: 'sample1'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotricer.tsv', checkIfExists: true),
+                    'ribotricer'
+                ])
+                input[1] = channel.of([
+                    [id: 'reference'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            def all_lines = path(process.out.tsv[0][1]).text.readLines()
+            def lines     = all_lines.findAll { !it.startsWith('#') }
+            def cols      = lines[0].split('\t') as List
+            def rows      = lines.drop(1).collect { it.split('\t') }
+            def parser_columns_line = all_lines.find { it.startsWith('# parser_columns:') }
+            def aa        = cols.indexOf('aa_length')
+            def score     = cols.indexOf('score')
+            def cls       = cols.indexOf('orf_class')
+            // Verify multi-exon recovery: at least one BED12 row should
+            // have blockCount > 1 (parser uses GTF exon intersection so
+            // multi-exon transcripts don't collapse to one intron-spanning
+            // block).
+            def bed_lines = path(process.out.bed12[0][1]).text.readLines()
+            def block_counts = bed_lines.findAll { it.trim() }.collect { it.split('\t')[9].toInteger() }
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                // every ORF must span a whole number of codons (frame guard)
+                { assert path(process.out.bed12[0][1]).text.readLines().findAll { it.trim() }.every { it.split('\t')[10].split(',').findAll { s -> s }.collect { s -> s.toInteger() }.sum() % 3 == 0 } },
+                { assert rows.size() > 0 },
+                { assert rows.every { it[aa].toInteger() > 0 } },
+                { assert rows.every { it[score] && it[score] != '' } },
+                { assert rows.collect { it[cls] }.toSet().any { it != 'other' } },
+                { assert block_counts.any { it > 1 } },
+                { assert parser_columns_line.contains('unmapped_orf_type=0') }
+            )
+        }
+    }
+
+    test("homo_sapiens [chr20] - rpbp") {
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                    [id: 'sample1'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.rpbp.predicted-orfs.bed.gz', checkIfExists: true),
+                    'rpbp'
+                ])
+                input[1] = channel.of([
+                    [id: 'reference'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            def all_lines = path(process.out.tsv[0][1]).text.readLines()
+            def lines = all_lines.findAll { !it.startsWith('#') }
+            def cols  = lines[0].split('\t') as List
+            def rows  = lines.drop(1).collect { it.split('\t') }
+            def parser_columns_line = all_lines.find { it.startsWith('# parser_columns:') }
+            def aa    = cols.indexOf('aa_length')
+            def score = cols.indexOf('score')
+            def cls   = cols.indexOf('orf_class')
+            def smorf = cols.indexOf('is_smorf')
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                // every ORF must span a whole number of codons (frame guard)
+                { assert path(process.out.bed12[0][1]).text.readLines().findAll { it.trim() }.every { it.split('\t')[10].split(',').findAll { s -> s }.collect { s -> s.toInteger() }.sum() % 3 == 0 } },
+                { assert rows.size() > 0 },
+                { assert rows.every { it[aa].toInteger() > 0 } },
+                { assert rows.every { it[score] && it[score] != '' && it[score].toDouble() > 0 } },
+                // Rp-Bp's predicted-orfs BED has no orf_type column; defaulting
+                // to 'canonical' should keep every row out of the 'other' bucket.
+                { assert rows.every { it[cls] != 'other' } },
+                { assert parser_columns_line.contains('unmapped_orf_type=0') }
+            )
+        }
+    }
+
+    test("homo_sapiens [chr19+chr22] - price") {
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                    [id: 'cohort'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/orf_predictions/cohort.price.orfs.tsv', checkIfExists: true),
+                    'price'
+                ])
+                input[1] = channel.of([
+                    [id: 'reference'],
+                    []
+                ])
+                """
+            }
+        }
+
+        then {
+            def all_lines = path(process.out.tsv[0][1]).text.readLines()
+            def lines = all_lines.findAll { !it.startsWith('#') }
+            def cols  = lines[0].split('\t') as List
+            def rows  = lines.drop(1).collect { it.split('\t') }
+            def parser_columns_line = all_lines.find { it.startsWith('# parser_columns:') }
+            def aa    = cols.indexOf('aa_length')
+            def cls   = cols.indexOf('orf_class')
+            def smorf = cols.indexOf('is_smorf')
+            // Verify PRICE's multi-exon Location decoding: at least one BED12
+            // record should have blockCount > 1 (Location field encodes
+            // intron-spliced blocks via pipe separators).
+            def bed_lines = path(process.out.bed12[0][1]).text.readLines()
+            def block_counts = bed_lines.findAll { it.trim() }.collect { it.split('\t')[9].toInteger() }
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                // every ORF must span a whole number of codons (frame guard)
+                { assert path(process.out.bed12[0][1]).text.readLines().findAll { it.trim() }.every { it.split('\t')[10].split(',').findAll { s -> s }.collect { s -> s.toInteger() }.sum() % 3 == 0 } },
+                { assert rows.size() > 0 },
+                { assert rows.every { it[aa].toInteger() > 0 } },
+                { assert rows.collect { it[cls] }.toSet().any { it != 'other' } },
+                { assert block_counts.any { it > 1 } },
+                { assert parser_columns_line.contains('unmapped_orf_type=0') },
+                { assert rows.every { it[cls] != 'smORF' } },
+                { assert rows.every { (it[smorf] == '1') == (it[aa].toInteger() in 1..100) } }
+            )
+        }
+    }
+
+    test("price - gene_id resolved from transcript, not the concatenated Gene column") {
+
+        when {
+            process {
+                """
+                input[0] = channel
+                    .of(
+                        'Gene\tId\tLocation\tType\tp value',
+                        'ENSG_A_ENSG_B\tENST_FAKE_TX_CDS_1\tchr1+:100-130\tCDS\t0.001'
+                    )
+                    .collectFile(name: 'price_gene_precedence.orfs.tsv', newLine: true, sort: false)
+                    .map { orfs -> [[id: 'sample1'], orfs, 'price'] }
+                input[1] = channel
+                    .of('chr1\ttest\texon\t100\t130\t.\t+\t.\tgene_id "ENSG_PLAIN"; transcript_id "ENST_FAKE_TX";')
+                    .collectFile(name: 'price_gene_precedence.gtf', newLine: true)
+                    .map { gtf -> [[id: 'reference'], gtf] }
+                """
+            }
+        }
+
+        then {
+            def lines = path(process.out.tsv[0][1]).text.readLines().findAll { !it.startsWith('#') }
+            def cols  = lines[0].split('\t') as List
+            def row   = lines[1].split('\t')
+            def gid   = cols.indexOf('gene_id')
+            def tid   = cols.indexOf('transcript_id')
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                // The Gene column holds PRICE's concatenated multi-gene form
+                // 'ENSG_A_ENSG_B'; the annotation resolves ENST_FAKE_TX to a
+                // single gene, which must win.
+                { assert row[gid] == 'ENSG_PLAIN' },
+                { assert row[tid] == 'ENST_FAKE_TX' }
+            )
+        }
+    }
+
+    test("homo_sapiens [chr20] - ribotish - score-field override") {
+        when {
+            params {
+                module_args = "--score-field RiboPvalue"
+            }
+
+            process {
+                """
+                input[0] = channel.of([
+                    [id: 'sample1'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.pred.txt', checkIfExists: true),
+                    'ribotish'
+                ])
+                input[1] = channel.of([
+                    [id: 'reference'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            def all_lines = path(process.out.tsv[0][1]).text.readLines()
+            def parser_columns_line = all_lines.find { it.startsWith('# parser_columns:') }
+            assertAll(
+                { assert process.success },
+                // Override resolves to RiboPvalue (not the default FisherPvalue),
+                // and the provenance header reflects that.
+                { assert parser_columns_line.contains('score=RiboPvalue') }
+            )
+        }
+    }
+
+    test("is_smorf flips at smorf_max_aa while orf_class does not") {
+
+        when {
+            process {
+                """
+                input[0] = channel
+                    .of(
+                        'ORF_ID\tORF_type\ttranscript_id\tgene_id\tchrom\tstrand\tORF_length\tORF_tstart\tORF_tstop\tpval_combined',
+                        'boundary_100\tuORF\tt1\tg1\tchr1\t+\t303\t1\t303\t0.001',
+                        'boundary_101\tuORF\tt1\tg1\tchr1\t+\t306\t1\t306\t0.002'
+                    )
+                    .collectFile(name: 'boundary.ribocode.txt', newLine: true, sort: false)
+                    .map { orfs -> [[id: 'sample1'], orfs, 'ribocode'] }
+                input[1] = channel
+                    .of('chr1\ttest\texon\t1001\t2000\t.\t+\t.\tgene_id "g1"; transcript_id "t1";')
+                    .collectFile(name: 'boundary.gtf', newLine: true)
+                    .map { gtf -> [[id: 'reference'], gtf] }
+                """
+            }
+        }
+
+        then {
+            def lines = path(process.out.tsv[0][1]).text.readLines().findAll { !it.startsWith('#') }
+            def cols  = lines[0].split('\t') as List
+            def byId  = lines.drop(1).collect { it.split('\t') }.collectEntries { [(it[cols.indexOf('orf_id')]): it] }
+            def aa    = cols.indexOf('aa_length')
+            def cls   = cols.indexOf('orf_class')
+            def smorf = cols.indexOf('is_smorf')
+            def a     = byId['ribocode|boundary_100']
+            def b     = byId['ribocode|boundary_101']
+            assertAll(
+                { assert process.success },
+                { assert a[aa] == '100' && b[aa] == '101' },
+                // The length flag moves across the default 100 aa boundary...
+                { assert a[smorf] == '1' && b[smorf] == '0' },
+                // ...while the positional class is unaffected by length.
+                { assert a[cls] == 'uORF' && b[cls] == 'uORF' }
+            )
+        }
+    }
+
+    test("smorf-max-aa override widens is_smorf without touching orf_class") {
+
+        when {
+            params {
+                module_args = "--smorf-max-aa 150"
+            }
+
+            process {
+                """
+                input[0] = channel
+                    .of(
+                        'ORF_ID\tORF_type\ttranscript_id\tgene_id\tchrom\tstrand\tORF_length\tORF_tstart\tORF_tstop\tpval_combined',
+                        'boundary_100\tuORF\tt1\tg1\tchr1\t+\t303\t1\t303\t0.001',
+                        'boundary_101\tuORF\tt1\tg1\tchr1\t+\t306\t1\t306\t0.002'
+                    )
+                    .collectFile(name: 'boundary.ribocode.txt', newLine: true, sort: false)
+                    .map { orfs -> [[id: 'sample1'], orfs, 'ribocode'] }
+                input[1] = channel
+                    .of('chr1\ttest\texon\t1001\t2000\t.\t+\t.\tgene_id "g1"; transcript_id "t1";')
+                    .collectFile(name: 'boundary.gtf', newLine: true)
+                    .map { gtf -> [[id: 'reference'], gtf] }
+                """
+            }
+        }
+
+        then {
+            def lines = path(process.out.tsv[0][1]).text.readLines().findAll { !it.startsWith('#') }
+            def cols  = lines[0].split('\t') as List
+            def byId  = lines.drop(1).collect { it.split('\t') }.collectEntries { [(it[cols.indexOf('orf_id')]): it] }
+            def aa    = cols.indexOf('aa_length')
+            def cls   = cols.indexOf('orf_class')
+            def smorf = cols.indexOf('is_smorf')
+            def a     = byId['ribocode|boundary_100']
+            def b     = byId['ribocode|boundary_101']
+            def parser_columns_line = path(process.out.tsv[0][1]).text.readLines().find { it.startsWith('# parser_columns:') }
+            assertAll(
+                { assert process.success },
+                // At --smorf-max-aa 150 both ORFs are small; both classes stay uORF.
+                { assert a[smorf] == '1' && b[smorf] == '1' },
+                { assert a[cls] == 'uORF' && b[cls] == 'uORF' },
+                { assert parser_columns_line.contains('smorf_max_aa=150') }
+            )
+        }
+    }
+
+
+    test("an unmapped ORF type aborts rather than falling through to other") {
+
+        when {
+            process {
+                """
+                input[0] = channel
+                    .of(
+                        'ORF_ID\tORF_type\ttranscript_id\tgene_id\tchrom\tstrand\tORF_length\tORF_tstart\tORF_tstop\tpval_combined',
+                        'unknown_1\tTotallyNewLabel\tt1\tg1\tchr1\t+\t303\t1\t303\t0.001'
+                    )
+                    .collectFile(name: 'unknown.ribocode.txt', newLine: true, sort: false)
+                    .map { orfs -> [[id: 'sample1'], orfs, 'ribocode'] }
+                input[1] = channel
+                    .of('chr1\ttest\texon\t1001\t2000\t.\t+\t.\tgene_id "g1"; transcript_id "t1";')
+                    .collectFile(name: 'unknown.gtf', newLine: true)
+                    .map { gtf -> [[id: 'reference'], gtf] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains('TotallyNewLabel') }
+            )
+        }
+    }
+
+    test("ribotish composite ORF types map on the location, keeping the qualifier native") {
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                    [id: 'sample1'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/orf_predictions/sample1.ribotish.extended.pred.txt', checkIfExists: true),
+                    'ribotish'
+                ])
+                input[1] = channel.of([
+                    [id: 'reference'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/riboseq_expression/Homo_sapiens.GRCh38.111_chr20.gtf', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            def lines = path(process.out.tsv[0][1]).text.readLines()
+            def header = lines.find { it.startsWith('orf_id') }.split('\t') as List
+            def data = lines.findAll { !it.startsWith('#') && !it.startsWith('orf_id') }
+            def i_class = header.indexOf('orf_class')
+            def i_native = header.indexOf('orf_type_native')
+            def classes = data.collect { it.split('\t')[i_class] } as Set
+            def natives = data.collect { it.split('\t')[i_native] }
+            def qualified = natives.findAll { it.contains(':') }
+            def provenance = lines.find { it.startsWith('# parser_columns:') }
+            def class_carries_qualifier = classes.any { it.contains(':') }
+            def expected_qualified = [
+                "Novel:CDSFrameOverlap",
+                "5'UTR:Known",
+                "5'UTR:CDSFrameOverlap",
+                "3'UTR:CDSFrameOverlap",
+                "Truncated:Known",
+                "Novel:Known",
+                "Internal:CDSFrameOverlap",
+            ]
+
+            assertAll(
+                // The part before the colon selects the class; the qualifier survives
+                // in orf_type_native.
+                { assert process.success },
+                { assert classes == ['canonical_cds', 'uORF', 'dORF', 'intORF', 'novel_u'] as Set },
+                { assert !class_carries_qualifier },
+                { assert natives.containsAll(expected_qualified) },
+                { assert qualified.size() == expected_qualified.size() },
+                { assert provenance.contains('unmapped_orf_type=0') }
+            )
+        }
+    }
+
+}

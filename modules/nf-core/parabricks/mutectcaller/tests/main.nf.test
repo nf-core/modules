@@ -16,21 +16,22 @@ nextflow_process {
 
         when {
             params {
-                module_args = "--mutect-low-memory"
+                module_args = "--tumor-name tumour --mutect-low-memory"
             }
             process {
                 """
                 input[0] = [
-                    [ id:'test',  tumor_id:'tumour' ],
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
                     [], // index only needed if using intervals or tumor-normal calling
                     [],
                     [],
                     []
                 ]
-                input[1] = [ // fasta
+                input[1] = [ // fasta + fasta_fai
                     [ id: 'reference' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
                     ]
                 input[2] = [] // pon
                 input[3] = [] // pon index
@@ -59,12 +60,14 @@ nextflow_process {
 
     //     when {
     //         params {
-    //             module_args = "--in-normal-bam $normal_bam --normal-name $meta.normal_id --mutect-low-memory"
+    //             module_args = "--mutect-low-memory"
     //         }
     //         process {
     //             """
     //             input[0] = [
-    //                 [ id:'test',  tumor_id:'tumour', normal_id:'normal' ],
+    //                 [ id:'test' ],
+    //                 'tumour',
+    //                 'normal',
     //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
     //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true),
     //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists: true),
@@ -100,12 +103,14 @@ nextflow_process {
 
     //     when {
     //         params {
-    //             module_args = "--mutect-low-memory"
+    //             module_args = "--tumor-name tumour --mutect-low-memory"
     //         }
     //         process {
     //             """
     //             input[0] = [
-    //                 [ id:'test',  tumor_id:'tumor' ],
+    //                 [ id:'test' ],
+    //                 'tumor',
+    //                 null,
     //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
     //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true),
     //                 [],
@@ -143,12 +148,14 @@ nextflow_process {
 
     //     when {
     //         params {
-    //             module_args = "--in-normal-bam $normal_bam --normal-name $meta.normal_id --mutect-low-memory"
+    //             module_args = "--mutect-low-memory"
     //         }
     //         process {
     //             """
     //             input[0] = [
-    //                 [ id:'test',  tumor_id:'tumor', normal_id:'normal'],
+    //                 [ id:'test' ],
+    //                 'tumor',
+    //                 'normal',
     //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
     //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true),
     //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists: true),
@@ -191,7 +198,9 @@ nextflow_process {
     //         process {
     //             """
     //             input[0] = [
-    //                 [ id:'test',  tumor_id:'tumour' ],
+    //                 [ id:'test' ],
+    //                 'tumour',
+    //                 null,
     //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
     //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true),
     //                 [],
@@ -227,21 +236,22 @@ nextflow_process {
 
         when {
             params {
-                module_args = "--mutect-low-memory"
+                module_args = "--tumor-name tumour --mutect-low-memory"
             }
             process {
                 """
                 input[0] = [
-                    [ id:'test',  tumor_id:'tumour' ],
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
-                    [], // index only neeeded if using intervals or tumor-normal calling
+                    [], // index only needed if using intervals or tumor-normal calling
                     [],
                     [],
                     []
                 ]
-                input[1] = [ // fasta
+                input[1] = [ // fasta + fasta_fai
                     [ id: 'reference' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
                     ]
                 input[2] = [] // pon
                 input[3] = [] // pon index
@@ -272,16 +282,17 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test',  tumor_id:'tumour' ],
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true),
                     [],
                     [],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true)
                 ]
-                input[1] = [ // fasta
+                input[1] = [ // fasta + fasta_fai
                     [ id: 'reference' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
                     ]
                 input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz', checkIfExists: true)
                 input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz.tbi', checkIfExists: true)

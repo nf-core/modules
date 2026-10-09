@@ -15,7 +15,8 @@ tools:
       documentation: "https://github.com/gymreklab/GangSTR"
       tool_dev_url: "https://github.com/gymreklab/GangSTR"
       doi: "10.1093/nar/gkz501"
-      licence: ["GPL v3-or-later"]
+      licence:
+        - "GPL v3-or-later"
       identifier: ""
 input:
   - - meta:
@@ -65,7 +66,7 @@ output:
           description: The resulting VCF file containing the genotypes
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
   index:
     - - meta:
           type: map
@@ -88,14 +89,28 @@ output:
           description: A tab-delimited file containing statistics for each sample
           pattern: "*.tab"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
+  versions_gangstr:
+    - - ${task.process}:
+          type: string
+          description: Task process name
+      - gangstr:
+          type: string
+          description: Software name
+      - GangSTR --version 2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: Task process name
+      - gangstr:
+          type: string
+          description: Software name
+      - GangSTR --version 2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:

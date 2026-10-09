@@ -38,4 +38,28 @@ nextflow_process {
         }
     }
 
+    test("test-ncbigenomedownload - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test', single_end:false ] ]
+                input[1] = []
+                input[2] = []
+                input[3] = 'bacteria'
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
 }

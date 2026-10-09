@@ -1,19 +1,18 @@
 name: prodigal
-description: Prodigal (Prokaryotic Dynamic Programming Genefinding Algorithm) is a
-  microbial (bacterial and archaeal) gene finding program
+description: Prodigal (Prokaryotic Dynamic Programming Genefinding Algorithm) is a microbial (bacterial and archaeal) gene finding program
 keywords:
   - prokaryotes
   - gene finding
   - microbial
 tools:
   - prodigal:
-      description: Prodigal (Prokaryotic Dynamic Programming Genefinding Algorithm)
-        is a microbial (bacterial and archaeal) gene finding program
+      description: Prodigal (Prokaryotic Dynamic Programming Genefinding Algorithm) is a microbial (bacterial and archaeal) gene finding program
       homepage: https://github.com/hyattpd/Prodigal
       documentation: https://github.com/hyattpd/prodigal/wiki
       tool_dev_url: https://github.com/hyattpd/Prodigal
       doi: "10.1186/1471-2105-11-119"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:prodigal
 input:
   - - meta:
@@ -73,14 +72,52 @@ output:
           description: complete starts file
           pattern: "*.{_all.txt}"
           ontologies: []
+  versions_prodigal:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - prodigal:
+          type: string
+          description: The name of the tool
+      - prodigal -v 2>&1 | sed -n "s/Prodigal V\(.*\):.*/\1/p":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - prodigal:
+          type: string
+          description: The name of the tool
+      - prodigal -v 2>&1 | sed -n "s/Prodigal V\(.*\):.*/\1/p":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@grst"
 maintainers:
   - "@grst"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/prodigal_pigz:27b5cdb2d516f347
+      build_id: bd-27b5cdb2d516f347_1
+      scan_id: sc-0f8e4b331138fcc6_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/prodigal_pigz:8f955ee5391535ca
+      build_id: bd-8f955ee5391535ca_1
+      scan_id: sc-3ba39ec5347b1408_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/prodigal_pigz:0f538b4630f0a3a8
+      build_id: bd-0f538b4630f0a3a8_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/50/50ed887c619464b235c905712471593120bc6821d6dc5949b5dae4bf688374fa/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/prodigal_pigz:91d31a94f3a16dca
+      build_id: bd-91d31a94f3a16dca_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/10/1002f40f4e92c0ba2997f63be327489c8593ba96e6d470679d5857c467bd180d/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/prodigal/.conda-lock/linux_amd64-bd-27b5cdb2d516f347_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/prodigal/.conda-lock/linux_arm64-bd-8f955ee5391535ca_1.txt

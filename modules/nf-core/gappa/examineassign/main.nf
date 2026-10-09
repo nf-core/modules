@@ -4,20 +4,19 @@ process GAPPA_EXAMINEASSIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gappa:0.8.0--h9a82719_0':
-        'quay.io/biocontainers/gappa:0.8.0--h9a82719_0' }"
+        'https://depot.galaxyproject.org/singularity/gappa:0.9.0--h077b44d_0':
+        'quay.io/biocontainers/gappa:0.9.0--h077b44d_0' }"
 
     input:
     tuple val(meta), path(jplace), path(taxonomy)
 
     output:
-    tuple val(meta), path("./.")                  , emit: examineassign
     tuple val(meta), path("*profile.tsv")         , emit: profile
     tuple val(meta), path("*labelled_tree.newick"), emit: labelled_tree
     tuple val(meta), path("*per_query.tsv")       , emit: per_query, optional: true
     tuple val(meta), path("*krona.profile")       , emit: krona    , optional: true
     tuple val(meta), path("*sativa.tsv")          , emit: sativa   , optional: true
-    path "versions.yml"                           , emit: versions
+    tuple val("${task.process}"), val('gappa'), eval("gappa --version 2>&1 | sed 's/v//'"), emit: versions_gappa, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,19 +24,20 @@ process GAPPA_EXAMINEASSIGN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    // gappa reads a gzipped jplace natively, but a gzipped taxon file is read as text and
+    // fails with "A line in the taxon file didn't have two tab separated columns".
+    def taxonfile = taxonomy.name.endsWith('.gz') ? taxonomy.baseName : "${taxonomy}"
+    def gunzip    = taxonomy.name.endsWith('.gz') ? "gzip -cd ${taxonomy} > ${taxonfile}" : ""
     """
+    $gunzip
+
     gappa \\
         examine assign \\
-        $args \\
-        --threads $task.cpus \\
-        --jplace-path $jplace \\
-        --taxon-file $taxonomy \\
+        ${args} \\
+        --threads ${task.cpus} \\
+        --jplace-path ${jplace} \\
+        --taxon-file ${taxonfile} \\
         --file-prefix ${prefix}.
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gappa: \$(echo \$(gappa --version 2>&1 | sed 's/v//' ))
-    END_VERSIONS
     """
 
     stub:
@@ -45,10 +45,5 @@ process GAPPA_EXAMINEASSIGN {
     """
     touch ${prefix}.profile.tsv
     touch ${prefix}.labelled_tree.newick
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gappa: \$(echo \$(gappa --version 2>&1 | sed 's/v//' ))
-    END_VERSIONS
     """
 }

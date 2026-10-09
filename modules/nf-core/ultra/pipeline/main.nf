@@ -14,7 +14,7 @@ process ULTRA_PIPELINE {
 
     output:
     tuple val(meta), path("*.sam"), emit: sam
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('ultra'), eval("uLTRA --version | sed 's/uLTRA //'"), emit: versions_ultra, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,22 +32,12 @@ process ULTRA_PIPELINE {
         $gtf \\
         $reads \\
         ./
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ultra: \$( uLTRA --version|sed 's/uLTRA //g' )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.sam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ultra: \$( uLTRA --version|sed 's/uLTRA //g' )
-    END_VERSIONS
     """
 
 

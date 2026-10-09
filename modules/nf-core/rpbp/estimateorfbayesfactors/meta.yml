@@ -1,0 +1,87 @@
+name: "rpbp_estimateorfbayesfactors"
+description: |
+  Score every candidate ORF for evidence of active translation. For
+  each ORF, Rp-Bp fits two competing Bayesian models to its per-codon
+  P-site count vector: a "translated" model that expects P-site density
+  to concentrate at codon-start positions (the in-frame signal a
+  translating ribosome produces), and an "untranslated" / noise model
+  for the same data. The Bayes factor (ratio of marginal likelihoods)
+  quantifies how much the data favour the translated hypothesis.
+
+  Emits a BED-style table with one row per ORF carrying genomic
+  coordinates plus the mean and variance of the log Bayes factor across
+  MCMC samples. Downstream, `rpbp/selectfinalpredictionset` applies
+  Bayes-factor, length and overlap rules to this table to produce the
+  final filtered prediction set.
+
+  Uses the Stan models bundled inside the rpbp Python package.
+keywords:
+  - rpbp
+  - orf
+  - bayes
+  - translation
+  - riboseq
+tools:
+  - "rpbp":
+      description: "Rp-Bp - Bayesian inference of ribosome profiling data for identifying translated open reading frames"
+      homepage: "https://github.com/dieterich-lab/rp-bp"
+      documentation: "https://rp-bp.readthedocs.io"
+      tool_dev_url: "https://github.com/dieterich-lab/rp-bp"
+      doi: "10.1093/nar/gkw1350"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information, e.g. `[ id:'sample1' ]`.
+    - profiles:
+        type: file
+        description: Per-ORF P-site profile matrix from `rpbp/extractorfprofiles`.
+        pattern: "*.profiles.mtx.gz"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map identifying the reference (e.g. `[ id:'reference' ]`).
+    - orfs_genomic_bed:
+        type: file
+        description: Per-ORF genomic BED from `rpbp/preparegenome`.
+        pattern: "*.orfs-genomic.annotated.bed.gz"
+        ontologies: []
+output:
+  bayes_factors:
+    - - meta:
+          type: map
+          description: Groovy Map inherited from input meta.
+      - "${prefix}.bed.gz":
+          type: file
+          description: Per-ORF translation Bayes factors (BED).
+          pattern: "*.bed.gz"
+          ontologies: []
+  versions_rpbp:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rpbp:
+          type: string
+          description: The name of the tool
+      - python -c "import rpbp; print(rpbp.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rpbp:
+          type: string
+          description: The name of the tool
+      - python -c "import rpbp; print(rpbp.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"

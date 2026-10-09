@@ -40,7 +40,7 @@ process LONGSTITCH {
     tuple val(meta), path("*k*.w*.z*.trimmed_scafs.tsv"),                                   emit: trimmed_scaffolds_tsv,                optional: true
     tuple val(meta), path("*k*.w*.z*.verbose_mapping.tsv"),                                 emit: verbose_mapping_tsv,                  optional: true
     tuple val(meta), path("*.k*.w???.tsv"),                                                 emit: tsv,                                  optional: true
-    path "versions.yml",                                                                    emit: versions
+    tuple val("${task.process}"), val("longstitch"), eval("longstitch | sed -n 's/LongStitch v//p'"), emit: versions_longstitch, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -85,7 +85,7 @@ process LONGSTITCH {
         ${arg_longmap} \\
         ${arg_span} \\
         ${arg_genomesize} \\
-        t=$task.cpus \\
+        t=${task.cpus} \\
         out_prefix=${prefix} \\
         ${args}
 
@@ -110,44 +110,24 @@ process LONGSTITCH {
     for file in assembly.fa.*; do
         mv \$file \${file/assembly.fa./${prefix}.}
     done
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        longstitch: \$(echo \$(longstitch | head -n1 | sed 's/LongStitch v//'))
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.tigmint-ntLink.fa
-    touch ${prefix}.tigmint-ntLink-arks.fa
-    touch ${prefix}.ntLink-arks.fa
+    touch ${prefix}.{tigmint-ntLink,tigmint-ntLink-arks,ntLink-arks}.fa
     touch ${prefix}.k21.w100.z1000.n_stub.scaffold.dot
     touch ${prefix}.k21.w100.z1000.ntLink.scaffolds_stub.dist.gv
     touch ${prefix}.k21.w100.z1000.ntLink.scaffolds_stub_l1.assembly_correspondence.tsv
-    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds_stub_l1.gv
-    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds_stub_l1.log
-    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds_stub_l1.scaffolds
-    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds_stub_l1.scaffolds.fa
-    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds_stub_l1.tigpair_checkpoint.tsv
+    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds_stub_l1.{gv,log}
+    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds_stub_l1.scaffolds{,.fa}
     touch ${prefix}.k21.w100.z1000.ntLink.scaffolds_stub_main.tsv
     touch ${prefix}.k21.w100.z1000.ntLink.scaffolds_stub_original.gv
-    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds_stub.tigpair_checkpoint.tsv
-    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds.fa
-    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds.renamed.fa
-    touch ${prefix}.k21.w100.z1000.stitch.abyss-scaffold.fa
-    touch ${prefix}.k21.w100.z1000.stitch.path
-    touch ${prefix}.k21.w100.z1000.trimmed_scafs.agp
-    touch ${prefix}.k21.w100.z1000.trimmed_scafs.fa
-    touch ${prefix}.k21.w100.z1000.trimmed_scafs.path
-    touch ${prefix}.k21.w100.z1000.trimmed_scafs.tsv
+    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds_stub{,_l1}.tigpair_checkpoint.tsv
+    touch ${prefix}.k21.w100.z1000.ntLink.scaffolds{,.renamed}.fa
+    touch ${prefix}.k21.w100.z1000.stitch.{abyss-scaffold.fa,path}
+    touch ${prefix}.k21.w100.z1000.trimmed_scafs.{agp,fa,path,tsv}
     touch ${prefix}.k21.w100.z1000.verbose_mapping.tsv
     touch ${prefix}.k21.w100.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        longstitch: \$(echo \$(longstitch | head -n1 | sed 's/LongStitch v//'))
-    END_VERSIONS
     """
 }

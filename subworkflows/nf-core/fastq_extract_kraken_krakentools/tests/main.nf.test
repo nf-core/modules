@@ -2,6 +2,7 @@ nextflow_workflow {
 
     name "Test Subworkflow FASTQ_EXTRACT_KRAKEN_KRAKENTOOLS"
     script "../main.nf"
+    config "./nextflow.config"
     workflow "FASTQ_EXTRACT_KRAKEN_KRAKENTOOLS"
 
     tag "subworkflows"
@@ -32,10 +33,13 @@ nextflow_workflow {
 
     test("sarscov2 illumina single end [fastq]") {
         when {
+            params{
+                extract_kraken_reads_args = ""
+            }
             workflow {
                 """
                 input[0] = [
-                    [ id:'test', single_end:true ], // meta map
+                    [ id:'test', single_end:true ],
                     [ file(
                         params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz',
                         checkIfExists: true
@@ -49,24 +53,21 @@ nextflow_workflow {
 
         then {
             assertAll(
-            { assert workflow.success },
-            { assert snapshot ( workflow.out ).match() }
+                { assert workflow.success },
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
             )
         }
     }
 
     test("sarscov2 illumina paired end with fastq output [fastq]") {
-        config "./fastq.nextflow.config"
         when {
-
-            params {
-                outdir   = "$outputDir"
+            params{
+                extract_kraken_reads_args = "--fastq-output"
             }
-
             workflow {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test', single_end:false ],
                     [
                         file(
                             params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz',
@@ -87,23 +88,21 @@ nextflow_workflow {
 
         then {
             assertAll(
-            { assert workflow.success },
-            { assert snapshot ( workflow.out ).match() }
+                { assert workflow.success },
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
             )
         }
     }
 
     test("sarscov2 illumina paired end with parents [fastq]") {
-        config "./includeparents.nextflow.config"
         when {
-            params {
-                outdir   = "$outputDir"
+            params{
+                extract_kraken_reads_args = "--include-parents"
             }
-
             workflow {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test', single_end:false ],
                     [
                         file(
                             params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz',
@@ -124,8 +123,8 @@ nextflow_workflow {
 
         then {
             assertAll(
-            { assert workflow.success },
-            { assert snapshot ( workflow.out ).match() }
+                { assert workflow.success },
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
             )
         }
     }

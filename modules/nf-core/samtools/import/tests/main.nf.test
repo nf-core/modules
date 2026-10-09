@@ -23,10 +23,12 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(
-                process.out.bam.collect { meta, bam_file -> [meta, bam(bam_file).getReadsMD5()] },
-                process.out.findAll { key, val -> key.startsWith("versions") }
-            ).match()
+            assertAll(
+                { assert snapshot(
+                    process.out.bam.collect{meta, bam_ ->  file(bam_).name + ':readsMD5,' + bam(bam_).getReadsMD5()},
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
         }
     }
 
@@ -37,8 +39,10 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
                 ]
                 """
             }
@@ -46,10 +50,12 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(
-                process.out.bam.collect { meta, bam_file -> [meta, bam(bam_file).getReadsMD5()] },
-                process.out.findAll { key, val -> key.startsWith("versions") }
-            ).match()
+            assertAll(
+                { assert snapshot(
+                    process.out.bam.collect{meta, bam_ ->  file(bam_).name + ':readsMD5,' + bam(bam_).getReadsMD5()},
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
         }
     }
 
@@ -68,14 +74,17 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(
-                process.out.bam.collect { meta, bam_file -> [meta, bam(bam_file).getReadsMD5()] },
-                process.out.findAll { key, val -> key.startsWith("versions") }
-            ).match()
+            assertAll(
+                { assert snapshot(
+                    process.out.bam.collect{meta, bam_ ->  file(bam_).name + ':readsMD5,' + bam(bam_).getReadsMD5()},
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
         }
     }
 
-    test("samtools_import -- stub") {
+    test("samtools_import - stub") {
+
         options "-stub"
 
         when {
@@ -91,7 +100,9 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(sanitizeOutput(process.out)).match()
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
         }
     }
 }

@@ -3,6 +3,8 @@ nextflow_process {
     name "Test Process FUSIONINSPECTOR"
     script "../main.nf"
     process "FUSIONINSPECTOR"
+    config './nextflow.config'
+
     tag "modules"
     tag "modules_local"
     tag "fusioninspector"
@@ -10,8 +12,6 @@ nextflow_process {
     tag "modules_nfcore"
 
     test("FUSIONINSPECTOR - test") {
-        config './nextflow.config'
-
         setup {
             run("STARFUSION_BUILD") {
                 script "../../starfusion/build/main.nf"
@@ -43,14 +43,17 @@ nextflow_process {
         }
 
         when {
+            params {
+                module_args = "--annotate --examine_coding_effect"
+            }
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test', single_end:false ],
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_1.fastq.gz'),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_2.fastq.gz')
-                    ], // reads
+                    ],
                     [
                         file("https://github.com/FusionInspector/FusionInspector/raw/master/test/fusion_targets.A.txt")
                     ]
@@ -70,7 +73,7 @@ nextflow_process {
                     process.out.out_gtf,
                     file(process.out.abridged_tsv[0][1]).name,
                     file(process.out.log[0][1]).name,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -80,10 +83,13 @@ nextflow_process {
     test("FUSIONINSPECTOR - test - stub") {
         options "-stub"
         when {
+            params {
+                module_args = ""
+            }
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test', single_end:false ],
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_1.fastq.gz'),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_2.fastq.gz')
@@ -100,9 +106,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out
-                    ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

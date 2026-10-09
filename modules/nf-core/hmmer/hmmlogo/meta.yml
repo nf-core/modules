@@ -1,0 +1,75 @@
+name: "hmmer_hmmlogo"
+description: extract logo data from a profile HMM file to produce an HMM logo
+keywords:
+  - hidden markov model
+  - HMM
+  - hmmer
+  - logo
+  - profile
+  - sequence logo
+tools:
+  - "hmmer":
+      description: "Biosequence analysis using profile hidden Markov models"
+      homepage: "http://hmmer.org"
+      documentation: "http://hmmer.org/documentation.html"
+      tool_dev_url: "https://github.com/EddyRivasLab/hmmer"
+      doi: "10.1371/journal.pcbi.1002195"
+      licence:
+        - "BSD"
+      identifier: "biotools:hmmer"
+      args_id: "$args"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - hmm:
+        type: file
+        description: |
+          Profile HMM file containing one or more profile HMMs
+        pattern: "*.hmm"
+        ontologies:
+          - edam: http://edamontology.org/data_1364 # HMM
+output:
+  logo:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.hmmlogo.txt:
+          type: file
+          description: |
+            Plain text report containing the information content needed to
+            produce an HMM logo for the profile HMM. Each column in the logo
+            represents a match state and lists the relative height of each
+            amino acid or nucleotide letter.
+          pattern: "*.hmmlogo.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_3671 # Plain text
+  versions_hmmer:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hmmer:
+          type: string
+          description: The name of the tool
+      - hmmlogo -h | sed '2!d;s/^# HMMER *//;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hmmer:
+          type: string
+          description: The name of the tool
+      - hmmlogo -h | sed '2!d;s/^# HMMER *//;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"

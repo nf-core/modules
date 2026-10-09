@@ -9,14 +9,14 @@ process MUDSKIPPER_BULK {
 
     input:
     tuple val(meta), path(bam)
-    path index
+    tuple val(meta2), path(index)
     path gtf
     val rad
 
     output:
-    tuple val(meta), path("${prefix}.bam"), optional:true, emit: bam
-    tuple val(meta), path("${prefix}.rad"), optional:true, emit: rad
-    path "versions.yml"                                  , emit: versions
+    tuple val(meta), path("${prefix}.bam"), emit: bam, optional:true
+    tuple val(meta), path("${prefix}.rad"), emit: rad, optional:true
+    tuple val("${task.process}"), val('mudskipper'), eval("mudskipper -V 2>&1 | sed 's/.*mudskipper //'"), emit: versions_mudskipper, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,22 +39,12 @@ process MUDSKIPPER_BULK {
         --alignment ${bam} \\
         --out ${prefix}.${suffix} \\
         --threads ${task.cpus} \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mudskipper: \$(echo \$(mudskipper -V 2>&1) | sed 's/^.*mudskipper //' )
-    END_VERSIONS
+        ${args}
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}.transcriptome"
     """
     touch ${prefix}.bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mudskipper: \$(echo \$(mudskipper -V 2>&1) | sed 's/^.*mudskipper //' )
-    END_VERSIONS
     """
 }

@@ -14,7 +14,7 @@ process MAGECK_MLE {
     output:
     tuple val(meta), path("*.gene_summary.txt") , emit: gene_summary
     tuple val(meta), path("*.sgrna_summary.txt"), emit: sgrna_summary
-    path "versions.yml"                         , emit: versions
+    tuple val("${task.process}"), val("mageck"), eval("mageck -v"), emit: versions_mageck, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,16 +26,11 @@ process MAGECK_MLE {
     """
     mageck \\
         mle \\
-        $args \\
-        --threads $task.cpus \\
-        -k $count_table \\
-        -d $design_matrix \\
-        -n $prefix
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mageck: \$(mageck -v)
-    END_VERSIONS
+        ${args} \\
+        --threads ${task.cpus} \\
+        -k ${count_table} \\
+        -d ${design_matrix} \\
+        -n ${prefix}
     """
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
@@ -43,11 +38,6 @@ process MAGECK_MLE {
     """
     touch ${prefix}.gene_summary.txt
     touch ${prefix}.sgrna_summary.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mageck: \$(mageck -v)
-    END_VERSIONS
     """
 
 

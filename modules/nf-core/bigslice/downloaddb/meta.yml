@@ -1,0 +1,83 @@
+name: "bigslice_downloaddb"
+description: |
+  Downloads and extracts the BiG-SLiCE HMM database (biosynthetic and sub Pfams)
+  using the bundled `download_bigslice_hmmdb` script shipped with BiG-SLiCE.
+  The resulting directory can be passed directly as the `hmmdb` input to the
+  `BIGSLICE` module.
+keywords:
+  - biosynthetic gene clusters
+  - genomics
+  - database
+  - download
+tools:
+  - "bigslice":
+      description: A highly scalable, user-interactive tool for the large scale
+        analysis of Biosynthetic Gene Clusters data
+      homepage: "https://github.com/medema-group/bigslice"
+      documentation: "https://github.com/medema-group/bigslice"
+      tool_dev_url: "https://github.com/medema-group/bigslice"
+      doi: "10.1093/gigascience/giaa154"
+      licence:
+        - "AGPL v3-or-later"
+      identifier: ""
+input:
+  - meta:
+      type: map
+      description: Groovy Map containing sample information e.g. `[ id:'test' ]`
+output:
+  db:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. `[ id:'test' ]`
+      - bigslice-models:
+          type: directory
+          description: Downloaded and extracted BiG-SLiCE HMM database directory
+            containing biosynthetic Pfam HMMs and sub-Pfam profiles. Pass this
+            directly as `hmmdb` to the `BIGSLICE` module.
+          pattern: "bigslice-models"
+  versions_bigslice:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bigslice:
+          type: string
+          description: The name of the tool
+      - 2.0.2:
+          type: string
+          description: The version of the tool
+  versions_python:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python --version | sed 's/Python //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bigslice:
+          type: string
+          description: The name of the tool
+      - 2.0.2:
+          type: string
+          description: The version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python --version | sed 's/Python //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@vagkaratzas"
+  - "@SkyLex"
+maintainers:
+  - "@vagkaratzas"
+  - "@SkyLex"

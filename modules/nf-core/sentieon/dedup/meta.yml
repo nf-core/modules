@@ -1,7 +1,7 @@
 name: sentieon_dedup
-description: Runs the sentieon tool LocusCollector followed by Dedup. LocusCollector
-  collects read information that is used by Dedup which in turn marks or removes duplicate
-  reads.
+description: Runs the sentieon tool LocusCollector followed by Dedup.
+  LocusCollector collects read information that is used by Dedup which, in turn,
+  marks or removes duplicate reads.
 keywords:
   - mem
   - dedup
@@ -106,8 +106,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.score":
           type: file
-          description: The score file indicates which reads LocusCollector finds are
-            likely duplicates.
+          description: The score file indicates which reads LocusCollector finds
+            are likely duplicates.
           pattern: "*.score"
           ontologies: []
   metrics:
@@ -129,10 +129,11 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.metrics.multiqc.tsv":
           type: file
-          description: Output tsv-file containing Dedup metrics excl. histogram data.
+          description: Output tsv-file containing Dedup metrics excl. histogram
+            data.
           pattern: "*.metrics.multiqc.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   versions_sentieon:
     - - ${task.process}:
           type: string
@@ -141,9 +142,8 @@ output:
           type: string
           description: The tool name
       - 'sentieon driver --version | sed "s/.*-//g"':
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -153,7 +153,7 @@ topics:
           type: string
           description: The tool name
       - 'sentieon driver --version | sed "s/.*-//g"':
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 authors:
   - "@asp8200"

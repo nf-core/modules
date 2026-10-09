@@ -8,12 +8,13 @@ keywords:
   - reference
 tools:
   - yara:
-      description: Yara is an exact tool for aligning DNA sequencing reads to reference
-        genomes.
+      description: Yara is an exact tool for aligning DNA sequencing reads to
+        reference genomes.
       homepage: https://github.com/seqan/seqan
       documentation: https://github.com/seqan/seqan
       tool_dev_url: https://github.com/seqan/seqan
-      licence: ["https://raw.githubusercontent.com/seqan/seqan/develop/apps/yara/LICENSE"]
+      licence:
+        - "https://raw.githubusercontent.com/seqan/seqan/develop/apps/yara/LICENSE"
       identifier: biotools:yara
 input:
   - - meta:
@@ -37,13 +38,27 @@ output:
           description: YARA genome index files
           pattern: "yara.*"
           ontologies: []
+  versions_yara:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - yara:
+          type: string
+          description: The name of the tool
+      - "yara_indexer --version 2>&1 | grep 'yara_indexer version' | sed 's/^.*yara_indexer version: //; s/ .*\\$//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - yara:
+          type: string
+          description: The name of the tool
+      - "yara_indexer --version 2>&1 | grep 'yara_indexer version' | sed 's/^.*yara_indexer version: //; s/ .*\\$//'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@apeltzer"
 maintainers:

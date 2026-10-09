@@ -14,7 +14,7 @@ process MULTISEQDEMUX {
     tuple val(meta), path("*_params_multiseqdemux.csv"), emit: params
     tuple val(meta), path("*_res_multiseqdemux.csv")   , emit: results
     tuple val(meta), path("*_multiseqdemux.rds")       , emit: rds
-    path "versions.yml"                                , emit: versions
+    path "versions.yml"                                , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,8 +31,8 @@ process MULTISEQDEMUX {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        r-seurat: \$(Rscript -e "library(Seurat); cat(as.character(packageVersion('Seurat')))")
         r-base: \$(Rscript -e "cat(strsplit(R.version[['version.string']], ' ')[[1]][3])")
+        r-seurat: \$(Rscript -e "library(Seurat); cat(as.character(packageVersion('Seurat')))")
     END_VERSIONS
     """
 }

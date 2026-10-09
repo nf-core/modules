@@ -12,7 +12,7 @@ process ISMAPPER {
 
     output:
     tuple val(meta), path("results/*"), emit: results
-    path "versions.yml"               , emit: versions
+    tuple val("${task.process}"), val('ismapper'), eval("ismap --version 2>&1 | sed -n 's/^.*ismap //p'"), emit: versions_ismapper, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,11 +27,6 @@ process ISMAPPER {
         --queries ${query} \\
         --reference ${reference} \\
         --reads ${reads}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ismapper: \$( echo \$( ismap --version 2>&1 ) | sed 's/^.*ismap //' )
-    END_VERSIONS
     """
 
     stub:
@@ -40,10 +35,5 @@ process ISMAPPER {
     mkdir -p results/${prefix}
 
     touch results/${prefix}/${prefix}_left_final.fastq
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ismapper: \$( echo \$( ismap --version 2>&1 ) | sed 's/^.*ismap //' )
-    END_VERSIONS
     """
 }
