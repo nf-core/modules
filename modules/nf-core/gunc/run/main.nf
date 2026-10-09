@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GUNC_RUN {
     tag "${meta.id}"
     label 'process_medium'
@@ -12,8 +15,8 @@ process GUNC_RUN {
     path db
 
     output:
-    tuple val(meta), path("*maxCSS_level.tsv")                , emit: maxcss_level_tsv
-    tuple val(meta), path("*all_levels.tsv")  , optional: true, emit: all_levels_tsv
+    tuple val(meta), path("*maxCSS_level.tsv"), emit: maxcss_level_tsv
+    tuple val(meta), path("*all_levels.tsv"), optional: true, emit: all_levels_tsv
     tuple val("${task.process}"), val('gunc'), eval('gunc --version'), emit: versions_gunc, topic: versions
 
     when:

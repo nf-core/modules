@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GENOMETESTER4_GLISTMAKER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/36/36ce7645eda890c172cecfa37b129d3600e0a23f64bbf05465df4423212ac958/data':
-        'community.wave.seqera.io/library/genometester4:4.0--061bc5822e0dd41d' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/36/36ce7645eda890c172cecfa37b129d3600e0a23f64bbf05465df4423212ac958/data'
+        : 'community.wave.seqera.io/library/genometester4:4.0--061bc5822e0dd41d'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -23,9 +26,9 @@ process GENOMETESTER4_GLISTMAKER {
 
     """
     glistmaker \\
-        $fasta \\
-        $args \\
-        --num_threads $task.cpus \\
+        ${fasta} \\
+        ${args} \\
+        --num_threads ${task.cpus} \\
         -o ${prefix}
     mv ${prefix}_*.list ${prefix}.list
     """

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TOBIAS_SCOREBIGWIG {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/tobias:0.17.5--py310h3479294_0':
-        'quay.io/biocontainers/tobias:0.17.5--py310h3479294_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/tobias:0.17.5--py310h3479294_0'
+        : 'quay.io/biocontainers/tobias:0.17.5--py310h3479294_0'}"
 
     input:
     tuple val(meta), path(signal), path(regions)
@@ -25,11 +28,11 @@ process TOBIAS_SCOREBIGWIG {
     export MPLCONFIGDIR="\${PWD}/.matplotlib"
 
     TOBIAS ScoreBigwig \\
-        --signal $signal \\
-        --regions $regions \\
+        --signal ${signal} \\
+        --regions ${regions} \\
         --output ${prefix}_footprints.bw \\
         --cores ${task.cpus} \\
-        $args
+        ${args}
     """
 
     stub:

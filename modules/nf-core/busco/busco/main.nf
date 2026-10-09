@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BUSCO_BUSCO {
     tag "${meta.id}"
     label 'process_medium'
@@ -6,8 +9,6 @@ process BUSCO_BUSCO {
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/96/963bad66c10646cf0adb1967cc462ad04d02789ddbfae4fbb94182291dbddf8c/data'
         : 'community.wave.seqera.io/library/busco:6.1.0--6d1f7006d91892b3'}"
-    // Note: one test had to be disabled when switching to Busco 6.0.0, cf https://github.com/nf-core/modules/pull/8781/files
-    // Try to restore it when upgrading Busco to a later version
 
     input:
     tuple val(meta), path(fasta, stageAs: 'tmp_input/*')

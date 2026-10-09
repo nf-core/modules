@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process STRELKA_GERMLINE {
     tag "${meta.id}"
     label 'process_medium'
@@ -14,10 +17,10 @@ process STRELKA_GERMLINE {
     path fai
 
     output:
-    tuple val(meta), path("*variants.vcf.gz"),     emit: vcf
+    tuple val(meta), path("*variants.vcf.gz"), emit: vcf
     tuple val(meta), path("*variants.vcf.gz.tbi"), emit: vcf_tbi
-    tuple val(meta), path("*genome.vcf.gz"),       emit: genome_vcf
-    tuple val(meta), path("*genome.vcf.gz.tbi"),   emit: genome_vcf_tbi
+    tuple val(meta), path("*genome.vcf.gz"), emit: genome_vcf
+    tuple val(meta), path("*genome.vcf.gz.tbi"), emit: genome_vcf_tbi
     tuple val("${task.process}"), val('strelka'), eval("configureStrelkaGermlineWorkflow.py --version"), emit: versions_strelka, topic: versions
 
     when:

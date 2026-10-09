@@ -1,33 +1,36 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MERQURY_MERQURY {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/merqury:1.3--hdfd78af_4':
-        'quay.io/biocontainers/merqury:1.3--hdfd78af_4' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/merqury:1.3--hdfd78af_4'
+        : 'quay.io/biocontainers/merqury:1.3--hdfd78af_4'}"
 
     input:
     tuple val(meta), path(meryl_db), path(assembly)
 
     output:
-    tuple val(meta), path("*_only.bed")          , emit: assembly_only_kmers_bed
-    tuple val(meta), path("*_only.wig")          , emit: assembly_only_kmers_wig
+    tuple val(meta), path("*_only.bed"), emit: assembly_only_kmers_bed
+    tuple val(meta), path("*_only.wig"), emit: assembly_only_kmers_wig
     tuple val(meta), path("*.completeness.stats"), emit: stats
-    tuple val(meta), path("*.dist_only.hist")    , emit: dist_hist
-    tuple val(meta), path("*.spectra-cn.fl.png") , emit: spectra_cn_fl_png, optional: true
-    tuple val(meta), path("*.spectra-cn.hist")   , emit: spectra_cn_hist
-    tuple val(meta), path("*.spectra-cn.ln.png") , emit: spectra_cn_ln_png
-    tuple val(meta), path("*.spectra-cn.st.png") , emit: spectra_cn_st_png, optional: true
+    tuple val(meta), path("*.dist_only.hist"), emit: dist_hist
+    tuple val(meta), path("*.spectra-cn.fl.png"), emit: spectra_cn_fl_png, optional: true
+    tuple val(meta), path("*.spectra-cn.hist"), emit: spectra_cn_hist
+    tuple val(meta), path("*.spectra-cn.ln.png"), emit: spectra_cn_ln_png
+    tuple val(meta), path("*.spectra-cn.st.png"), emit: spectra_cn_st_png, optional: true
     tuple val(meta), path("*.spectra-asm.fl.png"), emit: spectra_asm_fl_png, optional: true
-    tuple val(meta), path("*.spectra-asm.hist")  , emit: spectra_asm_hist
+    tuple val(meta), path("*.spectra-asm.hist"), emit: spectra_asm_hist
     tuple val(meta), path("*.spectra-asm.ln.png"), emit: spectra_asm_ln_png
     tuple val(meta), path("*.spectra-asm.st.png"), emit: spectra_asm_st_png, optional: true
-    tuple val(meta), path("${prefix}.qv")        , emit: assembly_qv
-    tuple val(meta), path("${prefix}.*.qv")      , emit: scaffold_qv
-    tuple val(meta), path("*.hist.ploidy")       , emit: read_ploidy
-    tuple val(meta), path("*.hapmers.blob.png")  , emit: hapmers_blob_png, optional: true
+    tuple val(meta), path("${prefix}.qv"), emit: assembly_qv
+    tuple val(meta), path("${prefix}.*.qv"), emit: scaffold_qv
+    tuple val(meta), path("*.hist.ploidy"), emit: read_ploidy
+    tuple val(meta), path("*.hapmers.blob.png"), emit: hapmers_blob_png, optional: true
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('merqury'), val('1.3'), emit: versions_merqury, topic: versions
 
@@ -46,12 +49,12 @@ process MERQURY_MERQURY {
         set -u
     fi
     # limit meryl to use the assigned number of cores.
-    export OMP_NUM_THREADS=$task.cpus
+    export OMP_NUM_THREADS=${task.cpus}
 
     merqury.sh \\
-        $meryl_db \\
-        $assembly \\
-        $prefix
+        ${meryl_db} \\
+        ${assembly} \\
+        ${prefix}
     """
 
     stub:

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CIRCEXPLORER2_PARSE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/circexplorer2:2.3.8--pyh864c0ab_1':
-        'quay.io/biocontainers/circexplorer2:2.3.8--pyh864c0ab_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/circexplorer2:2.3.8--pyh864c0ab_1'
+        : 'quay.io/biocontainers/circexplorer2:2.3.8--pyh864c0ab_1'}"
 
     input:
     tuple val(meta), path(fusions)
@@ -21,14 +24,16 @@ process CIRCEXPLORER2_PARSE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def aligner = "${fusions}".endsWith(".junction") ? "-t STAR" : "${fusions}".endsWith(".txt") ? "-t MapSplice" : "${fusions}".endsWith(".bam") ? "-t BWA" : "-t segemehl"
-    if ("${fusions}" == "${prefix}.bed") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${fusions}" == "${prefix}.bed") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
+    }
     """
     CIRCexplorer2 \\
         parse \\
-        $aligner \\
-        $fusions \\
+        ${aligner} \\
+        ${fusions} \\
         -b ${prefix}.bed \\
-        $args
+        ${args}
     """
 
     stub:

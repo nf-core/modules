@@ -1,27 +1,30 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process NEXTCLADE_RUN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7a/7acbe1c9567cd9e31fdf974b9fa1d8ed312ed9e1ae22cbe1c4c34d56096635af/data' :
-        'community.wave.seqera.io/library/nextclade:3.21.2--d3538cbe586c0f6c' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7a/7acbe1c9567cd9e31fdf974b9fa1d8ed312ed9e1ae22cbe1c4c34d56096635af/data'
+        : 'community.wave.seqera.io/library/nextclade:3.21.2--d3538cbe586c0f6c'}"
 
     input:
     tuple val(meta), path(fasta)
     path dataset
 
     output:
-    tuple val(meta), path("${prefix}.csv")           , optional:true, emit: csv
-    tuple val(meta), path("${prefix}.errors.csv")    , optional:true, emit: csv_errors
-    tuple val(meta), path("${prefix}.insertions.csv"), optional:true, emit: csv_insertions
-    tuple val(meta), path("${prefix}.tsv")           , optional:true, emit: tsv
-    tuple val(meta), path("${prefix}.json")          , optional:true, emit: json
-    tuple val(meta), path("${prefix}.auspice.json")  , optional:true, emit: json_auspice
-    tuple val(meta), path("${prefix}.ndjson")        , optional:true, emit: ndjson
-    tuple val(meta), path("${prefix}.aligned.fasta") , optional:true, emit: fasta_aligned
-    tuple val(meta), path("*_translation.*.fasta")   , optional:true, emit: fasta_translation
-    tuple val(meta), path("${prefix}.nwk")           , optional:true, emit: nwk
+    tuple val(meta), path("${prefix}.csv"), optional: true, emit: csv
+    tuple val(meta), path("${prefix}.errors.csv"), optional: true, emit: csv_errors
+    tuple val(meta), path("${prefix}.insertions.csv"), optional: true, emit: csv_insertions
+    tuple val(meta), path("${prefix}.tsv"), optional: true, emit: tsv
+    tuple val(meta), path("${prefix}.json"), optional: true, emit: json
+    tuple val(meta), path("${prefix}.auspice.json"), optional: true, emit: json_auspice
+    tuple val(meta), path("${prefix}.ndjson"), optional: true, emit: ndjson
+    tuple val(meta), path("${prefix}.aligned.fasta"), optional: true, emit: fasta_aligned
+    tuple val(meta), path("*_translation.*.fasta"), optional: true, emit: fasta_translation
+    tuple val(meta), path("${prefix}.nwk"), optional: true, emit: nwk
     tuple val("${task.process}"), val('nextclade'), eval("nextclade --version 2>&1 | sed 's/.*nextclade \\([^ ]*\\).*/\\1/'"), emit: versions_nextclade, topic: versions
 
     when:
@@ -33,12 +36,12 @@ process NEXTCLADE_RUN {
     """
     nextclade \\
         run \\
-        $args \\
-        --jobs $task.cpus \\
-        --input-dataset $dataset \\
+        ${args} \\
+        --jobs ${task.cpus} \\
+        --input-dataset ${dataset} \\
         --output-all ./ \\
         --output-basename ${prefix} \\
-        $fasta
+        ${fasta}
     """
 
     stub:

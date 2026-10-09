@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process LAST_POSTMASK {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
@@ -21,15 +24,19 @@ process LAST_POSTMASK {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if( "$maf" == "${prefix}.maf.gz" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("${maf}" == "${prefix}.maf.gz") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
     set -o pipefail
-    last-postmask $args $maf | gzip --no-name > ${prefix}.maf.gz
+    last-postmask ${args} ${maf} | gzip --no-name > ${prefix}.maf.gz
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if( "$maf" == "${prefix}.maf.gz" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("${maf}" == "${prefix}.maf.gz") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
     echo "" | gzip > ${prefix}.maf.gz
     """

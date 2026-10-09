@@ -1,24 +1,27 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FASTPLONG {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e5/e53f2d854500cba9b85619f1ae987371c2890f28a6059f4957b1b95a7317b4c7/data':
-        'community.wave.seqera.io/library/fastplong:0.4.1--73e8274104613b58' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e5/e53f2d854500cba9b85619f1ae987371c2890f28a6059f4957b1b95a7317b4c7/data'
+        : 'community.wave.seqera.io/library/fastplong:0.4.1--73e8274104613b58'}"
 
     input:
     tuple val(meta), path(reads)
-    path  adapter_fasta
-    val   discard_trimmed_pass
-    val   save_trimmed_fail
+    path adapter_fasta
+    val discard_trimmed_pass
+    val save_trimmed_fail
 
     output:
-    tuple val(meta), path('*.fastplong.fastq.gz') , optional:true, emit: reads
-    tuple val(meta), path('*.json')           , emit: json
-    tuple val(meta), path('*.html')           , emit: html
-    tuple val(meta), path('*.log')            , emit: log
-    tuple val(meta), path('*.fail.fastq.gz')  , optional:true, emit: reads_fail
+    tuple val(meta), path('*.fastplong.fastq.gz'), optional: true, emit: reads
+    tuple val(meta), path('*.json'), emit: json
+    tuple val(meta), path('*.html'), emit: html
+    tuple val(meta), path('*.log'), emit: log
+    tuple val(meta), path('*.fail.fastq.gz'), optional: true, emit: reads_fail
     tuple val("${task.process}"), val('fastplong'), eval('fastplong --version 2>&1 | sed -e "s/fastplong //g"'), emit: versions_fastplong, topic: versions
 
     when:
@@ -28,7 +31,7 @@ process FASTPLONG {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def adapter_list = adapter_fasta ? "--adapter_fasta ${adapter_fasta}" : ""
-    def fail_fastq  = save_trimmed_fail ? "--failed_out ${prefix}.fail.fastq.gz" : ''
+    def fail_fastq = save_trimmed_fail ? "--failed_out ${prefix}.fail.fastq.gz" : ''
     def output_file = discard_trimmed_pass ? '' : "--out ${prefix}.fastplong.fastq.gz"
     if (!args.contains("--report_title ")) {
         args += " --report_title ${prefix}_fastplong_report"
@@ -36,13 +39,13 @@ process FASTPLONG {
     """
     fastplong \\
         --in ${reads} \\
-        $output_file \\
+        ${output_file} \\
         --json ${prefix}.fastplong.json \\
         --html ${prefix}.fastplong.html \\
-        $adapter_list \\
-        $fail_fastq \\
-        --thread $task.cpus \\
-        $args \\
+        ${adapter_list} \\
+        ${fail_fastq} \\
+        --thread ${task.cpus} \\
+        ${args} \\
         2> >(tee ${prefix}.fastplong.log >&2)
     """
 
@@ -50,12 +53,12 @@ process FASTPLONG {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def touch_reads = discard_trimmed_pass ? "" : "echo '' | gzip > ${prefix}.fastplong.fastq.gz"
-    def touch_fail  = save_trimmed_fail ? "echo '' | gzip > ${prefix}.fail.fastq.gz" : ""
+    def touch_fail = save_trimmed_fail ? "echo '' | gzip > ${prefix}.fail.fastq.gz" : ""
     """
-    echo $args
+    echo ${args}
 
-    $touch_reads
-    $touch_fail
+    ${touch_reads}
+    ${touch_fail}
     touch ${prefix}.fastplong.json
     touch ${prefix}.fastplong.html
     touch ${prefix}.fastplong.log

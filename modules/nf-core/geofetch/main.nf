@@ -1,10 +1,13 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GEOFETCH {
-    tag "$geo_accession"
+    tag "${geo_accession}"
     label 'process_low'
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/geofetch:0.12.6--pyh7cba7a3_0':
-        'quay.io/biocontainers/geofetch:0.12.6--pyh7cba7a3_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/geofetch:0.12.6--pyh7cba7a3_0'
+        : 'quay.io/biocontainers/geofetch:0.12.6--pyh7cba7a3_0'}"
 
     input:
     val geo_accession
@@ -21,10 +24,10 @@ process GEOFETCH {
     """
     geofetch \\
         -i \\
-        $geo_accession \\
+        ${geo_accession} \\
         --processed \\
         -g . \\
-        $args
+        ${args}
     """
 
     stub:

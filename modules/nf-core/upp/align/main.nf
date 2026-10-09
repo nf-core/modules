@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process UPP_ALIGN {
     tag "${meta.id}"
     label 'process_medium'
@@ -10,7 +13,7 @@ process UPP_ALIGN {
     input:
     tuple val(meta), path(fasta_unaligned), path(fasta_aligned)
     tuple val(meta2), path(tree)
-    val(compress)
+    val compress
 
     output:
     tuple val(meta), path("*.aln{.gz,}"), emit: alignment

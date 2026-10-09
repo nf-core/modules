@@ -1,17 +1,20 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FCSGX_CLEANGENOME {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ncbi-fcs-gx:0.5.5--h9948957_0':
-        'quay.io/biocontainers/ncbi-fcs-gx:0.5.5--h9948957_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/ncbi-fcs-gx:0.5.5--h9948957_0'
+        : 'quay.io/biocontainers/ncbi-fcs-gx:0.5.5--h9948957_0'}"
 
     input:
     tuple val(meta), path(fasta), path(fcsgx_report)
 
     output:
-    tuple val(meta), path("*.cleaned.fasta")     , emit: cleaned
+    tuple val(meta), path("*.cleaned.fasta"), emit: cleaned
     tuple val(meta), path("*.contaminants.fasta"), emit: contaminants
     tuple val("${task.process}"), val('fcsgx'), eval("gx --help | sed '/build/!d; s/.*:v//; s/-.*//'"), emit: versions_fcsgx, topic: versions
 

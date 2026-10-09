@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ODGI_UNCHOP {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/odgi:0.9.0--py312h5e9d817_1':
-        'quay.io/biocontainers/odgi:0.9.0--py312h5e9d817_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/odgi:0.9.0--py312h5e9d817_1'
+        : 'quay.io/biocontainers/odgi:0.9.0--py312h5e9d817_1'}"
 
     input:
     tuple val(meta), path(graph)
@@ -23,10 +26,10 @@ process ODGI_UNCHOP {
     """
     odgi \\
         unchop \\
-        --threads $task.cpus \\
+        --threads ${task.cpus} \\
         --idx ${graph} \\
         --out ${prefix}.og \\
-        $args
+        ${args}
     """
 
     stub:

@@ -1,17 +1,20 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GEM3_GEM3INDEXER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gem3-mapper:3.6.1--h9d449c0_12':
-        'quay.io/biocontainers/gem3-mapper:3.6.1--h9d449c0_12' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/gem3-mapper:3.6.1--h9d449c0_12'
+        : 'quay.io/biocontainers/gem3-mapper:3.6.1--h9d449c0_12'}"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.gem") , emit: index
+    tuple val(meta), path("*.gem"), emit: index
     tuple val(meta), path("*.info"), emit: info
     tuple val("${task.process}"), val('gem3-indexer'), eval("gem-indexer --version 2>&1 | sed 's/v//'"), emit: versions_gem3, topic: versions
 

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PROPR_GREA {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b6/b65f7192866fbd9a947df15b104808abb720e7a224bbe3ca8f7f8f680f52c97a/data' :
-        'community.wave.seqera.io/library/bioconductor-limma_r-propr:f52f1d4fea746393' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b6/b65f7192866fbd9a947df15b104808abb720e7a224bbe3ca8f7f8f680f52c97a/data'
+        : 'community.wave.seqera.io/library/bioconductor-limma_r-propr:f52f1d4fea746393'}"
 
     input:
     tuple val(meta), path(adjacency)
@@ -13,14 +16,14 @@ process PROPR_GREA {
 
     output:
     tuple val(meta), path("*.grea.tsv"), emit: results
-    path "versions.yml",                 emit: versions, topic: versions
-    path "*.R_sessionInfo.log",          emit: session_info
+    path "versions.yml", emit: versions, topic: versions
+    path "*.R_sessionInfo.log", emit: session_info
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    template 'grea.R'
+    template('grea.R')
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"

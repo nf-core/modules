@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TSEBRA {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/tsebra:1.1.2.5--pyhca03a8a_0':
-        'quay.io/biocontainers/tsebra:1.1.2.5--pyhca03a8a_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/tsebra:1.1.2.5--pyhca03a8a_0'
+        : 'quay.io/biocontainers/tsebra:1.1.2.5--pyhca03a8a_0'}"
 
     input:
     tuple val(meta), path(gtfs)
@@ -24,12 +27,12 @@ process TSEBRA {
     task.ext.when == null || task.ext.when
 
     script:
-    def args        = task.ext.args                                     ?: ''
-    def prefix      = task.ext.prefix                                   ?: "${meta.id}"
-    def gtf_arg     = '-g ' + gtfs.collect { gtf -> "$gtf" }.join(',')
-    def hints_arg   = '-e ' + hints_files.collect { hint -> "$hint" }.join(',')
-    def keep_arg    = keep_gtfs                                         ? ( '-k ' + keep_gtfs.collect { gtf -> "$gtf" }.join(',') ) : ''
-    def config_arg  = config                                            ? "-c $config"                                      : ''
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def gtf_arg = '-g ' + gtfs.collect { gtf -> "${gtf}" }.join(',')
+    def hints_arg = '-e ' + hints_files.collect { hint -> "${hint}" }.join(',')
+    def keep_arg = keep_gtfs ? ('-k ' + keep_gtfs.collect { gtf -> "${gtf}" }.join(',')) : ''
+    def config_arg = config ? "-c ${config}" : ''
     """
     tsebra.py \\
         ${gtf_arg} \\
@@ -42,7 +45,7 @@ process TSEBRA {
     """
 
     stub:
-    def prefix      = task.ext.prefix   ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.gtf
     touch ${prefix}.tsv

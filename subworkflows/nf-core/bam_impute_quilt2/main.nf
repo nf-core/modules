@@ -1,16 +1,19 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { QUILT_QUILT2    } from '../../../modules/nf-core/quilt/quilt2/main'
 include { GLIMPSE2_LIGATE } from '../../../modules/nf-core/glimpse2/ligate/main'
 include { BCFTOOLS_INDEX  } from '../../../modules/nf-core/bcftools/index/main'
 
 workflow BAM_IMPUTE_QUILT2 {
     take:
-    ch_input           // channel (mandatory): [ meta, bam/cram, bai/crai, bampaths, bamnames ]
+    ch_input // channel (mandatory): [ meta, bam/cram, bai/crai, bampaths, bamnames ]
     ch_reference_panel // channel (mandatory): [ meta, reference_vcf, reference_index ]
-    ch_chunks          // channel (optional):  [ meta, chr, start, end ]
-    ch_map             // channel (optional):  [ meta, genetic_map ]
-    ch_fasta           // channel (optional):  [ meta, fasta, fai ]
-    n_gen              // integer: Number of generations since founding or mixing
-    buffer             // integer: Buffer of region to perform imputation over
+    ch_chunks // channel (optional):  [ meta, chr, start, end ]
+    ch_map // channel (optional):  [ meta, genetic_map ]
+    ch_fasta // channel (optional):  [ meta, fasta, fai ]
+    n_gen // integer: Number of generations since founding or mixing
+    buffer // integer: Buffer of region to perform imputation over
 
     main:
 
@@ -44,12 +47,20 @@ workflow BAM_IMPUTE_QUILT2 {
 
             [
                 meta_panel + meta_input + ["regionout": regionout, "regionoutPadded": regionoutPadded, "regionSize": region_size],
-                bam, bai,
-                bampath, bamname,
-                reference_vcf, reference_index,
-                [], [], [],
-                chr, start, end,
-                n_gen, buffer,
+                bam,
+                bai,
+                bampath,
+                bamname,
+                reference_vcf,
+                reference_index,
+                [],
+                [],
+                [],
+                chr,
+                start,
+                end,
+                n_gen,
+                buffer,
                 genetic_map,
             ]
         }
@@ -62,7 +73,8 @@ workflow BAM_IMPUTE_QUILT2 {
             def keysToKeep = meta.keySet() - ['regionout', 'regionoutPadded', 'regionSize']
             [
                 groupKey(meta.subMap(keysToKeep), meta.regionSize),
-                vcf, index,
+                vcf,
+                index,
             ]
         }
         .groupTuple()

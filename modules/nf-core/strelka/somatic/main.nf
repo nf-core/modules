@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process STRELKA_SOMATIC {
     tag "${meta.id}"
     label 'process_medium'
@@ -14,10 +17,10 @@ process STRELKA_SOMATIC {
     path fai
 
     output:
-    tuple val(meta), path("*.somatic_indels.vcf.gz"),     emit: vcf_indels
+    tuple val(meta), path("*.somatic_indels.vcf.gz"), emit: vcf_indels
     tuple val(meta), path("*.somatic_indels.vcf.gz.tbi"), emit: vcf_indels_tbi
-    tuple val(meta), path("*.somatic_snvs.vcf.gz"),       emit: vcf_snvs
-    tuple val(meta), path("*.somatic_snvs.vcf.gz.tbi"),   emit: vcf_snvs_tbi
+    tuple val(meta), path("*.somatic_snvs.vcf.gz"), emit: vcf_snvs
+    tuple val(meta), path("*.somatic_snvs.vcf.gz.tbi"), emit: vcf_snvs_tbi
     tuple val("${task.process}"), val('strelka'), eval("configureStrelkaSomaticWorkflow.py --version"), emit: versions_strelka, topic: versions
 
     when:

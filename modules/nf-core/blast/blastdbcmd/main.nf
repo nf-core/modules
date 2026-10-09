@@ -1,19 +1,22 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BLAST_BLASTDBCMD {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0c/0c86cbb145786bf5c24ea7fb13448da5f7d5cd124fd4403c1da5bc8fc60c2588/data':
-        'community.wave.seqera.io/library/blast:2.17.0--d4fb881691596759' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0c/0c86cbb145786bf5c24ea7fb13448da5f7d5cd124fd4403c1da5bc8fc60c2588/data'
+        : 'community.wave.seqera.io/library/blast:2.17.0--d4fb881691596759'}"
 
     input:
-    tuple val(meta) , val(entry), path(entry_batch)
+    tuple val(meta), val(entry), path(entry_batch)
     tuple val(meta2), path(db)
 
     output:
     tuple val(meta), path("*.fasta"), optional: true, emit: fasta
-    tuple val(meta), path("*.txt")  , optional: true, emit: text
+    tuple val(meta), path("*.txt"), optional: true, emit: text
     tuple val("${task.process}"), val('blastdbcmd'), eval('blastdbcmd -version 2>&1 | head -n1 | sed \'s/^.*blastdbcmd: //; s/ .*\$//\''), topic: versions, emit: versions_blastdbcmd
 
     when:
@@ -26,10 +29,11 @@ process BLAST_BLASTDBCMD {
     def input = ''
     if (entry) {
         input = "-entry ${entry}"
-    } else {
+    }
+    else {
         input = "-entry_batch ${entry_batch}"
     }
-    def extension  = args.contains("-outfmt") && !args.contains("-outfmt %f") ? "txt" : "fasta"
+    def extension = args.contains("-outfmt") && !args.contains("-outfmt %f") ? "txt" : "fasta"
     """
     DB=`find -L ./ -name "*.nto" | sed 's/\\.nto\$//'`
     if test -z "\$DB"
@@ -48,7 +52,7 @@ process BLAST_BLASTDBCMD {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def extension  = args.contains("-outfmt") && !args.contains("-outfmt %f") ? "txt" : "fasta"
+    def extension = args.contains("-outfmt") && !args.contains("-outfmt %f") ? "txt" : "fasta"
     """
     touch ${prefix}.${extension}
 

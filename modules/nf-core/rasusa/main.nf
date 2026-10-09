@@ -1,15 +1,18 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RASUSA {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/rasusa:0.3.0--h779adbc_1' :
-        'quay.io/biocontainers/rasusa:0.3.0--h779adbc_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/rasusa:0.3.0--h779adbc_1'
+        : 'quay.io/biocontainers/rasusa:0.3.0--h779adbc_1'}"
 
     input:
     tuple val(meta), path(reads), val(genome_size)
-    val   depth_cutoff
+    val depth_cutoff
 
     output:
     tuple val(meta), path('*.fastq.gz'), emit: reads
@@ -21,14 +24,14 @@ process RASUSA {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def output   = meta.single_end ? "--output ${prefix}.fastq.gz" : "--output ${prefix}_1.fastq.gz ${prefix}_2.fastq.gz"
+    def output = meta.single_end ? "--output ${prefix}.fastq.gz" : "--output ${prefix}_1.fastq.gz ${prefix}_2.fastq.gz"
     """
     rasusa \\
-        $args \\
-        --coverage $depth_cutoff \\
-        --genome-size $genome_size \\
-        --input $reads \\
-        $output
+        ${args} \\
+        --coverage ${depth_cutoff} \\
+        --genome-size ${genome_size} \\
+        --input ${reads} \\
+        ${output}
     """
 
     stub:

@@ -1,5 +1,8 @@
-include { FREEBAYES      } from '../../../modules/nf-core/freebayes'
-include { BCFTOOLS_SORT  } from '../../../modules/nf-core/bcftools/sort'
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
+include { FREEBAYES     } from '../../../modules/nf-core/freebayes'
+include { BCFTOOLS_SORT } from '../../../modules/nf-core/bcftools/sort'
 
 workflow BAM_VARIANT_CALLING_SORT_FREEBAYES_BCFTOOLS {
     take:
@@ -24,5 +27,5 @@ workflow BAM_VARIANT_CALLING_SORT_FREEBAYES_BCFTOOLS {
     BCFTOOLS_SORT(FREEBAYES.out.vcf)
 
     emit:
-    vcf_index      = BCFTOOLS_SORT.out.vcf.join(BCFTOOLS_SORT.out.index) // channel: [ val(meta), path(vcf), path(index) ]
+    vcf_index = BCFTOOLS_SORT.out.vcf.join(BCFTOOLS_SORT.out.index) // channel: [ val(meta), path(vcf), path(index) ]
 }

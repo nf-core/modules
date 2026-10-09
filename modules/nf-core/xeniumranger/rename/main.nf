@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process XENIUMRANGER_RENAME {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     container "quay.io/nf-core/xeniumranger:4.0"
@@ -18,7 +21,7 @@ process XENIUMRANGER_RENAME {
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "XENIUMRANGER_RENAME module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("XENIUMRANGER_RENAME module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
 
     def args = task.ext.args ?: ""

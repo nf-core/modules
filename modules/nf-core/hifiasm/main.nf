@@ -1,29 +1,32 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HIFIASM {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hifiasm:0.25.0--h5ca1c30_0' :
-        'quay.io/biocontainers/hifiasm:0.25.0--h5ca1c30_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/hifiasm:0.25.0--h5ca1c30_0'
+        : 'quay.io/biocontainers/hifiasm:0.25.0--h5ca1c30_0'}"
 
     input:
-    tuple val(meta) , path(long_reads)        , path(ul_reads)
+    tuple val(meta), path(long_reads), path(ul_reads)
     tuple val(meta2), path(paternal_kmer_dump), path(maternal_kmer_dump)
-    tuple val(meta3), path(hic_read1)         , path(hic_read2)
+    tuple val(meta3), path(hic_read1), path(hic_read2)
     tuple val(meta4), path(bin_files)
 
     output:
-    tuple val(meta), path("*.r_utg.gfa")                             , emit: raw_unitigs      , optional: true
-    tuple val(meta), path("*.bin")                                   , emit: bin_files        , optional: true
-    tuple val(meta), path("*.p_utg.gfa")                             , emit: processed_unitigs, optional: true
-    tuple val(meta), path("${prefix}.{p_ctg,bp.p_ctg,hic.p_ctg}.gfa"), emit: primary_contigs  , optional: true
-    tuple val(meta), path("${prefix}.{a_ctg,hic.a_ctg}.gfa")         , emit: alternate_contigs, optional: true
-    tuple val(meta), path("${prefix}.*.hap1.p_ctg.gfa")              , emit: hap1_contigs     , optional: true
-    tuple val(meta), path("${prefix}.*.hap2.p_ctg.gfa")              , emit: hap2_contigs     , optional: true
-    tuple val(meta), path("*.ec.fa.gz")                              , emit: corrected_reads  , optional: true
-    tuple val(meta), path("*.ovlp.paf.gz")                           , emit: read_overlaps    , optional: true
-    tuple val(meta), path("${prefix}.stderr.log")                    , emit: log
+    tuple val(meta), path("*.r_utg.gfa"), emit: raw_unitigs, optional: true
+    tuple val(meta), path("*.bin"), emit: bin_files, optional: true
+    tuple val(meta), path("*.p_utg.gfa"), emit: processed_unitigs, optional: true
+    tuple val(meta), path("${prefix}.{p_ctg,bp.p_ctg,hic.p_ctg}.gfa"), emit: primary_contigs, optional: true
+    tuple val(meta), path("${prefix}.{a_ctg,hic.a_ctg}.gfa"), emit: alternate_contigs, optional: true
+    tuple val(meta), path("${prefix}.*.hap1.p_ctg.gfa"), emit: hap1_contigs, optional: true
+    tuple val(meta), path("${prefix}.*.hap2.p_ctg.gfa"), emit: hap2_contigs, optional: true
+    tuple val(meta), path("*.ec.fa.gz"), emit: corrected_reads, optional: true
+    tuple val(meta), path("*.ovlp.paf.gz"), emit: read_overlaps, optional: true
+    tuple val(meta), path("${prefix}.stderr.log"), emit: log
     tuple val("${task.process}"), val('hifiasm'), eval('hifiasm --version 2>&1'), emit: versions_hifiasm, topic: versions
 
     when:
@@ -33,34 +36,36 @@ process HIFIASM {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
 
-    def long_reads_sorted = long_reads instanceof List ? long_reads.sort{ read -> read.name } : long_reads
-    def ul_reads_sorted = ul_reads instanceof List ? ul_reads.sort{ read -> read.name } : ul_reads
+    def long_reads_sorted = long_reads instanceof List ? long_reads.sort { read -> read.name } : long_reads
+    def ul_reads_sorted = ul_reads instanceof List ? ul_reads.sort { read -> read.name } : ul_reads
     def ultralong = ul_reads ? "--ul ${ul_reads_sorted}" : ""
 
-    if([paternal_kmer_dump, maternal_kmer_dump].any() && [hic_read1, hic_read2].any()) {
+    if ([paternal_kmer_dump, maternal_kmer_dump].any() && [hic_read1, hic_read2].any()) {
         log.error("ERROR: hifiasm trio binning mode and Hi-C phasing can not be used at the same time.")
     }
 
     def input_trio = ""
-    if([paternal_kmer_dump, maternal_kmer_dump].any()) {
-        if(![paternal_kmer_dump, maternal_kmer_dump].every()) {
+    if ([paternal_kmer_dump, maternal_kmer_dump].any()) {
+        if (![paternal_kmer_dump, maternal_kmer_dump].every()) {
             log.error("ERROR: Either the maternal or paternal kmer dump is missing!")
-        } else {
+        }
+        else {
             input_trio = "-1 ${paternal_kmer_dump} -2 ${maternal_kmer_dump}"
         }
     }
 
     def input_hic = ""
-    if([hic_read1, hic_read2].any()) {
-        if(![hic_read1, hic_read2].every()) {
+    if ([hic_read1, hic_read2].any()) {
+        if (![hic_read1, hic_read2].every()) {
             log.error("ERROR: Either the forward or reverse Hi-C reads are missing!")
-        } else {
+        }
+        else {
             input_hic = "--h1 ${hic_read1} --h2 ${hic_read2}"
         }
     }
     """
     hifiasm \\
-        $args \\
+        ${args} \\
         -t ${task.cpus} \\
         ${input_trio} \\
         ${input_hic} \\

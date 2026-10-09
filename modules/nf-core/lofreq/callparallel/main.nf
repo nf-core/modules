@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process LOFREQ_CALLPARALLEL {
     tag "${meta.id}"
     label 'process_high'
@@ -13,7 +16,7 @@ process LOFREQ_CALLPARALLEL {
     tuple val(meta3), path(fai)
 
     output:
-    tuple val(meta), path("*.vcf.gz"),     emit: vcf
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
     tuple val(meta), path("*.vcf.gz.tbi"), emit: tbi
     tuple val("${task.process}"), val('lofreq'), eval("lofreq version | sed -n '1s/^.* //p'"), emit: versions_lofreq, topic: versions
 

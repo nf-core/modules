@@ -1,15 +1,18 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process KALIGN_ALIGN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-5cd0277547c6b33133225c8ce14c0cf2a4396ea2:0a70b6d89a3e06fbdc4a735461e8b98ff32ee5de-0':
-        'quay.io/biocontainers/mulled-v2-5cd0277547c6b33133225c8ce14c0cf2a4396ea2:0a70b6d89a3e06fbdc4a735461e8b98ff32ee5de-0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/mulled-v2-5cd0277547c6b33133225c8ce14c0cf2a4396ea2:0a70b6d89a3e06fbdc4a735461e8b98ff32ee5de-0'
+        : 'quay.io/biocontainers/mulled-v2-5cd0277547c6b33133225c8ce14c0cf2a4396ea2:0a70b6d89a3e06fbdc4a735461e8b98ff32ee5de-0'}"
 
     input:
     tuple val(meta), path(fasta)
-    val(compress)
+    val compress
 
     output:
     tuple val(meta), path("*.aln{.gz,}"), emit: alignment
@@ -36,9 +39,9 @@ process KALIGN_ALIGN {
 
     trap 'error_handler' ERR
 
-    unpigz -cdf $fasta | \\
+    unpigz -cdf ${fasta} | \\
     kalign \\
-        $args \\
+        ${args} \\
         -n ${task.cpus} \\
         -o ${write_output}
     """

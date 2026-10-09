@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BANDAGE_IMAGE {
     tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3e/3eabbd074e3bc45e2643783450330cae3afc6697fefc635755ab964dc43665a1/data' :
-        'community.wave.seqera.io/library/bandage:0.9.0--4f0567049a14ea6d' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3e/3eabbd074e3bc45e2643783450330cae3afc6697fefc635755ab964dc43665a1/data'
+        : 'community.wave.seqera.io/library/bandage:0.9.0--4f0567049a14ea6d'}"
 
     input:
     tuple val(meta), path(gfa, arity: '1')
@@ -28,8 +31,8 @@ process BANDAGE_IMAGE {
     """
     ${decompress}
 
-    Bandage image ${gfa_input} ${prefix}.png $args
-    Bandage image ${gfa_input} ${prefix}.svg $args
+    Bandage image ${gfa_input} ${prefix}.png ${args}
+    Bandage image ${gfa_input} ${prefix}.svg ${args}
 
     ${cleanup}
     """

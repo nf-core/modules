@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SRATOOLS_PREFETCH {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sra-tools:3.2.1--h4304569_1' :
-        'quay.io/biocontainers/sra-tools:3.2.1--h4304569_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/sra-tools:3.2.1--h4304569_1'
+        : 'quay.io/biocontainers/sra-tools:3.2.1--h4304569_1'}"
 
     input:
     tuple val(meta), val(id)
@@ -22,10 +25,13 @@ process SRATOOLS_PREFETCH {
 
     script:
     args = task.ext.args ?: ''
-    args2 = task.ext.args2 ?: '5 1 100'  // <num retries> <base delay in seconds> <max delay in seconds>
-    def cert_arg = certificate ?
-        (certificate.name.endsWith('.jwt') ? "--perm ${certificate}" :
-        certificate.name.endsWith('.ngc') ? "--ngc ${certificate}" : '') : ''
+    args2 = task.ext.args2 ?: '5 1 100'
+    // <num retries> <base delay in seconds> <max delay in seconds>
+    def cert_arg = certificate
+        ? (certificate.name.endsWith('.jwt')
+            ? "--perm ${certificate}"
+            : certificate.name.endsWith('.ngc') ? "--ngc ${certificate}" : '')
+        : ''
     final_args = "${args} ${cert_arg}".trim()
 
     """
@@ -33,7 +39,7 @@ process SRATOOLS_PREFETCH {
     echo "${final_args}"
     """
 
-    template "retry_with_backoff.sh"
+    template("retry_with_backoff.sh")
 
     stub:
     """

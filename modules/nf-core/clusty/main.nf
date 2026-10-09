@@ -1,12 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
 
 process CLUSTY {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/clusty:1.2.2--h9ee0642_0':
-        'quay.io/biocontainers/clusty:1.2.2--h9ee0642_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/clusty:1.2.2--h9ee0642_0'
+        : 'quay.io/biocontainers/clusty:1.2.2--h9ee0642_0'}"
 
     input:
     tuple val(meta), path(distances)
@@ -22,14 +24,16 @@ process CLUSTY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def objects_arg = objects ? "--objects-file $objects" : ""
+    def objects_arg = objects ? "--objects-file ${objects}" : ""
 
-    if ("${distances}" == "${prefix}.tsv") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${distances}" == "${prefix}.tsv") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
+    }
 
     """
     clusty \\
-        $args \\
-        -t $task.cpus \\
+        ${args} \\
+        -t ${task.cpus} \\
         ${objects_arg} \\
         ${distances} \\
         ${prefix}.tsv
@@ -38,12 +42,14 @@ process CLUSTY {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def objects_arg = objects ? "--objects-file $objects" : ""
+    def objects_arg = objects ? "--objects-file ${objects}" : ""
 
-    if ("${distances}" == "${prefix}.tsv") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${distances}" == "${prefix}.tsv") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
+    }
 
     """
-    echo $args
+    echo ${args}
     echo ${objects_arg}
     touch ${prefix}.tsv
     """

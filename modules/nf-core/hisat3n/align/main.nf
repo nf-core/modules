@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HISAT3N_ALIGN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/hisat-3n:0.0.3--b4c98eb79ad7c714' :
-        'community.wave.seqera.io/library/hisat-3n:0.0.3--b4b80cb38c483147' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'oras://community.wave.seqera.io/library/hisat-3n:0.0.3--b4c98eb79ad7c714'
+        : 'community.wave.seqera.io/library/hisat-3n:0.0.3--b4b80cb38c483147'}"
 
     input:
     tuple val(meta), path(reads)
@@ -28,13 +31,14 @@ process HISAT3N_ALIGN {
         INDEX=`find -L ./ -name "*.3n.*.1.ht2" | sed 's/\\.3n\\..*\\.1\\.ht2\$//' | head -1`
         hisat-3n \\
             -x \$INDEX \\
-            -U $reads \\
+            -U ${reads} \\
             -S ${prefix}.sam \\
             --summary-file ${prefix}.hisat3n.summary.log \\
-            --threads $task.cpus \\
-            $args
+            --threads ${task.cpus} \\
+            ${args}
         """
-    } else {
+    }
+    else {
         """
         INDEX=`find -L ./ -name "*.3n.*.1.ht2" | sed 's/\\.3n\\..*\\.1\\.ht2\$//' | head -1`
         hisat-3n \\
@@ -43,8 +47,8 @@ process HISAT3N_ALIGN {
             -2 ${reads[1]} \\
             -S ${prefix}.sam \\
             --summary-file ${prefix}.hisat3n.summary.log \\
-            --threads $task.cpus \\
-            $args
+            --threads ${task.cpus} \\
+            ${args}
         """
     }
 

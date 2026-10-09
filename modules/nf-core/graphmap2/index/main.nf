@@ -1,10 +1,13 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GRAPHMAP2_INDEX {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/graphmap:0.6.3--he513fc3_0' :
-        'quay.io/biocontainers/graphmap:0.6.3--he513fc3_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/graphmap:0.6.3--he513fc3_0'
+        : 'quay.io/biocontainers/graphmap:0.6.3--he513fc3_0'}"
 
     input:
     path fasta

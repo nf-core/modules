@@ -1,20 +1,23 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GSTAMA_MERGE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gs-tama:1.0.3--hdfd78af_0' :
-        'quay.io/biocontainers/gs-tama:1.0.3--hdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/gs-tama:1.0.3--hdfd78af_0'
+        : 'quay.io/biocontainers/gs-tama:1.0.3--hdfd78af_0'}"
 
     input:
     tuple val(meta), path(bed)
     path filelist
 
     output:
-    tuple val(meta), path("*.bed")             , emit: bed
-    tuple val(meta), path("*_gene_report.txt") , emit: gene_report
-    tuple val(meta), path("*_merge.txt")       , emit: merge
+    tuple val(meta), path("*.bed"), emit: bed
+    tuple val(meta), path("*_gene_report.txt"), emit: gene_report
+    tuple val(meta), path("*_merge.txt"), emit: merge
     tuple val(meta), path("*_trans_report.txt"), emit: trans_report
     tuple val("${task.process}"), val('gstama'), eval("tama_merge.py -version | sed '1!d'"), emit: versions_gstama, topic: versions
 

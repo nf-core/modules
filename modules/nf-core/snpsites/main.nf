@@ -1,17 +1,20 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SNPSITES {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/snp-sites:2.5.1--hed695b0_0' :
-        'quay.io/biocontainers/snp-sites:2.5.1--hed695b0_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/snp-sites:2.5.1--hed695b0_0'
+        : 'quay.io/biocontainers/snp-sites:2.5.1--hed695b0_0'}"
 
     input:
     path alignment
 
     output:
-    path "*.fas"        , emit: fasta
-    path "*.sites.txt"  , emit: constant_sites
+    path "*.fas", emit: fasta
+    path "*.sites.txt", emit: constant_sites
     env 'CONSTANT_SITES', emit: constant_sites_string
     tuple val("${task.process}"), val('snpsites'), eval("snp-sites -V 2>&1 | sed 's/snp-sites //'"), emit: versions_snpsites, topic: versions
 
@@ -22,19 +25,19 @@ process SNPSITES {
     def args = task.ext.args ?: ''
     """
     snp-sites \\
-        $alignment \\
-        $args \\
+        ${alignment} \\
+        ${args} \\
         > filtered_alignment.fas
 
-    echo \$(snp-sites -C $alignment) > constant.sites.txt
+    echo \$(snp-sites -C ${alignment}) > constant.sites.txt
 
     export CONSTANT_SITES=\$(cat constant.sites.txt)
     """
+
     stub:
     """
     touch filtered_alignment.fas
     touch constant.sites.txt
     export CONSTANT_SITES=\$(cat constant.sites.txt)
     """
-
 }

@@ -1,25 +1,28 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RAXMLNG_SEARCH {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/raxml-ng:2.0.3--h870a6a7_0' :
-        'quay.io/biocontainers/raxml-ng:2.0.3--h870a6a7_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/raxml-ng:2.0.3--h870a6a7_0'
+        : 'quay.io/biocontainers/raxml-ng:2.0.3--h870a6a7_0'}"
 
     input:
     tuple val(meta), path(alignment), val(model)
-    path(tree)
-    path(tree_constraint)
-    path(partitions)
-    path(site_weights)
+    path tree
+    path tree_constraint
+    path partitions
+    path site_weights
 
     output:
-    tuple val(meta), path("*.raxml.bestTree") , emit: phylogeny
+    tuple val(meta), path("*.raxml.bestTree"), emit: phylogeny
     tuple val(meta), path("*.raxml.bestModel"), emit: best_model
-    tuple val(meta), path("*.raxml.mlTrees")  , emit: ml_trees  , optional: true
+    tuple val(meta), path("*.raxml.mlTrees"), emit: ml_trees, optional: true
     tuple val(meta), path("*.raxml.startTree"), emit: start_tree, optional: true
-    tuple val(meta), path("*.raxml.log")      , emit: log
+    tuple val(meta), path("*.raxml.log"), emit: log
     tuple val("${task.process}"), val('raxmlng'), eval("raxml-ng --version 2>&1 | sed '/RAxML-NG v/!d;s/.*v. //;s/ .*//'"), emit: versions_raxmlng, topic: versions
 
     when:
@@ -29,13 +32,15 @@ process RAXMLNG_SEARCH {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     // fix random seed for reproducibility if not specified in command line
-    if (!(args ==~ /.*--seed.*/)) {args += " --seed=42"}
-    def tree_arg             = tree             ? "--tree ${tree}"                       : ''
-    def tree_constraint_arg  = tree_constraint  ? "--tree-constraint ${tree_constraint}"  : ''
+    if (!(args ==~ /.*--seed.*/)) {
+        args += " --seed=42"
+    }
+    def tree_arg = tree ? "--tree ${tree}" : ''
+    def tree_constraint_arg = tree_constraint ? "--tree-constraint ${tree_constraint}" : ''
     // a partitions/model-definition file takes the place of a literal model string;
     // --model only ever takes one or the other, never both
-    def model_arg            = partitions       ? "--model ${partitions}"                : "--model ${model}"
-    def site_weights_arg     = site_weights     ? "--site-weights ${site_weights}"        : ''
+    def model_arg = partitions ? "--model ${partitions}" : "--model ${model}"
+    def site_weights_arg = site_weights ? "--site-weights ${site_weights}" : ''
     """
     raxml-ng \\
         --search \\

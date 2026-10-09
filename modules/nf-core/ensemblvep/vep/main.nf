@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ENSEMBLVEP_VEP {
     tag "${meta.id}"
     label 'process_medium'
@@ -15,7 +18,7 @@ process ENSEMBLVEP_VEP {
     tuple val(meta2), path(cache)
     tuple val(meta3), path(fasta)
     path extra_files
-    tuple path(gtf), path(gtf_tbi) // optional: [ path(gtf), path(gtf_tbi) ] -- mutually exclusive with cache
+    tuple path(gtf), path(gtf_tbi)
 
     output:
     tuple val(meta), path("${prefix}.vcf.gz"), emit: vcf, optional: true

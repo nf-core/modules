@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SAMTOOLS_BGZIP {
     tag "${meta.id}"
     label 'process_low'
@@ -25,7 +28,7 @@ process SAMTOOLS_BGZIP {
     Reason:
     This module is duplicative of TABIX/BGZIPTABIX and HTSLIB/BGZIPTABIX. The new HTSLIB/BGZIPTABIX module provides equivalent functionality with a more predictable behavior and better interface.
     """.stripIndent()
-    assert false: deprecation_message
+    assert false : deprecation_message
 
     stub:
     def deprecation_message = """
@@ -34,5 +37,5 @@ process SAMTOOLS_BGZIP {
     Reason:
     This module is duplicative of TABIX/BGZIPTABIX and HTSLIB/BGZIPTABIX. The new HTSLIB/BGZIPTABIX module provides equivalent functionality with a more predictable behavior and better interface.
     """.stripIndent()
-    assert false: deprecation_message
+    assert false : deprecation_message
 }

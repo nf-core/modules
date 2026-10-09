@@ -1,20 +1,23 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TOBIAS_ATACORRECT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/tobias:0.17.5--py310h3479294_0':
-        'quay.io/biocontainers/tobias:0.17.5--py310h3479294_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/tobias:0.17.5--py310h3479294_0'
+        : 'quay.io/biocontainers/tobias:0.17.5--py310h3479294_0'}"
 
     input:
     tuple val(meta), path(bam), path(bai), path(peaks), path(fasta)
 
     output:
-    tuple val(meta), path("*_corrected.bw")  , emit: corrected
-    tuple val(meta), path("*_expected.bw")   , emit: expected
+    tuple val(meta), path("*_corrected.bw"), emit: corrected
+    tuple val(meta), path("*_expected.bw"), emit: expected
     tuple val(meta), path("*_uncorrected.bw"), emit: uncorrected, optional: true
-    tuple val(meta), path("*_bias.bw")       , emit: bias, optional: true
+    tuple val(meta), path("*_bias.bw"), emit: bias, optional: true
     tuple val(meta), path("*_atacorrect.pdf"), emit: report, optional: true
     tuple val("${task.process}"), val('tobias'), eval('TOBIAS --version'), topic: versions, emit: versions_tobias
 

@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 //
 // Run VEP and/or SNPEFF to annotate VCF files
 //
@@ -121,7 +124,7 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
             SNPEFF_SNPEFF.out.vcf.map { meta, vcf -> [meta, vcf, [], []] },
             "compress",
             false,
-            "vcf"
+            "vcf",
         )
 
         ch_snpeff_output = COMPRESS_VCF.out.output
@@ -174,7 +177,7 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
         ch_tabix_input.bgzip.map { meta, vcf -> [meta, vcf, [], []] },
         "compress",
         true,
-        "vcf"
+        "vcf",
     )
 
     def ch_vcf_tbi = ch_tabix_input.bgzip

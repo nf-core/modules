@@ -1,12 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
 
 process HUMANN3_HUMANN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/humann:3.6.1--pyh7cba7a3_0' :
-        'quay.io/biocontainers/humann:3.6.1--pyh7cba7a3_0' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/humann:3.6.1--pyh7cba7a3_0'
+        : 'quay.io/biocontainers/humann:3.6.1--pyh7cba7a3_0'}"
 
     input:
     tuple val(meta), path(input)
@@ -16,14 +18,14 @@ process HUMANN3_HUMANN {
     path utility_db
 
     output:
-    tuple val(meta), path("*_genefamilies.tsv.gz") , emit: genefamilies
+    tuple val(meta), path("*_genefamilies.tsv.gz"), emit: genefamilies
     tuple val(meta), path("*_pathabundance.tsv.gz"), emit: pathabundance
-    tuple val(meta), path("*_pathcoverage.tsv.gz") , emit: pathcoverage, optional: true
-    tuple val(meta), path("*_reactions.tsv.gz")    , emit: reactions, optional: true
-    tuple val(meta), path("*.log")                 , emit: log
-    tuple val("${task.process}"), val('HUMAnN'),    eval("humann --version 2>&1 | sed 's/humann v//'"),       emit: versions_humann,    topic: versions
+    tuple val(meta), path("*_pathcoverage.tsv.gz"), emit: pathcoverage, optional: true
+    tuple val(meta), path("*_reactions.tsv.gz"), emit: reactions, optional: true
+    tuple val(meta), path("*.log"), emit: log
+    tuple val("${task.process}"), val('HUMAnN'), eval("humann --version 2>&1 | sed 's/humann v//'"), emit: versions_humann, topic: versions
     tuple val("${task.process}"), val('MetaPhlAn'), eval("metaphlan --version 2>&1 | sed 's/MetaPhlAn version //'"), emit: versions_metaphlan, topic: versions
-    tuple val("${task.process}"), val('Python'),    eval("python --version 2>&1 | sed 's/Python //'"),               emit: versions_python,    topic: versions
+    tuple val("${task.process}"), val('Python'), eval("python --version 2>&1 | sed 's/Python //'"), emit: versions_python, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,13 +40,13 @@ process HUMANN3_HUMANN {
     NUCS_DB=\$(dirname \$nuclist)
 
     humann \\
-        $args \\
+        ${args} \\
         --threads ${task.cpus} \\
-        --input $input \\
+        --input ${input} \\
         --protein-database \${PROTS_DB} \\
         --nucleotide-database \${NUCS_DB} \\
-        --output-basename $prefix \\
-        $pangenome_string \\
+        --output-basename ${prefix} \\
+        ${pangenome_string} \\
         --o-log ${prefix}.log \\
         --output .
 

@@ -1,17 +1,20 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process NARFMAP_ALIGN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2e/2e1e09305561788d02365e690360bfe9ad42b1dc3b1d63edbc19dbb771e709e9/data':
-        'community.wave.seqera.io/library/narfmap_samtools_pigz:f1aa37ab24c051ca' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2e/2e1e09305561788d02365e690360bfe9ad42b1dc3b1d63edbc19dbb771e709e9/data'
+        : 'community.wave.seqera.io/library/narfmap_samtools_pigz:f1aa37ab24c051ca'}"
 
     input:
-    tuple val(meta) , path(reads)
+    tuple val(meta), path(reads)
     tuple val(meta2), path(hashmap)
     tuple val(meta3), path(fasta)
-    val   sort_bam
+    val sort_bam
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
@@ -27,36 +30,41 @@ process NARFMAP_ALIGN {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def reads_command       = meta.single_end ? "-1 $reads" : "-1 ${reads[0]} -2 ${reads[1]}"
-    def samtools_command    = sort_bam ? 'sort' : 'view'
-    def extension_pattern   = /(--output-fmt|-O)+\s+(\S+)/
-    def extension_matcher   =  (args2 =~ extension_pattern)
-    def extension           = extension_matcher.getCount() > 0 ? extension_matcher[0][2].toLowerCase() : "bam"
-    def reference           = fasta && extension=="cram"  ? "--reference ${fasta}" : ""
-    if (!fasta && extension=="cram") error "Fasta reference is required for CRAM output"
+    def reads_command = meta.single_end ? "-1 ${reads}" : "-1 ${reads[0]} -2 ${reads[1]}"
+    def samtools_command = sort_bam ? 'sort' : 'view'
+    def extension_pattern = /(--output-fmt|-O)+\s+(\S+)/
+    def extension_matcher = (args2 =~ extension_pattern)
+    def extension = extension_matcher.getCount() > 0 ? extension_matcher[0][2].toLowerCase() : "bam"
+    def reference = fasta && extension == "cram" ? "--reference ${fasta}" : ""
+    if (!fasta && extension == "cram") {
+        error("Fasta reference is required for CRAM output")
+    }
 
     """
     dragen-os \\
-        -r $hashmap \\
-        $args \\
-        --num-threads $task.cpus \\
-        $reads_command \\
+        -r ${hashmap} \\
+        ${args} \\
+        --num-threads ${task.cpus} \\
+        ${reads_command} \\
         2>| >(tee ${prefix}.narfmap.log >&2) \\
-        | samtools $samtools_command $args2 --threads $task.cpus ${reference} -o ${prefix}.${extension} -
+        | samtools ${samtools_command} ${args2} --threads ${task.cpus} ${reference} -o ${prefix}.${extension} -
     """
 
     stub:
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def extension_pattern = /(--output-fmt|-O)+\s+(\S+)/
-    def extension_matcher =  (args2 =~ extension_pattern)
+    def extension_matcher = (args2 =~ extension_pattern)
     def extension = extension_matcher.getCount() > 0 ? extension_matcher[0][2].toLowerCase() : "bam"
-    if (!fasta && extension=="cram") error "Fasta reference is required for CRAM output"
+    if (!fasta && extension == "cram") {
+        error("Fasta reference is required for CRAM output")
+    }
 
     def create_index = ""
     if (extension == "cram") {
         create_index = "touch ${prefix}.crai"
-    } else if (extension == "bam") {
+    }
+    else if (extension == "bam") {
         create_index = "touch ${prefix}.csi"
     }
 

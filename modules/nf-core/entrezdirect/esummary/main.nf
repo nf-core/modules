@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ENTREZDIRECT_ESUMMARY {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/entrez-direct:16.2--he881be0_1':
-        'quay.io/biocontainers/entrez-direct:16.2--he881be0_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/entrez-direct:16.2--he881be0_1'
+        : 'quay.io/biocontainers/entrez-direct:16.2--he881be0_1'}"
 
     input:
     tuple val(meta), val(uid), path(uids_file)
@@ -22,20 +25,28 @@ process ENTREZDIRECT_ESUMMARY {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     input = uids_file ? "-input ${uids_file}" : "-id ${uid}"
-    if (!uid && !uids_file) error "No input. Valid input: an identifier or a .txt file with identifiers"
-    if (uid && uids_file) error "Only one input is required: a single identifier or a .txt file with identifiers"
+    if (!uid && !uids_file) {
+        error("No input. Valid input: an identifier or a .txt file with identifiers")
+    }
+    if (uid && uids_file) {
+        error("Only one input is required: a single identifier or a .txt file with identifiers")
+    }
     """
     esummary \\
-        $args \\
-        -db $database \\
-        $input > ${prefix}.xml
+        ${args} \\
+        -db ${database} \\
+        ${input} > ${prefix}.xml
 
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if (!uid && !uids_file) error "No input. Valid input: an identifier or a .txt file with identifiers"
-    if (uid && uids_file) error "Only one input is required: a single identifier or a .txt file with identifiers"
+    if (!uid && !uids_file) {
+        error("No input. Valid input: an identifier or a .txt file with identifiers")
+    }
+    if (uid && uids_file) {
+        error("Only one input is required: a single identifier or a .txt file with identifiers")
+    }
     """
     touch ${prefix}.xml
 

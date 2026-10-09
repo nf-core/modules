@@ -1,20 +1,23 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RTGTOOLS_CNVEVAL {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/dc/dca5ba13b7ec38bf7cacf00a33517b9080067bea638745c05d50a4957c75fc2e/data':
-        'community.wave.seqera.io/library/rtg-tools:3.13--3465421f1b0be0ce' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/dc/dca5ba13b7ec38bf7cacf00a33517b9080067bea638745c05d50a4957c75fc2e/data'
+        : 'community.wave.seqera.io/library/rtg-tools:3.13--3465421f1b0be0ce'}"
 
     input:
     tuple val(meta), path(query_vcf), path(query_vcf_tbi), path(truth_vcf), path(truth_vcf_tbi), path(evaluation_regions_bed)
 
     output:
-    tuple val(meta), path("*.baseline.bed.gz")    , emit: baseline_bed
-    tuple val(meta), path("*.calls.bed.gz")       , emit: calls_bed
+    tuple val(meta), path("*.baseline.bed.gz"), emit: baseline_bed
+    tuple val(meta), path("*.calls.bed.gz"), emit: calls_bed
     tuple val(meta), path("*.weighted_roc.tsv.gz"), emit: weighted_roc
-    tuple val(meta), path("*.summary.txt")        , emit: summary
+    tuple val(meta), path("*.summary.txt"), emit: summary
     tuple val("${task.process}"), val('rtgtools'), eval("rtg version | sed 's/Product: RTG Tools //; q'"), topic: versions, emit: versions_rtgtools
 
     when:
@@ -23,10 +26,10 @@ process RTGTOOLS_CNVEVAL {
     script:
     def args = task.ext.args ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def avail_mem = task.memory ? task.memory.toGiga() + "G": ""
+    def avail_mem = task.memory ? task.memory.toGiga() + "G" : ""
 
     """
-    rtg RTG_MEM=$avail_mem cnveval \\
+    rtg RTG_MEM=${avail_mem} cnveval \\
         ${args} \\
         --baseline=${truth_vcf} \\
         --calls=${query_vcf} \\
@@ -39,6 +42,7 @@ process RTGTOOLS_CNVEVAL {
         mv "\$f" "${prefix}.\${f##*/}"
     done
     """
+
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
 

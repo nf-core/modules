@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ULTRA_PIPELINE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ultra_bioinformatics:0.1--pyh7cba7a3_1':
-        'quay.io/biocontainers/ultra_bioinformatics:0.1--pyh7cba7a3_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/ultra_bioinformatics:0.1--pyh7cba7a3_1'
+        : 'quay.io/biocontainers/ultra_bioinformatics:0.1--pyh7cba7a3_1'}"
 
     input:
     tuple val(meta), path(reads)
@@ -25,12 +28,12 @@ process ULTRA_PIPELINE {
     """
     uLTRA \\
         pipeline \\
-        --t $task.cpus \\
-        --prefix $prefix \\
-        $args \\
-        $fasta \\
-        $gtf \\
-        $reads \\
+        --t ${task.cpus} \\
+        --prefix ${prefix} \\
+        ${args} \\
+        ${fasta} \\
+        ${gtf} \\
+        ${reads} \\
         ./
     """
 
@@ -39,6 +42,4 @@ process ULTRA_PIPELINE {
     """
     touch ${prefix}.sam
     """
-
-
 }

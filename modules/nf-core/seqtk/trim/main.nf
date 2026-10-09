@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SEQTK_TRIM {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/seqtk:1.4--he4a0461_1' :
-        'quay.io/biocontainers/seqtk:1.4--he4a0461_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/seqtk:1.4--he4a0461_1'
+        : 'quay.io/biocontainers/seqtk:1.4--he4a0461_1'}"
 
     input:
     tuple val(meta), path(reads)
@@ -18,14 +21,14 @@ process SEQTK_TRIM {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    printf "%s\\n" $reads | while read f;
+    printf "%s\\n" ${reads} | while read f;
     do
         seqtk \\
             trimfq \\
-            $args \\
+            ${args} \\
             \$f \\
             | gzip --no-name > ${prefix}_\$(basename \$f)
     done

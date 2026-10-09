@@ -1,27 +1,29 @@
-include { HTSLIB_BGZIPTABIX  } from '../../../modules/nf-core/htslib/bgziptabix/main'
-include { SAMTOOLS_DICT      } from '../../../modules/nf-core/samtools/dict/main'
-include { SAMTOOLS_FAIDX     } from '../../../modules/nf-core/samtools/faidx/main'
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
+include { HTSLIB_BGZIPTABIX } from '../../../modules/nf-core/htslib/bgziptabix/main'
+include { SAMTOOLS_DICT     } from '../../../modules/nf-core/samtools/dict/main'
+include { SAMTOOLS_FAIDX    } from '../../../modules/nf-core/samtools/faidx/main'
 
 workflow FASTA_BGZIP_INDEX_DICT_SAMTOOLS {
-
     take:
     ch_fasta // channel: [ val(meta), fasta ]
 
     main:
 
-    HTSLIB_BGZIPTABIX (
+    HTSLIB_BGZIPTABIX(
         ch_fasta.map { meta, fasta -> [meta, fasta, [], []] },
         'compress',
         [],
-        []
+        [],
     )
 
-    SAMTOOLS_FAIDX (
-        HTSLIB_BGZIPTABIX.out.output.map {meta, fasta -> [meta, fasta, []]},
-        true
+    SAMTOOLS_FAIDX(
+        HTSLIB_BGZIPTABIX.out.output.map { meta, fasta -> [meta, fasta, []] },
+        true,
     )
 
-    SAMTOOLS_DICT (
+    SAMTOOLS_DICT(
         HTSLIB_BGZIPTABIX.out.output
     )
 
@@ -32,5 +34,5 @@ workflow FASTA_BGZIP_INDEX_DICT_SAMTOOLS {
         .join(SAMTOOLS_DICT.out.dict)
 
     emit:
-    fasta_fai_gzi_dict = ch_joined             // channel: [ val(meta),  fasta.gz, fai, gzi, sizes, dict ]
+    fasta_fai_gzi_dict = ch_joined // channel: [ val(meta),  fasta.gz, fai, gzi, sizes, dict ]
 }

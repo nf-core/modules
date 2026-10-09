@@ -1,25 +1,28 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process LEEHOM {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/leehom:1.2.15--h29e30f7_1' :
-        'quay.io/biocontainers/leehom:1.2.15--h29e30f7_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/leehom:1.2.15--h29e30f7_1'
+        : 'quay.io/biocontainers/leehom:1.2.15--h29e30f7_1'}"
 
     input:
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("${prefix}.bam")          , emit: bam                , optional: true
-    tuple val(meta), path("${prefix}.fq.gz")        , emit: fq_pass            , optional: true
-    tuple val(meta), path("${prefix}.fail.fq.gz")   , emit: fq_fail            , optional: true
-    tuple val(meta), path("${prefix}_r1.fq.gz")     , emit: unmerged_r1_fq_pass, optional: true
+    tuple val(meta), path("${prefix}.bam"), emit: bam, optional: true
+    tuple val(meta), path("${prefix}.fq.gz"), emit: fq_pass, optional: true
+    tuple val(meta), path("${prefix}.fail.fq.gz"), emit: fq_fail, optional: true
+    tuple val(meta), path("${prefix}_r1.fq.gz"), emit: unmerged_r1_fq_pass, optional: true
     tuple val(meta), path("${prefix}_r1.fail.fq.gz"), emit: unmerged_r1_fq_fail, optional: true
-    tuple val(meta), path("${prefix}_r2.fq.gz")     , emit: unmerged_r2_fq_pass, optional: true
+    tuple val(meta), path("${prefix}_r2.fq.gz"), emit: unmerged_r2_fq_pass, optional: true
     tuple val(meta), path("${prefix}_r2.fail.fq.gz"), emit: unmerged_r2_fq_fail, optional: true
-    tuple val(meta), path("*.log")                  , emit: log
+    tuple val(meta), path("*.log"), emit: log
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('last'), val("1.2.15"), emit: versions_last, topic: versions
 
@@ -27,8 +30,8 @@ process LEEHOM {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args   ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
     if (reads.toString().endsWith('.bam')) {
         """
         leeHom \\
@@ -38,7 +41,8 @@ process LEEHOM {
             --log ${prefix}.log \\
             ${reads}
         """
-    } else if (meta.single_end) {
+    }
+    else if (meta.single_end) {
         """
         leeHom \\
             ${args} \\
@@ -47,7 +51,8 @@ process LEEHOM {
             -fqo ${prefix} \\
             --log ${prefix}.log
         """
-    } else {
+    }
+    else {
         """
         leeHom \\
             ${args} \\
@@ -60,8 +65,8 @@ process LEEHOM {
     }
 
     stub:
-    prefix        = task.ext.prefix ?: "${meta.id}"
-    is_bam        = reads.toString().endsWith('.bam')
+    prefix = task.ext.prefix ?: "${meta.id}"
+    is_bam = reads.toString().endsWith('.bam')
     is_single_end = meta.single_end
 
     """
@@ -79,5 +84,4 @@ process LEEHOM {
     fi
     touch ${prefix}.log
     """
-
 }

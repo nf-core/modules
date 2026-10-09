@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GTDBTK_CLASSIFYWF {
     tag "${meta.id}"
     label 'process_high_memory'
@@ -8,30 +11,30 @@ process GTDBTK_CLASSIFYWF {
         : 'community.wave.seqera.io/library/gtdbtk:2.7.2--64b0fd171db01270'}"
 
     input:
-    tuple val(meta)   , path("bins/*")
+    tuple val(meta), path("bins/*")
     tuple val(db_name), path(db)
     val use_pplacer_scratch_dir
 
     output:
-    tuple val(meta), path("${prefix}")                               , emit: gtdb_outdir
-    tuple val(meta), path("${prefix}/classify/*.summary.tsv")        , emit: summary
-    tuple val(meta), path("${prefix}/classify/*.classify.tree")      , emit: tree       , optional: true
-    tuple val(meta), path("${prefix}/identify/*.markers_summary.tsv"), emit: markers    , optional: true
-    tuple val(meta), path("${prefix}/align/*.msa.fasta.gz")          , emit: msa        , optional: true
-    tuple val(meta), path("${prefix}/align/*.user_msa.fasta.gz")     , emit: user_msa   , optional: true
-    tuple val(meta), path("${prefix}/align/*.filtered.tsv")          , emit: filtered   , optional: true
-    tuple val(meta), path("${prefix}/identify/*.failed_genomes.tsv") , emit: failed     , optional: true
-    tuple val(meta), path("${prefix}/${prefix}.log")                 , emit: log
-    tuple val(meta), path("${prefix}/${prefix}.warnings.log")        , emit: warnings
-    tuple val("${task.process}"), val('gtdbtk'), eval("gtdbtk --version 2>&1 | grep -Eo '[0-9]+(\\.[0-9]+)+' | head -1") , topic: versions, emit: versions_gtdbtk
+    tuple val(meta), path("${prefix}"), emit: gtdb_outdir
+    tuple val(meta), path("${prefix}/classify/*.summary.tsv"), emit: summary
+    tuple val(meta), path("${prefix}/classify/*.classify.tree"), emit: tree, optional: true
+    tuple val(meta), path("${prefix}/identify/*.markers_summary.tsv"), emit: markers, optional: true
+    tuple val(meta), path("${prefix}/align/*.msa.fasta.gz"), emit: msa, optional: true
+    tuple val(meta), path("${prefix}/align/*.user_msa.fasta.gz"), emit: user_msa, optional: true
+    tuple val(meta), path("${prefix}/align/*.filtered.tsv"), emit: filtered, optional: true
+    tuple val(meta), path("${prefix}/identify/*.failed_genomes.tsv"), emit: failed, optional: true
+    tuple val(meta), path("${prefix}/${prefix}.log"), emit: log
+    tuple val(meta), path("${prefix}/${prefix}.warnings.log"), emit: warnings
+    tuple val("${task.process}"), val('gtdbtk'), eval("gtdbtk --version 2>&1 | grep -Eo '[0-9]+(\\.[0-9]+)+' | head -1"), topic: versions, emit: versions_gtdbtk
     tuple val("${task.process}"), val('gtdb_db'), eval('grep VERSION_DATA \$GTDBTK_DATA_PATH/metadata/metadata.txt | sed "s/VERSION_DATA=//"'), topic: versions, emit: versions_gtdbtk_db
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args            = task.ext.args ?: ''
-    prefix              = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
     def pplacer_scratch = use_pplacer_scratch_dir ? "--scratch_dir pplacer_tmp" : ""
     """
     export GTDBTK_DATA_PATH="\$(find -L ${db} -name 'metadata' -type d -exec dirname {} \\;)"

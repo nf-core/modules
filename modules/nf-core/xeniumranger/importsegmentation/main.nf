@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process XENIUMRANGER_IMPORTSEGMENTATION {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     container "quay.io/nf-core/xeniumranger:4.0"
@@ -18,7 +21,7 @@ process XENIUMRANGER_IMPORTSEGMENTATION {
 
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "XENIUMRANGER_IMPORTSEGMENTATION module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("XENIUMRANGER_IMPORTSEGMENTATION module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
 
     prefix = task.ext.prefix ?: "${meta.id}"
@@ -27,23 +30,36 @@ process XENIUMRANGER_IMPORTSEGMENTATION {
     // transcript_assignment and viz_polygons are for transcript assignment results
     // they are mutually exclusive
     if ((nuclei || cells) && (transcript_assignment || viz_polygons)) {
-        error "--nuclei and --cells are for image segmentation results, which are mutually exclusive with --transcript-assignment and --viz-polygons for transcript assignment results. Please use only one of them."
+        error("--nuclei and --cells are for image segmentation results, which are mutually exclusive with --transcript-assignment and --viz-polygons for transcript assignment results. Please use only one of them.")
     }
 
     def assembled_args = []
-    if (task.ext.args) { assembled_args << task.ext.args.trim() }
+    if (task.ext.args) {
+        assembled_args << task.ext.args.trim()
+    }
     // --expansion-distance is only valid for nuclei-based imports.
     // xeniumranger rejects it for transcript-assignment imports and cells-only imports.
-    if (nuclei && expansion_distance != null) { assembled_args << "--expansion-distance=${expansion_distance}" }
-    if (nuclei) { assembled_args << "--nuclei=\"${nuclei}\"" }
-    if (cells) { assembled_args << "--cells=\"${cells}\"" }
-    if (transcript_assignment) { assembled_args << "--transcript-assignment=\"${transcript_assignment}\"" }
-    if (viz_polygons) { assembled_args << "--viz-polygons=\"${viz_polygons}\"" }
+    if (nuclei && expansion_distance != null) {
+        assembled_args << "--expansion-distance=${expansion_distance}"
+    }
+    if (nuclei) {
+        assembled_args << "--nuclei=\"${nuclei}\""
+    }
+    if (cells) {
+        assembled_args << "--cells=\"${cells}\""
+    }
+    if (transcript_assignment) {
+        assembled_args << "--transcript-assignment=\"${transcript_assignment}\""
+    }
+    if (viz_polygons) {
+        assembled_args << "--viz-polygons=\"${viz_polygons}\""
+    }
     if (coordinate_transform) {
         assembled_args << "--coordinate-transform=\"${coordinate_transform}\""
         // if coordinate_transform is provided, units must be microns
         assembled_args << "--units=\"microns\""
-    } else if (units) {
+    }
+    else if (units) {
         assembled_args << "--units=\"${units}\""
     }
 
@@ -67,5 +83,4 @@ process XENIUMRANGER_IMPORTSEGMENTATION {
     mkdir -p "${prefix}"
     touch "${prefix}/experiment.xenium"
     """
-
 }

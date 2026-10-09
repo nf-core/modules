@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CELLRANGERATAC_MKREF {
-    tag "$reference_config"
+    tag "${reference_config}"
     label 'process_medium'
 
     container "quay.io/nf-core/cellranger-atac:2.1.0"
@@ -21,20 +24,20 @@ process CELLRANGERATAC_MKREF {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "CELLRANGERATAC_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead."
+        exit(1, "CELLRANGERATAC_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     def args = task.ext.args ?: ''
     """
     cellranger-atac \\
         mkref \\
-        --config=$reference_config \\
-        $args
+        --config=${reference_config} \\
+        ${args}
     """
 
     stub:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "CELLRANGERATAC_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead."
+        exit(1, "CELLRANGERATAC_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     """
     mkdir -p "${reference_name}/"

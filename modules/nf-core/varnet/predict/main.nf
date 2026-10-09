@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VARNET_PREDICT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/varnet:1.5.3--pyhdfd78af_0':
-        'quay.io/biocontainers/varnet:1.5.3--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/varnet:1.5.3--pyhdfd78af_0'
+        : 'quay.io/biocontainers/varnet:1.5.3--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(input_tumor), path(index_tumor), path(input_normal), path(index_normal), path(candidates, stageAs: 'candidates')
@@ -17,7 +20,6 @@ process VARNET_PREDICT {
     tuple val(meta), path("${prefix}/${prefix}.vcf.gz"), emit: vcf
     tuple val(meta), path("${prefix}/predictions"), emit: predictions
     tuple val("${task.process}"), val("varnet"), val("1.5.3"), emit: versions_varnet, topic: versions
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,7 +28,7 @@ process VARNET_PREDICT {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     if (!input_normal) {
-        error "VARNET_PREDICT requires a matched normal BAM. Tumor-only mode needs large germline resource files (dbSNP and gnomAD) that are not shipped with the conda package, so it is not supported by this module. To run tumor-only, use the VarNet Docker image directly: https://github.com/skandlab/VarNet"
+        error("VARNET_PREDICT requires a matched normal BAM. Tumor-only mode needs large germline resource files (dbSNP and gnomAD) that are not shipped with the conda package, so it is not supported by this module. To run tumor-only, use the VarNet Docker image directly: https://github.com/skandlab/VarNet")
     }
     """
     export TF_CPP_MIN_LOG_LEVEL=3

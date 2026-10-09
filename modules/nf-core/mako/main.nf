@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MAKO {
     tag "${meta.id}"
     label 'process_medium'
@@ -11,10 +14,10 @@ process MAKO {
     tuple val(meta), path(bam)
 
     output:
-    tuple val(meta), path("${prefix}.bam"),     emit: bam
+    tuple val(meta), path("${prefix}.bam"), emit: bam
     tuple val(meta), path("${prefix}.bam.bai"), emit: bai, optional: true
-    tuple val("${task.process}"), val('mako'),  eval("mako --version | sed '1!d; s/^[^ ]* //; s/ .*//'"),    topic: versions, emit: versions_mako
-    tuple val("${task.process}"), val('fgumi'), eval("mako --version | sed '2!d; s/.* //'"),    topic: versions, emit: versions_fgumi
+    tuple val("${task.process}"), val('mako'), eval("mako --version | sed '1!d; s/^[^ ]* //; s/ .*//'"), topic: versions, emit: versions_mako
+    tuple val("${task.process}"), val('fgumi'), eval("mako --version | sed '2!d; s/.* //'"), topic: versions, emit: versions_fgumi
 
     when:
     task.ext.when == null || task.ext.when

@@ -1,15 +1,18 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process AMULETY_TRANSLATE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c3/c39fc87288811f7806452ecbdb559b9e9bba71aebb82c60d60af939a73bdf614/data':
-        'community.wave.seqera.io/library/igblast_curl_python_transformers_pruned:05685e2c81024d42' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c3/c39fc87288811f7806452ecbdb559b9e9bba71aebb82c60d60af939a73bdf614/data'
+        : 'community.wave.seqera.io/library/igblast_curl_python_transformers_pruned:05685e2c81024d42'}"
 
     input:
     tuple val(meta), path(tsv)
-    path(reference_igblast)
+    path reference_igblast
 
     output:
     tuple val(meta), path("*_translated.tsv"), emit: repertoire_translated
@@ -23,15 +26,15 @@ process AMULETY_TRANSLATE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     export IGDATA=${reference_igblast}
     amulety \\
     translate-igblast \\
     --nproc ${task.cpus} \\
-    $args \\
-    --input-file $tsv \\
+    ${args} \\
+    --input-file ${tsv} \\
     --output-dir . \\
     --reference-dir ${reference_igblast}
 

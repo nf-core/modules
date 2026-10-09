@@ -1,26 +1,29 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CUSTOM_MULTIQCCUSTOMBIOTYPE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/python:3.12.12' :
-        'quay.io/biocontainers/python:3.12.12' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/python:3.12.12'
+        : 'quay.io/biocontainers/python:3.12.12'}"
 
     input:
     tuple val(meta), path(count)
     tuple val(meta2), path(header)
 
     output:
-    tuple val(meta), path("*biotype_counts_mqc.tsv")      , emit: tsv
-    tuple val(meta), path("*biotype_counts_rrna_mqc.tsv") , emit: rrna
-    path "versions.yml"                                   , emit: versions, topic: versions
+    tuple val(meta), path("*biotype_counts_mqc.tsv"), emit: tsv
+    tuple val(meta), path("*biotype_counts_rrna_mqc.tsv"), emit: rrna
+    path "versions.yml", emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    template 'mqc_features_stat.py'
+    template('mqc_features_stat.py')
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"

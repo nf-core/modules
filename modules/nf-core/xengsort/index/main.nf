@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process XENGSORT_INDEX {
-    tag "$host_fasta"
+    tag "${host_fasta}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
@@ -13,8 +16,8 @@ process XENGSORT_INDEX {
     val nobjects
 
     output:
-    tuple val(meta2), path("*.hash")          , emit: hash
-    tuple val(meta2), path("*.info")          , emit: info
+    tuple val(meta2), path("*.hash"), emit: hash
+    tuple val(meta2), path("*.info"), emit: info
     tuple val("${task.process}"), val('xengsort'), eval("xengsort --version"), topic: versions, emit: versions_xengsort
 
     when:
@@ -42,7 +45,7 @@ process XENGSORT_INDEX {
     }
     """
     xengsort index \\
-        $args \\
+        ${args} \\
         --threads-split ${split_threads} \\
         --threads-read ${read_threads} \\
         --subtables ${subtables} \\

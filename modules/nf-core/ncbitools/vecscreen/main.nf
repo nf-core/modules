@@ -1,15 +1,18 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process NCBITOOLS_VECSCREEN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     container 'docker.io/biocontainers/ncbi-tools-bin:6.1.20170106-6-deb_cv2'
 
     input:
-    tuple val(meta) , path(fasta_file)
+    tuple val(meta), path(fasta_file)
     tuple val(meta2), path(adapters_database_directory)
 
     output:
-    tuple val(meta), path("${prefix}.vecscreen.out")    , emit: vecscreen_output
+    tuple val(meta), path("${prefix}.vecscreen.out"), emit: vecscreen_output
     // WARN: Version information not provided by tool on CLI.
     // WARN: VecScreen doesn't output a version number and doesn't appear to have a Github repository. 1.0 is arbitrarily used here as the version number
     tuple val("${task.process}"), val('vecscreen'), val('1.0'), emit: versions_vecscreen, topic: versions
@@ -20,9 +23,9 @@ process NCBITOOLS_VECSCREEN {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "The VecScreen module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("The VecScreen module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
-    def args   = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """

@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process NGSCHECKMATE_NCM {
     label 'process_low'
 
@@ -13,10 +16,10 @@ process NGSCHECKMATE_NCM {
 
     output:
     tuple val(meta), path("*_corr_matrix.txt"), emit: corr_matrix
-    tuple val(meta), path("*_matched.txt"),     emit: matched
-    tuple val(meta), path("*_all.txt"),         emit: all
-    tuple val(meta), path("*.pdf"),             emit: pdf, optional: true
-    tuple val(meta), path("*.vcf"),             emit: vcf, optional: true
+    tuple val(meta), path("*_matched.txt"), emit: matched
+    tuple val(meta), path("*_all.txt"), emit: all
+    tuple val(meta), path("*.pdf"), emit: pdf, optional: true
+    tuple val(meta), path("*.vcf"), emit: vcf, optional: true
     tuple val("${task.process}"), val('ngscheckmate'), eval("ncm.py --help | sed '7!d;s/.* v//g'"), topic: versions, emit: versions_ngscheckmate
 
     when:
@@ -25,7 +28,7 @@ process NGSCHECKMATE_NCM {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def unzip = files.any {file ->  file.toString().endsWith(".vcf.gz") }
+    def unzip = files.any { file -> file.toString().endsWith(".vcf.gz") }
     """
     if ${unzip}
     then

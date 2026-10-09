@@ -1,13 +1,16 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process IPHOP_DOWNLOAD {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/iphop:1.3.2--pyhdfd78af_0':
-        'quay.io/biocontainers/iphop:1.3.2--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/iphop:1.3.2--pyhdfd78af_0'
+        : 'quay.io/biocontainers/iphop:1.3.2--pyhdfd78af_0'}"
 
     output:
-    path "iphop_db/"        , emit: iphop_db
+    path "iphop_db/", emit: iphop_db
     tuple val("${task.process}"), val('iphop'), eval("iphop --version 2>&1 | sed '1!d;s/iPHoP v//;s/:.*//'"), emit: versions_iphop, topic: versions
 
     when:

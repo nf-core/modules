@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PYDAMAGE_ANALYZE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5b/5b5b5289345c54b75f42a54d300d222b9c0de8de5a60ecbe9ad829b6b85f1abd/data'
-:         'community.wave.seqera.io/library/pydamage:1.0--1c195c7c48e87ebb' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5b/5b5b5289345c54b75f42a54d300d222b9c0de8de5a60ecbe9ad829b6b85f1abd/data'
+        : 'community.wave.seqera.io/library/pydamage:1.0--1c195c7c48e87ebb'}"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -26,9 +29,9 @@ process PYDAMAGE_ANALYZE {
 
     pydamage \\
         analyze \\
-        $args \\
-        -p $task.cpus \\
-        $bam
+        ${args} \\
+        -p ${task.cpus} \\
+        ${bam}
 
     mv pydamage_results/pydamage_results.csv ${prefix}_pydamage_results.csv
     """
@@ -38,5 +41,4 @@ process PYDAMAGE_ANALYZE {
     """
     touch ${prefix}_pydamage_results.csv
     """
-
 }

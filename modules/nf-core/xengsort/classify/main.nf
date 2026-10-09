@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process XENGSORT_CLASSIFY {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/xengsort:2.2.1--pyhdfd78af_0':
-        'quay.io/biocontainers/xengsort:2.2.1--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/xengsort:2.2.1--pyhdfd78af_0'
+        : 'quay.io/biocontainers/xengsort:2.2.1--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(reads)
@@ -13,12 +16,12 @@ process XENGSORT_CLASSIFY {
     val mode
 
     output:
-    tuple val(meta), path("*-host*.fq.gz"),                                     emit: host, optional: true
-    tuple val(meta), path("*-graft*.fq.gz"),                                    emit: graft, optional: true
-    tuple val(meta), path("*-both*.fq.gz"),                                     emit: both, optional: true
-    tuple val(meta), path("*-neither*.fq.gz"),                                  emit: neither, optional: true
-    tuple val(meta), path("*-ambiguous*.fq.gz"),                                emit: ambiguous, optional: true
-    tuple val("${task.process}"), val('xengsort'), eval("xengsort --version"),  emit: versions_xengsort, topic: versions
+    tuple val(meta), path("*-host*.fq.gz"), emit: host, optional: true
+    tuple val(meta), path("*-graft*.fq.gz"), emit: graft, optional: true
+    tuple val(meta), path("*-both*.fq.gz"), emit: both, optional: true
+    tuple val(meta), path("*-neither*.fq.gz"), emit: neither, optional: true
+    tuple val(meta), path("*-ambiguous*.fq.gz"), emit: ambiguous, optional: true
+    tuple val("${task.process}"), val('xengsort'), eval("xengsort --version"), emit: versions_xengsort, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

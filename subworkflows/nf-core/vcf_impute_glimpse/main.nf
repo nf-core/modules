@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { GLIMPSE_CHUNK                           } from '../../../modules/nf-core/glimpse/chunk/main'
 include { GLIMPSE_PHASE                           } from '../../../modules/nf-core/glimpse/phase/main'
 include { GLIMPSE_LIGATE                          } from '../../../modules/nf-core/glimpse/ligate/main'
@@ -6,11 +9,11 @@ include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_LIGATE } from '../../../modules/nf-co
 
 workflow VCF_IMPUTE_GLIMPSE {
     take:
-    ch_vcf    // channel (mandatory): [ meta, vcf, csi, infos ]
-    ch_ref    // channel (mandatory): [ meta, vcf, csi, region ]
+    ch_vcf // channel (mandatory): [ meta, vcf, csi, infos ]
+    ch_ref // channel (mandatory): [ meta, vcf, csi, region ]
     ch_chunks // channel (optional) : [ meta, regionin, regionout ]
-    ch_map    // channel (optional) : [ meta, map ]
-    chunk     // val (optional)     : boolean to activate/deactivate chunking step
+    ch_map // channel (optional) : [ meta, map ]
+    chunk // val (optional)     : boolean to activate/deactivate chunking step
 
     main:
 
@@ -50,7 +53,7 @@ workflow VCF_IMPUTE_GLIMPSE {
 
     phase_input = ch_vcf
         .combine(ch_chunks_panel_map)
-        .map{ metaI, vcf, csi, sample, metaPC, regionin, regionout, ref, ref_index, _region, map, region_size ->
+        .map { metaI, vcf, csi, sample, metaPC, regionin, regionout, ref, ref_index, _region, map, region_size ->
             def chr = regionout.tokenize(':')[0]
             def region = regionout.tokenize(':')[1]
             def start = region.tokenize('-')[0]
@@ -58,12 +61,7 @@ workflow VCF_IMPUTE_GLIMPSE {
             def paddedStart = String.format('%010d', start as long)
             def paddedEnd = String.format('%010d', end as long)
             def regionoutPadded = "${chr}:${paddedStart}-${paddedEnd}"
-            [
-                metaI + metaPC + ["regionout": regionout, "regionoutPadded": regionoutPadded, "regionSize": region_size],
-                vcf, csi, sample, // target input
-                regionin, regionout, // chunks
-                ref, ref_index, map // reference panel
-            ]
+            [metaI + metaPC + ["regionout": regionout, "regionoutPadded": regionoutPadded, "regionSize": region_size], vcf, csi, sample, regionin, regionout, ref, ref_index, map]
         }
 
     GLIMPSE_PHASE(phase_input)
@@ -79,10 +77,7 @@ workflow VCF_IMPUTE_GLIMPSE {
         )
         .map { meta, vcf, index ->
             def keysToKeep = meta.keySet() - ['regionout', 'regionoutPadded', 'regionSize']
-            [
-                groupKey(meta.subMap(keysToKeep), meta.regionSize),
-                vcf, index
-            ]
+            [groupKey(meta.subMap(keysToKeep), meta.regionSize), vcf, index]
         }
         .groupTuple()
         .map { groupKeyObj, vcf, index ->
@@ -103,6 +98,6 @@ workflow VCF_IMPUTE_GLIMPSE {
     )
 
     emit:
-    chunks    = ch_chunks    // channel: [ val(meta), regionin, regionout ]
+    chunks    = ch_chunks // channel: [ val(meta), regionin, regionout ]
     vcf_index = ch_vcf_index // channel: [ val(meta), vcf, index ]
 }

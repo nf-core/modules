@@ -1,14 +1,17 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process JUPYTERNOTEBOOK {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     //NB: You likely want to override this with a container containing all required
     //dependencies for your analysis. The container at least needs to contain the
     //ipykernel, jupytext, papermill and nbconvert Python packages.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-514b1a5d280c7043110b2a8d0a87b57ba392a963:879972fc8bdc81ee92f2bce3b4805d89a772bf84-0' :
-        'quay.io/biocontainers/mulled-v2-514b1a5d280c7043110b2a8d0a87b57ba392a963:879972fc8bdc81ee92f2bce3b4805d89a772bf84-0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/mulled-v2-514b1a5d280c7043110b2a8d0a87b57ba392a963:879972fc8bdc81ee92f2bce3b4805d89a772bf84-0'
+        : 'quay.io/biocontainers/mulled-v2-514b1a5d280c7043110b2a8d0a87b57ba392a963:879972fc8bdc81ee92f2bce3b4805d89a772bf84-0'}"
 
     input:
     tuple val(meta), path(notebook)
@@ -17,19 +20,19 @@ process JUPYTERNOTEBOOK {
     val kernel_
 
     output:
-    tuple val(meta), path("*.html")                                                                                , emit: report
-    tuple val(meta), path("artifacts/")                                                                            , emit: artifacts, optional: true
-    tuple val("${task.process}"), val('jupytext'), eval('jupytext --version')                                      , emit: versions_jupytext, topic: versions
+    tuple val(meta), path("*.html"), emit: report
+    tuple val(meta), path("artifacts/"), emit: artifacts, optional: true
+    tuple val("${task.process}"), val('jupytext'), eval('jupytext --version'), emit: versions_jupytext, topic: versions
     tuple val("${task.process}"), val('ipykernel'), eval('python -c "import ipykernel; print(ipykernel.__version__)"'), emit: versions_ipykernel, topic: versions
-    tuple val("${task.process}"), val('nbconvert'), eval('jupyter nbconvert --version')                            , emit: versions_nbconvert, topic: versions
-    tuple val("${task.process}"), val('papermill'), eval('papermill --version | cut -f1 -d" "')                    , emit: versions_papermill, topic: versions
+    tuple val("${task.process}"), val('nbconvert'), eval('jupyter nbconvert --version'), emit: versions_nbconvert, topic: versions
+    tuple val("${task.process}"), val('papermill'), eval('papermill --version | cut -f1 -d" "'), emit: versions_papermill, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def kernel   = kernel_ ?: '-'
+    def kernel = kernel_ ?: '-'
     // Implicit parameters can be overwritten by supplying a value with parameters
     notebook_parameters = [
         meta: meta,
@@ -53,10 +56,10 @@ process JUPYTERNOTEBOOK {
     mkdir artifacts
 
     # Set parallelism for BLAS/MKL etc. to avoid over-booking of resources
-    export MKL_NUM_THREADS="$task.cpus"
-    export OPENBLAS_NUM_THREADS="$task.cpus"
-    export OMP_NUM_THREADS="$task.cpus"
-    export NUMBA_NUM_THREADS="$task.cpus"
+    export MKL_NUM_THREADS="${task.cpus}"
+    export OPENBLAS_NUM_THREADS="${task.cpus}"
+    export OMP_NUM_THREADS="${task.cpus}"
+    export NUMBA_NUM_THREADS="${task.cpus}"
 
     # Set temporary directory to remove warning about Matplotlib creating temporary directory
     export MPLCONFIGDIR=./tmp

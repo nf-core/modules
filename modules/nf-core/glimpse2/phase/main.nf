@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GLIMPSE2_PHASE {
     tag "${meta.id}"
     label 'process_single'
@@ -20,7 +23,7 @@ process GLIMPSE2_PHASE {
     input:
     tuple val(meta), path(input, arity: '1..*'), path(input_index), path(bamlist), path(samples_file), val(input_region), val(output_region), path(reference), path(reference_index), path(map)
     tuple val(meta2), path(fasta_reference), path(fasta_reference_index)
-    val(output_suffix)
+    val output_suffix
 
     output:
     tuple val(meta), path("*.{vcf,vcf.gz,bcf,bgen}"), emit: phased_variants

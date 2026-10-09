@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { QUILT_QUILT     } from '../../../modules/nf-core/quilt/quilt'
 include { GLIMPSE2_LIGATE } from '../../../modules/nf-core/glimpse2/ligate'
 include { BCFTOOLS_INDEX  } from '../../../modules/nf-core/bcftools/index'
@@ -43,13 +46,20 @@ workflow BAM_IMPUTE_QUILT {
             }
             [
                 metaPC + metaI + ["regionout": regionout, "regionoutPadded": regionoutPadded, "regionSize": region_size],
-                bam, bai,
-                bampath, bamname,
-                hap, legend,
+                bam,
+                bai,
+                bampath,
+                bamname,
+                hap,
+                legend,
                 posfile,
-                [], [],
-                chr, start, end,
-                n_gen, buffer,
+                [],
+                [],
+                chr,
+                start,
+                end,
+                n_gen,
+                buffer,
                 gmap,
             ]
         }
@@ -63,7 +73,8 @@ workflow BAM_IMPUTE_QUILT {
             def keysToKeep = meta.keySet() - ['regionout', 'regionoutPadded', 'regionSize']
             [
                 groupKey(meta.subMap(keysToKeep), meta.regionSize),
-                vcf, index,
+                vcf,
+                index,
             ]
         }
         .groupTuple()

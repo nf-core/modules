@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 // Database connection parameters are passed as val() inputs to support
 // dynamic per-sample configuration. Set PGPASSWORD via environment variable
 // or Nextflow secrets before running:
@@ -15,9 +18,9 @@ process VCFPGLOADER_LOAD {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vcf-pg-loader:0.5.4--pyhdfd78af_0' :
-        'quay.io/biocontainers/vcf-pg-loader:0.5.4--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/vcf-pg-loader:0.5.4--pyhdfd78af_0'
+        : 'quay.io/biocontainers/vcf-pg-loader:0.5.4--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(vcf), path(tbi), val(db_host), val(db_port), val(db_name), val(db_user), val(db_schema)

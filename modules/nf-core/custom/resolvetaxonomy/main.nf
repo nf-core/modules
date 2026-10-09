@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 // The resolved sequences keep the input's own extension, with any '.gz' stripped first so a
 // compressed input is not written as "*.resolved.gz". Falls back to 'fasta' when the input has
 // no extension at all (e.g. a download URL with no filename suffix), which would otherwise
@@ -8,21 +11,21 @@ def resolvedExtension(sequences) {
 }
 
 process CUSTOM_RESOLVETAXONOMY {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/biopython:1.84' :
-        'quay.io/biocontainers/biopython:1.84' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/biopython:1.84'
+        : 'quay.io/biocontainers/biopython:1.84'}"
 
     input:
     tuple val(meta), path(taxonomy), path(sequences), val(taxonomy_required)
 
     output:
-    tuple val(meta), path("*.resolved.tax"),                                  emit: taxonomy
-    tuple val(meta), path("*.resolved.${resolvedExtension(sequences)}"),      emit: sequences
-    tuple val(meta), path("*.warnings.txt"),                                  emit: warnings
+    tuple val(meta), path("*.resolved.tax"), emit: taxonomy
+    tuple val(meta), path("*.resolved.${resolvedExtension(sequences)}"), emit: sequences
+    tuple val(meta), path("*.warnings.txt"), emit: warnings
     tuple val("${task.process}"), val('biopython'), eval("python3 -c 'import Bio; print(Bio.__version__)'"), emit: versions_biopython, topic: versions
 
     when:

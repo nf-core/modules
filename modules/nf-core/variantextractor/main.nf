@@ -1,25 +1,28 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VARIANTEXTRACTOR {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/variant-extractor:5.1.0--pyh106432d_0':
-        'quay.io/biocontainers/variant-extractor:5.1.0--pyh106432d_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/variant-extractor:5.1.0--pyh106432d_0'
+        : 'quay.io/biocontainers/variant-extractor:5.1.0--pyh106432d_0'}"
 
     input:
     tuple val(meta), path(vcf)
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
-    path "versions.yml"           , emit: versions_variantextractor, topic: versions
+    path "versions.yml", emit: versions_variantextractor, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    prefix       = task.ext.prefix ?: "${meta.id}"
-    pass_only    = task.ext.args?.contains('--pass-only')       ? 'True'  : 'False'
+    prefix = task.ext.prefix ?: "${meta.id}"
+    pass_only = task.ext.args?.contains('--pass-only') ? 'True' : 'False'
     ensure_pairs = task.ext.args?.contains('--no-ensure-pairs') ? 'False' : 'True'
 
     """
@@ -27,7 +30,7 @@ process VARIANTEXTRACTOR {
     echo ${ensure_pairs}
     """
 
-    template 'variantextractor.py'
+    template('variantextractor.py')
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"

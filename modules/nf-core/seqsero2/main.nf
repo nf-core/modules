@@ -1,17 +1,20 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SEQSERO2 {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/seqsero2:1.2.1--py_0' :
-        'quay.io/biocontainers/seqsero2:1.2.1--py_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/seqsero2:1.2.1--py_0'
+        : 'quay.io/biocontainers/seqsero2:1.2.1--py_0'}"
 
     input:
     tuple val(meta), path(seqs)
 
     output:
-    tuple val(meta), path("results/*_log.txt")   , emit: log
+    tuple val(meta), path("results/*_log.txt"), emit: log
     tuple val(meta), path("results/*_result.tsv"), emit: tsv
     tuple val(meta), path("results/*_result.txt"), emit: txt
     tuple val("${task.process}"), val('seqsero2'), eval('SeqSero2_package.py --version 2>&1 | sed \'s/^.*SeqSero2_package.py //\''), emit: versions_seqsero2, topic: versions
@@ -24,11 +27,11 @@ process SEQSERO2 {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     SeqSero2_package.py \\
-        $args \\
+        ${args} \\
         -d results/ \\
-        -n $prefix \\
-        -p $task.cpus \\
-        -i $seqs
+        -n ${prefix} \\
+        -p ${task.cpus} \\
+        -i ${seqs}
     """
 
     stub:

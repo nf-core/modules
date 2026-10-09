@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process LOFREQ_CALL {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/lofreq:2.1.5--py38h588ecb2_4' :
-        'quay.io/biocontainers/lofreq:2.1.5--py38h588ecb2_4' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/lofreq:2.1.5--py38h588ecb2_4'
+        : 'quay.io/biocontainers/lofreq:2.1.5--py38h588ecb2_4'}"
 
     input:
     tuple val(meta), path(bam), path(intervals)
@@ -25,11 +28,11 @@ process LOFREQ_CALL {
     """
     lofreq \\
         call \\
-        $args \\
-        $options_intervals \\
-        -f $fasta \\
+        ${args} \\
+        ${options_intervals} \\
+        -f ${fasta} \\
         -o ${prefix}.vcf.gz \\
-        $bam
+        ${bam}
     """
 
     stub:

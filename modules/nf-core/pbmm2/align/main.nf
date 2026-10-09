@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PBMM2_ALIGN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/86/8678f70f464a6afd39f737c492a6e7d627ee7bb8a9cf54fe5008b564834084b5/data':
-        'community.wave.seqera.io/library/pbmm2:26.2.0--37598eea709c00f6' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/86/8678f70f464a6afd39f737c492a6e7d627ee7bb8a9cf54fe5008b564834084b5/data'
+        : 'community.wave.seqera.io/library/pbmm2:26.2.0--37598eea709c00f6'}"
 
     input:
     tuple val(meta), path(bam)
@@ -37,9 +40,9 @@ process PBMM2_ALIGN {
 
     pbmm2 \\
         align \\
-        $args \\
+        ${args} \\
         \${fasta} \\
-        $bam \\
+        ${bam} \\
         ${prefix}.bam \\
         --num-threads ${task.cpus}
     """

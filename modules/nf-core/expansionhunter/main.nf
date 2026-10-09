@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process EXPANSIONHUNTER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/14/14e1d96665f934a98e569fc5a6fa237f98d3753eee2b6f60d0aea8ff9d44f406/data' :
-        'community.wave.seqera.io/library/expansionhunter:5.0.0--389ada7e191a4fba' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/14/14e1d96665f934a98e569fc5a6fa237f98d3753eee2b6f60d0aea8ff9d44f406/data'
+        : 'community.wave.seqera.io/library/expansionhunter:5.0.0--389ada7e191a4fba'}"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -14,9 +17,9 @@ process EXPANSIONHUNTER {
     tuple val(meta4), path(variant_catalog)
 
     output:
-    tuple val(meta), path("*.vcf.gz")        , emit: vcf
-    tuple val(meta), path("*.json.gz")       , emit: json
-    tuple val(meta), path("*_realigned.bam") , emit: bam
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
+    tuple val(meta), path("*.json.gz"), emit: json
+    tuple val(meta), path("*_realigned.bam"), emit: bam
     tuple val("${task.process}"), val('expansionhunter'), eval("ExpansionHunter --version | head -1 | sed -n 's/^.*ExpansionHunter v//; s/]//p'"), topic: versions, emit: versions_expansionhunter
     tuple val("${task.process}"), val('bgzip'), eval("bgzip --version | sed '1!d;s/.* //'"), topic: versions, emit: versions_bgzip
 

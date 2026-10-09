@@ -1,16 +1,19 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VG_DECONSTRUCT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vg:1.73.0--h9ee0642_0' :
-        'quay.io/biocontainers/vg:1.73.0--h9ee0642_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/vg:1.73.0--h9ee0642_0'
+        : 'quay.io/biocontainers/vg:1.73.0--h9ee0642_0'}"
 
     input:
     tuple val(meta), path(gfa)
-    path(pb)
-    path(gbwt)
+    path pb
+    path gbwt
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
@@ -26,11 +29,11 @@ process VG_DECONSTRUCT {
     def gbwt_arg = gbwt ? "--gbwt ${gbwt}" : ""
     """
     vg deconstruct \\
-        --threads $task.cpus \\
-        $args \\
-        $snarls \\
-        $gbwt_arg \\
-        $gfa > ${prefix}.vcf
+        --threads ${task.cpus} \\
+        ${args} \\
+        ${snarls} \\
+        ${gbwt_arg} \\
+        ${gfa} > ${prefix}.vcf
     """
 
     stub:

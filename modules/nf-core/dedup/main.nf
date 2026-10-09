@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DEDUP {
     tag "${meta.id}"
     label 'process_single'
@@ -12,10 +15,10 @@ process DEDUP {
 
     output:
     // _rmdup is hardcoded output from dedup
-    tuple val(meta), path("${prefix}.bam"),  emit: bam
+    tuple val(meta), path("${prefix}.bam"), emit: bam
     tuple val(meta), path("${prefix}.json"), emit: json
     tuple val(meta), path("${prefix}.hist"), emit: hist
-    tuple val(meta), path("${prefix}.log"),  emit: log
+    tuple val(meta), path("${prefix}.log"), emit: log
     tuple val("${task.process}"), val('dedup'), eval("dedup --version | grep -oE '[0-9]+\\.[0-9]+\\.[0-9]+'"), emit: versions_dedup, topic: versions
 
     when:

@@ -1,21 +1,24 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GAPPA_EXAMINEASSIGN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gappa:0.9.0--h077b44d_0':
-        'quay.io/biocontainers/gappa:0.9.0--h077b44d_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/gappa:0.9.0--h077b44d_0'
+        : 'quay.io/biocontainers/gappa:0.9.0--h077b44d_0'}"
 
     input:
     tuple val(meta), path(jplace), path(taxonomy)
 
     output:
-    tuple val(meta), path("*profile.tsv")         , emit: profile
+    tuple val(meta), path("*profile.tsv"), emit: profile
     tuple val(meta), path("*labelled_tree.newick"), emit: labelled_tree
-    tuple val(meta), path("*per_query.tsv")       , emit: per_query, optional: true
-    tuple val(meta), path("*krona.profile")       , emit: krona    , optional: true
-    tuple val(meta), path("*sativa.tsv")          , emit: sativa   , optional: true
+    tuple val(meta), path("*per_query.tsv"), emit: per_query, optional: true
+    tuple val(meta), path("*krona.profile"), emit: krona, optional: true
+    tuple val(meta), path("*sativa.tsv"), emit: sativa, optional: true
     tuple val("${task.process}"), val('gappa'), eval("gappa --version 2>&1 | sed 's/v//'"), emit: versions_gappa, topic: versions
 
     when:
@@ -27,9 +30,9 @@ process GAPPA_EXAMINEASSIGN {
     // gappa reads a gzipped jplace natively, but a gzipped taxon file is read as text and
     // fails with "A line in the taxon file didn't have two tab separated columns".
     def taxonfile = taxonomy.name.endsWith('.gz') ? taxonomy.baseName : "${taxonomy}"
-    def gunzip    = taxonomy.name.endsWith('.gz') ? "gzip -cd ${taxonomy} > ${taxonfile}" : ""
+    def gunzip = taxonomy.name.endsWith('.gz') ? "gzip -cd ${taxonomy} > ${taxonfile}" : ""
     """
-    $gunzip
+    ${gunzip}
 
     gappa \\
         examine assign \\

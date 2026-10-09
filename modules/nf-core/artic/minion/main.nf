@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ARTIC_MINION {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5a747cc579edfc0cb2176b749afc02550ab5de678ae6a40d2cfadeba6c0de25d/data' :
-        'community.wave.seqera.io/library/artic:1.6.2--d4956cdc155b8612' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5a747cc579edfc0cb2176b749afc02550ab5de678ae6a40d2cfadeba6c0de25d/data'
+        : 'community.wave.seqera.io/library/artic:1.6.2--d4956cdc155b8612'}"
 
     input:
     tuple val(meta), path(fastq)
@@ -14,28 +17,28 @@ process ARTIC_MINION {
     path hdf5_plugin_path
 
     output:
-    tuple val(meta), path("${prefix}.*")                              , emit: results
-    tuple val(meta), path("${prefix}.sorted.bam")                     , emit: bam
-    tuple val(meta), path("${prefix}.sorted.bam.bai")                 , emit: bai
-    tuple val(meta), path("${prefix}.trimmed.rg.sorted.bam")          , emit: bam_trimmed
-    tuple val(meta), path("${prefix}.trimmed.rg.sorted.bam.bai")      , emit: bai_trimmed
-    tuple val(meta), path("${prefix}.primertrimmed.rg.sorted.bam")    , emit: bam_primertrimmed
+    tuple val(meta), path("${prefix}.*"), emit: results
+    tuple val(meta), path("${prefix}.sorted.bam"), emit: bam
+    tuple val(meta), path("${prefix}.sorted.bam.bai"), emit: bai
+    tuple val(meta), path("${prefix}.trimmed.rg.sorted.bam"), emit: bam_trimmed
+    tuple val(meta), path("${prefix}.trimmed.rg.sorted.bam.bai"), emit: bai_trimmed
+    tuple val(meta), path("${prefix}.primertrimmed.rg.sorted.bam"), emit: bam_primertrimmed
     tuple val(meta), path("${prefix}.primertrimmed.rg.sorted.bam.bai"), emit: bai_primertrimmed
-    tuple val(meta), path("${prefix}.consensus.fasta")                , emit: fasta
-    tuple val(meta), path("${prefix}.pass.vcf.gz")                    , emit: vcf
-    tuple val(meta), path("${prefix}.pass.vcf.gz.tbi")                , emit: tbi
-    tuple val(meta), path("*.json")                                   , emit: json, optional:true
+    tuple val(meta), path("${prefix}.consensus.fasta"), emit: fasta
+    tuple val(meta), path("${prefix}.pass.vcf.gz"), emit: vcf
+    tuple val(meta), path("${prefix}.pass.vcf.gz.tbi"), emit: tbi
+    tuple val(meta), path("*.json"), emit: json, optional: true
     tuple val("${task.process}"), val('artic'), eval("artic -v 2>&1 | sed 's/^.*artic //; s/ .*\$//'"), topic: versions, emit: versions_artic
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args   ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
 
-    def model_dir_val   = model_dir ?: "\$(which artic | sed 's/artic/models/')"
-    def hd5_plugin_path = hdf5_plugin_path?: "/usr/local/lib/python3.6/site-packages/ont_fast5_api/vbz_plugin"
+    def model_dir_val = model_dir ?: "\$(which artic | sed 's/artic/models/')"
+    def hd5_plugin_path = hdf5_plugin_path ?: "/usr/local/lib/python3.6/site-packages/ont_fast5_api/vbz_plugin"
     """
     export HDF5_PLUGIN_PATH=${hd5_plugin_path}
 

@@ -1,20 +1,23 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FASTAWINDOWS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fasta_windows:0.2.4--hec16e2b_0':
-        'quay.io/biocontainers/fasta_windows:0.2.4--hec16e2b_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/fasta_windows:0.2.4--hec16e2b_0'
+        : 'quay.io/biocontainers/fasta_windows:0.2.4--hec16e2b_0'}"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("fw_out/*_freq_windows.tsv")    , emit: freq
-    tuple val(meta), path("fw_out/*_mononuc_windows.tsv") , emit: mononuc
-    tuple val(meta), path("fw_out/*_dinuc_windows.tsv")   , emit: dinuc
-    tuple val(meta), path("fw_out/*_trinuc_windows.tsv")  , emit: trinuc
+    tuple val(meta), path("fw_out/*_freq_windows.tsv"), emit: freq
+    tuple val(meta), path("fw_out/*_mononuc_windows.tsv"), emit: mononuc
+    tuple val(meta), path("fw_out/*_dinuc_windows.tsv"), emit: dinuc
+    tuple val(meta), path("fw_out/*_trinuc_windows.tsv"), emit: trinuc
     tuple val(meta), path("fw_out/*_tetranuc_windows.tsv"), emit: tetranuc
     tuple val("${task.process}"), val('fasta_windows'), eval('fasta_windows --version | cut -d" " -f3'), emit: versions_fasta_windows, topic: versions
 
@@ -26,10 +29,10 @@ process FASTAWINDOWS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     rm -rf fw_out
-    env RAYON_NUM_THREADS=$task.cpus \\
+    env RAYON_NUM_THREADS=${task.cpus} \\
     fasta_windows \\
-        $args \\
-        --fasta $fasta \\
+        ${args} \\
+        --fasta ${fasta} \\
         --output ${prefix}
     """
 

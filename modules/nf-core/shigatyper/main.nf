@@ -1,17 +1,20 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SHIGATYPER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/shigatyper:2.0.5--pyhdfd78af_0':
-        'quay.io/biocontainers/shigatyper:2.0.5--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/shigatyper:2.0.5--pyhdfd78af_0'
+        : 'quay.io/biocontainers/shigatyper:2.0.5--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("${prefix}.tsv")     , emit: tsv
+    tuple val(meta), path("${prefix}.tsv"), emit: tsv
     tuple val(meta), path("${prefix}-hits.tsv"), optional: true, emit: hits
     tuple val("${task.process}"), val('shigatyper'), eval("shigatyper --version | sed 's/ShigaTyper //'"), emit: versions_shigatyper, topic: versions
 
@@ -29,7 +32,8 @@ process SHIGATYPER {
             --SE ${reads} \\
             --name ${prefix}
         """
-    } else {
+    }
+    else {
         """
         shigatyper \\
             ${args} \\

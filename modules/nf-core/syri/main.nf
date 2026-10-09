@@ -1,21 +1,24 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SYRI {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/syri:1.7.1--py310ha6711e0_0':
-        'quay.io/biocontainers/syri:1.7.1--py310ha6711e0_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/syri:1.7.1--py310ha6711e0_0'
+        : 'quay.io/biocontainers/syri:1.7.1--py310ha6711e0_0'}"
 
     input:
     tuple val(meta), path(infile)
     tuple val(meta2), path(query_fasta)
     tuple val(meta3), path(reference_fasta)
-    val(file_type)
+    val file_type
 
     output:
-    tuple val(meta), path("*.syri.out"), emit: syri , optional: true
-    tuple val(meta), path("*.error.log"), emit: error , optional: true
+    tuple val(meta), path("*.syri.out"), emit: syri, optional: true
+    tuple val(meta), path("*.error.log"), emit: error, optional: true
     tuple val("${task.process}"), val('syri'), eval("syri --version"), emit: versions_syri, topic: versions
 
     when:
@@ -24,7 +27,9 @@ process SYRI {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if ( ! ( file_type in [ 'T', 'S', 'B', 'P' ] ) ) { error "File type should be one of [ 'T', 'S', 'B', 'P' ]" }
+    if (!(file_type in ['T', 'S', 'B', 'P'])) {
+        error("File type should be one of [ 'T', 'S', 'B', 'P' ]")
+    }
     """
     syri \\
         -c ${infile} \\

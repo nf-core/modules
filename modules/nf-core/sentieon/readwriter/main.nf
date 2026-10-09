@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SENTIEON_READWRITER {
     tag "${meta.id}"
     label 'process_medium'
@@ -14,8 +17,8 @@ process SENTIEON_READWRITER {
     tuple val(meta3), path(fai)
 
     output:
-    tuple val(meta), path("${prefix}"),                             emit: output
-    tuple val(meta), path("${prefix}.${index}"),                    emit: index
+    tuple val(meta), path("${prefix}"), emit: output
+    tuple val(meta), path("${prefix}.${index}"), emit: index
     tuple val(meta), path("${prefix}"), path("${prefix}.${index}"), emit: output_index
     tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
@@ -27,7 +30,7 @@ process SENTIEON_READWRITER {
 
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
-    def input_str = input.sort {in -> in.getName() }.collect {in ->  "-i ${in}" }.join(' ')
+    def input_str = input.sort { in -> in.getName() }.collect { in -> "-i ${in}" }.join(' ')
     def reference = fasta ? "-r ${fasta}" : ''
 
     // bam -> bam: prefix = "<filename>.bam"

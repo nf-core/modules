@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DYSGU_RUN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1a/1a8c4c95342498790fe752b702051dc40eb71114d4c0b36e844daad1fea7b593/data':
-        'community.wave.seqera.io/library/dysgu:1.8.7--a06ec137d500dc83' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1a/1a8c4c95342498790fe752b702051dc40eb71114d4c0b36e844daad1fea7b593/data'
+        : 'community.wave.seqera.io/library/dysgu:1.8.7--a06ec137d500dc83'}"
 
     input:
     tuple val(meta), path(input), path(index)
@@ -17,7 +20,7 @@ process DYSGU_RUN {
     tuple val(meta7), path(exclude_bed)
 
     output:
-    tuple val(meta), path('*.vcf.gz')    , emit: vcf
+    tuple val(meta), path('*.vcf.gz'), emit: vcf
     tuple val(meta), path('*.vcf.gz.tbi'), emit: tbi
     tuple val("${task.process}"), val('dysgu'), eval("dysgu --version 2>&1 | sed 's/.*version //'"), emit: versions_dysgu, topic: versions
 
@@ -44,9 +47,9 @@ process DYSGU_RUN {
         ${exclude} \\
         --procs ${task.cpus} \\
         --overwrite \\
-        $fasta \\
+        ${fasta} \\
         . \\
-        $input \\
+        ${input} \\
         | bgzip ${args2} --threads ${task.cpus} --stdout > ${prefix}.vcf.gz && tabix ${args3} ${prefix}.vcf.gz
     """
 

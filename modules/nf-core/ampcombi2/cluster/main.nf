@@ -1,19 +1,22 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process AMPCOMBI2_CLUSTER {
     tag 'ampcombi2'
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ampcombi:3.0.0--pyhdfd78af_0':
-        'quay.io/biocontainers/ampcombi:3.0.0--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/ampcombi:3.0.0--pyhdfd78af_0'
+        : 'quay.io/biocontainers/ampcombi:3.0.0--pyhdfd78af_0'}"
 
     input:
-    path(summary_file)
+    path summary_file
 
     output:
-    path("Ampcombi_summary_cluster.tsv")                   , emit: cluster_tsv
-    path("Ampcombi_summary_cluster_representative_seq.tsv"), emit: rep_cluster_tsv
-    path("Ampcombi_cluster.log")                           , emit: log, optional:true
+    path ("Ampcombi_summary_cluster.tsv"), emit: cluster_tsv
+    path ("Ampcombi_summary_cluster_representative_seq.tsv"), emit: rep_cluster_tsv
+    path ("Ampcombi_cluster.log"), emit: log, optional: true
     tuple val("${task.process}"), val('ampcombi'), eval("ampcombi --version | sed 's/ampcombi //'"), emit: versions_ampcombi, topic: versions
 
     when:

@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SCANPY_PCA {
     tag "${meta.id}"
     label 'process_medium'
@@ -13,8 +16,8 @@ process SCANPY_PCA {
 
     output:
     tuple val(meta), path("*.{h5ad,zarr}"), emit: anndata
-    tuple val(meta), path("X_*.pkl")      , emit: obsm
-    path "versions.yml"                   , emit: versions, topic: versions
+    tuple val(meta), path("X_*.pkl"), emit: obsm
+    path "versions.yml", emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

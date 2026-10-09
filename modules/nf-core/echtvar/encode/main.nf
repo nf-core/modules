@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ECHTVAR_ENCODE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/87/87b75cb9e32b89261e8cbdca40b219a5d58fc78ebf92d5ca97c7ca23da1b9517/data':
-        'community.wave.seqera.io/library/echtvar:0.2.4--e59eba33636e3aab' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/87/87b75cb9e32b89261e8cbdca40b219a5d58fc78ebf92d5ca97c7ca23da1b9517/data'
+        : 'community.wave.seqera.io/library/echtvar:0.2.4--e59eba33636e3aab'}"
 
     input:
     tuple val(meta), path(vcf)
@@ -24,17 +27,17 @@ process ECHTVAR_ENCODE {
     """
     echtvar \\
         encode \\
-        $args \\
+        ${args} \\
         ${prefix}.zip \\
         ${json_filters} \\
-        $vcf
+        ${vcf}
     """
 
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo $args
+    echo ${args}
 
     touch ${prefix}.zip
     """

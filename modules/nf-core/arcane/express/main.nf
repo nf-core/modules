@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ARCANE_EXPRESS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/arcane:1.0.0--pyh106432d_0':
-        'quay.io/biocontainers/arcane:1.0.0--pyh106432d_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/arcane:1.0.0--pyh106432d_0'
+        : 'quay.io/biocontainers/arcane:1.0.0--pyh106432d_0'}"
 
     input:
     tuple val(meta), path(reads)
@@ -13,10 +16,10 @@ process ARCANE_EXPRESS {
     val chemistry
 
     output:
-    tuple val(meta), path("*_counts.mex.gz"),                                   emit: counts
-    tuple val(meta), path("*_genes.tsv.gz"),                                    emit: genes
-    tuple val(meta), path("*_barcodes.tsv.gz"),                                 emit: barcodes
-    tuple val("${task.process}"), val('arcane'), eval("arcane --version"),      emit: versions_arcane, topic: versions
+    tuple val(meta), path("*_counts.mex.gz"), emit: counts
+    tuple val(meta), path("*_genes.tsv.gz"), emit: genes
+    tuple val(meta), path("*_barcodes.tsv.gz"), emit: barcodes
+    tuple val("${task.process}"), val('arcane'), eval("arcane --version"), emit: versions_arcane, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

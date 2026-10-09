@@ -1,17 +1,20 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PURGEDUPS_PURGEDUPS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/purge_dups:1.2.6--py39h7132678_1':
-        'quay.io/biocontainers/purge_dups:1.2.6--py39h7132678_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/purge_dups:1.2.6--py39h7132678_1'
+        : 'quay.io/biocontainers/purge_dups:1.2.6--py39h7132678_1'}"
 
     input:
     tuple val(meta), path(basecov), path(cutoff), path(paf)
 
     output:
-    tuple val(meta), path("*.dups.bed.gz")   , emit: bed
+    tuple val(meta), path("*.dups.bed.gz"), emit: bed
     tuple val(meta), path("*.purge_dups.log"), emit: log
     // WARN: Incorrect version printed inside the container, please check this if bumping version ( \$( purge_dups -h |& sed '3!d; s/.*: //' ))
     tuple val("${task.process}"), val('purge_dups'), val('1.2.6'), emit: versions_purgedups, topic: versions

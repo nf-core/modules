@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VIENNARNA_RNAFOLD {
     tag '$rna_fastq'
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/viennarna:2.6.4--py310pl5321h6cc9453_1':
-        'quay.io/biocontainers/viennarna:2.6.4--py310pl5321h6cc9453_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/viennarna:2.6.4--py310pl5321h6cc9453_1'
+        : 'quay.io/biocontainers/viennarna:2.6.4--py310pl5321h6cc9453_1'}"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.fold")                                                             , emit: rnafold_txt
-    tuple val(meta), path("*.ps")                                                               , emit: rnafold_ps
+    tuple val(meta), path("*.fold"), emit: rnafold_txt
+    tuple val(meta), path("*.ps"), emit: rnafold_ps
     tuple val("${task.process}"), val('RNAfold'), eval("RNAfold --version 2>&1 | sed -n '1s/RNAfold //p'"), emit: versions_rnafold, topic: versions
 
     when:

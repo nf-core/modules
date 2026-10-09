@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SENTIEON_VARCAL {
     tag "${meta.id}"
     label 'process_low'
@@ -17,10 +20,10 @@ process SENTIEON_VARCAL {
     path fai
 
     output:
-    tuple val(meta), path("*.recal"),    emit: recal
-    tuple val(meta), path("*.idx"),      emit: idx
+    tuple val(meta), path("*.recal"), emit: recal
+    tuple val(meta), path("*.idx"), emit: idx
     tuple val(meta), path("*.tranches"), emit: tranches
-    tuple val(meta), path("*plots.R"),   emit: plots, optional: true
+    tuple val(meta), path("*plots.R"), emit: plots, optional: true
     tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
     when:
@@ -53,13 +56,16 @@ process SENTIEON_VARCAL {
         // one string), so split each element on `--resource:` just like the
         // String branch does, then process each individual resource.
         def processedResources = labels_input.collectMany { label ->
-            label.split('--resource:').findAll().collect { resource_string ->
-                def items = resource_string.split(' ', 2)
-                if (items.size() != 2) {
-                    error("Expected the resource string '${resource_string}' to contain two elements separated by a space.")
+            label
+                .split('--resource:')
+                .findAll()
+                .collect { resource_string ->
+                    def items = resource_string.split(' ', 2)
+                    if (items.size() != 2) {
+                        error("Expected the resource string '${resource_string}' to contain two elements separated by a space.")
+                    }
+                    "--resource ${items[1]} --resource_param ${items[0].replaceFirst('^--resource:', '')}"
                 }
-                "--resource ${items[1]} --resource_param ${items[0].replaceFirst('^--resource:', '')}"
-            }
         }
         labels_command = processedResources.join(' ')
     }

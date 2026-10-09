@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VCFLIB_VCFBREAKMULTI {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fc/fc33d59c090cef123aca26ae17fbddbd596640304d8325cbd5816229fa2c05ee/data':
-        'community.wave.seqera.io/library/vcflib:1.0.14--cc8ffb2c1a080797' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fc/fc33d59c090cef123aca26ae17fbddbd596640304d8325cbd5816229fa2c05ee/data'
+        : 'community.wave.seqera.io/library/vcflib:1.0.14--cc8ffb2c1a080797'}"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
@@ -13,31 +16,30 @@ process VCFLIB_VCFBREAKMULTI {
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
     tuple val("${task.process}"), val('vcflib'), val("1.0.14"), topic: versions, emit: versions_vcflib
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args    = task.ext.args   ?: ''
-    def args2   = task.ext.args2  ?: ''
-    def prefix  = task.ext.prefix ?: "${meta.id}.breakmulti"
+    def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}.breakmulti"
 
-    if ( "$vcf" == "${prefix}.vcf.gz" ) {
-        error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${vcf}" == "${prefix}.vcf.gz") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
     }
 
     """
     vcfbreakmulti \\
-        $vcf \\
-        $args \\
-        | bgzip -c $args2 > ${prefix}.vcf.gz
+        ${vcf} \\
+        ${args} \\
+        | bgzip -c ${args2} > ${prefix}.vcf.gz
     """
 
     stub:
-    def prefix  = task.ext.prefix ?: "${meta.id}.breakmulti"
-    if ( "$vcf" == "${prefix}.vcf.gz" ) {
-        error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    def prefix = task.ext.prefix ?: "${meta.id}.breakmulti"
+    if ("${vcf}" == "${prefix}.vcf.gz") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
     }
 
     """

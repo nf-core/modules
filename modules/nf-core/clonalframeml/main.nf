@@ -1,21 +1,24 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CLONALFRAMEML {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/clonalframeml:1.12--h7d875b9_1' :
-        'quay.io/biocontainers/clonalframeml:1.12--h7d875b9_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/clonalframeml:1.12--h7d875b9_1'
+        : 'quay.io/biocontainers/clonalframeml:1.12--h7d875b9_1'}"
 
     input:
     tuple val(meta), path(newick), path(msa)
 
     output:
-    tuple val(meta), path("*.emsim.txt")                   , emit: emsim, optional: true
-    tuple val(meta), path("*.em.txt")                      , emit: em
-    tuple val(meta), path("*.importation_status.txt")      , emit: status
-    tuple val(meta), path("*.labelled_tree.newick")        , emit: newick
-    tuple val(meta), path("*.ML_sequence.fasta")           , emit: fasta
+    tuple val(meta), path("*.emsim.txt"), emit: emsim, optional: true
+    tuple val(meta), path("*.em.txt"), emit: em
+    tuple val(meta), path("*.importation_status.txt"), emit: status
+    tuple val(meta), path("*.labelled_tree.newick"), emit: newick
+    tuple val(meta), path("*.ML_sequence.fasta"), emit: fasta
     tuple val(meta), path("*.position_cross_reference.txt"), emit: pos_ref
     tuple val("${task.process}"), val("clonalframeml"), eval("ClonalFrameML -version 2>&1 | sed 's/^.*ClonalFrameML v//'"), topic: versions, emit: versions_clonalframeml
 
@@ -27,10 +30,10 @@ process CLONALFRAMEML {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     ClonalFrameML \\
-        $newick \\
-        <(gzip -cdf $msa) \\
-        $prefix \\
-        $args
+        ${newick} \\
+        <(gzip -cdf ${msa}) \\
+        ${prefix} \\
+        ${args}
     """
 
     stub:

@@ -1,21 +1,24 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TRANSDECODER_PREDICT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/transdecoder:5.7.1--pl5321hdfd78af_0':
-        'quay.io/biocontainers/transdecoder:5.7.1--pl5321hdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/transdecoder:5.7.1--pl5321hdfd78af_0'
+        : 'quay.io/biocontainers/transdecoder:5.7.1--pl5321hdfd78af_0'}"
 
     input:
     tuple val(meta), path(fasta)
-    path(fold)
+    path fold
 
     output:
-    tuple val(meta), path("*.transdecoder.pep")  , emit: pep
-    tuple val(meta), path("*.transdecoder.gff3") , emit: gff3
-    tuple val(meta), path("*.transdecoder.cds")  , emit: cds
-    tuple val(meta), path("*.transdecoder.bed")  , emit: bed
+    tuple val(meta), path("*.transdecoder.pep"), emit: pep
+    tuple val(meta), path("*.transdecoder.gff3"), emit: gff3
+    tuple val(meta), path("*.transdecoder.cds"), emit: cds
+    tuple val(meta), path("*.transdecoder.bed"), emit: bed
     tuple val("${task.process}"), val('transdecoder'), eval("TransDecoder.Predict --version | sed 's/TransDecoder.Predict //'"), emit: versions_transdecoder, topic: versions
 
     when:
@@ -31,18 +34,18 @@ process TRANSDECODER_PREDICT {
     # private, writable directory of symlinks instead. mv handles both staging modes: it moves a
     # symlink as a symlink, and renames a real directory in place, so nothing is deleted either way.
     # find avoids the dotglob/nullglob shell-option juggling that caused three earlier bugs here.
-    mv "$fold" "${fold}.staged"
+    mv "${fold}" "${fold}.staged"
     real_fold=\$(readlink -f "${fold}.staged")
     [ -d "\$real_fold" ] || { echo "TRANSDECODER_LONGORF's directory is missing: \$real_fold" >&2; exit 1; }
     [ -n "\$(ls -A "\$real_fold")" ] || { echo "TRANSDECODER_LONGORF produced an empty directory: \$real_fold" >&2; exit 1; }
-    mkdir "$fold"
-    find "\$real_fold" -mindepth 1 -maxdepth 1 -exec ln -s {} "$fold"/ \\;
+    mkdir "${fold}"
+    find "\$real_fold" -mindepth 1 -maxdepth 1 -exec ln -s {} "${fold}"/ \\;
 
     TransDecoder.Predict \\
-        $args \\
+        ${args} \\
         -O . \\
         -t \\
-        $fasta
+        ${fasta}
     """
 
     stub:

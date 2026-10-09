@@ -1,24 +1,27 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process METASPACE_DOWNLOAD {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c3/c317f9380b8b631acacad83ab362b2badb42e8782f6bfa03e5befe59f2382283/data':
-        'community.wave.seqera.io/library/python_pip_metaspace-converter:958b8906de66e072' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c3/c317f9380b8b631acacad83ab362b2badb42e8782f6bfa03e5befe59f2382283/data'
+        : 'community.wave.seqera.io/library/python_pip_metaspace-converter:958b8906de66e072'}"
 
     input:
     tuple val(dataset_id), val(database), val(version)
 
     output:
     path "${dataset_id}_*.csv", emit: results, optional: true
-    stdout                      emit: log
-    path "versions.yml"       , emit: versions, topic: versions
+    stdout emit: log
+    path "versions.yml", emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    template 'metaspace_download.py'
+    template('metaspace_download.py')
 
     stub:
     """

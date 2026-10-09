@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { UNTAR                     } from '../../../modules/nf-core/untar/main'
 include { GUNZIP                    } from '../../../modules/nf-core/gunzip/main'
 include { BISMARK_GENOMEPREPARATION } from '../../../modules/nf-core/bismark/genomepreparation/main'
@@ -27,21 +30,16 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
         .set { ch_fasta_branched }
 
     GUNZIP(
-        ch_fasta_branched.gzipped
-            .map{ meta, fasta, _fai -> [meta, fasta] }
+        ch_fasta_branched.gzipped.map { meta, fasta, _fai -> [meta, fasta] }
     )
 
     SAMTOOLS_FAIDX(
-        ch_fasta_branched.unzipped
-            .mix(GUNZIP.out.gunzip)
-            .map { meta, fasta ->
-                [meta, fasta, []]
-            },
+        ch_fasta_branched.unzipped.mix(GUNZIP.out.gunzip).map { meta, fasta ->
+            [meta, fasta, []]
+        },
         false,
     )
-    ch_fasta_fai = ch_fasta_branched
-        .unzipped.mix(GUNZIP.out.gunzip)
-        .join(SAMTOOLS_FAIDX.out.fai)
+    ch_fasta_fai = ch_fasta_branched.unzipped.mix(GUNZIP.out.gunzip).join(SAMTOOLS_FAIDX.out.fai)
 
     // Aligner: bismark or bismark_hisat
     if (aligner =~ /bismark/) {
@@ -65,7 +63,7 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
         }
         else {
             BISMARK_GENOMEPREPARATION(
-                ch_fasta_fai.map{ meta, fasta, _fai -> [meta, fasta] }
+                ch_fasta_fai.map { meta, fasta, _fai -> [meta, fasta] }
             )
             ch_bismark_index = BISMARK_GENOMEPREPARATION.out.index
         }
@@ -92,13 +90,13 @@ workflow FASTA_INDEX_BISMARK_BWAMETH {
         else {
             if (use_mem2) {
                 BWAMETH_INDEX(
-                    ch_fasta_fai.map{ meta, fasta, _fai -> [meta, fasta] },
+                    ch_fasta_fai.map { meta, fasta, _fai -> [meta, fasta] },
                     true,
                 )
             }
             else {
                 BWAMETH_INDEX(
-                    ch_fasta_fai.map{ meta, fasta, _fai -> [meta, fasta] },
+                    ch_fasta_fai.map { meta, fasta, _fai -> [meta, fasta] },
                     false,
                 )
             }

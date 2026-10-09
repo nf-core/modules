@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CRISPRESSO2 {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/crispresso2:2.3.4--py312hfcd9dac_0' :
-        'quay.io/biocontainers/crispresso2:2.3.4--py312hfcd9dac_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/crispresso2:2.3.4--py312hfcd9dac_0'
+        : 'quay.io/biocontainers/crispresso2:2.3.4--py312hfcd9dac_0'}"
 
     input:
     tuple val(meta), path(reads)
@@ -13,9 +16,9 @@ process CRISPRESSO2 {
     path amplicon_file
 
     output:
-    tuple val(meta), path("CRISPResso_on_*")        , emit: results
-    tuple val(meta), path("*.html")                 , emit: html
-    tuple val(meta), path("CRISPResso_on_*/*.txt")  , emit: txt
+    tuple val(meta), path("CRISPResso_on_*"), emit: results
+    tuple val(meta), path("*.html"), emit: html
+    tuple val(meta), path("CRISPResso_on_*/*.txt"), emit: txt
     tuple val("${task.process}"), val('crispresso2'), eval("CRISPResso --version 2>&1 | sed 's/CRISPResso //'"), emit: versions_crispresso2, topic: versions
 
     when:
@@ -29,20 +32,24 @@ process CRISPRESSO2 {
     def read_inputs = ""
     if (reads instanceof Path || reads.size() == 1) {
         read_inputs = "-r1 ${reads}"
-    } else {
+    }
+    else {
         read_inputs = "-r1 ${reads[0]} -r2 ${reads[1]}"
     }
 
     // Handle amplicon sequence vs amplicon file
     def amplicon_input = ""
     if (amplicon_file && amplicon_sequences) {
-        error "Both amplicon_file and amplicon_sequences are provided. Please provide only one."
-    } else if (amplicon_file) {
+        error("Both amplicon_file and amplicon_sequences are provided. Please provide only one.")
+    }
+    else if (amplicon_file) {
         amplicon_input = "-a \"\$(paste -sd, ${amplicon_file})\""
-    } else if (amplicon_sequences) {
+    }
+    else if (amplicon_sequences) {
         amplicon_input = "-a ${amplicon_sequences}"
-    } else if (task.ext.args && !task.ext.args.contains("--auto")) {
-        error "Neither amplicon_file nor amplicon_sequences is provided and automatic amplicon detection is not enabled. Please provide one."
+    }
+    else if (task.ext.args && !task.ext.args.contains("--auto")) {
+        error("Neither amplicon_file nor amplicon_sequences is provided and automatic amplicon detection is not enabled. Please provide one.")
     }
 
     """

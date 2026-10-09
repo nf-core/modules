@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HMMER_HMMALIGN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hmmer:3.4--hb6cb901_4' :
-        'quay.io/biocontainers/hmmer:3.4--hb6cb901_4' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/hmmer:3.4--hb6cb901_4'
+        : 'quay.io/biocontainers/hmmer:3.4--hb6cb901_4'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -23,9 +26,9 @@ process HMMER_HMMALIGN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     hmmalign \\
-        $args \\
-        $hmm \\
-        $fasta | gzip -c > ${prefix}.sto.gz
+        ${args} \\
+        ${hmm} \\
+        ${fasta} | gzip -c > ${prefix}.sto.gz
     """
 
     stub:

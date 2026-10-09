@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HOSTILE_CLEAN {
     tag "${meta.id}"
     label 'process_low'
@@ -8,22 +11,22 @@ process HOSTILE_CLEAN {
         : 'community.wave.seqera.io/library/hostile:2.0.2--a7f5e5d341b6b94b'}"
 
     input:
-    tuple val(meta)          , path(reads, stageAs: "input_reads/")
+    tuple val(meta), path(reads, stageAs: "input_reads/")
     tuple val(reference_name), path(reference_dir)
 
     output:
     tuple val(meta), path('*.fastq.gz'), emit: fastq
-    tuple val(meta), path('*.json')    , emit: json
+    tuple val(meta), path('*.json'), emit: json
     tuple val("${task.process}"), val('hostile'), eval("hostile --version"), emit: versions_hostile, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args         = task.ext.args ?: ''
-    def prefix       = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def sorted_reads = meta.single_end ? [reads].flatten() : reads.sort { read -> read.simpleName }
-    def reads_cmd    = meta.single_end ? "--fastq1 ${sorted_reads[0]}" : "--fastq1 ${sorted_reads[0]} --fastq2 ${sorted_reads[1]}"
+    def reads_cmd = meta.single_end ? "--fastq1 ${sorted_reads[0]}" : "--fastq1 ${sorted_reads[0]} --fastq2 ${sorted_reads[1]}"
     """
     export HOSTILE_CACHE_DIR=${reference_dir}
 
@@ -42,8 +45,8 @@ process HOSTILE_CLEAN {
     """
 
     stub:
-    def prefix       = task.ext.prefix ?: "${meta.id}"
-    def fake_read2   = !meta.single_end ? "echo '' | gzip > ${prefix}.clean_2.fastq.gz" : ""
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def fake_read2 = !meta.single_end ? "echo '' | gzip > ${prefix}.clean_2.fastq.gz" : ""
     """
     export HOSTILE_CACHE_DIR=${reference_dir}
     echo "" | gzip > ${prefix}.clean_1.fastq.gz

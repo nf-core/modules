@@ -1,17 +1,20 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process AMULETY_EMBED {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
     label 'process_gpu'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c3/c39fc87288811f7806452ecbdb559b9e9bba71aebb82c60d60af939a73bdf614/data':
-        'community.wave.seqera.io/library/igblast_curl_python_transformers_pruned:05685e2c81024d42' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c3/c39fc87288811f7806452ecbdb559b9e9bba71aebb82c60d60af939a73bdf614/data'
+        : 'community.wave.seqera.io/library/igblast_curl_python_transformers_pruned:05685e2c81024d42'}"
 
     input:
     tuple val(meta), path(tsv)
-    val(chain)
-    val(model)
+    val chain
+    val model
 
     output:
     tuple val(meta), path("${task.ext.prefix ?: meta.id}.tsv"), emit: embedding
@@ -25,23 +28,27 @@ process AMULETY_EMBED {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if ("${tsv}" == "${prefix}.tsv") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("${tsv}" == "${prefix}.tsv") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
 
     """
     TRANSFORMERS_CACHE="./cache" amulety \\
         embed \\
-        $args \\
-        --input-airr $tsv \\
-        --chain $chain \\
-        --model $model \\
+        ${args} \\
+        --input-airr ${tsv} \\
+        --chain ${chain} \\
+        --model ${model} \\
         --output-file-path ${prefix}.tsv
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if ("${tsv}" == "${prefix}.tsv") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("${tsv}" == "${prefix}.tsv") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
 
     """
     touch ${prefix}.tsv

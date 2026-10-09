@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { BEDTOOLS_SPLIT } from '../../../modules/nf-core/bedtools/split'
 
 workflow BED_SCATTER_BEDTOOLS {

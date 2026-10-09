@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PORECHOP_PORECHOP {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2b/2bce1f10c51906a66c4c4d3a7485394f67e304177192ad1cce6cf586a3a18bae/data' :
-        'community.wave.seqera.io/library/porechop_pigz:d1655e5b5bad786c' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2b/2bce1f10c51906a66c4c4d3a7485394f67e304177192ad1cce6cf586a3a18bae/data'
+        : 'community.wave.seqera.io/library/porechop_pigz:d1655e5b5bad786c'}"
 
     input:
     tuple val(meta), path(reads)
 
     output:
     tuple val(meta), path("*.fastq.gz"), emit: reads
-    tuple val(meta), path("*.log")     , emit: log
+    tuple val(meta), path("*.log"), emit: log
     tuple val("${task.process}"), val('porechop'), eval("porechop --version"), topic: versions, emit: versions_porechop
 
     when:

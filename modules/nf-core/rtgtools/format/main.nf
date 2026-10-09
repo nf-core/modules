@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RTGTOOLS_FORMAT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/dc/dca5ba13b7ec38bf7cacf00a33517b9080067bea638745c05d50a4957c75fc2e/data':
-        'community.wave.seqera.io/library/rtg-tools:3.13--3465421f1b0be0ce' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/dc/dca5ba13b7ec38bf7cacf00a33517b9080067bea638745c05d50a4957c75fc2e/data'
+        : 'community.wave.seqera.io/library/rtg-tools:3.13--3465421f1b0be0ce'}"
 
     input:
     tuple val(meta), path(input1), path(input2), path(sam_rg)
@@ -27,9 +30,10 @@ process RTGTOOLS_FORMAT {
 
     def avail_mem = "3G"
     if (!task.memory) {
-        log.info '[RTG format] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
-    } else {
-        avail_mem = (task.memory.mega*0.8).intValue() + "M"
+        log.info('[RTG format] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.')
+    }
+    else {
+        avail_mem = (task.memory.mega * 0.8).intValue() + "M"
     }
 
     """
@@ -45,9 +49,10 @@ process RTGTOOLS_FORMAT {
 
     def avail_mem = "3G"
     if (!task.memory) {
-        log.info '[RTG format] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
-    } else {
-        avail_mem = (task.memory.mega*0.8).intValue() + "M"
+        log.info('[RTG format] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.')
+    }
+    else {
+        avail_mem = (task.memory.mega * 0.8).intValue() + "M"
     }
     """
     touch ${prefix}.sdf

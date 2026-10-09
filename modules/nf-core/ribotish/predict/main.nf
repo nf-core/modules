@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RIBOTISH_PREDICT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ribotish:0.2.8--pyhdfd78af_0':
-        'quay.io/biocontainers/ribotish:0.2.8--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/ribotish:0.2.8--pyhdfd78af_0'
+        : 'quay.io/biocontainers/ribotish:0.2.8--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(bam_ribo), path(bai_ribo)
@@ -17,9 +20,9 @@ process RIBOTISH_PREDICT {
     tuple val(meta7), path(reference_gtf, stageAs: 'secondary.gtf')
 
     output:
-    tuple val(meta), path("*_pred.txt")        , emit: predictions
-    tuple val(meta), path("*_all.txt")         , emit: all
-    tuple val(meta), path("*_transprofile.py") , emit: transprofile
+    tuple val(meta), path("*_pred.txt"), emit: predictions
+    tuple val(meta), path("*_all.txt"), emit: all
+    tuple val(meta), path("*_transprofile.py"), emit: transprofile
     tuple val("${task.process}"), val('ribotish'), eval("ribotish --version | sed 's/ribotish //'"), topic: versions, emit: versions_ribotish
 
     when:
@@ -32,30 +35,30 @@ process RIBOTISH_PREDICT {
 
     ribo_bam_cmd = ''
     ti_bam_cmd = ''
-    if (bam_ribo){
+    if (bam_ribo) {
         ribo_bam_cmd = "-b ${bam_ribo.join(',')}"
-        if (para_ribo){
+        if (para_ribo) {
             ribo_bam_cmd += " --ribopara ${para_ribo.join(',')}"
         }
     }
-    if (bam_ti){
+    if (bam_ti) {
         ti_bam_cmd = "-t ${bam_ti.join(',')}"
-        if (para_ti){
+        if (para_ti) {
             ti_bam_cmd += " --tisparapara  ${para_ti.join(',')}"
         }
     }
     """
     ribotish predict \\
-        $ribo_bam_cmd \\
-        $ti_bam_cmd \\
-        -f $fasta \\
-        -g $gtf \\
-        $reference_gtf_arg \\
+        ${ribo_bam_cmd} \\
+        ${ti_bam_cmd} \\
+        -f ${fasta} \\
+        -g ${gtf} \\
+        ${reference_gtf_arg} \\
         -o ${prefix}_pred.txt \\
         --allresult ${prefix}_all.txt \\
         --transprofile ${prefix}_transprofile.py \\
-        -p $task.cpus \\
-        $args
+        -p ${task.cpus} \\
+        ${args}
     """
 
     stub:

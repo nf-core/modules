@@ -1,14 +1,17 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HMMER_HMMRANK {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/68/68261e24307fdf80b9988d6fd13cf3551735e6dc0e7e38003259f7d8efa84cdb/data' :
-        'community.wave.seqera.io/library/duckdb-cli:1.5.5--9c6d18d9f687a45d' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/68/68261e24307fdf80b9988d6fd13cf3551735e6dc0e7e38003259f7d8efa84cdb/data'
+        : 'community.wave.seqera.io/library/duckdb-cli:1.5.5--9c6d18d9f687a45d'}"
 
     input:
-    tuple val(meta), path(tblout), path(domtblout)    // Parquet tables from hmmer/formattsv + duckdb/table2parquet; domtblout is optional ([] when absent)
+    tuple val(meta), path(tblout), path(domtblout)
 
     output:
     tuple val(meta), path("*.hmmrank.tsv.gz"), emit: hmmrank
@@ -47,7 +50,8 @@ process HMMER_HMMRANK {
     // materialised temp tables, each free to break that tie differently (parallel threads give no
     // ordering guarantee) -- a total, identical order in both statements is what keeps a tied row's
     // prev_cummax and its running island count referring to the same relative position.
-    def islands_sql = { set -> """
+    def islands_sql = { set ->
+        """
 CREATE TEMP TABLE ${set}_prev AS
 SELECT accno, profile, query, ${set}_from AS f, ${set}_to AS t,
     MAX(${set}_to) OVER (
@@ -79,7 +83,8 @@ GROUP BY accno, profile, query;
     }
     // dom_raw is read once and reused by every *_prev table and dom_base below, rather than each
     // issuing its own read_parquet() of the same file (4 scans of one input down to 1).
-    def domtbl_sql = domtblout ? """
+    def domtbl_sql = domtblout
+        ? """
 CREATE TEMP TABLE dom_raw AS
 SELECT target_name AS accno, profile, query_name AS query, target_length AS tlen, query_length AS qlen,
     hmm_from, hmm_to, ali_from, ali_to, env_from, env_to
@@ -98,14 +103,16 @@ FROM dom_base
 LEFT JOIN hmm_coords USING (accno, profile, query)
 LEFT JOIN ali_coords USING (accno, profile, query)
 LEFT JOIN env_coords USING (accno, profile, query);
-""" : ''
+"""
+        : ''
     // rank 1 is what downstream consumers select on; ties are resolved by profile and then model
     // name (alphabetical) so the order is deterministic even when one file holds several models
     // and score/e-value alone don't break the tie. The final ORDER BY matters for its own sake
     // too, separate from `rank`: DuckDB does not otherwise guarantee row order (query
     // parallelism can interleave rows arbitrarily), so without it the output's row order --
     // and therefore its checksum -- would vary run to run even when its content doesn't.
-    def output_select = domtblout ? """
+    def output_select = domtblout
+        ? """
 SELECT ranked.profile, ranked.accno, ranked.profile_desc, ranked.evalue, ranked.score, ranked.rank,
     domain_coords.tlen, domain_coords.qlen,
     domain_coords.hmm_from, domain_coords.hmm_to, domain_coords.hmm_len, domain_coords.hmm_n_islands,
@@ -115,7 +122,8 @@ FROM ranked
 LEFT JOIN domain_coords
     ON ranked.accno = domain_coords.accno AND ranked.profile = domain_coords.profile AND ranked.profile_desc = domain_coords.query
 ORDER BY ranked.accno, ranked.rank
-""" : 'SELECT * FROM ranked ORDER BY accno, rank\n'
+"""
+        : 'SELECT * FROM ranked ORDER BY accno, rank\n'
 
     def sql = """\
     SET threads=${task.cpus};

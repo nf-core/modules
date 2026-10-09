@@ -1,17 +1,20 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TRYCYCLER_CLUSTER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/trycycler:0.5.3--pyhdfd78af_0':
-        'quay.io/biocontainers/trycycler:0.5.3--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/trycycler:0.5.3--pyhdfd78af_0'
+        : 'quay.io/biocontainers/trycycler:0.5.3--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(contigs), path(reads)
 
     output:
-    tuple val(meta), path("*") , emit: cluster_dir
+    tuple val(meta), path("*"), emit: cluster_dir
     tuple val("${task.process}"), val('trycycler'), eval("trycycler --version | sed 's/Trycycler v//'"), emit: versions_trycycler, topic: versions
 
     when:
@@ -28,7 +31,7 @@ process TRYCYCLER_CLUSTER {
         ${args} \\
         --assemblies ${contigs} \\
         --reads ${reads} \\
-        --threads $task.cpus \\
+        --threads ${task.cpus} \\
         --out_dir ${prefix}
 
     gzip ${args2} ${prefix}/cluster_*/*/*.fasta

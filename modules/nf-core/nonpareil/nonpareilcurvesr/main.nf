@@ -1,20 +1,23 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process NONPAREIL_NONPAREILCURVESR {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/nonpareil:3.5.5--r43hdcf5f25_0':
-        'quay.io/biocontainers/nonpareil:3.5.5--r43hdcf5f25_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/nonpareil:3.5.5--r43hdcf5f25_0'
+        : 'quay.io/biocontainers/nonpareil:3.5.5--r43hdcf5f25_0'}"
 
     input:
     tuple val(meta), path(npos)
 
     output:
     tuple val(meta), path("*.json"), emit: json, optional: true
-    tuple val(meta), path("*.tsv" ), emit: tsv , optional: true
-    tuple val(meta), path("*.csv" ), emit: csv , optional: true
-    tuple val(meta), path("*.pdf" ), emit: pdf , optional: true
+    tuple val(meta), path("*.tsv"), emit: tsv, optional: true
+    tuple val(meta), path("*.csv"), emit: csv, optional: true
+    tuple val(meta), path("*.pdf"), emit: pdf, optional: true
 
     tuple val("${task.process}"), val('nonpareil'), eval('nonpareil -V 2>&1 | sed "s/Nonpareil v//"'), emit: versions_nonpareil, topic: versions
 
@@ -27,12 +30,12 @@ process NONPAREIL_NONPAREILCURVESR {
 
     """
     NonpareilCurves.R \\
-        $args \\
+        ${args} \\
         --json ${prefix}.json \\
         --tsv ${prefix}.tsv \\
         --csv ${prefix}.csv \\
         --pdf ${prefix}.pdf \\
-        $npos
+        ${npos}
     """
 
     stub:

@@ -1,26 +1,29 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MGIKIT_DEMULTIPLEX {
-    tag "$run_id"
+    tag "${run_id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
 
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mgikit:2.1.0--h3ab6199_0' :
-        'quay.io/biocontainers/mgikit:2.1.0--h3ab6199_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/mgikit:2.1.0--h3ab6199_0'
+        : 'quay.io/biocontainers/mgikit:2.1.0--h3ab6199_0'}"
 
     input:
     tuple val(meta), path(samplesheet), path(run_dir)
 
     output:
-    tuple val(meta), path("${prefix}/*.fastq.gz")                                                    , emit: fastq
-    tuple val(meta), path("${prefix}_undetermined/*.fastq.gz")                                       , optional:true, emit: undetermined
-    tuple val(meta), path("${prefix}_ambiguous/*.fastq.gz")                                          , optional:true, emit: ambiguous
-    tuple val(meta), path("${prefix}/*mgikit.undetermined_barcode*")                                 , emit: undetermined_reports, optional:true
-    tuple val(meta), path("${prefix}/*mgikit.ambiguous_barcode*")                                    , emit: ambiguous_reports, optional:true
-    tuple val(meta), path("${prefix}/*mgikit.general")                                               , emit: general_info_reports
-    tuple val(meta), path("${prefix}/*mgikit.info")                                                  , emit: index_reports
-    tuple val(meta), path("${prefix}/*mgikit.sample_stats")                                          , emit: sample_stat_reports
-    tuple val(meta), path("${prefix}/*mgikit.{info,general,ambiguous_barcode,undetermined_barcode}") , emit: qc_reports
+    tuple val(meta), path("${prefix}/*.fastq.gz"), emit: fastq
+    tuple val(meta), path("${prefix}_undetermined/*.fastq.gz"), optional: true, emit: undetermined
+    tuple val(meta), path("${prefix}_ambiguous/*.fastq.gz"), optional: true, emit: ambiguous
+    tuple val(meta), path("${prefix}/*mgikit.undetermined_barcode*"), emit: undetermined_reports, optional: true
+    tuple val(meta), path("${prefix}/*mgikit.ambiguous_barcode*"), emit: ambiguous_reports, optional: true
+    tuple val(meta), path("${prefix}/*mgikit.general"), emit: general_info_reports
+    tuple val(meta), path("${prefix}/*mgikit.info"), emit: index_reports
+    tuple val(meta), path("${prefix}/*mgikit.sample_stats"), emit: sample_stat_reports
+    tuple val(meta), path("${prefix}/*mgikit.{info,general,ambiguous_barcode,undetermined_barcode}"), emit: qc_reports
     tuple val("${task.process}"), val('mgikit'), eval('mgikit --version | sed -n "s/.*kit. //p"'), emit: versions_mgikit, topic: versions
 
     when:

@@ -1,20 +1,23 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BCFTOOLS_PLOTVCFSTATS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0c/0c09d69110865b895690f9e29adcaa936054e13265bed2152f2d21fc6a386325/data'
-        : 'community.wave.seqera.io/library/bcftools_htslib_matplotlib_tectonic:1c95fd09e2fdce73' }"
+        : 'community.wave.seqera.io/library/bcftools_htslib_matplotlib_tectonic:1c95fd09e2fdce73'}"
 
     input:
     tuple val(meta), path(stats)
 
     output:
-    tuple val(meta), path("${prefix}_plots"),             emit: plot_dir
-    tuple val(meta), path("${prefix}.plot-vcfstats.pdf"), optional:true, emit: plot_pdf
-    tuple val(meta), path("${prefix}_plots/*.pdf"),       optional:true, emit: images_pdf
-    tuple val(meta), path("${prefix}_plots/*.png"),       optional:true, emit: images_png
+    tuple val(meta), path("${prefix}_plots"), emit: plot_dir
+    tuple val(meta), path("${prefix}.plot-vcfstats.pdf"), optional: true, emit: plot_pdf
+    tuple val(meta), path("${prefix}_plots/*.pdf"), optional: true, emit: images_pdf
+    tuple val(meta), path("${prefix}_plots/*.png"), optional: true, emit: images_png
     tuple val("${task.process}"), val('bcftools'), eval("bcftools --version | sed '1!d; s/^.*bcftools //'"), topic: versions, emit: versions_bcftools
 
     when:
@@ -35,8 +38,8 @@ process BCFTOOLS_PLOTVCFSTATS {
 
     plot-vcfstats \\
         -p ${prefix}_plots \\
-        $args \\
-        $stats
+        ${args} \\
+        ${stats}
 
     if [ -e ${prefix}_plots/summary.pdf ]
     then

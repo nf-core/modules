@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process EMU_ABUNDANCE {
     tag "${meta.id}"
     label 'process_high'
@@ -12,11 +15,11 @@ process EMU_ABUNDANCE {
     path db
 
     output:
-    tuple val(meta), path("${prefix}_rel-abundance.tsv")                , emit: report
+    tuple val(meta), path("${prefix}_rel-abundance.tsv"), emit: report
     tuple val(meta), path("${prefix}_read-assignment-distributions.tsv"), emit: assignment_report, optional: true
-    tuple val(meta), path("${prefix}_emu_alignments.sam")               , emit: samfile          , optional: true
-    tuple val(meta), path("${prefix}_unclassified_mapped.*")            , emit: unclassified     , optional: true
-    tuple val(meta), path("${prefix}_unmapped.*")                       , emit: unmapped         , optional: true
+    tuple val(meta), path("${prefix}_emu_alignments.sam"), emit: samfile, optional: true
+    tuple val(meta), path("${prefix}_unclassified_mapped.*"), emit: unclassified, optional: true
+    tuple val(meta), path("${prefix}_unmapped.*"), emit: unmapped, optional: true
     tuple val("${task.process}"), val('emu'), eval('emu --version 2>&1 | sed "s/^.*emu //; s/Using.*$//"'), topic: versions, emit: versions_emu
 
     when:

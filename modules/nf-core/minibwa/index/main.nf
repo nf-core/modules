@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MINIBWA_INDEX {
-    tag "$fasta"
+    tag "${fasta}"
     // NOTE minibwa builds an FM-index with libsais; peak memory scales with the reference size.
     memory { 280.MB * Math.ceil(fasta.size() / 10000000) * task.attempt }
 
@@ -25,9 +28,9 @@ process MINIBWA_INDEX {
     mkdir minibwa
     minibwa \\
         index \\
-        $args \\
+        ${args} \\
         -t ${task.cpus} \\
-        $fasta \\
+        ${fasta} \\
         minibwa/${prefix}
     """
 

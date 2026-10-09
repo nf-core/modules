@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PLINK2_PCA {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
@@ -27,11 +30,12 @@ process PLINK2_PCA {
     plink2 \\
         --pca ${n_pcs} ${approx_option} \\
         --memory ${task.memory.toMega()} \\
-        $args \\
-        --threads $task.cpus \\
+        ${args} \\
+        --threads ${task.cpus} \\
         --pfile ${pgen.baseName} \\
         --out ${prefix}
     """
+
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """

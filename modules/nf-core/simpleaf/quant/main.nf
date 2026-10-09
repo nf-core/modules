@@ -1,36 +1,44 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SIMPLEAF_QUANT {
     tag "${meta.id ?: meta4.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d0/d04c6d819d0712b766a7cf18aa39a15cced3ea4d79178c0811966d8a741b4db1/data'
-:         'community.wave.seqera.io/library/piscem_simpleaf:8fd648760a75594c' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d0/d04c6d819d0712b766a7cf18aa39a15cced3ea4d79178c0811966d8a741b4db1/data'
+        : 'community.wave.seqera.io/library/piscem_simpleaf:8fd648760a75594c'}"
 
     input:
     //
     // Input reads are expected to come as: [ meta, [ pair1_read1, pair1_read2, pair2_read1, pair2_read2 ] ]
     // Input array for a sample is created in the same order reads appear in samplesheet as pairs from replicates are appended to array.
     //
-    tuple val(meta), val(chemistry), path(reads)                        // chemistry and reads
-    tuple val(meta2), path(index), path(txp2gene)                       // index and t2g mapping
-    tuple val(meta3), val(cell_filter), val(number_cb), path(cb_list)   // cell filtering strategy
-    val resolution                                                      // UMI resolution
-    tuple val(meta4), path(map_dir)                                     // mapping results
+    tuple val(meta), val(chemistry), path(reads)
+    // chemistry and reads
+    tuple val(meta2), path(index), path(txp2gene)
+    // index and t2g mapping
+    tuple val(meta3), val(cell_filter), val(number_cb), path(cb_list)
+    // cell filtering strategy
+    val resolution
+    // UMI resolution
+    tuple val(meta4), path(map_dir)
 
     output:
-    tuple val(meta), path("${prefix}/af_map")       , emit: map, optional: true // missing if map_dir is provided
-    tuple val(meta), path("${prefix}/af_quant")     , emit: quant
-    tuple val("${task.process}"), val('alevin-fry'), eval("alevin-fry --version | sed 's/alevin-fry //'"),                    topic: versions, emit: versions_alevin_fry
-    tuple val("${task.process}"), val('piscem'),     eval("piscem --version | sed 's/piscem //'"),                            topic: versions, emit: versions_piscem
-    tuple val("${task.process}"), val('simpleaf'),   eval("ALEVIN_FRY_HOME=. simpleaf --version | sed 's/simpleaf //'"),      topic: versions, emit: versions_simpleaf
+    tuple val(meta), path("${prefix}/af_map"), emit: map, optional: true
+    // missing if map_dir is provided
+    tuple val(meta), path("${prefix}/af_quant"), emit: quant
+    tuple val("${task.process}"), val('alevin-fry'), eval("alevin-fry --version | sed 's/alevin-fry //'"), topic: versions, emit: versions_alevin_fry
+    tuple val("${task.process}"), val('piscem'), eval("piscem --version | sed 's/piscem //'"), topic: versions, emit: versions_piscem
+    tuple val("${task.process}"), val('simpleaf'), eval("ALEVIN_FRY_HOME=. simpleaf --version | sed 's/simpleaf //'"), topic: versions, emit: versions_simpleaf
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args      = task.ext.args ?: ''
-    prefix    = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     // The first required input is either a mapping result directory, or the reads and index files for mapping.
     mapping_args = mappingArgs(chemistry, reads, index, txp2gene, map_dir)
@@ -39,7 +47,7 @@ process SIMPLEAF_QUANT {
     cf_option = cellFilteringArgs(cell_filter, number_cb, cb_list)
 
     meta = map_dir ? meta4 : meta2 + meta3 + meta
-    meta = meta + [ "filtered": cell_filter != "unfiltered-pl" ]
+    meta = meta + ["filtered": cell_filter != "unfiltered-pl"]
 
     // separate forward from reverse pairs
     """
@@ -51,7 +59,7 @@ process SIMPLEAF_QUANT {
 
     # run simpleaf quant
     simpleaf quant \\
-        $mapping_args \\
+        ${mapping_args} \\
         --resolution ${resolution} \\
         --output ${prefix} \\
         --threads ${task.cpus} \\
@@ -61,7 +69,7 @@ process SIMPLEAF_QUANT {
     """
 
     stub:
-    prefix    = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     export ALEVIN_FRY_HOME=.
 
@@ -92,44 +100,49 @@ def cellFilteringArgs(cell_filter_method, number_cb, cb_list) {
     def pl_options = ["knee", "forced-cells", "explicit-pl", "expect-cells", "unfiltered-pl"]
 
     // try catch unintentional underscore in method name
-    def method = cell_filter_method.replaceAll('_','-')
+    def method = cell_filter_method.replaceAll('_', '-')
 
     def number = number_cb
     if (!method) {
-        error "No cell filtering method was provided; cannot proceed."
-    } else if (! method in pl_options) {
-        error "Invalid cell filtering method, '${method}', was provided; cannot proceed. possible options are ${pl_options.join(',')}."
+        error("No cell filtering method was provided; cannot proceed.")
+    }
+    else if (!method in pl_options) {
+        error("Invalid cell filtering method, '${method}', was provided; cannot proceed. possible options are ${pl_options.join(',')}.")
     }
 
     if (method == "unfiltered-pl") {
         return "--${method} ${cb_list}"
-    } else if (method == "explicit-pl") {
+    }
+    else if (method == "explicit-pl") {
         return "--${method} ${cb_list}"
-    } else if (method == "knee") {
+    }
+    else if (method == "knee") {
         return "--${method}"
-    } else {
+    }
+    else {
         if (!number) {
-            error "Could not find the corresponding 'number' field for the cell filtering method '${method}'; please use the following format: [method:'${method}',number:3000]."
+            error("Could not find the corresponding 'number' field for the cell filtering method '${method}'; please use the following format: [method:'${method}',number:3000].")
         }
         return "--${method} ${number}"
     }
 }
 
 def mappingArgs(chemistry, reads, index, txp2gene, map_dir) {
-    if ( map_dir ) {
+    if (map_dir) {
         if (reads) {
-            error "Found both reads and map_dir. Please provide only one of the two."
+            error("Found both reads and map_dir. Please provide only one of the two.")
         }
         return "--map-dir ${map_dir}"
-    } else {
+    }
+    else {
         if (!reads) {
-            error "Missing read files; could not proceed."
+            error("Missing read files; could not proceed.")
         }
         if (!index) {
-            error "Missing index files; could not proceed."
+            error("Missing index files; could not proceed.")
         }
         if (!chemistry) {
-            error "Missing chemistry; could not proceed."
+            error("Missing chemistry; could not proceed.")
         }
 
         def (forward, reverse) = reads.collate(2).transpose()
@@ -138,8 +151,8 @@ def mappingArgs(chemistry, reads, index, txp2gene, map_dir) {
         def mapping_args = """${t2g} \\
         --chemistry ${chemistry} \\
         --index ${index} \\
-        --reads1 ${forward.join( "," )} \\
-        --reads2 ${reverse.join( "," )}"""
+        --reads1 ${forward.join(",")} \\
+        --reads2 ${reverse.join(",")}"""
         return mapping_args
     }
 }

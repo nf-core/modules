@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 // Safely quote a Groovy value as a single-quoted R string literal. Used everywhere
 // below that a sample ID or other user-controlled value gets embedded into generated
 // R source -- without this, a value containing a quote could break the generated R
@@ -7,35 +10,35 @@ def rq(v) {
 }
 
 process CUSTOM_COLLECTSTATS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/40/4047b396af338ea9fa9f58d345f84b77234dfe825a1c71ae178f502d0569b62c/data'
-:         'community.wave.seqera.io/library/r-base_r-dplyr_r-purrr_r-readr_pruned:24026ac6303954f2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/40/4047b396af338ea9fa9f58d345f84b77234dfe825a1c71ae178f502d0569b62c/data'
+        : 'community.wave.seqera.io/library/r-base_r-dplyr_r-purrr_r-readr_pruned:24026ac6303954f2'}"
 
     input:
     tuple val(meta), val(samples_meta), path(trimlogs), path(bblogs), path(idxstats), path(fcs), path(mergetab)
 
     output:
     tuple val(meta), path("${outfile}"), emit: overall_stats
-    path "versions.yml"                , emit: versions, topic: versions
+    path "versions.yml", emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    outfile    = "${prefix}.overall_stats.tsv.gz"
+    outfile = "${prefix}.overall_stats.tsv.gz"
 
     def read_trimlogs = ""
-    if ( trimlogs ) {
+    if (trimlogs) {
         def se_trimlogs = samples_meta
             .findAll { s -> s.single_end }
             .collect { s -> "${rq(s.id)}, ${rq(s.id + '.*_trimming_report.txt')}, 1," }
         def pe_trimlogs = samples_meta
-            .findAll { s -> ! s.single_end }
+            .findAll { s -> !s.single_end }
             .collect { s -> "${rq(s.id)}, ${rq(s.id + '_1.*_trimming_report.txt')}, 2," }
 
         read_trimlogs = """
@@ -62,15 +65,17 @@ process CUSTOM_COLLECTSTATS {
             unnest(d) %>%
             transmute(sample, n_post_trimming = n_post_trimming * mult)
         """
-    } else {
+    }
+    else {
         read_trimlogs = "trimming <- tibble(sample = character(), n_post_trimming = integer())"
     }
 
-    if ( mergetab ) {
+    if (mergetab) {
         read_mergetab = """
         mergetab <- read_tsv("${mergetab}", show_col_types = FALSE)
         """
-    } else {
+    }
+    else {
         read_mergetab = """
         mergetab <- tibble(sample = character())
         """
@@ -171,7 +176,7 @@ process CUSTOM_COLLECTSTATS {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    outfile    = "${prefix}.overall_stats.tsv.gz"
+    outfile = "${prefix}.overall_stats.tsv.gz"
     """
     cat /dev/null | gzip -c > ${outfile}
 

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ANNOSINE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/annosine2:2.0.8--pyh7e72e81_0':
-        'quay.io/biocontainers/annosine2:2.0.8--pyh7e72e81_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/annosine2:2.0.8--pyh7e72e81_0'
+        : 'quay.io/biocontainers/annosine2:2.0.8--pyh7e72e81_0'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -13,16 +16,18 @@ process ANNOSINE {
 
     output:
     tuple val(meta), path("${prefix}.log"), emit: log
-    tuple val(meta), path("${prefix}.fa") , emit: fa, optional: true
+    tuple val(meta), path("${prefix}.fa"), emit: fa, optional: true
     tuple val("${task.process}"), val('annosine'), eval("pip show annosine2 | sed -n 's/Version: //p'"), emit: versions_annosine, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args    = task.ext.args   ?: ''
-    prefix      = task.ext.prefix ?: "${meta.id}_annosine"
-    if ( "${fasta}" == "${prefix}.fa" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}_annosine"
+    if ("${fasta}" == "${prefix}.fa") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
     AnnoSINE_v2 \\
         ${args} \\
@@ -39,8 +44,10 @@ process ANNOSINE {
     """
 
     stub:
-    prefix      = task.ext.prefix ?: "${meta.id}_annosine"
-    if ( "${fasta}" == "${prefix}.fa" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    prefix = task.ext.prefix ?: "${meta.id}_annosine"
+    if ("${fasta}" == "${prefix}.fa") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
     touch ${prefix}.log
     touch ${prefix}.fa

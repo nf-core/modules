@@ -1,29 +1,32 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MOBSTER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label "process_high"
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/66/66c76b38ccd331b5e1178f680219c7091b7332e14089e611df949276be6afa1e/data' :
-        'community.wave.seqera.io/library/r-cnaqc_r-mobster_r-cli_r-dplyr_r-ggplot2:cc406f90216d5a33' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/66/66c76b38ccd331b5e1178f680219c7091b7332e14089e611df949276be6afa1e/data'
+        : 'community.wave.seqera.io/library/r-cnaqc_r-mobster_r-cli_r-dplyr_r-ggplot2:cc406f90216d5a33'}"
 
     input:
     tuple val(meta), path(rds_join)
 
     output:
-    tuple val(meta), path("*_mobster_fit.rds")        , emit: mobster_rds
-    tuple val(meta), path("*_mobster_best_fit.rds")   , emit: mobster_best_rds
-    tuple val(meta), path("*_mobster_best_plots.rds") , emit: mobster_best_plots_rds
-    tuple val(meta), path("*_mobster_report.rds")     , emit: mobster_report_rds
-    tuple val(meta), path("*_mobster_report.pdf")     , emit: mobster_report_pdf
-    tuple val(meta), path("*_mobster_report.png")     , emit: mobster_report_png
-    path "versions.yml"                               , emit: versions_mobster       , topic: versions
+    tuple val(meta), path("*_mobster_fit.rds"), emit: mobster_rds
+    tuple val(meta), path("*_mobster_best_fit.rds"), emit: mobster_best_rds
+    tuple val(meta), path("*_mobster_best_plots.rds"), emit: mobster_best_plots_rds
+    tuple val(meta), path("*_mobster_report.rds"), emit: mobster_report_rds
+    tuple val(meta), path("*_mobster_report.pdf"), emit: mobster_report_pdf
+    tuple val(meta), path("*_mobster_report.png"), emit: mobster_report_png
+    path "versions.yml", emit: versions_mobster, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    template "main_script.R"
+    template("main_script.R")
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"

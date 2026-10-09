@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BCLCONVERT {
-    tag "${ meta.lane ? meta.id + "." + meta.lane : meta.id }"
+    tag "${meta.lane ? meta.id + "." + meta.lane : meta.id}"
     label 'process_high'
 
     container "quay.io/nf-core/bclconvert:4.5.4"

@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { BEAGLE5_BEAGLE              } from '../../../modules/nf-core/beagle5/beagle'
 include { PLINK2_VCF                  } from '../../../modules/nf-core/plink2/vcf'
 include { PLINK2_PCA                  } from '../../../modules/nf-core/plink2/pca'
@@ -29,7 +32,7 @@ workflow SNPCLUSTERING {
             [],
             [],
             [],
-            region
+            region,
         )
     }
 
@@ -50,7 +53,7 @@ workflow SNPCLUSTERING {
         algorithm,
         n_clusters,
         dbscan_eps,
-        dbscan_min_samples
+        dbscan_min_samples,
     )
 
     ch_cluster_analysis_input = PLINK2_PCA.out.evecfile
@@ -63,22 +66,22 @@ workflow SNPCLUSTERING {
     CUSTOM_CLUSTERVISUALIZATION(ch_cluster_analysis_input)
 
     emit:
-    imputed_vcf   = BEAGLE5_BEAGLE.out.vcf
-    beagle_log    = BEAGLE5_BEAGLE.out.log
-    pgen          = PLINK2_VCF.out.pgen
-    pvar          = PLINK2_VCF.out.pvar
-    psam          = PLINK2_VCF.out.psam
-    evecfile      = PLINK2_PCA.out.evecfile
-    evfile        = PLINK2_PCA.out.evfile
-    pca_log       = PLINK2_PCA.out.logfile
-    clusters      = CUSTOM_PCACLUSTERING.out.clusters
-    cluster_info  = CUSTOM_PCACLUSTERING.out.info
-    metrics       = CUSTOM_CLUSTERMETRICS.out.metrics
-    k_sweep       = CUSTOM_CLUSTERMETRICS.out.k_sweep
-    selected      = CUSTOM_CLUSTERMETRICS.out.selected
-    metric_plots  = CUSTOM_CLUSTERMETRICS.out.plots
-    umap_tsv      = CUSTOM_CLUSTERVISUALIZATION.out.umap_tsv
-    tsne_tsv      = CUSTOM_CLUSTERVISUALIZATION.out.tsne_tsv
-    umap_png      = CUSTOM_CLUSTERVISUALIZATION.out.umap_png
-    tsne_png      = CUSTOM_CLUSTERVISUALIZATION.out.tsne_png
+    imputed_vcf  = BEAGLE5_BEAGLE.out.vcf
+    beagle_log   = BEAGLE5_BEAGLE.out.log
+    pgen         = PLINK2_VCF.out.pgen
+    pvar         = PLINK2_VCF.out.pvar
+    psam         = PLINK2_VCF.out.psam
+    evecfile     = PLINK2_PCA.out.evecfile
+    evfile       = PLINK2_PCA.out.evfile
+    pca_log      = PLINK2_PCA.out.logfile
+    clusters     = CUSTOM_PCACLUSTERING.out.clusters
+    cluster_info = CUSTOM_PCACLUSTERING.out.info
+    metrics      = CUSTOM_CLUSTERMETRICS.out.metrics
+    k_sweep      = CUSTOM_CLUSTERMETRICS.out.k_sweep
+    selected     = CUSTOM_CLUSTERMETRICS.out.selected
+    metric_plots = CUSTOM_CLUSTERMETRICS.out.plots
+    umap_tsv     = CUSTOM_CLUSTERVISUALIZATION.out.umap_tsv
+    tsne_tsv     = CUSTOM_CLUSTERVISUALIZATION.out.tsne_tsv
+    umap_png     = CUSTOM_CLUSTERVISUALIZATION.out.umap_png
+    tsne_png     = CUSTOM_CLUSTERVISUALIZATION.out.tsne_png
 }

@@ -1,21 +1,24 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process METAMAPS_MAPDIRECTLY {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/metamaps:0.1.633d2e0--h21ec9f0_0':
-        'quay.io/biocontainers/metamaps:0.1.633d2e0--h21ec9f0_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/metamaps:0.1.633d2e0--h21ec9f0_0'
+        : 'quay.io/biocontainers/metamaps:0.1.633d2e0--h21ec9f0_0'}"
 
     input:
     tuple val(meta), path(reads)
     path database
 
     output:
-    tuple val(meta), path("*classification_res")                          , emit: classification_res
-    tuple val(meta), path("*classification_res.meta")                     , emit: meta_file
+    tuple val(meta), path("*classification_res"), emit: classification_res
+    tuple val(meta), path("*classification_res.meta"), emit: meta_file
     tuple val(meta), path("*classification_res.meta.unmappedReadsLengths"), emit: meta_unmappedreadsLengths
-    tuple val(meta), path("*classification_res.parameters")               , emit: para_file
+    tuple val(meta), path("*classification_res.parameters"), emit: para_file
     tuple val("${task.process}"), val('metamaps'), eval("metamaps | sed -n 's/.*MetaMaps v //p'"), emit: versions_metamaps, topic: versions
 
     when:
@@ -35,6 +38,7 @@ process METAMAPS_MAPDIRECTLY {
         --query ${reads} \\
         --output ${prefix}.classification_res
     """
+
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """

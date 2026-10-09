@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SENTIEON_QUALCAL {
     tag "${meta.id}"
     label 'process_medium'
@@ -18,11 +21,11 @@ process SENTIEON_QUALCAL {
     val generate_recalibrated_bams
 
     output:
-    tuple val(meta), path("*.table"),      emit: table, optional: true
+    tuple val(meta), path("*.table"), emit: table, optional: true
     tuple val(meta), path("*.table.post"), emit: table_post, optional: true
     tuple val(meta), path("*.{cram,bam}"), emit: recal_alignment, optional: true
-    tuple val(meta), path("*.csv"),        emit: csv, optional: true
-    tuple val(meta), path("*.pdf"),        emit: pdf, optional: true
+    tuple val(meta), path("*.csv"), emit: csv, optional: true
+    tuple val(meta), path("*.pdf"), emit: pdf, optional: true
     tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
     when:
@@ -31,8 +34,8 @@ process SENTIEON_QUALCAL {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input_list = input.collect {in -> "-i ${in}" }.join(' ')
-    def knownSites = known_sites ? known_sites.collect {in -> "-k ${in}" }.join(' ') : ""
+    def input_list = input.collect { in -> "-i ${in}" }.join(' ')
+    def knownSites = known_sites ? known_sites.collect { in -> "-k ${in}" }.join(' ') : ""
     def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64
         ? "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; "
         : ""

@@ -1,19 +1,22 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SMOOTHXG {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/smoothxg:0.8.0--h40c17d1_0' :
-        'quay.io/biocontainers/smoothxg:0.8.0--h40c17d1_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/smoothxg:0.8.0--h40c17d1_0'
+        : 'quay.io/biocontainers/smoothxg:0.8.0--h40c17d1_0'}"
 
     input:
     tuple val(meta), path(gfa)
 
     output:
     tuple val(meta), path("*smoothxg.gfa"), emit: gfa
-    path("*.maf") , optional: true, emit: maf
-    tuple val("${task.process}"), val('smoothxg'), eval("smoothxg --version 2>&1 | sed 's/^v//; s/-.*//'"  ), topic: versions, emit: versions_smoothxg
+    path ("*.maf"), optional: true, emit: maf
+    tuple val("${task.process}"), val('smoothxg'), eval("smoothxg --version 2>&1 | sed 's/^v//; s/-.*//'"), topic: versions, emit: versions_smoothxg
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,10 +26,10 @@ process SMOOTHXG {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     smoothxg \\
-        --threads=$task.cpus \\
+        --threads=${task.cpus} \\
         --gfa-in=${gfa} \\
         --smoothed-out=${prefix}.smoothxg.gfa \\
-        $args
+        ${args}
     """
 
     stub:

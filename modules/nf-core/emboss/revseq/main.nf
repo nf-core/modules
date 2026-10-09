@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process EMBOSS_REVSEQ {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/emboss:6.6.0--h86d058a_5':
-        'quay.io/biocontainers/emboss:6.6.0--h86d058a_5' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/emboss:6.6.0--h86d058a_5'
+        : 'quay.io/biocontainers/emboss:6.6.0--h86d058a_5'}"
 
     input:
     tuple val(meta), path(sequences)
@@ -24,9 +27,9 @@ process EMBOSS_REVSEQ {
     def outfile = "${prefix}.rev.${suffix}"
     """
     revseq \\
-        $args \\
-        $sequences \\
-        $outfile
+        ${args} \\
+        ${sequences} \\
+        ${outfile}
     """
 
     stub:

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HICAP {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hicap:1.0.3--py_0' :
-        'quay.io/biocontainers/hicap:1.0.3--py_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/hicap:1.0.3--py_0'
+        : 'quay.io/biocontainers/hicap:1.0.3--py_0'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -29,7 +32,7 @@ process HICAP {
     def fasta_name = fasta.getName().replace(".gz", "")
     """
     if [ "${is_compressed}" == "true" ]; then
-        gzip -c -d $fasta > ${fasta_name}
+        gzip -c -d ${fasta} > ${fasta_name}
     fi
     hicap \\
         --query_fp ${fasta_name} \\

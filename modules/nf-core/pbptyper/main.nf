@@ -1,15 +1,18 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PBPTYPER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pbptyper:1.0.2--hdfd78af_0':
-        'quay.io/biocontainers/pbptyper:1.0.2--hdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/pbptyper:1.0.2--hdfd78af_0'
+        : 'quay.io/biocontainers/pbptyper:1.0.2--hdfd78af_0'}"
 
     input:
     tuple val(meta), path(fasta)
-    path(db)
+    path db
 
     output:
     tuple val(meta), path("${prefix}.tsv"), emit: tsv

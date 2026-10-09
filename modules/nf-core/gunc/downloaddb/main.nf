@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GUNC_DOWNLOADDB {
-    tag "$db_name"
+    tag "${db_name}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
@@ -20,7 +23,7 @@ process GUNC_DOWNLOADDB {
     script:
     def args = task.ext.args ?: ''
     """
-    gunc download_db . -db $db_name $args
+    gunc download_db . -db ${db_name} ${args}
     """
 
     stub:

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process STARE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/13/131d4d3e84c3a947d60bcf833b714f0af91007e9532f7d8421eb52e5a006dcd2/data' :
-        'community.wave.seqera.io/library/stare-abc:1.0.5--fd37836c16678a24' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/13/131d4d3e84c3a947d60bcf833b714f0af91007e9532f7d8421eb52e5a006dcd2/data'
+        : 'community.wave.seqera.io/library/stare-abc:1.0.5--fd37836c16678a24'}"
 
     input:
     tuple val(meta), path(bed_file), path(contact_folder), path(existing_abc)
@@ -16,7 +19,7 @@ process STARE {
     tuple val(meta6), path(genes)
 
     output:
-    tuple val(meta), path("${meta.id}/Gene_TF_matrices/${meta.id}_TF_Gene_Affinities.txt") , emit: affinities
+    tuple val(meta), path("${meta.id}/Gene_TF_matrices/${meta.id}_TF_Gene_Affinities.txt"), emit: affinities
     tuple val("${task.process}"), val('stare'), eval('STARE.sh --version | cut -f3 -d" "'), topic: versions, emit: versions_stare
 
     when:
@@ -25,11 +28,11 @@ process STARE {
     script:
     def args = task.ext.args ?: ''
 
-    def path_bed_file       = bed_file       ? "-b ${bed_file}"       : ""
+    def path_bed_file = bed_file ? "-b ${bed_file}" : ""
     def path_contact_folder = contact_folder ? "-f ${contact_folder}" : ""
-    def path_existing_abc   = existing_abc   ? "-r ${existing_abc}"   : ""
-    def path_exclude_bed    = exclude_bed    ? "-x ${exclude_bed}"    : ""
-    def path_genes          = genes          ? "-u ${genes}"          : ""
+    def path_existing_abc = existing_abc ? "-r ${existing_abc}" : ""
+    def path_exclude_bed = exclude_bed ? "-x ${exclude_bed}" : ""
+    def path_genes = genes ? "-u ${genes}" : ""
 
     """
     STARE.sh \\

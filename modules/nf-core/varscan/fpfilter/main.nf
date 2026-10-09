@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VARSCAN_FPFILTER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ed/ed57a091507c62e990bbd08d532281d161d99f060316e0a991791f167d7b1daf/data':
-        'community.wave.seqera.io/library/htslib_varscan:24b3b3db2ca78de8' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ed/ed57a091507c62e990bbd08d532281d161d99f060316e0a991791f167d7b1daf/data'
+        : 'community.wave.seqera.io/library/htslib_varscan:24b3b3db2ca78de8'}"
 
     input:
     tuple val(meta), path(vcf), path(rc)
@@ -23,14 +26,14 @@ process VARSCAN_FPFILTER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def compressed = vcf.name.endsWith('.gz') ? true : false
     """
-    ${compressed ? "bgzip -df $vcf" : ""}
+    ${compressed ? "bgzip -df ${vcf}" : ""}
 
     varscan fpfilter \\
-        ${compressed ? "${vcf.baseName}" : "$vcf"} \\
-        $rc \\
+        ${compressed ? "${vcf.baseName}" : "${vcf}"} \\
+        ${rc} \\
         --output-file ${prefix}.pass.vcf \\
         --filtered-file ${prefix}.fail.vcf \\
-        $args
+        ${args}
 
     bgzip ${prefix}.pass.vcf
     bgzip ${prefix}.fail.vcf
@@ -40,7 +43,7 @@ process VARSCAN_FPFILTER {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo $args
+    echo ${args}
 
     echo "" | gzip > ${prefix}.pass.vcf.gz
     echo "" | gzip > ${prefix}.fail.vcf.gz

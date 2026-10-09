@@ -1,25 +1,28 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SURVIVOR_SIMSV {
     tag "simSV"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/survivor:1.0.7--hd03093a_2':
-        'quay.io/biocontainers/survivor:1.0.7--hd03093a_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/survivor:1.0.7--hd03093a_2'
+        : 'quay.io/biocontainers/survivor:1.0.7--hd03093a_2'}"
 
     input:
-    tuple val(meta) , path(fasta)
+    tuple val(meta), path(fasta)
     tuple val(meta2), path(fai)
     tuple val(meta3), path(parameters)
-    val(snp_mutation_frequency)
-    val(sim_reads)
+    val snp_mutation_frequency
+    val sim_reads
 
     output:
-    tuple val(meta), path("*.txt")          , emit: parameters, optional:true
-    tuple val(meta), path("*.vcf")          , emit: vcf, optional:true
-    tuple val(meta), path("*.bed")          , emit: bed, optional:true
-    tuple val(meta), path("*.fasta")        , emit: fasta, optional:true
-    tuple val(meta), path("*.insertions.fa"), emit: insertions, optional:true
+    tuple val(meta), path("*.txt"), emit: parameters, optional: true
+    tuple val(meta), path("*.vcf"), emit: vcf, optional: true
+    tuple val(meta), path("*.bed"), emit: bed, optional: true
+    tuple val(meta), path("*.fasta"), emit: fasta, optional: true
+    tuple val(meta), path("*.insertions.fa"), emit: insertions, optional: true
     tuple val("${task.process}"), val('survivor'), eval("SURVIVOR 2>&1 | grep 'Version' | sed 's/Version: //'"), topic: versions, emit: versions_survivor
 
     when:

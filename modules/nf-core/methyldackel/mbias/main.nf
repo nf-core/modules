@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process METHYLDACKEL_MBIAS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/methyldackel:0.6.1--he4a0461_7' :
-        'quay.io/biocontainers/methyldackel:0.6.1--he4a0461_7' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/methyldackel:0.6.1--he4a0461_7'
+        : 'quay.io/biocontainers/methyldackel:0.6.1--he4a0461_7'}"
 
     input:
     tuple val(meta), path(bam), path(bai)

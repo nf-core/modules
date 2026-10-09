@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BLOBTK_CREATE {
     tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/08/08833d1b91f41024e06e2cb5a982598531199c04e6544885d42ef2cb0480de18/data' :
-        'community.wave.seqera.io/library/blobtk:0.8.0--2fe0d833a26e0cd9' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/08/08833d1b91f41024e06e2cb5a982598531199c04e6544885d42ef2cb0480de18/data'
+        : 'community.wave.seqera.io/library/blobtk:0.8.0--2fe0d833a26e0cd9'}"
 
     input:
     tuple val(meta), path(fasta), path(full_table)
@@ -18,9 +21,9 @@ process BLOBTK_CREATE {
     task.ext.when == null || task.ext.when
 
     script:
-    prefix              = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
 
-    def full_table_args = full_table ? "--busco ${full_table}"  : ""
+    def full_table_args = full_table ? "--busco ${full_table}" : ""
 
     """
     blobtk create \\
@@ -30,7 +33,7 @@ process BLOBTK_CREATE {
     """
 
     stub:
-    prefix      = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}
     touch ${prefix}/meta.json

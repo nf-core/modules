@@ -1,12 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
 
 process SOMALIER_EXTRACT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/somalier:0.2.19--h0c29559_0':
-        'quay.io/biocontainers/somalier:0.2.19--h0c29559_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/somalier:0.2.19--h0c29559_0'
+        : 'quay.io/biocontainers/somalier:0.2.19--h0c29559_0'}"
 
     input:
     tuple val(meta), path(input), path(input_index)
@@ -15,7 +17,7 @@ process SOMALIER_EXTRACT {
     tuple val(meta4), path(sites)
 
     output:
-    tuple val(meta), path("*.somalier") , emit: extract
+    tuple val(meta), path("*.somalier"), emit: extract
     tuple val("${task.process}"), val('somalier'), eval('somalier 2>&1 | sed -n \'s/.*version: \\([0-9.]*\\).*/\\1/p\''), emit: versions_somalier, topic: versions
 
     when:

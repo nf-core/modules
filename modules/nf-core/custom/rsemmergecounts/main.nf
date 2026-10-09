@@ -1,23 +1,26 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CUSTOM_RSEMMERGECOUNTS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label "process_medium"
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ubuntu:20.04' :
-        'quay.io/nf-core/ubuntu:20.04' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/ubuntu:20.04'
+        : 'quay.io/nf-core/ubuntu:20.04'}"
 
     input:
-    tuple val(meta), path ('genes/*')
-    path ('isoforms/*')
+    tuple val(meta), path('genes/*')
+    path 'isoforms/*'
 
     output:
-    tuple val(meta), path("${prefix}.gene_counts.tsv")      , emit: counts_gene
-    tuple val(meta), path("${prefix}.gene_tpm.tsv")         , emit: tpm_gene
+    tuple val(meta), path("${prefix}.gene_counts.tsv"), emit: counts_gene
+    tuple val(meta), path("${prefix}.gene_tpm.tsv"), emit: tpm_gene
     tuple val(meta), path("${prefix}.transcript_counts.tsv"), emit: counts_transcript
-    tuple val(meta), path("${prefix}.transcript_tpm.tsv")   , emit: tpm_transcript
-    tuple val(meta), path("${prefix}.genes_long.tsv")       , emit: genes_long
-    tuple val(meta), path("${prefix}.isoforms_long.tsv")    , emit: isoforms_long
+    tuple val(meta), path("${prefix}.transcript_tpm.tsv"), emit: tpm_transcript
+    tuple val(meta), path("${prefix}.genes_long.tsv"), emit: genes_long
+    tuple val(meta), path("${prefix}.isoforms_long.tsv"), emit: isoforms_long
     tuple val("${task.process}"), val('sed'), eval("sed --version 2>&1 | sed '1!d;s/^.*) //'"), emit: versions_sed, topic: versions
 
     when:

@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GETORGANELLE_CONFIG {
     tag "${organelle_type}"
     label 'process_single'
@@ -8,7 +11,7 @@ process GETORGANELLE_CONFIG {
         : 'quay.io/biocontainers/getorganelle:1.7.7.1--pyhdfd78af_0'}"
 
     input:
-    val(organelle_type)
+    val organelle_type
 
     output:
     tuple val(organelle_type), path("getorganelle"), emit: db

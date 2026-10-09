@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process KHMER_NORMALIZEBYMEDIAN {
     tag "${meta.id}"
     label 'process_long'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/khmer:3.0.0a3--py37haa7609a_2' :
-        'quay.io/biocontainers/khmer:3.0.0a3--py37haa7609a_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/khmer:3.0.0a3--py37haa7609a_2'
+        : 'quay.io/biocontainers/khmer:3.0.0a3--py37haa7609a_2'}"
 
     input:
     tuple val(meta), path(fastq_paired), path(fastq_unpaired)
@@ -18,17 +21,17 @@ process KHMER_NORMALIZEBYMEDIAN {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_normalized"
-    assert "${prefix}.fastq.gz" != fastq_paired.name   : "KHMER_NORMALIZEBYMEDIAN: The output file name must be different from the input file name. Please set a different prefix."
+    assert "${prefix}.fastq.gz" != fastq_paired.name : "KHMER_NORMALIZEBYMEDIAN: The output file name must be different from the input file name. Please set a different prefix."
     assert "${prefix}.fastq.gz" != fastq_unpaired.name : "KHMER_NORMALIZEBYMEDIAN: The output file name must be different from the input file name. Please set a different prefix."
-    def paired   = fastq_paired   ? "--paired"                     : ""
+    def paired = fastq_paired ? "--paired" : ""
     def unpaired = fastq_unpaired ? "--unpaired ${fastq_unpaired}" : ""
     def input_sequence_filename = fastq_paired ? fastq_paired : fastq_unpaired
     """
     normalize-by-median.py \\
         -M ${task.memory.toGiga()}e9 \\
-        --gzip $args \\
+        --gzip ${args} \\
         -o ${prefix}.fastq.gz \\
         ${paired} \\
         ${unpaired} \\

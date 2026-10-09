@@ -1,16 +1,19 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PARACLU {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/paraclu:10--h9a82719_1' :
-        'quay.io/biocontainers/paraclu:10--h9a82719_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/paraclu:10--h9a82719_1'
+        : 'quay.io/biocontainers/paraclu:10--h9a82719_1'}"
 
     input:
     tuple val(meta), path(bed)
-    val(min_cluster)
+    val min_cluster
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
@@ -25,7 +28,7 @@ process PARACLU {
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    awk -F "\t" '{print\$1"\t"\$6"\t"\$2"\t"\$5}' < $bed > ${bed}_4P
+    awk -F "\t" '{print\$1"\t"\$6"\t"\$2"\t"\$5}' < ${bed} > ${bed}_4P
     sort -k1,1 -k3n ${bed}_4P > ${bed}_4Ps
     paraclu ${args} ${min_cluster} ${bed}_4Ps > ${prefix}.clustered
     paraclu-cut ${args2} ${prefix}.clustered >  ${prefix}.clustered.simplified

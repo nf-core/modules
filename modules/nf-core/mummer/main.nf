@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MUMMER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mummer:3.23--pl5262h1b792b2_12' :
-        'quay.io/biocontainers/mummer:3.23--pl5262h1b792b2_12' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/mummer:3.23--pl5262h1b792b2_12'
+        : 'quay.io/biocontainers/mummer:3.23--pl5262h1b792b2_12'}"
 
     input:
     tuple val(meta), path(ref), path(query)
@@ -28,16 +31,16 @@ process MUMMER {
     def is_compressed_query = query.getName().endsWith(".gz") ? true : false
     def fasta_name_query = query.getName().replace(".gz", "")
     """
-    if [ "$is_compressed_ref" == "true" ]; then
-        gzip -c -d $ref > $fasta_name_ref
+    if [ "${is_compressed_ref}" == "true" ]; then
+        gzip -c -d ${ref} > ${fasta_name_ref}
     fi
-    if [ "$is_compressed_query" == "true" ]; then
-        gzip -c -d $query > $fasta_name_query
+    if [ "${is_compressed_query}" == "true" ]; then
+        gzip -c -d ${query} > ${fasta_name_query}
     fi
     mummer \\
-        $args \\
-        $fasta_name_ref \\
-        $fasta_name_query \\
+        ${args} \\
+        ${fasta_name_ref} \\
+        ${fasta_name_query} \\
         > ${prefix}.coords
     """
 

@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { BCFTOOLS_VIEW        } from '../../../modules/nf-core/bcftools/view'
 include { ENSEMBLVEP_FILTERVEP } from '../../../modules/nf-core/ensemblvep/filtervep'
 include { HTSLIB_BGZIPTABIX    } from '../../../modules/nf-core/htslib/bgziptabix'
@@ -33,14 +36,14 @@ workflow VCF_FILTER_BCFTOOLS_ENSEMBLVEP {
         ENSEMBLVEP_FILTERVEP(
             ch_vcf,
             ch_filter_vep_feature_file.map { _meta, file -> file },
-            "vcf"
+            "vcf",
         )
 
         HTSLIB_BGZIPTABIX(
             ENSEMBLVEP_FILTERVEP.out.output.map { meta, vcf -> [meta, vcf, [], []] },
             "compress",
             true,
-            "vcf"
+            "vcf",
         )
 
         ch_vcf = HTSLIB_BGZIPTABIX.out.output
@@ -48,6 +51,6 @@ workflow VCF_FILTER_BCFTOOLS_ENSEMBLVEP {
     }
 
     emit:
-    vcf      = ch_vcf // channel: [ val(meta), path(vcf) ]
-    tbi      = ch_tbi // channel: [ val(meta), path(tbi) ]
+    vcf = ch_vcf // channel: [ val(meta), path(vcf) ]
+    tbi = ch_tbi // channel: [ val(meta), path(tbi) ]
 }

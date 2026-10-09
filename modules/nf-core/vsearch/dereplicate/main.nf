@@ -1,19 +1,22 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VSEARCH_DEREPLICATE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vsearch:2.31.0--hd2be7a0_0':
-        'quay.io/biocontainers/vsearch:2.31.0--hd2be7a0_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/vsearch:2.31.0--hd2be7a0_0'
+        : 'quay.io/biocontainers/vsearch:2.31.0--hd2be7a0_0'}"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
     tuple val(meta), path("${prefix}.fasta"), emit: fasta
-    tuple val(meta), path("${prefix}.uc")   , emit: clustering
-    tuple val(meta), path("${prefix}.log")  , emit: log
+    tuple val(meta), path("${prefix}.uc"), emit: clustering
+    tuple val(meta), path("${prefix}.log"), emit: log
     tuple val("${task.process}"), val('vsearch'), eval('vsearch --version 2>&1 | sed -n "1s/.*v\\([0-9.]*\\).*/\\\\1/p"'), emit: versions_vsearch, topic: versions
 
     when:
@@ -25,7 +28,7 @@ process VSEARCH_DEREPLICATE {
     """
     vsearch \\
         --derep_fulllength ${fasta} \\
-        $args \\
+        ${args} \\
         --relabel "${prefix}." \\
         --uc ${prefix}.uc \\
         --output ${prefix}.fasta 2>&1 | tee ${prefix}.log

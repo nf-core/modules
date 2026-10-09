@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SKA_FASTA {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ska:1.0--he860b03_0':
-        'quay.io/biocontainers/ska:1.0--he860b03_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/ska:1.0--he860b03_0'
+        : 'quay.io/biocontainers/ska:1.0--he860b03_0'}"
 
     input:
     tuple val(meta), path(fastas), path(fasta_list)
@@ -18,8 +21,8 @@ process SKA_FASTA {
     task.ext.when == null || task.ext.when
 
     script:
-    def args    = task.ext.args ?: ''
-    def prefix  = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def arg_list = fasta_list ? "-f ${fasta_list}" : ''
     """
     ska fasta \\

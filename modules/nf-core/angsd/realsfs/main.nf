@@ -1,15 +1,18 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ANGSD_REALSFS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/angsd:0.940--h13024bc_4':
-        'quay.io/biocontainers/angsd:0.940--h13024bc_4' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/angsd:0.940--h13024bc_4'
+        : 'quay.io/biocontainers/angsd:0.940--h13024bc_4'}"
 
     input:
     tuple val(meta), path(pop1_saf_idx), path(pop1_saf_pos), path(pop1_saf)
-    tuple val(meta2), path(pop2_saf_idx), path(pop2_saf_pos), path(pop2_saf) // Optional: use for 2-dimensional SFS estimation
+    tuple val(meta2), path(pop2_saf_idx), path(pop2_saf_pos), path(pop2_saf)
 
     output:
     tuple val(meta3), path("*.sfs"), emit: sfs

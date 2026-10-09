@@ -1,17 +1,20 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PROSEG2BAYSOR {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5c/5c9a638dd3ab6d2ce5f366a8aaec27dc34dcf2914f01112a22b855c71bf58a7b/data' :
-        'community.wave.seqera.io/library/rust-proseg:3.1.1--5dbb81bc6361cb10'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5c/5c9a638dd3ab6d2ce5f366a8aaec27dc34dcf2914f01112a22b855c71bf58a7b/data'
+        : 'community.wave.seqera.io/library/rust-proseg:3.1.1--5dbb81bc6361cb10'}"
 
     input:
     tuple val(meta), path(sd_zarr)
 
     output:
-    tuple val(meta), path("${prefix}_cell-polygons.geojson")  , emit: cell_polygons
+    tuple val(meta), path("${prefix}_cell-polygons.geojson"), emit: cell_polygons
     tuple val(meta), path("${prefix}_transcript-metadata.csv"), emit: transcript_metadata
     tuple val("${task.process}"), val('proseg'), eval("proseg --version | sed 's/proseg //'"), topic: versions, emit: versions_proseg
 

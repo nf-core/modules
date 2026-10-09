@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process AARDVARK_MERGE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/aardvark:0.10.5--h4349ce8_0':
-        'quay.io/biocontainers/aardvark:0.10.5--h4349ce8_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/aardvark:0.10.5--h4349ce8_0'
+        : 'quay.io/biocontainers/aardvark:0.10.5--h4349ce8_0'}"
 
     input:
     tuple val(meta), path(vcfs), path(indexes)
@@ -13,14 +16,14 @@ process AARDVARK_MERGE {
     tuple val(meta3), path(bed)
 
     output:
-    tuple val(meta), path('*.summary.tsv')                    , emit: summary
-    tuple val(meta), path('*.passing.vcf.gz')                 , emit: passing_vcf
-    tuple val(meta), path('*.passing.vcf.gz.tbi')             , emit: passing_vcf_index
-    tuple val(meta), path('*.regions.bed.gz')                 , emit: passing_regions
-    tuple val(meta), path('*.regions.bed.gz.tbi')             , emit: passing_regions_index
-    tuple val(meta), path('*.failed_regions.bed.gz')          , emit: failed_regions
-    tuple val(meta), path('*.failed_regions.bed.gz.tbi')      , emit: failed_regions_index
-    tuple val(meta), path('*.json')                           , emit: runinfo
+    tuple val(meta), path('*.summary.tsv'), emit: summary
+    tuple val(meta), path('*.passing.vcf.gz'), emit: passing_vcf
+    tuple val(meta), path('*.passing.vcf.gz.tbi'), emit: passing_vcf_index
+    tuple val(meta), path('*.regions.bed.gz'), emit: passing_regions
+    tuple val(meta), path('*.regions.bed.gz.tbi'), emit: passing_regions_index
+    tuple val(meta), path('*.failed_regions.bed.gz'), emit: failed_regions
+    tuple val(meta), path('*.failed_regions.bed.gz.tbi'), emit: failed_regions_index
+    tuple val(meta), path('*.json'), emit: runinfo
     tuple val("${task.process}"), val('aardvark'), eval("aardvark merge --version 2>&1 | sed 's/aardvark-bio-merge //; s/-conda//'"), topic: versions, emit: versions_aardvark
 
     when:
@@ -33,14 +36,14 @@ process AARDVARK_MERGE {
 
     """
     aardvark merge \\
-        --threads $task.cpus \\
-        --reference $fasta \\
-        $inputs \\
+        --threads ${task.cpus} \\
+        --reference ${fasta} \\
+        ${inputs} \\
         --regions ${bed} \\
-        --output-vcfs $prefix \\
-        --output-debug $prefix \\
+        --output-vcfs ${prefix} \\
+        --output-debug ${prefix} \\
         --output-summary ${prefix}.summary.tsv \\
-        $args
+        ${args}
 
     for f in ${prefix}/*; do
         mv "\$f" "${prefix}.\${f##*/}"
@@ -52,7 +55,7 @@ process AARDVARK_MERGE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo $args
+    echo ${args}
 
     echo "" | gzip > ${prefix}.passing.vcf.gz
     echo "" | gzip > ${prefix}.regions.bed.gz

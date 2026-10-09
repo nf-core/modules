@@ -1,20 +1,23 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HIFIADAPTERFILT_HIFIADAPTERFILT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hifiadapterfilt:3.0.0--hdfd78af_0':
-        'quay.io/biocontainers/hifiadapterfilt:3.0.0--hdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/hifiadapterfilt:3.0.0--hdfd78af_0'
+        : 'quay.io/biocontainers/hifiadapterfilt:3.0.0--hdfd78af_0'}"
 
     input:
     tuple val(meta), path(reads), path(db)
 
     output:
-    tuple val(meta), path("${prefix}.filt.fastq.gz")       , emit: fastq
-    tuple val(meta), path("${prefix}.stats")               , emit: stats
+    tuple val(meta), path("${prefix}.filt.fastq.gz"), emit: fastq
+    tuple val(meta), path("${prefix}.stats"), emit: stats
     tuple val(meta), path("${prefix}.contaminant.blastout"), emit: blastout
-    tuple val(meta), path("${prefix}.blocklist")           , emit: blocklist
+    tuple val(meta), path("${prefix}.blocklist"), emit: blocklist
     tuple val("${task.process}"), val('hifiadapterfilt'), eval("hifiadapterfilt.sh --version 2>&1 | head -1"), topic: versions, emit: versions_hifiadapterfilt
 
     when:
@@ -22,9 +25,10 @@ process HIFIADAPTERFILT_HIFIADAPTERFILT {
 
     script:
     def args = task.ext.args ?: ''
-    def ext  = reads.name.endsWith('.bam') ? '.bam' :
-        (reads.name.endsWith('.fastq.gz') || reads.name.endsWith('.fq.gz')) ? '.fastq.gz' : '.fastq'
-    prefix   = task.ext.prefix ?: "${meta.id}"
+    def ext = reads.name.endsWith('.bam')
+        ? '.bam'
+        : (reads.name.endsWith('.fastq.gz') || reads.name.endsWith('.fq.gz')) ? '.fastq.gz' : '.fastq'
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     # Workaround: BusyBox sed in this container lacks GNU step-address syntax (1~4,2~4).
     # hifiadapterfilt.sh uses `sed -n '1~4s/^@/>/p;2~4p'` to convert FASTQ→FASTA for

@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process LAST_DOTPLOT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
@@ -10,8 +13,8 @@ process LAST_DOTPLOT {
     input:
     tuple val(meta), path(maf), path(annot_b)
     tuple val(meta2), path(annot_a)
-    val(format)
-    val(filter)
+    val format
+    val filter
 
     output:
     tuple val(meta), path("*.{gif,png}"), emit: plot
@@ -31,20 +34,19 @@ process LAST_DOTPLOT {
     """
     TTF=/home/runner/conda_pkgs_dir/open-fonts-0.7.0-1/fonts/open-fonts/DejaVuSansMono-Regular.ttf
     [ -e "\$TTF" ] || TTF="/opt/conda/fonts/open-fonts/DejaVuSansMono-Regular.ttf"
-    $input_command $maf |
+    ${input_command} ${maf} |
     last-dotplot \\
         -f \$TTF \\
-        $args \\
-        $annot_a_arg \\
-        $annot_b_arg \\
+        ${args} \\
+        ${annot_a_arg} \\
+        ${annot_b_arg} \\
         - \\
-        $prefix.$format
+        ${prefix}.${format}
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch $prefix.$format
+    touch ${prefix}.${format}
     """
-
 }

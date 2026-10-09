@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
     label 'process_single'
 
@@ -12,13 +15,11 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
     These files are also emitted as output channels in this module to enable the antismash-lite module to use them as mount volumes to the docker/singularity containers.
     */
 
-    containerOptions (
-        ['singularity', 'apptainer'].contains(workflow.containerEngine)
-            ? "-B ${database_css}:/usr/local/lib/python3.10/site-packages/antismash/outputs/html/css,${database_detection}:/usr/local/lib/python3.10/site-packages/antismash/detection,${database_modules}:/usr/local/lib/python3.10/site-packages/antismash/modules"
-            : workflow.containerEngine == 'docker'
-                ? "-v \$PWD/${database_css}:/usr/local/lib/python3.10/site-packages/antismash/outputs/html/css -v \$PWD/${database_detection}:/usr/local/lib/python3.10/site-packages/antismash/detection -v \$PWD/${database_modules}:/usr/local/lib/python3.10/site-packages/antismash/modules"
-                : ''
-    )
+    containerOptions ['singularity', 'apptainer'].contains(workflow.containerEngine)
+        ? "-B ${database_css}:/usr/local/lib/python3.10/site-packages/antismash/outputs/html/css,${database_detection}:/usr/local/lib/python3.10/site-packages/antismash/detection,${database_modules}:/usr/local/lib/python3.10/site-packages/antismash/modules"
+        : workflow.containerEngine == 'docker'
+            ? "-v \$PWD/${database_css}:/usr/local/lib/python3.10/site-packages/antismash/outputs/html/css -v \$PWD/${database_detection}:/usr/local/lib/python3.10/site-packages/antismash/detection -v \$PWD/${database_modules}:/usr/local/lib/python3.10/site-packages/antismash/modules"
+            : ''
 
     input:
     path database_css
@@ -42,11 +43,11 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
         The new module antismash/antismashdownloaddatabases uses a different nf-core hosted container that works around this issue, thus providing a much better developer and user experience.
     """
 
-    assert false: deprecation_message
+    assert false : deprecation_message
     def args = task.ext.args ?: ''
-    cp_cmd = workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1 ?
-        "cp -r \$(python -c 'import antismash;print(antismash.__file__.split(\"/__\")[0])') antismash_dir;" :
-        "cp -r /usr/local/lib/python3.10/site-packages/antismash antismash_dir;"
+    cp_cmd = workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1
+        ? "cp -r \$(python -c 'import antismash;print(antismash.__file__.split(\"/__\")[0])') antismash_dir;"
+        : "cp -r /usr/local/lib/python3.10/site-packages/antismash antismash_dir;"
     """
     download-antismash-databases \\
         --database-dir antismash_db \\
@@ -64,11 +65,11 @@ process ANTISMASH_ANTISMASHLITEDOWNLOADDATABASES {
         The new module antismash/antismash uses a different nf-core hosted container that works around this issue, thus providing a much better developer and user experience.
     """
 
-    assert false: deprecation_message
+    assert false : deprecation_message
     def args = task.ext.args ?: ''
-    cp_cmd = workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1 ?
-        "cp -r \$(python -c 'import antismash;print(antismash.__file__.split(\"/__\")[0])') antismash_dir;" :
-        "cp -r /usr/local/lib/python3.10/site-packages/antismash antismash_dir;"
+    cp_cmd = workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1
+        ? "cp -r \$(python -c 'import antismash;print(antismash.__file__.split(\"/__\")[0])') antismash_dir;"
+        : "cp -r /usr/local/lib/python3.10/site-packages/antismash antismash_dir;"
     """
     echo "download-antismash-databases --database-dir antismash_db ${args}"
 

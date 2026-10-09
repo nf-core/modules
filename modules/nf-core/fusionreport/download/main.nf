@@ -1,14 +1,17 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FUSIONREPORT_DOWNLOAD {
     tag 'fusionreport'
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/32/3240b594c095a3682b14e92571b2bc721c7925990a74f9df3b54ce82d4e05daa/data' :
-        'community.wave.seqera.io/library/fusion-report_beautifulsoup4_click_colorlog_pruned:15d1184d4eac76b8'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/32/3240b594c095a3682b14e92571b2bc721c7925990a74f9df3b54ce82d4e05daa/data'
+        : 'community.wave.seqera.io/library/fusion-report_beautifulsoup4_click_colorlog_pruned:15d1184d4eac76b8'}"
 
     input:
-    val(meta)
+    val meta
 
     output:
     tuple val(meta), path("${prefix}"), emit: fusionreport_ref

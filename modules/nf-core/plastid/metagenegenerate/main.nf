@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PLASTID_METAGENEGENERATE {
-    tag "$annotation"
+    tag "${annotation}"
     label "process_low"
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/plastid:0.6.1--py39had3e4b6_2':
-        'quay.io/biocontainers/plastid:0.6.1--py39had3e4b6_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/plastid:0.6.1--py39had3e4b6_2'
+        : 'quay.io/biocontainers/plastid:0.6.1--py39had3e4b6_2'}"
 
     input:
     tuple val(meta), path(annotation)
@@ -24,8 +27,8 @@ process PLASTID_METAGENEGENERATE {
     """
     metagene generate \\
         "${annotation.baseName}" \\
-        --annotation_files "$annotation" \\
-        $args
+        --annotation_files "${annotation}" \\
+        ${args}
     """
 
     stub:

@@ -1,19 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
 
 process VSEARCH_FASTQFILTER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vsearch:2.31.0--hd2be7a0_0':
-        'quay.io/biocontainers/vsearch:2.31.0--hd2be7a0_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/vsearch:2.31.0--hd2be7a0_0'
+        : 'quay.io/biocontainers/vsearch:2.31.0--hd2be7a0_0'}"
 
     input:
     tuple val(meta), path(fastq)
 
     output:
-    tuple val(meta), path('*.fasta')   , emit: fasta
-    path "*.log"                       , emit: log
+    tuple val(meta), path('*.fasta'), emit: fasta
+    path "*.log", emit: log
     tuple val("${task.process}"), val('vsearch'), eval('vsearch --version 2>&1 | sed -n "1s/.*v\\([0-9.]*\\).*/\\\\1/p"'), emit: versions_vsearch, topic: versions
 
     when:
@@ -25,7 +27,7 @@ process VSEARCH_FASTQFILTER {
     """
     vsearch \\
         --fastq_filter ${fastq} \\
-        $args \\
+        ${args} \\
         --fastaout ${prefix}.fasta 2>&1 | tee ${prefix}.log
     """
 

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SEQUENZAUTILS_BAM2SEQZ {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sequenza-utils:3.0.0--py38h6ed170a_2' :
-        'quay.io/biocontainers/sequenza-utils:3.0.0--py38h6ed170a_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/sequenza-utils:3.0.0--py38h6ed170a_2'
+        : 'quay.io/biocontainers/sequenza-utils:3.0.0--py38h6ed170a_2'}"
 
     input:
     tuple val(meta), path(normalbam), path(tumourbam)

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process JELLYFISH_COUNT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/kmer-jellyfish:2.3.1--py310h184ae93_5':
-        'quay.io/biocontainers/kmer-jellyfish:2.3.1--py310h184ae93_5' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/kmer-jellyfish:2.3.1--py310h184ae93_5'
+        : 'quay.io/biocontainers/kmer-jellyfish:2.3.1--py310h184ae93_5'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -21,7 +24,7 @@ process JELLYFISH_COUNT {
 
     script:
     def is_compressed = fasta.getName().endsWith(".gz") ? true : false
-    def fasta_name    = fasta.getName().replace(".gz", "")
+    def fasta_name = fasta.getName().replace(".gz", "")
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
@@ -30,10 +33,10 @@ process JELLYFISH_COUNT {
     fi
     jellyfish \\
         count \\
-        $args \\
+        ${args} \\
         -m ${kmer_length} \\
         -s ${size} \\
-        -t $task.cpus \\
+        -t ${task.cpus} \\
         -o ${prefix}.jf \\
         ${fasta_name}
     """

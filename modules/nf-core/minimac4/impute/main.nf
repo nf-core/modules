@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MINIMAC4_IMPUTE {
     tag "${meta.id}"
     label 'process_medium'
@@ -20,17 +23,23 @@ process MINIMAC4_IMPUTE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args  = task.ext.args   ?: ''
-    prefix    = task.ext.prefix ?: "${meta.id}"
-    extension = args.contains("--output-format bcf")    || args.contains("-O bcf")    ? "bcf"    :
-                args.contains("--output-format sav")    || args.contains("-O sav")    ? "sav"    :
-                args.contains("--output-format vcf.gz") || args.contains("-O vcf.gz") ? "vcf.gz" :
-                args.contains("--output-format vcf")    || args.contains("-O vcf")    ? "vcf"    :
-                args.contains("--output-format ubcf")   || args.contains("-O ubcf")   ? "ubcf"   :
-                args.contains("--output-format usav")   || args.contains("-O usav")   ? "usav"   :
-                "vcf.gz"
-    def map_cmd      = map         ? "--map ${map}"                   : ""
-    def region_cmd   = region      ? "--region ${region}"             : ""
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    extension = args.contains("--output-format bcf") || args.contains("-O bcf")
+        ? "bcf"
+        : args.contains("--output-format sav") || args.contains("-O sav")
+            ? "sav"
+            : args.contains("--output-format vcf.gz") || args.contains("-O vcf.gz")
+                ? "vcf.gz"
+                : args.contains("--output-format vcf") || args.contains("-O vcf")
+                    ? "vcf"
+                    : args.contains("--output-format ubcf") || args.contains("-O ubcf")
+                        ? "ubcf"
+                        : args.contains("--output-format usav") || args.contains("-O usav")
+                            ? "usav"
+                            : "vcf.gz"
+    def map_cmd = map ? "--map ${map}" : ""
+    def region_cmd = region ? "--region ${region}" : ""
     def sites_output = write_sites ? "--sites ${prefix}.sites.vcf.gz" : ""
     """
     minimac4 \\
@@ -45,15 +54,21 @@ process MINIMAC4_IMPUTE {
     """
 
     stub:
-    def args  = task.ext.args   ?: ''
-    prefix    = task.ext.prefix ?: "${meta.id}"
-    extension = args.contains("--output-format bcf")    || args.contains("-O bcf")    ? "bcf"    :
-                args.contains("--output-format sav")    || args.contains("-O sav")    ? "sav"    :
-                args.contains("--output-format vcf.gz") || args.contains("-O vcf.gz") ? "vcf.gz" :
-                args.contains("--output-format vcf")    || args.contains("-O vcf")    ? "vcf"    :
-                args.contains("--output-format ubcf")   || args.contains("-O ubcf")   ? "ubcf"   :
-                args.contains("--output-format usav")   || args.contains("-O usav")   ? "usav"   :
-                "vcf.gz"
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    extension = args.contains("--output-format bcf") || args.contains("-O bcf")
+        ? "bcf"
+        : args.contains("--output-format sav") || args.contains("-O sav")
+            ? "sav"
+            : args.contains("--output-format vcf.gz") || args.contains("-O vcf.gz")
+                ? "vcf.gz"
+                : args.contains("--output-format vcf") || args.contains("-O vcf")
+                    ? "vcf"
+                    : args.contains("--output-format ubcf") || args.contains("-O ubcf")
+                        ? "ubcf"
+                        : args.contains("--output-format usav") || args.contains("-O usav")
+                            ? "usav"
+                            : "vcf.gz"
     def create_cmd = extension.endsWith(".gz") ? "echo '' | gzip >" : "touch"
     def sites_output = write_sites ? "echo '' | gzip > ${prefix}.sites.vcf.gz" : ""
 

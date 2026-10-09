@@ -1,19 +1,22 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BINETTE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f4/f49d890620286da8d7663f73091c2caa1b7186ae05da2e885ef039f07d628a96/data'
-:         'community.wave.seqera.io/library/binette_gzip:3dad8d26ac1fc14c' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f4/f49d890620286da8d7663f73091c2caa1b7186ae05da2e885ef039f07d628a96/data'
+        : 'community.wave.seqera.io/library/binette_gzip:3dad8d26ac1fc14c'}"
 
     input:
-    tuple val(meta) , path(contig2bin), path(bindirs), path(contigs), path(proteins)
+    tuple val(meta), path(contig2bin), path(bindirs), path(contigs), path(proteins)
     tuple val(meta2), path(checkm2_db)
 
     output:
-    tuple val(meta), path("final_bins/*.fa.gz")              , emit: final_bins, optional: true
-    tuple val(meta), path("*.final_contig_to_bin.tsv")       , emit: contig2bin
+    tuple val(meta), path("final_bins/*.fa.gz"), emit: final_bins, optional: true
+    tuple val(meta), path("*.final_contig_to_bin.tsv"), emit: contig2bin
     tuple val(meta), path("input_bins_quality_reports/*.tsv"), emit: input_bins_quality_reports
     tuple val(meta), path("*.final_bins_quality_reports.tsv"), emit: final_bins_quality_report
     tuple val("${task.process}"), val('binette'), eval("binette --version | sed 's/Binette //'"), topic: versions, emit: versions_binette

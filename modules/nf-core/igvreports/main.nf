@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process IGVREPORTS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/igv-reports:1.12.0--pyh7cba7a3_0':
-        'quay.io/biocontainers/igv-reports:1.12.0--pyh7cba7a3_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/igv-reports:1.12.0--pyh7cba7a3_0'
+        : 'quay.io/biocontainers/igv-reports:1.12.0--pyh7cba7a3_0'}"
 
     input:
     tuple val(meta), path(sites), path(tracks), path(tracks_indices)
     tuple val(meta2), path(fasta), path(fai)
 
     output:
-    tuple val(meta), path("*.html") , emit: report
+    tuple val(meta), path("*.html"), emit: report
     tuple val("${task.process}"), val("igvreports"), eval("python -c 'import igv_reports; print(igv_reports.__version__)'"), topic: versions, emit: versions_igvreports
 
     when:
@@ -23,7 +26,7 @@ process IGVREPORTS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def fasta_opt = fasta ? "--fasta ${fasta}" : ""
     // If tracks is not null, create a string of the track paths
-    def track_arg = tracks ? "--tracks "+ tracks.collect { track -> track.toString() }.join(' ') : ""
+    def track_arg = tracks ? "--tracks " + tracks.collect { track -> track.toString() }.join(' ') : ""
     // if "--tracks" is in the args, then add track_string immediately after it in
     // the args string and set the track_arg to ""
     if (args.contains("--tracks") && track_arg) {

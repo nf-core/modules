@@ -1,33 +1,36 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process LIMMA_DIFFERENTIAL {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/af/afd9579a0ff62890ff451d82b360d85e82a0d61a3da40736ee0eee4e45926269/data' :
-        'community.wave.seqera.io/library/bioconductor-edger_bioconductor-limma:176c202c82450990' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/af/afd9579a0ff62890ff451d82b360d85e82a0d61a3da40736ee0eee4e45926269/data'
+        : 'community.wave.seqera.io/library/bioconductor-edger_bioconductor-limma:176c202c82450990'}"
 
     input:
     tuple val(meta), val(contrast_variable), val(reference), val(target), val(formula), val(comparison)
     tuple val(meta2), path(samplesheet), path(intensities)
 
     output:
-    tuple val(meta), path("*.limma.results.tsv")          , emit: results
-    tuple val(meta), path("*.limma.mean_difference.png")  , emit: md_plot
-    tuple val(meta), path("*.MArrayLM.limma.rds")         , emit: rdata
-    tuple val(meta), path("*.limma.model.txt")            , emit: model
-    tuple val(meta), path("*.R_sessionInfo.log")          , emit: session_info
-    tuple val(meta), path("*.normalised_counts.tsv")      , emit: normalised_counts, optional: true
-    path "versions.yml"                                   , emit: versions, topic: versions
+    tuple val(meta), path("*.limma.results.tsv"), emit: results
+    tuple val(meta), path("*.limma.mean_difference.png"), emit: md_plot
+    tuple val(meta), path("*.MArrayLM.limma.rds"), emit: rdata
+    tuple val(meta), path("*.limma.model.txt"), emit: model
+    tuple val(meta), path("*.R_sessionInfo.log"), emit: session_info
+    tuple val(meta), path("*.normalised_counts.tsv"), emit: normalised_counts, optional: true
+    path "versions.yml", emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    template 'limma_de.R'
+    template('limma_de.R')
 
     stub:
-    prefix              = task.ext.prefix   ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     #!/usr/bin/env Rscript
     library(limma)

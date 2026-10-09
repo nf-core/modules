@@ -1,10 +1,13 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MCSTAGING_IMC2MC {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
     container "ghcr.io/schapirolabor/imc2mc:0.0.2"
 
     input:
-    tuple val(meta) , path(txtfile)
+    tuple val(meta), path(txtfile)
 
     output:
     tuple val(meta), path("*.tif"), emit: tif
@@ -20,21 +23,21 @@ WARNING: This module has been deprecated. Please use nf-core/modules/imc2mc
 Reason:
 Renamed module to match the tool/subtool convention
 """
-    def args   = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    assert false: deprecation_message
+    assert false : deprecation_message
     """
     python /imc2mc/scripts/imc2mc.py \
         -i ${txtfile} \
         -o "${prefix}.tif" \
-        $args
+        ${args}
 
     """
 
     stub:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "imc2mc module in conda does not exist. Please use Docker / Singularity / Podman instead."
+        error("imc2mc module in conda does not exist. Please use Docker / Singularity / Podman instead.")
     }
     def prefix = task.ext.prefix ?: "${meta.id}"
     """

@@ -1,15 +1,18 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SCOARY {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/scoary:1.6.16--py_2' :
-        'quay.io/biocontainers/scoary:1.6.16--py_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/scoary:1.6.16--py_2'
+        : 'quay.io/biocontainers/scoary:1.6.16--py_2'}"
 
     input:
     tuple val(meta), path(genes), path(traits)
-    path(tree)
+    path tree
 
     output:
     tuple val(meta), path("*.csv"), emit: csv

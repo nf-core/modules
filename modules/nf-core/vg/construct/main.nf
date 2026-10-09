@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VG_CONSTRUCT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vg:1.73.0--h9ee0642_0' :
-        'quay.io/biocontainers/vg:1.73.0--h9ee0642_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/vg:1.73.0--h9ee0642_0'
+        : 'quay.io/biocontainers/vg:1.73.0--h9ee0642_0'}"
 
     input:
     tuple val(meta), path(input), path(tbis), path(insertions_fasta)
@@ -13,7 +16,7 @@ process VG_CONSTRUCT {
     tuple val(meta3), path(fasta_fai)
 
     output:
-    tuple val(meta), path("*.vg") , emit: graph
+    tuple val(meta), path("*.vg"), emit: graph
     tuple val("${task.process}"), val('vg'), eval("vg 2>&1 | sed -n 's/.*version v\\([0-9.]*\\).*/\\1/p'"), topic: versions, emit: versions_vg
 
     when:
@@ -23,7 +26,7 @@ process VG_CONSTRUCT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def mode =  input instanceof ArrayList || input.toString().endsWith(".vcf.gz") ? 'vcf' : 'msa'
+    def mode = input instanceof ArrayList || input.toString().endsWith(".vcf.gz") ? 'vcf' : 'msa'
 
     input_files = mode == 'vcf' ? input.collect { vcf_file -> "--vcf ${vcf_file}" }.join(" ") : "--msa ${input}"
     reference = mode == 'vcf' ? "--reference ${fasta}" : ""

@@ -1,10 +1,13 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process METAPHLAN3_MERGEMETAPHLANTABLES {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/metaphlan:3.0.12--pyhb7b1952_0' :
-        'quay.io/biocontainers/metaphlan:3.0.12--pyhb7b1952_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/metaphlan:3.0.12--pyhb7b1952_0'
+        : 'quay.io/biocontainers/metaphlan:3.0.12--pyhb7b1952_0'}"
 
     input:
     tuple val(meta), path(profiles)
@@ -17,12 +20,12 @@ process METAPHLAN3_MERGEMETAPHLANTABLES {
     task.ext.when == null || task.ext.when
 
     script:
-    def args  = task.ext.args   ?: ''
-    prefix    = task.ext.prefix ?: "${meta.id}"
-    def input = profiles.sort{profile -> profile.toString()}.join(" ")
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def input = profiles.sort { profile -> profile.toString() }.join(" ")
     """
     merge_metaphlan_tables.py \\
-        $args \\
+        ${args} \\
         -o ${prefix}.txt \\
         ${input}
 

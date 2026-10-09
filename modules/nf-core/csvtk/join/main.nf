@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CSVTK_JOIN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/91/917edb71b915f07fa2838c20e3c731181d3d315cbf8a9bfead41412d2b4ae062/data':
-        'community.wave.seqera.io/library/csvtk:0.37.0--113625988dd3285d' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/91/917edb71b915f07fa2838c20e3c731181d3d315cbf8a9bfead41412d2b4ae062/data'
+        : 'community.wave.seqera.io/library/csvtk:0.37.0--113625988dd3285d'}"
 
     input:
     tuple val(meta), path(csv)
@@ -24,10 +27,10 @@ process CSVTK_JOIN {
     """
     csvtk \\
         join \\
-        $args \\
-        --num-cpus $task.cpus \\
+        ${args} \\
+        --num-cpus ${task.cpus} \\
         --out-file ${prefix}.${out_extension} \\
-        $csv
+        ${csv}
     """
 
     stub:

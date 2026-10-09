@@ -1,18 +1,20 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
 
 process PLINK2_HET {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/plink2:2.00a5.10--h4ac6f70_0':
-        'quay.io/biocontainers/plink2:2.00a5.10--h4ac6f70_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/plink2:2.00a5.10--h4ac6f70_0'
+        : 'quay.io/biocontainers/plink2:2.00a5.10--h4ac6f70_0'}"
 
     input:
     tuple val(meta), path(plink_genotype_file), path(plink_variant_file), path(plink_sample_file)
 
     output:
-    tuple val(meta), path("*.het")  , emit: het
+    tuple val(meta), path("*.het"), emit: het
     tuple val("${task.process}"), val('plink2'), eval("plink2 --version 2>&1 | sed 's/^PLINK v//; s/ 64.*\$//'"), topic: versions, emit: versions_plink2
 
     when:
@@ -25,11 +27,11 @@ process PLINK2_HET {
     def input = "${plink_genotype_file.getBaseName()}"
     """
     plink2 \\
-        $mode $input \\
-        $args \\
-        --threads $task.cpus \\
+        ${mode} ${input} \\
+        ${args} \\
+        --threads ${task.cpus} \\
         --het \\
-        --out $prefix
+        --out ${prefix}
     """
 
     stub:

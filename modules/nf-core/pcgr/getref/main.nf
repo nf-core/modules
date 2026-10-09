@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PCGR_GETREF {
     tag "${meta.id}"
     label 'process_single'
@@ -12,9 +15,9 @@ process PCGR_GETREF {
 
     output:
     tuple val(meta), path("${bundleversion}"), emit: pcgrref
-    tuple val("${task.process}"), val('curl'),  eval("curl --version | head -1 | cut -d ' ' -f 2"), topic: versions, emit: versions_curl
-    tuple val("${task.process}"), val('gzip'),  eval("gzip --version | head -1 | cut -d ' ' -f 2"), topic: versions, emit: versions_gzip
-    tuple val("${task.process}"), val('tar'),   eval("tar --version | head -1 | cut -d ' ' -f 4"),  topic: versions, emit: versions_tar
+    tuple val("${task.process}"), val('curl'), eval("curl --version | head -1 | cut -d ' ' -f 2"), topic: versions, emit: versions_curl
+    tuple val("${task.process}"), val('gzip'), eval("gzip --version | head -1 | cut -d ' ' -f 2"), topic: versions, emit: versions_gzip
+    tuple val("${task.process}"), val('tar'), eval("tar --version | head -1 | cut -d ' ' -f 4"), topic: versions, emit: versions_tar
 
     when:
     task.ext.when == null || task.ext.when

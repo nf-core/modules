@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SKESA {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/skesa%3A2.5.1--h077b44d_3':
-        'quay.io/biocontainers/skesa:2.5.1--h077b44d_3' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/skesa%3A2.5.1--h077b44d_3'
+        : 'quay.io/biocontainers/skesa:2.5.1--h077b44d_3'}"
 
     input:
     tuple val(meta), path(fastq)
@@ -24,19 +27,19 @@ process SKESA {
     def paired_end = meta.single_end ? "" : "--use_paired_ends"
     """
         skesa \
-            --reads $fastq \
+            --reads ${fastq} \
             --contigs_out ${prefix}.fa \
-            --cores $task.cpus \
-            $paired_end \
-            $memory \
-            $args
+            --cores ${task.cpus} \
+            ${paired_end} \
+            ${memory} \
+            ${args}
     """
 
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo $args
+    echo ${args}
     touch ${prefix}.fa
     """
 }

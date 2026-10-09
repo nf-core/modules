@@ -1,16 +1,19 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SPACERANGER_MKREF {
-    tag "$fasta"
+    tag "${fasta}"
     label 'process_high'
 
     container "quay.io/nf-core/spaceranger:9c5e7dc93c32448e"
 
     input:
-    path(fasta)
-    path(gtf)
-    val(reference_name)
+    path fasta
+    path gtf
+    val reference_name
 
     output:
-    path("${reference_name}"), emit: reference
+    path ("${reference_name}"), emit: reference
     tuple val("${task.process}"), val('spaceranger'), eval('spaceranger -V | sed "s/spaceranger spaceranger-//"'), emit: versions_spaceranger, topic: versions
 
     when:
@@ -19,7 +22,7 @@ process SPACERANGER_MKREF {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "SPACERANGER_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("SPACERANGER_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     def args = task.ext.args ?: ''
     // --localcores is passed to the martian runtime and specifies the number of allocated jobs
@@ -28,22 +31,22 @@ process SPACERANGER_MKREF {
     """
     spaceranger \\
         mkref \\
-        --genome=$reference_name \\
-        --fasta=$fasta \\
-        --genes=$gtf \\
+        --genome=${reference_name} \\
+        --fasta=${fasta} \\
+        --genes=${gtf} \\
         --localcores=${task.cpus} \\
         --localmem=${task.memory.toGiga()} \\
         --nthreads=${task.cpus} \\
-        $args
+        ${args}
     """
 
     stub:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "SPACERANGER_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("SPACERANGER_MKREF module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     """
-    mkdir -p $reference_name
+    mkdir -p ${reference_name}
 
     touch ${reference_name}/genome.fa
     touch ${reference_name}/genome.fa.fai

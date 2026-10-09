@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HISAT3N_BUILD {
-    tag "$fasta"
+    tag "${fasta}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/hisat-3n:0.0.3--b4c98eb79ad7c714' :
-        'community.wave.seqera.io/library/hisat-3n:0.0.3--b4b80cb38c483147' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'oras://community.wave.seqera.io/library/hisat-3n:0.0.3--b4c98eb79ad7c714'
+        : 'community.wave.seqera.io/library/hisat-3n:0.0.3--b4b80cb38c483147'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -22,9 +25,9 @@ process HISAT3N_BUILD {
     """
     mkdir hisat3n
     hisat-3n-build \\
-        -p $task.cpus \\
-        $args \\
-        $fasta \\
+        -p ${task.cpus} \\
+        ${args} \\
+        ${fasta} \\
         hisat3n/${fasta.baseName}
     """
 

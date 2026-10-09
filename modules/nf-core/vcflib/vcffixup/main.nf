@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VCFLIB_VCFFIXUP {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/16/169e4e28f26469eb05baf60eab777bccadd747ac75038c6bb22149cd40c2ff38/data':
-        'community.wave.seqera.io/library/bcftools_vcflib:0b47030679d1eff1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/16/169e4e28f26469eb05baf60eab777bccadd747ac75038c6bb22149cd40c2ff38/data'
+        : 'community.wave.seqera.io/library/bcftools_vcflib:0b47030679d1eff1'}"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
 
     output:
     tuple val(meta), path("*.{vcf,bcf}{,.gz}"), emit: vcf
-    tuple val(meta), path("*.{csi,tbi}")      , emit: index, optional: true
+    tuple val(meta), path("*.{csi,tbi}"), emit: index, optional: true
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('vcflib'), val("1.0.14"), topic: versions, emit: versions_vcflib
     tuple val("${task.process}"), val('bcftools'), eval("bcftools --version | sed '1!d; s/^.*bcftools //'"), topic: versions, emit: versions_bcftools
@@ -21,9 +24,9 @@ process VCFLIB_VCFFIXUP {
     task.ext.when == null || task.ext.when
 
     script:
-    def args    = task.ext.args   ?: ''
-    def args2   = task.ext.args2  ?: ''
-    def prefix  = task.ext.prefix ?: "${meta.id}.fixed"
+    def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}.fixed"
 
     def extension = args2.contains("--output-type b") || args2.contains("-Ob")
         ? "bcf.gz"
@@ -35,8 +38,8 @@ process VCFLIB_VCFFIXUP {
                     ? "vcf"
                     : "vcf"
 
-    if ( "${vcf}" == "${prefix}.${extension}" ) {
-        error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${vcf}" == "${prefix}.${extension}") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
     }
 
     """
@@ -47,8 +50,8 @@ process VCFLIB_VCFFIXUP {
     """
 
     stub:
-    def prefix  = task.ext.prefix ?: "${meta.id}.fixed"
-    def args2   = task.ext.args2  ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}.fixed"
+    def args2 = task.ext.args2 ?: ''
     def extension = args2.contains("--output-type b") || args2.contains("-Ob")
         ? "bcf.gz"
         : args2.contains("--output-type u") || args2.contains("-Ou")
@@ -66,8 +69,8 @@ process VCFLIB_VCFFIXUP {
                 ? "csi"
                 : ""
 
-    if ( "${vcf}" == "${prefix}.${extension}" ) {
-        error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${vcf}" == "${prefix}.${extension}") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
     }
 
     def create_cmd = extension.endsWith(".gz") ? "echo '' | gzip >" : "touch"

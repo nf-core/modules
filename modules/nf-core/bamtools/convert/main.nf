@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BAMTOOLS_CONVERT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bamtools:2.5.2--hdcf5f25_2' :
-        'quay.io/biocontainers/bamtools:2.5.2--hdcf5f25_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/bamtools:2.5.2--hdcf5f25_2'
+        : 'quay.io/biocontainers/bamtools:2.5.2--hdcf5f25_2'}"
 
     input:
     tuple val(meta), path(bam)
@@ -18,27 +21,31 @@ process BAMTOOLS_CONVERT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args       = task.ext.args   ?: ''
-    def prefix     = task.ext.prefix ?: "${meta.id}"
-    format_cmd     = args ==~ /-format (bed|fasta|fastq|json|pileup|sam|yaml)/
-    matched_format = args =~  /-format ([a-z]+)/
-    extension      = matched_format[0][1]
-    if ( format_cmd == false ) error "-format option must be provided in args. Possible values: bed fasta fastq json pileup sam yaml"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    format_cmd = args ==~ /-format (bed|fasta|fastq|json|pileup|sam|yaml)/
+    matched_format = args =~ /-format ([a-z]+)/
+    extension = matched_format[0][1]
+    if (format_cmd == false) {
+        error("-format option must be provided in args. Possible values: bed fasta fastq json pileup sam yaml")
+    }
 
     """
     bamtools \\
         convert \\
-        $args \\
-        -in $bam \\
+        ${args} \\
+        -in ${bam} \\
         -out ${prefix}.${extension}
     """
 
     stub:
-    def prefix     = task.ext.prefix ?: "${meta.id}"
-    format_cmd     = args ==~ /-format (bed|fasta|fastq|json|pileup|sam|yaml)/
-    matched_format = args =~  /-format ([a-z]+)/
-    extension      = matched_format[0][1]
-    if ( format_cmd == false ) error "-format option must be provided in args. Possible values: bed fasta fastq json pileup sam yaml"
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    format_cmd = args ==~ /-format (bed|fasta|fastq|json|pileup|sam|yaml)/
+    matched_format = args =~ /-format ([a-z]+)/
+    extension = matched_format[0][1]
+    if (format_cmd == false) {
+        error("-format option must be provided in args. Possible values: bed fasta fastq json pileup sam yaml")
+    }
 
     """
     touch ${prefix}.${extension}

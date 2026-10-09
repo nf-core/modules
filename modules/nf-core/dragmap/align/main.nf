@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DRAGMAP_ALIGN {
     tag "${meta.id}"
     label 'process_high'
@@ -15,12 +18,12 @@ process DRAGMAP_ALIGN {
     val sort_bam
 
     output:
-    tuple val(meta), path("*.sam"),  emit: sam,  optional: true
-    tuple val(meta), path("*.bam"),  emit: bam,  optional: true
+    tuple val(meta), path("*.sam"), emit: sam, optional: true
+    tuple val(meta), path("*.bam"), emit: bam, optional: true
     tuple val(meta), path("*.cram"), emit: cram, optional: true
     tuple val(meta), path("*.crai"), emit: crai, optional: true
-    tuple val(meta), path("*.csi"),  emit: csi,  optional: true
-    tuple val(meta), path('*.log'),  emit: log
+    tuple val(meta), path("*.csi"), emit: csi, optional: true
+    tuple val(meta), path('*.log'), emit: log
     tuple val("${task.process}"), val('dragmap'), eval("dragen-os --version 2>&1"), emit: versions_dragmap, topic: versions
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), emit: versions_samtools, topic: versions
     tuple val("${task.process}"), val('pigz'), eval("pigz --version 2>&1 | sed 's/pigz //'"), emit: versions_pigz, topic: versions

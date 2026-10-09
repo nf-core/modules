@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PLINK_EPISTASIS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/plink:1.90b6.21--h031d066_5':
-        'quay.io/biocontainers/plink:1.90b6.21--h031d066_5' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/plink:1.90b6.21--h031d066_5'
+        : 'quay.io/biocontainers/plink:1.90b6.21--h031d066_5'}"
 
     input:
     tuple val(meta), path(bed), path(bim), path(fam)
@@ -15,10 +18,10 @@ process PLINK_EPISTASIS {
     tuple val(meta4), path(phe)
 
     output:
-    tuple val(meta), path("*.epi.cc")        ,  emit: epi
-    tuple val(meta), path("*.epi.cc.summary"),  emit: episummary, optional:true
-    tuple val(meta), path("*.log")           ,  emit: log
-    tuple val(meta), path("*.nosex")         ,  emit: nosex, optional:true
+    tuple val(meta), path("*.epi.cc"), emit: epi
+    tuple val(meta), path("*.epi.cc.summary"), emit: episummary, optional: true
+    tuple val(meta), path("*.log"), emit: log
+    tuple val(meta), path("*.nosex"), emit: nosex, optional: true
     tuple val("${task.process}"), val('plink'), eval("plink --version 2>&1 | sed 's/^PLINK v//;s/ .*//'"), emit: versions_plink, topic: versions
 
     when:
@@ -30,27 +33,30 @@ process PLINK_EPISTASIS {
     // define input string based on provided input files
     // in hierarchical order
     def input_command = ""
-    if (bed){
+    if (bed) {
         input_command = "--bed ${bed} --bim ${bim} --fam ${fam}"
         prefix = task.ext.prefix ?: "${meta.id}"
-    } else if (vcf) {
+    }
+    else if (vcf) {
         input_command = "--vcf ${vcf} --pheno ${phe}"
         prefix = task.ext.prefix ?: "${meta2.id}"
         meta = meta2
-    } else if (bcf) {
+    }
+    else if (bcf) {
         input_command = "--bcf ${bcf} --pheno ${phe}"
         prefix = task.ext.prefix ?: "${meta3.id}"
         meta = meta3
-    } else {
-        log.error 'ERROR: the input should be either plink native binary format, VCF or BCF'
+    }
+    else {
+        log.error('ERROR: the input should be either plink native binary format, VCF or BCF')
     }
     """
     plink \\
-        $input_command \\
-        --threads $task.cpus \\
+        ${input_command} \\
+        --threads ${task.cpus} \\
         --epistasis \\
-        $args \\
-        --out $prefix
+        ${args} \\
+        --out ${prefix}
     """
 
     stub:
@@ -58,19 +64,22 @@ process PLINK_EPISTASIS {
     // define input string based on provided input files
     // in hierarchical order
     def input_command = ""
-    if (bed){
+    if (bed) {
         input_command = "--bed ${bed} --bim ${bim} --fam ${fam}"
         prefix = task.ext.prefix ?: "${meta.id}"
-    } else if (vcf) {
+    }
+    else if (vcf) {
         input_command = "--vcf ${vcf}"
         prefix = task.ext.prefix ?: "${meta2.id} --pheno ${phe}"
         meta = meta2
-    } else if (bcf) {
+    }
+    else if (bcf) {
         input_command = "--bcf ${bcf} --pheno ${phe}"
         prefix = task.ext.prefix ?: "${meta3.id}"
         meta = meta3
-    } else {
-        log.error 'ERROR: the input should be either plink native binary format, VCF or BCF'
+    }
+    else {
+        log.error('ERROR: the input should be either plink native binary format, VCF or BCF')
     }
     """
     touch ${prefix}.epi

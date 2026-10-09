@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CELLRANGERARC_MKFASTQ {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     // WARNING !! Cell Ranger ARC mkfastq results are not deterministic, so the number of threads used in the process might affect the results.
@@ -20,11 +23,11 @@ process CELLRANGERARC_MKFASTQ {
     script:
 
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "CELLRANGERARC_MKFASTQ module does not support Conda. Please use docker or singularity containers."
+        exit(1, "CELLRANGERARC_MKFASTQ module does not support Conda. Please use docker or singularity containers.")
     }
 
-    def args = task.ext.args   ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}_mkfastq"
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}_mkfastq"
     """
     cellranger-arc mkfastq --id=${prefix} \\
         --localmem=${task.memory.toGiga()} \\
@@ -36,7 +39,7 @@ process CELLRANGERARC_MKFASTQ {
 
     stub:
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        exit 1, "CELLRANGERARC_MKFASTQ module does not support Conda. Please use docker or singularity containers."
+        exit(1, "CELLRANGERARC_MKFASTQ module does not support Conda. Please use docker or singularity containers.")
     }
 
     prefix = task.ext.prefix ?: "${meta.id}"

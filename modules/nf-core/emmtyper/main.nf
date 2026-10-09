@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process EMMTYPER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/emmtyper:0.2.0--py_0' :
-        'quay.io/biocontainers/emmtyper:0.2.0--py_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/emmtyper:0.2.0--py_0'
+        : 'quay.io/biocontainers/emmtyper:0.2.0--py_0'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -22,8 +25,8 @@ process EMMTYPER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     emmtyper \\
-        $args \\
-        $fasta \\
+        ${args} \\
+        ${fasta} \\
         > ${prefix}.tsv
     """
 

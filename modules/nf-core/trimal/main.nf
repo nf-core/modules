@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TRIMAL {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/trimal:1.5.0--h9948957_2':
-        'quay.io/biocontainers/trimal:1.5.0--h9948957_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/trimal:1.5.0--h9948957_2'
+        : 'quay.io/biocontainers/trimal:1.5.0--h9948957_2'}"
 
     input:
     tuple val(meta), path(aln)
@@ -13,7 +16,7 @@ process TRIMAL {
 
     output:
     tuple val(meta), path("${prefix}.${out_extension}"), emit: trimal
-    tuple val(meta), path("${prefix}.html")            , emit: summary, optional: true
+    tuple val(meta), path("${prefix}.html"), emit: summary, optional: true
     tuple val("${task.process}"), val('trimal'), eval("trimal --version | sed '2!d;s/trimAl v//;s/ .*//'"), emit: versions_trimal, topic: versions
 
     when:

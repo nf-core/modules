@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GLIMPSE_CHUNK {
     tag "${meta.id}"
     label 'process_medium'
@@ -19,7 +22,7 @@ process GLIMPSE_CHUNK {
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def args   = task.ext.args   ?: ""
+    def args = task.ext.args ?: ""
 
     """
     GLIMPSE_chunk \\

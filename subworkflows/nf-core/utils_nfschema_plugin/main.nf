@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 //
 // Subworkflow that uses the nf-schema plugin to validate parameters and render the parameter summary
 //
@@ -7,26 +10,21 @@ include { validateParameters } from 'plugin/nf-schema'
 include { paramsHelp         } from 'plugin/nf-schema'
 
 workflow UTILS_NFSCHEMA_PLUGIN {
-
     take:
-    input_workflow      // workflow: the workflow object used by nf-schema to get metadata from the workflow
-    validate_params     // boolean:  validate the parameters
-    parameters_schema   // string:   path to the parameters JSON schema.
-                        //           this has to be the same as the schema given to `validation.parametersSchema`
-                        //           when this input is empty it will automatically use the configured schema or
-                        //           "${projectDir}/nextflow_schema.json" as default. This input should not be empty
-                        //           for meta pipelines
-    help                // boolean:  show help message
-    help_full           // boolean:  show full help message
-    show_hidden         // boolean:  show hidden parameters in help message
-    before_text         // string:   text to show before the help message and parameters summary
-    after_text          // string:   text to show after the help message and parameters summary
-    command             // string:   an example command of the pipeline
-    cli_typecast        // boolean:  whether to perform typecasting of CLI parameters. Set this to `null` to use the default behaviour
+    input_workflow // workflow: the workflow object used by nf-schema to get metadata from the workflow
+    validate_params // boolean:  validate the parameters
+    parameters_schema // string:   path to the parameters JSON schema.
+    help // boolean:  show help message
+    help_full // boolean:  show full help message
+    show_hidden // boolean:  show hidden parameters in help message
+    before_text // string:   text to show before the help message and parameters summary
+    after_text // string:   text to show after the help message and parameters summary
+    command // string:   an example command of the pipeline
+    cli_typecast // boolean:  whether to perform typecasting of CLI parameters. Set this to `null` to use the default behaviour
 
     main:
 
-    if(help || help_full) {
+    if (help || help_full) {
         help_options = [
             parameter: (help instanceof String && help != "true") ? help : null,
             beforeText: before_text,
@@ -35,12 +33,12 @@ workflow UTILS_NFSCHEMA_PLUGIN {
             showHidden: show_hidden,
             fullHelp: help_full,
         ]
-        if(parameters_schema) {
+        if (parameters_schema) {
             help_options << [parameters_schema: parameters_schema]
         }
 
-        log.info paramsHelp(help_options)
-        exit 0
+        log.info(paramsHelp(help_options))
+        exit(0)
     }
 
     //
@@ -49,23 +47,23 @@ workflow UTILS_NFSCHEMA_PLUGIN {
     //
 
     summary_options = [:]
-    if(parameters_schema) {
+    if (parameters_schema) {
         summary_options << [parameters_schema: parameters_schema]
     }
-    log.info before_text
-    log.info paramsSummaryLog(summary_options)
-    log.info after_text
+    log.info(before_text)
+    log.info(paramsSummaryLog(summary_options))
+    log.info(after_text)
 
     //
     // Validate the parameters using nextflow_schema.json or the schema
     // given via the validation.parametersSchema configuration option
     //
-    if(validate_params) {
+    if (validate_params) {
         validateOptions = [:]
-        if(parameters_schema) {
+        if (parameters_schema) {
             validateOptions << [parameters_schema: parameters_schema]
         }
-        if(cli_typecast != null) {
+        if (cli_typecast != null) {
             validateOptions << [cast_cli_params: cli_typecast]
         }
         validateParameters(validateOptions)

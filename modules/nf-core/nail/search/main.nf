@@ -1,14 +1,17 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process NAIL_SEARCH {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/nail:0.4.0--h4349ce8_0':
-        'quay.io/biocontainers/nail:0.4.0--h4349ce8_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/nail:0.4.0--h4349ce8_0'
+        : 'quay.io/biocontainers/nail:0.4.0--h4349ce8_0'}"
 
     input:
-    tuple val(meta) , path(query)
+    tuple val(meta), path(query)
     tuple val(meta2), path(target)
     val write_align
 
@@ -22,9 +25,10 @@ process NAIL_SEARCH {
     task.ext.when == null || task.ext.when
 
     script:
-    def args  = task.ext.args ?: ''
-    prefix    = task.ext.prefix ?: "${meta.id}"
-    alignment = write_align ? "--ali-out ${prefix}.ali" : '' // no def here due to current Nextflow bug; cause: Variable `prefix` already defined in the process scope
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    alignment = write_align ? "--ali-out ${prefix}.ali" : ''
+    // no def here due to current Nextflow bug; cause: Variable `prefix` already defined in the process scope
     """
     nail search \\
         ${args} \\
@@ -36,7 +40,7 @@ process NAIL_SEARCH {
     """
 
     stub:
-    prefix   = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.txt
     touch ${prefix}.tbl

@@ -1,22 +1,24 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
 
 process HUMID {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/humid:1.0.4--hadf994f_0':
-        'quay.io/biocontainers/humid:1.0.4--hadf994f_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/humid:1.0.4--hadf994f_0'
+        : 'quay.io/biocontainers/humid:1.0.4--hadf994f_0'}"
 
     input:
     tuple val(meta), path(reads)
     tuple val(meta2), path(umi_file)
 
     output:
-    tuple val(meta), path("${prefix}.log")         , emit: log
-    tuple val(meta), path("*_dedup*.fastq.gz")     , emit: dedup    , optional: true
-    tuple val(meta), path("*_annotated*.fastq.gz") , emit: annotated, optional: true
-    tuple val(meta), path("${prefix}")             , emit: stats    , optional: true
+    tuple val(meta), path("${prefix}.log"), emit: log
+    tuple val(meta), path("*_dedup*.fastq.gz"), emit: dedup, optional: true
+    tuple val(meta), path("*_annotated*.fastq.gz"), emit: annotated, optional: true
+    tuple val(meta), path("${prefix}"), emit: stats, optional: true
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('humid'), val("1.0.4"), emit: versions_humid, topic: versions
 

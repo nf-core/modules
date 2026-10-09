@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DREP_COMPARE {
     tag "${meta.id}"
     label 'process_medium'
@@ -12,7 +15,7 @@ process DREP_COMPARE {
 
     output:
     tuple val(meta), path("${prefix}"), emit: directory
-    tuple val("${task.process}"), val("drep"), eval("dRep | sed '2!d;s/.*v//g;s/ .*//g'"), emit:versions_drep, topic:versions
+    tuple val("${task.process}"), val("drep"), eval("dRep | sed '2!d;s/.*v//g;s/ .*//g'"), emit: versions_drep, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

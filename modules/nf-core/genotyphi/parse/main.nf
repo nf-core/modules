@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GENOTYPHI_PARSE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/genotyphi:1.9.1--hdfd78af_1':
-        'quay.io/biocontainers/genotyphi:1.9.1--hdfd78af_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/genotyphi:1.9.1--hdfd78af_1'
+        : 'quay.io/biocontainers/genotyphi:1.9.1--hdfd78af_1'}"
 
     input:
     tuple val(meta), path(json)
@@ -22,7 +25,7 @@ process GENOTYPHI_PARSE {
 
     """
     parse_typhi_mykrobe.py \\
-        --jsons $json \\
+        --jsons ${json} \\
         --prefix ${prefix}
     """
 

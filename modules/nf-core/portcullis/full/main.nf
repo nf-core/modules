@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PORTCULLIS_FULL {
     tag "${meta.id}"
     label 'process_high'
@@ -15,11 +18,11 @@ process PORTCULLIS_FULL {
     output:
     tuple val(meta), path("*.pass.junctions.bed"), emit: pass_junctions_bed
     tuple val(meta), path("*.pass.junctions.tab"), emit: pass_junctions_tab
-    tuple val(meta), path("*.portcullis.log")    , emit: log
-    tuple val(meta), path("*.intron.gff3")       , emit: intron_gff , optional: true
-    tuple val(meta), path("*.exon.gff3")         , emit: exon_gff   , optional: true
-    tuple val(meta), path("*.spliced.bam")       , emit: spliced_bam, optional: true
-    tuple val(meta), path("*.spliced.bam.bai")   , emit: spliced_bai, optional: true
+    tuple val(meta), path("*.portcullis.log"), emit: log
+    tuple val(meta), path("*.intron.gff3"), emit: intron_gff, optional: true
+    tuple val(meta), path("*.exon.gff3"), emit: exon_gff, optional: true
+    tuple val(meta), path("*.spliced.bam"), emit: spliced_bam, optional: true
+    tuple val(meta), path("*.spliced.bam.bai"), emit: spliced_bai, optional: true
     tuple val("${task.process}"), val('portcullis'), eval("portcullis --version |& sed '1!d ; s/portcullis //'"), emit: versions_portcullis, topic: versions
 
     when:

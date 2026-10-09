@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process STRINGTIE_MERGE {
     tag "${meta.id}"
     label 'process_medium'
 
     // Note: 2.7X indices incompatible with AWS iGenomes.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3f/3facd74a0f728c9bb9e9a731b58c343895d2dbdfeb812ce5747f701103fc61cf/data' :
-        'community.wave.seqera.io/library/stringtie:3.0.3--e8043d00caecd051' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3f/3facd74a0f728c9bb9e9a731b58c343895d2dbdfeb812ce5747f701103fc61cf/data'
+        : 'community.wave.seqera.io/library/stringtie:3.0.3--e8043d00caecd051'}"
 
     input:
     tuple val(meta), path(gtf)

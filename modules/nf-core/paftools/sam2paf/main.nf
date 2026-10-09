@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PAFTOOLS_SAM2PAF {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     // Note: the versions here need to match the versions used in the mulled container below and minimap2/index
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/37/37671219cfd244eb9b33db9345d3543ffd83037419a1c57f4648aace493ec2c2/data' :
-        'community.wave.seqera.io/library/minimap2_samtools:b09096fc890429ce' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/37/37671219cfd244eb9b33db9345d3543ffd83037419a1c57f4648aace493ec2c2/data'
+        : 'community.wave.seqera.io/library/minimap2_samtools:b09096fc890429ce'}"
 
     input:
     tuple val(meta), path(bam)
@@ -20,14 +23,14 @@ process PAFTOOLS_SAM2PAF {
     task.ext.when == null || task.ext.when
 
     script:
-    def prefix  = task.ext.prefix   ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     samtools view -h ${bam} | paftools.js sam2paf - > ${prefix}.paf
     """
 
     stub:
-    def prefix  = task.ext.prefix   ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     touch ${prefix}.paf

@@ -1,17 +1,20 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BAMUTIL_TRIMBAM {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bamutil:1.0.15--h2e03b76_1' :
-        'quay.io/biocontainers/bamutil:1.0.15--h2e03b76_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/bamutil:1.0.15--h2e03b76_1'
+        : 'quay.io/biocontainers/bamutil:1.0.15--h2e03b76_1'}"
 
     input:
     tuple val(meta), path(bam), val(trim_left), val(trim_right)
 
     output:
-    tuple val(meta), path("*.bam")                                                                       , emit: bam
+    tuple val(meta), path("*.bam"), emit: bam
     tuple val("${task.process}"), val('bamutil'), eval("bam trimBam 2>&1 | head -1 | sed 's/^Version: //;s/;.*//'"), emit: versions_bamutil, topic: versions
 
     when:
@@ -23,11 +26,11 @@ process BAMUTIL_TRIMBAM {
     """
     bam \\
         trimBam \\
-        $bam \\
+        ${bam} \\
         ${prefix}.bam \\
-        $args \\
-        -L $trim_left \\
-        -R $trim_right
+        ${args} \\
+        -L ${trim_left} \\
+        -R ${trim_right}
     """
 
     stub:

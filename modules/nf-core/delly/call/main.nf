@@ -1,21 +1,24 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DELLY_CALL {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/delly:1.7.3--hd6466ae_0' :
-        'quay.io/biocontainers/delly:1.7.3--hd6466ae_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/delly:1.7.3--hd6466ae_0'
+        : 'quay.io/biocontainers/delly:1.7.3--hd6466ae_0'}"
 
     input:
     tuple val(meta), path(input), path(input_index), path(vcf), path(vcf_index), path(exclude_bed)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
-    val(suffix)
+    val suffix
 
     output:
-    tuple val(meta), path("*.{bcf,vcf.gz}")  , emit: bcf
-    tuple val(meta), path("*.{csi,tbi}")     , emit: csi
+    tuple val(meta), path("*.{bcf,vcf.gz}"), emit: bcf
+    tuple val(meta), path("*.{csi,tbi}"), emit: csi
     tuple val("${task.process}"), val('delly'), eval("delly --version |& sed -n '1s/Delly version: *v//p'"), emit: versions_delly, topic: versions
 
     when:

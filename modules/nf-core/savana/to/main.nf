@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SAVANA_TO {
     tag "${meta.id}"
     label 'process_high'
@@ -15,18 +18,29 @@ process SAVANA_TO {
     tuple val(meta5), val(g1000_vcf)
 
     output:
-    tuple val(meta), path("${prefix}.sv_breakpoints.vcf"), emit: sv_breakpoints_vcf // savana run
-    tuple val(meta), path("${prefix}.sv_breakpoints.bedpe"), emit: sv_breakpoints_bedpe // savana run
-    tuple val(meta), path("${prefix}.sv_breakpoints_read_support.tsv"), emit: sv_breakpoints_read_support // savana run
-    tuple val(meta), path("${prefix}.inserted_sequences.fa"), emit: inserted_sequences // savana run
-    tuple val(meta), path("${prefix}.classified.vcf"), emit: classified_vcf // savana classify
-    tuple val(meta), path("${prefix}.classified.somatic.vcf"), emit: somatic_vcf, optional: true // savana classify
-    tuple val(meta), path("${prefix}.classified.somatic.bedpe"), emit: somatic_bedpe, optional: true // savana classify
-    tuple val(meta), path("${prefix}.classified.germline.vcf"), emit: germline_vcf, optional: true // savana classify
-    tuple val(meta), path("${prefix}.classified.{strict,lenient}.vcf"), emit: legacy_vcfs, optional: true // savana classify
+    tuple val(meta), path("${prefix}.sv_breakpoints.vcf"), emit: sv_breakpoints_vcf
+    // savana run
+    tuple val(meta), path("${prefix}.sv_breakpoints.bedpe"), emit: sv_breakpoints_bedpe
+    // savana run
+    tuple val(meta), path("${prefix}.sv_breakpoints_read_support.tsv"), emit: sv_breakpoints_read_support
+    // savana run
+    tuple val(meta), path("${prefix}.inserted_sequences.fa"), emit: inserted_sequences
+    // savana run
+    tuple val(meta), path("${prefix}.classified.vcf"), emit: classified_vcf
+    // savana classify
+    tuple val(meta), path("${prefix}.classified.somatic.vcf"), emit: somatic_vcf, optional: true
+    // savana classify
+    tuple val(meta), path("${prefix}.classified.somatic.bedpe"), emit: somatic_bedpe, optional: true
+    // savana classify
+    tuple val(meta), path("${prefix}.classified.germline.vcf"), emit: germline_vcf, optional: true
+    // savana classify
+    tuple val(meta), path("${prefix}.classified.{strict,lenient}.vcf"), emit: legacy_vcfs, optional: true
+    // savana classify
     tuple val(meta), path("${prefix}.classified*.cna_rescue.vcf"), emit: cna_rescue_vcfs, optional: true
-    tuple val(meta), path("${prefix}.somatic.labelled.vcf"), emit: labelled_vcf, optional: true // savana evaluate
-    tuple val(meta), path("${prefix}.somatic.evaluation.stats"), emit: evaluation_stats, optional: true // savana evaluate
+    tuple val(meta), path("${prefix}.somatic.labelled.vcf"), emit: labelled_vcf, optional: true
+    // savana evaluate
+    tuple val(meta), path("${prefix}.somatic.evaluation.stats"), emit: evaluation_stats, optional: true
+    // savana evaluate
     tuple val(meta), path("${prefix}_allele_counts_hetSNPs.bed"), emit: allele_counts, optional: true
     tuple val(meta), path("${prefix}_raw_read_counts.tsv"), emit: raw_read_counts, optional: true
     tuple val(meta), path("${prefix}_read_counts_*_log2r_segmented.tsv"), emit: segmented_log2r, optional: true

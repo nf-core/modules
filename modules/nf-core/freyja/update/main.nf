@@ -1,21 +1,24 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FREYJA_UPDATE {
-    tag "$db_name"
+    tag "${db_name}"
     label 'process_single'
 
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/freyja:2.0.3--pyhdfd78af_0' :
-        'quay.io/biocontainers/freyja:2.0.3--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/freyja:2.0.3--pyhdfd78af_0'
+        : 'quay.io/biocontainers/freyja:2.0.3--pyhdfd78af_0'}"
 
     input:
     val db_name
 
     output:
-    path "${db_name}/*barcodes.*"            , emit: barcodes
-    path "${db_name}/*lineages.yml"          , emit: lineages_topology
-    path "${db_name}/*pathogen_config.yml"   , emit: config
-    path "${db_name}/*curated_lineages.json" , emit: lineages_meta, optional: true
+    path "${db_name}/*barcodes.*", emit: barcodes
+    path "${db_name}/*lineages.yml", emit: lineages_topology
+    path "${db_name}/*pathogen_config.yml", emit: config
+    path "${db_name}/*curated_lineages.json", emit: lineages_meta, optional: true
     tuple val("${task.process}"), val('freyja'), eval("freyja --version | sed 's/.* //'"), topic: versions, emit: versions_freyja
 
     when:
@@ -24,16 +27,16 @@ process FREYJA_UPDATE {
     script:
     def args = task.ext.args ?: ''
     """
-    mkdir -p $db_name
+    mkdir -p ${db_name}
     freyja \\
         update \\
-        $args \\
-        --outdir $db_name
+        ${args} \\
+        --outdir ${db_name}
     """
 
     stub:
     """
-    mkdir $db_name
+    mkdir ${db_name}
 
     touch "${db_name}/usher_barcodes.csv"
     touch "${db_name}/lineages.yml"

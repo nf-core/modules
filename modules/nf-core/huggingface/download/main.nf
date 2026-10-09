@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HUGGINGFACE_DOWNLOAD {
     tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ed/ede89b6c560efe66ea1fc29f93947d4f9fe9f529de23929fb5cc55394c53bf5c/data'
-        : 'community.wave.seqera.io/library/huggingface_hub:1.18.0--d5830d12561fd965' }"
+        : 'community.wave.seqera.io/library/huggingface_hub:1.18.0--d5830d12561fd965'}"
 
     input:
     tuple val(meta), val(hf_repo), val(hf_file)

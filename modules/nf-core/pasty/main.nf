@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PASTY {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pasty:1.0.0--hdfd78af_0':
-        'quay.io/biocontainers/pasty:1.0.0--hdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/pasty:1.0.0--hdfd78af_0'
+        : 'quay.io/biocontainers/pasty:1.0.0--hdfd78af_0'}"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("${prefix}.tsv")        , emit: tsv
-    tuple val(meta), path("${prefix}.blastn.tsv") , emit: blast
+    tuple val(meta), path("${prefix}.tsv"), emit: tsv
+    tuple val(meta), path("${prefix}.blastn.tsv"), emit: blast
     tuple val(meta), path("${prefix}.details.tsv"), emit: details
     tuple val("${task.process}"), val('pasty'), eval("pasty --version 2>&1 | sed 's/^.*pasty, version //;'"), topic: versions, emit: versions_pasty
 

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process LEGSTA {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/legsta%3A0.5.1--hdfd78af_2':
-        'quay.io/biocontainers/legsta:0.5.1--hdfd78af_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/legsta%3A0.5.1--hdfd78af_2'
+        : 'quay.io/biocontainers/legsta:0.5.1--hdfd78af_2'}"
 
     input:
     tuple val(meta), path(seqs)
@@ -22,8 +25,8 @@ process LEGSTA {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     legsta \\
-        $args \\
-        $seqs > ${prefix}.tsv
+        ${args} \\
+        ${seqs} > ${prefix}.tsv
     """
 
     stub:
@@ -31,5 +34,4 @@ process LEGSTA {
     """
     touch ${prefix}.tsv
     """
-
 }

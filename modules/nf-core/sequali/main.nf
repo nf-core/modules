@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SEQUALI {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sequali:1.0.2--py312h0fa9677_0':
-        'quay.io/biocontainers/sequali:1.0.2--py312h0fa9677_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/sequali:1.0.2--py312h0fa9677_0'
+        : 'quay.io/biocontainers/sequali:1.0.2--py312h0fa9677_0'}"
 
     input:
 
@@ -24,16 +27,16 @@ process SEQUALI {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def read_1_bam = reads.size() == 1 ? reads : reads[0]
-    def read_2 = reads.size() == 2 ? reads[1]: ""
+    def read_2 = reads.size() == 2 ? reads[1] : ""
 
     """
     sequali \\
-        $args \\
-        -t $task.cpus \\
+        ${args} \\
+        -t ${task.cpus} \\
         --html ${prefix}.html \\
         --json ${prefix}.json \\
-        $read_1_bam \\
-        $read_2
+        ${read_1_bam} \\
+        ${read_2}
     """
 
     stub:

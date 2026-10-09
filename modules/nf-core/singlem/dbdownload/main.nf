@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SINGLEM_DBDOWNLOAD {
     label 'process_single'
 
@@ -7,8 +10,8 @@ process SINGLEM_DBDOWNLOAD {
         : 'quay.io/biocontainers/singlem:0.20.3--pyhdfd78af_2'}"
 
     output:
-    path("*.smpkg.zb")                                                                                                     , emit: singlem_database
-    tuple val("${task.process}"), val('singlem'), eval('singlem --version'), topic: versions                                , emit: versions_singlem
+    path ("*.smpkg.zb"), emit: singlem_database
+    tuple val("${task.process}"), val('singlem'), eval('singlem --version'), topic: versions, emit: versions_singlem
 
     when:
     task.ext.when == null || task.ext.when

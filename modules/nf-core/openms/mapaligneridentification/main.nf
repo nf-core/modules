@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process OPENMS_MAPALIGNERIDENTIFICATION {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/openms:3.5.0--h78fb946_0' :
-        'quay.io/biocontainers/openms:3.5.0--h78fb946_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/openms:3.5.0--h78fb946_0'
+        : 'quay.io/biocontainers/openms:3.5.0--h78fb946_0'}"
 
     input:
     tuple val(meta), path(id_files)
@@ -18,19 +21,19 @@ process OPENMS_MAPALIGNERIDENTIFICATION {
     task.ext.when == null || task.ext.when
 
     script:
-    def args      = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
     def trafo_out = id_files.collect { item -> "${item.baseName}.trafoXML" }.join(' ')
     """
     MapAlignerIdentification \\
-        -in $id_files \\
-        -trafo_out $trafo_out \\
-        -threads $task.cpus \\
-        $args
+        -in ${id_files} \\
+        -trafo_out ${trafo_out} \\
+        -threads ${task.cpus} \\
+        ${args}
     """
 
     stub:
     def trafo_out = id_files.collect { item -> "${item.baseName}.trafoXML" }.join(' ')
     """
-    touch $trafo_out
+    touch ${trafo_out}
     """
 }

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ANGSD_CONTAMINATION {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/angsd:0.940--hce60e53_2':
-        'quay.io/biocontainers/angsd:0.940--hce60e53_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/angsd:0.940--hce60e53_2'
+        : 'quay.io/biocontainers/angsd:0.940--hce60e53_2'}"
 
     input:
     tuple val(meta), path(icounts)
@@ -19,8 +22,8 @@ process ANGSD_CONTAMINATION {
     task.ext.when == null || task.ext.when
 
     script:
-    def args     = task.ext.args   ?: ''
-    def prefix   = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def seed_cmd = args.contains("-s ") ? '' : '-s 1'
     """
     contamination \

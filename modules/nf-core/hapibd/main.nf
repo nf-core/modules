@@ -1,22 +1,24 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HAPIBD {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hap-ibd:1.0.rev20May22.818--hdfd78af_0':
-        'quay.io/biocontainers/hap-ibd:1.0.rev20May22.818--hdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/hap-ibd:1.0.rev20May22.818--hdfd78af_0'
+        : 'quay.io/biocontainers/hap-ibd:1.0.rev20May22.818--hdfd78af_0'}"
 
     input:
     tuple val(meta), path(vcf)
-    path(map)
-    path(exclude)
-
+    path map
+    path exclude
 
     output:
     tuple val(meta), path("*.hbd.gz"), emit: hbd
     tuple val(meta), path("*.ibd.gz"), emit: ibd
-    tuple val(meta), path("*.log")   , emit: log
+    tuple val(meta), path("*.log"), emit: log
     tuple val("${task.process}"), val('hapibd'), eval("hap-ibd 2>&1 | sed '1!d;s/^.* version //;s/,.*//'"), topic: versions, emit: versions_hapibd
 
     when:
@@ -25,13 +27,14 @@ process HAPIBD {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def excludesamples_command = exclude ? "excludesamples=$exclude" : ""
+    def excludesamples_command = exclude ? "excludesamples=${exclude}" : ""
 
     def avail_mem = 3072
     if (!task.memory) {
-        log.info '[hapibd] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
-    } else {
-        avail_mem = (task.memory.mega*0.8).intValue()
+        log.info('[hapibd] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.')
+    }
+    else {
+        avail_mem = (task.memory.mega * 0.8).intValue()
     }
 
     """
@@ -39,7 +42,7 @@ process HAPIBD {
         gt=${vcf} \\
         map=${map} \\
         out=${prefix} \\
-        $args \\
+        ${args} \\
         ${excludesamples_command}
     """
 
@@ -48,9 +51,10 @@ process HAPIBD {
 
     def avail_mem = 3072
     if (!task.memory) {
-        log.info '[hapibd] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
-    } else {
-        avail_mem = (task.memory.mega*0.8).intValue()
+        log.info('[hapibd] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.')
+    }
+    else {
+        avail_mem = (task.memory.mega * 0.8).intValue()
     }
 
     """

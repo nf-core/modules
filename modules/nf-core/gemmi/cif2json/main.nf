@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GEMMI_CIF2JSON {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/99/993d88cc40cbb0e8a42a8d173f7efdae2feb0924077d41c974c11459d49b6e5b/data':
-        'community.wave.seqera.io/library/python_pip_gemmi-program:6276064ce54c78fb' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/99/993d88cc40cbb0e8a42a8d173f7efdae2feb0924077d41c974c11459d49b6e5b/data'
+        : 'community.wave.seqera.io/library/python_pip_gemmi-program:6276064ce54c78fb'}"
 
     input:
     tuple val(meta), path(cif)
@@ -23,7 +26,7 @@ process GEMMI_CIF2JSON {
     """
     gemmi \\
         cif2json \\
-            $args \\
+            ${args} \\
             ${cif} \\
             ${prefix}.json
     """
@@ -32,7 +35,7 @@ process GEMMI_CIF2JSON {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo $args
+    echo ${args}
 
     touch ${prefix}.json
     """

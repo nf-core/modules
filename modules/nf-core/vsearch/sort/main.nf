@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VSEARCH_SORT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vsearch:2.31.0--hd2be7a0_0':
-        'quay.io/biocontainers/vsearch:2.31.0--hd2be7a0_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/vsearch:2.31.0--hd2be7a0_0'
+        : 'quay.io/biocontainers/vsearch:2.31.0--hd2be7a0_0'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -21,13 +24,15 @@ process VSEARCH_SORT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if ("$fasta" == "${prefix}.fasta") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${fasta}" == "${prefix}.fasta") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
+    }
     """
     vsearch \\
-        $sort_arg $fasta \\
-        --threads $task.cpus \\
+        ${sort_arg} ${fasta} \\
+        --threads ${task.cpus} \\
         --output ${prefix}.fasta \\
-        $args
+        ${args}
     """
 
     stub:

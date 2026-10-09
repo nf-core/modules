@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DEACON_FILTER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/deacon:0.15.0--hdd79491_0':
-        'quay.io/biocontainers/deacon:0.15.0--hdd79491_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/deacon:0.15.0--hdd79491_0'
+        : 'quay.io/biocontainers/deacon:0.15.0--hdd79491_0'}"
 
     input:
     tuple val(meta), path(index), path(reads)
 
     output:
     tuple val(meta), path("${prefix}*.fq.gz"), emit: fastq_filtered
-    tuple val(meta), path("${prefix}.json")  , emit: log
+    tuple val(meta), path("${prefix}.json"), emit: log
     tuple val("${task.process}"), val('deacon'), eval('deacon --version | head -n1 | sed "s/deacon //g"'), emit: versions_deacon, topic: versions
 
     when:
@@ -21,16 +24,19 @@ process DEACON_FILTER {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def read_type = (reads instanceof List) ? "-o ${prefix}_1.fq -O ${prefix}_2.fq" : "> ${prefix}.fq" // deacon's automatic compression does not work
-    if (!(reads instanceof List) && "${reads}" == "${prefix}.fq.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    def read_type = (reads instanceof List) ? "-o ${prefix}_1.fq -O ${prefix}_2.fq" : "> ${prefix}.fq"
+    // deacon's automatic compression does not work
+    if (!(reads instanceof List) && "${reads}" == "${prefix}.fq.gz") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
+    }
     """
     deacon \\
         filter \\
         --threads ${task.cpus} \\
-        $args \\
+        ${args} \\
         --summary ${prefix}.json \\
-        -d $index \\
-        $reads \\
+        -d ${index} \\
+        ${reads} \\
         ${read_type}
 
     gzip -f ${prefix}*.fq

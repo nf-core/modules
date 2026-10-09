@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CELLRANGER_COUNT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     container "quay.io/nf-core/cellranger:10.0.0"
@@ -10,7 +13,7 @@ process CELLRANGER_COUNT {
 
     output:
     tuple val(meta), path("**/outs/**"), emit: outs
-    path "versions.yml"                , emit: versions_cellranger, topic: versions
+    path "versions.yml", emit: versions_cellranger, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -18,7 +21,7 @@ process CELLRANGER_COUNT {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "CELLRANGER_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("CELLRANGER_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
@@ -27,17 +30,17 @@ process CELLRANGER_COUNT {
     echo ${args}
     """
 
-    template "cellranger_count.py"
+    template("cellranger_count.py")
 
     stub:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "CELLRANGER_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("CELLRANGER_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p "${prefix}/outs/"
-    echo "$prefix" > ${prefix}/outs/fake_file.txt
+    echo "${prefix}" > ${prefix}/outs/fake_file.txt
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

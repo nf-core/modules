@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MACSYFINDER_SEARCH {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/macsyfinder:2.1.6--pyhdfd78af_0' :
-        'quay.io/biocontainers/macsyfinder:2.1.6--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/macsyfinder:2.1.6--pyhdfd78af_0'
+        : 'quay.io/biocontainers/macsyfinder:2.1.6--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(proteins)
@@ -13,12 +16,12 @@ process MACSYFINDER_SEARCH {
     val model_names
 
     output:
-    tuple val(meta), path("${prefix}/*")                    , emit: results
-    tuple val(meta), path("${prefix}/hmmer_results")        , emit: hmmer    , optional: true
-    tuple val(meta), path("${prefix}/macsyfinder.out")      , emit: stdout   , optional: true
-    tuple val(meta), path("${prefix}/macsyfinder.err")      , emit: stderr   , optional: true
-    tuple val(meta), path("${prefix}/all_systems.tsv")      , emit: summary  , optional: true
-    tuple val(meta), path("${prefix}/all_best_solutions*")  , emit: best_solutions, optional: true
+    tuple val(meta), path("${prefix}/*"), emit: results
+    tuple val(meta), path("${prefix}/hmmer_results"), emit: hmmer, optional: true
+    tuple val(meta), path("${prefix}/macsyfinder.out"), emit: stdout, optional: true
+    tuple val(meta), path("${prefix}/macsyfinder.err"), emit: stderr, optional: true
+    tuple val(meta), path("${prefix}/all_systems.tsv"), emit: summary, optional: true
+    tuple val(meta), path("${prefix}/all_best_solutions*"), emit: best_solutions, optional: true
     tuple val("${task.process}"), val('macsyfinder'), eval('macsyfinder --version 2>&1 | sed "1!d;s/^.*MacSyFinder //;s/ .*$//"'), topic: versions, emit: versions_macsyfinder
     tuple val("${task.process}"), val('hmmer'), eval('hmmsearch -h 2>&1 | sed "2!d;s/^# HMMER //;s/ .*$//"'), topic: versions, emit: versions_hmmer
 

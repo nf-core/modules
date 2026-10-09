@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PARABRICKS_DEEPVARIANT {
     tag "${meta.id}"
     label 'process_high'
@@ -12,9 +15,9 @@ process PARABRICKS_DEEPVARIANT {
     tuple val(ref_meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.vcf.gz"),   emit: vcf,                 optional: true
-    tuple val(meta), path("*.g.vcf.gz"), emit: gvcf,                optional: true
-    path "compatible_versions.yml",      emit: compatible_versions, optional: true
+    tuple val(meta), path("*.vcf.gz"), emit: vcf, optional: true
+    tuple val(meta), path("*.g.vcf.gz"), emit: gvcf, optional: true
+    path "compatible_versions.yml", emit: compatible_versions, optional: true
     tuple val("${task.process}"), val('parabricks'), eval("pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'"), topic: versions, emit: versions_parabricks
 
     when:
@@ -28,7 +31,7 @@ process PARABRICKS_DEEPVARIANT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def output_file = args.contains("--gvcf") ? "${prefix}.g.vcf.gz" : "${prefix}.vcf.gz"
-    def interval_command = intervals        ? intervals.collect { interval -> "--interval-file ${interval}" }.join(' ') : ""
+    def interval_command = intervals ? intervals.collect { interval -> "--interval-file ${interval}" }.join(' ') : ""
     def num_gpus = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
     """
     pbrun \\

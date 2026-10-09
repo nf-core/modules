@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 //
 // Subworkflow with functionality that may be useful for any Nextflow pipeline
 //
@@ -10,9 +13,9 @@
 
 workflow UTILS_NEXTFLOW_PIPELINE {
     take:
-    print_version        // boolean: print version
-    dump_parameters      // boolean: dump parameters
-    outdir               //    path: base directory used to publish pipeline results
+    print_version // boolean: print version
+    dump_parameters // boolean: dump parameters
+    outdir //    path: base directory used to publish pipeline results
     check_conda_channels // boolean: check conda channels
 
     main:
@@ -72,22 +75,24 @@ def getWorkflowVersion() {
 //
 def dumpParametersToJSON(outdir) {
     def timestamp = new java.util.Date().format('yyyy-MM-dd_HH-mm-ss')
-    def filename  = "params_${timestamp}.json"
-    def temp_pf       = workflow.launchDir.resolve(".${filename}")
-    def jsonGenerator = new groovy.json.JsonGenerator.Options()
+    def filename = "params_${timestamp}.json"
+    def temp_pf = workflow.launchDir.resolve(".${filename}")
+    def jsonGenerator = new groovy.json.JsonGenerator$Options()
         .excludeNulls()
-        .addConverter(Path) { Path path -> path.toUriString() }
-        .addConverter(Duration) { Duration duration -> duration.toMillis() }
-        .addConverter(MemoryUnit) { MemoryUnit memory -> memory.toBytes() }
-        .addConverter(nextflow.script.types.VersionNumber) { nextflow.script.types.VersionNumber version -> version.toString() }
+        .addConverter(Path) { path: Path -> path.toUriString() }
+        .addConverter(Duration) { duration: Duration -> duration.toMillis() }
+        .addConverter(MemoryUnit) { memory: MemoryUnit -> memory.toBytes() }
+        .addConverter(nextflow.script.types.VersionNumber) { version: nextflow.script.types.VersionNumber -> version.toString() }
         .build()
-    def jsonStr   = jsonGenerator.toJson(params)
-    temp_pf.text  = groovy.json.JsonOutput.prettyPrint(jsonStr)
+    def jsonStr = jsonGenerator.toJson(params)
+    temp_pf.text = groovy.json.JsonOutput.prettyPrint(jsonStr)
     if (outdir instanceof Path) {
         temp_pf.copyTo(outdir.resolve("pipeline_info/${filename}"))
-    } else if (outdir instanceof String) {
+    }
+    else if (outdir instanceof String) {
         temp_pf.copyTo("${outdir}/pipeline_info/params_${timestamp}.json")
-    } else {
+    }
+    else {
         log.warn("Could not determine type of outdir, parameters JSON file will not be copied to output directory!")
     }
     temp_pf.delete()
@@ -103,12 +108,12 @@ def checkCondaChannels() {
         def config = parser.load("conda config --show channels".execute().text)
         channels = config.channels
     }
-    catch (NullPointerException e) {
+    catch (e: NullPointerException) {
         log.debug(e)
         log.warn("Could not verify conda channel configuration.")
         return null
     }
-    catch (IOException e) {
+    catch (e: IOException) {
         log.debug(e)
         log.warn("Could not verify conda channel configuration.")
         return null
@@ -123,7 +128,8 @@ def checkCondaChannels() {
     def channel_priority_violation = required_channels_in_order != channels.findAll { ch -> ch in required_channels_in_order }
 
     if (channels_missing | channel_priority_violation) {
-        log.warn """\
+        log.warn(
+            """\
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             There is a problem with your Conda configuration!
             You will need to set-up the conda-forge and bioconda channels correctly.
@@ -134,5 +140,6 @@ def checkCondaChannels() {
             ${required_channels_in_order}
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
         """.stripIndent(true)
+        )
     }
 }

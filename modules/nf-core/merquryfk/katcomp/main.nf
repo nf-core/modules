@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MERQURYFK_KATCOMP {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/56/56641ad3d1130e668134edc752fdf0bed1cc31da3b3d74730aa6edf40527493a/data' :
-        'community.wave.seqera.io/library/merquryfk:1.2--f21b6c1cbbbbfe64' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/56/56641ad3d1130e668134edc752fdf0bed1cc31da3b3d74730aa6edf40527493a/data'
+        : 'community.wave.seqera.io/library/merquryfk:1.2--f21b6c1cbbbbfe64'}"
 
     input:
     tuple val(meta), path(fastk1_hist), path(fastk1_ktab), path(fastk2_hist), path(fastk2_ktab)
@@ -23,23 +26,23 @@ process MERQURYFK_KATCOMP {
     task.ext.when == null || task.ext.when
 
     script:
-    def args      = task.ext.args ?: ''
-    def prefix    = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def input_fk1 = fastk1_ktab.find { path -> path.toString().endsWith(".ktab") }.getBaseName()
     def input_fk2 = fastk2_ktab.find { path -> path.toString().endsWith(".ktab") }.getBaseName()
     """
     KatComp \\
-        $args \\
-        -T$task.cpus \\
+        ${args} \\
+        -T${task.cpus} \\
         ${input_fk1} \\
         ${input_fk2} \\
-        $prefix
+        ${prefix}
     """
 
     stub:
-    def args            = task.ext.args ?: ''
-    def prefix          = task.ext.prefix ?: "${meta.id}"
-    def outfmt          = args.contains('-pdf') ? "pdf" : "png"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def outfmt = args.contains('-pdf') ? "pdf" : "png"
     """
     touch ${prefix}.test.fi.${outfmt}
     touch ${prefix}.test.ln.${outfmt}

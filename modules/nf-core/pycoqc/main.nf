@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PYCOQC {
-    tag "$summary"
+    tag "${summary}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pycoqc:2.5.2--py_0' :
-        'quay.io/biocontainers/pycoqc:2.5.2--py_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/pycoqc:2.5.2--py_0'
+        : 'quay.io/biocontainers/pycoqc:2.5.2--py_0'}"
 
     input:
     tuple val(meta), path(summary)
@@ -23,8 +26,8 @@ process PYCOQC {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     pycoQC \\
-        $args \\
-        -f $summary \\
+        ${args} \\
+        -f ${summary} \\
         -o ${prefix}.html \\
         -j ${prefix}.json
     """

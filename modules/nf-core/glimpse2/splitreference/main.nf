@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GLIMPSE2_SPLITREFERENCE {
     tag "${meta.id}"
     label 'process_low'
@@ -28,9 +31,9 @@ process GLIMPSE2_SPLITREFERENCE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args        = task.ext.args   ?: ''
-    def prefix      = task.ext.prefix ?: "${meta.id}_${output_region.replace(":", "_")}"
-    def map_command = map             ? "--map ${map}" : ""
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}_${output_region.replace(":", "_")}"
+    def map_command = map ? "--map ${map}" : ""
 
     """
     GLIMPSE2_split_reference \\
