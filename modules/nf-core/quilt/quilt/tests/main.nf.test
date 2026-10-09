@@ -77,21 +77,8 @@ nextflow_process {
 
         then {
             assert process.success
-            def dir = new File(process.out.plots[0][1])
-            def list = []
-            dir.eachFileRecurse { file -> list << file.getName() }
             assertAll(
-                { assert snapshot(
-                    process.out.tbi,
-                    list.sort(),
-                    process.out.rdata,
-                    process.out.vcf.collect{ meta, vcf -> [
-                        meta,
-                        path(vcf).vcf.header.getGenotypeSamples().sort(),
-                        path(vcf).vcf.variantsMD5
-                    ]},
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["plots"], variantsMD5Keys:["vcf"])).match() }
             )
         }
     }
@@ -120,17 +107,8 @@ nextflow_process {
 
         then {
             assert process.success
-            def dir = new File(process.out.plots[0][1])
-            def list = []
-            dir.eachFileRecurse { file -> list << file.getName() }
             assertAll(
-                { assert snapshot(
-                    process.out.vcf,
-                    process.out.tbi,
-                    list.sort(),
-                    process.out.rdata,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -161,16 +139,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out.tbi,
-                    process.out.rdata,
-                    process.out.vcf.collect{ meta, vcf -> [
-                        meta,
-                        path(vcf).vcf.header.getGenotypeSamples().sort(),
-                        path(vcf).vcf.variantsMD5
-                    ]},
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys:["vcf"])).match() }
             )
         }
     }
@@ -214,16 +183,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    process.out.tbi,
-                    process.out.rdata,
-                    process.out.vcf.collect{ meta, vcf -> [
-                        meta,
-                        path(vcf).vcf.header.getGenotypeSamples().sort(),
-                        path(vcf).vcf.variantsMD5
-                    ]},
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys:["vcf"])).match() }
             )
         }
     }

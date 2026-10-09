@@ -36,6 +36,7 @@ process QUILT_QUILT {
     def genetic_map_command = genetic_map   ? "--genetic_map_file=${genetic_map}" : ""
     def posfile_command     = posfile       ? "--posfile=${posfile}"              : ""
     def phasefile_command   = phasefile     ? "--phasefile=${phasefile}"          : ""
+    def genfile_command     = genfile       ? "--genfile=${genfile}"              : ""
     def samplename_command  = samplename    ? "--sampleNames_file=${samplename}"  : ""
     def start_command       = regions_start ? "--regionStart=${regions_start}"    : ""
     def end_command         = regions_end   ? "--regionEnd=${regions_end}"        : ""
@@ -59,6 +60,7 @@ process QUILT_QUILT {
         ${genetic_map_command} \\
         ${posfile_command} \\
         ${phasefile_command} \\
+        ${genfile_command} \\
         ${samplename_command} \\
         --chr=${chr} \\
         ${start_command} \\
