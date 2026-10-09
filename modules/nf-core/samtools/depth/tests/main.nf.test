@@ -21,6 +21,11 @@ nextflow_process {
                     [],
                     []
                 ]
+                input[1] = [
+                    [ id:'test', genome:'hg38' ],
+                    [],
+                    []
+                ]
                 """
             }
         }
@@ -44,6 +49,11 @@ nextflow_process {
                     [],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true)
                 ]
+                input[1] = [
+                    [ id:'test', genome:'hg38' ],
+                    [],
+                    []
+                ]
                 """
             }
         }
@@ -64,6 +74,11 @@ nextflow_process {
                 input[0] = [
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists: true),
+                    [],
+                    []
+                ]
+                input[1] = [
+                    [ id:'test', genome:'hg38' ],
                     [],
                     []
                 ]
