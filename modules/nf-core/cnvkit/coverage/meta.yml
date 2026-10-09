@@ -1,5 +1,6 @@
 name: "cnvkit_coverage"
-description: Calculate coverage in the given regions from BAM/CRAM or bedGraph files read depths.
+description: Calculate coverage in the given regions from BAM/CRAM or bedGraph
+  files read depths.
 keywords:
   - cnvkit
   - coverage
@@ -26,18 +27,47 @@ input:
           e.g. `[ id:'sample1' ]`
     - alignment_file:
         type: file
-        description: Sorted BAM/CRAM, or bedGraph file containing read alignements.
+        description: Sorted BAM/CRAM, or bedGraph file containing read
+          alignements.
         pattern: "*.{bam,cram,bed.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_2572"
           - edam: "http://edamontology.org/format_2573"
           - edam: "http://edamontology.org/format_3583"
+    - alignment_index:
+        type: file
+        description: Index file for sorted BAM/CRAM or bedGraph
+        pattern: "*.{bai,crai,csi,tbi}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327"
+          - edam: "http://edamontology.org/format_3616"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[id: 'sample1']`
     - interval:
         type: file
         description: bed file containing the target or antitarget regions.
         pattern: "*.{target,antitarget}.bed"
         ontologies:
           - edam: "http://edamontology.org/format_3003"
+  - - meta3:
+        type: map
+        description: |
+          Groovy map containing reference information
+          e.g. `[ id: 'reference']`
+    - fasta:
+        type: file
+        description: reference genome in FASTA format, only needed for CRAM input
+        pattern: "*.{fasta,fa,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+    - fai:
+        type: file
+        description: index for the FASTA file, only needed for CRAM input
+        pattern: "*.fai"
+        ontologies: []
 output:
   coverage:
     - - meta:
