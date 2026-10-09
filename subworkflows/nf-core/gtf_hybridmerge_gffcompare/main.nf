@@ -32,7 +32,7 @@ workflow GTF_HYBRIDMERGE_GFFCOMPARE {
         .combine(val_class_codes)
         .map { meta, gtf, codes ->
             def codes_csv = codes instanceof List ? codes.join(',') : "${codes}"
-            [ meta + [class_codes: codes_csv], gtf ]
+            [ meta + [class_codes: codes_csv], gtf, "gtf" ]
         }
 
     // Drop transcripts whose class_code is not in the caller-supplied set.
@@ -60,7 +60,7 @@ workflow GTF_HYBRIDMERGE_GFFCOMPARE {
     ch_concat_input = ch_post_blacklist
         .combine(ch_backbone_gtf)
         .map { _novel_meta, novel_gtf, backbone_meta, backbone_gtf ->
-            [ backbone_meta, [ backbone_gtf, novel_gtf ] ]
+            [ backbone_meta, [ backbone_gtf, novel_gtf ], "gtf" ]
         }
 
     // Concatenate and synthesise missing gene rows with union spans.

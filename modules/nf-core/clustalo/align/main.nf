@@ -32,12 +32,9 @@ process CLUSTALO_ALIGN {
     def fhmm_batch   = hmm_batch ? "--hmm-batch=${hmm_batch}" : ""
     def fprofile1    = profile1  ? "--profile1=${profile1}"   : ""
     def fprofile2    = profile2  ? "--profile2=${profile2}"   : ""
-    def write_output = compress ? "--force -o >(pigz -cp ${task.cpus} > ${prefix}.aln.gz)" : "-o ${prefix}.aln"
-    // using >() is necessary to preserve the return value,
-    // so nextflow knows to display an error when it failed
-    // the --force -o is necessary, as clustalo expands the commandline input,
-    // causing it to treat the pipe as a parameter and fail
-    // this way, the command expands to /dev/fd/<id>, and --force allows writing output to an already existing file
+    def write_output = compress ? "--force -o >(pigz -cp ${task.cpus} > ${prefix}.aln.gz) && wait \$!" : "-o ${prefix}.aln"
+    // The shell does not wait for a process substitution: without wait the task can end before pigz
+    // has finished, leaving a truncated .aln.gz. --force lets clustalo open the existing /dev/fd/<id> path.
     """
     clustalo \
         -i ${fasta} \

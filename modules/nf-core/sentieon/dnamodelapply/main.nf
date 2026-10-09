@@ -4,9 +4,9 @@ process SENTIEON_DNAMODELAPPLY {
     label 'sentieon'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/73/73e9111552beb76e2ad3ad89eb75bed162d7c5b85b2433723ecb4fc96a02674a/data'
-        : 'community.wave.seqera.io/library/sentieon:202503.02--def60555294d04fa'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2c/2c157e27981ec529b03e7ae5cfc88e51b6158332d2a82db399eef8dd8f2b1d5d/data'
+        : 'community.wave.seqera.io/library/sentieon:202503.03--5e34aa16344b911c' }"
 
     input:
     tuple val(meta), path(vcf), path(idx)
@@ -39,13 +39,12 @@ process SENTIEON_DNAMODELAPPLY {
         --model ${ml_model} \\
         -v ${vcf} \\
         ${prefix}.vcf.gz
-
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}_applied"
     """
-    echo | gzip > ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
     """
 }

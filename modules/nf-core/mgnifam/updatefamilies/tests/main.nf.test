@@ -1,0 +1,237 @@
+nextflow_process {
+
+    name "Test Process MGNIFAM_UPDATEFAMILIES"
+    script "../main.nf"
+    process "MGNIFAM_UPDATEFAMILIES"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mgnifam"
+    tag "mgnifam/updatefamilies"
+    tag "mgnifam/generatefamilies"
+    tag "hmmer/eslsfetchindex"
+
+    config "./nextflow.config"
+
+    test("mgnify - faa - mgnifams") {
+
+        setup {
+            run("MGNIFAM_GENERATEFAMILIES") {
+                script "../../generatefamilies/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins_trimmed_clustering.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true),
+                        []
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = MGNIFAM_GENERATEFAMILIES.out.hmm.map { meta, hmm ->
+                    [
+                        meta,
+                        hmm,
+                        file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true),
+                        []
+                    ]
+                }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                // "log" contains wall-clock timestamps
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
+            )
+        }
+
+    }
+
+    test("mgnify - faa - mgnifams - skip_refine") {
+
+        setup {
+            run("MGNIFAM_GENERATEFAMILIES") {
+                script "../../generatefamilies/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins_trimmed_clustering.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true),
+                        []
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = '--skip_refine'
+            }
+            process {
+                """
+                input[0] = MGNIFAM_GENERATEFAMILIES.out.hmm.map { meta, hmm ->
+                    [
+                        meta,
+                        hmm,
+                        file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true),
+                        []
+                    ]
+                }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                // "log" contains wall-clock timestamps; "converged" is a legit
+                // zero-byte file here since --skip_refine disables the
+                // iterative refinement loop, so nothing ever "converges" -
+                // nf-core lint rejects empty-file md5s in snapshots
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log", "converged"])).match() }
+            )
+        }
+
+    }
+
+    test("mgnify - faa - mgnifams - esl-sfetch index") {
+
+        setup {
+            run("MGNIFAM_GENERATEFAMILIES") {
+                script "../../generatefamilies/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins_trimmed_clustering.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true),
+                        []
+                    ]
+                    """
+                }
+            }
+            run("HMMER_ESLSFETCHINDEX") {
+                script "../../../hmmer/eslsfetchindex/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = MGNIFAM_GENERATEFAMILIES.out.hmm.join(HMMER_ESLSFETCHINDEX.out.ssi).map { meta, hmm, ssi ->
+                    [
+                        meta,
+                        hmm,
+                        file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true),
+                        ssi
+                    ]
+                }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
+            )
+        }
+
+    }
+
+    test("mgnify - faa - mgnifams - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [ file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true) ],
+                    file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true),
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    // Extra `update_families --help` options that main.nf does not already
+    // hardcode, as documentation (default values as comments):
+    // `--fasta_index` is skipped here: it is a module input, not an ext.arg,
+    // and is covered by the `esl-sfetch index` test above.
+    test("mgnify - faa - mgnifams - custom_args - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = "--recruit_evalue_cutoff 0.01 " +          // 0.001
+                    "--recruit_hit_length_percentage 0.8 " +             // 0.9
+                    "--discard_min_starting_membership 0.8 " +           // 0.9
+                    "--max_seq_identity 0.7 " +                          // 0.8
+                    "--max_seed_seqs 1000 " +                            // 2000
+                    "--max_gap_occupancy 0.6 " +                         // 0.5
+                    "--batch_size 4 " +                                  // 2 * cpus
+                    "--prefetch_targets " +                              // off
+                    "--skip_refine"                                      // off
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [ file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true) ],
+                    file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true),
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

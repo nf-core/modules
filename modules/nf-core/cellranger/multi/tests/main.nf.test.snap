@@ -20,6 +20,7 @@
                 "all_contig.fastq:md5,e5b0cec096f4d57981916d2247a9f9b7"
             ],
             [
+                "consensus.bam.bai:md5,125978e04496fe193a5c162603a7e6f6",
                 "consensus.bam.bai:md5,125978e04496fe193a5c162603a7e6f6"
             ],
             [
@@ -27,14 +28,25 @@
             ],
             [
                 "cell_barcodes.json:md5,d751713988987e9331980363e24189ce",
+                "cell_barcodes.json:md5,d751713988987e9331980363e24189ce",
                 "all_contig_annotations.json:md5,cf33174fc4dbbadc5e74051bc13a5bd2",
-                "reference.json:md5,384f6efabad59f6da5c89b862aee71a8"
+                "reference.json:md5,384f6efabad59f6da5c89b862aee71a8",
+                "all_contig_annotations.json:md5,d751713988987e9331980363e24189ce"
+            ],
+            [
+                "all_contig.bam",
+                "all_contig.bam.bai",
+                "all_contig.fasta",
+                "all_contig.fastq",
+                "all_contig_annotations.bed",
+                "all_contig_annotations.csv",
+                "all_contig_annotations.json"
             ]
         ],
-        "timestamp": "2026-07-07T14:41:21.918016",
+        "timestamp": "2026-09-30T18:40:35.414656594",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.3"
+            "nextflow": "26.04.6"
         }
     },
     "cellranger - multi - 10k - PBMC - with cmo - pipeline scenario where different references might be available for different samples": {
@@ -67,6 +79,32 @@
             ]
         ],
         "timestamp": "2026-08-06T09:44:42.817483788",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "cellranger - multi - 10k - PBMC - vdj-t-gd only with gex reference - stub": {
+        "content": [
+            {
+                "versions_cellranger": [
+                    [
+                        "CELLRANGER_MULTI",
+                        "cellranger",
+                        "10.0.0"
+                    ]
+                ]
+            },
+            [
+                "[vdj]",
+                "reference,$PWD/references/vdj/vdj_reference_stub",
+                "inner-enrichment-primers,$PWD/references/vdj/primers/gd_primers.txt",
+                "[libraries]",
+                "fastq_id,fastqs,lanes,feature_types",
+                "subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_t_gd,,VDJ-T-GD"
+            ]
+        ],
+        "timestamp": "2026-09-30T17:44:30.642055396",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
@@ -140,6 +178,39 @@
             "nextflow": "26.04.3"
         }
     },
+    "cellranger - multi - 10k - PBMC - vdj-t-gd + vdj-b + antibody capture without gex - stub": {
+        "content": [
+            {
+                "versions_cellranger": [
+                    [
+                        "CELLRANGER_MULTI",
+                        "cellranger",
+                        "10.0.0"
+                    ]
+                ]
+            },
+            [
+                "[gene-expression]",
+                "reference,$PWD/references/gex/homo_sapiens_chr22_reference",
+                "create-bam,true",
+                "[feature]",
+                "reference,$PWD/fb_reference_copy.csv",
+                "[vdj]",
+                "reference,$PWD/references/vdj/vdj_reference_stub",
+                "inner-enrichment-primers,$PWD/references/vdj/primers/gd_primers.txt",
+                "[libraries]",
+                "fastq_id,fastqs,lanes,feature_types",
+                "subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_t_gd,,VDJ-T-GD",
+                "subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_b,,VDJ-B",
+                "subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/ab,,Antibody Capture"
+            ]
+        ],
+        "timestamp": "2026-09-30T14:59:53.125453826",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
     "cellranger - multi - 5k - a549 - sc3 v3 - gex + crispr": {
         "content": [
             {
@@ -168,6 +239,42 @@
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.3"
+        }
+    },
+    "cellranger - multi - 10k - PBMC - vdj-t + vdj-t-gd + vdj-b - stub": {
+        "content": [
+            {
+                "versions_cellranger": [
+                    [
+                        "CELLRANGER_MULTI",
+                        "cellranger",
+                        "10.0.0"
+                    ]
+                ]
+            },
+            [
+                "[gene-expression]",
+                "reference,$PWD/references/gex/homo_sapiens_chr22_reference",
+                "chemistry,SC5P-PE",
+                "expect-cells,1000",
+                "no-secondary,true",
+                "create-bam,false",
+                "[vdj]",
+                "reference,$PWD/references/vdj/vdj_reference_stub",
+                "inner-enrichment-primers,$PWD/references/vdj/primers/gd_primers.txt",
+                "r1-length,26",
+                "[libraries]",
+                "fastq_id,fastqs,lanes,feature_types",
+                "subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/gex,,Gene Expression",
+                "subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_t,,VDJ-T",
+                "subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_t_gd,,VDJ-T-GD",
+                "subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_b,,VDJ-B"
+            ]
+        ],
+        "timestamp": "2026-09-30T15:28:14.672620722",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
         }
     },
     "cellranger - multi - 10k - PBMC - with vdj": {

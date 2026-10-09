@@ -1,7 +1,5 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "ngsbits_bedcoverage"
-description: Annotates a BED file with the average coverage of the regions from one
-  or several BAM/CRAM file(s).
+description: Annotates a BED file with the average coverage of the regions from one or several BAM/CRAM file(s).
 keywords:
   - bed
   - coverage
@@ -12,7 +10,8 @@ tools:
       homepage: "https://github.com/imgag/ngs-bits"
       documentation: "https://github.com/imgag/ngs-bits"
       tool_dev_url: "https://github.com/imgag/ngs-bits"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 
 input:
@@ -46,8 +45,7 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - fasta:
         type: file
-        description: The reference FASTA to use (mandatory when CRAM files are used,
-          otherwise optional)
+        description: The reference FASTA to use (mandatory when CRAM files are used, otherwise optional)
         pattern: "*.{fasta,fa,fna}"
         ontologies: []
   - - meta3:
@@ -81,9 +79,10 @@ output:
       - ngsbits:
           type: string
           description: The name of the tool
-      - BedCoverage --version 2>&1 | sed 's/BedCoverage //':
+      - BedCoverage --version 2>&1 | sed -n 's/BedCoverage //p':
           type: eval
           description: The expression to obtain the version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -92,10 +91,35 @@ topics:
       - ngsbits:
           type: string
           description: The name of the tool
-      - BedCoverage --version 2>&1 | sed 's/BedCoverage //':
+      - BedCoverage --version 2>&1 | sed -n 's/BedCoverage //p':
           type: eval
           description: The expression to obtain the version of the tool
+
 authors:
   - "@nvnieuwk"
 maintainers:
   - "@nvnieuwk"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/ngs-bits:2026_06--10de2f01af4c9c32
+      build_id: bd-10de2f01af4c9c32_1
+      scan_id: sc-ed9d8aa51d32d8c4_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/ngs-bits:2026_06--ded3d87a5c0a98ee
+      build_id: bd-ded3d87a5c0a98ee_1
+      scan_id: sc-f7a23e68d81b01b0_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/ngs-bits:2026_06--eefe177929fb17d1
+      build_id: bd-eefe177929fb17d1_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/db/db759890fb18613dd6178305e20a588bda85a12c3d06f885899aca2f54725985/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/ngs-bits:2026_06--68b7658e81716a8e
+      build_id: bd-68b7658e81716a8e_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e8/e833a9ec91195ab6632d4f69260e788bafd42a05fbad4acd4d064e491b9091f6/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/ngsbits/bedcoverage/.conda-lock/linux_amd64-bd-10de2f01af4c9c32_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/ngsbits/bedcoverage/.conda-lock/linux_arm64-bd-ded3d87a5c0a98ee_1.txt
