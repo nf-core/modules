@@ -7,11 +7,15 @@ keywords:
   - nanopore
   - qc
 tools:
-  - "zcat":
-      description: "zcat uncompresses either a list of files on the command line or
-        its standard input and writes the uncompressed data on standard output."
-      documentation: "https://linux.die.net/man/1/zcat"
-      args_id: "$args"
+  - "pigz":
+      description: "A parallel implementation of gzip for modern multi-processor, multi-core
+        machines."
+      homepage: "https://zlib.net/pigz/"
+      documentation: "https://zlib.net/pigz/pigz.pdf"
+      tool_dev_url: "https://github.com/madler/pigz"
+      args_id:
+        - "args"
+        - "args3"
       identifier: ""
   - "chopper":
       description: "A rust command line for filtering and trimming long reads."
@@ -19,14 +23,9 @@ tools:
       documentation: "https://github.com/wdecoster/chopper"
       tool_dev_url: "https://github.com/wdecoster/chopper"
       doi: "10.1093/bioinformatics/bty149"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       args_id: "$args2"
-      identifier: ""
-  - "gzip":
-      description: "Gzip reduces the size of the named files using Lempel-Ziv coding
-        (LZ77)."
-      documentation: "https://linux.die.net/man/1/gzip"
-      args_id: "$args3"
       identifier: ""
 input:
   - - meta:
@@ -41,8 +40,8 @@ input:
         ontologies: []
   - fasta:
       type: file
-      description: An optional reference fasta file against which to remove reads that
-        align to it.
+      description: An optional reference fasta file against which to remove reads
+        that align to it.
       pattern: "*.fasta"
       ontologies: []
 output:
@@ -67,6 +66,16 @@ output:
       - "chopper --version 2>&1 | cut -d ' ' -f 2":
           type: eval
           description: The expression to obtain the version of the tool
+  versions_pigz:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool used for compression / decompression
+      - pigz --version | sed 's/pigz //g':
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -78,7 +87,18 @@ topics:
       - "chopper --version 2>&1 | cut -d ' ' -f 2":
           type: eval
           description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool
+      - "pigz --version | sed 's/pigz //g'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@FynnFreyer"
+  - "@OlivierCoen"
 maintainers:
   - "@FynnFreyer"
