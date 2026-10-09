@@ -18,7 +18,9 @@ process RAGTAG_SCAFFOLD {
     tuple val(meta), path("*.agp"), emit: corrected_agp
     tuple val(meta), path("*.stats"), emit: corrected_stats
     tuple val(meta), path("*.paf.gz"), emit: ragtag_paf
-    tuple val(meta), path("*.paf.log"), emit: ragtag_log
+    tuple val(meta), path("*.paf.log"), emit: ragtag_paf_log, optional: true
+    tuple val(meta), path("*.delta.gz"), emit: ragtag_delta, optional: true
+    tuple val(meta), path("*.delta.log"), emit: ragtag_delta_log, optional: true
     tuple val(meta), path("*.confidence.txt"), emit: confidence_txt
     tuple val("${task.process}"), val('ragtag'), eval("ragtag.py -v | sed 's/v//'"), emit: versions_ragtag, topic: versions
 
@@ -49,7 +51,6 @@ process RAGTAG_SCAFFOLD {
     ragtag.py scaffold reference.fa assembly.fa \\
         -o "${prefix}" \\
         -t ${task.cpus} \\
-        -C \\
         ${arg_exclude} \\
         ${arg_skip} \\
         ${arg_hard_skip} \\
@@ -60,11 +61,21 @@ process RAGTAG_SCAFFOLD {
     mv ${prefix}/ragtag.scaffold.fasta ${prefix}.fasta
     mv ${prefix}/ragtag.scaffold.agp ${prefix}.agp
     mv ${prefix}/ragtag.scaffold.stats ${prefix}.stats
-    mv ${prefix}/ragtag.scaffold.asm.paf ${prefix}.asm.paf
     mv ${prefix}/ragtag.scaffold.confidence.txt ${prefix}.confidence.txt
-    mv ${prefix}/ragtag.scaffold.asm.paf.log ${prefix}.asm.paf.log
 
-    gzip ${prefix}.asm.paf
+    if [ -f "${prefix}/ragtag.scaffold.asm.paf" ]; then
+        mv ${prefix}/ragtag.scaffold.asm.paf ${prefix}.asm.paf
+        if [ -f "${prefix}/ragtag.scaffold.asm.paf.log" ]; then
+            mv ${prefix}/ragtag.scaffold.asm.paf.log ${prefix}.asm.paf.log
+        fi
+        gzip ${prefix}.asm.paf
+    fi
+
+    if [ -f "${prefix}/ragtag.scaffold.asm.delta" ]; then
+        mv ${prefix}/ragtag.scaffold.asm.delta ${prefix}.asm.delta
+        mv ${prefix}/ragtag.scaffold.asm.delta.log ${prefix}.asm.delta.log
+        gzip ${prefix}.asm.delta
+    fi
     """
 
     stub:
@@ -78,6 +89,8 @@ process RAGTAG_SCAFFOLD {
     touch ${prefix}.agp
     touch ${prefix}.stats
     echo "" | gzip > ${prefix}.asm.paf.gz
+    echo "" | gzip > ${prefix}.asm.delta.gz
+    touch ${prefix}.delta.log
     touch ${prefix}.paf.log
     touch ${prefix}.confidence.txt
     """

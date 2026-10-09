@@ -112,7 +112,7 @@ output:
           description: PAF file of alignments between reference and input
           pattern: "*.paf.gz"
           ontologies: []
-  ragtag_log:
+  ragtag_paf_log:
     - - meta:
           type: map
           description: |
@@ -120,7 +120,29 @@ output:
             e.g. [ id:'test' ]
       - "*.paf.log":
           type: file
-          description: Log file of the ragtag alignment
+          description: Log file of the ragtag alignment when using minimap2
+          pattern: "*.paf.log"
+          ontologies: []
+  ragtag_delta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.delta.gz":
+          type: file
+          description: Nucmer delta file of alignments between reference and input
+          pattern: "*.delta.gz"
+          ontologies: []
+  ragtag_delta_log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.delta.log":
+          type: file
+          description: Log file of the ragtag alignment when using nucmer
           pattern: "*.paf.log"
           ontologies: []
   confidence_txt:
