@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TIARA_TIARA {
     tag "${meta.id}"
     label 'process_medium'
@@ -13,10 +16,9 @@ process TIARA_TIARA {
 
     output:
     tuple val(meta), path("${prefix}.{txt,txt.gz}"), emit: classifications
-    tuple val(meta), path("log_*.{txt,txt.gz}")    , emit: log
-    tuple val(meta), path("*.{fasta,fasta.gz}")    , emit: fasta, optional: true
+    tuple val(meta), path("log_*.{txt,txt.gz}"), emit: log
+    tuple val(meta), path("*.{fasta,fasta.gz}"), emit: fasta, optional: true
     tuple val("${task.process}"), val('tiara'), val("1.0.3"), topic: versions, emit: versions_tiara
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     when:
     task.ext.when == null || task.ext.when

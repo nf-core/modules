@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PORECHOP_ABI {
     tag "${meta.id}"
     label 'process_medium'
@@ -13,7 +16,7 @@ process PORECHOP_ABI {
 
     output:
     tuple val(meta), path("*.fastq.gz"), emit: reads
-    tuple val(meta), path("*.log")     , emit: log
+    tuple val(meta), path("*.log"), emit: log
     tuple val("${task.process}"), val('porechop_abi'), eval("porechop_abi --version"), topic: versions, emit: versions_porechop_abi
 
     when:

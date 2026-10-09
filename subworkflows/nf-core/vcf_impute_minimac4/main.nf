@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { MINIMAC4_COMPRESSREF                    } from '../../../modules/nf-core/minimac4/compressref'
 include { MINIMAC4_IMPUTE                         } from '../../../modules/nf-core/minimac4/impute'
 include { GLIMPSE2_LIGATE                         } from '../../../modules/nf-core/glimpse2/ligate'
@@ -6,10 +9,10 @@ include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_LIGATE } from '../../../modules/nf-co
 
 workflow VCF_IMPUTE_MINIMAC4 {
     take:
-    ch_input   // channel (mandatory): [ [id, chr], vcf, tbi ]
-    ch_panel   // channel (mandatory): [ [panel, chr], vcf, tbi ]
-    ch_chunks  // channel (optional) : [ [panel, chr], regionout ]
-    ch_map     // channel (optional) : [ [panel, chr], map]
+    ch_input // channel (mandatory): [ [id, chr], vcf, tbi ]
+    ch_panel // channel (mandatory): [ [panel, chr], vcf, tbi ]
+    ch_chunks // channel (optional) : [ [panel, chr], regionout ]
+    ch_map // channel (optional) : [ [panel, chr], map]
 
     main:
 
@@ -62,13 +65,15 @@ workflow VCF_IMPUTE_MINIMAC4 {
                 def paddedStart = String.format('%010d', start as long)
                 def paddedEnd = String.format('%010d', end as long)
                 regionoutPadded = "${chr}:${paddedStart}-${paddedEnd}"
-            } else {
+            }
+            else {
                 // Handle format like "chr22" (no coordinates)
                 regionoutPadded = regionout
             }
             [
                 metaPC + metaI + ["regionout": regionout, "regionoutPadded": regionoutPadded, "regionSize": region_size],
-                target_vcf, target_tbi,
+                target_vcf,
+                target_tbi,
                 ref_msav,
                 map,
                 regionout,
@@ -89,10 +94,7 @@ workflow VCF_IMPUTE_MINIMAC4 {
         )
         .map { meta, vcf, index ->
             def keysToKeep = meta.keySet() - ['regionout', 'regionoutPadded', 'regionSize']
-            [
-                groupKey(meta.subMap(keysToKeep), meta.regionSize),
-                vcf, index
-            ]
+            [groupKey(meta.subMap(keysToKeep), meta.regionSize), vcf, index]
         }
         .groupTuple()
         .map { groupKeyObj, vcf, index ->

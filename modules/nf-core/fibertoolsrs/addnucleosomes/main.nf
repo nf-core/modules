@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FIBERTOOLSRS_ADDNUCLEOSOMES {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fibertools-rs:0.8.2--h3b373d1_0':
-        'quay.io/biocontainers/fibertools-rs:0.8.2--h3b373d1_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/fibertools-rs:0.8.2--h3b373d1_0'
+        : 'quay.io/biocontainers/fibertools-rs:0.8.2--h3b373d1_0'}"
 
     input:
     tuple val(meta), path(bam)
@@ -20,7 +23,9 @@ process FIBERTOOLSRS_ADDNUCLEOSOMES {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_nucleosomes"
-    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${bam}" == "${prefix}.bam") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
+    }
 
     """
     ft \\

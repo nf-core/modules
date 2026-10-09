@@ -1,24 +1,26 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PLASMIDFINDER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/plasmidfinder:2.1.6--py310hdfd78af_1':
-        'quay.io/biocontainers/plasmidfinder:2.1.6--py310hdfd78af_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/plasmidfinder:2.1.6--py310hdfd78af_1'
+        : 'quay.io/biocontainers/plasmidfinder:2.1.6--py310hdfd78af_1'}"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.json")                 , emit: json
-    tuple val(meta), path("*.txt")                  , emit: txt
-    tuple val(meta), path("*.tsv")                  , emit: tsv
+    tuple val(meta), path("*.json"), emit: json
+    tuple val(meta), path("*.txt"), emit: txt
+    tuple val(meta), path("*.tsv"), emit: tsv
     tuple val(meta), path("*-hit_in_genome_seq.fsa"), emit: genome_seq
-    tuple val(meta), path("*-plasmid_seqs.fsa")     , emit: plasmid_seq
+    tuple val(meta), path("*-plasmid_seqs.fsa"), emit: plasmid_seq
     tuple val("${task.process}"), val('plasmidfinder'), val('2.1.6'), topic: versions, emit: versions_plasmidfinder
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,13 +32,13 @@ process PLASMIDFINDER {
     def fasta_name = fasta.getName().replace(".gz", "")
     """
     # Decompress input FASTA if needed
-    if [ "$is_compressed" == "true" ]; then
-        gzip -c -d $fasta > $fasta_name
+    if [ "${is_compressed}" == "true" ]; then
+        gzip -c -d ${fasta} > ${fasta_name}
     fi
 
     plasmidfinder.py \\
-        $args \\
-        -i $fasta_name \\
+        ${args} \\
+        -i ${fasta_name} \\
         -o ./ \\
         -x
 

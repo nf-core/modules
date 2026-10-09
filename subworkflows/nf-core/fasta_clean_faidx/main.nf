@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { GUNZIP                        } from "../../../modules/nf-core/gunzip/main"
 include { SEQKIT_SEQ                    } from '../../../modules/nf-core/seqkit/seq/main'
 include { SEQKIT_REPLACE as SEQKIT_DOTS } from '../../../modules/nf-core/seqkit/replace/main'
@@ -6,10 +9,10 @@ include { SAMTOOLS_DICT                 } from "../../../modules/nf-core/samtool
 
 workflow FASTA_CLEAN_FAIDX {
     take:
-    ch_reference          // channel.of( [meta], reference )
-    val_replace_dots      // boolean: replace dots in headers with underscores in trimmed reference
-    val_get_chromsizes    // boolean: emit chromsizes
-    val_get_dict          // boolean: emit dict
+    ch_reference // channel.of( [meta], reference )
+    val_replace_dots // boolean: replace dots in headers with underscores in trimmed reference
+    val_get_chromsizes // boolean: emit chromsizes
+    val_get_dict // boolean: emit dict
 
     main:
 
@@ -17,17 +20,16 @@ workflow FASTA_CLEAN_FAIDX {
     // LOGIC: SPLIT THE INPUT REFERENCES INTO THOSE THAT ARE ZIPPED OR UNZIPPED
     //        THIS ENSURES THAT ALL INPUT ARE UNZIPPED FOR DOWNSTREAM PROCESSING
     //
-    ch_input = ch_reference
-            .branch { _meta, file ->
-                zipped: file.name.endsWith('.gz')
-                unzipped: !file.name.endsWith('.gz')
-            }
+    ch_input = ch_reference.branch { _meta, file ->
+        zipped: file.name.endsWith('.gz')
+        unzipped: !file.name.endsWith('.gz')
+    }
 
 
     //
     // MODULE: UNZIP INPUTS IF NEEDED
     //
-    GUNZIP (
+    GUNZIP(
         ch_input.zipped
     )
 
@@ -35,15 +37,14 @@ workflow FASTA_CLEAN_FAIDX {
     //
     // LOGIC: MIX CHANELS WHICH MAY OR MAY NOT BE EMPTY INTO A SINGLE QUEUE CHANNEL
     //
-    unzipped_reference = ch_input.unzipped
-        .mix(GUNZIP.out.gunzip)
+    unzipped_reference = ch_input.unzipped.mix(GUNZIP.out.gunzip)
 
 
     //
     // MODULE: UPPERCASE THE REFERENCE SEQUENCE
     //         ALSO RETURN ONLY THE ID OF A SEQUENCE NOT THE FULL HEADER
     //
-    SEQKIT_SEQ (
+    SEQKIT_SEQ(
         unzipped_reference
     )
 
@@ -55,13 +56,14 @@ workflow FASTA_CLEAN_FAIDX {
     //         SOME STANDARDS (e.g. ONLY TAKE FIRST WORK IN HEADER)
     //
     if (val_replace_dots) {
-        SEQKIT_DOTS (
+        SEQKIT_DOTS(
             SEQKIT_SEQ.out.fastx,
-            "fasta"
+            "fasta",
         )
 
         renamed_fasta = SEQKIT_DOTS.out.fastx
-    } else {
+    }
+    else {
         renamed_fasta = SEQKIT_SEQ.out.fastx
     }
 
@@ -70,16 +72,16 @@ workflow FASTA_CLEAN_FAIDX {
     // MODULE: GENERATE INDEX OF REFERENCE FASTA
     //         OPTIONALLY EMIT CHROMOSOME SIZES FILE
     //
-    SAMTOOLS_FAIDX (
+    SAMTOOLS_FAIDX(
         renamed_fasta.map { meta, file -> [meta, file, []] },
-        val_get_chromsizes
+        val_get_chromsizes,
     )
 
 
     //
     // MODULE: GENERATE GENOME STATS FROM FASTA INDEX
     //
-    GENOME_STATS (
+    GENOME_STATS(
         SAMTOOLS_FAIDX.out.fai
     )
 
@@ -87,17 +89,16 @@ workflow FASTA_CLEAN_FAIDX {
     //
     // MODULE: GENERATE A SAMTOOLS DICT FILE BASED ON THE CORRECTED FASTA FILE
     //
-    SAMTOOLS_DICT (
+    SAMTOOLS_DICT(
         renamed_fasta.filter { _meta, _file -> val_get_dict }
     )
 
-
     emit:
-    reference               = renamed_fasta
-    fai                     = SAMTOOLS_FAIDX.out.fai
-    sizes                   = SAMTOOLS_FAIDX.out.sizes
-    dict                    = SAMTOOLS_DICT.out.dict
-    sequence_description    = GENOME_STATS.out.json
+    reference            = renamed_fasta
+    fai                  = SAMTOOLS_FAIDX.out.fai
+    sizes                = SAMTOOLS_FAIDX.out.sizes
+    dict                 = SAMTOOLS_DICT.out.dict
+    sequence_description = GENOME_STATS.out.json
 }
 
 process GENOME_STATS {
@@ -115,14 +116,15 @@ process GENOME_STATS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def outfile = task.workDir.resolve("${prefix}.json")
 
-    def lengths = fai.readLines()
+    def lengths = fai
+        .readLines()
         .findAll { line -> line.trim() }
         .collect { line -> line.split('\t')[1].toLong() }
 
     def sequence_map = [
-            n_sequences : lengths.size(),
-            total_length: lengths.sum() ?: 0L,
-        ]
+        n_sequences: lengths.size(),
+        total_length: lengths.sum() ?: 0L,
+    ]
 
     if (lengths) {
         sequence_map.max_length = lengths.max()
@@ -131,7 +133,4 @@ process GENOME_STATS {
     outfile.text = groovy.json.JsonOutput.prettyPrint(
         groovy.json.JsonOutput.toJson(sequence_map)
     )
-
-    // NOTE: Using the new File syntax writes the file to the top of the workdir
-    //       resulting in the process being unable to find the file inside it self.
 }

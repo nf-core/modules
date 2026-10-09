@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HELITRONSCANNER_DRAW {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/helitronscanner:1.0--hdfd78af_0':
-        'quay.io/biocontainers/helitronscanner:1.0--hdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/helitronscanner:1.0--hdfd78af_0'
+        : 'quay.io/biocontainers/helitronscanner:1.0--hdfd78af_0'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -20,11 +23,13 @@ process HELITRONSCANNER_DRAW {
     task.ext.when == null || task.ext.when
 
     script:
-    def args        = task.ext.args     ?: ''
-    def args2       = task.ext.args2    ?: ''
-    def prefix      = task.ext.prefix   ?: "${meta.id}"
-    if ( !task.memory ) { error '[HELITRONSCANNER_DRAW] Available memory not known. Specify process memory requirements to fix this.' }
-    def avail_mem   = (task.memory.giga*0.8).intValue()
+    def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    if (!task.memory) {
+        error('[HELITRONSCANNER_DRAW] Available memory not known. Specify process memory requirements to fix this.')
+    }
+    def avail_mem = (task.memory.giga * 0.8).intValue()
     """
     # Nextflow changes the container --entrypoint to /bin/bash (container default entrypoint: /usr/local/env-execute)
     # Check for container variable initialisation script and source it.

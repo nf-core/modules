@@ -1,14 +1,17 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process COBRAMETA {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cobra-meta:1.2.3--pyhdfd78af_0':
-        'quay.io/biocontainers/cobra-meta:1.2.3--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/cobra-meta:1.2.3--pyhdfd78af_0'
+        : 'quay.io/biocontainers/cobra-meta:1.2.3--pyhdfd78af_0'}"
 
     input:
-    tuple val(meta) , path(fasta)
+    tuple val(meta), path(fasta)
     tuple val(meta2), path(coverage)
     tuple val(meta3), path(query)
     tuple val(meta4), path(bam)
@@ -17,14 +20,14 @@ process COBRAMETA {
     val maxk
 
     output:
-    tuple val(meta), path("${prefix}/COBRA_category_i_self_circular.fasta.gz")                  , emit: self_circular       , optional: true
-    tuple val(meta), path("${prefix}/COBRA_category_ii-a_extended_circular_unique.fasta.gz")    , emit: extended_circular   , optional: true
-    tuple val(meta), path("${prefix}/COBRA_category_ii-b_extended_partial_unique.fasta.gz")     , emit: extended_partial    , optional: true
-    tuple val(meta), path("${prefix}/COBRA_category_ii-c_extended_failed.fasta.gz")             , emit: extended_failed     , optional: true
-    tuple val(meta), path("${prefix}/COBRA_category_iii_orphan_end.fasta.gz")                   , emit: orphan_end          , optional: true
-    tuple val(meta), path("${prefix}/COBRA_all_assemblies.fasta.gz")                            , emit: all_cobra_assemblies, optional: true
-    tuple val(meta), path("${prefix}/COBRA_joining_summary.txt")                                , emit: joining_summary
-    tuple val(meta), path("${prefix}/log")                                                      , emit: log
+    tuple val(meta), path("${prefix}/COBRA_category_i_self_circular.fasta.gz"), emit: self_circular, optional: true
+    tuple val(meta), path("${prefix}/COBRA_category_ii-a_extended_circular_unique.fasta.gz"), emit: extended_circular, optional: true
+    tuple val(meta), path("${prefix}/COBRA_category_ii-b_extended_partial_unique.fasta.gz"), emit: extended_partial, optional: true
+    tuple val(meta), path("${prefix}/COBRA_category_ii-c_extended_failed.fasta.gz"), emit: extended_failed, optional: true
+    tuple val(meta), path("${prefix}/COBRA_category_iii_orphan_end.fasta.gz"), emit: orphan_end, optional: true
+    tuple val(meta), path("${prefix}/COBRA_all_assemblies.fasta.gz"), emit: all_cobra_assemblies, optional: true
+    tuple val(meta), path("${prefix}/COBRA_joining_summary.txt"), emit: joining_summary
+    tuple val(meta), path("${prefix}/log"), emit: log
     tuple val("${task.process}"), val('cobra'), eval("cobra-meta --version 2>&1 | sed 's/^.*cobra v//'"), emit: versions_cobra, topic: versions
 
     when:
@@ -44,7 +47,7 @@ process COBRAMETA {
         --maxk ${maxk} \\
         --threads ${task.cpus} \\
         --output ${prefix} \\
-        $args
+        ${args}
 
     gzip ${prefix}/*.fasta
     cat ${prefix}/*fasta.gz > ${prefix}/COBRA_all_assemblies.fasta.gz

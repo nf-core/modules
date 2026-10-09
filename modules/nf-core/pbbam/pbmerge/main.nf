@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PBBAM_PBMERGE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pbbam:2.4.0--hdcf5f25_1' :
-        'quay.io/biocontainers/pbbam:2.4.0--hdcf5f25_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/pbbam:2.4.0--hdcf5f25_1'
+        : 'quay.io/biocontainers/pbbam:2.4.0--hdcf5f25_1'}"
 
     input:
     tuple val(meta), path(bam)
@@ -28,11 +31,11 @@ This module is no longer fit for purpose because pbbam has been deprecated by Pa
 """
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    assert false: deprecation_message
+    assert false : deprecation_message
     """
     pbmerge \\
         -o ${prefix}.bam \\
-        $args \\
+        ${args} \\
         *.bam
 
     """
@@ -46,7 +49,7 @@ This module is no longer fit for purpose because pbbam has been deprecated by Pa
 
 """
     def prefix = task.ext.prefix ?: "${meta.id}"
-    assert false: deprecation_message
+    assert false : deprecation_message
     """
     touch ${prefix}.bam
     touch ${prefix}.bam.pbi

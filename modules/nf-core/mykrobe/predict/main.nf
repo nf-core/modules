@@ -1,20 +1,23 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MYKROBE_PREDICT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mykrobe:0.11.0--py39h2add14b_1':
-        'quay.io/biocontainers/mykrobe:0.11.0--py39h2add14b_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/mykrobe:0.11.0--py39h2add14b_1'
+        : 'quay.io/biocontainers/mykrobe:0.11.0--py39h2add14b_1'}"
 
     input:
     tuple val(meta), path(seqs)
     val species
 
     output:
-    tuple val(meta), path("${prefix}.csv") , emit: csv
+    tuple val(meta), path("${prefix}.csv"), emit: csv
     tuple val(meta), path("${prefix}.json"), emit: json
-    tuple val("${task.process}"), val('mykrobe'),  eval("mykrobe --version 2>&1 | sed 's/^.*mykrobe v//'"), topic: versions, emit: versions_mykrobe
+    tuple val("${task.process}"), val('mykrobe'), eval("mykrobe --version 2>&1 | sed 's/^.*mykrobe v//'"), topic: versions, emit: versions_mykrobe
 
     when:
     task.ext.when == null || task.ext.when

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FLASH {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/flash:1.2.11--h5bf99c6_6' :
-        'quay.io/biocontainers/flash:1.2.11--h5bf99c6_6' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/flash:1.2.11--h5bf99c6_6'
+        : 'quay.io/biocontainers/flash:1.2.11--h5bf99c6_6'}"
 
     input:
     tuple val(meta), path(reads)
@@ -13,7 +16,7 @@ process FLASH {
     output:
     tuple val(meta), path("${prefix}.extendedFrags.fastq.gz"), emit: merged
     tuple val(meta), path("${prefix}.notCombined_*.fastq.gz"), emit: notcombined
-    tuple val(meta), path("${prefix}.hist")                  , emit: histogram
+    tuple val(meta), path("${prefix}.hist"), emit: histogram
     tuple val("${task.process}"), val('flash'), eval("flash --version |& sed '1!d;s/^.*FLASH v//'"), topic: versions, emit: versions_flash
 
     when:
@@ -22,13 +25,19 @@ process FLASH {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    if ("$reads" == "${prefix}.extendedFrags.fastq.gz") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
-    if ("$reads" == "${prefix}.notCombined_1.fastq.gz") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
-    if ("$reads" == "${prefix}.notCombined_2.fastq.gz") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("${reads}" == "${prefix}.extendedFrags.fastq.gz") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
+    if ("${reads}" == "${prefix}.notCombined_1.fastq.gz") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
+    if ("${reads}" == "${prefix}.notCombined_2.fastq.gz") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
 
     """
     flash \\
-        $args \\
+        ${args} \\
         -o ${prefix} \\
         -z \\
         ${reads[0]} \\

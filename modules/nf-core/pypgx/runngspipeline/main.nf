@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PYPGX_RUNNGSPIPELINE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pypgx:0.25.0--pyh7e72e81_0':
-        'quay.io/biocontainers/pypgx:0.25.0--pyh7e72e81_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/pypgx:0.25.0--pyh7e72e81_0'
+        : 'quay.io/biocontainers/pypgx:0.25.0--pyh7e72e81_0'}"
 
     input:
     tuple val(meta), path(vcf), path(tbi), path(coverage), path(control_stats), val(pgx_gene)

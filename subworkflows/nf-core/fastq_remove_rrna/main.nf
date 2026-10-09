@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { BOWTIE2_ALIGN                            } from '../../../modules/nf-core/bowtie2/align'
 include { BOWTIE2_ALIGN as BOWTIE2_ALIGN_PE        } from '../../../modules/nf-core/bowtie2/align'
 include { BOWTIE2_BUILD                            } from '../../../modules/nf-core/bowtie2/build'
@@ -17,13 +20,13 @@ include { SORTMERNA as SORTMERNA_INDEX             } from '../../../modules/nf-c
 def getReadLengthFromSeqkitStats(stats_file) {
     def lines = stats_file.text.readLines()
     if (lines.size() < 2) {
-        return 100 // Default fallback
+        return 100
     }
 
     def header = lines[0].split('\t')
     def avgLenIdx = header.findIndexOf { col -> col == 'avg_len' }
     if (avgLenIdx < 0) {
-        return 100 // Default fallback if column not found
+        return 100
     }
 
     // Calculate mean avg_len across all files in the stats output
@@ -152,9 +155,9 @@ workflow FASTQ_REMOVE_RRNA {
         BOWTIE2_ALIGN(
             ch_reads_for_bowtie2.single_end,
             ch_bowtie2_index,
-            [[], []], // No reference fasta needed
-            true,     // save_unaligned - for single-end this works correctly
-            false,    // sort_bam - not needed
+            [[], []],
+            true,
+            false,
         )
 
         ch_bowtie2_log = BOWTIE2_ALIGN.out.log
@@ -166,9 +169,9 @@ workflow FASTQ_REMOVE_RRNA {
         BOWTIE2_ALIGN_PE(
             ch_reads_for_bowtie2.paired_end,
             ch_bowtie2_index,
-            [[], []], // No reference fasta needed for BAM output
-            false,    // save_unaligned - we'll extract from BAM instead
-            false,    // sort_bam - not needed
+            [[], []],
+            false,
+            false,
         )
 
         ch_bowtie2_log = ch_bowtie2_log.mix(BOWTIE2_ALIGN_PE.out.log)
@@ -178,17 +181,17 @@ workflow FASTQ_REMOVE_RRNA {
         // This removes any pair where at least one mate aligned to rRNA
         SAMTOOLS_VIEW_BOWTIE2(
             BOWTIE2_ALIGN_PE.out.bam.map { meta, bam_file -> [meta, bam_file, []] },
-            [[], [], []], // No reference fasta
-            [[], []],     // No qname file
-            [[], []],     // No bed file
-            []            // No index format
+            [[], [], []],
+            [[], []],
+            [[], []],
+            [],
         )
         // Note: samtools/view versions collected via topic
 
         // Convert filtered BAM back to paired FASTQ
         SAMTOOLS_FASTQ_BOWTIE2(
             SAMTOOLS_VIEW_BOWTIE2.out.bam,
-            false, // not interleaved
+            false,
         )
 
         // Combine single-end and paired-end results

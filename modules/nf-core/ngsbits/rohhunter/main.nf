@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process NGSBITS_ROHHUNTER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/db/db759890fb18613dd6178305e20a588bda85a12c3d06f885899aca2f54725985/data'
-:         'community.wave.seqera.io/library/ngs-bits:2026_06--10de2f01af4c9c32' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/db/db759890fb18613dd6178305e20a588bda85a12c3d06f885899aca2f54725985/data'
+        : 'community.wave.seqera.io/library/ngs-bits:2026_06--10de2f01af4c9c32'}"
 
     input:
     tuple val(meta), path(vcf), path(exclude_bed)
@@ -26,18 +29,18 @@ process NGSBITS_ROHHUNTER {
 
     """
     RohHunter \\
-        $args \\
-        $ann_beds \\
-        $excl_bed \\
+        ${args} \\
+        ${ann_beds} \\
+        ${excl_bed} \\
         -out ${prefix}.tsv \\
-        -in $vcf
+        -in ${vcf}
     """
 
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo $args
+    echo ${args}
 
     touch ${prefix}.tsv
     """

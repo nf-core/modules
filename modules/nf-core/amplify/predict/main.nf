@@ -1,25 +1,28 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process AMPLIFY_PREDICT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/amplify:2.0.1--py36hdfd78af_2':
-        'quay.io/biocontainers/amplify:2.0.1--py36hdfd78af_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/amplify:2.0.1--py36hdfd78af_2'
+        : 'quay.io/biocontainers/amplify:2.0.1--py36hdfd78af_2'}"
 
     input:
     tuple val(meta), path(faa)
-    path(model_dir)
+    path model_dir
 
     output:
     tuple val(meta), path('*.tsv'), emit: tsv
-    tuple val("${task.process}"), val('AMPlify'), eval( "AMPlify --help 2>&1 | sed -n 's/AMPlify v//p'" ), emit: versions_amplify, topic: versions
+    tuple val("${task.process}"), val('AMPlify'), eval("AMPlify --help 2>&1 | sed -n 's/AMPlify v//p'"), emit: versions_amplify, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def custom_model_dir = model_dir ? "-md ${model_dir}" : ""
     """

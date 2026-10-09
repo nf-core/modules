@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RAGTAG_SCAFFOLD {
     tag "${meta.id}"
     label 'process_medium'
@@ -14,9 +17,9 @@ process RAGTAG_SCAFFOLD {
     tuple val(meta4), path(skip), path(hard_skip)
 
     output:
-    tuple val(meta), path("*.fasta"),   emit: corrected_assembly
-    tuple val(meta), path("*.agp"),     emit: corrected_agp
-    tuple val(meta), path("*.stats"),   emit: corrected_stats
+    tuple val(meta), path("*.fasta"), emit: corrected_assembly
+    tuple val(meta), path("*.agp"), emit: corrected_agp
+    tuple val(meta), path("*.stats"), emit: corrected_stats
     tuple val("${task.process}"), val('ragtag'), eval("ragtag.py -v | sed 's/v//'"), emit: versions_ragtag, topic: versions
 
     when:

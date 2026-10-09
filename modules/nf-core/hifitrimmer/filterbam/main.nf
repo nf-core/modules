@@ -1,15 +1,17 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HIFITRIMMER_FILTERBAM {
-   tag "$meta.id"
+   tag "${meta.id}"
    label 'process_medium'
 
    conda "${moduleDir}/environment.yml"
-   container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-      'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2d/2d413393b4194a57d7508e03614d1f4b1ba64b7294a817fd9547613421bc9343/data' :
-      'community.wave.seqera.io/library/hifi_trimmer_htslib_samtools:3a74b5c5520eaff2' }"
+   container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+      ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2d/2d413393b4194a57d7508e03614d1f4b1ba64b7294a817fd9547613421bc9343/data'
+      : 'community.wave.seqera.io/library/hifi_trimmer_htslib_samtools:3a74b5c5520eaff2'}"
 
    input:
    tuple val(meta), path(input), path(bed)
-
 
    output:
    tuple val(meta), path("*.fast{q,a}.gz"), emit: filtered
@@ -26,14 +28,15 @@ process HIFITRIMMER_FILTERBAM {
    Reason:
    Command filterbam is no longer supported by hifi-trimmer, please use hifitrimmer/trim module instead.
    """
-   assert false: deprecation_message
+   assert false : deprecation_message
    def prefix = task.ext.prefix ?: "${meta.id}"
    def args = task.ext.args ?: ''
    def args2 = task.ext.args2 ?: ''
    def args3 = task.ext.args3 ?: ''
-   def suffix = args.contains('-f') ? "fastq.gz"  : "fasta.gz"
-   def input_convert = input.name.endsWith('cram') ? "<(samtools view ${input} -u ${args3} -@ ${task.cpus})" :
-        !input.name.endsWith('bam') ? "<(samtools import ${input} ${args2} -@ ${task.cpus})" : input
+   def suffix = args.contains('-f') ? "fastq.gz" : "fasta.gz"
+   def input_convert = input.name.endsWith('cram')
+      ? "<(samtools view ${input} -u ${args3} -@ ${task.cpus})"
+      : !input.name.endsWith('bam') ? "<(samtools import ${input} ${args2} -@ ${task.cpus})" : input
    """
    hifi_trimmer filter_bam \\
       -t ${task.cpus} \\
@@ -50,10 +53,10 @@ process HIFITRIMMER_FILTERBAM {
    Reason:
    Command filterbam is no longer supported by hifi-trimmer, please use hifitrimmer/trim module instead.
    """
-   assert false: deprecation_message
+   assert false : deprecation_message
    def args = task.ext.args ?: ''
    def prefix = task.ext.prefix ?: "${meta.id}"
-   def suffix = args.contains('-f') ? "fastq.gz"  : "fasta.gz"
+   def suffix = args.contains('-f') ? "fastq.gz" : "fasta.gz"
    """
    echo "stub" | gzip > ${prefix}.${suffix}
    echo ${args}

@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SUSHIE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
@@ -9,21 +12,21 @@ process SUSHIE {
 
     input:
     tuple val(meta), path(study_locus_files)
-    path(ld_files)
-    val(sample_sizes)
+    path ld_files
+    val sample_sizes
 
     output:
-    tuple val(meta), path("*.sushie.corr.tsv.gz")   , emit: corr
-    tuple val(meta), path("*.sushie.cs.tsv.gz")     , emit: cs
+    tuple val(meta), path("*.sushie.corr.tsv.gz"), emit: corr
+    tuple val(meta), path("*.sushie.cs.tsv.gz"), emit: cs
     tuple val(meta), path("*.sushie.weights.tsv.gz"), emit: weights
-    tuple val(meta), path("*.log")                  , emit: log
+    tuple val(meta), path("*.log"), emit: log
     tuple val("${task.process}"), val('sushie'), eval('sushie --version'), topic: versions, emit: versions_sushie
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     sushie \\
@@ -38,7 +41,7 @@ process SUSHIE {
     """
 
     stub:
-    def args   = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo ${args}

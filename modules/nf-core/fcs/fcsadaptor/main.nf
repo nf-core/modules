@@ -1,36 +1,26 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FCS_FCSADAPTOR {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://ftp.ncbi.nlm.nih.gov/genomes/TOOLS/FCS/releases/0.5.0/fcs-adaptor.sif':
-        'docker.io/ncbi/fcs-adaptor:0.5.0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://ftp.ncbi.nlm.nih.gov/genomes/TOOLS/FCS/releases/0.5.0/fcs-adaptor.sif'
+        : 'docker.io/ncbi/fcs-adaptor:0.5.0'}"
 
     input:
     tuple val(meta), path(assembly)
 
     output:
     tuple val(meta), path("*.cleaned_sequences.fa.gz"), emit: cleaned_assembly, optional: true
-    tuple val(meta), path("*.fcs_adaptor_report.txt") , emit: adaptor_report
-    tuple val(meta), path("*.fcs_adaptor.log")        , emit: log
-    tuple val(meta), path("*.pipeline_args.yaml")     , emit: pipeline_args
-    tuple val(meta), path("*.skipped_trims.jsonl")    , emit: skipped_trims
+    tuple val(meta), path("*.fcs_adaptor_report.txt"), emit: adaptor_report
+    tuple val(meta), path("*.fcs_adaptor.log"), emit: log
+    tuple val(meta), path("*.pipeline_args.yaml"), emit: pipeline_args
+    tuple val(meta), path("*.skipped_trims.jsonl"), emit: skipped_trims
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('fcsadaptor'), val("0.5.0"), emit: versions_fcsadaptor, topic: versions
-
-    // Downstream handling of optional cleaned_assembly
-    //
-    // ch_cleaned_assembly  = FCS_FCSADAPTOR ( ch_input_assembly ).cleaned_assembly
-
-    // ch_input_assembly
-    // | join (ch_cleaned_assembly, by:0, remainder:true )
-    // | map { meta, input, cleaned ->
-    //     [ meta, cleaned ?: input ]
-    // }
-    // | set { ch_downstream_channel }
-
-    // FCS_FCSGX ( ch_downstream_channel )
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,14 +28,15 @@ process FCS_FCSADAPTOR {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "FCS_FCSADAPTOR module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("FCS_FCSADAPTOR module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
-    def args = task.ext.args ?: '--prok' // --prok || --euk
+    def args = task.ext.args ?: '--prok'
+    // --prok || --euk
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     # To avoid permanentFail: See https://github.com/ncbi/fcs/issues/42
     sed -E 's/^(>[^[:space:]]+).*/\\1/'  \\
-        <(gzip -cdf $assembly) \\
+        <(gzip -cdf ${assembly}) \\
         > ${prefix}.id.only.fasta
 
     av_screen_x \\
@@ -68,7 +59,7 @@ process FCS_FCSADAPTOR {
     stub:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "FCS_FCSADAPTOR module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("FCS_FCSADAPTOR module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     def prefix = task.ext.prefix ?: "${meta.id}"
 

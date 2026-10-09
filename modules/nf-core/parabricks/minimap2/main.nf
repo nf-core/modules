@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PARABRICKS_MINIMAP2 {
     tag "${meta.id}"
     label 'process_high'
@@ -8,21 +11,21 @@ process PARABRICKS_MINIMAP2 {
     container "nvcr.io/nvidia/clara/clara-parabricks:4.7.1-1"
 
     input:
-    tuple val(meta),  path(reads)
+    tuple val(meta), path(reads)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(intervals)
     tuple val(meta4), path(known_sites)
     val output_fmt
 
     output:
-    tuple val(meta), path("*.bam"),                   emit: bam,                 optional: true
-    tuple val(meta), path("*.bai"),                   emit: bai,                 optional: true
-    tuple val(meta), path("*.cram"),                  emit: cram,                optional: true
-    tuple val(meta), path("*.crai"),                  emit: crai,                optional: true
-    tuple val(meta), path("*.table"),                 emit: bqsr_table,          optional: true
-    tuple val(meta), path("*_qc_metrics"),            emit: qc_metrics,          optional: true
-    tuple val(meta), path("*.duplicate-metrics.txt"), emit: duplicate_metrics,   optional: true
-    path "compatible_versions.yml",                   emit: compatible_versions, optional: true
+    tuple val(meta), path("*.bam"), emit: bam, optional: true
+    tuple val(meta), path("*.bai"), emit: bai, optional: true
+    tuple val(meta), path("*.cram"), emit: cram, optional: true
+    tuple val(meta), path("*.crai"), emit: crai, optional: true
+    tuple val(meta), path("*.table"), emit: bqsr_table, optional: true
+    tuple val(meta), path("*_qc_metrics"), emit: qc_metrics, optional: true
+    tuple val(meta), path("*.duplicate-metrics.txt"), emit: duplicate_metrics, optional: true
+    path "compatible_versions.yml", emit: compatible_versions, optional: true
     tuple val("${task.process}"), val('parabricks'), eval("pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'"), topic: versions, emit: versions_parabricks
 
     when:
@@ -33,7 +36,7 @@ process PARABRICKS_MINIMAP2 {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error("Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
-    def args   = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     // Determine input format and set appropriate command flag
@@ -49,9 +52,9 @@ process PARABRICKS_MINIMAP2 {
     }
     def extension = "${output_fmt}"
 
-    def known_sites_command    = known_sites ? (known_sites instanceof List ? known_sites.collect { knownSite -> "--knownSites ${knownSite}" }.join(' ') : "--knownSites ${known_sites}") : ""
+    def known_sites_command = known_sites ? (known_sites instanceof List ? known_sites.collect { knownSite -> "--knownSites ${knownSite}" }.join(' ') : "--knownSites ${known_sites}") : ""
     def known_sites_output_cmd = known_sites ? "--out-recal-file ${prefix}.table" : ""
-    def intervals_command  = intervals     ? (intervals instanceof List ? intervals.collect { interval -> "--interval-file ${interval}" }.join(' ') : "--interval-file ${intervals}") : ""
+    def intervals_command = intervals ? (intervals instanceof List ? intervals.collect { interval -> "--interval-file ${interval}" }.join(' ') : "--interval-file ${intervals}") : ""
 
     def num_gpus = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
     """
@@ -74,10 +77,10 @@ process PARABRICKS_MINIMAP2 {
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def extension       = "${output_fmt}"
+    def extension = "${output_fmt}"
     def extension_index = "${output_fmt}" == "cram" ? "crai" : "bai"
-    def known_sites_output       = known_sites ? "touch ${prefix}.table" : ""
-    def qc_metrics_output        = args.contains("--out-qc-metrics-dir") ? "mkdir ${prefix}_qc_metrics" : ""
+    def known_sites_output = known_sites ? "touch ${prefix}.table" : ""
+    def qc_metrics_output = args.contains("--out-qc-metrics-dir") ? "mkdir ${prefix}_qc_metrics" : ""
     def duplicate_metrics_output = args.contains("--out-duplicate-metrics") ? "touch ${prefix}.duplicate-metrics.txt" : ""
     """
     touch ${prefix}.${extension}

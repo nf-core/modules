@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SALTSHAKER_CALL {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5a902cc9f161d602fde9c268a509be2f593cfac7ed4cdc2219f630e02e43b2ec/data':
-        'community.wave.seqera.io/library/pip_saltshaker:be40ca61bbf77cf2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5a902cc9f161d602fde9c268a509be2f593cfac7ed4cdc2219f630e02e43b2ec/data'
+        : 'community.wave.seqera.io/library/pip_saltshaker:be40ca61bbf77cf2'}"
 
     input:
     tuple val(meta), path(breakpoint), path(cluster)
@@ -32,19 +35,19 @@ process SALTSHAKER_CALL {
 
     """
     saltshaker call \\
-        --prefix $prefix \\
+        --prefix ${prefix} \\
         --output-dir . \\
-        --reference $mtfasta \\
-        --cluster $cluster \\
-        --breakpoint $breakpoint \\
-        --flank-size $flank \\
-        --het-limit $heteroplasmy_limit \\
-        --genome-length $mito_length \\
-        --ori-h-start $heavy_strand_origin_start \\
-        --ori-h-end $heavy_strand_origin_end \\
-        --ori-l-start $light_strand_origin_start \\
-        --ori-l-end $light_strand_origin_end \\
-        $args
+        --reference ${mtfasta} \\
+        --cluster ${cluster} \\
+        --breakpoint ${breakpoint} \\
+        --flank-size ${flank} \\
+        --het-limit ${heteroplasmy_limit} \\
+        --genome-length ${mito_length} \\
+        --ori-h-start ${heavy_strand_origin_start} \\
+        --ori-h-end ${heavy_strand_origin_end} \\
+        --ori-l-start ${light_strand_origin_start} \\
+        --ori-l-end ${light_strand_origin_end} \\
+        ${args}
     """
 
     stub:
@@ -52,7 +55,7 @@ process SALTSHAKER_CALL {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    echo $args
+    echo ${args}
 
     touch ${prefix}.saltshaker_call_metadata.tsv
     """

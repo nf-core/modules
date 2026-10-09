@@ -1,14 +1,17 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MAXQUANT_LFQ {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_long'
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/maxquant:2.0.3.0--py310hdfd78af_1' :
-        'quay.io/biocontainers/maxquant:2.0.3.0--py310hdfd78af_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/maxquant:2.0.3.0--py310hdfd78af_1'
+        : 'quay.io/biocontainers/maxquant:2.0.3.0--py310hdfd78af_1'}"
 
     input:
     tuple val(meta), path(fasta), path(paramfile)
-    path(raw)
+    path raw
 
     output:
     tuple val(meta), path("${prefix}/*.txt"), emit: maxquant_txt
@@ -18,10 +21,10 @@ process MAXQUANT_LFQ {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args   ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
-    sed \"s_<numThreads>.*_<numThreads>$task.cpus</numThreads>_\" ${paramfile} > mqpar_changed.xml
+    sed \"s_<numThreads>.*_<numThreads>${task.cpus}</numThreads>_\" ${paramfile} > mqpar_changed.xml
     sed -i \"s|PLACEHOLDER|\$PWD/|g\" mqpar_changed.xml
 
     mkdir ${prefix}
@@ -32,7 +35,7 @@ process MAXQUANT_LFQ {
     """
 
     stub:
-    prefix   = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir ${prefix}
     touch '${prefix}/Oxidation (M)Sites.txt'

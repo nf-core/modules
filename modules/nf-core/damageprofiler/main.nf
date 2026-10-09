@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DAMAGEPROFILER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/damageprofiler:1.1--hdfd78af_2' :
-        'quay.io/biocontainers/damageprofiler:1.1--hdfd78af_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/damageprofiler:1.1--hdfd78af_2'
+        : 'quay.io/biocontainers/damageprofiler:1.1--hdfd78af_2'}"
 
     input:
     tuple val(meta), path(bam)
@@ -21,43 +24,43 @@ process DAMAGEPROFILER {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args   ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}"
-    def reference    = fasta       ? "-r $fasta"        : ""
-    def species_list = specieslist ? "-sf $specieslist" : ""
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def reference = fasta ? "-r ${fasta}" : ""
+    def species_list = specieslist ? "-sf ${specieslist}" : ""
     """
     damageprofiler \\
-        -i $bam \\
-        -o $prefix/ \\
-        $args \\
-        $reference \\
-        $species_list
+        -i ${bam} \\
+        -o ${prefix}/ \\
+        ${args} \\
+        ${reference} \\
+        ${species_list}
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    mkdir -p $prefix
+    mkdir -p ${prefix}
 
-    touch $prefix/3pGtoA_freq.txt
-    touch $prefix/3p_freq_misincorporations.txt
-    touch $prefix/5pCtoT_freq.txt
-    touch $prefix/5p_freq_misincorporations.txt
-    touch $prefix/DNA_comp_genome.txt
-    touch $prefix/DNA_composition_sample.txt
-    touch $prefix/DamagePlot.pdf
-    touch $prefix/DamagePlot_five_prime.svg
-    touch $prefix/DamagePlot_three_prime.svg
-    touch $prefix/DamageProfiler.log
-    touch $prefix/Length_plot.pdf
-    touch $prefix/Length_plot_combined_data.svg
-    touch $prefix/Length_plot_forward_reverse_separated.svg
-    touch $prefix/dmgprof.json
-    touch $prefix/editDistance.txt
-    touch $prefix/edit_distance.pdf
-    touch $prefix/edit_distance.svg
-    touch $prefix/lgdistribution.txt
-    touch $prefix/misincorporation.txt
+    touch ${prefix}/3pGtoA_freq.txt
+    touch ${prefix}/3p_freq_misincorporations.txt
+    touch ${prefix}/5pCtoT_freq.txt
+    touch ${prefix}/5p_freq_misincorporations.txt
+    touch ${prefix}/DNA_comp_genome.txt
+    touch ${prefix}/DNA_composition_sample.txt
+    touch ${prefix}/DamagePlot.pdf
+    touch ${prefix}/DamagePlot_five_prime.svg
+    touch ${prefix}/DamagePlot_three_prime.svg
+    touch ${prefix}/DamageProfiler.log
+    touch ${prefix}/Length_plot.pdf
+    touch ${prefix}/Length_plot_combined_data.svg
+    touch ${prefix}/Length_plot_forward_reverse_separated.svg
+    touch ${prefix}/dmgprof.json
+    touch ${prefix}/editDistance.txt
+    touch ${prefix}/edit_distance.pdf
+    touch ${prefix}/edit_distance.svg
+    touch ${prefix}/lgdistribution.txt
+    touch ${prefix}/misincorporation.txt
     """
 }

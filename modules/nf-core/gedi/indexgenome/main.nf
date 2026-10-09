@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GEDI_INDEXGENOME {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ba/bae29fa913dea79a3dcdbfbf544f0391f82bbfdbf3e6430f71db45ba21d6cf79/data' :
-        'community.wave.seqera.io/library/gedi_indexgenome:cfca16738f306c86' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ba/bae29fa913dea79a3dcdbfbf544f0391f82bbfdbf3e6430f71db45ba21d6cf79/data'
+        : 'community.wave.seqera.io/library/gedi_indexgenome:cfca16738f306c86'}"
 
     input:
     tuple val(meta), path(fasta), path(gtf)
@@ -20,7 +23,7 @@ process GEDI_INDEXGENOME {
     script:
     def args = task.ext.args ?: ''
     def name = meta.id ?: 'reference'
-    prefix   = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}
 
@@ -40,7 +43,7 @@ process GEDI_INDEXGENOME {
 
     stub:
     def name = meta.id ?: 'reference'
-    prefix   = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}
     touch ${prefix}/${name}.oml

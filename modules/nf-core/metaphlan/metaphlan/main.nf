@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process METAPHLAN_METAPHLAN {
     tag "${meta.id}"
     label 'process_medium'
@@ -50,10 +53,13 @@ process METAPHLAN_METAPHLAN {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     def samfile_cmd = save_samfile ? "touch ${prefix}.sam" : ''
-    def input_type = "${input}" =~ /.*\.(fastq|fq)/ ? "fastq" :
-        "${input}" =~ /.*\.(fasta|fna|fa)/? "fasta" :
-        "${input}".endsWith(".bowtie2out.txt") ? "bowtie2out" :
-        "sam"
+    def input_type = "${input}" =~ /.*\.(fastq|fq)/
+        ? "fastq"
+        : "${input}" =~ /.*\.(fasta|fna|fa)/
+            ? "fasta"
+            : "${input}".endsWith(".bowtie2out.txt")
+                ? "bowtie2out"
+                : "sam"
     def bowtie2_cmd = "${input_type}" == "bowtie2out" || "${input_type}" == "sam" ? '' : "touch ${prefix}.bowtie2out.txt"
 
     """

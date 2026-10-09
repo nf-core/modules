@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MULTIVCFANALYZER {
-    tag "$fasta"
+    tag "${fasta}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/79/7946097c8ad51df09c52ebf0b91d4f2c42ab74fd37ac3c00fd6acab0e3602136/data' :
-        'community.wave.seqera.io/library/htslib_multivcfanalyzer:a64c201b4804e6cd' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/79/7946097c8ad51df09c52ebf0b91d4f2c42ab74fd37ac3c00fd6acab0e3602136/data'
+        : 'community.wave.seqera.io/library/htslib_multivcfanalyzer:a64c201b4804e6cd'}"
 
     input:
     tuple val(meta), path(vcfs)
@@ -19,33 +22,32 @@ process MULTIVCFANALYZER {
     val heterozygous_freq
     tuple val(meta5), path(gff_exclude)
 
-
     output:
-    tuple val(meta), path('*fullAlignment.fasta.gz')                                           , emit: full_alignment
-    tuple val(meta), path('*info.txt')                                                         , emit: info_txt
-    tuple val(meta), path('*snpAlignment.fasta.gz')                                            , emit: snp_alignment
-    tuple val(meta), path('*snpAlignmentIncludingRefGenome.fasta.gz')                          , emit: snp_genome_alignment
-    tuple val(meta), path('*snpStatistics.tsv')                                                , emit: snpstatistics
-    tuple val(meta), path('*snpTable.tsv')                                                     , emit: snptable
-    tuple val(meta), path('*snpTableForSnpEff.tsv')                                            , emit: snptable_snpeff
-    tuple val(meta), path('*snpTableWithUncertaintyCalls.tsv')                                 , emit: snptable_uncertainty
-    tuple val(meta), path('*structureGenotypes.tsv')                                           , emit: structure_genotypes
-    tuple val(meta), path('*structureGenotypes_noMissingData-Columns.tsv')                     , emit: structure_genotypes_nomissing
-    tuple val(meta), path('*MultiVCFAnalyzer.json')                                            , emit: json
-    tuple val("${task.process}"), val('multivcfanalyzer'), eval('multivcfanalyzer -h | head -n 1 | cut -f 3 -d " "') , emit: versions_multivcfanalyzer, topic: versions
-    tuple val("${task.process}"), val('tabix'),            eval('tabix -h 2>&1 | grep Version | cut -f 2 -d " "')    , emit: versions_tabix           , topic: versions
+    tuple val(meta), path('*fullAlignment.fasta.gz'), emit: full_alignment
+    tuple val(meta), path('*info.txt'), emit: info_txt
+    tuple val(meta), path('*snpAlignment.fasta.gz'), emit: snp_alignment
+    tuple val(meta), path('*snpAlignmentIncludingRefGenome.fasta.gz'), emit: snp_genome_alignment
+    tuple val(meta), path('*snpStatistics.tsv'), emit: snpstatistics
+    tuple val(meta), path('*snpTable.tsv'), emit: snptable
+    tuple val(meta), path('*snpTableForSnpEff.tsv'), emit: snptable_snpeff
+    tuple val(meta), path('*snpTableWithUncertaintyCalls.tsv'), emit: snptable_uncertainty
+    tuple val(meta), path('*structureGenotypes.tsv'), emit: structure_genotypes
+    tuple val(meta), path('*structureGenotypes_noMissingData-Columns.tsv'), emit: structure_genotypes_nomissing
+    tuple val(meta), path('*MultiVCFAnalyzer.json'), emit: json
+    tuple val("${task.process}"), val('multivcfanalyzer'), eval('multivcfanalyzer -h | head -n 1 | cut -f 3 -d " "'), emit: versions_multivcfanalyzer, topic: versions
+    tuple val("${task.process}"), val('tabix'), eval('tabix -h 2>&1 | grep Version | cut -f 2 -d " "'), emit: versions_tabix, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     // def args = task.ext.args ?: '' // MultiVCFAnalyzer has strict and input ordering and all are mandatory. Deactivating $args to prevent breakage of input
-    def args2              = task.ext.args2  ?: ''
-    def prefix             = task.ext.prefix ?: "${meta2.id}"
+    def args2 = task.ext.args2 ?: ''
+    def prefix = task.ext.prefix ?: "${meta2.id}"
     def cmd_snpeff_results = snpeff_results ? "${snpeff_results}" : "NA"
-    def cmd_gff            = gff ? "${gff}" : "NA"
-    def cmd_allele_freqs   = allele_freqs ? "T" : "F"
-    def cmd_gff_exclude    = gff_exclude ? "${gff}" : "NA"
+    def cmd_gff = gff ? "${gff}" : "NA"
+    def cmd_allele_freqs = allele_freqs ? "T" : "F"
+    def cmd_gff_exclude = gff_exclude ? "${gff}" : "NA"
 
     """
     multivcfanalyzer \\
@@ -69,6 +71,7 @@ process MULTIVCFANALYZER {
         mv \${fn} ${prefix}_\${fn}
     done
     """
+
     stub:
     def prefix = task.ext.prefix ?: "${meta2.id}"
     """

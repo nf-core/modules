@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PLASTID_PSITE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label "process_single"
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/plastid:0.6.1--py39had3e4b6_2':
-        'quay.io/biocontainers/plastid:0.6.1--py39had3e4b6_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/plastid:0.6.1--py39had3e4b6_2'
+        : 'quay.io/biocontainers/plastid:0.6.1--py39had3e4b6_2'}"
 
     input:
     tuple val(meta), path(bam), path(bam_index)
@@ -14,8 +17,8 @@ process PLASTID_PSITE {
 
     output:
     tuple val(meta), path("*_metagene_profiles.txt"), emit: metagene_profiles
-    tuple val(meta), path("*_p_offsets.png")        , emit: p_offsets_png
-    tuple val(meta), path("*_p_offsets.txt")        , emit: p_offsets
+    tuple val(meta), path("*_p_offsets.png"), emit: p_offsets_png
+    tuple val(meta), path("*_p_offsets.txt"), emit: p_offsets
     tuple val("${task.process}"), val('plastid'), val('0.6.1'), emit: versions_plastid, topic: versions
 
     when:
@@ -26,10 +29,10 @@ process PLASTID_PSITE {
     def args = task.ext.args ?: ""
     """
     psite \
-        "$rois_txt" \\
-        "$prefix" \\
-        --count_files "$bam" \\
-        $args
+        "${rois_txt}" \\
+        "${prefix}" \\
+        --count_files "${bam}" \\
+        ${args}
     """
 
     stub:

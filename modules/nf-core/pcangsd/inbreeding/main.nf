@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PCANGSD_INBREEDING {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pcangsd:1.36.4--py313h5d164f8_1':
-        'quay.io/biocontainers/pcangsd:1.36.4--py313h5d164f8_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/pcangsd:1.36.4--py313h5d164f8_1'
+        : 'quay.io/biocontainers/pcangsd:1.36.4--py313h5d164f8_1'}"
 
     input:
     tuple val(meta), path(beagle_file)
@@ -27,14 +30,14 @@ process PCANGSD_INBREEDING {
         --beagle ${beagle_file} \\
         --inbreed-samples \\
         --out ${prefix} \\
-        $args
+        ${args}
     """
 
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo $args
+    echo ${args}
 
     touch ${prefix}.inbreed.samples
     """

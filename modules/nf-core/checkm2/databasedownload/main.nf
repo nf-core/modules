@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 def downloadZenodoApiEntry(zenodo_id) {
     // Download metadata from Zenodo API, setting "Accept: application/json" header
-    def api_url  = "https://zenodo.org/api/records/${zenodo_id}"
-    def conn     = new URL(api_url).openConnection()
+    def api_url = "https://zenodo.org/api/records/${zenodo_id}"
+    def conn = new URL(api_url).openConnection()
     conn.setRequestProperty('Accept', 'application/json')
     conn.setRequestProperty('User-Agent', "Nextflow ${nextflow.version ?: ''}".trim())
 
     def api_text = conn.getInputStream().getText('UTF-8')
-    def parser   = new groovy.json.JsonSlurper()
+    def parser = new groovy.json.JsonSlurper()
 
     return parser.parseText(api_text)
 }
@@ -15,12 +18,12 @@ process CHECKM2_DATABASEDOWNLOAD {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/95/95c0d3d867f5bc805b926b08ee761a993b24062739743eb82cc56363e0f7817d/data':
-        'community.wave.seqera.io/library/aria2:1.37.0--3a9ec328469995dd' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/95/95c0d3d867f5bc805b926b08ee761a993b24062739743eb82cc56363e0f7817d/data'
+        : 'community.wave.seqera.io/library/aria2:1.37.0--3a9ec328469995dd'}"
 
     input:
-    val(db_zenodo_id)
+    val db_zenodo_id
 
     output:
     tuple val(meta), path("checkm2_db_v${db_version}.dmnd"), emit: database
@@ -32,14 +35,15 @@ process CHECKM2_DATABASEDOWNLOAD {
     script:
     def args = task.ext.args ?: ''
     // Append user-agent if not already present
-    if( !args.contains('--user-agent') ) {
+    if (!args.contains('--user-agent')) {
         args = args ? "${args} --user-agent=\"Wget/1.21.4\"" : '--user-agent="Wget/1.21.4"'
     }
-    zenodo_id  = db_zenodo_id ?: 14897628  // Default to version 3 if no ID provided
-    api_data   = downloadZenodoApiEntry(zenodo_id)
+    zenodo_id = db_zenodo_id ?: 14897628
+    // Default to version 3 if no ID provided
+    api_data = downloadZenodoApiEntry(zenodo_id)
     db_version = api_data.metadata.version
-    checksum   = api_data.files[0].checksum.replaceFirst(/^md5:/, "md5=")
-    meta       = [id: 'checkm2_db', version: db_version]
+    checksum = api_data.files[0].checksum.replaceFirst(/^md5:/, "md5=")
+    meta = [id: 'checkm2_db', version: db_version]
     """
     # Automatic download is broken when using singularity/apptainer (https://github.com/chklovski/CheckM2/issues/73)
     # So it's necessary to download the database manually
@@ -58,7 +62,7 @@ process CHECKM2_DATABASEDOWNLOAD {
 
     stub:
     db_version = 0
-    meta       = [id: 'checkm2_db', version: db_version]
+    meta = [id: 'checkm2_db', version: db_version]
     """
     touch checkm2_db_v${db_version}.dmnd
     """

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SRATOOLS_FASTERQDUMP {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/37/37aacd127aa32161d8b38a83efb18df01a8ab1d769a93e88f80342d27801b548/data' :
-        'community.wave.seqera.io/library/sra-tools_pigz:4a694d823f6f7fcf' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/37/37aacd127aa32161d8b38a83efb18df01a8ab1d769a93e88f80342d27801b548/data'
+        : 'community.wave.seqera.io/library/sra-tools_pigz:4a694d823f6f7fcf'}"
 
     input:
     tuple val(meta), path(sra)
@@ -25,31 +28,32 @@ process SRATOOLS_FASTERQDUMP {
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def outfile = "${prefix}.fastq"
-    def exclude_third = meta.single_end ? '' : "mv $outfile $prefix || echo 'No third file'"
+    def exclude_third = meta.single_end ? '' : "mv ${outfile} ${prefix} || echo 'No third file'"
     // Excludes the "${prefix}.fastq" file from output `reads` channel for paired end cases and
     // avoids the '.' in the path bug: https://github.com/ncbi/sra-tools/issues/865
     def key_file = ''
     if (certificate.toString().endsWith('.jwt')) {
         key_file += " --perm ${certificate}"
-    } else if (certificate.toString().endsWith('.ngc')) {
+    }
+    else if (certificate.toString().endsWith('.ngc')) {
         key_file += " --ngc ${certificate}"
     }
     """
     export NCBI_SETTINGS="\$PWD/${ncbi_settings}"
 
     fasterq-dump \\
-        $args \\
-        --threads $task.cpus \\
-        --outfile $outfile \\
+        ${args} \\
+        --threads ${task.cpus} \\
+        --outfile ${outfile} \\
         ${key_file} \\
         ${sra}
 
-    $exclude_third
+    ${exclude_third}
 
     pigz \\
-        $args2 \\
+        ${args2} \\
         --no-name \\
-        --processes $task.cpus \\
+        --processes ${task.cpus} \\
         *.fastq
     """
 
@@ -58,35 +62,36 @@ process SRATOOLS_FASTERQDUMP {
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def outfile = "${prefix}.fastq"
-    def exclude_third = meta.single_end ? '' : "mv $outfile $prefix || echo 'No third file'"
+    def exclude_third = meta.single_end ? '' : "mv ${outfile} ${prefix} || echo 'No third file'"
     // Excludes the "${prefix}.fastq" file from output `reads` channel for paired end cases and
     // avoids the '.' in the path bug: https://github.com/ncbi/sra-tools/issues/865
     def key_file = ''
     if (certificate.toString().endsWith('.jwt')) {
         key_file += " --perm ${certificate}"
-    } else if (certificate.toString().endsWith('.ngc')) {
+    }
+    else if (certificate.toString().endsWith('.ngc')) {
         key_file += " --ngc ${certificate}"
     }
     def touch_outfiles = meta.single_end ? "${prefix}.fastq" : "${prefix}_1.fastq ${prefix}_2.fastq"
     """
-    touch $touch_outfiles
+    touch ${touch_outfiles}
 
     export NCBI_SETTINGS="\$PWD/${ncbi_settings}"
 
     echo \\
     "fasterq-dump \\
-        $args \\
-        --threads $task.cpus \\
-        --outfile $outfile \\
+        ${args} \\
+        --threads ${task.cpus} \\
+        --outfile ${outfile} \\
         ${key_file} \\
         ${sra}"
 
-    $exclude_third
+    ${exclude_third}
 
     pigz \\
-        $args2 \\
+        ${args2} \\
         --no-name \\
-        --processes $task.cpus \\
+        --processes ${task.cpus} \\
         *.fastq
     """
 }

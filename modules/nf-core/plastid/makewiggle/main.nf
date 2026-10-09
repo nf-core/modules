@@ -1,16 +1,19 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PLASTID_MAKEWIGGLE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label "process_single"
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/plastid:0.6.1--py39had3e4b6_2':
-        'quay.io/biocontainers/plastid:0.6.1--py39had3e4b6_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/plastid:0.6.1--py39had3e4b6_2'
+        : 'quay.io/biocontainers/plastid:0.6.1--py39had3e4b6_2'}"
 
     input:
     tuple val(meta), path(bam), path(bam_index), path(p_offsets)
-    val(mapping_rule)
+    val mapping_rule
 
     output:
     tuple val(meta), path("*.{wig,bedgraph}"), emit: tracks
@@ -21,21 +24,21 @@ process PLASTID_MAKEWIGGLE {
 
     script:
     if (mapping_rule == 'fiveprime_variable' && !p_offsets) {
-        error "p_offsets file is required when using mapping_rule 'fiveprime_variable'"
+        error("p_offsets file is required when using mapping_rule 'fiveprime_variable'")
     }
     def prefix = task.ext.prefix ?: "${meta.id}"
     def args = task.ext.args ?: ""
-    def offset_arg = mapping_rule == 'fiveprime_variable' ? "--offset $p_offsets" : ""
+    def offset_arg = mapping_rule == 'fiveprime_variable' ? "--offset ${p_offsets}" : ""
     def extension = args.contains('--output_format bedgraph') ? "bedgraph" : "wig"
     """
     make_wiggle \\
-        --count_files "$bam" \\
-        $offset_arg \\
+        --count_files "${bam}" \\
+        ${offset_arg} \\
         --${mapping_rule} \\
-        -o "$prefix" \\
-        $args
+        -o "${prefix}" \\
+        ${args}
 
-    if [ "$extension" = "bedgraph" ]; then
+    if [ "${extension}" = "bedgraph" ]; then
         for FILE in *.wig; do
             mv "\$FILE" "\${FILE%.wig}.bedgraph"
         done
@@ -44,7 +47,7 @@ process PLASTID_MAKEWIGGLE {
 
     stub:
     if (mapping_rule == 'fiveprime_variable' && !p_offsets) {
-        error "p_offsets file is required when using mapping_rule 'fiveprime_variable'"
+        error("p_offsets file is required when using mapping_rule 'fiveprime_variable'")
     }
     def prefix = task.ext.prefix ?: "${meta.id}"
     def args = task.ext.args ?: ""

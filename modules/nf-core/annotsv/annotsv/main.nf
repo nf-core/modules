@@ -1,14 +1,17 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ANNOTSV_ANNOTSV {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2a/2aa8892f5160501bd74eb44461ca6743dcf7132dd3b8bc769d09806585754b38/data' :
-        'community.wave.seqera.io/library/annotsv:3.5.10--67b698fbe288f0ac' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2a/2aa8892f5160501bd74eb44461ca6743dcf7132dd3b8bc769d09806585754b38/data'
+        : 'community.wave.seqera.io/library/annotsv:3.5.10--67b698fbe288f0ac'}"
 
     // Container options are needed to allow AnnotSV to overwrite a file in a dependency directory in Singularity
-    containerOptions "${ workflow.containerEngine in ['singularity', 'apptainer'] ? '--writable-tmpfs' : ''}"
+    containerOptions "${workflow.containerEngine in ['singularity', 'apptainer'] ? '--writable-tmpfs' : ''}"
 
     input:
     tuple val(meta), path(sv_vcf), path(sv_vcf_index), path(candidate_small_variants)
@@ -18,9 +21,9 @@ process ANNOTSV_ANNOTSV {
     tuple val(meta5), path(gene_transcripts)
 
     output:
-    tuple val(meta), path("${prefix}.tsv")            , emit: tsv
+    tuple val(meta), path("${prefix}.tsv"), emit: tsv
     tuple val(meta), path("${prefix}.unannotated.tsv"), emit: unannotated_tsv, optional: true
-    tuple val(meta), path("*.vcf")            , emit: vcf            , optional: true
+    tuple val(meta), path("*.vcf"), emit: vcf, optional: true
     tuple val("${task.process}"), val('annotsv'), eval("AnnotSV --version | sed 's/AnnotSV //'"), emit: versions_annotsv, topic: versions
 
     when:
@@ -30,10 +33,10 @@ process ANNOTSV_ANNOTSV {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
 
-    def cand_genes     = candidate_genes          ? "-candidateGenesFile ${candidate_genes}"              : ""
+    def cand_genes = candidate_genes ? "-candidateGenesFile ${candidate_genes}" : ""
     def small_variants = candidate_small_variants ? "-candidateSnvIndelFiles ${candidate_small_variants}" : ""
-    def fp_snv         = false_positive_snv       ? "-snvIndelFiles ${false_positive_snv}"                : ""
-    def transcripts    = gene_transcripts         ? "-txFile ${gene_transcripts}"                         : ""
+    def fp_snv = false_positive_snv ? "-snvIndelFiles ${false_positive_snv}" : ""
+    def transcripts = gene_transcripts ? "-txFile ${gene_transcripts}" : ""
 
     """
     AnnotSV \\
@@ -50,7 +53,7 @@ process ANNOTSV_ANNOTSV {
     """
 
     stub:
-    def args   = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
 
     def create_vcf = args.contains("-vcf 1") ? "touch ${prefix}.vcf" : ""

@@ -1,13 +1,16 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SPACERANGER_COUNT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     container "quay.io/nf-core/spaceranger:9c5e7dc93c32448e"
 
     input:
     tuple val(meta), path(reads), path(image), val(slide), val(area), path(cytaimage), path(darkimage), path(colorizedimage), path(alignment), path(slidefile)
-    path(reference)
-    path(probeset)
+    path reference
+    path probeset
 
     output:
     tuple val(meta), path("outs/**"), emit: outs
@@ -19,7 +22,7 @@ process SPACERANGER_COUNT {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "SPACERANGER_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("SPACERANGER_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
@@ -33,7 +36,8 @@ process SPACERANGER_COUNT {
     def colorizedimage_opt = colorizedimage ? "--colorizedimage=\"${colorizedimage}\"" : ""
     if (slide.matches("visium-(.*)") && area == "" && slidefile_opt == "") {
         slide_and_area = "--unknown-slide=\"${slide}\""
-    } else {
+    }
+    else {
         slide_and_area = "--slide=\"${slide}\" --area=\"${area}\""
     }
     """
@@ -44,22 +48,22 @@ process SPACERANGER_COUNT {
         --transcriptome="${reference}" \\
         --localcores=${task.cpus} \\
         --localmem=${task.memory.toGiga()} \\
-        $image_opt \\
-        $cytaimage_opt \\
-        $darkimage_opt \\
-        $colorizedimage_opt \\
-        $slide_and_area \\
-        $probeset_opt \\
-        $alignment_opt \\
-        $slidefile_opt \\
-        $args
+        ${image_opt} \\
+        ${cytaimage_opt} \\
+        ${darkimage_opt} \\
+        ${colorizedimage_opt} \\
+        ${slide_and_area} \\
+        ${probeset_opt} \\
+        ${alignment_opt} \\
+        ${slidefile_opt} \\
+        ${args}
     mv ${prefix}/outs outs
     """
 
     stub:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "SPACERANGER_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("SPACERANGER_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     """
     mkdir -p outs/

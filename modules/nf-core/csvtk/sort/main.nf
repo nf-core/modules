@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CSVTK_SORT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/91/917edb71b915f07fa2838c20e3c731181d3d315cbf8a9bfead41412d2b4ae062/data' :
-        'community.wave.seqera.io/library/csvtk:0.37.0--113625988dd3285d' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/91/917edb71b915f07fa2838c20e3c731181d3d315cbf8a9bfead41412d2b4ae062/data'
+        : 'community.wave.seqera.io/library/csvtk:0.37.0--113625988dd3285d'}"
 
     input:
     tuple val(meta), path(csv, stageAs: 'input/*')
@@ -20,20 +23,20 @@ process CSVTK_SORT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args   ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
     def delimiter = in_format == "tsv" ? "\t" : (in_format == "csv" ? "," : in_format)
     def out_delimiter = out_format == "tsv" ? "\t" : (out_format == "csv" ? "," : out_format)
     out_extension = out_format == "tsv" ? 'tsv' : 'csv'
     """
     csvtk \\
         sort \\
-        $args \\
-        --num-cpus $task.cpus \\
+        ${args} \\
+        --num-cpus ${task.cpus} \\
         --delimiter "${delimiter}" \\
         --out-delimiter "${out_delimiter}" \\
         --out-file ${prefix}.${out_extension} \\
-        $csv
+        ${csv}
     """
 
     stub:

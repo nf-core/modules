@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SALTSHAKER_PLOT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5a902cc9f161d602fde9c268a509be2f593cfac7ed4cdc2219f630e02e43b2ec/data':
-        'community.wave.seqera.io/library/pip_saltshaker:be40ca61bbf77cf2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5a902cc9f161d602fde9c268a509be2f593cfac7ed4cdc2219f630e02e43b2ec/data'
+        : 'community.wave.seqera.io/library/pip_saltshaker:be40ca61bbf77cf2'}"
 
     input:
     tuple val(meta), path(classify)
@@ -24,9 +27,9 @@ process SALTSHAKER_PLOT {
 
     """
     saltshaker plot \\
-        --prefix $prefix \\
+        --prefix ${prefix} \\
         --input-dir . \\
-        $args
+        ${args}
 
     """
 
@@ -35,7 +38,7 @@ process SALTSHAKER_PLOT {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    echo $args
+    echo ${args}
 
     touch ${prefix}.saltshaker.png
     """

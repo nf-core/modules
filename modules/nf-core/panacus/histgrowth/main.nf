@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PANACUS_HISTGROWTH {
     tag "${meta.id}"
     label 'process_single'
@@ -15,7 +18,7 @@ process PANACUS_HISTGROWTH {
 
     output:
     tuple val(meta), path("*.{tsv,html}"), emit: tsv
-    tuple val("${task.process}"), val('panacus'), eval("panacus --version | sed 's/panacus //'") , emit: versions_panacus, topic: versions
+    tuple val("${task.process}"), val('panacus'), eval("panacus --version | sed 's/panacus //'"), emit: versions_panacus, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

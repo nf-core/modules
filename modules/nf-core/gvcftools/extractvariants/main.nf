@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GVCFTOOLS_EXTRACTVARIANTS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gvcftools:0.17.0--he941832_3':
-        'quay.io/biocontainers/gvcftools:0.17.0--he941832_3' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/gvcftools:0.17.0--he941832_3'
+        : 'quay.io/biocontainers/gvcftools:0.17.0--he941832_3'}"
 
     input:
     tuple val(meta), path(gvcf)
@@ -20,13 +23,13 @@ process GVCFTOOLS_EXTRACTVARIANTS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def open_gvcf = gvcf.extension == "gz" ? "gzip -dc $gvcf" : "cat $gvcf"
+    def open_gvcf = gvcf.extension == "gz" ? "gzip -dc ${gvcf}" : "cat ${gvcf}"
 
     """
-    $open_gvcf |
+    ${open_gvcf} |
     extract_variants \\
-        $args \\
-        $gvcf |
+        ${args} \\
+        ${gvcf} |
     gzip -c > ${prefix}.vcf.gz
     """
 

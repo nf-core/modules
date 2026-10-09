@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FIND_CONCATENATE {
     tag "${meta.id}"
     label 'process_low'
@@ -36,7 +39,7 @@ process FIND_CONCATENATE {
     // Use input file ending as default for output file
     prefix = task.ext.prefix ?: "${meta.id}${file_extensions[0]}"
 
-    if (files_in.any{ file -> file.toString().endsWith('.gz')} && !files_in.every{ file -> file.toString().endsWith('.gz') }) {
+    if (files_in.any { file -> file.toString().endsWith('.gz') } && !files_in.every { file -> file.toString().endsWith('.gz') }) {
         error("All files provided to this module must either be gzipped (and have the .gz extension) or unzipped (and not have the .gz extension). A mix of both is not allowed.")
     }
 
@@ -60,7 +63,7 @@ process FIND_CONCATENATE {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
 
-    if (files_in.any{ file -> file.toString().endsWith('.gz')} && !files_in.every{ file -> file.toString().endsWith('.gz') }) {
+    if (files_in.any { file -> file.toString().endsWith('.gz') } && !files_in.every { file -> file.toString().endsWith('.gz') }) {
         error("All files provided to this module must either be gzipped (and have the .gz extension) or unzipped (and not have the .gz extension). A mix of both is not allowed.")
     }
 

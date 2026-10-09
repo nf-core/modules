@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { CONCOCT_CUTUPFASTA           } from '../../../modules/nf-core/concoct/cutupfasta/main.nf'
 include { CONCOCT_CONCOCTCOVERAGETABLE } from '../../../modules/nf-core/concoct/concoctcoveragetable/main.nf'
 include { CONCOCT_CONCOCT              } from '../../../modules/nf-core/concoct/concoct/main.nf'
@@ -5,43 +8,36 @@ include { CONCOCT_MERGECUTUPCLUSTERING } from '../../../modules/nf-core/concoct/
 include { CONCOCT_EXTRACTFASTABINS     } from '../../../modules/nf-core/concoct/extractfastabins/main.nf'
 
 workflow FASTA_BINNING_CONCOCT {
-
     take:
     ch_fasta // channel (mandatory): [ val(meta), [ fasta ] ] (raw contigs from assembly)
-    ch_bam   // channel (mandatory): [ val(meta), [ bam ], [bai]] (bam files of original FASTQ Files mapped back to each contig. meta must correspond to ch_fasta)
+    ch_bam // channel (mandatory): [ val(meta), [ bam ], [bai]] (bam files of original FASTQ Files mapped back to each contig. meta must correspond to ch_fasta)
 
     main:
     // required to create bedfile due to coverage table
     produce_bedfile = true
 
-    CONCOCT_CUTUPFASTA ( ch_fasta, produce_bedfile )
+    CONCOCT_CUTUPFASTA(ch_fasta, produce_bedfile)
 
-    ch_cutupfasta_for_concoctcoveragetable = CONCOCT_CUTUPFASTA.out.bed
-                                                .join( ch_bam, failOnMismatch: true )
+    ch_cutupfasta_for_concoctcoveragetable = CONCOCT_CUTUPFASTA.out.bed.join(ch_bam, failOnMismatch: true)
 
-    CONCOCT_CONCOCTCOVERAGETABLE ( ch_cutupfasta_for_concoctcoveragetable )
+    CONCOCT_CONCOCTCOVERAGETABLE(ch_cutupfasta_for_concoctcoveragetable)
 
-    ch_concoctcoveragetable_for_concoctconcoct = CONCOCT_CONCOCTCOVERAGETABLE.out.tsv
-                                                    .join(CONCOCT_CUTUPFASTA.out.fasta, failOnMismatch: true)
+    ch_concoctcoveragetable_for_concoctconcoct = CONCOCT_CONCOCTCOVERAGETABLE.out.tsv.join(CONCOCT_CUTUPFASTA.out.fasta, failOnMismatch: true)
 
-    CONCOCT_CONCOCT( ch_concoctcoveragetable_for_concoctconcoct )
+    CONCOCT_CONCOCT(ch_concoctcoveragetable_for_concoctconcoct)
 
-    CONCOCT_MERGECUTUPCLUSTERING ( CONCOCT_CONCOCT.out.clustering_csv )
+    CONCOCT_MERGECUTUPCLUSTERING(CONCOCT_CONCOCT.out.clustering_csv)
 
-    ch_mergecutupclustering_for_extractfastabins = ch_fasta
-                                                    .join(CONCOCT_MERGECUTUPCLUSTERING.out.csv, failOnMismatch: false)
+    ch_mergecutupclustering_for_extractfastabins = ch_fasta.join(CONCOCT_MERGECUTUPCLUSTERING.out.csv, failOnMismatch: false)
 
-    CONCOCT_EXTRACTFASTABINS ( ch_mergecutupclustering_for_extractfastabins )
+    CONCOCT_EXTRACTFASTABINS(ch_mergecutupclustering_for_extractfastabins)
 
     emit:
-    coverage_table      = CONCOCT_CONCOCTCOVERAGETABLE.out.tsv     // channel: [ val(meta), [ tsv ] ]
-
-    original_csv        = CONCOCT_CONCOCT.out.original_data_csv    // channel: [ val(meta), [ csv ] ]
-    raw_clustering_csv  = CONCOCT_CONCOCT.out.clustering_csv       // channel: [ val(meta), [ csv ] ]
-    pca_original        = CONCOCT_CONCOCT.out.pca_components_csv   // channel: [ val(meta), [ csv ] ]
-    pca_transformed     = CONCOCT_CONCOCT.out.pca_transformed_csv  // channel: [ val(meta), [ csv ] ]
-
-    cluster_table       = CONCOCT_MERGECUTUPCLUSTERING.out.csv     // channel: [ val(meta), [ csv ] ]
-    bins                = CONCOCT_EXTRACTFASTABINS.out.fasta       // channel: [ val(meta), [ fasta ] ]
-
+    coverage_table     = CONCOCT_CONCOCTCOVERAGETABLE.out.tsv // channel: [ val(meta), [ tsv ] ]
+    original_csv       = CONCOCT_CONCOCT.out.original_data_csv // channel: [ val(meta), [ csv ] ]
+    raw_clustering_csv = CONCOCT_CONCOCT.out.clustering_csv // channel: [ val(meta), [ csv ] ]
+    pca_original       = CONCOCT_CONCOCT.out.pca_components_csv // channel: [ val(meta), [ csv ] ]
+    pca_transformed    = CONCOCT_CONCOCT.out.pca_transformed_csv // channel: [ val(meta), [ csv ] ]
+    cluster_table      = CONCOCT_MERGECUTUPCLUSTERING.out.csv // channel: [ val(meta), [ csv ] ]
+    bins               = CONCOCT_EXTRACTFASTABINS.out.fasta // channel: [ val(meta), [ fasta ] ]
 }

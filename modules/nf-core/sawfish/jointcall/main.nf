@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SAWFISH_JOINTCALL {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ca/ca71c93b472a8b9a7701a744a5f123e4474ce9bf1e0d110aae5b84b5134dd74c/data' :
-        'community.wave.seqera.io/library/sawfish:2.2.0--430c21f2b465b4f7' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ca/ca71c93b472a8b9a7701a744a5f123e4474ce9bf1e0d110aae5b84b5134dd74c/data'
+        : 'community.wave.seqera.io/library/sawfish:2.2.0--430c21f2b465b4f7'}"
 
     input:
     tuple val(meta), path(sample_dirs)
@@ -14,18 +17,18 @@ process SAWFISH_JOINTCALL {
     tuple val(meta4), path(sample_csv)
 
     output:
-    tuple val(meta), path("*/*_genotyped.sv.vcf.gz")                                             , emit: vcf
-    tuple val(meta), path("*/*_genotyped.sv.vcf.gz.tbi")                                         , emit: tbi
-    tuple val(meta), path("*/contig.alignment.bam")                                              , emit: bam
-    tuple val(meta), path("*/contig.alignment.bam.csi")                                          , emit: bam_index
-    tuple val(meta), path("*/run.stats.json")                                                    , emit: stats
-    tuple val(meta), path("*/samples/*/depth.bw")                                                , emit: depth_bw
-    tuple val(meta), path("*/samples/*/copynum.bedgraph")                                        , emit: copynum_bedgraph          , optional: true
-    tuple val(meta), path("*/samples/*/gc_bias_corrected_depth.bw")                              , emit: gc_bias_corrected_depth_bw, optional: true
-    tuple val(meta), path("*/samples/*/copynum.summary.json")                                    , emit: copynum_summary           , optional: true
-    tuple val(meta), path("*/samples/*/maf.bw")                                                  , emit: maf_bw                    , optional: true
-    tuple val(meta), path("*/sawfish.log")                                                       , emit: log
-    tuple val("${task.process}"), val("sawfish"), eval('sawfish --version | sed "s/.* //g"')     , emit: versions_sawfish          , topic: versions
+    tuple val(meta), path("*/*_genotyped.sv.vcf.gz"), emit: vcf
+    tuple val(meta), path("*/*_genotyped.sv.vcf.gz.tbi"), emit: tbi
+    tuple val(meta), path("*/contig.alignment.bam"), emit: bam
+    tuple val(meta), path("*/contig.alignment.bam.csi"), emit: bam_index
+    tuple val(meta), path("*/run.stats.json"), emit: stats
+    tuple val(meta), path("*/samples/*/depth.bw"), emit: depth_bw
+    tuple val(meta), path("*/samples/*/copynum.bedgraph"), emit: copynum_bedgraph, optional: true
+    tuple val(meta), path("*/samples/*/gc_bias_corrected_depth.bw"), emit: gc_bias_corrected_depth_bw, optional: true
+    tuple val(meta), path("*/samples/*/copynum.summary.json"), emit: copynum_summary, optional: true
+    tuple val(meta), path("*/samples/*/maf.bw"), emit: maf_bw, optional: true
+    tuple val(meta), path("*/sawfish.log"), emit: log
+    tuple val("${task.process}"), val("sawfish"), eval('sawfish --version | sed "s/.* //g"'), emit: versions_sawfish, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -41,11 +44,11 @@ process SAWFISH_JOINTCALL {
     """
     sawfish \\
         joint-call \\
-        --threads $task.cpus \\
-        --ref $fasta \\
-        $sample_args \\
-        $args \\
-        $sample_csv_arg \\
+        --threads ${task.cpus} \\
+        --ref ${fasta} \\
+        ${sample_args} \\
+        ${args} \\
+        ${sample_csv_arg} \\
         --output-dir ${prefix}
 
     # Rename the output files to include prefix

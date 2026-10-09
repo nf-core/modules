@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HMMER_ESLALIPID {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hmmer:3.4--hb6cb901_4' :
-        'quay.io/biocontainers/hmmer:3.4--hb6cb901_4' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/hmmer:3.4--hb6cb901_4'
+        : 'quay.io/biocontainers/hmmer:3.4--hb6cb901_4'}"
 
     input:
     tuple val(meta), path(aln)
@@ -20,11 +23,11 @@ process HMMER_ESLALIPID {
 
     script:
     def args = task.ext.args ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     esl-alipid \\
-        $args \\
-        $aln \\
+        ${args} \\
+        ${aln} \\
         > ${prefix}.alipid.txt
     """
 

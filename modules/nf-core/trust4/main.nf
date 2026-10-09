@@ -1,30 +1,33 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TRUST4 {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/trust4:1.1.5--h5ca1c30_0':
-        'quay.io/biocontainers/trust4:1.1.5--h5ca1c30_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/trust4:1.1.5--h5ca1c30_0'
+        : 'quay.io/biocontainers/trust4:1.1.5--h5ca1c30_0'}"
 
     input:
     tuple val(meta), path(bam), path(reads)
-    path(fasta)
-    path(vdj_reference)
-    path(barcode_whitelist)
-    val(cell_barcode_read)
-    val(umi_read)
-    val(read_format)
+    path fasta
+    path vdj_reference
+    path barcode_whitelist
+    val cell_barcode_read
+    val umi_read
+    val read_format
 
     output:
-    tuple val(meta), path("*.tsv")                  , emit: tsv
-    tuple val(meta), path("*_airr.tsv")             , emit: airr_files
-    tuple val(meta), path("${prefix}_airr.tsv")     , emit: airr_tsv
-    tuple val(meta), path("*_report.tsv")           , emit: report_tsv
-    tuple val(meta), path("*.fa")                   , emit: fasta
-    tuple val(meta), path("*.out")                  , emit: out
-    tuple val(meta), path("*.fq")                   , emit: fq
-    tuple val(meta), path("**")                     , emit: outs
+    tuple val(meta), path("*.tsv"), emit: tsv
+    tuple val(meta), path("*_airr.tsv"), emit: airr_files
+    tuple val(meta), path("${prefix}_airr.tsv"), emit: airr_tsv
+    tuple val(meta), path("*_report.tsv"), emit: report_tsv
+    tuple val(meta), path("*.fa"), emit: fasta
+    tuple val(meta), path("*.out"), emit: out
+    tuple val(meta), path("*.fq"), emit: fq
+    tuple val(meta), path("**"), emit: outs
     tuple val("${task.process}"), val('trust4'), eval("run-trust4 2>&1 | sed '/^TRUST4/!d; s/.*TRUST4 v//; s/ .*//'"), emit: versions_trust4, topic: versions
 
     when:
@@ -43,25 +46,29 @@ process TRUST4 {
     // read format is optional
     def readFormat = read_format ? "--readFormat ${read_format}" : ''
     // barcodeWhitelist is optional
-    def barcodeWhitelist  = barcode_whitelist ? "--barcodeWhitelist ${barcode_whitelist}" : ""
+    def barcodeWhitelist = barcode_whitelist ? "--barcodeWhitelist ${barcode_whitelist}" : ""
     // add barcode information if present
     if (cell_barcode_read) {
         if (cell_barcode_read == "R1") {
             barcode = "--barcode ${forward[0]}"
-        } else if (cell_barcode_read == "R2") {
+        }
+        else if (cell_barcode_read == "R2") {
             barcode = "--barcode ${reverse[0]}"
         }
-    } else {
+    }
+    else {
         barcode = ''
     }
     // add umi information if present
     if (umi_read) {
         if (umi_read == "R1") {
             umi = "--UMI ${forward[0]}"
-        } else if (umi_read == "R2") {
+        }
+        else if (umi_read == "R2") {
             umi = "--UMI ${reverse[0]}"
         }
-    } else {
+    }
+    else {
         umi = ''
     }
 
@@ -73,12 +80,12 @@ process TRUST4 {
         ${barcode} \\
         ${readFormat} \\
         ${umi} \\
-        -t $task.cpus \\
+        -t ${task.cpus} \\
         -f ${fasta} \\
         -o ${prefix} \\
         ${reference} \\
         ${barcodeWhitelist} \\
-        $args
+        ${args}
     """
 
     stub:

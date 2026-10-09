@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CUSTOM_FILTERDIFFERENTIALTABLE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b0/b06950ac325030db5976f3d9c536e358eb686503af35c7e6222f86d016b3466f/data' :
-        'community.wave.seqera.io/library/pandas_python:67bda66f0cb8a241' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b0/b06950ac325030db5976f3d9c536e358eb686503af35c7e6222f86d016b3466f/data'
+        : 'community.wave.seqera.io/library/pandas_python:67bda66f0cb8a241'}"
 
     input:
     tuple val(meta), path(input_file)
@@ -13,10 +16,10 @@ process CUSTOM_FILTERDIFFERENTIALTABLE {
     tuple val(stat_column), val(stat_threshold), val(stat_cardinality)
 
     output:
-    tuple val(meta), path("*_filtered.tsv")     , emit: filtered
-    tuple val(meta), path("*_filtered_up.tsv")  , emit: filtered_up
+    tuple val(meta), path("*_filtered.tsv"), emit: filtered
+    tuple val(meta), path("*_filtered_up.tsv"), emit: filtered_up
     tuple val(meta), path("*_filtered_down.tsv"), emit: filtered_down
-    path "versions.yml"                         , emit: versions, topic: versions
+    path "versions.yml", emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

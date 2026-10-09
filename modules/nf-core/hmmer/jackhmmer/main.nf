@@ -1,19 +1,22 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HMMER_JACKHMMER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hmmer:3.4--h503566f_3':
-        'quay.io/biocontainers/hmmer:3.4--h503566f_3' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/hmmer:3.4--h503566f_3'
+        : 'quay.io/biocontainers/hmmer:3.4--h503566f_3'}"
 
     input:
     tuple val(meta), path(fasta), path(seqdb), val(write_align), val(write_target), val(write_domain)
 
     output:
-    tuple val(meta), path('*.txt.gz')   , emit: output
-    tuple val(meta), path('*.sto.gz')   , emit: alignments    , optional: true
-    tuple val(meta), path('*.tbl.gz')   , emit: target_summary, optional: true
+    tuple val(meta), path('*.txt.gz'), emit: output
+    tuple val(meta), path('*.sto.gz'), emit: alignments, optional: true
+    tuple val(meta), path('*.tbl.gz'), emit: target_summary, optional: true
     tuple val(meta), path('*.domtbl.gz'), emit: domain_summary, optional: true
     tuple val("${task.process}"), val('hmmer'), eval("jackhmmer -h | sed '2!d;s/^# HMMER *//;s/ .*//'"), emit: versions_hmmer, topic: versions
 
@@ -21,19 +24,19 @@ process HMMER_JACKHMMER {
     task.ext.when == null || task.ext.when
 
     script:
-    def args       = task.ext.args ?: ''
-    def prefix     = task.ext.prefix ?: "${meta.id}"
-    alignment      = write_align  ? "-A ${prefix}.sto" : ''
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    alignment = write_align ? "-A ${prefix}.sto" : ''
     target_summary = write_target ? "--tblout ${prefix}.tbl" : ''
     domain_summary = write_domain ? "--domtblout ${prefix}.domtbl" : ''
     """
     jackhmmer \\
-        $args \\
-        --cpu $task.cpus \\
+        ${args} \\
+        --cpu ${task.cpus} \\
         -o ${prefix}.txt \\
-        $alignment \\
-        $target_summary \\
-        $domain_summary \\
+        ${alignment} \\
+        ${target_summary} \\
+        ${domain_summary} \\
         ${fasta} \\
         ${seqdb}
 

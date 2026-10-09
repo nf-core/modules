@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process UNZIP {
-    tag "$archive"
+    tag "${archive}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/p7zip:16.02' :
-        'quay.io/biocontainers/p7zip:16.02' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/p7zip:16.02'
+        : 'quay.io/biocontainers/p7zip:16.02'}"
 
     input:
     tuple val(meta), path(archive)
@@ -19,19 +22,23 @@ process UNZIP {
 
     script:
     def args = task.ext.args ?: ''
-    if ( archive instanceof List && archive.name.size > 1 ) { error "[UNZIP] error: 7za only accepts a single archive as input. Please check module input." }
-    prefix = task.ext.prefix ?: ( meta.id ? "${meta.id}" : archive.baseName)
+    if (archive instanceof List && archive.name.size > 1) {
+        error("[UNZIP] error: 7za only accepts a single archive as input. Please check module input.")
+    }
+    prefix = task.ext.prefix ?: (meta.id ? "${meta.id}" : archive.baseName)
     """
     7za \\
         x \\
         -o"${prefix}"/ \\
-        $args \\
-        $archive
+        ${args} \\
+        ${archive}
     """
 
     stub:
-    if ( archive instanceof List && archive.name.size > 1 ) { error "[UNZIP] error: 7za only accepts a single archive as input. Please check module input." }
-    prefix = task.ext.prefix ?: ( meta.id ? "${meta.id}" : archive.baseName)
+    if (archive instanceof List && archive.name.size > 1) {
+        error("[UNZIP] error: 7za only accepts a single archive as input. Please check module input.")
+    }
+    prefix = task.ext.prefix ?: (meta.id ? "${meta.id}" : archive.baseName)
     """
     mkdir "${prefix}"
     """

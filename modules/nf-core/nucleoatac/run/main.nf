@@ -1,30 +1,33 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process NUCLEOATAC_RUN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/nucleoatac:1.0.0--py310h3479294_0':
-        'quay.io/biocontainers/nucleoatac:1.0.0--py310h3479294_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/nucleoatac:1.0.0--py310h3479294_0'
+        : 'quay.io/biocontainers/nucleoatac:1.0.0--py310h3479294_0'}"
 
     input:
     tuple val(meta), path(bam), path(bai), path(bed), path(fasta), path(fai)
 
     output:
-    tuple val(meta), path("*.nucpos.bed*")                       , emit: nucpos, optional: true
-    tuple val(meta), path("*.nucpos.redundant.bed*")             , emit: nucpos_redundant, optional: true
-    tuple val(meta), path("*.nfrpos.bed*")                       , emit: nfrpos, optional: true
-    tuple val(meta), path("*.nucmap_combined.bed*")              , emit: nucmap_combined, optional: true
-    tuple val(meta), path("*.occpeaks.bed*")                     , emit: occpeaks, optional: true
-    tuple val(meta), path("*.occ.bedgraph*")                     , emit: occupancy, optional: true
-    tuple val(meta), path("*.occ.lower_bound.bedgraph*")         , emit: occupancy_lower_bound, optional: true
-    tuple val(meta), path("*.occ.upper_bound.bedgraph*")         , emit: occupancy_upper_bound, optional: true
-    tuple val(meta), path("*.nucleoatac_signal.bedgraph*")       , emit: signal, optional: true
+    tuple val(meta), path("*.nucpos.bed*"), emit: nucpos, optional: true
+    tuple val(meta), path("*.nucpos.redundant.bed*"), emit: nucpos_redundant, optional: true
+    tuple val(meta), path("*.nfrpos.bed*"), emit: nfrpos, optional: true
+    tuple val(meta), path("*.nucmap_combined.bed*"), emit: nucmap_combined, optional: true
+    tuple val(meta), path("*.occpeaks.bed*"), emit: occpeaks, optional: true
+    tuple val(meta), path("*.occ.bedgraph*"), emit: occupancy, optional: true
+    tuple val(meta), path("*.occ.lower_bound.bedgraph*"), emit: occupancy_lower_bound, optional: true
+    tuple val(meta), path("*.occ.upper_bound.bedgraph*"), emit: occupancy_upper_bound, optional: true
+    tuple val(meta), path("*.nucleoatac_signal.bedgraph*"), emit: signal, optional: true
     tuple val(meta), path("*.nucleoatac_signal.smooth.bedgraph*"), emit: signal_smooth, optional: true
-    tuple val(meta), path("*.fragmentsizes.txt")                 , emit: fragment_sizes, optional: true
-    tuple val(meta), path("*.nuc_dist.txt")                      , emit: nuc_dist, optional: true
-    tuple val(meta), path("*.VMat")                              , emit: vmat, optional: true
-    tuple val(meta), path("*.eps")                               , emit: plots, optional: true
+    tuple val(meta), path("*.fragmentsizes.txt"), emit: fragment_sizes, optional: true
+    tuple val(meta), path("*.nuc_dist.txt"), emit: nuc_dist, optional: true
+    tuple val(meta), path("*.VMat"), emit: vmat, optional: true
+    tuple val(meta), path("*.eps"), emit: plots, optional: true
     tuple val("${task.process}"), val('nucleoatac'), eval('nucleoatac --version | sed "s/^nucleoatac //"'), topic: versions, emit: versions_nucleoatac
 
     when:
@@ -35,17 +38,17 @@ process NUCLEOATAC_RUN {
     def args_line = args ? " \\\n        ${args}" : ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    ln -s $bam ${prefix}.bam
-    if [[ "$bai" == *.csi ]]; then
-        ln -s $bai ${prefix}.bam.csi
+    ln -s ${bam} ${prefix}.bam
+    if [[ "${bai}" == *.csi ]]; then
+        ln -s ${bai} ${prefix}.bam.csi
     else
-        ln -s $bai ${prefix}.bam.bai
+        ln -s ${bai} ${prefix}.bam.bai
     fi
 
     nucleoatac run \\
-        --bed $bed \\
+        --bed ${bed} \\
         --bam ${prefix}.bam \\
-        --fasta $fasta \\
+        --fasta ${fasta} \\
         --out ${prefix} \\
         --cores ${task.cpus}${args_line}
 

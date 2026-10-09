@@ -1,17 +1,20 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PIRATE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pirate:1.0.5--hdfd78af_0' :
-        'quay.io/biocontainers/pirate:1.0.5--hdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/pirate:1.0.5--hdfd78af_0'
+        : 'quay.io/biocontainers/pirate:1.0.5--hdfd78af_0'}"
 
     input:
     tuple val(meta), path(gff)
 
     output:
-    tuple val(meta), path("${prefix}_results/*")                   , emit: results
+    tuple val(meta), path("${prefix}_results/*"), emit: results
     tuple val(meta), path("${prefix}_results/core_alignment.fasta"), emit: aln, optional: true
     tuple val("${task.process}"), val('pirate'), eval("PIRATE --version 2>&1 | sed 's/PIRATE //'"), topic: versions, emit: versions_pirate
 

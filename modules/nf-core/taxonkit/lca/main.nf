@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TAXONKIT_LCA {
     tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/taxonkit:0.20.0--h9ee0642_0':
-        'quay.io/biocontainers/taxonkit:0.20.0--h9ee0642_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/taxonkit:0.20.0--h9ee0642_0'
+        : 'quay.io/biocontainers/taxonkit:0.20.0--h9ee0642_0'}"
 
     input:
     tuple val(meta), val(taxids), path(taxidsfile)
@@ -22,12 +25,10 @@ process TAXONKIT_LCA {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     if (!taxids && !taxidsfile) {
-            error("Error: Neither taxids nor taxidsfile provided! ")
-
+        error("Error: Neither taxids nor taxidsfile provided! ")
     }
     if (taxids && taxidsfile) {
-            error("Error: Both taxids and taxidsfile provided, and only one should be passed! ")
-
+        error("Error: Both taxids and taxidsfile provided, and only one should be passed! ")
     }
     """
     taxonkit \\
@@ -36,7 +37,7 @@ process TAXONKIT_LCA {
         --data-dir ${taxdb} \\
         --threads ${task.cpus} \\
         --out-file ${prefix}.tsv \\
-        ${taxids? "<<< '$taxids'": taxidsfile}
+        ${taxids ? "<<< '${taxids}'" : taxidsfile}
     """
 
     stub:

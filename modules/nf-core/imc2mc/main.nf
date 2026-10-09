@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process IMC2MC {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
@@ -16,22 +19,22 @@ process IMC2MC {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     imc2mc \\
         -i ${txtfile} \\
         -o "${prefix}.tif" \\
-        $args
+        ${args}
 
     sed -i -E 's/UUID="urn:uuid:[[:xdigit:]]{8}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{4}-[[:xdigit:]]{12}"/                                                    /g' ${prefix}.tif
     """
 
     stub:
-    def args   = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo $args
+    echo ${args}
 
     touch ${prefix}.tif
     """

@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FREYJA_BOOT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/freyja:2.0.3--pyhdfd78af_0' :
-        'quay.io/biocontainers/freyja:2.0.3--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/freyja:2.0.3--pyhdfd78af_0'
+        : 'quay.io/biocontainers/freyja:2.0.3--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(variants), path(depths)
@@ -16,7 +19,7 @@ process FREYJA_BOOT {
     path lineages_topology
 
     output:
-    tuple val(meta), path("*lineages.csv")  , emit: lineages
+    tuple val(meta), path("*lineages.csv"), emit: lineages
     tuple val(meta), path("*summarized.csv"), emit: summarized
     tuple val("${task.process}"), val('freyja'), eval("freyja --version | sed 's/.* //'"), topic: versions, emit: versions_freyja
 
@@ -26,20 +29,20 @@ process FREYJA_BOOT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def meta_cmd = lineages_meta ? "--meta $lineages_meta" : ''
-    def lineage_cmd = lineages_topology ? "--lineageyml $lineages_topology" : ''
+    def meta_cmd = lineages_meta ? "--meta ${lineages_meta}" : ''
+    def lineage_cmd = lineages_topology ? "--lineageyml ${lineages_topology}" : ''
     """
     freyja \\
         boot \\
-        $args \\
-        --nt $task.cpus \\
-        --nb $repeats \\
-        --output_base $prefix \\
-        --barcodes $barcodes \\
-        $meta_cmd \\
-        $lineage_cmd \\
-        $variants \\
-        $depths
+        ${args} \\
+        --nt ${task.cpus} \\
+        --nb ${repeats} \\
+        --output_base ${prefix} \\
+        --barcodes ${barcodes} \\
+        ${meta_cmd} \\
+        ${lineage_cmd} \\
+        ${variants} \\
+        ${depths}
 
     """
 

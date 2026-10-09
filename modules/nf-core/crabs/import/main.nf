@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CRABS_IMPORT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/crabs:1.0.7--pyhdfd78af_0':
-        'quay.io/biocontainers/crabs:1.0.7--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/crabs:1.0.7--pyhdfd78af_0'
+        : 'quay.io/biocontainers/crabs:1.0.7--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(fasta)
     tuple val(meta2), path(accession2taxid)
     tuple val(meta3), path(names)
     tuple val(meta4), path(nodes)
-    val(import_format)
+    val import_format
 
     output:
     tuple val(meta), path("*.txt"), emit: crabsdb
@@ -22,10 +25,10 @@ process CRABS_IMPORT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args           = task.ext.args ?: ''
-    def prefix         = task.ext.prefix ?: "${meta.id}"
-    def is_compressed  = fasta.name.endsWith(".gz")
-    def fasta_name     = fasta.name.replace(".gz", "")
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def is_compressed = fasta.name.endsWith(".gz")
+    def fasta_name = fasta.name.replace(".gz", "")
     def import_fmt_cmd = "--import-format ${import_format}"
 
     """
@@ -46,7 +49,7 @@ process CRABS_IMPORT {
     """
 
     stub:
-    def prefix       = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     touch ${prefix}.txt

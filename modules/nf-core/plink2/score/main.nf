@@ -1,15 +1,18 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PLINK2_SCORE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/plink2:2.00a2.3--h712d239_1' :
-        'quay.io/biocontainers/plink2:2.00a2.3--h712d239_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/plink2:2.00a2.3--h712d239_1'
+        : 'quay.io/biocontainers/plink2:2.00a2.3--h712d239_1'}"
 
     input:
     tuple val(meta), path(pgen), path(psam), path(pvar)
-    path(scorefile)
+    path scorefile
 
     output:
     tuple val(meta), path("*.sscore"), emit: score
@@ -21,16 +24,18 @@ process PLINK2_SCORE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def mem_mb = task.memory.toMega() // plink is greedy
+    def mem_mb = task.memory.toMega()
+    // plink is greedy
     """
     plink2 \\
-        --threads $task.cpus \\
-        --memory $mem_mb \\
+        --threads ${task.cpus} \\
+        --memory ${mem_mb} \\
         --pfile ${pgen.baseName} \\
         --score ${scorefile} \\
-        $args \\
+        ${args} \\
         --out ${prefix}
     """
+
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ODGI_SQUEEZE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/odgi:0.9.0--py312h5e9d817_1':
-        'quay.io/biocontainers/odgi:0.9.0--py312h5e9d817_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/odgi:0.9.0--py312h5e9d817_1'
+        : 'quay.io/biocontainers/odgi:0.9.0--py312h5e9d817_1'}"
 
     input:
     tuple val(meta), path(graphs)
@@ -24,8 +27,8 @@ process ODGI_SQUEEZE {
     ls *.og > files
     odgi \\
         squeeze \\
-        $args \\
-        --threads $task.cpus \\
+        ${args} \\
+        --threads ${task.cpus} \\
         --input-graphs files \\
         -o ${prefix}.og
     """

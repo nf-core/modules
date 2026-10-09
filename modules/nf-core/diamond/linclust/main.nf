@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DIAMOND_LINCLUST {
     tag "${meta.id}"
     label 'process_medium'
@@ -19,8 +22,8 @@ process DIAMOND_LINCLUST {
 
     script:
     def args = task.ext.args ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}"
-    def mem  = task.memory.toKilo() + 'K'
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def mem = task.memory.toKilo() + 'K'
     """
     diamond \\
         linclust \\
@@ -33,7 +36,7 @@ process DIAMOND_LINCLUST {
 
     stub:
     def args = task.ext.args ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "${args}"
     touch ${prefix}.tsv

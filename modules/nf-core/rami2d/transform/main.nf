@@ -1,16 +1,19 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RAMI2D_TRANSFORM {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cd/cde38bd19f190e920f5f99178fd6802f841e5e52f596e2efe13f95c733637850/data':
-        'community.wave.seqera.io/library/pip_python_tifffile_ome-types_pruned:d3b5c8c723a6348d' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cd/cde38bd19f190e920f5f99178fd6802f841e5e52f596e2efe13f95c733637850/data'
+        : 'community.wave.seqera.io/library/pip_python_tifffile_ome-types_pruned:d3b5c8c723a6348d'}"
 
     input:
     tuple val(meta), path(image_file), path(transform_dir)
     tuple val(meta2), path(markers)
-    val(mpp)
+    val mpp
 
     output:
     tuple val(meta), path("${prefix}/*transformed.ome.tif"), emit: transformed_image
@@ -29,22 +32,22 @@ process RAMI2D_TRANSFORM {
     export XDG_CACHE_HOME=./.cache
     export FONTCONFIG_PATH=./.cache/fontconfig
 
-    mkdir -p $prefix
+    mkdir -p ${prefix}
 
     rami2d-transform \\
-        -i $image_file \\
-        -mpp $mpp \\
-        -tdir $transform_dir \\
-        -o $prefix \\
-        $markers_arg \\
-        $args
+        -i ${image_file} \\
+        -mpp ${mpp} \\
+        -tdir ${transform_dir} \\
+        -o ${prefix} \\
+        ${markers_arg} \\
+        ${args}
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    mkdir -p $prefix
+    mkdir -p ${prefix}
     touch ${prefix}/${image_file.baseName}_transformed.ome.tif
     """
 }

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HMTNOTE_ANNOTATE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hmtnote:0.7.2--pyhdfd78af_1':
-        'quay.io/biocontainers/hmtnote:0.7.2--pyhdfd78af_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/hmtnote:0.7.2--pyhdfd78af_1'
+        : 'quay.io/biocontainers/hmtnote:0.7.2--pyhdfd78af_1'}"
 
     input:
     tuple val(meta), path(vcf)
@@ -25,7 +28,7 @@ Reason:
 This tool is no longer maintained by its author and, as its database hosting service has
 been discontinued, it can no longer work with conda.
 """
-    assert false: deprecation_message
+    assert false : deprecation_message
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
@@ -38,14 +41,14 @@ been discontinued, it can no longer work with conda.
     """
 
     stub:
-        def deprecation_message = """
+    def deprecation_message = """
 WARNING: This module has been deprecated.
 
 Reason:
 This tool is no longer maintained by its author and, as its database hosting service has
 been discontinued, it can no longer work with conda.
 """
-    assert false: deprecation_message
+    assert false : deprecation_message
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_annotated.vcf

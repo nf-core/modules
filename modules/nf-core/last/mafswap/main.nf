@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process LAST_MAFSWAP {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
@@ -23,7 +26,7 @@ process LAST_MAFSWAP {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     set -o pipefail
-    maf-swap $args $maf | gzip --no-name > ${prefix}.swapped.maf.gz
+    maf-swap ${args} ${maf} | gzip --no-name > ${prefix}.swapped.maf.gz
     """
 
     stub:

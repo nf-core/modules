@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BEDOPS_CONVERT2BED {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bedops:2.4.42--h9948957_0':
-        'quay.io/biocontainers/bedops:2.4.42--h9948957_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/bedops:2.4.42--h9948957_0'
+        : 'quay.io/biocontainers/bedops:2.4.42--h9948957_0'}"
 
     input:
     tuple val(meta), path(in_file)
@@ -23,9 +26,9 @@ process BEDOPS_CONVERT2BED {
     def format = in_file.getExtension()
     """
     convert2bed \\
-        $args \\
-        -i $format \\
-        < $in_file \\
+        ${args} \\
+        -i ${format} \\
+        < ${in_file} \\
         > ${prefix}.bed
     """
 

@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process NEXTCLADE_DATASETGET {
-    tag "$dataset"
+    tag "${dataset}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7a/7acbe1c9567cd9e31fdf974b9fa1d8ed312ed9e1ae22cbe1c4c34d56096635af/data' :
-        'community.wave.seqera.io/library/nextclade:3.21.2--d3538cbe586c0f6c' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7a/7acbe1c9567cd9e31fdf974b9fa1d8ed312ed9e1ae22cbe1c4c34d56096635af/data'
+        : 'community.wave.seqera.io/library/nextclade:3.21.2--d3538cbe586c0f6c'}"
 
     input:
     val dataset
     val tag
 
     output:
-    path "$prefix"     , emit: dataset
+    path "${prefix}", emit: dataset
     tuple val("${task.process}"), val('nextclade'), eval("nextclade --version 2>&1 | sed 's/.*nextclade \\([^ ]*\\).*/\\1/'"), emit: versions_nextclade, topic: versions
     tuple val("${task.process}"), val('nextclade-dataset'), eval("grep 'tag' ${prefix}/pathogen.json | sed 's/.*tag.: .\\([0-9-]\\+Z\\).*/\\1/'"), emit: versions_nextclade_dataset, topic: versions
 
@@ -27,10 +30,10 @@ process NEXTCLADE_DATASETGET {
     nextclade \\
         dataset \\
         get \\
-        $args \\
-        --name $dataset \\
-        $version \\
-        --output-dir $prefix
+        ${args} \\
+        --name ${dataset} \\
+        ${version} \\
+        --output-dir ${prefix}
     """
 
     stub:
@@ -45,5 +48,4 @@ process NEXTCLADE_DATASETGET {
     touch ${prefix}/sequences.fasta
     touch ${prefix}/tree.json
     """
-
 }

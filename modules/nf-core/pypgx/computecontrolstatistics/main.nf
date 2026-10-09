@@ -1,15 +1,18 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PYPGX_COMPUTECONTROLSTATISTICS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pypgx:0.25.0--pyh7e72e81_0':
-        'quay.io/biocontainers/pypgx:0.25.0--pyh7e72e81_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/pypgx:0.25.0--pyh7e72e81_0'
+        : 'quay.io/biocontainers/pypgx:0.25.0--pyh7e72e81_0'}"
 
     input:
     tuple val(meta), path(bam), path(bai)
-    val(control_gene)
+    val control_gene
 
     output:
     tuple val(meta), path('*.zip'), emit: control_stats
@@ -21,19 +24,19 @@ process PYPGX_COMPUTECONTROLSTATISTICS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def control = "${control_gene}"  ?: "VDR"
+    def control = "${control_gene}" ?: "VDR"
 
     """
     pypgx compute-control-statistics \\
         ${args} \\
         ${control} \\
         ${prefix}_${control}.zip \\
-        $bam
+        ${bam}
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def control = "${control_gene}"  ?: "VDR"
+    def control = "${control_gene}" ?: "VDR"
     """
     # zip program unavailable in container
     python -c 'import zipfile; zipfile.ZipFile("${prefix}_${control}.zip", "w").close()'

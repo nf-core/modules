@@ -1,19 +1,22 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HICEXPLORER_HICPCA {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hicexplorer:3.7.2--pyhdfd78af_1':
-        'quay.io/biocontainers/hicexplorer:3.7.2--pyhdfd78af_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/hicexplorer:3.7.2--pyhdfd78af_1'
+        : 'quay.io/biocontainers/hicexplorer:3.7.2--pyhdfd78af_1'}"
 
     input:
     tuple val(meta), path(matrix)
 
     output:
-    tuple val(meta), path("${prefix}_*")           , emit:results
-    tuple val(meta), path("${prefix}_pca1.$format"), emit:pca1
-    tuple val(meta), path("${prefix}_pca2.$format"), emit:pca2
+    tuple val(meta), path("${prefix}_*"), emit: results
+    tuple val(meta), path("${prefix}_pca1.${format}"), emit: pca1
+    tuple val(meta), path("${prefix}_pca2.${format}"), emit: pca2
     tuple val("${task.process}"), val("hicexplorer"), eval("hicPCA --version 2>&1 | sed 's/hicPCA //'"), topic: versions, emit: versions_hicexplorer
 
     when:
@@ -21,23 +24,23 @@ process HICEXPLORER_HICPCA {
 
     script:
     def args = task.ext.args ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}"
-    args     = args.tokenize()
-    def idx  = args.findIndexOf{ arg_it -> arg_it == '--format' | arg_it == '-f' }
-    format   = 'bigwig'
-    if (idx>=0) {
-        format = args[idx+1]
-        args.remove(idx+1)
+    prefix = task.ext.prefix ?: "${meta.id}"
+    args = args.tokenize()
+    def idx = args.findIndexOf { arg_it -> arg_it == '--format' | arg_it == '-f' }
+    format = 'bigwig'
+    if (idx >= 0) {
+        format = args[idx + 1]
+        args.remove(idx + 1)
         args.remove(idx)
     }
     idx = args.indexOf('--whichEigenvectors')
     eigenvectors = '1 2'
-    if(idx>=0) {
+    if (idx >= 0) {
         eigenvectors = args[idx + 1]
-        args.remove(idx+1)
+        args.remove(idx + 1)
         args.remove(idx)
     }
-    outfilenames = eigenvectors.tokenize().collect{ value -> "${prefix}_pca${value}.${format}"}.join(' ')
+    outfilenames = eigenvectors.tokenize().collect { value -> "${prefix}_pca${value}.${format}" }.join(' ')
     args = args.join(' ')
     """
     hicPCA \\
@@ -50,18 +53,17 @@ process HICEXPLORER_HICPCA {
 
     stub:
     def args = task.ext.args ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}"
-    args     = args.tokenize()
-    def idx  = args.findIndexOf{ arg_it -> arg_it == '--format' | arg_it == '-f' }
-    format   = 'bigwig'
-    if (idx>=0) {
-        format = args[idx+1]
-        args.remove(idx+1)
+    prefix = task.ext.prefix ?: "${meta.id}"
+    args = args.tokenize()
+    def idx = args.findIndexOf { arg_it -> arg_it == '--format' | arg_it == '-f' }
+    format = 'bigwig'
+    if (idx >= 0) {
+        format = args[idx + 1]
+        args.remove(idx + 1)
         args.remove(idx)
     }
     """
     touch ${prefix}_pca1.${format}
     touch ${prefix}_pca2.${format}
     """
-
 }

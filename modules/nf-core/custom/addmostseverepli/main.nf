@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CUSTOM_ADDMOSTSEVEREPLI {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cb/cbeb20c898a76bec809629320ece9e1f84a3e355e96568bfbe14b9f411bdf3e7/data':
-        'community.wave.seqera.io/library/htslib_python:9c6265e98ef06930' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cb/cbeb20c898a76bec809629320ece9e1f84a3e355e96568bfbe14b9f411bdf3e7/data'
+        : 'community.wave.seqera.io/library/htslib_python:9c6265e98ef06930'}"
 
     input:
     tuple val(meta), path(vcf)
@@ -24,12 +27,12 @@ process CUSTOM_ADDMOSTSEVEREPLI {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     add_most_severe_pli.py \\
-        $args \\
-        --file_in $vcf \\
+        ${args} \\
+        --file_in ${vcf} \\
         --file_out ${prefix}.vcf
 
     bgzip \\
-        $args2 \\
+        ${args2} \\
         --threads ${task.cpus} \\
         ${prefix}.vcf
     """

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BPPSUITE_BPPML {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bppsuite:3.0.0--hd63eeec_0':
-        'quay.io/biocontainers/bppsuite:3.0.0--hd63eeec_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/bppsuite:3.0.0--hd63eeec_0'
+        : 'quay.io/biocontainers/bppsuite:3.0.0--hd63eeec_0'}"
 
     input:
     tuple val(meta), path(alignment), path(tree), path(parameters)
@@ -32,14 +35,14 @@ process BPPSUITE_BPPML {
         TREE=${tree} \\
         DATA=${prefix} \\
         param=${parameters} \\
-        $args
+        ${args}
     """
 
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo $args
+    echo ${args}
 
     touch ${prefix}.params.txt
     touch ${prefix}.ML.dnd_1

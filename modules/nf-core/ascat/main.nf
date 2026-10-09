@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ASCAT {
     tag "${meta.id}"
     label 'process_medium'
@@ -18,13 +21,13 @@ process ASCAT {
 
     output:
     tuple val(meta), path("*alleleFrequencies_chr*.txt"), emit: allelefreqs
-    tuple val(meta), path("*BAF.txt"),                    emit: bafs
-    tuple val(meta), path("*cnvs.txt"),                   emit: cnvs
-    tuple val(meta), path("*LogR.txt"),                   emit: logrs
-    tuple val(meta), path("*metrics.txt"),                emit: metrics
-    tuple val(meta), path("*png"),                        emit: png
-    tuple val(meta), path("*purityploidy.txt"),           emit: purityploidy
-    tuple val(meta), path("*segments.txt"),               emit: segments
+    tuple val(meta), path("*BAF.txt"), emit: bafs
+    tuple val(meta), path("*cnvs.txt"), emit: cnvs
+    tuple val(meta), path("*LogR.txt"), emit: logrs
+    tuple val(meta), path("*metrics.txt"), emit: metrics
+    tuple val(meta), path("*png"), emit: png
+    tuple val(meta), path("*purityploidy.txt"), emit: purityploidy
+    tuple val(meta), path("*segments.txt"), emit: segments
     tuple val("${task.process}"), val('bioconductor-ascat'), eval('Rscript -e "library(ASCAT); cat(as.character(packageVersion(\'ASCAT\')))"'), topic: versions, emit: versions_ascat
     tuple val("${task.process}"), val('alleleCounter'), eval("alleleCounter --version"), topic: versions, emit: versions_allelecounter
 
@@ -35,18 +38,18 @@ process ASCAT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def gender        = args.gender        ? "${args.gender}"        : "NULL"
+    def gender = args.gender ? "${args.gender}" : "NULL"
     def genomeVersion = args.genomeVersion ? "${args.genomeVersion}" : "NULL"
-    def purity        = args.purity        ? "${args.purity}"        : "NULL"
-    def ploidy        = args.ploidy        ? "${args.ploidy}"        : "NULL"
-    def gc_input      = gc_file            ? "${gc_file}"            : "NULL"
-    def rt_input      = rt_file            ? "${rt_file}"            : "NULL"
+    def purity = args.purity ? "${args.purity}" : "NULL"
+    def ploidy = args.ploidy ? "${args.ploidy}" : "NULL"
+    def gc_input = gc_file ? "${gc_file}" : "NULL"
+    def rt_input = rt_file ? "${rt_file}" : "NULL"
 
-    def minCounts_arg                   = args.minCounts                   ? ", minCounts = ${args.minCounts}"                                     : ""
-    def bed_file_arg                    = bed_file                         ? ", BED_file = '${bed_file}'"                                          : ""
-    def chrom_names_arg                 = args.chrom_names                 ? ", chrom_names = ${args.chrom_names}"                                 : ""
-    def min_base_qual_arg               = args.min_base_qual               ? ", min_base_qual = ${args.min_base_qual}"                             : ""
-    def min_map_qual_arg                = args.min_map_qual                ? ", min_map_qual = ${args.min_map_qual}"                               : ""
+    def minCounts_arg = args.minCounts ? ", minCounts = ${args.minCounts}" : ""
+    def bed_file_arg = bed_file ? ", BED_file = '${bed_file}'" : ""
+    def chrom_names_arg = args.chrom_names ? ", chrom_names = ${args.chrom_names}" : ""
+    def min_base_qual_arg = args.min_base_qual ? ", min_base_qual = ${args.min_base_qual}" : ""
+    def min_map_qual_arg = args.min_map_qual ? ", min_map_qual = ${args.min_map_qual}" : ""
     def skip_allele_counting_tumour_arg = args.skip_allele_counting_tumour ? ", skip_allele_counting_tumour = ${args.skip_allele_counting_tumour}" : ""
     def skip_allele_counting_normal_arg = args.skip_allele_counting_normal ? ", skip_allele_counting_normal = ${args.skip_allele_counting_normal}" : ""
 

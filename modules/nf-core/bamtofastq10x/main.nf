@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BAMTOFASTQ10X {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/10x_bamtofastq:1.4.1--hdbdd923_2':
-        'quay.io/biocontainers/10x_bamtofastq:1.4.1--hdbdd923_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/10x_bamtofastq:1.4.1--hdbdd923_2'
+        : 'quay.io/biocontainers/10x_bamtofastq:1.4.1--hdbdd923_2'}"
 
     input:
     tuple val(meta), path(bam)
@@ -22,9 +25,9 @@ process BAMTOFASTQ10X {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     bamtofastq \\
-        $args \\
-        $bam \\
-        $prefix
+        ${args} \\
+        ${bam} \\
+        ${prefix}
     """
 
     stub:

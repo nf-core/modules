@@ -1,23 +1,27 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CAFE {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cafe:5.1.0--h43eeafb_0':
-        'quay.io/biocontainers/cafe:5.1.0--h43eeafb_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/cafe:5.1.0--h43eeafb_0'
+        : 'quay.io/biocontainers/cafe:5.1.0--h43eeafb_0'}"
 
     input:
     tuple val(meta), path(infile)
-    path(tree)
+    path tree
 
     output:
-    tuple val(meta), path("${prefix}") , emit: cafe
-    path("$prefix/*_count.tab") , emit: cafe_base_count
-    path("$prefix/*.tre") , emit: cafe_significant_trees
-    path("$prefix/*_report.cafe") , emit: cafe_report
-    path("$prefix/*results.txt") , emit: cafe_results
+    tuple val(meta), path("${prefix}"), emit: cafe
+    path ("${prefix}/*_count.tab"), emit: cafe_base_count
+    path ("${prefix}/*.tre"), emit: cafe_significant_trees
+    path ("${prefix}/*_report.cafe"), emit: cafe_report
+    path ("${prefix}/*results.txt"), emit: cafe_results
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     tuple val("${task.process}"), val('cafe'), val('5.1.0'), emit: versions_cafe, topic: versions
+
     when:
     task.ext.when == null || task.ext.when
 
@@ -25,12 +29,12 @@ process CAFE {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    tr '\\r' '\\n' < $infile > infile.txt
-    tr '\\r' '\\n' < $tree > treefile.txt
+    tr '\\r' '\\n' < ${infile} > infile.txt
+    tr '\\r' '\\n' < ${tree} > treefile.txt
     cafe5 \\
         -i infile.txt \\
         -t treefile.txt \\
-        $args \\
+        ${args} \\
         --cores ${task.cpus} \\
         -o ${prefix}
     """

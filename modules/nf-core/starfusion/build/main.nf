@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process STARFUSION_BUILD {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
     stageInMode 'copy'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/75/75d085bf2a8e40c6693b357800eef0f9568f661226d0888339bc77f7852234bb/data' :
-        'community.wave.seqera.io/library/dfam_hmmer_minimap2_star-fusion:e285bb3eb373b9a7'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/75/75d085bf2a8e40c6693b357800eef0f9568f661226d0888339bc77f7852234bb/data'
+        : 'community.wave.seqera.io/library/dfam_hmmer_minimap2_star-fusion:e285bb3eb373b9a7'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -34,13 +37,13 @@ process STARFUSION_BUILD {
     gunzip ${pfam_url} && hmmpress Pfam-A.hmm
 
     prep_genome_lib.pl \\
-        --genome_fa $fasta \\
-        --gtf $gtf \\
+        --genome_fa ${fasta} \\
+        --gtf ${gtf} \\
         --dfam_db *_dfam.hmm \\
         --pfam_db Pfam-A.hmm \\
-        --fusion_annot_lib $fusion_annot_lib \\
+        --fusion_annot_lib ${fusion_annot_lib} \\
         --annot_filter_rule ${annot_filter_url} \\
-        --CPU $task.cpus \\
+        --CPU ${task.cpus} \\
         --output_dir ${prefix}_genome_lib_build_dir \\
         ${args}
     """
@@ -131,5 +134,4 @@ process STARFUSION_BUILD {
     echo "stub" > ${prefix}_genome_lib_build_dir/trans.blast.align_coords.align_coords.dbm
     echo "" | gzip > ${prefix}_genome_lib_build_dir/trans.blast.dat.gz
     """
-
 }

@@ -1,20 +1,23 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ARCANE_INDEX {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/arcane:1.0.0--pyh106432d_0':
-        'quay.io/biocontainers/arcane:1.0.0--pyh106432d_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/arcane:1.0.0--pyh106432d_0'
+        : 'quay.io/biocontainers/arcane:1.0.0--pyh106432d_0'}"
 
     input:
     tuple val(meta), path(reference), path(genes)
     val n_objects
 
     output:
-    tuple val(meta), path("*.hash"),                                        emit: index
-    tuple val(meta), path("*.info"),                                        emit: info
-    tuple val("${task.process}"), val('arcane'), eval("arcane --version"),  topic: versions, emit: versions_arcane
+    tuple val(meta), path("*.hash"), emit: index
+    tuple val(meta), path("*.info"), emit: info
+    tuple val("${task.process}"), val('arcane'), eval("arcane --version"), topic: versions, emit: versions_arcane
 
     when:
     task.ext.when == null || task.ext.when

@@ -1,23 +1,26 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MERQURY_HAPMERS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/merqury:1.3--hdfd78af_1':
-        'quay.io/biocontainers/merqury:1.3--hdfd78af_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/merqury:1.3--hdfd78af_1'
+        : 'quay.io/biocontainers/merqury:1.3--hdfd78af_1'}"
 
     input:
     tuple val(meta), path(child_meryl, stageAs: 'child.meryl')
-    path(maternal_meryl, stageAs: 'mat.meryl')
-    path(paternal_meryl, stageAs: 'pat.meryl')
+    path maternal_meryl, stageAs: 'mat.meryl'
+    path paternal_meryl, stageAs: 'pat.meryl'
 
     output:
-    tuple val(meta), path('*_mat.hapmer.meryl')         , emit: mat_hapmer_meryl
-    tuple val(meta), path('*_pat.hapmer.meryl')         , emit: pat_hapmer_meryl
-    tuple val(meta), path('*_inherited_hapmers.fl.png') , emit: inherited_hapmers_fl_png
-    tuple val(meta), path('*_inherited_hapmers.ln.png') , emit: inherited_hapmers_ln_png
-    tuple val(meta), path('*_inherited_hapmers.st.png') , emit: inherited_hapmers_st_png
+    tuple val(meta), path('*_mat.hapmer.meryl'), emit: mat_hapmer_meryl
+    tuple val(meta), path('*_pat.hapmer.meryl'), emit: pat_hapmer_meryl
+    tuple val(meta), path('*_inherited_hapmers.fl.png'), emit: inherited_hapmers_fl_png
+    tuple val(meta), path('*_inherited_hapmers.ln.png'), emit: inherited_hapmers_ln_png
+    tuple val(meta), path('*_inherited_hapmers.st.png'), emit: inherited_hapmers_st_png
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('merqury'), val('1.3'), emit: versions_merqury, topic: versions
 
@@ -25,8 +28,8 @@ process MERQURY_HAPMERS {
     task.ext.when == null || task.ext.when
 
     script:
-    def args    = task.ext.args ?: ''
-    def prefix  = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     # Nextflow changes the container --entrypoint to /bin/bash (container default entrypoint: /usr/local/env-execute)
     # Check for container variable initialisation script and source it.
@@ -40,7 +43,7 @@ process MERQURY_HAPMERS {
         mat.meryl \\
         pat.meryl\\
         child.meryl \\
-        $args
+        ${args}
 
     mv mat.hapmer.meryl             ${prefix}_mat.hapmer.meryl
     mv pat.hapmer.meryl             ${prefix}_pat.hapmer.meryl
@@ -50,8 +53,8 @@ process MERQURY_HAPMERS {
     """
 
     stub:
-    def args    = task.ext.args ?: ''
-    def prefix  = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     # Nextflow changes the container --entrypoint to /bin/bash (container default entrypoint: /usr/local/env-execute)
     # Check for container variable initialisation script and source it.
@@ -66,7 +69,7 @@ process MERQURY_HAPMERS {
         mat.meryl \\
         pat.meryl\\
         child.meryl \\
-        $args"
+        ${args}"
 
     mkdir ${prefix}_mat.hapmer.meryl
     touch ${prefix}_mat.hapmer.meryl/0x000000.merylData

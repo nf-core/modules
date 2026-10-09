@@ -1,25 +1,28 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CUSTOM_COLLECTFEATURECOUNTS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bf/bfe4a872ba15a90cc12fb24aa96ddda852d5b295c214684d9c8fdf3dc02af535/data' :
-        'community.wave.seqera.io/library/r-base_r-data.table_r-dplyr_r-dtplyr_pruned:e289d008f8e006c5' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bf/bfe4a872ba15a90cc12fb24aa96ddda852d5b295c214684d9c8fdf3dc02af535/data'
+        : 'community.wave.seqera.io/library/r-base_r-data.table_r-dplyr_r-dtplyr_pruned:e289d008f8e006c5'}"
 
     input:
     tuple val(meta), path(inputfiles, stageAs: "input/*")
 
     output:
     tuple val(meta), path("${prefix}.counts.tsv.gz"), emit: counts
-    path "versions.yml"                             , emit: versions, topic: versions
+    path "versions.yml", emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     prefix = task.ext.prefix ?: "${meta.id}"
-    template 'collectfeaturecounts.R'
+    template('collectfeaturecounts.R')
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"

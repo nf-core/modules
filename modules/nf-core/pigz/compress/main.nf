@@ -1,17 +1,20 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PIGZ_COMPRESS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pigz:2.8':
-        'quay.io/biocontainers/pigz:2.8' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/pigz:2.8'
+        : 'quay.io/biocontainers/pigz:2.8'}"
 
     input:
     tuple val(meta), path(raw_file)
 
     output:
-    tuple val(meta), path("$archive"), emit: archive
+    tuple val(meta), path("${archive}"), emit: archive
     tuple val("${task.process}"), val('pigz'), eval('pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//"'), emit: versions_pigz, topic: versions
 
     when:
@@ -23,7 +26,7 @@ process PIGZ_COMPRESS {
     """
     # Note: needs --stdout for pigz to avoid the following issue:
     #   pigz: skipping: ${raw_file} is a symbolic link
-    pigz --processes $task.cpus --stdout --force ${args} ${raw_file} > ${archive}
+    pigz --processes ${task.cpus} --stdout --force ${args} ${raw_file} > ${archive}
     """
 
     stub:

@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FREYJA_VARIANTS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/freyja:2.0.3--pyhdfd78af_0' :
-        'quay.io/biocontainers/freyja:2.0.3--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/freyja:2.0.3--pyhdfd78af_0'
+        : 'quay.io/biocontainers/freyja:2.0.3--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(bam)
@@ -25,11 +28,11 @@ process FREYJA_VARIANTS {
     """
     freyja \\
         variants \\
-        $args \\
-        --ref $fasta \\
+        ${args} \\
+        --ref ${fasta} \\
         --variants ${prefix}.variants.tsv \\
         --depths ${prefix}.depth.tsv \\
-        $bam
+        ${bam}
 
     """
 

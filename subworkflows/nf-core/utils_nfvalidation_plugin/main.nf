@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 //
 // Subworkflow that uses the nf-validation plugin to render help text and parameter summary
 //
@@ -20,20 +23,20 @@ include { validateParameters } from 'plugin/nf-validation'
 
 workflow UTILS_NFVALIDATION_PLUGIN {
     take:
-    print_help       // boolean: print help
+    print_help // boolean: print help
     workflow_command //  string: default command used to run pipeline
-    pre_help_text    //  string: string to be printed before help text and summary log
-    post_help_text   //  string: string to be printed after help text and summary log
-    validate_params  // boolean: validate parameters
-    schema_filename  //    path: JSON schema file, null to use default value
+    pre_help_text //  string: string to be printed before help text and summary log
+    post_help_text //  string: string to be printed after help text and summary log
+    validate_params // boolean: validate parameters
+    schema_filename //    path: JSON schema file, null to use default value
 
     main:
 
     log.debug("Using schema file: ${schema_filename}")
 
     // Default values for strings
-    pre_help_text    = pre_help_text    ?: ''
-    post_help_text   = post_help_text   ?: ''
+    pre_help_text = pre_help_text ?: ''
+    post_help_text = post_help_text ?: ''
     workflow_command = workflow_command ?: ''
 
     //

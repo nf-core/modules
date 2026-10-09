@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { SEQKIT_FQ2FA      } from '../../../modules/nf-core/seqkit/fq2fa'
 include { SEQKIT_REPLACE    } from '../../../modules/nf-core/seqkit/replace'
 include { MIRDEEP2_MAPPER   } from '../../../modules/nf-core/mirdeep2/mapper'
@@ -21,5 +24,5 @@ workflow FASTQ_FIND_MIRNA_MIRDEEP2 {
     MIRDEEP2_MIRDEEP2(MIRDEEP2_MAPPER.out.outputs, ch_genome_fasta, ch_mirna_mature_hairpin)
 
     emit:
-    outputs  = MIRDEEP2_MIRDEEP2.out.outputs // channel: [ val(meta), [ bed, csv, html ] ]
+    outputs = MIRDEEP2_MIRDEEP2.out.outputs // channel: [ val(meta), [ bed, csv, html ] ]
 }

@@ -1,14 +1,17 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RMARKDOWNNOTEBOOK {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     //NB: You likely want to override this with a container containing all required
     //dependencies for your analysis. The container at least needs to contain the
     //yaml and rmarkdown R packages.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-31ad840d814d356e5f98030a4ee308a16db64ec5:0e852a1e4063fdcbe3f254ac2c7469747a60e361-0' :
-        'quay.io/biocontainers/mulled-v2-31ad840d814d356e5f98030a4ee308a16db64ec5:0e852a1e4063fdcbe3f254ac2c7469747a60e361-0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/mulled-v2-31ad840d814d356e5f98030a4ee308a16db64ec5:0e852a1e4063fdcbe3f254ac2c7469747a60e361-0'
+        : 'quay.io/biocontainers/mulled-v2-31ad840d814d356e5f98030a4ee308a16db64ec5:0e852a1e4063fdcbe3f254ac2c7469747a60e361-0'}"
 
     input:
     tuple val(meta), path(notebook)
@@ -16,10 +19,10 @@ process RMARKDOWNNOTEBOOK {
     path input_files
 
     output:
-    tuple val(meta), path("*.html")             , emit: report
+    tuple val(meta), path("*.html"), emit: report
     tuple val(meta), path("*.parameterised.Rmd"), emit: parameterised_notebook, optional: true
-    tuple val(meta), path("artifacts/*")        , emit: artifacts, optional: true
-    tuple val(meta), path("session_info.log")   , emit: session_info
+    tuple val(meta), path("artifacts/*"), emit: artifacts, optional: true
+    tuple val(meta), path("session_info.log"), emit: session_info
     tuple val("${task.process}"), val("rmarkdownnotebook"), eval("Rscript -e \"cat(paste(packageVersion('rmarkdown'), collapse='.'))\""), emit: versions_rmarkdownnotebook, topic: versions
 
     when:
@@ -49,9 +52,9 @@ process RMARKDOWNNOTEBOOK {
     mkdir artifacts
 
     # Set parallelism for BLAS/MKL etc. to avoid over-booking of resources
-    export MKL_NUM_THREADS="$task.cpus"
-    export OPENBLAS_NUM_THREADS="$task.cpus"
-    export OMP_NUM_THREADS="$task.cpus"
+    export MKL_NUM_THREADS="${task.cpus}"
+    export OPENBLAS_NUM_THREADS="${task.cpus}"
+    export OMP_NUM_THREADS="${task.cpus}"
 
     # Work around  https://github.com/rstudio/rmarkdown/issues/1508
     # If the symbolic link is not replaced by a physical file

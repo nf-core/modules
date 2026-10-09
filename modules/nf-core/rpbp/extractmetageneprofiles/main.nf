@@ -1,14 +1,17 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RPBP_EXTRACTMETAGENEPROFILES {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/14/146c3f15abf184a5ec13531d2a040ba7b9235c1091723aa37c7a119817411367/data' :
-        'community.wave.seqera.io/library/rpbp:4.0.1--71297b462026e13b' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/14/146c3f15abf184a5ec13531d2a040ba7b9235c1091723aa37c7a119817411367/data'
+        : 'community.wave.seqera.io/library/rpbp:4.0.1--71297b462026e13b'}"
 
     input:
-    tuple val(meta),  path(bam), path(bai)
+    tuple val(meta), path(bam), path(bai)
     tuple val(meta2), path(transcript_bed)
 
     output:

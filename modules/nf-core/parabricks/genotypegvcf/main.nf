@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PARABRICKS_GENOTYPEGVCF {
     tag "${meta.id}"
     label 'process_high'
@@ -8,7 +11,7 @@ process PARABRICKS_GENOTYPEGVCF {
     container "nvcr.io/nvidia/clara/clara-parabricks:4.7.1-1"
 
     input:
-    tuple val(meta),  path(input)
+    tuple val(meta), path(input)
     tuple val(meta2), path(fasta)
 
     output:

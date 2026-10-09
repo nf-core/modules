@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PARABRICKS_STARFUSION {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
     label 'process_gpu'
     // needed by the module to work properly can be removed when fixed upstream - see: https://github.com/nf-core/modules/issues/7226
@@ -12,8 +15,8 @@ process PARABRICKS_STARFUSION {
     tuple val(meta2), path(genome_lib_dir)
 
     output:
-    tuple val(meta), path("fusion_predictions.tsv"),                emit: fusions
-    tuple val(meta), path("fusion_predictions.abridged.tsv"),       emit: abridged
+    tuple val(meta), path("fusion_predictions.tsv"), emit: fusions
+    tuple val(meta), path("fusion_predictions.abridged.tsv"), emit: abridged
     tuple val("${task.process}"), val('parabricks'), eval("pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'"), topic: versions, emit: versions_parabricks
 
     when:
@@ -22,12 +25,12 @@ process PARABRICKS_STARFUSION {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def num_gpus = task.accelerator ? "--num-gpus $task.accelerator.request" : ''
+    def num_gpus = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
     """
     pbrun \\
         starfusion \\
@@ -44,7 +47,7 @@ process PARABRICKS_STARFUSION {
     stub:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     """
     touch fusion_predictions.tsv

@@ -1,28 +1,27 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 /*
  * CAT/BAT/RAT: tools for taxonomic classification of contigs and metagenome-assembled genomes (MAGs)
  */
-include { CATPACK_ADDNAMES as CATPACK_ADDNAMES_BINS    } from '../../../modules/nf-core/catpack/addnames/main'
-include { CATPACK_ADDNAMES as CATPACK_ADDNAMES_CONTIGS } from '../../../modules/nf-core/catpack/addnames/main'
-include { CATPACK_BINS                                 } from '../../../modules/nf-core/catpack/bins/main'
-include { CATPACK_CONTIGS                              } from '../../../modules/nf-core/catpack/contigs/main'
-include { CATPACK_DOWNLOAD                             } from '../../../modules/nf-core/catpack/download/main'
-include { CATPACK_PREPARE                              } from '../../../modules/nf-core/catpack/prepare/main'
+include { CATPACK_ADDNAMES as CATPACK_ADDNAMES_BINS      } from '../../../modules/nf-core/catpack/addnames/main'
+include { CATPACK_ADDNAMES as CATPACK_ADDNAMES_CONTIGS   } from '../../../modules/nf-core/catpack/addnames/main'
+include { CATPACK_BINS                                   } from '../../../modules/nf-core/catpack/bins/main'
+include { CATPACK_CONTIGS                                } from '../../../modules/nf-core/catpack/contigs/main'
+include { CATPACK_DOWNLOAD                               } from '../../../modules/nf-core/catpack/download/main'
+include { CATPACK_PREPARE                                } from '../../../modules/nf-core/catpack/prepare/main'
 include { CATPACK_SUMMARISE as CATPACK_SUMMARISE_BINS    } from '../../../modules/nf-core/catpack/summarise/main'
 include { CATPACK_SUMMARISE as CATPACK_SUMMARISE_CONTIGS } from '../../../modules/nf-core/catpack/summarise/main'
-include { UNTAR as CAT_DB_UNTAR                        } from '../../../modules/nf-core/untar/main'
+include { UNTAR as CAT_DB_UNTAR                          } from '../../../modules/nf-core/untar/main'
 
 workflow FASTA_CLASSIFY_CATPACK {
-
     take:
-    ch_bins               // channel: [ val(meta), path(fasta) ] - binned MAGs/contigs
-    ch_contigs            // channel: [ val(meta), path(fasta) ] - contigs; provide channel.empty() to skip contig classification
-    ch_cat_db             // channel: [ val(meta), path(db) ] - pre-built db as directory (with db/ and tax/ subdirs) or .tar.gz
-                          //          provide channel.empty() to trigger automatic download via ch_cat_db_download_id
+    ch_bins // channel: [ val(meta), path(fasta) ] - binned MAGs/contigs
+    ch_contigs // channel: [ val(meta), path(fasta) ] - contigs; provide channel.empty() to skip contig classification
+    ch_cat_db // channel: [ val(meta), path(db) ] - pre-built db as directory (with db/ and tax/ subdirs) or .tar.gz
     ch_cat_db_download_id // channel: [ val(meta), val(db_id) ] - db ID for CATPACK_DOWNLOAD (e.g. 'nr')
-                          //          provide channel.empty() if supplying a pre-built db via ch_cat_db
-                          //          supplying both ch_cat_db and ch_cat_db_download_id will cause a runtime error
-    run_summarise         // val: boolean - whether to run CATPACK_SUMMARISE; requires ext.args = "--only_official" on CATPACK_ADDNAMES_BINS/CONTIGS
-    bin_suffix            // val: string - file extension of bin FASTA files (e.g. '.fa' or '.fasta')
+    run_summarise // val: boolean - whether to run CATPACK_SUMMARISE; requires ext.args = "--only_official" on CATPACK_ADDNAMES_BINS/CONTIGS
+    bin_suffix // val: string - file extension of bin FASTA files (e.g. '.fa' or '.fasta')
 
     main:
 
@@ -31,12 +30,11 @@ workflow FASTA_CLASSIFY_CATPACK {
     //
 
     // Handle pre-built db: untar if compressed, or use directory directly
-    ch_cat_db_input = ch_cat_db
-        .branch { _meta, db ->
-            tar:   db.name.endsWith('.tar.gz')
-            dir:   db.isDirectory()
-            other: true
-         }
+    ch_cat_db_input = ch_cat_db.branch { _meta, db ->
+        tar: db.name.endsWith('.tar.gz')
+        dir: db.isDirectory()
+        other: true
+    }
 
     ch_cat_db_input.other.subscribe { _meta, _db ->
         error("Error: A DB was provided to FASTA_CLASSIFY_CATPACK that is not a `.tar.gz` or a directory.")
@@ -47,7 +45,7 @@ workflow FASTA_CLASSIFY_CATPACK {
     ch_prepared_from_dir = ch_cat_db_input.dir
         .mix(CAT_DB_UNTAR.out.untar)
         .multiMap { meta, dir ->
-            db:       [meta, dir / 'db']
+            db: [meta, dir / 'db']
             taxonomy: [meta, dir / 'tax']
         }
 
@@ -56,19 +54,21 @@ workflow FASTA_CLASSIFY_CATPACK {
 
     CATPACK_PREPARE(
         CATPACK_DOWNLOAD.out.fasta,
-        CATPACK_DOWNLOAD.out.names.map   { _meta, names -> names },
-        CATPACK_DOWNLOAD.out.nodes.map   { _meta, nodes -> nodes },
+        CATPACK_DOWNLOAD.out.names.map { _meta, names -> names },
+        CATPACK_DOWNLOAD.out.nodes.map { _meta, nodes -> nodes },
         CATPACK_DOWNLOAD.out.acc2tax.map { _meta, acc2tax -> acc2tax },
     )
 
     // Combine db sources - one of these channels will be empty depending on inputs
     // Guard: fail if both ch_cat_db and ch_cat_db_download_id are provided simultaneously.
     // .combine() only emits when both channels have at least one element.
-    ch_prepared_from_dir.db.combine(CATPACK_PREPARE.out.db).subscribe {
-        error("Error: Both a pre-built DB and a download ID were provided to FASTA_CLASSIFY_CATPACK! Provide only one via ch_cat_db or ch_cat_db_download_id.")
-    }
+    ch_prepared_from_dir.db
+        .combine(CATPACK_PREPARE.out.db)
+        .subscribe {
+            error("Error: Both a pre-built DB and a download ID were provided to FASTA_CLASSIFY_CATPACK! Provide only one via ch_cat_db or ch_cat_db_download_id.")
+        }
 
-    ch_db       = ch_prepared_from_dir.db.mix(CATPACK_PREPARE.out.db).first()
+    ch_db = ch_prepared_from_dir.db.mix(CATPACK_PREPARE.out.db).first()
     ch_taxonomy = ch_prepared_from_dir.taxonomy.mix(CATPACK_PREPARE.out.taxonomy).first()
 
     //
@@ -111,7 +111,7 @@ workflow FASTA_CLASSIFY_CATPACK {
         ch_contigs_input = CATPACK_ADDNAMES_CONTIGS.out.txt
             .join(ch_contigs)
             .multiMap { meta, names, contigs ->
-                names:   [meta, names]
+                names: [meta, names]
                 contigs: [meta, contigs]
             }
 
@@ -120,10 +120,10 @@ workflow FASTA_CLASSIFY_CATPACK {
     }
 
     emit:
-    bin2classification      = CATPACK_BINS.out.bin2classification        // channel: [ val(meta), path(txt) ]
-    bat_classification      = CATPACK_ADDNAMES_BINS.out.txt              // channel: [ val(meta), path(txt) ]
-    bat_summary             = ch_bat_summary                             // channel: [ val(meta), path(txt) ]
-    contig2classification   = CATPACK_CONTIGS.out.contig2classification  // channel: [ val(meta), path(txt) ]
-    contigs_classification  = CATPACK_ADDNAMES_CONTIGS.out.txt           // channel: [ val(meta), path(txt) ]
-    contigs_summary         = ch_contigs_summary                         // channel: [ val(meta), path(txt) ]
+    bin2classification     = CATPACK_BINS.out.bin2classification // channel: [ val(meta), path(txt) ]
+    bat_classification     = CATPACK_ADDNAMES_BINS.out.txt // channel: [ val(meta), path(txt) ]
+    bat_summary            = ch_bat_summary // channel: [ val(meta), path(txt) ]
+    contig2classification  = CATPACK_CONTIGS.out.contig2classification // channel: [ val(meta), path(txt) ]
+    contigs_classification = CATPACK_ADDNAMES_CONTIGS.out.txt // channel: [ val(meta), path(txt) ]
+    contigs_summary        = ch_contigs_summary // channel: [ val(meta), path(txt) ]
 }

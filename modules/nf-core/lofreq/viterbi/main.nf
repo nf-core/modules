@@ -1,14 +1,17 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process LOFREQ_VITERBI {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/lofreq:2.1.5--py310h47ef89e_10' :
-        'quay.io/biocontainers/lofreq:2.1.5--py310h47ef89e_10' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/lofreq:2.1.5--py310h47ef89e_10'
+        : 'quay.io/biocontainers/lofreq:2.1.5--py310h47ef89e_10'}"
 
     input:
-    tuple val(meta),  path(bam)
+    tuple val(meta), path(bam)
     tuple val(meta2), path(fasta)
 
     output:
@@ -25,13 +28,13 @@ process LOFREQ_VITERBI {
     """
     lofreq \\
         viterbi \\
-        $args \\
-        -ref $fasta \\
-        $bam |
+        ${args} \\
+        -ref ${fasta} \\
+        ${bam} |
         samtools sort \\
-            $args2 \\
+            ${args2} \\
             -T ${prefix} \\
-            --threads $task.cpus \\
+            --threads ${task.cpus} \\
             -o ${prefix}.bam
     """
 

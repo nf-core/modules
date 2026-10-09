@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VERIFYBAMID_VERIFYBAMID2 {
     tag "${meta.id}"
     label 'process_low'
@@ -14,12 +17,12 @@ process VERIFYBAMID_VERIFYBAMID2 {
     path references
 
     output:
-    tuple val(meta), path("*.log")             , optional:true, emit: log
-    tuple val(meta), path("*.UD")              , optional:true, emit: ud
-    tuple val(meta), path("*.bed")             , optional:true, emit: bed
-    tuple val(meta), path("*.mu")              , optional:true, emit: mu
-    tuple val(meta), path("*.selfSM")          , optional:true, emit: self_sm
-    tuple val(meta), path("*.Ancestry")        , optional:true, emit: ancestry
+    tuple val(meta), path("*.log"), optional: true, emit: log
+    tuple val(meta), path("*.UD"), optional: true, emit: ud
+    tuple val(meta), path("*.bed"), optional: true, emit: bed
+    tuple val(meta), path("*.mu"), optional: true, emit: mu
+    tuple val(meta), path("*.selfSM"), optional: true, emit: self_sm
+    tuple val(meta), path("*.Ancestry"), optional: true, emit: ancestry
     tuple val("${task.process}"), val('verifybamid2'), eval("verifybamid2 --help 2>&1 | sed -n '3s/.*Version://p'"), topic: versions, emit: versions_verifybamid2
 
     when:
@@ -32,8 +35,9 @@ process VERIFYBAMID_VERIFYBAMID2 {
 
     def bam_file = "${bam}.endsWith('.bam|.cram')" ? "--BamFile ${bam}" : ""
 
-    def svd_args = (svd_ud.baseName.equals(svd_mu.baseName) && svd_ud.baseName.equals(svd_bed.baseName)) ?
-        "--SVDPrefix ${svd_ud.baseName}" : "--UDPath ${svd_ud} --MeanPath ${svd_mu} --BedPath ${svd_bed}"
+    def svd_args = (svd_ud.baseName.equals(svd_mu.baseName) && svd_ud.baseName.equals(svd_bed.baseName))
+        ? "--SVDPrefix ${svd_ud.baseName}"
+        : "--UDPath ${svd_ud} --MeanPath ${svd_mu} --BedPath ${svd_bed}"
     def refvcf_args = "${refvcf}".endsWith(".vcf") ? "--RefVCF ${refvcf}" : ""
 
     def reference_args = "${references}".matches(/.+((fasta)|(fa)|(fna))(\.gz)*$/)

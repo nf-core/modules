@@ -1,21 +1,24 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DEEPTMHMM {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pybiolib:1.3.418--pyhdfd78af_0':
-        'quay.io/biocontainers/pybiolib:1.3.418--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/pybiolib:1.3.418--pyhdfd78af_0'
+        : 'quay.io/biocontainers/pybiolib:1.3.418--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("biolib_results/TMRs.gff3")                 , emit: gff3
+    tuple val(meta), path("biolib_results/TMRs.gff3"), emit: gff3
     tuple val(meta), path("biolib_results/predicted_topologies.3line"), emit: line3
-    tuple val(meta), path("biolib_results/deeptmhmm_results.md")      , emit: md
-    tuple val(meta), path("biolib_results/*_probs.csv")               , optional: true, emit: csv
-    tuple val(meta), path("biolib_results/plot.png")                  , optional: true, emit: png
+    tuple val(meta), path("biolib_results/deeptmhmm_results.md"), emit: md
+    tuple val(meta), path("biolib_results/*_probs.csv"), optional: true, emit: csv
+    tuple val(meta), path("biolib_results/plot.png"), optional: true, emit: png
     tuple val("${task.process}"), val("biolib"), eval("biolib --version 2>&1 | sed 's/.*version //'"), emit: versions_biolib, topic: versions
     tuple val("${task.process}"), val('python'), eval("python --version | sed 's/Python //'"), topic: versions, emit: versions_python
 
@@ -29,15 +32,15 @@ process DEEPTMHMM {
 
     """
     export XDG_CACHE_HOME=/tmp/.cache
-    if [ "$is_compressed" == "true" ]; then
-        gzip -c -d $fasta > $fasta_name
+    if [ "${is_compressed}" == "true" ]; then
+        gzip -c -d ${fasta} > ${fasta_name}
     fi
 
     biolib \\
         run \\
         DTU/DeepTMHMM \\
         --fasta ${fasta_name} \\
-        $args
+        ${args}
     """
 
     stub:

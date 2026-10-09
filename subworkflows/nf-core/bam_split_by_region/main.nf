@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 //
 // Run SAMtools idxstats, then split reads in input bam into one bam per chromosome in idxstats output
 //
@@ -6,7 +9,6 @@ include { SAMTOOLS_VIEW  } from '../../../modules/nf-core/samtools/view/main'
 include { SAMTOOLS_INDEX } from '../../../modules/nf-core/samtools/index/main'
 
 workflow BAM_SPLIT_BY_REGION {
-
     take:
     ch_bam // channel: [ val(meta), path(bam), path(bai), path(regions_file) ]
 
@@ -16,12 +18,11 @@ workflow BAM_SPLIT_BY_REGION {
     //
 
     ch_regions = ch_bam
-        .map{
-            meta, _bam, _bai, regions_file ->
-            [ meta, regions_file ]
+        .map { meta, _bam, _bai, regions_file ->
+            [meta, regions_file]
         }
-        .splitCsv ( header: ['seq_name', 'start', 'stop'], sep:'\t', elem: 1)
-        .map{ meta, stats ->
+        .splitCsv(header: ['seq_name', 'start', 'stop'], sep: '\t', elem: 1)
+        .map { meta, stats ->
             // If the regions file contains just a sequence name provide that
             if (!stats['start']) {
                 return [meta, stats['seq_name']]
@@ -43,11 +44,10 @@ workflow BAM_SPLIT_BY_REGION {
 
     ch_bam_for_splitting = ch_bam
         .combine(ch_regions, by: 0)
-        // Place region into meta map
-        .map{ meta, bam, bai, _region_file, chrom -> [ meta + [ genomic_region:chrom ], bam, bai ] }
+        .map { meta, bam, bai, _region_file, chrom -> [meta + [genomic_region: chrom], bam, bai] }
 
     // The specified region is put into ext.args2 from the meta. See nextflow.config of the subworkflow.
-    SAMTOOLS_VIEW(ch_bam_for_splitting, [[],[],[]], [[], []], [[], []], [])
+    SAMTOOLS_VIEW(ch_bam_for_splitting, [[], [], []], [[], []], [[], []], [])
 
     //
     // Index the output bams
@@ -62,5 +62,5 @@ workflow BAM_SPLIT_BY_REGION {
     ch_output = SAMTOOLS_VIEW.out.bam.join(SAMTOOLS_INDEX.out.index)
 
     emit:
-    bam_bai     = ch_output                         // channel: [ val(meta), path(bam), path(bai) ]
+    bam_bai = ch_output // channel: [ val(meta), path(bam), path(bai) ]
 }

@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GLIMPSE_CONCORDANCE {
     tag "${meta.id}"
     label 'process_low'
@@ -14,9 +17,9 @@ process GLIMPSE_CONCORDANCE {
     val bins
 
     output:
-    tuple val(meta), path("*.error.cal.txt.gz")  , emit: errors_cal
-    tuple val(meta), path("*.error.grp.txt.gz")  , emit: errors_grp
-    tuple val(meta), path("*.error.spl.txt.gz")  , emit: errors_spl
+    tuple val(meta), path("*.error.cal.txt.gz"), emit: errors_cal
+    tuple val(meta), path("*.error.grp.txt.gz"), emit: errors_grp
+    tuple val(meta), path("*.error.spl.txt.gz"), emit: errors_spl
     tuple val(meta), path("*.rsquare.grp.txt.gz"), emit: rsquare_grp
     tuple val(meta), path("*.rsquare.spl.txt.gz"), emit: rsquare_spl
     tuple val("${task.process}"), val('glimpse'), eval("GLIMPSE_concordance --help | sed -n '/Version/s/.*: //p'"), topic: versions, emit: versions_glimpse
@@ -25,11 +28,11 @@ process GLIMPSE_CONCORDANCE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args         = task.ext.args   ?: ''
-    def prefix       = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def min_prob_cmd = min_prob ? "--minPROB ${min_prob}" : "--minPROB 0.9999"
-    def min_dp_cmd   = min_dp   ? "--minDP ${min_dp}"     : "--minDP 8"
-    def bins_cmd     = bins     ? "--bins ${bins}"        : "--bins 0.00000 0.00100 0.00200 0.00500 0.01000 0.05000 0.10000 0.20000 0.50000"
+    def min_dp_cmd = min_dp ? "--minDP ${min_dp}" : "--minDP 8"
+    def bins_cmd = bins ? "--bins ${bins}" : "--bins 0.00000 0.00100 0.00200 0.00500 0.01000 0.05000 0.10000 0.20000 0.50000"
     """
     echo ${region} ${freq} ${truth} ${estimate} > input.txt
     GLIMPSE_concordance \\

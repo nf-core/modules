@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BASES2FASTQ {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     container "docker.io/elembio/bases2fastq:2.3.0"
@@ -9,13 +12,13 @@ process BASES2FASTQ {
 
     output:
     tuple val(meta), path("${prefix}/Samples/**/*_R*.fastq.gz"), emit: sample_fastq
-    tuple val(meta), path("${prefix}/Samples/**/*_stats.json") , emit: sample_json
-    tuple val(meta), path("${prefix}/*_QC.html")               , emit: qc_report
-    tuple val(meta), path("${prefix}/multiqc_report.html")     , emit: multiqc_report, optional: true
-    tuple val(meta), path("${prefix}/RunStats.json")           , emit: run_stats
-    tuple val(meta), path("${prefix}/RunManifest.json")        , emit: generated_run_manifest
-    tuple val(meta), path("${prefix}/Metrics.csv")             , emit: metrics
-    tuple val(meta), path("${prefix}/UnassignedSequences.csv") , emit: unassigned
+    tuple val(meta), path("${prefix}/Samples/**/*_stats.json"), emit: sample_json
+    tuple val(meta), path("${prefix}/*_QC.html"), emit: qc_report
+    tuple val(meta), path("${prefix}/multiqc_report.html"), emit: multiqc_report, optional: true
+    tuple val(meta), path("${prefix}/RunStats.json"), emit: run_stats
+    tuple val(meta), path("${prefix}/RunManifest.json"), emit: generated_run_manifest
+    tuple val(meta), path("${prefix}/Metrics.csv"), emit: metrics
+    tuple val(meta), path("${prefix}/UnassignedSequences.csv"), emit: unassigned
     tuple val("${task.process}"), val('bases2fastq'), eval('bases2fastq --version | sed "s/.*version //;s/,.*//"'), emit: versions_bases2fastq, topic: versions
 
     when:
@@ -24,17 +27,17 @@ process BASES2FASTQ {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "BASES2FASTQ module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("BASES2FASTQ module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def runManifest = run_manifest ? "-r ${run_manifest}" : ""
     """
     bases2fastq \\
-        -p $task.cpus \\
-        $runManifest \\
-        $args \\
-        $run_dir \\
+        -p ${task.cpus} \\
+        ${runManifest} \\
+        ${args} \\
+        ${run_dir} \\
         ${prefix}
     """
 

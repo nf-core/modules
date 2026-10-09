@@ -1,23 +1,26 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CHECKV_ENDTOEND {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/checkv:1.0.3--pyhdfd78af_0':
-        'quay.io/biocontainers/checkv:1.0.3--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/checkv:1.0.3--pyhdfd78af_0'
+        : 'quay.io/biocontainers/checkv:1.0.3--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(fasta)
     path db
 
     output:
-    tuple val(meta), path ("${prefix}/quality_summary.tsv") , emit: quality_summary
-    tuple val(meta), path ("${prefix}/completeness.tsv")    , emit: completeness
-    tuple val(meta), path ("${prefix}/contamination.tsv")   , emit: contamination
-    tuple val(meta), path ("${prefix}/complete_genomes.tsv"), emit: complete_genomes
-    tuple val(meta), path ("${prefix}/proviruses.fna")      , emit: proviruses
-    tuple val(meta), path ("${prefix}/viruses.fna")         , emit: viruses
+    tuple val(meta), path("${prefix}/quality_summary.tsv"), emit: quality_summary
+    tuple val(meta), path("${prefix}/completeness.tsv"), emit: completeness
+    tuple val(meta), path("${prefix}/contamination.tsv"), emit: contamination
+    tuple val(meta), path("${prefix}/complete_genomes.tsv"), emit: complete_genomes
+    tuple val(meta), path("${prefix}/proviruses.fna"), emit: proviruses
+    tuple val(meta), path("${prefix}/viruses.fna"), emit: viruses
     tuple val("${task.process}"), val("checkv"), eval("checkv -h 2>&1 | sed '1!d;s/^.*CheckV v//;s/:.*//'"), topic: versions, emit: versions_checkv
 
     when:
@@ -30,11 +33,11 @@ process CHECKV_ENDTOEND {
     """
     checkv \\
         end_to_end \\
-        $args \\
-        -t $task.cpus \\
-        -d $db \\
-        $fasta \\
-        $prefix
+        ${args} \\
+        -t ${task.cpus} \\
+        -d ${db} \\
+        ${fasta} \\
+        ${prefix}
     """
 
     stub:

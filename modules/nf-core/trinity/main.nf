@@ -1,19 +1,22 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TRINITY {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
     label 'process_high_memory'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/trinity:2.15.2--pl5321hdcf5f25_1':
-        'quay.io/biocontainers/trinity:2.15.2--pl5321hdcf5f25_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/trinity:2.15.2--pl5321hdcf5f25_1'
+        : 'quay.io/biocontainers/trinity:2.15.2--pl5321hdcf5f25_1'}"
 
     input:
     tuple val(meta), path(reads, stageAs: "input*/*", arity: '1..*')
 
     output:
-    tuple val(meta), path("*.fa.gz")    , emit: transcript_fasta
-    tuple val(meta), path("*.log")      , emit: log
+    tuple val(meta), path("*.fa.gz"), emit: transcript_fasta
+    tuple val(meta), path("*.log"), emit: log
     tuple val("${task.process}"), val('trinity'), eval("Trinity --version | grep 'Trinity version' | sed 's/.*Trinity-v//'"), topic: versions, emit: versions_trinity
 
     when:
@@ -29,8 +32,9 @@ process TRINITY {
     if (meta.single_end) {
         reads1 = reads
         reads_args = "--single ${reads1.join(',')}"
-    } else {
-        reads.eachWithIndex{ v, ix -> ( ix & 1 ? reads2 : reads1) << v }
+    }
+    else {
+        reads.eachWithIndex { v, ix -> (ix & 1 ? reads2 : reads1) << v }
         reads_args = "--left ${reads1.join(',')} --right ${reads2.join(',')}"
     }
 
@@ -40,9 +44,10 @@ process TRINITY {
     // Define the memory requirements. Trinity needs this as an option.
     def avail_mem = 7
     if (!task.memory) {
-        log.info '[Trinity] Available memory not known - defaulting to 7GB. Specify process memory requirements to change this.'
-    } else {
-        avail_mem = (task.memory.giga*0.8).intValue()
+        log.info('[Trinity] Available memory not known - defaulting to 7GB. Specify process memory requirements to change this.')
+    }
+    else {
+        avail_mem = (task.memory.giga * 0.8).intValue()
     }
 
     """
@@ -53,8 +58,8 @@ process TRINITY {
         --max_memory ${avail_mem}G \\
         ${reads_args} \\
         --output ${prefix}_trinity \\
-        --CPU $task.cpus \\
-        $args \\
+        --CPU ${task.cpus} \\
+        ${args} \\
         | tee ${prefix}.log
 
     gzip \\

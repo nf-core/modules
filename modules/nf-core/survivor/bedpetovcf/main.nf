@@ -1,12 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
 
 process SURVIVOR_BEDPETOVCF {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/survivor:1.0.7--h9a82719_1':
-        'quay.io/biocontainers/survivor:1.0.7--h9a82719_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/survivor:1.0.7--h9a82719_1'
+        : 'quay.io/biocontainers/survivor:1.0.7--h9a82719_1'}"
 
     input:
     tuple val(meta), path(bedpe)
@@ -23,7 +25,7 @@ process SURVIVOR_BEDPETOVCF {
     """
     SURVIVOR \\
         bedpetovcf \\
-        $bedpe \\
+        ${bedpe} \\
         ${prefix}.vcf
     """
 

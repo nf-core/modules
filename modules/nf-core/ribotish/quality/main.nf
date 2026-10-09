@@ -1,19 +1,22 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RIBOTISH_QUALITY {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ribotish:0.2.8--pyhdfd78af_0':
-        'quay.io/biocontainers/ribotish:0.2.8--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/ribotish:0.2.8--pyhdfd78af_0'
+        : 'quay.io/biocontainers/ribotish:0.2.8--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(bam), path(bai)
     tuple val(meta2), path(gtf)
 
     output:
-    tuple val(meta), path("*.txt")    , emit: distribution
-    tuple val(meta), path("*.pdf")    , emit: pdf
+    tuple val(meta), path("*.txt"), emit: distribution
+    tuple val(meta), path("*.pdf"), emit: pdf
     tuple val(meta), path("*.para.py"), emit: offset
     tuple val("${task.process}"), val('ribotish'), eval("ribotish --version | sed 's/ribotish //'"), topic: versions, emit: versions_ribotish
 
@@ -25,13 +28,13 @@ process RIBOTISH_QUALITY {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     ribotish quality \\
-        -b $bam \\
-        -g $gtf \\
+        -b ${bam} \\
+        -g ${gtf} \\
         -o ${prefix}_qual.txt \\
         -f ${prefix}_qual.pdf \\
         -r ${prefix}.para.py \\
-        -p $task.cpus \\
-        $args
+        -p ${task.cpus} \\
+        ${args}
     """
 
     stub:

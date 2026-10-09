@@ -1,27 +1,30 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VARIANCEPARTITION_DREAM {
     tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d6/d6fa8a7908dd357484d63bb574a378f1739440a2c0752ce91b1e0e9d1ac1638c/data' :
-        'community.wave.seqera.io/library/bioconductor-edger_bioconductor-variancepartition_r-optparse:ba778938d72f30c5' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d6/d6fa8a7908dd357484d63bb574a378f1739440a2c0752ce91b1e0e9d1ac1638c/data'
+        : 'community.wave.seqera.io/library/bioconductor-edger_bioconductor-variancepartition_r-optparse:ba778938d72f30c5'}"
 
     input:
     tuple val(meta), val(contrast_variable), val(reference), val(target), val(formula), val(comparison)
     tuple val(meta2), path(samplesheet), path(counts)
 
     output:
-    tuple val(meta), path("*.dream.results.tsv")        , emit: results
-    tuple val(meta), path("*.dream.model.txt")          , emit: model
-    tuple val(meta), path("*.normalised_counts.tsv")    , emit: normalised_counts, optional: true
-    path "versions.yml"                                 , emit: versions, topic: versions
+    tuple val(meta), path("*.dream.results.tsv"), emit: results
+    tuple val(meta), path("*.dream.model.txt"), emit: model
+    tuple val(meta), path("*.normalised_counts.tsv"), emit: normalised_counts, optional: true
+    path "versions.yml", emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    template 'dream.R'
+    template('dream.R')
 
     stub:
     """

@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CDHIT_CDHIT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cd-hit%3A4.8.1--h5b5514e_7':
-        'quay.io/biocontainers/cd-hit:4.8.1--h5b5514e_7' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/cd-hit%3A4.8.1--h5b5514e_7'
+        : 'quay.io/biocontainers/cd-hit:4.8.1--h5b5514e_7'}"
 
     input:
     tuple val(meta), path(sequences)
 
     output:
-    tuple val(meta), path("*.fasta")    ,emit: fasta
-    tuple val(meta), path("*.clstr")    ,emit: clusters
+    tuple val(meta), path("*.fasta"), emit: fasta
+    tuple val(meta), path("*.clstr"), emit: clusters
     tuple val("${task.process}"), val('cdhit'), eval("cd-hit -h | sed -n '1s/.*version \\([0-9.]*\\).*/\\1/p'"), topic: versions, emit: versions_cdhit
 
     when:
@@ -23,17 +26,18 @@ process CDHIT_CDHIT {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def avail_mem = 3072
     if (!task.memory) {
-        log.info '[cd-hit] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
-    } else {
-        avail_mem = (task.memory.mega*0.8).intValue()
+        log.info('[cd-hit] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.')
+    }
+    else {
+        avail_mem = (task.memory.mega * 0.8).intValue()
     }
     """
     cd-hit \\
-        $args \\
+        ${args} \\
         -i ${sequences} \\
         -o ${prefix}.fasta \\
-        -M $avail_mem \\
-        -T $task.cpus
+        -M ${avail_mem} \\
+        -T ${task.cpus}
     """
 
     stub:

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FLYE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fa/fa1c1e961de38d24cf36c424a8f4a9920ddd07b63fdb4cfa51c9e3a593c3c979/data' :
-        'community.wave.seqera.io/library/flye:2.9.5--d577924c8416ccd8' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fa/fa1c1e961de38d24cf36c424a8f4a9920ddd07b63fdb4cfa51c9e3a593c3c979/data'
+        : 'community.wave.seqera.io/library/flye:2.9.5--d577924c8416ccd8'}"
 
     input:
     tuple val(meta), path(reads)
@@ -13,11 +16,11 @@ process FLYE {
 
     output:
     tuple val(meta), path("*.fasta.gz"), emit: fasta
-    tuple val(meta), path("*.gfa.gz")  , emit: gfa
-    tuple val(meta), path("*.gv.gz")   , emit: gv
-    tuple val(meta), path("*.txt")     , emit: txt
-    tuple val(meta), path("*.log")     , emit: log
-    tuple val(meta), path("*.json")    , emit: json
+    tuple val(meta), path("*.gfa.gz"), emit: gfa
+    tuple val(meta), path("*.gv.gz"), emit: gv
+    tuple val(meta), path("*.txt"), emit: txt
+    tuple val(meta), path("*.log"), emit: log
+    tuple val(meta), path("*.json"), emit: json
     tuple val("${task.process}"), val('flye'), eval('flye --version'), emit: versions_flye, topic: versions
 
     when:
@@ -27,15 +30,17 @@ process FLYE {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def valid_mode = ["--pacbio-raw", "--pacbio-corr", "--pacbio-hifi", "--nano-raw", "--nano-corr", "--nano-hq"]
-    if ( !valid_mode.contains(mode) )  { error "Unrecognised mode to run Flye. Options: ${valid_mode.join(', ')}" }
+    if (!valid_mode.contains(mode)) {
+        error("Unrecognised mode to run Flye. Options: ${valid_mode.join(', ')}")
+    }
     """
     flye \\
-        $mode \\
-        $reads \\
+        ${mode} \\
+        ${reads} \\
         --out-dir . \\
         --threads \\
-        $task.cpus \\
-        $args
+        ${task.cpus} \\
+        ${args}
 
     gzip -c assembly.fasta > ${prefix}.assembly.fasta.gz
     gzip -c assembly_graph.gfa > ${prefix}.assembly_graph.gfa.gz

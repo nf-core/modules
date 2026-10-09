@@ -1,10 +1,13 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process AMPS {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hops:0.35--hdfd78af_1' :
-        'quay.io/biocontainers/hops:0.35--hdfd78af_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/hops:0.35--hdfd78af_1'
+        : 'quay.io/biocontainers/hops:0.35--hdfd78af_1'}"
 
     input:
     path maltextract_results
@@ -13,9 +16,9 @@ process AMPS {
 
     output:
     path "results/heatmap_overview_Wevid.json", emit: json
-    path "results/heatmap_overview_Wevid.pdf" , emit: summary_pdf
-    path "results/heatmap_overview_Wevid.tsv" , emit: tsv
-    path "results/pdf_candidate_profiles/"    , emit: candidate_pdfs
+    path "results/heatmap_overview_Wevid.pdf", emit: summary_pdf
+    path "results/heatmap_overview_Wevid.tsv", emit: tsv
+    path "results/pdf_candidate_profiles/", emit: candidate_pdfs
     tuple val("${task.process}"), val('hops'), eval("hops --version 2>&1 | sed 's/HOPS version//' "), emit: versions_hops, topic: versions
 
     when:

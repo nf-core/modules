@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BISCUIT_ALIGN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/50/5021d3f67d0221a5fa1eb692573a20fa28a5a552754d89c4351eb0eba42eadb0/data':
-        'community.wave.seqera.io/library/biscuit_samtools:1e5147589c9d9ec1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/50/5021d3f67d0221a5fa1eb692573a20fa28a5a552754d89c4351eb0eba42eadb0/data'
+        : 'community.wave.seqera.io/library/biscuit_samtools:1e5147589c9d9ec1'}"
 
     input:
     tuple val(meta), path(reads)
@@ -28,14 +31,14 @@ process BISCUIT_ALIGN {
     def biscuit_cpus = [(task.cpus * 0.9) as int, 1].max()
     def samtools_cpus = (task.cpus - biscuit_cpus < 1) ? biscuit_cpus : (task.cpus - biscuit_cpus)
     """
-    ln -sf \$(readlink $fasta) $index/$fasta
+    ln -sf \$(readlink ${fasta}) ${index}/${fasta}
 
     biscuit align \\
-        $args \\
-        -@ $biscuit_cpus \\
-        $index/$fasta \\
-        $reads \\
-        | samtools sort $args2 --threads $samtools_cpus --write-index -o ${prefix}.bam -O BAM -
+        ${args} \\
+        -@ ${biscuit_cpus} \\
+        ${index}/${fasta} \\
+        ${reads} \\
+        | samtools sort ${args2} --threads ${samtools_cpus} --write-index -o ${prefix}.bam -O BAM -
 
     samtools index ${prefix}.bam
     """

@@ -1,24 +1,27 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CAALM_CAALM {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
-    conda "${ task.accelerator ? "${moduleDir}/environment.gpu.yml" : "${moduleDir}/environment.yml" }"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        (task.accelerator ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b7/b7d8463ba45e58c679292c34ae29a86d32203c087656b21c6a0b1994f99587b1/data' : 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/55/55ece0a3f753bb56ac6218db66467266cafb0fb4e04116875b26817614a45fd4/data') :
-        (task.accelerator ? 'community.wave.seqera.io/library/faiss-cpu_mkl_python_pytorch-gpu_pruned:eafab5e379ebcfa9' : 'community.wave.seqera.io/library/faiss-cpu_mkl_python_pytorch_caalm:de045242d7b19122') }"
+    conda "${task.accelerator ? "${moduleDir}/environment.gpu.yml" : "${moduleDir}/environment.yml"}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? (task.accelerator ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b7/b7d8463ba45e58c679292c34ae29a86d32203c087656b21c6a0b1994f99587b1/data' : 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/55/55ece0a3f753bb56ac6218db66467266cafb0fb4e04116875b26817614a45fd4/data')
+        : (task.accelerator ? 'community.wave.seqera.io/library/faiss-cpu_mkl_python_pytorch-gpu_pruned:eafab5e379ebcfa9' : 'community.wave.seqera.io/library/faiss-cpu_mkl_python_pytorch_caalm:de045242d7b19122')}"
 
     input:
     tuple val(meta), path(fasta)
     tuple path(level0), path(level1), path(level2)
 
     output:
-    tuple val(meta), path("${prefix}_predictions.tsv")      , emit: predictions
-    tuple val(meta), path("${prefix}_probabilities.jsonl")  , emit: probabilities
-    tuple val(meta), path("${prefix}_statistics.tsv")       , emit: statistics
+    tuple val(meta), path("${prefix}_predictions.tsv"), emit: predictions
+    tuple val(meta), path("${prefix}_probabilities.jsonl"), emit: probabilities
+    tuple val(meta), path("${prefix}_statistics.tsv"), emit: statistics
     tuple val(meta), path("${prefix}_level0_embeddings.npy"), emit: embeddings_level0, optional: true
     tuple val(meta), path("${prefix}_level1_embeddings.npy"), emit: embeddings_level1, optional: true
     tuple val(meta), path("${prefix}_level2_embeddings.npy"), emit: embeddings_level2, optional: true
-    tuple val(meta), path("${prefix}.log")                  , emit: log
+    tuple val(meta), path("${prefix}.log"), emit: log
     tuple val("${task.process}"), val('caalm'), eval("caalm --version 2>&1 | head -1"), topic: versions, emit: versions_caalm
     tuple val("${task.process}"), val('python'), eval("python --version | sed 's/Python //'"), topic: versions, emit: versions_python
     tuple val("${task.process}"), val('torch'), eval("python -c 'import torch; print(torch.__version__)'"), topic: versions, emit: versions_torch
@@ -34,7 +37,7 @@ process CAALM_CAALM {
     def device = task.accelerator ? "cuda" : "cpu"
     """
     caalm \\
-        $args \\
+        ${args} \\
         --num-workers ${task.cpus} \\
         --device ${device} \\
         --level0-model ${level0} \\
@@ -52,15 +55,15 @@ process CAALM_CAALM {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo "$args"
+    echo "${args}"
 
     touch ${prefix}_predictions.tsv
     touch ${prefix}_probabilities.jsonl
     touch ${prefix}_statistics.tsv
     touch ${prefix}.log
 
-    if [[ "$args" == *"--save-level0-embeddings"* ]]; then touch ${prefix}_level0_embeddings.npy; fi
-    if [[ "$args" == *"--save-level1-embeddings"* ]]; then touch ${prefix}_level1_embeddings.npy; fi
-    if [[ "$args" == *"--save-level2-embeddings"* ]]; then touch ${prefix}_level2_embeddings.npy; fi
+    if [[ "${args}" == *"--save-level0-embeddings"* ]]; then touch ${prefix}_level0_embeddings.npy; fi
+    if [[ "${args}" == *"--save-level1-embeddings"* ]]; then touch ${prefix}_level1_embeddings.npy; fi
+    if [[ "${args}" == *"--save-level2-embeddings"* ]]; then touch ${prefix}_level2_embeddings.npy; fi
     """
 }

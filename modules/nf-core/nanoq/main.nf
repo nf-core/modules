@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process NANOQ {
     tag "${meta.id}"
     label 'process_low'
@@ -9,10 +12,10 @@ process NANOQ {
 
     input:
     tuple val(meta), path(ontreads)
-    val(output_format) //One of the following: fastq, fastq.gz, fastq.bz2, fastq.lzma, fasta, fasta.gz, fasta.bz2, fasta.lzma.
+    val output_format
 
     output:
-    tuple val(meta), path("*.{stats,json}")            , emit: stats
+    tuple val(meta), path("*.{stats,json}"), emit: stats
     tuple val(meta), path("${prefix}.${output_format}"), emit: reads
     tuple val("${task.process}"), val('nanoq'), eval("nanoq --version | sed -e 's/nanoq //g'"), topic: versions, emit: versions_nanoq
 

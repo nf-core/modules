@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 // NB 1: You'll likely want to override this with a container containing all
 // required dependencies for your analyses. Or use wave to build the container
 // for you from the environment.yml You'll at least need Quarto itself,
@@ -18,18 +21,18 @@ process QUARTO_NOTEBOOK {
 
     input:
     tuple val(meta), path(notebook)
-    val(parameters)
+    val parameters
     path input_files
     path extensions
 
     output:
-    tuple val(meta), path("*.html")                                                            , emit: html
-    tuple val(meta), path(notebook)                                                            , emit: notebook
-    tuple val(meta), path("params.yml")                                                        , emit: params_yaml
-    tuple val(meta), path("${notebook_parameters.artifact_dir}/*")                             , emit: artifacts  , optional: true
-    tuple val(meta), path("_extensions")                                                       , emit: extensions , optional: true
-    path "versions.yml"                                                                        , emit: versions          , topic: versions
-    tuple val("${task.process}"), val('quarto'), eval('quarto -v')                             , emit: versions_quarto   , topic: versions
+    tuple val(meta), path("*.html"), emit: html
+    tuple val(meta), path(notebook), emit: notebook
+    tuple val(meta), path("params.yml"), emit: params_yaml
+    tuple val(meta), path("${notebook_parameters.artifact_dir}/*"), emit: artifacts, optional: true
+    tuple val(meta), path("_extensions"), emit: extensions, optional: true
+    path "versions.yml", emit: versions, topic: versions
+    tuple val("${task.process}"), val('quarto'), eval('quarto -v'), emit: versions_quarto, topic: versions
     tuple val("${task.process}"), val('papermill'), eval('papermill --version | cut -f1 -d" "'), emit: versions_papermill, topic: versions
 
     when:

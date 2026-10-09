@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GRIDSS_CALL {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gridss:2.13.2--h50ea8bc_3':
-        'quay.io/biocontainers/gridss:2.13.2--h50ea8bc_3' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/gridss:2.13.2--h50ea8bc_3'
+        : 'quay.io/biocontainers/gridss:2.13.2--h50ea8bc_3'}"
 
     input:
     tuple val(meta), path(bam), path(bai), path(preprocess_dir), path(assemble_dir), path(assemble_bam)
@@ -13,8 +16,8 @@ process GRIDSS_CALL {
     tuple val(meta3), path(gridss_config)
 
     output:
-    tuple val(meta), path("*.sv.gridss.vcf.gz"),  emit: vcf
-    tuple val("${task.process}"), val('gridss'), eval("CallVariants --version 2>&1 | sed 's/-gridss\$//'")  , topic: versions, emit: versions_gridss
+    tuple val(meta), path("*.sv.gridss.vcf.gz"), emit: vcf
+    tuple val("${task.process}"), val('gridss'), eval("CallVariants --version 2>&1 | sed 's/-gridss\$//'"), topic: versions, emit: versions_gridss
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,8 +29,8 @@ process GRIDSS_CALL {
     def bam_list = bam instanceof List ? bam : [bam]
 
     def index_files = bwa_index instanceof List ? bwa_index : [bwa_index]
-	// GRIDSS requires all BWA index files to have the exact same basename as the reference fasta
-	def link_cmds = index_files.collect { idx -> "ln -sf ${idx} ./${fasta}.${idx.extension}" }.join('\n')
+    // GRIDSS requires all BWA index files to have the exact same basename as the reference fasta
+    def link_cmds = index_files.collect { idx -> "ln -sf ${idx} ./${fasta}.${idx.extension}" }.join('\n')
     """
     ${link_cmds}
 

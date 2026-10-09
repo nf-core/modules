@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process QUILT_QUILT2 {
     tag "${meta.id}"
     label 'process_single'
@@ -12,8 +15,8 @@ process QUILT_QUILT2 {
     tuple val(meta2), path(fasta), path(fasta_fai)
 
     output:
-    tuple val(meta), path("*.vcf.gz")          , emit: vcf
-    tuple val(meta), path("*.vcf.gz.tbi")      , emit: tbi  , optional: true
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
+    tuple val(meta), path("*.vcf.gz.tbi"), emit: tbi, optional: true
     tuple val(meta), path("RData", type: "dir"), emit: rdata, optional: true
     tuple val(meta), path("plots", type: "dir"), emit: plots, optional: true
     tuple val("${task.process}"), val('r-quilt'), eval('Rscript -e "cat(as.character(packageVersion(\'QUILT\')))"'), topic: versions, emit: versions_r_quilt
@@ -23,23 +26,23 @@ process QUILT_QUILT2 {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def extensions   = bams.collect { path -> path.extension }
-    def extension    = extensions.flatten().unique()
+    def extensions = bams.collect { path -> path.extension }
+    def extension = extensions.flatten().unique()
     def list_command = extension == ["bam"]
         ? "--bamlist="
         : extension == ["cram"] ? "--reference=${fasta} --cramlist=" : ""
 
     def genetic_map_command = genetic_map ? "--genetic_map_file=${genetic_map}" : ""
-    def posfile_command     = posfile     ? "--posfile=${posfile}"               : ""
-    def phasefile_command   = phasefile   ? "--phasefile=${phasefile}"           : ""
-    def genfile_command     = genfile     ? "--genfile=${genfile}"               : ""
-    def samplename_command  = samplename  ? "--sampleNames_file=${samplename}"   : ""
-    def start_command       = regions_start ? "--regionStart=${regions_start}"    : ""
-    def end_command         = regions_end ? "--regionEnd=${regions_end}"         : ""
-    def buffer_command      = buffer      ? "--buffer=${buffer}"                 : ""
+    def posfile_command = posfile ? "--posfile=${posfile}" : ""
+    def phasefile_command = phasefile ? "--phasefile=${phasefile}" : ""
+    def genfile_command = genfile ? "--genfile=${genfile}" : ""
+    def samplename_command = samplename ? "--sampleNames_file=${samplename}" : ""
+    def start_command = regions_start ? "--regionStart=${regions_start}" : ""
+    def end_command = regions_end ? "--regionEnd=${regions_end}" : ""
+    def buffer_command = buffer ? "--buffer=${buffer}" : ""
 
     if (!(args ==~ /.*--seed.*/)) {
         args += " --seed=1"
@@ -74,12 +77,12 @@ process QUILT_QUILT2 {
     """
 
     stub:
-    def args          = task.ext.args   ?: ''
-    def prefix        = task.ext.prefix ?: "${meta.id}"
-    def make_plots    = args.contains("--make_plots=TRUE")
-    def save_ref      = args.contains("--save_prepared_reference=TRUE")
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def make_plots = args.contains("--make_plots=TRUE")
+    def save_ref = args.contains("--save_prepared_reference=TRUE")
     def nGibbsSamples = args.contains("--nGibbsSamples=") ? args.split("--nGibbsSamples=")[1].split(" ")[0] : 7
-    def n_seek_its    = args.contains("--n_seek_its=")    ? args.split("--n_seek_its=")[1].split(" ")[0]    : 3
+    def n_seek_its = args.contains("--n_seek_its=") ? args.split("--n_seek_its=")[1].split(" ")[0] : 3
 
     """
     echo '' | gzip > ${prefix}.vcf.gz

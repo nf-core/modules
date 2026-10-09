@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 //
 // Alignment with Bowtie2
 //
@@ -17,7 +20,7 @@ workflow FASTQ_ALIGN_BOWTIE2 {
 
     //
     // Remap ch_fasta_fai to ch_fasta
-    ch_fasta = ch_fasta_fai.map{ meta, fasta, _fai -> [ meta, fasta] }
+    ch_fasta = ch_fasta_fai.map { meta, fasta, _fai -> [meta, fasta] }
 
     //
     // Map reads with Bowtie2

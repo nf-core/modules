@@ -1,12 +1,15 @@
-include { BCFTOOLS_CONCAT } from '../../../modules/nf-core/bcftools/concat/main'
-include { BCFTOOLS_SORT   } from '../../../modules/nf-core/bcftools/sort/main'
-include { HTSLIB_BGZIPTABIX     } from '../../../modules/nf-core/htslib/bgziptabix/main'
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
+include { BCFTOOLS_CONCAT   } from '../../../modules/nf-core/bcftools/concat/main'
+include { BCFTOOLS_SORT     } from '../../../modules/nf-core/bcftools/sort/main'
+include { HTSLIB_BGZIPTABIX } from '../../../modules/nf-core/htslib/bgziptabix/main'
 
 workflow VCF_GATHER_BCFTOOLS {
     take:
-    ch_vcfs           // channel: [ meta, vcf, index, count ]
-    arr_common_meta   // array: The name of the meta fields that should be used for grouping
-    val_sort          // boolean: Whether or not the output file should be sorted !! Add the config when using sort !!
+    ch_vcfs // channel: [ meta, vcf, index, count ]
+    arr_common_meta // array: The name of the meta fields that should be used for grouping
+    val_sort // boolean: Whether or not the output file should be sorted !! Add the config when using sort !!
 
     main:
 
@@ -21,37 +24,41 @@ workflow VCF_GATHER_BCFTOOLS {
             if (missingKeys) {
                 error("ERROR: Keys ${missingKeys} from arr_common_meta not found in meta. Available keys: ${meta.keySet()}")
             }
-            def newMeta = arr_common_meta ?
-                arr_common_meta.collectEntries { key -> [(key): meta[key]] } :
-                meta
+            def newMeta = arr_common_meta
+                ? arr_common_meta.collectEntries { key -> [(key): meta[key]] }
+                : meta
             [groupKey(newMeta, count), meta, vcf, index]
         }
         .groupTuple()
         .branch { key, metas, vcf, index ->
-            def cleanedMetas = metas.collect { meta -> meta
-                .findAll { k, _v -> !(k in arr_common_meta) }
-                .toSorted() // sort inside each meta map
-            }.sort { a, b -> a.toString() <=> b.toString() } // sort across meta maps
+            def cleanedMetas = metas
+                .collect { meta ->
+                    meta
+                        .findAll { k, _v -> !(k in arr_common_meta) }
+                        .toSorted()
+                }
+                .sort { a, b -> a.toString() <=> b.toString() }
+            // sort across meta maps
             def newMeta = arr_common_meta ? key.target + [metas: cleanedMetas] : metas[0]
             def out_tuple = [newMeta, vcf.sort(), index.sort()]
-
             one: vcf.size() == 1
-                return out_tuple
+            return out_tuple
             more: vcf.size() > 1
-                return out_tuple
+            return out_tuple
         }
 
     // Concatenate vcf with more than one record
     BCFTOOLS_CONCAT(ch_concat_input.more)
 
     ch_vcf_concat = ch_concat_input.one
-        .map{ meta, vcf, _index -> [meta, vcf.get(0)] }
+        .map { meta, vcf, _index -> [meta, vcf.get(0)] }
         .mix(BCFTOOLS_CONCAT.out.vcf)
 
     if (val_sort) {
         BCFTOOLS_SORT(ch_vcf_concat)
         ch_tabix_input = BCFTOOLS_SORT.out.vcf
-    } else {
+    }
+    else {
         ch_tabix_input = ch_vcf_concat
     }
 
@@ -59,13 +66,13 @@ workflow VCF_GATHER_BCFTOOLS {
         ch_tabix_input.map { meta, vcf -> [meta, vcf, [], []] },
         "compress",
         true,
-        "vcf"
+        "vcf",
     )
 
     ch_vcf_index = HTSLIB_BGZIPTABIX.out.output.join(HTSLIB_BGZIPTABIX.out.index)
 
     emit:
     vcf       = HTSLIB_BGZIPTABIX.out.output // channel: [ val(meta), [ vcf ] ]
-    index     = HTSLIB_BGZIPTABIX.out.index  // channel: [ val(meta), [ tbi or csi ] ]
-    vcf_index = ch_vcf_index                 // channel: [ val(meta), [ vcf ], [ tbi or csi ] ]
+    index     = HTSLIB_BGZIPTABIX.out.index // channel: [ val(meta), [ tbi or csi ] ]
+    vcf_index = ch_vcf_index // channel: [ val(meta), [ vcf ], [ tbi or csi ] ]
 }

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MINDAGAP_MINDAGAP {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mindagap:0.0.2--pyhdfd78af_1' :
-        'quay.io/biocontainers/mindagap:0.0.2--pyhdfd78af_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/mindagap:0.0.2--pyhdfd78af_1'
+        : 'quay.io/biocontainers/mindagap:0.0.2--pyhdfd78af_1'}"
 
     input:
     tuple val(meta), path(panorama)
@@ -14,7 +17,6 @@ process MINDAGAP_MINDAGAP {
     tuple val(meta), path("*.{tif,tiff}"), emit: tiff
     tuple val("${task.process}"), val('mindagap'), eval("mindagap.py test -v"), emit: versions_mindagap, topic: versions
 
-
     when:
     task.ext.when == null || task.ext.when
 
@@ -22,8 +24,8 @@ process MINDAGAP_MINDAGAP {
     def args = task.ext.args ?: ''
     """
     mindagap.py \\
-        $panorama \\
-        $args
+        ${panorama} \\
+        ${args}
     """
 
     stub:

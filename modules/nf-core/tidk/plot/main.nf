@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TIDK_PLOT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/tidk:0.2.7--h6872113_0':
-        'quay.io/biocontainers/tidk:0.2.7--h6872113_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/tidk:0.2.7--h6872113_0'
+        : 'quay.io/biocontainers/tidk:0.2.7--h6872113_0'}"
 
     input:
     tuple val(meta), path(tsv)
@@ -23,9 +26,9 @@ process TIDK_PLOT {
     """
     tidk \\
         plot \\
-        --output $prefix \\
-        $args \\
-        --tsv "$tsv"
+        --output ${prefix} \\
+        ${args} \\
+        --tsv "${tsv}"
 
     """
 

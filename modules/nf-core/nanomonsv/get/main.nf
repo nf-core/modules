@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process NANOMONSV_GET {
     tag "${meta.id}"
     label 'process_high'
@@ -28,7 +31,7 @@ process NANOMONSV_GET {
 
     script:
     def args = task.ext.args ?: ''
-    prefix  = task.ext.prefix  ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     prefix2 = task.ext.prefix2 ?: "${meta2.id}"
 
     def simple_repeat_arg = simple_repeat_bed ? "--simple_repeat_bed ${simple_repeat_bed[0]}" : ""

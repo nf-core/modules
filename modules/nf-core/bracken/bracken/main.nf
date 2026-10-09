@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BRACKEN_BRACKEN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f3/f30aa99d8d4f6ff1104f56dbacac95c1dc0905578fb250c80f145b6e80703bd1/data':
-        'community.wave.seqera.io/library/bracken:3.1--22a4e66ce04c5e01' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f3/f30aa99d8d4f6ff1104f56dbacac95c1dc0905578fb250c80f145b6e80703bd1/data'
+        : 'community.wave.seqera.io/library/bracken:3.1--22a4e66ce04c5e01'}"
 
     input:
     tuple val(meta), path(kraken_report)
     path database
 
     output:
-    tuple val(meta), path(bracken_report)        , emit: reports
+    tuple val(meta), path(bracken_report), emit: reports
     tuple val(meta), path(bracken_kraken_style_report), emit: txt
     tuple val("${task.process}"), val('bracken'), eval('bracken -v | cut -f2 -d"v"'), topic: versions, emit: versions_bracken
 

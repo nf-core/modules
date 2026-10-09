@@ -1,21 +1,24 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process EGGNOGMAPPER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/eggnog-mapper:2.1.13--pyhdfd78af_2':
-        'quay.io/biocontainers/eggnog-mapper:2.1.13--pyhdfd78af_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/eggnog-mapper:2.1.13--pyhdfd78af_2'
+        : 'quay.io/biocontainers/eggnog-mapper:2.1.13--pyhdfd78af_2'}"
 
     input:
     tuple val(meta), path(fasta)
     tuple val(search_mode), path(db)
-    path(eggnog_data_dir)
+    path eggnog_data_dir
 
     output:
-    tuple val(meta), path("*.emapper.annotations")   , emit: annotations
+    tuple val(meta), path("*.emapper.annotations"), emit: annotations
     tuple val(meta), path("*.emapper.seed_orthologs"), emit: orthologs, optional: true
-    tuple val(meta), path("*.emapper.hits")          , emit: hits     , optional: true
+    tuple val(meta), path("*.emapper.hits"), emit: hits, optional: true
     // emapper.py --version reports the enclosing repository's git tag when the package sits inside one, as it does under conda.
     tuple val("${task.process}"), val('eggnog-mapper'), eval('python -c "from importlib.metadata import version; import sys; print(version(sys.argv[1]))" eggnog-mapper'), topic: versions, emit: versions_eggnogmapper
 
@@ -23,26 +26,26 @@ process EGGNOGMAPPER {
     task.ext.when == null || task.ext.when
 
     script:
-    def args          = task.ext.args   ?: ''
-    def prefix        = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def is_compressed = fasta.extension == '.gz'
-    def fasta_name    = is_compressed ? fasta.baseName : "$fasta"
+    def fasta_name = is_compressed ? fasta.baseName : "${fasta}"
     def db_flags = ['diamond': '--dmnd_db', 'novel_fams': '--dmnd_db', 'mmseqs': '--mmseqs_db', 'hmmer': '--database', 'no_search': '--annotate_hits_table', 'cache': '--cache']
-    def db_path  = (db instanceof Path && db.isDirectory()) ? "${db}/${db.name}"                    : "$db"
-    def db_arg   = db && db_flags[search_mode]              ? "${db_flags[search_mode]} ${db_path}" : ''
-    def dbmem    = task.memory.toMega() > 40000             ? '--dbmem'                             : ''
+    def db_path = (db instanceof Path && db.isDirectory()) ? "${db}/${db.name}" : "${db}"
+    def db_arg = db && db_flags[search_mode] ? "${db_flags[search_mode]} ${db_path}" : ''
+    def dbmem = task.memory.toMega() > 40000 ? '--dbmem' : ''
     """
-    if [ "$is_compressed" == "true" ]; then
-        gzip -c -d $fasta > $fasta_name
+    if [ "${is_compressed}" == "true" ]; then
+        gzip -c -d ${fasta} > ${fasta_name}
     fi
 
     emapper.py \\
-        $args \\
+        ${args} \\
         --cpu ${task.cpus} \\
         -i ${fasta_name} \\
         --data_dir ${eggnog_data_dir} \\
         -m ${search_mode} \\
-        $db_arg \\
+        ${db_arg} \\
         ${dbmem} \\
         --output ${prefix}
     """
@@ -50,7 +53,7 @@ process EGGNOGMAPPER {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo $args
+    echo ${args}
 
     touch ${prefix}.emapper.annotations
     touch ${prefix}.emapper.seed_orthologs

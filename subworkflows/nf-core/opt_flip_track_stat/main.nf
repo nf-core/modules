@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { OPT_FLIP  } from '../../../modules/nf-core/opt/flip/main'
 include { OPT_TRACK } from '../../../modules/nf-core/opt/track/main'
 include { OPT_STAT  } from '../../../modules/nf-core/opt/stat/main'
@@ -5,8 +8,8 @@ include { OPT_STAT  } from '../../../modules/nf-core/opt/stat/main'
 
 workflow OPT_FLIP_TRACK_STAT {
     take:
-    ch_probe_fasta   // channel: [ val(meta), [ "panel_probes_sequences.fasta" ] ]
-    ch_references    // channel: [ val(meta), ["reference_annotations.gff"], ["reference_annotations.fa"] ]
+    ch_probe_fasta // channel: [ val(meta), [ "panel_probes_sequences.fasta" ] ]
+    ch_references // channel: [ val(meta), ["reference_annotations.gff"], ["reference_annotations.fa"] ]
     ch_gene_synonyms // channel: [ "path-to-gene-synonyms" ]
 
     main:
@@ -25,5 +28,5 @@ workflow OPT_FLIP_TRACK_STAT {
     ch_summary = OPT_STAT.out.summary
 
     emit:
-    summary  = ch_summary  // channel: [ val(meta), ["collapsed_summary.tsv"]]
+    summary = ch_summary // channel: [ val(meta), ["collapsed_summary.tsv"]]
 }

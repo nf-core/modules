@@ -1,14 +1,17 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RNAQUAST {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/rnaquast:2.3.0--h9ee0642_0':
-        'quay.io/biocontainers/rnaquast:2.3.0--h9ee0642_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/rnaquast:2.3.0--h9ee0642_0'
+        : 'quay.io/biocontainers/rnaquast:2.3.0--h9ee0642_0'}"
 
     input:
-    tuple val(meta) , path(fasta)
+    tuple val(meta), path(fasta)
     tuple val(meta2), path(reference)
     tuple val(meta3), path(gtf)
 
@@ -26,13 +29,14 @@ process RNAQUAST {
     gtf = gtf ? "--gtf ${gtf}" : ''
     """
     rnaQUAST.py \\
-        $args \\
-        --threads $task.cpus \\
+        ${args} \\
+        --threads ${task.cpus} \\
         --transcripts ${fasta} \\
         ${reference} \\
         ${gtf} \\
         -o ${prefix}
     """
+
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """

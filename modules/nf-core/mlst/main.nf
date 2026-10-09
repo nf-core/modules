@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MLST {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mlst:2.25.0--hdfd78af_0' :
-        'quay.io/biocontainers/mlst:2.25.0--hdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/mlst:2.25.0--hdfd78af_0'
+        : 'quay.io/biocontainers/mlst:2.25.0--hdfd78af_0'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -22,9 +25,9 @@ process MLST {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mlst \\
-        $args \\
-        --threads $task.cpus \\
-        $fasta \\
+        ${args} \\
+        --threads ${task.cpus} \\
+        ${fasta} \\
         > ${prefix}.tsv
     """
 

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SEQUENCETOOLS_PILEUPCALLER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sequencetools:1.6.0.0--hebebf5b_0':
-        'quay.io/biocontainers/sequencetools:1.6.0.0--hebebf5b_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/sequencetools:1.6.0.0--hebebf5b_0'
+        : 'quay.io/biocontainers/sequencetools:1.6.0.0--hebebf5b_0'}"
 
     input:
     tuple val(meta), path(mpileup)
@@ -13,9 +16,9 @@ process SEQUENCETOOLS_PILEUPCALLER {
     path sample_names_fn
 
     output:
-    tuple val(meta), path("*.geno"), path("*.snp"), path("*.ind"), emit: eigenstrat, optional:true
-    tuple val(meta), path("*.bed") , path("*.bim"), path("*.fam"), emit: plink     , optional:true
-    tuple val(meta), path("*.freqsum.gz")                        , emit: freqsum   , optional:true
+    tuple val(meta), path("*.geno"), path("*.snp"), path("*.ind"), emit: eigenstrat, optional: true
+    tuple val(meta), path("*.bed"), path("*.bim"), path("*.fam"), emit: plink, optional: true
+    tuple val(meta), path("*.freqsum.gz"), emit: freqsum, optional: true
     tuple val("${task.process}"), val("sequencetools"), eval("pileupCaller --version 2>&1"), topic: versions, emit: versions_pileupcaller
 
     when:
@@ -43,8 +46,8 @@ process SEQUENCETOOLS_PILEUPCALLER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def args_list = args.tokenize()
     // If no output format is set, freqsum is produced in stdout.
-    freqsum_output    = "-e" in args_list || "--eigenstratOut" in args_list || "-p" in args_list || "--plinkOut" in args_list ? '' : "echo | gzip > ${prefix}.freqsum.gz"
-    plink_output      = "-p" in args_list || "--plinkOut" in args_list ? "touch ${prefix}.{bed,bin,fam}" : ''
+    freqsum_output = "-e" in args_list || "--eigenstratOut" in args_list || "-p" in args_list || "--plinkOut" in args_list ? '' : "echo | gzip > ${prefix}.freqsum.gz"
+    plink_output = "-p" in args_list || "--plinkOut" in args_list ? "touch ${prefix}.{bed,bin,fam}" : ''
     eigenstrat_output = "-e" in args_list || "--eigenstratOut" in args_list ? "touch ${prefix}.{geno,snp,ind}" : ''
     """
     ${freqsum_output}

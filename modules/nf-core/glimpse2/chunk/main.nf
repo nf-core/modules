@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GLIMPSE2_CHUNK {
     tag "${meta.id}"
     label 'process_single'
@@ -28,8 +31,8 @@ process GLIMPSE2_CHUNK {
     task.ext.when == null || task.ext.when
 
     script:
-    def prefix  = task.ext.prefix ?: "${meta.id}"
-    def args    = task.ext.args   ?: ""
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ""
     def map_cmd = map ? "--map ${map}" : ""
 
     """

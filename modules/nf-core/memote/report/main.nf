@@ -1,17 +1,20 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MEMOTE_REPORT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/memote:0.17.0--pyhdfd78af_0' :
-        'quay.io/biocontainers/memote:0.17.0--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/memote:0.17.0--pyhdfd78af_0'
+        : 'quay.io/biocontainers/memote:0.17.0--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(model)
 
     output:
-    tuple val(meta), path("*.html"), emit: report , topic: report
+    tuple val(meta), path("*.html"), emit: report, topic: report
     tuple val("${task.process}"), val('memote'), eval("memote --version | sed 's/memote, version //'"), topic: versions, emit: versions_memote
 
     when:

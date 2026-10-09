@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PLINK_GENOME {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/plink:1.90b6.21--h031d066_5':
-        'quay.io/biocontainers/plink:1.90b6.21--h031d066_5' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/plink:1.90b6.21--h031d066_5'
+        : 'quay.io/biocontainers/plink:1.90b6.21--h031d066_5'}"
 
     input:
     tuple val(meta), path(bed), path(bim), path(fam)
@@ -18,7 +21,7 @@ process PLINK_GENOME {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     plink \\
@@ -26,15 +29,14 @@ process PLINK_GENOME {
         --bim ${bim} \\
         --fam ${fam} \\
         --genome \\
-        $args \\
-        --threads $task.cpus \\
+        ${args} \\
+        --threads ${task.cpus} \\
         --out ${prefix}
     """
 
-   stub:
-   def prefix = task.ext.prefix ?: "${meta.id}"
-   """
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
    touch ${prefix}.genome
    """
-
 }

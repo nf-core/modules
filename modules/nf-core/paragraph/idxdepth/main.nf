@@ -1,32 +1,35 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PARAGRAPH_IDXDEPTH {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/paragraph:2.3--h8908b6f_0':
-        'quay.io/biocontainers/paragraph:2.3--h8908b6f_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/paragraph:2.3--h8908b6f_0'
+        : 'quay.io/biocontainers/paragraph:2.3--h8908b6f_0'}"
 
     input:
-    tuple val(meta) , path(input), path(input_index)
+    tuple val(meta), path(input), path(input_index)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fasta_fai)
 
     output:
-    tuple val(meta), path("*.json") , emit: depth
-    tuple val(meta), path("*.tsv")  , emit: binned_depth, optional:true
+    tuple val(meta), path("*.json"), emit: depth
+    tuple val(meta), path("*.tsv"), emit: binned_depth, optional: true
     tuple val("${task.process}"), val('paragraph'), val('2.3'), emit: versions_paragraph, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def type = input.extension
     def output_bins = type == "cram" ? "--output-bins ${prefix}.tsv" : ""
     if (type == "cram" && workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "PARAGRAPH_IDXDEPTH module does not support Conda with CRAM input. Please use Docker / Singularity / Podman instead."
+        error("PARAGRAPH_IDXDEPTH module does not support Conda with CRAM input. Please use Docker / Singularity / Podman instead.")
     }
     """
     idxdepth \\
@@ -43,7 +46,7 @@ process PARAGRAPH_IDXDEPTH {
     def type = input.extension
     def output_bins = type == "cram" ? "touch ${prefix}.tsv" : ""
     if (type == "cram" && workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "PARAGRAPH_IDXDEPTH module does not support Conda with CRAM input. Please use Docker / Singularity / Podman instead."
+        error("PARAGRAPH_IDXDEPTH module does not support Conda with CRAM input. Please use Docker / Singularity / Podman instead.")
     }
     """
     touch ${prefix}.json

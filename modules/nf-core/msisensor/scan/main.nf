@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MSISENSOR_SCAN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/msisensor:0.5--hb3646a4_2' :
-        'quay.io/biocontainers/msisensor:0.5--hb3646a4_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/msisensor:0.5--hb3646a4_2'
+        : 'quay.io/biocontainers/msisensor:0.5--hb3646a4_2'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -24,16 +27,16 @@ process MSISENSOR_SCAN {
         Reason:
         This module is no longer fit for purpose as it is now archived and no longer maintained.
     """
-    assert false: deprecation_message
+    assert false : deprecation_message
 
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     msisensor \\
         scan \\
-        -d $fasta \\
+        -d ${fasta} \\
         -o ${prefix}.msisensor_scan.tab \\
-        $args
+        ${args}
 
     """
 
@@ -44,5 +47,5 @@ process MSISENSOR_SCAN {
         Reason:
         This module is no longer fit for purpose as it is now archived and no longer maintained.
     """
-    assert false: deprecation_message
+    assert false : deprecation_message
 }

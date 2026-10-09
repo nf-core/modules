@@ -1,20 +1,23 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MSISENSOR_MSI {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/msisensor:0.5--hb3646a4_2' :
-        'quay.io/biocontainers/msisensor:0.5--hb3646a4_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/msisensor:0.5--hb3646a4_2'
+        : 'quay.io/biocontainers/msisensor:0.5--hb3646a4_2'}"
 
     input:
     tuple val(meta), path(normal_bam), path(normal_bai), path(tumor_bam), path(tumor_bai), val(metascan), path(homopolymers)
 
     output:
-    tuple val(meta), path("${prefix}")         , emit: output
-    tuple val(meta), path("${prefix}_dis")     , emit: output_dis
+    tuple val(meta), path("${prefix}"), emit: output
+    tuple val(meta), path("${prefix}_dis"), emit: output_dis
     tuple val(meta), path("${prefix}_germline"), emit: output_germline
-    tuple val(meta), path("${prefix}_somatic") , emit: output_somatic
+    tuple val(meta), path("${prefix}_somatic"), emit: output_somatic
     tuple val("${task.process}"), val('msisensor'), eval("msisensor 2>&1 | sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p'"), emit: versions_msisensor, topic: versions
 
     when:
@@ -27,18 +30,18 @@ process MSISENSOR_MSI {
         Reason:
         This module is no longer fit for purpose as it is now archived and no longer maintained.
     """
-    assert false: deprecation_message
+    assert false : deprecation_message
 
-    def args = task.ext.args   ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     msisensor \\
         msi \\
-        -d $homopolymers \\
-        -n $normal_bam \\
-        -t $tumor_bam \\
-        -o $prefix \\
-        $args
+        -d ${homopolymers} \\
+        -n ${normal_bam} \\
+        -t ${tumor_bam} \\
+        -o ${prefix} \\
+        ${args}
 
     """
 
@@ -49,5 +52,5 @@ process MSISENSOR_MSI {
         Reason:
         This module is no longer fit for purpose as it is now archived and no longer maintained.
     """
-    assert false: deprecation_message
+    assert false : deprecation_message
 }

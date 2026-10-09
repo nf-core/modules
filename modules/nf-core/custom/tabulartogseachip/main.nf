@@ -1,15 +1,18 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CUSTOM_TABULARTOGSEACHIP {
 
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ca/cae75dbf13aabe63298c0acce8ccfa9bd65fe4b73dc5578da5a2e30867f7169f/data' :
-        'community.wave.seqera.io/library/gawk:5.1.0--fa97c4ccf4cfbc4b' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ca/cae75dbf13aabe63298c0acce8ccfa9bd65fe4b73dc5578da5a2e30867f7169f/data'
+        : 'community.wave.seqera.io/library/gawk:5.1.0--fa97c4ccf4cfbc4b'}"
 
     input:
     tuple val(meta), path(tabular)
-    tuple val(id)  , val(symbol)
+    tuple val(id), val(symbol)
 
     output:
     tuple val(meta), path("*.chip"), emit: chip
@@ -28,12 +31,12 @@ process CUSTOM_TABULARTOGSEACHIP {
         head -n 1 \$file | tr '\\t' '\\n' | grep -n "^\${column}\$" | awk -F':' '{print \$1}'
     }
 
-    id_col=\$(find_column_number $tabular $id)
-    symbol_col=\$(find_column_number $tabular $symbol)
+    id_col=\$(find_column_number ${tabular} ${id})
+    symbol_col=\$(find_column_number ${tabular} ${symbol})
     outfile=${prefix}.chip
 
     echo -e "Probe Set ID\\tGene Symbol\\tGene Title" > \${outfile}.tmp
-    tail -n +2 $tabular | awk -F'\\t' -v id=\$id_col -v symbol=\$symbol_col '{print \$id"\\t"\$symbol"\\tNA"}' >> \${outfile}.tmp
+    tail -n +2 ${tabular} | awk -F'\\t' -v id=\$id_col -v symbol=\$symbol_col '{print \$id"\\t"\$symbol"\\tNA"}' >> \${outfile}.tmp
     mv \${outfile}.tmp \${outfile}
     """
 

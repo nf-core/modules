@@ -1,16 +1,19 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process WFMASH {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/wfmash:0.13.0--h11f254b_0':
-        'quay.io/biocontainers/wfmash:0.13.0--h11f254b_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/wfmash:0.13.0--h11f254b_0'
+        : 'quay.io/biocontainers/wfmash:0.13.0--h11f254b_0'}"
 
     input:
     tuple val(meta), path(fasta_gz), path(paf), path(gzi), path(fai)
-    val(query_self)
-    path(fasta_query_list)
+    val query_self
+    path fasta_query_list
 
     output:
     tuple val(meta), path("*.paf"), emit: paf
@@ -28,11 +31,11 @@ process WFMASH {
     """
     wfmash \\
         ${fasta_gz} \\
-        $query \\
-        $query_list \\
-        --threads $task.cpus \\
-        $paf_mappings \\
-        $args > ${prefix}.paf
+        ${query} \\
+        ${query_list} \\
+        --threads ${task.cpus} \\
+        ${paf_mappings} \\
+        ${args} > ${prefix}.paf
     """
 
     stub:

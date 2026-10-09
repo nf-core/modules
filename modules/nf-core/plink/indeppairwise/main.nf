@@ -1,21 +1,24 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PLINK_INDEPPAIRWISE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/plink:1.90b6.21--h779adbc_1':
-        'quay.io/biocontainers/plink:1.90b6.21--h779adbc_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/plink:1.90b6.21--h779adbc_1'
+        : 'quay.io/biocontainers/plink:1.90b6.21--h779adbc_1'}"
 
     input:
-    tuple val(meta), path(bed),  path(bim), path(fam)
-    val(window_size)
-    val(variant_count)
-    val(r2_threshold)
+    tuple val(meta), path(bed), path(bim), path(fam)
+    val window_size
+    val variant_count
+    val r2_threshold
 
     output:
-    tuple val(meta), path("*.prune.in")                    , emit: prunein
-    tuple val(meta), path("*.prune.out")    , optional:true, emit: pruneout
+    tuple val(meta), path("*.prune.in"), emit: prunein
+    tuple val(meta), path("*.prune.out"), optional: true, emit: pruneout
     tuple val("${task.process}"), val('plink'), eval("plink --version 2>&1 | sed 's/^PLINK v//;s/ .*//'"), emit: versions_plink, topic: versions
 
     when:

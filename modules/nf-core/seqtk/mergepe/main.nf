@@ -1,17 +1,20 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SEQTK_MERGEPE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/seqtk:1.4--he4a0461_1' :
-        'quay.io/biocontainers/seqtk:1.4--he4a0461_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/seqtk:1.4--he4a0461_1'
+        : 'quay.io/biocontainers/seqtk:1.4--he4a0461_1'}"
 
     input:
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("*.fastq.gz") , emit: reads
+    tuple val(meta), path("*.fastq.gz"), emit: reads
     tuple val("${task.process}"), val('seqtk'), eval("seqtk 2>&1 | sed -n 's/^Version: //p'"), emit: versions_seqtk, topic: versions
 
     when:
@@ -24,11 +27,12 @@ process SEQTK_MERGEPE {
         """
         ln -s ${reads} ${prefix}.fastq.gz
         """
-    } else {
+    }
+    else {
         """
         seqtk \\
             mergepe \\
-            $args \\
+            ${args} \\
             ${reads} \\
             | gzip -n >> ${prefix}.fastq.gz
         """

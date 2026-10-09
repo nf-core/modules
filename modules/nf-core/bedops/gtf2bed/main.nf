@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BEDOPS_GTF2BED {
-    tag "$gtf"
+    tag "${gtf}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bedops:2.4.42--h9948957_0':
-        'quay.io/biocontainers/bedops:2.4.42--h9948957_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/bedops:2.4.42--h9948957_0'
+        : 'quay.io/biocontainers/bedops:2.4.42--h9948957_0'}"
 
     input:
     tuple val(meta), path(gtf)
@@ -18,14 +21,14 @@ process BEDOPS_GTF2BED {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${gtf.baseName}"
 
     """
     cat \\
-    $gtf \\
+    ${gtf} \\
     | gtf2bed \\
-    $args \\
+    ${args} \\
     --attribute-key=exon_id \\
     > ${prefix}.bed
     """
@@ -35,5 +38,4 @@ process BEDOPS_GTF2BED {
     """
     touch ${prefix}.bed
     """
-
 }

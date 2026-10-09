@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GFFCOMPARE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gffcompare:0.12.6--h9f5acd7_0' :
-        'quay.io/biocontainers/gffcompare:0.12.6--h9f5acd7_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/gffcompare:0.12.6--h9f5acd7_0'
+        : 'quay.io/biocontainers/gffcompare:0.12.6--h9f5acd7_0'}"
 
     input:
     tuple val(meta), path(gtfs)
@@ -14,12 +17,12 @@ process GFFCOMPARE {
 
     output:
     tuple val(meta), path("*.annotated.gtf"), optional: true, emit: annotated_gtf
-    tuple val(meta), path("*.combined.gtf") , optional: true, emit: combined_gtf
-    tuple val(meta), path("*.tmap")         , optional: true, emit: tmap
-    tuple val(meta), path("*.refmap")       , optional: true, emit: refmap
-    tuple val(meta), path("*.loci")         , emit: loci
-    tuple val(meta), path("*.stats")        , emit: stats
-    tuple val(meta), path("*.tracking")     , emit: tracking
+    tuple val(meta), path("*.combined.gtf"), optional: true, emit: combined_gtf
+    tuple val(meta), path("*.tmap"), optional: true, emit: tmap
+    tuple val(meta), path("*.refmap"), optional: true, emit: refmap
+    tuple val(meta), path("*.loci"), emit: loci
+    tuple val(meta), path("*.stats"), emit: stats
+    tuple val(meta), path("*.tracking"), emit: tracking
     tuple val("${task.process}"), val('gffcompare'), eval('gffcompare --version 2>&1 | sed "s/gffcompare v//"'), emit: versions_gffcompare, topic: versions
 
     when:
@@ -32,11 +35,11 @@ process GFFCOMPARE {
     def ref_gtf = reference_gtf ? "-r ${reference_gtf}" : ''
     """
     gffcompare \\
-        $args \\
-        $ref_fasta \\
-        $ref_gtf \\
-        -o $prefix \\
-        $gtfs
+        ${args} \\
+        ${ref_fasta} \\
+        ${ref_gtf} \\
+        -o ${prefix} \\
+        ${gtfs}
 
     """
 

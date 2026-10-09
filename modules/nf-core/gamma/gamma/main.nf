@@ -1,23 +1,25 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
 
 process GAMMA_GAMMA {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gamma%3A2.1--hdfd78af_0':
-        'quay.io/biocontainers/gamma:2.1--hdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/gamma%3A2.1--hdfd78af_0'
+        : 'quay.io/biocontainers/gamma:2.1--hdfd78af_0'}"
 
     input:
     tuple val(meta), path(fasta)
-    path(db)
+    path db
 
     output:
-    tuple val(meta), path("*.gamma")                      , emit: gamma
-    tuple val(meta), path("*.psl")                        , emit: psl
-    tuple val(meta), path("*.gff")  , optional:true       , emit: gff
-    tuple val(meta), path("*.fasta"), optional:true       , emit: fasta
+    tuple val(meta), path("*.gamma"), emit: gamma
+    tuple val(meta), path("*.psl"), emit: psl
+    tuple val(meta), path("*.gff"), optional: true, emit: gff
+    tuple val(meta), path("*.fasta"), optional: true, emit: fasta
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('gamma'), val("2.1"), emit: versions_gamma, topic: versions
 

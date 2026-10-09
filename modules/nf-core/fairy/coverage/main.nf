@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FAIRY_COVERAGE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fairy:0.5.8--hc1c3326_0':
-        'quay.io/biocontainers/fairy:0.5.8--hc1c3326_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/fairy:0.5.8--hc1c3326_0'
+        : 'quay.io/biocontainers/fairy:0.5.8--hc1c3326_0'}"
 
     input:
     tuple val(meta), path(sketches), path(contigs)
@@ -33,7 +36,7 @@ process FAIRY_COVERAGE {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo "$args"
+    echo "${args}"
 
     touch ${prefix}.tsv
     """

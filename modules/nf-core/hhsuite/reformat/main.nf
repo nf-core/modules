@@ -1,16 +1,19 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HHSUITE_REFORMAT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hhsuite:3.3.0--py39pl5321h0dd7abe_13':
-        'quay.io/biocontainers/hhsuite:3.3.0--py39pl5321h0dd7abe_13' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/hhsuite:3.3.0--py39pl5321h0dd7abe_13'
+        : 'quay.io/biocontainers/hhsuite:3.3.0--py39pl5321h0dd7abe_13'}"
 
     input:
     tuple val(meta), path(aln)
-    val(informat)
-    val(outformat)
+    val informat
+    val outformat
 
     output:
     tuple val(meta), path("${prefix}.${outformat}.gz"), emit: msa
@@ -30,7 +33,7 @@ process HHSUITE_REFORMAT {
     fi
 
     reformat.pl \\
-        $args \\
+        ${args} \\
         ${informat} \\
         ${outformat} \\
         ${aln_name} \\

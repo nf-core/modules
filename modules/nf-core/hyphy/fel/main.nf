@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HYPHY_FEL {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hyphy:2.5.101--h526e2cb_0':
-        'quay.io/biocontainers/hyphy:2.5.101--h526e2cb_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/hyphy:2.5.101--h526e2cb_0'
+        : 'quay.io/biocontainers/hyphy:2.5.101--h526e2cb_0'}"
 
     input:
     tuple val(meta), path(alignment), path(tree)

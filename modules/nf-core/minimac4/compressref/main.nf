@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MINIMAC4_COMPRESSREF {
     tag "${meta.id}"
     label 'process_low'
@@ -8,7 +11,7 @@ process MINIMAC4_COMPRESSREF {
         : 'quay.io/biocontainers/minimac4:4.1.6--hcb620b3_1'}"
 
     input:
-    tuple val(meta), path(ref), path(ref_index) // Reference index is autodetected from reference file name
+    tuple val(meta), path(ref), path(ref_index)
 
     output:
     tuple val(meta), path("*.msav"), emit: msav
@@ -18,7 +21,7 @@ process MINIMAC4_COMPRESSREF {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     minimac4 \\

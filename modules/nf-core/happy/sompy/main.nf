@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HAPPY_SOMPY {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hap.py:0.3.15--py27hcb73b3d_0':
-        'quay.io/biocontainers/hap.py:0.3.15--py27hcb73b3d_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/hap.py:0.3.15--py27hcb73b3d_0'
+        : 'quay.io/biocontainers/hap.py:0.3.15--py27hcb73b3d_0'}"
 
     input:
     tuple val(meta), path(query_vcf), path(truth_vcf), path(regions_bed), path(targets_bed)
@@ -17,9 +20,9 @@ process HAPPY_SOMPY {
     tuple val(meta6), path(bams)
 
     output:
-    tuple val(meta), path('*.features.csv')           , emit: features, optional: true
-    tuple val(meta), path('*.metrics.json')           , emit: metrics
-    tuple val(meta), path('*.stats.csv')              , emit: stats
+    tuple val(meta), path('*.features.csv'), emit: features, optional: true
+    tuple val(meta), path('*.metrics.json'), emit: metrics
+    tuple val(meta), path('*.stats.csv'), emit: stats
     tuple val("${task.process}"), val('happy'), val('0.3.15'), topic: versions, emit: versions_happy
 
     when:

@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DATAVZRD {
     tag "${meta.id}"
     label 'process_single'
@@ -12,7 +15,7 @@ process DATAVZRD {
 
     output:
     tuple val(meta), path("${prefix}"), emit: report
-    tuple val("${task.process}"), val('datavzrd'),  eval("datavzrd --version | sed -e 's/[^0-9.]//g'"), topic: versions, emit: versions_datavzrd
+    tuple val("${task.process}"), val('datavzrd'), eval("datavzrd --version | sed -e 's/[^0-9.]//g'"), topic: versions, emit: versions_datavzrd
 
     when:
     task.ext.when == null || task.ext.when

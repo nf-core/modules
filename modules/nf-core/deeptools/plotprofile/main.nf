@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DEEPTOOLS_PLOTPROFILE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/deeptools:3.5.6--pyhdfd78af_0':
-        'quay.io/biocontainers/deeptools:3.5.6--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/deeptools:3.5.6--pyhdfd78af_0'
+        : 'quay.io/biocontainers/deeptools:3.5.6--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(matrix)
@@ -13,7 +16,7 @@ process DEEPTOOLS_PLOTPROFILE {
     output:
     tuple val(meta), path("*.pdf"), emit: pdf
     tuple val(meta), path("*.tab"), emit: table
-    tuple val("${task.process}"), val('deeptools'), eval('plotProfile --version | sed "s/plotProfile //g"') , emit: versions_deeptools, topic: versions
+    tuple val("${task.process}"), val('deeptools'), eval('plotProfile --version | sed "s/plotProfile //g"'), emit: versions_deeptools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,8 +26,8 @@ process DEEPTOOLS_PLOTPROFILE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     plotProfile \\
-        $args \\
-        --matrixFile $matrix \\
+        ${args} \\
+        --matrixFile ${matrix} \\
         --outFileName ${prefix}.plotProfile.pdf \\
         --outFileNameData ${prefix}.plotProfile.tab
     """

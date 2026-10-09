@@ -1,20 +1,23 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PEAR {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pear:0.9.6--h67092d7_8':
-        'quay.io/biocontainers/pear:0.9.6--h67092d7_8' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/pear:0.9.6--h67092d7_8'
+        : 'quay.io/biocontainers/pear:0.9.6--h67092d7_8'}"
 
     input:
     tuple val(meta), path(reads)
 
     output:
-    tuple val(meta), path("*.assembled.fastq.gz")                                                                   , emit: assembled
-    tuple val(meta), path("*.unassembled.forward.fastq.gz"), path("*.unassembled.reverse.fastq.gz")                 , emit: unassembled
-    tuple val(meta), path("*.discarded.fastq.gz")                                                                   , emit: discarded
-    tuple val("${task.process}"), val('pear'), eval("pear -h | grep 'PEAR v' | sed 's/PEAR v//' | sed 's/ .*//'")   , topic: versions, emit: versions_pear
+    tuple val(meta), path("*.assembled.fastq.gz"), emit: assembled
+    tuple val(meta), path("*.unassembled.forward.fastq.gz"), path("*.unassembled.reverse.fastq.gz"), emit: unassembled
+    tuple val(meta), path("*.discarded.fastq.gz"), emit: discarded
+    tuple val("${task.process}"), val('pear'), eval("pear -h | grep 'PEAR v' | sed 's/PEAR v//' | sed 's/ .*//'"), topic: versions, emit: versions_pear
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,9 +31,9 @@ process PEAR {
     pear \\
         -f ${reads[0].baseName} \\
         -r ${reads[1].baseName} \\
-        -o $prefix \\
-        -j $task.cpus \\
-        $args
+        -o ${prefix} \\
+        -j ${task.cpus} \\
+        ${args}
     gzip -f ${prefix}.assembled.fastq
     gzip -f ${prefix}.unassembled.forward.fastq
     gzip -f ${prefix}.unassembled.reverse.fastq

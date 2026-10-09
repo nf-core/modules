@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process COVERM_CONTIG {
     tag "${meta.id}"
     label "process_medium"
@@ -16,19 +19,19 @@ process COVERM_CONTIG {
 
     output:
     tuple val(meta), path('*.depth.tsv'), emit: coverage
-    tuple val(meta), path('*.bam')      , emit: bam, optional: true
+    tuple val(meta), path('*.bam'), emit: bam, optional: true
     tuple val("${task.process}"), val('coverm'), eval('coverm --version | sed "s/coverm //"'), emit: versions_coverm, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args           = task.ext.args ?: ""
-    def prefix         = task.ext.prefix ?: "${meta.id}"
-    def fastq_input    = meta.single_end ? "--single" : interleaved ? "--interleaved" : "--coupled"
-    def input_type     = bam_input ? "--bam-files" : "${fastq_input}"
+    def args = task.ext.args ?: ""
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def fastq_input = meta.single_end ? "--single" : interleaved ? "--interleaved" : "--coupled"
+    def input_type = bam_input ? "--bam-files" : "${fastq_input}"
 
-    def reference_str  = bam_input ? "" : "--reference ${reference}"
+    def reference_str = bam_input ? "" : "--reference ${reference}"
     def bam_output_str = enable_bam_output ? "--bam-file-cache-directory _bam_cache/" : ""
     """
     TMPDIR=.

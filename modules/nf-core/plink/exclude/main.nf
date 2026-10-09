@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PLINK_EXCLUDE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/plink:1.90b6.21--h779adbc_1' :
-        'quay.io/biocontainers/plink:1.90b6.21--h779adbc_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/plink:1.90b6.21--h779adbc_1'
+        : 'quay.io/biocontainers/plink:1.90b6.21--h779adbc_1'}"
 
     input:
     tuple val(meta), path(bed), path(bim), path(fam), path(variants)
@@ -22,15 +25,17 @@ process PLINK_EXCLUDE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if( "$bed" == "${prefix}.bed" ) error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("${bed}" == "${prefix}.bed") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
     plink \\
         --bfile ${meta.id} \\
-        $args \\
-        --exclude $variants \\
-        --threads $task.cpus \\
+        ${args} \\
+        --exclude ${variants} \\
+        --threads ${task.cpus} \\
         --make-bed \\
-        --out $prefix
+        --out ${prefix}
     """
 
     stub:
@@ -41,5 +46,4 @@ process PLINK_EXCLUDE {
     touch ${prefix}.bim
     touch ${prefix}.fam
     """
-
 }

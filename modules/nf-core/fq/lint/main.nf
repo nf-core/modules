@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FQ_LINT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fq:0.12.0--h9ee0642_0':
-        'quay.io/biocontainers/fq:0.12.0--h9ee0642_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/fq:0.12.0--h9ee0642_0'
+        : 'quay.io/biocontainers/fq:0.12.0--h9ee0642_0'}"
 
     input:
     tuple val(meta), path(fastq, arity: '1..2')
@@ -18,12 +21,12 @@ process FQ_LINT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     fq lint \\
-        $args \\
-        $fastq > ${prefix}.fq_lint.txt
+        ${args} \\
+        ${fastq} > ${prefix}.fq_lint.txt
     """
 
     stub:

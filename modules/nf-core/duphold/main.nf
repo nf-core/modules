@@ -1,19 +1,22 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DUPHOLD {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/duphold:0.2.1--h516909a_1':
-        'quay.io/biocontainers/duphold:0.2.1--h516909a_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/duphold:0.2.1--h516909a_1'
+        : 'quay.io/biocontainers/duphold:0.2.1--h516909a_1'}"
 
     input:
     tuple val(meta), path(alignment_file), path(alignment_index), path(sv_variants), path(snp_variants), path(snp_variants_index)
-    path(fasta)
-    path(fasta_fai)
+    path fasta
+    path fasta_fai
 
     output:
-    tuple val(meta), path("*.vcf.gz")   , emit: vcf
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
     tuple val("${task.process}"), val('duphold'), eval('duphold -h | sed -e "s/^version: //;q"'), emit: versions_duphold, topic: versions
 
     when:

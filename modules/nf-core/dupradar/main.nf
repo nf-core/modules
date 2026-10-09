@@ -1,31 +1,34 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DUPRADAR {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_long'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/24/24bb76357588d05b5637e2954f2dfb3ba04e3eb1ff52c927ffe1906d7d69915a/data' :
-        'community.wave.seqera.io/library/bioconductor-dupradar:1.38.0--831da16eb40a64ab' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/24/24bb76357588d05b5637e2954f2dfb3ba04e3eb1ff52c927ffe1906d7d69915a/data'
+        : 'community.wave.seqera.io/library/bioconductor-dupradar:1.38.0--831da16eb40a64ab'}"
 
     input:
     tuple val(meta), path(bam)
     tuple val(meta2), path(gtf)
 
     output:
-    tuple val(meta), path("*_duprateExpDens.pdf")   , emit: scatter2d
+    tuple val(meta), path("*_duprateExpDens.pdf"), emit: scatter2d
     tuple val(meta), path("*_duprateExpBoxplot.pdf"), emit: boxplot
-    tuple val(meta), path("*_expressionHist.pdf")   , emit: hist
-    tuple val(meta), path("*_dupMatrix.txt")        , emit: dupmatrix
-    tuple val(meta), path("*_intercept_slope.txt")  , emit: intercept_slope
-    tuple val(meta), path("*_mqc.txt")              , emit: multiqc
-    tuple val(meta), path("*.R_sessionInfo.log")    , emit: session_info
-    path "versions.yml"                             , emit: versions, topic: versions
+    tuple val(meta), path("*_expressionHist.pdf"), emit: hist
+    tuple val(meta), path("*_dupMatrix.txt"), emit: dupmatrix
+    tuple val(meta), path("*_intercept_slope.txt"), emit: intercept_slope
+    tuple val(meta), path("*_mqc.txt"), emit: multiqc
+    tuple val(meta), path("*.R_sessionInfo.log"), emit: session_info
+    path "versions.yml", emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    template 'dupradar.r'
+    template('dupradar.r')
 
     stub:
     """

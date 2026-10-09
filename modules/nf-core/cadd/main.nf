@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CADD {
     tag "${meta.id}"
     label 'process_medium'
@@ -7,13 +10,14 @@ process CADD {
 
     containerOptions {
         if (prescored_dir) {
-            ['singularity', 'apptainer'].contains(workflow.containerEngine) ?
-                "-B ${annotation_dir}:/cadd-scripts/data/annotations -B ${prescored_dir}:/cadd-scripts/data/prescored" :
-                "-v ${annotation_dir}:/cadd-scripts/data/annotations -v ${prescored_dir}:/cadd-scripts/data/prescored"
-        } else {
-            ['singularity', 'apptainer'].contains(workflow.containerEngine) ?
-                "-B ${annotation_dir}:/cadd-scripts/data/annotations" :
-                "-v ${annotation_dir}:/cadd-scripts/data/annotations"
+            ['singularity', 'apptainer'].contains(workflow.containerEngine)
+                ? "-B ${annotation_dir}:/cadd-scripts/data/annotations -B ${prescored_dir}:/cadd-scripts/data/prescored"
+                : "-v ${annotation_dir}:/cadd-scripts/data/annotations -v ${prescored_dir}:/cadd-scripts/data/prescored"
+        }
+        else {
+            ['singularity', 'apptainer'].contains(workflow.containerEngine)
+                ? "-B ${annotation_dir}:/cadd-scripts/data/annotations"
+                : "-v ${annotation_dir}:/cadd-scripts/data/annotations"
         }
     }
 
@@ -25,7 +29,6 @@ process CADD {
     output:
     tuple val(meta), path("${prefix}.tsv.gz"), emit: tsv
     tuple val("${task.process}"), val("cadd"), val("1.7.3"), emit: versions_cadd, topic: versions
-    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
 
     when:
     task.ext.when == null || task.ext.when

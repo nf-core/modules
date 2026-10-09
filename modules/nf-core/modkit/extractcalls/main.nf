@@ -1,34 +1,37 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MODKIT_EXTRACTCALLS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ont-modkit:0.6.4--h7f49ad2_0':
-        'quay.io/biocontainers/ont-modkit:0.6.4--h7f49ad2_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/ont-modkit:0.6.4--h7f49ad2_0'
+        : 'quay.io/biocontainers/ont-modkit:0.6.4--h7f49ad2_0'}"
 
     input:
-    tuple val(meta),  path(bam), path(bai)
+    tuple val(meta), path(bam), path(bai)
     tuple val(meta2), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("*.tsv{,.gz}"), emit: tsv
-    tuple val(meta), path("*.log")      , emit: log, optional: true
+    tuple val(meta), path("*.log"), emit: log, optional: true
     tuple val("${task.process}"), val('modkit'), eval("modkit --version | sed 's/modkit //'"), emit: versions_modkit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args       = task.ext.args ?: ''
-    def prefix     = task.ext.prefix ?: "${meta.id}"
-    def reference  = fasta ? "--reference ${fasta}" : ''
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def reference = fasta ? "--reference ${fasta}" : ''
     def out_suffix = args.tokenize().contains('--bgzf') ? 'tsv.gz' : 'tsv'
     """
     modkit \\
         extract \\
         calls \\
-        $args \\
+        ${args} \\
         --threads ${task.cpus} \\
         ${reference} \\
         ${bam} \\
@@ -36,8 +39,8 @@ process MODKIT_EXTRACTCALLS {
     """
 
     stub:
-    def args       = task.ext.args ?: ''
-    def prefix     = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def out_suffix = args.tokenize().contains('--bgzf') ? 'tsv.gz' : 'tsv'
     """
     touch ${prefix}.${out_suffix}

@@ -1,21 +1,24 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PLINK2_INDEPPAIRWISE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/plink2:2.00a5.10--h4ac6f70_0':
-        'quay.io/biocontainers/plink2:2.00a5.10--h4ac6f70_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/plink2:2.00a5.10--h4ac6f70_0'
+        : 'quay.io/biocontainers/plink2:2.00a5.10--h4ac6f70_0'}"
 
     input:
     tuple val(meta), path(plink_genotype_file), path(plink_variant_file), path(plink_sample_file)
-    val(win)
-    val(step)
-    val(r2)
+    val win
+    val step
+    val r2
 
     output:
-    tuple val(meta), path("*.prune.in")  , emit: prune_in
-    tuple val(meta), path("*.prune.out") , emit: prune_out
+    tuple val(meta), path("*.prune.in"), emit: prune_in
+    tuple val(meta), path("*.prune.out"), emit: prune_out
     tuple val("${task.process}"), val('plink2'), eval("plink2 --version 2>&1 | sed 's/^PLINK v//; s/ 64.*\$//'"), topic: versions, emit: versions_plink2
 
     when:
@@ -28,10 +31,10 @@ process PLINK2_INDEPPAIRWISE {
     def input = "${plink_genotype_file.getBaseName()}"
     """
     plink2 \\
-        $mode $input \\
-        $args \\
-        --indep-pairwise $win $step $r2 \\
-        --threads $task.cpus \\
+        ${mode} ${input} \\
+        ${args} \\
+        --indep-pairwise ${win} ${step} ${r2} \\
+        --threads ${task.cpus} \\
         --out ${prefix}
     """
 

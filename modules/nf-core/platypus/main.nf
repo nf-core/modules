@@ -1,28 +1,31 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 /*
 unfortunately need to output the version manually
 because platypus CallVariants does not include --version or -v commend
 */
 process PLATYPUS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/platypus-variant:0.8.1--py27_1':
-        'quay.io/biocontainers/platypus-variant:0.8.1--py27_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/platypus-variant:0.8.1--py27_1'
+        : 'quay.io/biocontainers/platypus-variant:0.8.1--py27_1'}"
 
     input:
 
-    tuple val(meta), path(tumor_file), path(tumor_file_bai), path(control_file),  path(control_file_bai)
+    tuple val(meta), path(tumor_file), path(tumor_file_bai), path(control_file), path(control_file_bai)
     path fasta
     path fai
     path skipregions_file
 
     output:
-    tuple val(meta), path('*.vcf.gz')    , emit: vcf
+    tuple val(meta), path('*.vcf.gz'), emit: vcf
     tuple val(meta), path('*.vcf.gz.tbi'), emit: tbi
-    tuple val(meta), path('*.log')       , emit: log
+    tuple val(meta), path('*.log'), emit: log
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     tuple val("${task.process}"), val('platypus'), val('0.8.1'), emit: versions_platypus, topic: versions
 

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process IRESCUE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/irescue:1.1.2--pyhdfd78af_0':
-        'quay.io/biocontainers/irescue:1.1.2--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/irescue:1.1.2--pyhdfd78af_0'
+        : 'quay.io/biocontainers/irescue:1.1.2--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(bam)
@@ -13,10 +16,10 @@ process IRESCUE {
     path bed
 
     output:
-    tuple val(meta), path("${prefix}")            , emit: results
-    tuple val(meta), path("${prefix}/counts")     , emit: counts
+    tuple val(meta), path("${prefix}"), emit: results
+    tuple val(meta), path("${prefix}/counts"), emit: counts
     tuple val(meta), path("${prefix}/irescue.log"), emit: log
-    tuple val(meta), path("${prefix}/tmp")        , emit: tmp, optional: true
+    tuple val(meta), path("${prefix}/tmp"), emit: tmp, optional: true
     tuple val("${task.process}"), val('irescue'), eval("irescue --version 2>&1 | sed '1!d ; s/IRescue //'"), emit: versions_irescue, topic: versions
 
     when:
@@ -25,18 +28,18 @@ process IRESCUE {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def reference = bed ? "--regions $bed" : ''
-    def genome_assembly = reference ? '' : "--genome $genome"
+    def reference = bed ? "--regions ${bed}" : ''
+    def genome_assembly = reference ? '' : "--genome ${genome}"
     """
-    mkdir -p $prefix
+    mkdir -p ${prefix}
 
     irescue \\
-        --bam $bam \\
-        $reference \\
-        $genome_assembly \\
-        --outdir $prefix \\
-        --threads $task.cpus \\
-        $args 2>| >(tee -a ${prefix}/irescue.log >&2)
+        --bam ${bam} \\
+        ${reference} \\
+        ${genome_assembly} \\
+        --outdir ${prefix} \\
+        --threads ${task.cpus} \\
+        ${args} 2>| >(tee -a ${prefix}/irescue.log >&2)
     """
 
     stub:

@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VCFLIB_VCFFILTER {
     tag "${meta.id}"
     label 'process_low'
@@ -13,7 +16,6 @@ process VCFLIB_VCFFILTER {
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
     tuple val("${task.process}"), val('vcflib'), val("1.0.14"), topic: versions, emit: versions_vcflib
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     when:
     task.ext.when == null || task.ext.when

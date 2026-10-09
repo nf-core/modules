@@ -1,29 +1,32 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ATLAS_PMD {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/atlas:0.9.9--h082e891_0':
-        'quay.io/biocontainers/atlas:0.9.9--h082e891_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/atlas:0.9.9--h082e891_0'
+        : 'quay.io/biocontainers/atlas:0.9.9--h082e891_0'}"
 
     input:
     tuple val(meta), path(bam), path(bai), path(pool_rg_txt)
-    path(fasta)
-    path(fai)
+    path fasta
+    path fai
 
     output:
-    tuple val(meta), path("*_PMD_input_Empiric.txt")    , emit: empiric
+    tuple val(meta), path("*_PMD_input_Empiric.txt"), emit: empiric
     tuple val(meta), path("*_PMD_input_Exponential.txt"), emit: exponential
-    tuple val(meta), path("*_PMD_Table_counts.txt")     , emit: counts
-    tuple val(meta), path("*_PMD_Table.txt")            , emit: table
+    tuple val(meta), path("*_PMD_Table_counts.txt"), emit: counts
+    tuple val(meta), path("*_PMD_Table.txt"), emit: table
     tuple val("${task.process}"), val('atlas'), eval('atlas | sed -e "2!d;s/.*Atlas //"'), emit: versions_atlas, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args    = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
     def pool_rg_txt_cmd = pool_rg_txt ? "poolReadGroups=${pool_rg_txt}" : ""
     """
     atlas \\

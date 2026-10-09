@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GZRT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gzrt:0.9.1--h577a1d6_1':
-        'quay.io/biocontainers/gzrt:0.9.1--h577a1d6_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/gzrt:0.9.1--h577a1d6_1'
+        : 'quay.io/biocontainers/gzrt:0.9.1--h577a1d6_1'}"
 
     input:
     tuple val(meta), path(fastqgz)
@@ -19,20 +22,19 @@ process GZRT {
 
     script:
     def args = task.ext.args ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}_recovered"
+    prefix = task.ext.prefix ?: "${meta.id}_recovered"
     fastqgz.each { file ->
         if (file.extension != "gz") {
-            error "GZRT works with .gz files only. Offending file: ${file}"
+            error("GZRT works with .gz files only. Offending file: ${file}")
         }
 
-        if ((meta.single_end && "${file}" == "${prefix}.fastq.gz") ||
-            (!meta.single_end && ("${file}" == "${prefix}_1.fastq.gz" || "${file}" == "${prefix}_2.fastq.gz"))) {
-                error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+        if ((meta.single_end && "${file}" == "${prefix}.fastq.gz") || (!meta.single_end && ("${file}" == "${prefix}_1.fastq.gz" || "${file}" == "${prefix}_2.fastq.gz"))) {
+            error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
         }
     }
 
     """
-    if [ "$meta.single_end" == true ]; then
+    if [ "${meta.single_end}" == true ]; then
         gzrecover ${args} -p ${fastqgz} | gzip > ${prefix}.fastq.gz
 
         if [ -e "${prefix}.fastq.gz" ] && [ ! -s "${prefix}.fastq.gz" ]; then
@@ -56,16 +58,15 @@ process GZRT {
     prefix = task.ext.prefix ?: "${meta.id}_recovered"
     fastqgz.each { file ->
         if (file.extension != "gz") {
-            error "GZRT works with .gz files only. Offending file: ${file}"
+            error("GZRT works with .gz files only. Offending file: ${file}")
         }
 
-        if ((meta.single_end && "${file}" == "${prefix}.fastq.gz") ||
-            (!meta.single_end && ("${file}" == "${prefix}_1.fastq.gz" || "${file}" == "${prefix}_2.fastq.gz"))) {
-                error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+        if ((meta.single_end && "${file}" == "${prefix}.fastq.gz") || (!meta.single_end && ("${file}" == "${prefix}_1.fastq.gz" || "${file}" == "${prefix}_2.fastq.gz"))) {
+            error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
         }
     }
     """
-    if [ "$meta.single_end" == true ]; then
+    if [ "${meta.single_end}" == true ]; then
         echo "" | gzip > ${prefix}.fastq.gz
     else
         echo "" | gzip > ${prefix}_1.fastq.gz

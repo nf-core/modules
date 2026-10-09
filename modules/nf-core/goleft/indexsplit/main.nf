@@ -1,19 +1,22 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GOLEFT_INDEXSPLIT {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/goleft:0.2.4--h9ee0642_1':
-        'quay.io/biocontainers/goleft:0.2.4--h9ee0642_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/goleft:0.2.4--h9ee0642_1'
+        : 'quay.io/biocontainers/goleft:0.2.4--h9ee0642_1'}"
 
     input:
-    tuple val(meta) , path(bai)
+    tuple val(meta), path(bai)
     tuple val(meta2), path(fai)
     val split
 
     output:
-    tuple val(meta), path("*.bed") , emit: bed
+    tuple val(meta), path("*.bed"), emit: bed
     tuple val("${task.process}"), val('goleft'), eval("goleft --version 2>&1 | sed '1!d;s/^.*goleft Version: //'"), topic: versions, emit: versions_goleft
 
     when:

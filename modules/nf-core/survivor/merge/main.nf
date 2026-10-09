@@ -1,23 +1,26 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SURVIVOR_MERGE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/survivor:1.0.7--h9a82719_1':
-        'quay.io/biocontainers/survivor:1.0.7--h9a82719_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/survivor:1.0.7--h9a82719_1'
+        : 'quay.io/biocontainers/survivor:1.0.7--h9a82719_1'}"
 
     input:
     tuple val(meta), path(vcfs)
-    val(max_distance_breakpoints)
-    val(min_supporting_callers)
-    val(account_for_type)
-    val(account_for_sv_strands)
-    val(estimate_distanced_by_sv_size)
-    val(min_sv_size)
+    val max_distance_breakpoints
+    val min_supporting_callers
+    val account_for_type
+    val account_for_sv_strands
+    val estimate_distanced_by_sv_size
+    val min_sv_size
 
     output:
-    tuple val(meta), path("*.vcf")   , emit: vcf
+    tuple val(meta), path("*.vcf"), emit: vcf
     tuple val("${task.process}"), val('survivor'), eval("SURVIVOR 2>&1 | grep 'Version' | sed 's/Version: //'"), topic: versions, emit: versions_survivor
 
     when:
@@ -26,10 +29,9 @@ process SURVIVOR_MERGE {
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    vcfs.each{ vcf_file ->
-        if ( vcf_file.getExtension() == "gz"){
-            error "Gzipped files are not supported by Survivor, please gunzip your VCF files first."
-            // https://github.com/fritzsedlazeck/SURVIVOR/issues/158
+    vcfs.each { vcf_file ->
+        if (vcf_file.getExtension() == "gz") {
+            error("Gzipped files are not supported by Survivor, please gunzip your VCF files first.")
         }
     }
 
@@ -47,10 +49,9 @@ process SURVIVOR_MERGE {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    vcfs.each{ vcf_file ->
-        if (vcf_file.getExtension() == "gz"){
-            error "Gzipped files are not supported by Survivor, please gunzip your VCF files first."
-            // https://github.com/fritzsedlazeck/SURVIVOR/issues/158
+    vcfs.each { vcf_file ->
+        if (vcf_file.getExtension() == "gz") {
+            error("Gzipped files are not supported by Survivor, please gunzip your VCF files first.")
         }
     }
     """

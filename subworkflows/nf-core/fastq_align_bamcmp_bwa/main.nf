@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 //
 // Alignment with BWA to an additional genome, then use BAMCMP to remove reads that map to the second genome.
 //

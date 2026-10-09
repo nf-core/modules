@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PLINK_GWAS {
     tag "${meta.id}"
     label 'process_low'
 
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/plink:1.90b6.21--h031d066_5':
-        'quay.io/biocontainers/plink:1.90b6.21--h031d066_5' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/plink:1.90b6.21--h031d066_5'
+        : 'quay.io/biocontainers/plink:1.90b6.21--h031d066_5'}"
 
     input:
     tuple val(meta), path(bed), path(bim), path(fam)

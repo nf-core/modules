@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PRESIDENT {
-    tag "$fasta"
+    tag "${fasta}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/president:0.6.8--pyhdfd78af_0' :
-        'quay.io/biocontainers/president:0.6.8--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/president:0.6.8--pyhdfd78af_0'
+        : 'quay.io/biocontainers/president:0.6.8--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -13,10 +16,10 @@ process PRESIDENT {
     val compress
 
     output:
-    tuple val(meta), path("${prefix}_valid.fasta*")  , emit: valid_fasta
+    tuple val(meta), path("${prefix}_valid.fasta*"), emit: valid_fasta
     tuple val(meta), path("${prefix}_invalid.fasta*"), emit: invalid_fasta
-    tuple val(meta), path("*.tsv")                   , emit: report
-    tuple val(meta), path("*.log")                   , emit: log
+    tuple val(meta), path("*.tsv"), emit: report
+    tuple val(meta), path("*.log"), emit: log
     tuple val("${task.process}"), val('president'), eval("president --version |& sed '1!d;s/president v//'"), topic: versions, emit: versions_president
 
     when:
@@ -25,11 +28,21 @@ process PRESIDENT {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    if ("${fasta}" == "${reference}") error "Input and reference names are the same!"
-    if ("${fasta}" == "${prefix}_valid.fasta") error "Input and output file names are the same, use \"task.ext.prefix\" to disambiguate!"
-    if ("${fasta}" == "${prefix}_invalid.fasta") error "Input and output file names are the same, use \"task.ext.prefix\" to disambiguate!"
-    if ("${fasta}" == "${prefix}_valid.fasta.gz" && compress) error "Input and output file names are the same, use \"task.ext.prefix\" to disambiguate!"
-    if ("${fasta}" == "${prefix}_invalid.fasta.gz" && compress) error "Input and output file names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("${fasta}" == "${reference}") {
+        error("Input and reference names are the same!")
+    }
+    if ("${fasta}" == "${prefix}_valid.fasta") {
+        error("Input and output file names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
+    if ("${fasta}" == "${prefix}_invalid.fasta") {
+        error("Input and output file names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
+    if ("${fasta}" == "${prefix}_valid.fasta.gz" && compress) {
+        error("Input and output file names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
+    if ("${fasta}" == "${prefix}_invalid.fasta.gz" && compress) {
+        error("Input and output file names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
     president \\
         --query ${fasta} \\

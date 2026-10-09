@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FASTDUP {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c5/c55070589353b3e1837ca3414c4f182d3674cbf55a64edee07e8bf75370762a9/data':
-        'community.wave.seqera.io/library/fastdup:1.0.0--a9b28abff06bb2bb' }"
+    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c5/c55070589353b3e1837ca3414c4f182d3674cbf55a64edee07e8bf75370762a9/data'
+        : 'community.wave.seqera.io/library/fastdup:1.0.0--a9b28abff06bb2bb'}"
 
     input:
     tuple val(meta), path(reads)
@@ -28,19 +31,20 @@ process FASTDUP {
     }
     """
     fastdup \\
-        $args \\
-        --input $reads \\
+        ${args} \\
+        --input ${reads} \\
         --metrics ${prefix}.metrics.txt \\
         --output ${prefix}.bam \\
-        --num-threads $task.cpus
+        --num-threads ${task.cpus}
 
     """
 
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def index_command = args.contains("--index-format CSI") ? "touch ${prefix}.csi"
-                        : args.contains("--create-index")   ? "touch ${prefix}.bai" : ""
+    def index_command = args.contains("--index-format CSI")
+        ? "touch ${prefix}.csi"
+        : args.contains("--create-index") ? "touch ${prefix}.bai" : ""
 
     """
 

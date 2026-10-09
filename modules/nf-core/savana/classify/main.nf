@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SAVANA_CLASSIFY {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
@@ -11,11 +14,11 @@ process SAVANA_CLASSIFY {
     tuple val(meta), path(vcf)
 
     output:
-    tuple val(meta), path("${prefix}.classified.vcf")              , emit: classified_vcf
-    tuple val(meta), path("${prefix}.classified.somatic.vcf")      , emit: somatic_vcf        , optional: true
-    tuple val(meta), path("${prefix}.classified.germline.vcf")     , emit: germline_vcf       , optional: true
-    tuple val(meta), path("${prefix}.classified.somatic.bedpe")    , emit: somatic_bedpe      , optional: true
-    tuple val(meta), path("${prefix}.classified.{strict,lenient}.vcf"), emit: legacy_vcfs     , optional: true
+    tuple val(meta), path("${prefix}.classified.vcf"), emit: classified_vcf
+    tuple val(meta), path("${prefix}.classified.somatic.vcf"), emit: somatic_vcf, optional: true
+    tuple val(meta), path("${prefix}.classified.germline.vcf"), emit: germline_vcf, optional: true
+    tuple val(meta), path("${prefix}.classified.somatic.bedpe"), emit: somatic_bedpe, optional: true
+    tuple val(meta), path("${prefix}.classified.{strict,lenient}.vcf"), emit: legacy_vcfs, optional: true
     tuple val("${task.process}"), val('savana'), eval("python -c \"import importlib.metadata as m; print(m.version('savana'))\""), emit: versions_savana, topic: versions
 
     when:

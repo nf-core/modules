@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process STITCH {
     tag "${meta.id}"
     label 'process_medium'
@@ -13,11 +16,11 @@ process STITCH {
     val seed
 
     output:
-    tuple val(meta), path("input", type: "dir") , emit: input
-    tuple val(meta), path("RData", type: "dir") , emit: rdata
-    tuple val(meta), path("plots", type: "dir") , emit: plots , optional: { generate_input_only }
-    tuple val(meta), path("*.vcf.gz")           , emit: vcf   , optional: { generate_input_only || bgen_output }
-    tuple val(meta), path("*.bgen")             , emit: bgen  , optional: { generate_input_only || !bgen_output }
+    tuple val(meta), path("input", type: "dir"), emit: input
+    tuple val(meta), path("RData", type: "dir"), emit: rdata
+    tuple val(meta), path("plots", type: "dir"), emit: plots, optional: { generate_input_only }
+    tuple val(meta), path("*.vcf.gz"), emit: vcf, optional: { generate_input_only || bgen_output }
+    tuple val(meta), path("*.bgen"), emit: bgen, optional: { generate_input_only || !bgen_output }
     tuple val("${task.process}"), val('r-quilt'), eval('Rscript -e "cat(as.character(packageVersion(\'STITCH\')))"'), topic: versions, emit: versions_r_quilt
     tuple val("${task.process}"), val('r-base'), eval('R --version | sed "1!d; s/.*version //; s/ .*//"'), topic: versions, emit: versions_r_base
     tuple val("${task.process}"), val('rsync'), eval("rsync --version | sed '1!d;s/^rsync  version //; s/ .*//'"), topic: versions, emit: versions_rsync
@@ -27,36 +30,36 @@ process STITCH {
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def args   = task.ext.args   ?: ""
-    def args2  = task.ext.args2  ?: ""
+    def args = task.ext.args ?: ""
+    def args2 = task.ext.args2 ?: ""
 
     generate_input_only = args2.contains("--generateInputOnly TRUE")
-    bgen_output         = args2.contains("--output_format bgen")
-    def suffix          = bgen_output ? "bgen" : "vcf.gz"
+    bgen_output = args2.contains("--output_format bgen")
+    def suffix = bgen_output ? "bgen" : "vcf.gz"
 
     def crams_list = collected_crams instanceof Collection ? collected_crams : [collected_crams]
-    def reads_ext  = crams_list ? crams_list.collect { path -> path.extension }.unique() : []
+    def reads_ext = crams_list ? crams_list.collect { path -> path.extension }.unique() : []
 
     if (reads_ext.size() > 1) {
         error("STITCH process: Mixed input read file types detected: ${reads_ext}. Please provide either all BAM or all CRAM files.")
     }
-    def cramlist_cmd         = cramlist && reads_ext == ["cram"] ? "--cramlist ${cramlist}"           : ""
-    def bamlist_cmd          = cramlist && reads_ext == ["bam" ] ? "--bamlist ${cramlist}"            : ""
+    def cramlist_cmd = cramlist && reads_ext == ["cram"] ? "--cramlist ${cramlist}" : ""
+    def bamlist_cmd = cramlist && reads_ext == ["bam"] ? "--bamlist ${cramlist}" : ""
 
-    def reference_cmd        = fasta                       ? "--reference ${fasta}"                                            : ""
-    def has_region           = start != null && start != [] && end != null && end != []
-    def has_buffer           = buffer != null && buffer != [] && buffer.toString() != ""
+    def reference_cmd = fasta ? "--reference ${fasta}" : ""
+    def has_region = start != null && start != [] && end != null && end != []
+    def has_buffer = buffer != null && buffer != [] && buffer.toString() != ""
     def original_region_name = has_region ? "${chromosome_name}.${start}.${end}" : "${chromosome_name}"
     def regenerate_input_cmd = input && rdata && !cramlist ? "--regenerateInput FALSE --originalRegionName ${original_region_name}" : ""
-    def samplename_cmd       = samplename                  ? "--sampleNames_file ${samplename}"                                : ""
-    def genetic_map_command  = genetic_map                 ? "--genetic_map_file=${genetic_map}"                               : ""
-    def start_command        = has_region                  ? "--regionStart ${start}"                                       : ""
-    def end_command          = has_region                  ? "--regionEnd ${end}"                                           : ""
-    def buffer_command       = has_region && has_buffer    ? "--buffer ${buffer}"                                           : ""
+    def samplename_cmd = samplename ? "--sampleNames_file ${samplename}" : ""
+    def genetic_map_command = genetic_map ? "--genetic_map_file=${genetic_map}" : ""
+    def start_command = has_region ? "--regionStart ${start}" : ""
+    def end_command = has_region ? "--regionEnd ${end}" : ""
+    def buffer_command = has_region && has_buffer ? "--buffer ${buffer}" : ""
 
     // Rsync and Stitch command to copy RData from previous run if available
-    def rsync_cmd            = rdata ? "rsync -rL ${rdata}/ RData" : ""
-    def stitch_cmd           = seed  ? "Rscript <(cat \$(which STITCH.R) | tail -n +2 | cat <(echo 'set.seed(${seed})') -)" : "STITCH.R"
+    def rsync_cmd = rdata ? "rsync -rL ${rdata}/ RData" : ""
+    def stitch_cmd = seed ? "Rscript <(cat \$(which STITCH.R) | tail -n +2 | cat <(echo 'set.seed(${seed})') -)" : "STITCH.R"
 
     """
     ${rsync_cmd} ${args}
@@ -83,15 +86,15 @@ process STITCH {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def _args  = task.ext.args   ?: ""
-    def args2  = task.ext.args2  ?: ""
+    def _args = task.ext.args ?: ""
+    def args2 = task.ext.args2 ?: ""
 
-    def nb_samples      = collected_crams.size()
+    def nb_samples = collected_crams.size()
     generate_input_only = args2.contains("--generateInputOnly TRUE")
-    bgen_output         = args2.contains("--output_format bgen")
+    bgen_output = args2.contains("--output_format bgen")
 
     def generate_plots_cmd = !generate_input_only
-    def generate_file_cmd  = !generate_input_only ? bgen_output ? "touch ${prefix}.bgen" : "echo '' | gzip > ${prefix}.vcf.gz" : ""
+    def generate_file_cmd = !generate_input_only ? bgen_output ? "touch ${prefix}.bgen" : "echo '' | gzip > ${prefix}.vcf.gz" : ""
 
     """
     mkdir -p input

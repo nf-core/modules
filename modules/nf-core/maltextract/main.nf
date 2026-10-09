@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MALTEXTRACT {
 
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hops:0.35--hdfd78af_1' :
-        'quay.io/biocontainers/hops:0.35--hdfd78af_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/hops:0.35--hdfd78af_1'
+        : 'quay.io/biocontainers/hops:0.35--hdfd78af_1'}"
 
     input:
     tuple val(meta), path(rma6)
@@ -13,7 +16,7 @@ process MALTEXTRACT {
     path ncbi_dir
 
     output:
-    tuple val(meta), path("results")      , emit: results
+    tuple val(meta), path("results"), emit: results
     tuple val("${task.process}"), val('maltextract'), eval('MaltExtract --help | head -n 2 | tail -n 1 | sed \'s/MaltExtract version//\''), emit: versions_maltextract, topic: versions
 
     when:
@@ -24,12 +27,12 @@ process MALTEXTRACT {
     """
     MaltExtract \\
         -Xmx${task.memory.toGiga()}g \\
-        -p $task.cpus \\
+        -p ${task.cpus} \\
         -i ${rma6.join(' ')} \\
-        -t $taxon_list \\
-        -r $ncbi_dir \\
+        -t ${taxon_list} \\
+        -r ${ncbi_dir} \\
         -o results/ \\
-        $args
+        ${args}
     """
 
     stub:

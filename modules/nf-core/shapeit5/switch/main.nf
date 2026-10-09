@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SHAPEIT5_SWITCH {
     tag "${meta.id}"
     label 'process_low'
@@ -18,10 +21,10 @@ process SHAPEIT5_SWITCH {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def freq_cmd     = freq     ? "--frequency ${freq}"    : ""
+    def freq_cmd = freq ? "--frequency ${freq}" : ""
     def pedigree_cmd = pedigree ? "--pedigree ${pedigree}" : ""
 
     """

@@ -1,29 +1,32 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GCTA_CALCULATELDSCORES {
-    tag "${meta.id}"
-    label 'process_medium'
-    conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ed/ed2d6a4b4f43f3230014aa67bb40feb0acbd7cc41ef0b0a895002f1befc6502c/data'
-        : 'community.wave.seqera.io/library/gcta_r-base:31127c93877b38de'}"
+  tag "${meta.id}"
+  label 'process_medium'
+  conda "${moduleDir}/environment.yml"
+  container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+    ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ed/ed2d6a4b4f43f3230014aa67bb40feb0acbd7cc41ef0b0a895002f1befc6502c/data'
+    : 'community.wave.seqera.io/library/gcta_r-base:31127c93877b38de'}"
 
-    input:
-    tuple val(meta), path(bed), path(bim), path(fam)
-    val ld_score_region
+  input:
+  tuple val(meta), path(bed), path(bim), path(fam)
+  val ld_score_region
 
-    output:
-    tuple val(meta), path("*_gcta_ld.score.ld"), emit: ld_scores
-    tuple val(meta), path("*_snp_group*.txt"), emit: snp_group_files
-    tuple val("${task.process}"), val("gcta"), eval("gcta --version | sed -En 's/^[*] version v([0-9.]*).*/\\1/p'"), emit: versions_gcta, topic: versions
-    tuple val("${task.process}"), val("r-base"), eval('Rscript -e "cat(as.character(getRversion()))"'), emit: versions_rbase, topic: versions
+  output:
+  tuple val(meta), path("*_gcta_ld.score.ld"), emit: ld_scores
+  tuple val(meta), path("*_snp_group*.txt"), emit: snp_group_files
+  tuple val("${task.process}"), val("gcta"), eval("gcta --version | sed -En 's/^[*] version v([0-9.]*).*/\\1/p'"), emit: versions_gcta, topic: versions
+  tuple val("${task.process}"), val("r-base"), eval('Rscript -e "cat(as.character(getRversion()))"'), emit: versions_rbase, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
+  when:
+  task.ext.when == null || task.ext.when
 
-    script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def bfile_prefix = bed.baseName
-    """
+  script:
+  def args = task.ext.args ?: ''
+  def prefix = task.ext.prefix ?: "${meta.id}"
+  def bfile_prefix = bed.baseName
+  """
     gcta \\
         --bfile ${bfile_prefix} \\
         --ld-score-region ${ld_score_region} \\
@@ -56,9 +59,9 @@ process GCTA_CALCULATELDSCORES {
     EOF
     """
 
-    stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    """
+  stub:
+  def prefix = task.ext.prefix ?: "${meta.id}"
+  """
     printf "%s\\n" \
         "SNP A1 A2 Freq b se p N ldscore_SNP" \
         "stub_snp1 A G 0.10 0.01 0.02 0.50 100 1.00" \

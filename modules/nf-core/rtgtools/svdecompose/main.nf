@@ -1,17 +1,20 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RTGTOOLS_SVDECOMPOSE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/dc/dca5ba13b7ec38bf7cacf00a33517b9080067bea638745c05d50a4957c75fc2e/data':
-        'community.wave.seqera.io/library/rtg-tools:3.13--3465421f1b0be0ce' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/dc/dca5ba13b7ec38bf7cacf00a33517b9080067bea638745c05d50a4957c75fc2e/data'
+        : 'community.wave.seqera.io/library/rtg-tools:3.13--3465421f1b0be0ce'}"
 
     input:
     tuple val(meta), path(input), path(tbi)
 
     output:
-    tuple val(meta), path("*.vcf.gz")    , emit: vcf
+    tuple val(meta), path("*.vcf.gz"), emit: vcf
     tuple val(meta), path("*.vcf.gz.tbi"), emit: index
     tuple val("${task.process}"), val('rtgtools'), eval("rtg version | sed 's/Product: RTG Tools //; q'"), topic: versions, emit: versions_rtgtools
 
@@ -19,16 +22,18 @@ process RTGTOOLS_SVDECOMPOSE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args      = task.ext.args ?: ""
-    def prefix    = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ""
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def index_vcf = tbi ? "" : "rtg index ${input}"
     def avail_mem = task.memory.toGiga() + "G"
-    if ("$input" == "${prefix}.vcf.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${input}" == "${prefix}.vcf.gz") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
+    }
 
     """
     ${index_vcf}
 
-    rtg RTG_MEM=$avail_mem svdecompose \\
+    rtg RTG_MEM=${avail_mem} svdecompose \\
         ${args} \\
         --input=${input} \\
         --output=${prefix}.vcf.gz
@@ -38,7 +43,9 @@ process RTGTOOLS_SVDECOMPOSE {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if ("$input" == "${prefix}.vcf.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${input}" == "${prefix}.vcf.gz") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
+    }
 
     """
     echo | gzip -n > ${prefix}.vcf.gz

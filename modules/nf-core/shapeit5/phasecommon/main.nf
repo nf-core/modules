@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SHAPEIT5_PHASECOMMON {
     tag "${meta.id}"
     label 'process_medium'
@@ -21,19 +24,22 @@ process SHAPEIT5_PHASECOMMON {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def extension = args.contains("--output-format bcf")   ? "bcf"   :
-                    args.contains("--output-format graph") ? "graph" :
-                    args.contains("--output-format bh")    ? "bh"    :
-                    "bcf"
+    def extension = args.contains("--output-format bcf")
+        ? "bcf"
+        : args.contains("--output-format graph")
+            ? "graph"
+            : args.contains("--output-format bh")
+                ? "bh"
+                : "bcf"
 
     if ("${input}" == "${prefix}.${extension}") {
         error("Input and output names are the same, set prefix in module configuration to disambiguate!")
     }
 
-    def map_command       = map       ? "--map ${map}"             : ""
+    def map_command = map ? "--map ${map}" : ""
     def reference_command = reference ? "--reference ${reference}" : ""
-    def scaffold_command  = scaffold  ? "--scaffold ${scaffold}"   : ""
-    def pedigree_command  = pedigree  ? "--pedigree ${pedigree}"   : ""
+    def scaffold_command = scaffold ? "--scaffold ${scaffold}" : ""
+    def pedigree_command = pedigree ? "--pedigree ${pedigree}" : ""
 
     """
     SHAPEIT5_phase_common \\
@@ -49,13 +55,16 @@ process SHAPEIT5_PHASECOMMON {
     """
 
     stub:
-    def args   = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def extension = args.contains("--output-format bcf")   ? "bcf"   :
-                    args.contains("--output-format graph") ? "graph" :
-                    args.contains("--output-format bh")    ? "bh"    :
-                    "bcf"
+    def extension = args.contains("--output-format bcf")
+        ? "bcf"
+        : args.contains("--output-format graph")
+            ? "graph"
+            : args.contains("--output-format bh")
+                ? "bh"
+                : "bcf"
     """
     touch ${prefix}.${extension}
     """

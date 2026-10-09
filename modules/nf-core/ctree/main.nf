@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CTREE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label "process_medium"
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/40/4084291fbed2d8371cc9dd8c53a422d0731a27b2366d0dc0069c0fc0fac314bb/data':
-        'community.wave.seqera.io/library/r-ctree_r-mobster_r-viber_r-cli_pruned:48299db4104e296b' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/40/4084291fbed2d8371cc9dd8c53a422d0731a27b2366d0dc0069c0fc0fac314bb/data'
+        : 'community.wave.seqera.io/library/r-ctree_r-mobster_r-viber_r-cli_pruned:48299db4104e296b'}"
 
     input:
     tuple val(meta), path(ctree_input)
 
     output:
-    tuple val(meta), path("**ctree_{mobster,VIBER,pyclonevi}.rds")       , emit: ctree_rds       , optional: true
-    tuple val(meta), path("**ctree_{mobster,VIBER,pyclonevi}_plots.rds") , emit: ctree_plots_rds , optional: true
+    tuple val(meta), path("**ctree_{mobster,VIBER,pyclonevi}.rds"), emit: ctree_rds, optional: true
+    tuple val(meta), path("**ctree_{mobster,VIBER,pyclonevi}_plots.rds"), emit: ctree_plots_rds, optional: true
     tuple val(meta), path("**ctree_{mobster,VIBER,pyclonevi}_report.rds"), emit: ctree_report_rds, optional: true
     tuple val(meta), path("**ctree_{mobster,VIBER,pyclonevi}_report.pdf"), emit: ctree_report_pdf, optional: true
     tuple val(meta), path("**ctree_{mobster,VIBER,pyclonevi}_report.png"), emit: ctree_report_png, optional: true
@@ -22,7 +25,7 @@ process CTREE {
     task.ext.when == null || task.ext.when
 
     script:
-    template "main_script.R"
+    template("main_script.R")
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"

@@ -1,21 +1,24 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MACREL_CONTIGS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/macrel:1.4.0--pyh7e72e81_0':
-        'quay.io/biocontainers/macrel:1.4.0--pyh7e72e81_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/macrel:1.4.0--pyh7e72e81_0'
+        : 'quay.io/biocontainers/macrel:1.4.0--pyh7e72e81_0'}"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*/*.smorfs.faa.gz")  , emit: smorfs
+    tuple val(meta), path("*/*.smorfs.faa.gz"), emit: smorfs
     tuple val(meta), path("*/*.all_orfs.faa.gz"), emit: all_orfs
-    tuple val(meta), path("*/*.prediction.gz")  , emit: amp_prediction
-    tuple val(meta), path("*/*.md")             , emit: readme_file
-    tuple val(meta), path("*/*_log.txt")        , emit: log_file
+    tuple val(meta), path("*/*.prediction.gz"), emit: amp_prediction
+    tuple val(meta), path("*/*.md"), emit: readme_file
+    tuple val(meta), path("*/*_log.txt"), emit: log_file
     tuple val("${task.process}"), val("macrel"), eval("macrel --version | sed 's/macrel //'"), emit: versions_macrel, topic: versions
     tuple val("${task.process}"), val("pyrodigal"), eval("pyrodigal --version | sed 's/pyrodigal v//'"), emit: versions_pyrodigal, topic: versions
 

@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HLALA_PREPAREGRAPH {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
     stageInMode 'copy'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hla-la:1.0.4--h077b44d_1':
-        'quay.io/biocontainers/hla-la:1.0.4--h077b44d_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/hla-la:1.0.4--h077b44d_1'
+        : 'quay.io/biocontainers/hla-la:1.0.4--h077b44d_1'}"
 
     input:
     tuple val(meta), path(graph)
@@ -22,15 +25,16 @@ process HLALA_PREPAREGRAPH {
     script:
     def bin = ""
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        bin="\$CONDA_PREFIX/opt/hla-la/bin/HLA-LA"
-    } else {
-        bin="/usr/local/opt/hla-la/bin/HLA-LA"
+        bin = "\$CONDA_PREFIX/opt/hla-la/bin/HLA-LA"
+    }
+    else {
+        bin = "/usr/local/opt/hla-la/bin/HLA-LA"
     }
 
     """
     ${bin} \\
         --action prepareGraph \\
-        --PRG_graph_dir $graph
+        --PRG_graph_dir ${graph}
     """
 
     stub:

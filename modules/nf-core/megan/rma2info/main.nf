@@ -1,19 +1,22 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MEGAN_RMA2INFO {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/megan:6.25.9--h9ee0642_0':
-        'quay.io/biocontainers/megan:6.25.9--h9ee0642_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/megan:6.25.9--h9ee0642_0'
+        : 'quay.io/biocontainers/megan:6.25.9--h9ee0642_0'}"
 
     input:
     tuple val(meta), path(rma6)
-    val(megan_summary)
+    val megan_summary
 
     output:
     tuple val(meta), path("*.txt.gz"), emit: txt
-    tuple val(meta), path("*.megan") , emit: megan_summary, optional: true
+    tuple val(meta), path("*.megan"), emit: megan_summary, optional: true
     tuple val("${task.process}"), val('megan'), eval("rma2info 2>&1 | sed -n 's/.*version \\([^,]*\\).*/\\1/p'"), emit: versions_megan, topic: versions
 
     when:

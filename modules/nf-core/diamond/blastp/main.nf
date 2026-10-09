@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DIAMOND_BLASTP {
     tag "${meta.id}.${meta2.id}"
     label 'process_high'
@@ -27,7 +30,7 @@ process DIAMOND_BLASTP {
     task.ext.when == null || task.ext.when
 
     script:
-    meta = meta + [ db: meta2.id ]
+    meta = meta + [db: meta2.id]
 
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}.${meta2.id}"
@@ -78,7 +81,7 @@ process DIAMOND_BLASTP {
     """
 
     stub:
-    meta = meta + [ db: meta2.id ]
+    meta = meta + [db: meta2.id]
 
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"

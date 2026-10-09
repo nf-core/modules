@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RAXMLNG {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/raxml-ng:1.2.2--h6747034_1' :
-        'quay.io/biocontainers/raxml-ng:1.2.2--h6747034_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/raxml-ng:1.2.2--h6747034_1'
+        : 'quay.io/biocontainers/raxml-ng:1.2.2--h6747034_1'}"
 
     input:
     tuple val(meta), path(alignment), val(model)
 
     output:
     // either bestTree or bootstraps file is created, depending on options given
-    tuple val(meta), path("*.raxml.bestTree")  , emit: phylogeny             , optional:true
-    tuple val(meta), path("*.raxml.bootstraps"), emit: phylogeny_bootstrapped, optional:true
+    tuple val(meta), path("*.raxml.bestTree"), emit: phylogeny, optional: true
+    tuple val(meta), path("*.raxml.bootstraps"), emit: phylogeny_bootstrapped, optional: true
     tuple val("${task.process}"), val('raxmlng'), eval("raxml-ng --version 2>&1 | sed '/RAxML-NG v/!d;s/.*v. //;s/ .*//'"), emit: versions_raxmlng, topic: versions
 
     when:
@@ -22,7 +25,9 @@ process RAXMLNG {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     // fix random seed for reproducibility if not specified in command line
-    if (!(args ==~ /.*--seed.*/)) {args += " --seed=42"}
+    if (!(args ==~ /.*--seed.*/)) {
+        args += " --seed=42"
+    }
     """
     raxml-ng \\
         ${args} \\

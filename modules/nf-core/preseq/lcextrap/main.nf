@@ -1,19 +1,22 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PRESEQ_LCEXTRAP {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
     label 'error_retry'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/preseq:3.2.0--hdcf5f25_6':
-        'quay.io/biocontainers/preseq:3.2.0--hdcf5f25_6' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/preseq:3.2.0--hdcf5f25_6'
+        : 'quay.io/biocontainers/preseq:3.2.0--hdcf5f25_6'}"
 
     input:
     tuple val(meta), path(bam)
 
     output:
     tuple val(meta), path("*.lc_extrap.txt"), emit: lc_extrap
-    tuple val(meta), path("*.log")          , emit: log
+    tuple val(meta), path("*.log"), emit: log
     tuple val("${task.process}"), val('preseq'), eval("preseq 2>&1 | sed -n 's/Version: //p'"), emit: versions_preseq, topic: versions
 
     when:
@@ -21,7 +24,8 @@ process PRESEQ_LCEXTRAP {
 
     script:
     def args = task.ext.args ?: ''
-    args = task.attempt > 1 ? args.join(' -defects') : args  // Disable testing for defects
+    args = task.attempt > 1 ? args.join(' -defects') : args
+    // Disable testing for defects
     def prefix = task.ext.prefix ?: "${meta.id}"
     def paired_end = meta.single_end ? '' : '-pe'
     """

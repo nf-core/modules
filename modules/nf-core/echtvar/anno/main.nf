@@ -1,16 +1,19 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ECHTVAR_ANNO {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8f/8fbd0fb4d4e5dc62fbec999fb80befec797d83a0b3b70f39b6baaa73714438df/data':
-        'community.wave.seqera.io/library/echtvar_htslib:d37d5e1f4106f9c3' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8f/8fbd0fb4d4e5dc62fbec999fb80befec797d83a0b3b70f39b6baaa73714438df/data'
+        : 'community.wave.seqera.io/library/echtvar_htslib:d37d5e1f4106f9c3'}"
 
     input:
     tuple val(meta), path(vcf)
     tuple val(meta2), path(annotation_files)
-    val(output_suffix)
+    val output_suffix
 
     output:
     tuple val(meta), path("*.{vcf.gz,bcf,bcf.gz}"), emit: vcf
@@ -27,9 +30,9 @@ process ECHTVAR_ANNO {
     """
     echtvar \\
         anno \\
-        $args \\
-        $annotations \\
-        $vcf \\
+        ${args} \\
+        ${annotations} \\
+        ${vcf} \\
         ${prefix}.${suffix}
 
     """
@@ -40,7 +43,7 @@ process ECHTVAR_ANNO {
     def suffix = output_suffix ?: 'vcf.gz'
     def create_output = suffix.endsWith('.gz') ? "echo '' | bgzip -c > ${prefix}.${suffix}" : "touch ${prefix}.${suffix}"
     """
-    echo $args
+    echo ${args}
 
     ${create_output}
     """

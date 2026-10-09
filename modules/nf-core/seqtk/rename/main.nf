@@ -1,17 +1,20 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SEQTK_RENAME {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/seqtk:1.4--he4a0461_1' :
-        'quay.io/biocontainers/seqtk:1.4--he4a0461_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/seqtk:1.4--he4a0461_1'
+        : 'quay.io/biocontainers/seqtk:1.4--he4a0461_1'}"
 
     input:
     tuple val(meta), path(sequences)
 
     output:
-    tuple val(meta), path("*.gz")     , emit: sequences
+    tuple val(meta), path("*.gz"), emit: sequences
     tuple val("${task.process}"), val('seqtk'), eval("seqtk 2>&1 | sed -n 's/^Version: //p'"), emit: versions_seqtk, topic: versions
 
     when:
@@ -21,15 +24,15 @@ process SEQTK_RENAME {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def extension = "fasta"
-    if ("$sequences" ==~ /.+\.fq|.+\.fq.gz|.+\.fastq|.+\.fastq.gz/) {
+    if ("${sequences}" ==~ /.+\.fq|.+\.fq.gz|.+\.fastq|.+\.fastq.gz/) {
         extension = "fastq"
     }
     """
     seqtk \\
         rename \\
-        $args \\
-        $sequences \\
-        $prefix | \\
+        ${args} \\
+        ${sequences} \\
+        ${prefix} | \\
         gzip -c --no-name > ${prefix}.renamed.${extension}.gz
     """
 
@@ -37,7 +40,7 @@ process SEQTK_RENAME {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def extension = "fasta"
-    if ("$sequences" ==~ /.+\.fq|.+\.fq.gz|.+\.fastq|.+\.fastq.gz/) {
+    if ("${sequences}" ==~ /.+\.fq|.+\.fq.gz|.+\.fastq|.+\.fastq.gz/) {
         extension = "fastq"
     }
     """

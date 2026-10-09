@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CNVKIT_BATCH {
     tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3c/3c127bbeb62b853e044adee5da1f788ab84bc07c2809843ffdd9154ce74b8d2a/data'
-:         'community.wave.seqera.io/library/cnvkit_htslib_samtools:10abfe6987f6efe6' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3c/3c127bbeb62b853e044adee5da1f788ab84bc07c2809843ffdd9154ce74b8d2a/data'
+        : 'community.wave.seqera.io/library/cnvkit_htslib_samtools:10abfe6987f6efe6'}"
 
     input:
     tuple val(meta), path(tumor), path(tumor_index), path(normal), path(normal_index)
@@ -26,6 +29,7 @@ process CNVKIT_BATCH {
 
     when:
     task.ext.when == null || task.ext.when
+
     script:
     def args = task.ext.args ?: ''
     def tumor_exists = tumor ? true : false
@@ -98,6 +102,7 @@ process CNVKIT_BATCH {
         --processes ${task.cpus} \\
         ${args}
     """
+
     stub:
     def tumor_exists = tumor ? true : false
     def reference_exists = reference ? true : false

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TETRANSCRIPTS {
-    tag "$meta_c.id"
+    tag "${meta_c.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/tetranscripts:2.2.3--pyh7cba7a3_0':
-        'quay.io/biocontainers/tetranscripts:2.2.3--pyh7cba7a3_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/tetranscripts:2.2.3--pyh7cba7a3_0'
+        : 'quay.io/biocontainers/tetranscripts:2.2.3--pyh7cba7a3_0'}"
 
     input:
     tuple val(meta_t), path(bam_t)
@@ -26,17 +29,17 @@ process TETRANSCRIPTS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta_c.id}"
-// Join multiple BAM files with spaces for -t and -c arguments
+    // Join multiple BAM files with spaces for -t and -c arguments
     def treatment_bams = [bam_t].flatten().join(' ')
     def control_bams = [bam_c].flatten().join(' ')
     """
     TEtranscripts \\
 	-t ${treatment_bams} \\
 	-c ${control_bams} \\
-	--GTF $g_gtf \\
-	--TE $te_gtf \\
+	--GTF ${g_gtf} \\
+	--TE ${te_gtf} \\
 	--project ${prefix} \\
-        $args
+        ${args}
 
     """
 
@@ -44,7 +47,7 @@ process TETRANSCRIPTS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta_c.id}"
     """
-    echo $args
+    echo ${args}
 
     touch ${prefix}.R
     touch ${prefix}.cntTable

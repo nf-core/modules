@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process POLYPOLISH_POLISH {
 
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high_memory'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/polypolish:0.6.0--hdbdd923_0':
-        'quay.io/biocontainers/polypolish:0.6.0--hdbdd923_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/polypolish:0.6.0--hdbdd923_0'
+        : 'quay.io/biocontainers/polypolish:0.6.0--hdbdd923_0'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -15,7 +18,7 @@ process POLYPOLISH_POLISH {
 
     output:
     tuple val(meta), path("*.fasta"), emit: fasta
-    tuple val(meta), path("*.txt")  , emit: debug, optional: true
+    tuple val(meta), path("*.txt"), emit: debug, optional: true
     tuple val("${task.process}"), val('polypolish'), eval("polypolish polish --version |& sed '1!d;s/Polypolish-polish //'"), emit: versions_polypolish, topic: versions
 
     when:
@@ -24,7 +27,9 @@ process POLYPOLISH_POLISH {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if ("${fasta}" == "${prefix}.fasta") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    if ("${fasta}" == "${prefix}.fasta") {
+        error("Input and output names are the same, set prefix in module configuration to disambiguate!")
+    }
     def debug_mode = save_debug ? "--debug ${prefix}.txt" : ''
 
     """

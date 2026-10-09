@@ -1,20 +1,23 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RIBOCODE_METAPLOTS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fe/fe815db0864b45b91afc7bc84c55cb60acb0035e7248dda7f480a55c4cb105d7/data':
-        'community.wave.seqera.io/library/ribocode:1.2.15--5530b252f5433a62' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fe/fe815db0864b45b91afc7bc84c55cb60acb0035e7248dda7f480a55c4cb105d7/data'
+        : 'community.wave.seqera.io/library/ribocode:1.2.15--5530b252f5433a62'}"
 
     input:
     tuple val(meta), path(bam)
     tuple val(meta2), path(annotation)
 
     output:
-    tuple val(meta), path("*config.txt")                                            , emit: config
-    tuple val(meta), path("*.pdf")                                                  , emit: pdf
-    tuple val("${task.process}"), val('ribocode'), eval('RiboCode --version  2>&1') , emit: versions_ribocode, topic: versions
+    tuple val(meta), path("*config.txt"), emit: config
+    tuple val(meta), path("*.pdf"), emit: pdf
+    tuple val("${task.process}"), val('ribocode'), eval('RiboCode --version  2>&1'), emit: versions_ribocode, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,10 +27,10 @@ process RIBOCODE_METAPLOTS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     metaplots \\
-        -a $annotation \\
-        -r $bam \\
+        -a ${annotation} \\
+        -r ${bam} \\
         -o ${prefix} \\
-        $args
+        ${args}
 
     # Check config file has a sample config line (non-empty, doesn't start with #)
     if ! grep -qE '^[^#[:space:]]' ${prefix}_pre_config.txt; then

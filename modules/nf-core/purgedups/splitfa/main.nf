@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PURGEDUPS_SPLITFA {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/purge_dups:1.2.6--py39h7132678_1':
-        'quay.io/biocontainers/purge_dups:1.2.6--py39h7132678_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/purge_dups:1.2.6--py39h7132678_1'
+        : 'quay.io/biocontainers/purge_dups:1.2.6--py39h7132678_1'}"
 
     input:
     tuple val(meta), path(assembly)
@@ -33,5 +36,4 @@ process PURGEDUPS_SPLITFA {
     """
     echo | gzip > ${prefix}.split.fasta.gz
     """
-
 }

@@ -1,33 +1,36 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RUSTQC {
-    tag "$meta.id"
-    label 'process_high'
+      tag "${meta.id}"
+      label 'process_high'
 
-    conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2a/2a8a0514855c54307399fd0f664c2685e76c8cc07631e767c1e37c575b18d59f/data'
-        : 'community.wave.seqera.io/library/rustqc:0.2.1--00df1502b490e005'}"
+      conda "${moduleDir}/environment.yml"
+      container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+            ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2a/2a8a0514855c54307399fd0f664c2685e76c8cc07631e767c1e37c575b18d59f/data'
+            : 'community.wave.seqera.io/library/rustqc:0.2.1--00df1502b490e005'}"
 
-    input:
-    tuple val(meta), path(bam), path(bai)
-    tuple val(meta2), path(gtf)
+      input:
+      tuple val(meta), path(bam), path(bai)
+      tuple val(meta2), path(gtf)
 
-    output:
-    tuple val(meta), path("${prefix}/dupradar/*"),                                                      emit: dupradar
-    tuple val(meta), path("${prefix}/featurecounts/*"),                                                 emit: featurecounts
-    tuple val(meta), path("${prefix}/preseq/*"),                                                        emit: preseq
-    tuple val(meta), path("${prefix}/samtools/*"),                                                      emit: samtools
-    tuple val(meta), path("${prefix}/rseqc/**"),                                                        emit: rseqc
-    tuple val(meta), path("${prefix}/qualimap/**"),                                                     emit: qualimap
-    tuple val("${task.process}"), val('rustqc'), eval("rustqc --version 2>&1 | sed -n '1s/rustqc //; 1s/ .*//p'"),  emit: versions_rustqc, topic: versions
+      output:
+      tuple val(meta), path("${prefix}/dupradar/*"), emit: dupradar
+      tuple val(meta), path("${prefix}/featurecounts/*"), emit: featurecounts
+      tuple val(meta), path("${prefix}/preseq/*"), emit: preseq
+      tuple val(meta), path("${prefix}/samtools/*"), emit: samtools
+      tuple val(meta), path("${prefix}/rseqc/**"), emit: rseqc
+      tuple val(meta), path("${prefix}/qualimap/**"), emit: qualimap
+      tuple val("${task.process}"), val('rustqc'), eval("rustqc --version 2>&1 | sed -n '1s/rustqc //; 1s/ .*//p'"), emit: versions_rustqc, topic: versions
 
-    when:
-    task.ext.when == null || task.ext.when
+      when:
+      task.ext.when == null || task.ext.when
 
-    script:
-    prefix = task.ext.prefix ?: "${meta.id}"
-    def args = task.ext.args ?: ''
-    def paired = meta.single_end ? '' : '--paired'
-    """
+      script:
+      prefix = task.ext.prefix ?: "${meta.id}"
+      def args = task.ext.args ?: ''
+      def paired = meta.single_end ? '' : '--paired'
+      """
     rustqc rna \\
         ${bam} \\
         --gtf ${gtf} \\
@@ -38,9 +41,9 @@ process RUSTQC {
         ${args}
     """
 
-    stub:
-    prefix = task.ext.prefix ?: "${meta.id}"
-    """
+      stub:
+      prefix = task.ext.prefix ?: "${meta.id}"
+      """
     mkdir -p ${prefix}/{dupradar,featurecounts,preseq,samtools} \\
             ${prefix}/rseqc/{bam_stat,infer_experiment,read_duplication,read_distribution,junction_annotation,junction_saturation,inner_distance,tin} \\
             ${prefix}/qualimap/{raw_data_qualimapReport,images_qualimapReport}

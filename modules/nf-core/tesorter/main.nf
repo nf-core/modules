@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TESORTER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/tesorter:1.4.7--pyhdfd78af_1':
-        'quay.io/biocontainers/tesorter:1.4.7--pyhdfd78af_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/tesorter:1.4.7--pyhdfd78af_1'
+        : 'quay.io/biocontainers/tesorter:1.4.7--pyhdfd78af_1'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -25,29 +28,29 @@ process TESORTER {
     task.ext.when == null || task.ext.when
 
     script:
-    def args        = task.ext.args ?: ''
-    def prefix      = task.ext.prefix ?: "${meta.id}"
-    def db_hmm_arg  = db_hmm ? "--db-hmm $db_hmm" : ''
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def db_hmm_arg = db_hmm ? "--db-hmm ${db_hmm}" : ''
     """
     TEsorter \\
-        $db_hmm_arg \\
-        --processors $task.cpus \\
-        -pre $prefix \\
-        $args \\
-        $fasta
+        ${db_hmm_arg} \\
+        --processors ${task.cpus} \\
+        -pre ${prefix} \\
+        ${args} \\
+        ${fasta}
     """
 
     stub:
-    def args        = task.ext.args ?: ''
-    def prefix      = task.ext.prefix ?: "${meta.id}"
-    def touch_opts  = ( ! args.contains('-genome') ) ? 'Yes' : 'No'
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def touch_opts = (!args.contains('-genome')) ? 'Yes' : 'No'
     """
     touch ${prefix}.domtbl
     touch ${prefix}.dom.faa
     touch ${prefix}.dom.tsv
     touch ${prefix}.dom.gff3
 
-    if [ "$touch_opts" = "Yes" ]; then
+    if [ "${touch_opts}" = "Yes" ]; then
         touch ${prefix}.cls.tsv
         touch ${prefix}.cls.lib
         touch ${prefix}.cls.pep

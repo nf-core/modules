@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process EASYPQP_LIBRARY {
     tag "${meta.id}"
     label 'process_single'
@@ -11,7 +14,7 @@ process EASYPQP_LIBRARY {
     tuple val(meta), path(psmpkl), path(peakpkl)
 
     output:
-    tuple val(meta), path("${prefix}.tsv")   , emit: tsv
+    tuple val(meta), path("${prefix}.tsv"), emit: tsv
     tuple val(meta), path("*_run_peaks.tsv"), emit: run_peaks, optional: true
     tuple val("${task.process}"), val('easypqp'), eval("easypqp --version | sed 's/.*version //'"), topic: versions, emit: versions_easypqp
 

@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PARABRICKS_APPLYBQSR {
     tag "${meta.id}"
     label 'process_high'
@@ -8,7 +11,7 @@ process PARABRICKS_APPLYBQSR {
     container "nvcr.io/nvidia/clara/clara-parabricks:4.7.1-1"
 
     input:
-    tuple val(meta),  path(bam), path(bai)
+    tuple val(meta), path(bam), path(bai)
     tuple val(meta3), path(bqsr_table)
     tuple val(meta4), path(intervals)
     tuple val(meta5), path(fasta)
@@ -29,11 +32,11 @@ process PARABRICKS_APPLYBQSR {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error("Parabricks module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
-    def args             = task.ext.args    ?: ''
-    def prefix           = task.ext.prefix  ?: "${meta.id}"
-    def extension        = "${output_fmt}"
-    def interval_command = intervals        ? intervals.collect { interval -> "--interval-file ${interval}" }.join(' ') : ""
-    def num_gpus         = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def extension = "${output_fmt}"
+    def interval_command = intervals ? intervals.collect { interval -> "--interval-file ${interval}" }.join(' ') : ""
+    def num_gpus = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
     """
     pbrun \\
         applybqsr \\
@@ -48,8 +51,8 @@ process PARABRICKS_APPLYBQSR {
     """
 
     stub:
-    def prefix          = task.ext.prefix ?: "${meta.id}"
-    def extension       = "${output_fmt}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def extension = "${output_fmt}"
     def extension_index = "${output_fmt}" == "cram" ? "crai" : "bai"
     """
     touch ${prefix}.${extension}

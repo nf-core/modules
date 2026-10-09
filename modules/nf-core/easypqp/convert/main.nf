@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process EASYPQP_CONVERT {
     tag "${meta.id}"
     label 'process_single'
@@ -12,7 +15,7 @@ process EASYPQP_CONVERT {
     path unimod
 
     output:
-    tuple val(meta), path("*.psmpkl") , emit: psmpkl
+    tuple val(meta), path("*.psmpkl"), emit: psmpkl
     tuple val(meta), path("*.peakpkl"), emit: peakpkl
     tuple val("${task.process}"), val('easypqp'), eval("easypqp --version | sed 's/.*version //'"), topic: versions, emit: versions_easypqp
 

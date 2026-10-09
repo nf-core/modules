@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ATLAS_CALL {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/atlas:0.9.9--h082e891_0':
-        'quay.io/biocontainers/atlas:0.9.9--h082e891_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/atlas:0.9.9--h082e891_0'
+        : 'quay.io/biocontainers/atlas:0.9.9--h082e891_0'}"
 
     input:
     tuple val(meta), path(bam), path(bai), path(pmd), path(recal)
@@ -22,13 +25,15 @@ process ATLAS_CALL {
     task.ext.when == null || task.ext.when
 
     script:
-    def args               = task.ext.args   ?: ''
-    def recal_file         = recal           ? "recal=${recal}" : ""
-    def pmd_file           = pmd             ? "pmdFile=${pmd}" : ""
-    def known_alleles_file = known_alleles   ? "alleles=${known_alleles}" : ""
+    def args = task.ext.args ?: ''
+    def recal_file = recal ? "recal=${recal}" : ""
+    def pmd_file = pmd ? "pmdFile=${pmd}" : ""
+    def known_alleles_file = known_alleles ? "alleles=${known_alleles}" : ""
 
     def valid_method = ['MLE', 'Bayesian', 'allelePresence', 'randomBase', 'majorityBase']
-    if ( !valid_method.contains(method) )  { error "Unrecognised calling method for ATLAS_CALL. Options: MLE, Bayesian, allelePresence, randomBase, majorityBase" }
+    if (!valid_method.contains(method)) {
+        error("Unrecognised calling method for ATLAS_CALL. Options: MLE, Bayesian, allelePresence, randomBase, majorityBase")
+    }
 
     """
     atlas \\
@@ -41,5 +46,4 @@ process ATLAS_CALL {
         method=${method} \\
         ${args}
     """
-
 }

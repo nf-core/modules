@@ -1,15 +1,18 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process NEXTGENMAP {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/nextgenmap%3A0.5.5--hc9558a2_4' :
-        'quay.io/biocontainers/nextgenmap:0.5.5--hc9558a2_4' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/nextgenmap%3A0.5.5--hc9558a2_4'
+        : 'quay.io/biocontainers/nextgenmap:0.5.5--hc9558a2_4'}"
 
     input:
     tuple val(meta), path(reads)
-    path(fasta)
+    path fasta
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
@@ -23,26 +26,27 @@ process NEXTGENMAP {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def threads = task.cpus
 
-    if(meta.single_end){
+    if (meta.single_end) {
         """
         ngm \\
-            -r $fasta \\
-            -q $reads \\
-            -t $threads \\
+            -r ${fasta} \\
+            -q ${reads} \\
+            -t ${threads} \\
             --bam \\
             -o ${prefix}.bam \\
-            $args
+            ${args}
         """
-    } else{
+    }
+    else {
         """
         ngm \\
-            -r $fasta \\
+            -r ${fasta} \\
             -1 ${reads[0]} \\
             -2 ${reads[1]} \\
-            -t $threads \\
+            -t ${threads} \\
             --bam \\
             -o ${prefix}.bam \\
-            $args
+            ${args}
         """
     }
 

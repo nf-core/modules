@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CELLRANGERATAC_MKFASTQ {
     tag "mkfastq"
     label 'process_medium'
@@ -9,7 +12,7 @@ process CELLRANGERATAC_MKFASTQ {
     path csv
 
     output:
-    path "${bcl.getSimpleName()}/outs/fastq_path/*.fastq.gz"  , emit: fastq
+    path "${bcl.getSimpleName()}/outs/fastq_path/*.fastq.gz", emit: fastq
     tuple val("${task.process}"), val('cellrangeratac'), eval("cellranger-atac --version | sed 's/.*cellranger-atac-//'"), emit: versions_cellrangeratac, topic: versions
 
     when:
@@ -18,21 +21,21 @@ process CELLRANGERATAC_MKFASTQ {
     script:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "CELLRANGERATAC_MKFASTQ module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("CELLRANGERATAC_MKFASTQ module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
 
     def args = task.ext.args ?: ''
     """
     cellranger-atac mkfastq --id=${bcl.getSimpleName()} \
-        --run=$bcl \
-        --csv=$csv \
-        $args
+        --run=${bcl} \
+        --csv=${csv} \
+        ${args}
     """
 
     stub:
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "CELLRANGERATAC_MKFASTQ module does not support Conda. Please use Docker / Singularity / Podman instead."
+        error("CELLRANGERATAC_MKFASTQ module does not support Conda. Please use Docker / Singularity / Podman instead.")
     }
 
     """

@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process STARDIST {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
     label 'process_gpu'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d9/d964e0bef867bb2ff1a309c9c087d8d83ac734ce3aa315dd8311d4c1bfdafd8e/data' :
-        'community.wave.seqera.io/library/python_pip_imagecodecs_nvidia-cublas-cu12_pruned:b668bcb6d531d350' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d9/d964e0bef867bb2ff1a309c9c087d8d83ac734ce3aa315dd8311d4c1bfdafd8e/data'
+        : 'community.wave.seqera.io/library/python_pip_imagecodecs_nvidia-cublas-cu12_pruned:b668bcb6d531d350'}"
 
     input:
     tuple val(meta), path(image)
@@ -27,10 +30,10 @@ process STARDIST {
     def model_command = model_path ? "-m ${model_path}" : model_name ? "-m ${model_name}" : ""
     """
     stardist-predict2d \\
-        -i $image \\
+        -i ${image} \\
         -o . \\
-        $model_command \\
-        $args
+        ${model_command} \\
+        ${args}
     """
 
     stub:

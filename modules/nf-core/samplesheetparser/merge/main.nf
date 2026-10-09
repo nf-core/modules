@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SAMPLESHEETPARSER_MERGE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samplesheet-parser:2.5.2--pyhdfd78af_0' :
-        'quay.io/biocontainers/samplesheet-parser:2.5.2--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/samplesheet-parser:2.5.2--pyhdfd78af_0'
+        : 'quay.io/biocontainers/samplesheet-parser:2.5.2--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(samplesheets, stageAs: "input*/*")
@@ -20,15 +23,15 @@ process SAMPLESHEETPARSER_MERGE {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: ''
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def to_norm = target_version.toLowerCase()
-    def sheets  = samplesheets instanceof List ? samplesheets : [ samplesheets ]
+    def sheets = samplesheets instanceof List ? samplesheets : [samplesheets]
     if (!['v1', 'v2'].contains(to_norm)) {
-        error "target_version must be 'v1' or 'v2', got: ${target_version}"
+        error("target_version must be 'v1' or 'v2', got: ${target_version}")
     }
     if (sheets.size() < 2) {
-        error "SAMPLESHEETPARSER_MERGE requires at least two input sheets, got ${sheets.size()}"
+        error("SAMPLESHEETPARSER_MERGE requires at least two input sheets, got ${sheets.size()}")
     }
     // samplesheet-parser >=2.5.2 exits 0 on a successful merge (warnings are
     // advisory) and non-zero only on conflicts (1) or hard errors (2), so no

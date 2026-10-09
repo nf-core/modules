@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ALIGNOTH {
     tag "${meta.id}"
     label 'process_single'
@@ -11,8 +14,8 @@ process ALIGNOTH {
     tuple val(meta), path(bam), path(bai), path(fasta), path(fai), path(bed), path(vcf), path(tbi)
 
     output:
-    tuple val(meta), path("${prefix}.html"),    emit: html,    optional: true
-    tuple val(meta), path("${prefix}"),         emit: output,  optional: true
+    tuple val(meta), path("${prefix}.html"), emit: html, optional: true
+    tuple val(meta), path("${prefix}"), emit: output, optional: true
     tuple val(meta), path("${prefix}.vl.json"), emit: vl_json, optional: true
     tuple val("${task.process}"), val('alignoth'), eval("alignoth --version | sed 's/alignoth //g'"), topic: versions, emit: versions_alignoth
 

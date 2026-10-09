@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GOLEFT_INDEXCOV {
     tag "${meta.id}"
     label 'process_single'
@@ -12,13 +15,13 @@ process GOLEFT_INDEXCOV {
     tuple val(meta2), path(fai)
 
     output:
-    tuple val(meta), path("${prefix}/*"),           emit: output
-    tuple val(meta), path("${prefix}/*ped"),        emit: ped,       optional: true
-    tuple val(meta), path("${prefix}/*bed.gz"),     emit: bed,       optional: true
+    tuple val(meta), path("${prefix}/*"), emit: output
+    tuple val(meta), path("${prefix}/*ped"), emit: ped, optional: true
+    tuple val(meta), path("${prefix}/*bed.gz"), emit: bed, optional: true
     tuple val(meta), path("${prefix}/*bed.gz.tbi"), emit: bed_index, optional: true
-    tuple val(meta), path("${prefix}/*roc"),        emit: roc,       optional: true
-    tuple val(meta), path("${prefix}/*html"),       emit: html,      optional: true
-    tuple val(meta), path("${prefix}/*png"),        emit: png,       optional: true
+    tuple val(meta), path("${prefix}/*roc"), emit: roc, optional: true
+    tuple val(meta), path("${prefix}/*html"), emit: html, optional: true
+    tuple val(meta), path("${prefix}/*png"), emit: png, optional: true
     tuple val("${task.process}"), val('goleft'), eval("goleft --version |& sed '1!d;s/^.*goleft Version: //'"), topic: versions, emit: versions_goleft
     tuple val("${task.process}"), val('tabix'), eval("tabix -h |& sed -n 's/^.*Version: //p'"), topic: versions, emit: versions_tabix
 
@@ -29,8 +32,8 @@ process GOLEFT_INDEXCOV {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     // indexcov uses BAM files or CRAI
-    def input_files = bams.findAll {bam_file -> bam_file.name.endsWith(".bam") } + indexes.findAll {index_file -> index_file.name.endsWith(".crai") }
-    def extranormalize = input_files.any {input_file -> input_file.name.endsWith(".crai") } ? " --extranormalize " : ""
+    def input_files = bams.findAll { bam_file -> bam_file.name.endsWith(".bam") } + indexes.findAll { index_file -> index_file.name.endsWith(".crai") }
+    def extranormalize = input_files.any { input_file -> input_file.name.endsWith(".crai") } ? " --extranormalize " : ""
     """
     goleft indexcov \\
         --fai ${fai}  \\

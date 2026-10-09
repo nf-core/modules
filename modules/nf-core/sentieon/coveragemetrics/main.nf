@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SENTIEON_COVERAGEMETRICS {
     tag "${meta.id}"
     label 'process_medium'
@@ -16,12 +19,12 @@ process SENTIEON_COVERAGEMETRICS {
     tuple val(meta5), path(gene_list)
 
     output:
-    tuple val(meta), path("${prefix}"),                                                      emit: per_locus,            optional: true
-    tuple val(meta), path("${prefix}.${partitions_output}_summary"),                         emit: sample_summary,       optional: true
-    tuple val(meta), path("${prefix}.${partitions_output}_interval_statistics"),             emit: statistics,           optional: true
-    tuple val(meta), path("${prefix}.${partitions_output}_cumulative_coverage_counts"),      emit: coverage_counts,      optional: true
+    tuple val(meta), path("${prefix}"), emit: per_locus, optional: true
+    tuple val(meta), path("${prefix}.${partitions_output}_summary"), emit: sample_summary, optional: true
+    tuple val(meta), path("${prefix}.${partitions_output}_interval_statistics"), emit: statistics, optional: true
+    tuple val(meta), path("${prefix}.${partitions_output}_cumulative_coverage_counts"), emit: coverage_counts, optional: true
     tuple val(meta), path("${prefix}.${partitions_output}_cumulative_coverage_proportions"), emit: coverage_proportions, optional: true
-    tuple val(meta), path("${prefix}.${partitions_output}_interval_summary"),                emit: interval_summary,     optional: true
+    tuple val(meta), path("${prefix}.${partitions_output}_interval_summary"), emit: interval_summary, optional: true
     tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
     when:
@@ -31,7 +34,7 @@ process SENTIEON_COVERAGEMETRICS {
     prefix = task.ext.prefix ?: "${meta.id}"
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
-    def input = bam.sort().collect {in -> "-i ${in}" }.join(' ')
+    def input = bam.sort().collect { in -> "-i ${in}" }.join(' ')
     def interval_cmd = interval ? "--interval ${interval}" : ""
     def gene_list_cmd = gene_list ? "--gene_list ${gene_list}" : ""
     // Glob that matches any version of 'sample_library_platform_center'.

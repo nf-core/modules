@@ -1,28 +1,31 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MANTA_SOMATIC {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
     label 'error_retry'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f6/f696c93e6209e33ac0d15f1ecfa799bc67329eec07b0569e065ea8b220b53953/data' :
-        'community.wave.seqera.io/library/manta_python:0eb71149179b3920' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f6/f696c93e6209e33ac0d15f1ecfa799bc67329eec07b0569e065ea8b220b53953/data'
+        : 'community.wave.seqera.io/library/manta_python:0eb71149179b3920'}"
 
     input:
     tuple val(meta), path(input_normal), path(input_index_normal), path(input_tumor), path(input_index_tumor), path(target_bed), path(target_bed_tbi)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
-    path(config)
+    path config
 
     output:
-    tuple val(meta), path("*.candidate_small_indels.vcf.gz")     , emit: candidate_small_indels_vcf
-    tuple val(meta), path("*.candidate_small_indels.vcf.gz.tbi") , emit: candidate_small_indels_vcf_tbi
-    tuple val(meta), path("*.candidate_sv.vcf.gz")               , emit: candidate_sv_vcf
-    tuple val(meta), path("*.candidate_sv.vcf.gz.tbi")           , emit: candidate_sv_vcf_tbi
-    tuple val(meta), path("*.diploid_sv.vcf.gz")                 , emit: diploid_sv_vcf
-    tuple val(meta), path("*.diploid_sv.vcf.gz.tbi")             , emit: diploid_sv_vcf_tbi
-    tuple val(meta), path("*.somatic_sv.vcf.gz")                 , emit: somatic_sv_vcf
-    tuple val(meta), path("*.somatic_sv.vcf.gz.tbi")             , emit: somatic_sv_vcf_tbi
+    tuple val(meta), path("*.candidate_small_indels.vcf.gz"), emit: candidate_small_indels_vcf
+    tuple val(meta), path("*.candidate_small_indels.vcf.gz.tbi"), emit: candidate_small_indels_vcf_tbi
+    tuple val(meta), path("*.candidate_sv.vcf.gz"), emit: candidate_sv_vcf
+    tuple val(meta), path("*.candidate_sv.vcf.gz.tbi"), emit: candidate_sv_vcf_tbi
+    tuple val(meta), path("*.diploid_sv.vcf.gz"), emit: diploid_sv_vcf
+    tuple val(meta), path("*.diploid_sv.vcf.gz.tbi"), emit: diploid_sv_vcf_tbi
+    tuple val(meta), path("*.somatic_sv.vcf.gz"), emit: somatic_sv_vcf
+    tuple val(meta), path("*.somatic_sv.vcf.gz.tbi"), emit: somatic_sv_vcf_tbi
     tuple val("${task.process}"), val("manta"), eval("configManta.py --version"), topic: versions, emit: versions_manta
 
     when:
@@ -31,19 +34,19 @@ process MANTA_SOMATIC {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def options_manta = target_bed ? "--callRegions $target_bed" : ""
+    def options_manta = target_bed ? "--callRegions ${target_bed}" : ""
     def config_option = config ? "--config ${config}" : ""
     """
     configManta.py \\
-        --tumorBam $input_tumor \\
-        --normalBam $input_normal \\
-        --reference $fasta \\
+        --tumorBam ${input_tumor} \\
+        --normalBam ${input_normal} \\
+        --reference ${fasta} \\
         ${config_option} \\
         --runDir manta \\
-        $options_manta \\
-        $args
+        ${options_manta} \\
+        ${args}
 
-    python manta/runWorkflow.py -m local -j $task.cpus
+    python manta/runWorkflow.py -m local -j ${task.cpus}
 
     mv manta/results/variants/candidateSmallIndels.vcf.gz \\
         ${prefix}.candidate_small_indels.vcf.gz

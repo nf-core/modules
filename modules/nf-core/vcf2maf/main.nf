@@ -1,18 +1,23 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VCF2MAF {
 
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7c/7cbf9421f0bee23a93a35c5d0c7166ac1e89a40008d8e474cecfddb93226bf65/data':
-        'community.wave.seqera.io/library/ensembl-vep_vcf2maf:2d40b60b4834af73' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7c/7cbf9421f0bee23a93a35c5d0c7166ac1e89a40008d8e474cecfddb93226bf65/data'
+        : 'community.wave.seqera.io/library/ensembl-vep_vcf2maf:2d40b60b4834af73'}"
 
     input:
-    tuple val(meta), path(vcf) // Use an uncompressed VCF file!
-    path fasta                 // Required
-    path vep_cache             // Required for VEP running. A default of /.vep is supplied.
+    tuple val(meta), path(vcf)
+    // Use an uncompressed VCF file!
+    path fasta
+    // Required
+    path vep_cache
 
     output:
     tuple val(meta), path("*.maf"), emit: maf
@@ -23,27 +28,28 @@ process VCF2MAF {
     task.ext.when == null || task.ext.when
 
     script:
-    def args          = task.ext.args   ?: ''
-    def prefix        = task.ext.prefix ?: "${meta.id}"
-    def vep_cache_cmd = vep_cache       ? "--vep-data $vep_cache" : "" // If VEP is present, it will find it and add it to commands otherwise blank
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def vep_cache_cmd = vep_cache ? "--vep-data ${vep_cache}" : ""
+    // If VEP is present, it will find it and add it to commands otherwise blank
     """
-    if [ "$vep_cache" ]; then
+    if [ "${vep_cache}" ]; then
         VEP_CMD="--vep-path \$(dirname \$(type -p vep))"
     else
         VEP_CMD=""
     fi
 
     vcf2maf.pl \\
-        $args \\
+        ${args} \\
         \$VEP_CMD \\
-        $vep_cache_cmd \\
-        --ref-fasta $fasta \\
-        --input-vcf $vcf \\
+        ${vep_cache_cmd} \\
+        --ref-fasta ${fasta} \\
+        --input-vcf ${vcf} \\
         --output-maf ${prefix}.maf
     """
 
     stub:
-    def prefix  = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.maf
     """

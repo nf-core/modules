@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RAVEN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/raven-assembler:1.6.1--h2e03b76_0' :
-        'quay.io/biocontainers/raven-assembler:1.6.1--h2e03b76_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/raven-assembler:1.6.1--h2e03b76_0'
+        : 'quay.io/biocontainers/raven-assembler:1.6.1--h2e03b76_0'}"
 
     input:
     tuple val(meta), path(reads)
 
     output:
     tuple val(meta), path("*.fasta.gz"), emit: fasta
-    tuple val(meta), path("*.gfa.gz")  , emit: gfa
+    tuple val(meta), path("*.gfa.gz"), emit: gfa
     tuple val("${task.process}"), val('raven'), eval('raven --version'), emit: versions_raven, topic: versions
 
     when:
@@ -24,10 +27,10 @@ process RAVEN {
     """
     # run tool
     raven \\
-        -t $task.cpus \\
+        -t ${task.cpus} \\
         --graphical-fragment-assembly ${prefix}.gfa \\
-        $args \\
-        $reads | \\
+        ${args} \\
+        ${reads} | \\
         gzip -c > ${prefix}.fasta.gz
 
     # compress assembly graph

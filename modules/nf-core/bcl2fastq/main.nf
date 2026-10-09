@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BCL2FASTQ {
-    tag "${ meta.lane ? meta.id + "." + meta.lane : meta.id }"
+    tag "${meta.lane ? meta.id + "." + meta.lane : meta.id}"
     label 'process_high'
 
     container "quay.io/nf-core/bcl2fastq:2.20.0.422"

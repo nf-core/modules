@@ -1,12 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
 
 process CNVKIT_COVERAGE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/39/3935f8d7507f85fd20e073f0625bb6bdff8aa1b6044f4bbb720c9a8063ea0390/data'
-:         'community.wave.seqera.io/library/cnvkit:0.9.14--288e98d6210b7304' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/39/3935f8d7507f85fd20e073f0625bb6bdff8aa1b6044f4bbb720c9a8063ea0390/data'
+        : 'community.wave.seqera.io/library/cnvkit:0.9.14--288e98d6210b7304'}"
 
     input:
     tuple val(meta), path(alignment_file), path(interval)
@@ -22,7 +24,8 @@ process CNVKIT_COVERAGE {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}" // prefix is used to distinguish between target and antitarget files in output.
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    // prefix is used to distinguish between target and antitarget files in output.
 
     """
     cnvkit.py \\
@@ -39,7 +42,7 @@ process CNVKIT_COVERAGE {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    echo $args
+    echo ${args}
 
     touch ${prefix}.cnn
 

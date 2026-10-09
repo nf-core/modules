@@ -1,13 +1,16 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process METAPHLAN_MAKEDB {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/metaphlan:4.1.1--pyhdfd78af_0' :
-        'quay.io/biocontainers/metaphlan:4.1.1--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/metaphlan:4.1.1--pyhdfd78af_0'
+        : 'quay.io/biocontainers/metaphlan:4.1.1--pyhdfd78af_0'}"
 
     output:
-    path "metaphlan_db_latest"      , emit: db
+    path "metaphlan_db_latest", emit: db
     tuple val("${task.process}"), val('metaphlan'), eval("metaphlan --version 2>&1 | cut -d ' ' -f 3"), emit: versions_metaphlan, topic: versions
 
     when:
@@ -19,7 +22,7 @@ process METAPHLAN_MAKEDB {
     """
     metaphlan \\
         --install \\
-        --nproc $task.cpus \\
+        --nproc ${task.cpus} \\
         --bowtie2db metaphlan_db_latest \\
         ${args}
 

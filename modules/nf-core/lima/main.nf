@@ -1,32 +1,35 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process LIMA {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/lima:2.12.0--h9ee0642_1' :
-        'quay.io/biocontainers/lima:2.12.0--h9ee0642_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/lima:2.12.0--h9ee0642_1'
+        : 'quay.io/biocontainers/lima:2.12.0--h9ee0642_1'}"
 
     input:
     tuple val(meta), path(ccs)
     path primers
 
     output:
-    tuple val(meta), path("*.counts") , emit: counts
-    tuple val(meta), path("*.report") , emit: report
+    tuple val(meta), path("*.counts"), emit: counts
+    tuple val(meta), path("*.report"), emit: report
     tuple val(meta), path("*.summary"), emit: summary
     tuple val("${task.process}"), val('lima'), eval("lima --version | head -n1 | sed 's/lima //g' | sed 's/ (.\\+//g'"), emit: versions_lima, topic: versions
 
-    tuple val(meta), path("*.bam")              , optional: true, emit: bam
-    tuple val(meta), path("*.bam.pbi")          , optional: true, emit: pbi
-    tuple val(meta), path("*.{fa,fasta}")      , optional: true, emit: fasta
+    tuple val(meta), path("*.bam"), optional: true, emit: bam
+    tuple val(meta), path("*.bam.pbi"), optional: true, emit: pbi
+    tuple val(meta), path("*.{fa,fasta}"), optional: true, emit: fasta
     tuple val(meta), path("*.{fa.gz,fasta.gz}"), optional: true, emit: fastagz
-    tuple val(meta), path("*.fastq")            , optional: true, emit: fastq
-    tuple val(meta), path("*.fastq.gz")         , optional: true, emit: fastqgz
-    tuple val(meta), path("*.xml")              , optional: true, emit: xml
-    tuple val(meta), path("*.json")             , optional: true, emit: json
-    tuple val(meta), path("*.clips")            , optional: true, emit: clips
-    tuple val(meta), path("*.guess")            , optional: true, emit: guess
+    tuple val(meta), path("*.fastq"), optional: true, emit: fastq
+    tuple val(meta), path("*.fastq.gz"), optional: true, emit: fastqgz
+    tuple val(meta), path("*.xml"), optional: true, emit: xml
+    tuple val(meta), path("*.json"), optional: true, emit: json
+    tuple val(meta), path("*.clips"), optional: true, emit: clips
+    tuple val(meta), path("*.guess"), optional: true, emit: guess
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,33 +37,43 @@ process LIMA {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if( "$ccs" == "${prefix}.bam" )      error "Input and output names are the same, set prefix in module configuration"
-    if( "$ccs" == "${prefix}.fasta" )    error "Input and output names are the same, set prefix in module configuration"
-    if( "$ccs" == "${prefix}.fasta.gz" ) error "Input and output names are the same, set prefix in module configuration"
-    if( "$ccs" == "${prefix}.fastq" )    error "Input and output names are the same, set prefix in module configuration"
-    if( "$ccs" == "${prefix}.fastq.gz" ) error "Input and output names are the same, set prefix in module configuration"
+    if ("${ccs}" == "${prefix}.bam") {
+        error("Input and output names are the same, set prefix in module configuration")
+    }
+    if ("${ccs}" == "${prefix}.fasta") {
+        error("Input and output names are the same, set prefix in module configuration")
+    }
+    if ("${ccs}" == "${prefix}.fasta.gz") {
+        error("Input and output names are the same, set prefix in module configuration")
+    }
+    if ("${ccs}" == "${prefix}.fastq") {
+        error("Input and output names are the same, set prefix in module configuration")
+    }
+    if ("${ccs}" == "${prefix}.fastq.gz") {
+        error("Input and output names are the same, set prefix in module configuration")
+    }
 
     """
     OUT_EXT=""
 
-    if [[ $ccs =~ bam\$ ]]; then
+    if [[ ${ccs} =~ bam\$ ]]; then
         OUT_EXT="bam"
-    elif [[ $ccs =~ fasta\$ ]]; then
+    elif [[ ${ccs} =~ fasta\$ ]]; then
         OUT_EXT="fasta"
-    elif [[ $ccs =~ fasta.gz\$ ]]; then
+    elif [[ ${ccs} =~ fasta.gz\$ ]]; then
         OUT_EXT="fasta.gz"
-    elif [[ $ccs =~ fastq\$ ]]; then
+    elif [[ ${ccs} =~ fastq\$ ]]; then
         OUT_EXT="fastq"
-    elif [[ $ccs =~ fastq.gz\$ ]]; then
+    elif [[ ${ccs} =~ fastq.gz\$ ]]; then
         OUT_EXT="fastq.gz"
     fi
 
     lima \\
-        $ccs \\
-        $primers \\
-        $prefix.\$OUT_EXT \\
-        -j $task.cpus \\
-        $args
+        ${ccs} \\
+        ${primers} \\
+        ${prefix}.\$OUT_EXT \\
+        -j ${task.cpus} \\
+        ${args}
     """
 
     stub:

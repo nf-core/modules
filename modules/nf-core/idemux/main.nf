@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process IDEMUX {
     tag "${meta.id}"
     label 'process_high'
@@ -12,8 +15,8 @@ process IDEMUX {
 
     output:
     tuple val(meta), path("[!undetermined]*.fastq.gz"), emit: fastq
-    tuple val(meta), path("undetermined_R?.fastq.gz") , emit: undetermined, optional: true
-    tuple val(meta), path("demultipexing_stats.tsv")  , emit: stats
+    tuple val(meta), path("undetermined_R?.fastq.gz"), emit: undetermined, optional: true
+    tuple val(meta), path("demultipexing_stats.tsv"), emit: stats
     tuple val("${task.process}"), val("idemux"), eval("idemux --version |& sed '1!d ; s/idemux //'"), topic: versions, emit: versions_idemux
 
     when:

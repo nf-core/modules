@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PARABRICKS_RNAFQ2BAM {
     tag "${meta.id}"
     label 'process_high'
@@ -8,33 +11,33 @@ process PARABRICKS_RNAFQ2BAM {
     container "nvcr.io/nvidia/clara/clara-parabricks:4.7.1-1"
 
     input:
-    tuple val(meta),  path(reads)
+    tuple val(meta), path(reads)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(index)
     val qc_metrics
     val mark_duplicates
 
     output:
-    tuple val(meta), path("${prefix}.Log.final.out"),                           emit: log_final
-    tuple val(meta), path("${prefix}.Log.out"),                                 emit: log_out
-    tuple val(meta), path("${prefix}.Log.progress.out"),                        emit: log_progress
-    tuple val(meta), path("${prefix}.bam"),                                     emit: bam,                  optional:true
-    tuple val(meta), path("${prefix}.bam.bai"),                                 emit: bai,                  optional:true
-    tuple val(meta), path("*.sortedByCoord.out.bam"),                           emit: bam_sorted,           optional:true
-    tuple val(meta), path("*.Aligned.sortedByCoord.out.bam"),                   emit: bam_sorted_aligned,   optional:true
-    tuple val(meta), path('*toTranscriptome.out.bam'),                          emit: bam_transcript,       optional:true
-    tuple val(meta), path('*Aligned.unsort.out.bam'),                           emit: bam_unsorted,         optional:true
-    tuple val(meta), path('*fastq.gz'),                                         emit: fastq,                optional:true
-    tuple val(meta), path('*.tab'),                                             emit: tab,                  optional:true
-    tuple val(meta), path('*.SJ.out.tab'),                                      emit: spl_junc_tab,         optional:true
-    tuple val(meta), path('*.ReadsPerGene.out.tab'),                            emit: read_per_gene_tab,    optional:true
-    tuple val(meta), path('*.out.junction'),                                    emit: junction,             optional:true
-    tuple val(meta), path('*.out.sam'),                                         emit: sam,                  optional:true
-    tuple val(meta), path('*.wig'),                                             emit: wig,                  optional:true
-    tuple val(meta), path('*.bg'),                                              emit: bedgraph,             optional:true
-    tuple val(meta), path("${prefix}_qc_metrics"),                              emit: qc_metrics,           optional:true
-    tuple val(meta), path("${prefix}.duplicate-metrics.txt"),                   emit: duplicate_metrics,    optional:true
-    tuple val("${task.process}"), val("parabricks"), eval("pbrun version 2>&1 | grep -Po '(?<=^pbrun: ).*'"),   emit: versions_parabricks,  topic: versions
+    tuple val(meta), path("${prefix}.Log.final.out"), emit: log_final
+    tuple val(meta), path("${prefix}.Log.out"), emit: log_out
+    tuple val(meta), path("${prefix}.Log.progress.out"), emit: log_progress
+    tuple val(meta), path("${prefix}.bam"), emit: bam, optional: true
+    tuple val(meta), path("${prefix}.bam.bai"), emit: bai, optional: true
+    tuple val(meta), path("*.sortedByCoord.out.bam"), emit: bam_sorted, optional: true
+    tuple val(meta), path("*.Aligned.sortedByCoord.out.bam"), emit: bam_sorted_aligned, optional: true
+    tuple val(meta), path('*toTranscriptome.out.bam'), emit: bam_transcript, optional: true
+    tuple val(meta), path('*Aligned.unsort.out.bam'), emit: bam_unsorted, optional: true
+    tuple val(meta), path('*fastq.gz'), emit: fastq, optional: true
+    tuple val(meta), path('*.tab'), emit: tab, optional: true
+    tuple val(meta), path('*.SJ.out.tab'), emit: spl_junc_tab, optional: true
+    tuple val(meta), path('*.ReadsPerGene.out.tab'), emit: read_per_gene_tab, optional: true
+    tuple val(meta), path('*.out.junction'), emit: junction, optional: true
+    tuple val(meta), path('*.out.sam'), emit: sam, optional: true
+    tuple val(meta), path('*.wig'), emit: wig, optional: true
+    tuple val(meta), path('*.bg'), emit: bedgraph, optional: true
+    tuple val(meta), path("${prefix}_qc_metrics"), emit: qc_metrics, optional: true
+    tuple val(meta), path("${prefix}.duplicate-metrics.txt"), emit: duplicate_metrics, optional: true
+    tuple val("${task.process}"), val("parabricks"), eval("pbrun version 2>&1 | grep -Po '(?<=^pbrun: ).*'"), emit: versions_parabricks, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

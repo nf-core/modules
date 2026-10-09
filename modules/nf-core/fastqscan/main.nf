@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FASTQSCAN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/fastq-scan:0.4.4--h7d875b9_0' :
-        'quay.io/biocontainers/fastq-scan:0.4.4--h7d875b9_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/fastq-scan:0.4.4--h7d875b9_0'
+        : 'quay.io/biocontainers/fastq-scan:0.4.4--h7d875b9_0'}"
 
     input:
     tuple val(meta), path(reads)
@@ -21,9 +24,9 @@ process FASTQSCAN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    zcat $reads | \\
+    zcat ${reads} | \\
         fastq-scan \\
-        $args > ${prefix}.json
+        ${args} > ${prefix}.json
     """
 
     stub:

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SUPPA_DIFFSPLICE {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d8/d887a6a05dec2a1f64fdff0eac40581f9a1ec30301b2c267bde7f564b0f14270/data' :
-        'community.wave.seqera.io/library/suppa:2.4--2612fcca3884f6bc' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d8/d887a6a05dec2a1f64fdff0eac40581f9a1ec30301b2c267bde7f564b0f14270/data'
+        : 'community.wave.seqera.io/library/suppa:2.4--2612fcca3884f6bc'}"
 
     input:
     tuple val(meta), path(events)
@@ -46,7 +49,7 @@ process SUPPA_DIFFSPLICE {
     def tpm_threshold_arg = tpm_threshold ? "--tpm-threshold ${tpm_threshold}" : ''
     def nan_tpm_threshold_arg = nan_tpm_threshold ? "--nan-tpm-threshold ${nan_tpm_threshold}" : ''
 
-    [ "empirical", "classical" ].contains(method) ?: error("Invalid method: ${method}. Must be one of 'empirical' or 'classical'.")
+    ["empirical", "classical"].contains(method) ?: error("Invalid method: ${method}. Must be one of 'empirical' or 'classical'.")
 
     """
     suppa.py \\
@@ -66,14 +69,14 @@ process SUPPA_DIFFSPLICE {
         ${median_delta_psi_arg} \\
         ${tpm_threshold_arg} \\
         ${nan_tpm_threshold_arg} \\
-        $args
+        ${args}
     """
 
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo $args
+    echo ${args}
 
     touch ${prefix}.dpsi
     touch ${prefix}.psivec

@@ -1,27 +1,31 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process JVARKIT_WGSCOVERAGEPLOTTER {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/jvarkit:2024.08.25--hdfd78af_1':
-        'quay.io/biocontainers/jvarkit:2024.08.25--hdfd78af_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/jvarkit:2024.08.25--hdfd78af_1'
+        : 'quay.io/biocontainers/jvarkit:2024.08.25--hdfd78af_1'}"
 
     input:
-    tuple val(meta),  path(bam), path(bai)
+    tuple val(meta), path(bam), path(bai)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
     tuple val(meta4), path(dict)
+
     output:
-    tuple val(meta),  path("*.svg"), emit: output
+    tuple val(meta), path("*.svg"), emit: output
     tuple val("${task.process}"), val('jvarkit'), eval("jvarkit -v"), emit: versions_jvarkit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args        = task.ext.args ?: ''
-    def prefix       = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p TMP
 

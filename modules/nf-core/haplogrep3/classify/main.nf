@@ -1,17 +1,20 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HAPLOGREP3_CLASSIFY {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/haplogrep3:3.2.2--hdfd78af_0':
-        'quay.io/biocontainers/haplogrep3:3.2.2--hdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/haplogrep3:3.2.2--hdfd78af_0'
+        : 'quay.io/biocontainers/haplogrep3:3.2.2--hdfd78af_0'}"
 
     input:
     tuple val(meta), path(inputfile)
 
     output:
-    tuple val(meta)             , path("*.txt")                                                                           , emit: txt
+    tuple val(meta), path("*.txt"), emit: txt
     tuple val("${task.process}"), val('haplogrep3'), eval("haplogrep3 | sed -n 's/.*Haplogrep 3 \\([0-9.]\\+\\).*/\\1/p'"), emit: versions_haplogrep3, topic: versions
 
     when:
@@ -23,8 +26,8 @@ process HAPLOGREP3_CLASSIFY {
     """
     haplogrep3 \\
         classify \\
-        $args \\
-        --in $inputfile \\
+        ${args} \\
+        --in ${inputfile} \\
         --out ${prefix}.txt
     """
 
@@ -33,5 +36,4 @@ process HAPLOGREP3_CLASSIFY {
     """
     touch ${prefix}.txt
     """
-
 }

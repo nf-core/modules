@@ -1,40 +1,43 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TOPAS_GENCONS {
     tag "${meta.id}"
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/topas:1.0.1--hdfd78af_1':
-        'quay.io/biocontainers/topas:1.0.1--hdfd78af_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/topas:1.0.1--hdfd78af_1'
+        : 'quay.io/biocontainers/topas:1.0.1--hdfd78af_1'}"
 
     input:
     tuple val(meta), path(vcf)
     tuple val(meta2), path(vcf_indels)
     tuple val(meta3), path(reference)
     tuple val(meta4), path(fai)
-    val(vcf_output)
+    val vcf_output
 
     output:
     tuple val(meta), path("*.fasta.gz"), emit: fasta
-    tuple val(meta), path("*.vcf.gz")  , emit: vcf     , optional: true
-    tuple val(meta), path("*.ccf")     , emit: ccf
-    tuple val(meta), path("*.log")     , emit: log
+    tuple val(meta), path("*.vcf.gz"), emit: vcf, optional: true
+    tuple val(meta), path("*.ccf"), emit: ccf
+    tuple val(meta), path("*.log"), emit: log
     tuple val("${task.process}"), val('topas'), val('1.0.1'), emit: versions_topas, topic: versions
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args              = task.ext.args   ?: ''
-    def prefix            = task.ext.prefix ?: "${meta.id}"
-    def vcfoutput         = vcf_output      ? "-vcf_out ${prefix}.vcf" : ""
-    def optionalfai       = fai             ? "-fai ${fai}"            : ""
-    def optionalvcfindels = vcf_indels      ? "-indels ${vcf_indels}"  : ""
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def vcfoutput = vcf_output ? "-vcf_out ${prefix}.vcf" : ""
+    def optionalfai = fai ? "-fai ${fai}" : ""
+    def optionalvcfindels = vcf_indels ? "-indels ${vcf_indels}" : ""
 
-    if ("${reference}" == "${prefix}.fasta" || "${reference}" == "${prefix}.fasta.gz")
-        error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("${reference}" == "${prefix}.fasta" || "${reference}" == "${prefix}.fasta.gz") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
 
     topas \\
@@ -55,16 +58,16 @@ process TOPAS_GENCONS {
     """
 
     stub:
-    def prefix    = task.ext.prefix ?: "${meta.id}"
-    def vcfoutput = vcf_output      ? "echo \"\" | gzip > ${prefix}.vcf.gz" : ""
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def vcfoutput = vcf_output ? "echo \"\" | gzip > ${prefix}.vcf.gz" : ""
 
-    if ("${reference}" == "${prefix}.fasta" || "${reference}" == "${prefix}.fasta.gz")
-        error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("${reference}" == "${prefix}.fasta" || "${reference}" == "${prefix}.fasta.gz") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
     echo "" | gzip > ${prefix}.fasta.gz
     touch ${prefix}.fastq.ccf
     touch ${prefix}.fastq.log
     ${vcfoutput}
     """
-
 }

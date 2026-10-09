@@ -1,17 +1,20 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CRAMINO {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cramino:1.1.0--h3dc2dae_0' :
-        'quay.io/biocontainers/cramino:1.1.0--h3dc2dae_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/cramino:1.1.0--h3dc2dae_0'
+        : 'quay.io/biocontainers/cramino:1.1.0--h3dc2dae_0'}"
 
     input:
     tuple val(meta), path(bam), path(bai)
 
     output:
-    tuple val(meta), path("*.txt")  , emit: stats
+    tuple val(meta), path("*.txt"), emit: stats
     tuple val(meta), path("*.arrow"), optional: true, emit: arrow
     tuple val("${task.process}"), val('cramino'), eval("cramino -V | sed 's/cramino //'"), emit: versions_cramino, topic: versions
 
@@ -24,8 +27,8 @@ process CRAMINO {
 
     """
     cramino \\
-        $args \\
-        --threads $task.cpus \\
+        ${args} \\
+        --threads ${task.cpus} \\
         ${bam} > ${prefix}.txt
     """
 

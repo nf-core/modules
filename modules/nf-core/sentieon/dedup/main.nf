@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SENTIEON_DEDUP {
     tag "${meta.id}"
     label 'process_medium'
@@ -14,12 +17,12 @@ process SENTIEON_DEDUP {
     tuple val(meta3), path(fasta_fai)
 
     output:
-    tuple val(meta), path("*.cram"),                emit: cram, optional: true
-    tuple val(meta), path("*.crai"),                emit: crai, optional: true
-    tuple val(meta), path("*.bam"),                 emit: bam,  optional: true
-    tuple val(meta), path("*.bai"),                 emit: bai
-    tuple val(meta), path("*.score"),               emit: score
-    tuple val(meta), path("*.metrics"),             emit: metrics
+    tuple val(meta), path("*.cram"), emit: cram, optional: true
+    tuple val(meta), path("*.crai"), emit: crai, optional: true
+    tuple val(meta), path("*.bam"), emit: bam, optional: true
+    tuple val(meta), path("*.bai"), emit: bai
+    tuple val(meta), path("*.score"), emit: score
+    tuple val(meta), path("*.metrics"), emit: metrics
     tuple val(meta), path("*.metrics.multiqc.tsv"), emit: metrics_multiqc_tsv
     tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
@@ -33,7 +36,7 @@ process SENTIEON_DEDUP {
     def args4 = task.ext.args4 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}.cram"
     def metrics = "${prefix}.metrics"
-    def input_list = bam.collect {input -> "-i ${input}" }.join(' ')
+    def input_list = bam.collect { input -> "-i ${input}" }.join(' ')
     def prefix_basename = prefix.substring(0, prefix.lastIndexOf("."))
     def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64
         ? "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; "

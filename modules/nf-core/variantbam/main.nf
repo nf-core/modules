@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VARIANTBAM {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/variantbam:1.4.4a--h7d7f7ad_5' :
-        'quay.io/biocontainers/variantbam:1.4.4a--h7d7f7ad_5' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/variantbam:1.4.4a--h7d7f7ad_5'
+        : 'quay.io/biocontainers/variantbam:1.4.4a--h7d7f7ad_5'}"
 
     input:
     tuple val(meta), path(bam)
@@ -23,10 +26,11 @@ process VARIANTBAM {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     variant \\
-        $bam \\
+        ${bam} \\
         -o ${prefix}.bam \\
-        $args
+        ${args}
     """
+
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
