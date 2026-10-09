@@ -84,7 +84,6 @@ nextflow_process {
     }
 
     test("homo_sapiens - bam, hap, legend, posfile, genfile, map - fasta") {
-        tag "test1"
         setup {
             run("BCFTOOLS_QUERY") {
                 script "../../../bcftools/query/main.nf"
