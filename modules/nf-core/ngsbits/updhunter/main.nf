@@ -3,9 +3,9 @@ process NGSBITS_UPDHUNTER {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2b/2be56a07ac1d5a447a10fd061be4d6144620bec00bac834f58c2bdef0330147f/data'
-        : 'community.wave.seqera.io/library/ngs-bits:2025_09--f6ea3a4494373ed6'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/db/db759890fb18613dd6178305e20a588bda85a12c3d06f885899aca2f54725985/data'
+:         'community.wave.seqera.io/library/ngs-bits:2026_06--10de2f01af4c9c32' }"
 
     input:
     tuple val(meta), path(vcf), path(bed)
@@ -13,7 +13,7 @@ process NGSBITS_UPDHUNTER {
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
     tuple val(meta), path("*.igv"), emit: igv
-    tuple val("${task.process}"), val('ngsbits'), eval("UpdHunter --version 2>&1 | sed 's/UpdHunter //'"), topic: versions, emit: versions_ngsbits
+    tuple val("${task.process}"), val('ngsbits'), eval("UpdHunter --version 2>&1 | grep UpdHunter | sed -n 's/UpdHunter //p'"), topic: versions, emit: versions_ngsbits
 
     when:
     task.ext.when == null || task.ext.when
