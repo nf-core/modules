@@ -178,7 +178,9 @@ input:
           Optional Cell Ranger VDJ section options as a Map. See vdj_options.
   - gex_frna_probeset:
       type: file
-      description: Fixed RNA profiling information containing custom probes in CSV format
+      description: |
+        Fixed RNA profiling information containing custom probes in CSV format.
+        Ignored when CMO or OCM barcodes or V(D)J libraries are present, as Flex is incompatible with them.
       pattern: "*.csv"
       ontologies:
         - edam: http://edamontology.org/format_3752
