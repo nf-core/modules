@@ -54,6 +54,8 @@ process QUILT_QUILT {
         BAM_LIST="all_files.txt"
     fi
 
+    export XDG_CACHE_HOME=\$PWD/.cache
+
     QUILT.R \\
         ${list_command}\$BAM_LIST \\
         ${genetic_map_command} \\

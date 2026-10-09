@@ -35,7 +35,7 @@ nextflow_process {
                 script "../../../gawk/main.nf"
                 process {
                     """
-                    program  = Channel.of('BEGIN{print "NA12878"} {print}').collectFile(name: 'program.txt', newLine: true)
+                    program  = channel.of('BEGIN{print "NA12878"} {print}').collectFile(name: 'program.txt', newLine: true)
                     input[0] = BCFTOOLS_QUERY.out.output.map { meta, file -> tuple(meta, file, "phasefile.name.txt") }
                     input[1] = program
                     input[2] = false
@@ -52,7 +52,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id:'NA12878', chr:'chr22' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai', checkIfExists: true),
@@ -83,6 +83,99 @@ nextflow_process {
         }
     }
 
+    test("homo_sapiens - bam, hap, legend, posfile, genfile, map - fasta") {
+        tag "test1"
+        setup {
+            run("BCFTOOLS_QUERY") {
+                script "../../../bcftools/query/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: 'NA12878'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/NA12878.chr21_22.1X.glimpse2.vcf.gz.csi', checkIfExists: true)
+                    ]
+                    input[1] = []
+                    input[2] = []
+                    input[3] = []
+                    """
+                }
+            }
+
+            run("GAWK", alias: "GAWK_NAME") {
+                script "../../../gawk/main.nf"
+                process {
+                    """
+                    program = channel.of(
+                        '''BEGIN { OFS="\\t"; print "NA12878" }
+                        {
+                            for (i=1; i<=NF; i++) {
+                                if (\$i ~ /\\\\./) {
+                                    \$i = "NA"
+                                } else {
+                                    n = split(\$i, a, /[\\\\/|]/)
+                                    if (n != 2)
+                                        \$i = "NA"
+                                    else if (a[1] == 0 && a[2] == 0)
+                                        \$i = 0
+                                    else if (a[1] == a[2])
+                                        \$i = 2
+                                    else
+                                        \$i = 1
+                                }
+                            }
+                            print
+                        }'''
+                    ).collectFile(name: 'program.txt', newLine: true)
+
+                    input[0] = BCFTOOLS_QUERY.out.output.map { meta, file -> tuple(meta, file, "genfile.name.txt") }
+                    input[1] = program
+                    input[2] = false
+                    """
+                }
+            }
+        }
+
+        when {
+            params{
+                quilt_args = "--save_prepared_reference=TRUE --seed=1"
+                bcftools_query_args = "-f '[%GT]\\n' -r chr22"
+                bcftools_query_suffix = "genfile.txt"
+            }
+            process {
+                """
+                input[0] = channel.of([
+                    [ id:'NA12878', chr:'chr22' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai', checkIfExists: true),
+                    [], [],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.hap.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.legend.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.posfile', checkIfExists: true),
+                    []
+                ])
+                .combine(GAWK_NAME.out.output.map{ it[1] })
+                .combine(channel.of([
+                    "chr22", "16570000", "16610000", "100", "10000",
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genetic_map/genome.GRCh38.chr22.stitch.map", checkIfExists:true)
+                ]))
+                input[1] = [
+                    [id: 'GRCh38'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys:["vcf"])).match() }
+            )
+        }
+    }
+
     test("QUILT - stub") {
         options '-stub'
         when {
@@ -91,7 +184,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id:'NA12878', chr:'chr22' ],
                     [], [], [], [], [], [], [], [],
                     [], "chr22", "16570000", "16610000", "100", "10000", []
@@ -151,22 +244,22 @@ nextflow_process {
             }
             process {
                 """
-                bamlist = Channel.of(
+                bamlist = channel.of(
                     "NA12878.chr21_22.1X.bam",
                 ).collectFile(name : 'bamlist.txt', newLine : true)
 
-                bamnames = Channel.of(
+                bamnames = channel.of(
                     "Mysample1",
                 ).collectFile(name : 'bamnames.txt', newLine : true)
 
-                ch_input = Channel.of([
-                    [ id:'test', chr:'chr20' ],
+                ch_input = channel.of([
+                    [ id:'test', chr:'chr22' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.1X.bam.bai', checkIfExists: true)
                 ])
                 .combine(bamlist)
                 .combine(bamnames)
-                .combine(Channel.of([
+                .combine(channel.of([
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.hap.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/1000GP.chr22.legend.gz', checkIfExists: true),
                     [], [], [],
