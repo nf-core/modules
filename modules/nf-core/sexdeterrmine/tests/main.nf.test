@@ -25,6 +25,11 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test3.single_end.markduplicates.sorted.bam', checkIfExists: true),
                     [], []
                 ]
+                input[1] = [
+                    [:],
+                    [],
+                    []
+                ]
                 """
             }
         }
