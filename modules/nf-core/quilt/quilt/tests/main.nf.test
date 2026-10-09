@@ -170,7 +170,8 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys:["vcf"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys:["vcf"])).match() },
+                { assert new File(new File(process.out.vcf[0][1]).parent, '.command.err').text.contains('Final imputation dosage accuracy for sample NA12878') }
             )
         }
     }
