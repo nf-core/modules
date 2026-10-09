@@ -43,20 +43,67 @@ input:
       description: The command used to run the tool, i.e. kiv2 (LPA KIV2 repeat)
         or d4z4 (D4Z4 repeat)
 output:
+  json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.kivvi.*.json":
+          type: file
+          description: JSON report containing genotyping results for the target KIV2 or D4Z4 region
+          pattern: "*.kivvi.*.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464"
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.kivvi.*.vcf":
+          type: file
+          description: Variant calls for the target KIV2 or D4Z4 region
+          pattern: "*.kivvi.*.vcf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016"
+  svg:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.kivvi.*.svg":
+          type: file
+          description: Optional SVG visualisation of genotyping results for the target KIV2 or D4Z4 region
+          pattern: "*.kivvi.*.svg"
+          ontologies: []
   bam:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.bam":
+      - "*.kivvi.*.bam":
           type: file
           description: |
             Reads realigned to a single repeat unit of the target KIV2 or D4Z4
             region, with HP tags identifying repeat copies
-          pattern: "*.bam"
+          pattern: "*.kivvi.*.bam"
           ontologies:
             - edam: "http://edamontology.org/format_2572"
+  bai:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.kivvi.*.bam.bai":
+          type: file
+          description: BAI index file corresponding to the realigned BAM file
+          pattern: "*.kivvi.*.bam.bai"
+          ontologies:
+            - edam: "http://edamontology.org/format_2573"
   versions_kivvi:
     - - ${task.process}:
           type: string

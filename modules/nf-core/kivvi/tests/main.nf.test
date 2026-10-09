@@ -31,8 +31,10 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out)).match() }
-             )
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["json", "svg"])).match() },
+                { assert path(process.out.json[0][1]).json.allele_cn == '28,56,35' },
+                { assert path(process.out.svg[0][1]).text.contains('<svg') }
+            )
         }
 
     }
@@ -58,8 +60,10 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out)).match() }
-             )
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["json", "svg"])).match() },
+                { assert path(process.out.json[0][1]).json.allele_cn == "14/23" },
+                { assert path(process.out.svg[0][1]).text.contains('<svg') }
+            )
         }
 
     }
@@ -100,7 +104,6 @@ nextflow_process {
         when {
             params {
                 module_prefix = 'd4z4_stub'
-                module_args = '--out ./'
             }
             process {
                 """
