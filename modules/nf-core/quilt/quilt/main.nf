@@ -54,6 +54,7 @@ process QUILT_QUILT {
         BAM_LIST="all_files.txt"
     fi
 
+    # Fontconfig need a writable cache directory
     export XDG_CACHE_HOME=\$PWD/.cache
 
     QUILT.R \\
