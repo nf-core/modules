@@ -183,7 +183,8 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys:["vcf"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys:["vcf"])).match() },
+                { assert path(process.out.vcf[0][1]).vcf.header.getGenotypeSamples() == ["Mysample1"] }
             )
         }
     }
