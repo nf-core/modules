@@ -2,8 +2,8 @@ process VUEGEN {
     label 'process_single'
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d0/d02298452116f9bbcecab348b6302f7915d32eddf6c8282d363df29d92e60a4c/data'
-:         'community.wave.seqera.io/library/python_pytinytex_quarto_r-tinytex_pruned:1323ab0dfae5f051' }"
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2a/2a9cd0a1455ebd911d8621a05ed5a800b32544243e8eaf930cb27998def10bb9/data'
+:         'community.wave.seqera.io/library/python_pytinytex_quarto_r-tinytex_pruned:b7ae8917d526ebb5' }"
     input:
     val input_type
     path input_path

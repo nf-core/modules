@@ -84,14 +84,18 @@ maintainers:
 containers:
   docker:
     linux/amd64:
-      name: community.wave.seqera.io/library/python_pytinytex_quarto_r-tinytex_pruned:9eebdec0448f6563
-      build_id: bd-9eebdec0448f6563_1
-      scan_id: sc-fdc3fb6bcec30409_1
+      name: community.wave.seqera.io/library/python_pytinytex_quarto_r-tinytex_pruned:b7ae8917d526ebb5
+      build_id: bd-b7ae8917d526ebb5_1
+      scan_id: sc-4055cafa136aa8e7_1
   singularity:
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/python_pytinytex_quarto_r-tinytex_pruned:dee5e2966278494d
-      build_id: bd-dee5e2966278494d_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a0/a0ff4f778cefa7ae78c684ba2b97dc4a1fac3d49ffc958c532bfe06e19e23807/data
+      name: oras://community.wave.seqera.io/library/python_pytinytex_quarto_r-tinytex_pruned:fc2805e0e16a6e6e
+      build_id: bd-fc2805e0e16a6e6e_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2a/2a9cd0a1455ebd911d8621a05ed5a800b32544243e8eaf930cb27998def10bb9/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/python_pytinytex_quarto_r-tinytex_pruned:7c78cdc884f5eaab
+      build_id: bd-7c78cdc884f5eaab_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e8/e8f8e5ebb0310052bf80635afb3828e691521d77cbafc522fdf389a1b0f7ab65/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/vuegen/.conda-lock/linux_amd64-bd-9eebdec0448f6563_1.txt
+      lock_file: modules/nf-core/vuegen/.conda-lock/linux_amd64-bd-b7ae8917d526ebb5_1.txt
