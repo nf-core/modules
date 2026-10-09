@@ -1,5 +1,5 @@
 name: sniffles
-description: structural-variant calling with sniffles
+description: structural-variant calling and genotyping of known structural variants (forced calling with --genotype-vcf) with sniffles. As of Sniffles 2.8.1 the genotyping output carries one more value per sample than the FORMAT declares (fritzsedlazeck/Sniffles#615).
 keywords:
   - sniffles
   - structural-variant calling
@@ -30,6 +30,12 @@ input:
         description: Index of BAM/CAM file
         pattern: "*.{bai,crai}"
         ontologies: []
+    - genotype_vcf:
+        type: file
+        description: Optional VCF of known structural variants to genotype in the input BAM/CRAM (forced calling), plain or gzipped. Use an empty list (`[]`) for regular SV calling.
+        pattern: "*.{vcf,vcf.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_3016
   - - meta2:
         type: map
         description: |

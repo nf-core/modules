@@ -8,7 +8,7 @@ process SNIFFLES {
 :         'community.wave.seqera.io/library/sniffles:2.8.1--b8c26c44b42620c5' }"
 
     input:
-    tuple val(meta), path(input), path(index)
+    tuple val(meta), path(input), path(index), path(genotype_vcf)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(tandem_file)
     val(vcf_output)
@@ -31,13 +31,18 @@ process SNIFFLES {
     def tandem_repeats = tandem_file ? "--tandem-repeats ${tandem_file}" : ''
     def vcf = vcf_output ? "--vcf ${prefix}.vcf.gz": ''
     def snf = snf_output ? "--snf ${prefix}.snf": ''
+    // Sniffles reads the sites file as plain text, a gzipped one is decompressed first (fritzsedlazeck/Sniffles#613)
+    def decompress = genotype_vcf && genotype_vcf.name.endsWith('.gz') ? "gzip -dc ${genotype_vcf} > ${prefix}.sites.vcf" : ''
+    def genotype = genotype_vcf ? "--genotype-vcf ${genotype_vcf.name.endsWith('.gz') ? prefix + '.sites.vcf' : genotype_vcf}" : ''
 
     """
+    $decompress
     sniffles \\
         --input $input \\
         $reference \\
         -t $task.cpus \\
         $tandem_repeats \\
+        $genotype \\
         $vcf \\
         $snf \\
         $args
