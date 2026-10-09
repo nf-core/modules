@@ -1,0 +1,129 @@
+nextflow_process {
+
+    name "Test Process KIVVI"
+    script "../main.nf"
+    process "KIVVI"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "kivvi"
+
+    config "./nextflow.config"
+
+    test("bam - d4z4") {
+
+        when {
+            params {
+                module_prefix = 'd4z4'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file('https://raw.githubusercontent.com/PacificBiosciences/kivvi/main/example/HG03453_d4z4_extract.bam', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/PacificBiosciences/kivvi/main/example/HG03453_d4z4_extract.bam.bai', checkIfExists: true),
+                ]
+                input[1] = "d4z4"
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["json", "svg"])).match() },
+                { assert path(process.out.json[0][1]).json.allele_cn == '28,56,35' },
+                { assert path(process.out.svg[0][1]).text.contains('<svg') }
+            )
+        }
+
+    }
+
+    test("bam - kiv2") {
+
+        when {
+            params {
+                module_prefix = 'kiv2'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file('https://raw.githubusercontent.com/PacificBiosciences/kivvi/main/example/HG03453_kiv2_extract.bam', checkIfExists: true),
+                    file('https://raw.githubusercontent.com/PacificBiosciences/kivvi/main/example/HG03453_kiv2_extract.bam.bai', checkIfExists: true),
+                ]
+                input[1] = "kiv2"
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["json", "svg"])).match() },
+                { assert path(process.out.json[0][1]).json.allele_cn == "14/23" },
+                { assert path(process.out.svg[0][1]).text.contains('<svg') }
+            )
+        }
+
+    }
+
+    test("bam - kiv2 - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_prefix = 'kiv2_stub'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true),
+                ]
+                input[1] = "kiv2"
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("bam - d4z4 - set outdir - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_prefix = 'd4z4_stub'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true),
+                ]
+                input[1] = "d4z4"
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
