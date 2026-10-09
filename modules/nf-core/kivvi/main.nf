@@ -12,7 +12,11 @@ process KIVVI {
     val command
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.kivvi.*.json")   , emit: json
+    tuple val(meta), path("*.kivvi.*.vcf")    , emit: vcf
+    tuple val(meta), path("*.kivvi.*.svg")    , emit: svg, optional: true
+    tuple val(meta), path("*.kivvi.*.bam")    , emit: bam
+    tuple val(meta), path("*.kivvi.*.bam.bai"), emit: bai
     tuple val("${task.process}"), val('kivvi'), eval("kivvi --version | sed 's/.* //g'"), topic: versions, emit: versions_kivvi
 
     when:
