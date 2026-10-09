@@ -35,6 +35,10 @@ process KIVVI {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.bam
+    touch ${prefix}.kivvi.${command}.json
+    touch ${prefix}.kivvi.${command}.vcf
+    touch ${prefix}.kivvi.${command}.svg
+    touch ${prefix}.kivvi.${command}.bam
+    touch ${prefix}.kivvi.${command}.bam.bai
     """
 }
