@@ -317,6 +317,89 @@ seq1                               -          model_A               PF00001     
         }
     }
 
+    test("two HMMER runs' output concatenated into one file -- fails rather than silently dropping the second run") {
+
+        when {
+            process {
+                """
+                // Two runs' tblout concatenated together -- used to be silently swallowed after
+                // the first run's footer "#" sentinel line.
+                def tblout1 = File.createTempFile('profileA', '.tbl')
+                tblout1.text = '''#                                                                           --- full sequence ---- --- best 1 domain ---- --- domain number estimation ----
+# target name                    accession  query name           accession    E-value  score  bias   E-value  score  bias   exp reg clu  ov env dom rep inc description of target
+#            ------------------- ---------- -------------------- ---------- --------- ------ ----- --------- ------ -----   --- --- --- --- --- --- --- --- ---------------------
+seq1                               -          model_A               PF00001       1e-10   50.0   0.1      2e-10   49.0   0.1   1.0   1   0   0   1   1   1   1 first run's hit
+#
+# Program:         hmmsearch
+# Version:         3.4 (Aug 2023)
+# Pipeline mode:   SEARCH
+# Query file:      model_A.hmm
+# Target file:     all.faa.gz
+# Date:            Sun Sep 13 14:01:33 2026
+# [ok]
+#                                                                           --- full sequence ---- --- best 1 domain ---- --- domain number estimation ----
+# target name                    accession  query name           accession    E-value  score  bias   E-value  score  bias   exp reg clu  ov env dom rep inc description of target
+#            ------------------- ---------- -------------------- ---------- --------- ------ ----- --------- ------ -----   --- --- --- --- --- --- --- --- ---------------------
+seq2                               -          model_B               PF00002       2e-10   49.0   0.1      3e-10   48.0   0.1   1.0   1   0   0   1   1   1   1 second run's hit
+#
+# Program:         hmmsearch
+# [ok]
+'''
+
+                input[0] = [
+                    [ id:'test' ],
+                    [ 'profileA' ],
+                    [ file(tblout1.toString()) ],
+                ]
+                input[1] = 'tblout'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains('more than one HMMER run') }
+            )
+        }
+    }
+
+    test("trailing blank line after the footer -- still a single run, not mistaken for a second one") {
+
+        when {
+            process {
+                """
+                // A trailing blank line after the footer must stay a no-op, not trip the guard
+                // above.
+                def tblout1 = File.createTempFile('profileA', '.tbl')
+                tblout1.text = '''#                                                                           --- full sequence ---- --- best 1 domain ---- --- domain number estimation ----
+# target name                    accession  query name           accession    E-value  score  bias   E-value  score  bias   exp reg clu  ov env dom rep inc description of target
+#            ------------------- ---------- -------------------- ---------- --------- ------ ----- --------- ------ -----   --- --- --- --- --- --- --- --- ---------------------
+seq1                               -          model_A               PF00001       1e-10   50.0   0.1      2e-10   49.0   0.1   1.0   1   0   0   1   1   1   1 a description
+#
+# Program:         hmmsearch
+# [ok]
+
+'''
+
+                input[0] = [
+                    [ id:'test' ],
+                    [ 'profileA' ],
+                    [ file(tblout1.toString()) ],
+                ]
+                input[1] = 'tblout'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(path(process.out.tsv[0][1]).linesGzip).match() }
+            )
+        }
+    }
+
     test("zero-hit tblout -- header with no data rows succeeds, not treated as a missing header") {
 
         when {

@@ -1,5 +1,5 @@
 process DEEPTOOLS_COMPUTEMATRIX {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
@@ -8,8 +8,9 @@ process DEEPTOOLS_COMPUTEMATRIX {
         'quay.io/biocontainers/deeptools:3.5.6--pyhdfd78af_0' }"
 
     input:
-    tuple val(meta), path(bigwig)
-    path  bed
+    tuple val(meta),  path(bigwig)
+    tuple val(meta2), path(bed)
+    tuple val(meta3), path(blacklist)
 
     output:
     tuple val(meta), path("*.mat.gz") , emit: matrix
@@ -22,14 +23,17 @@ process DEEPTOOLS_COMPUTEMATRIX {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def blacklist_cmd = blacklist ? "--blackListFileName ${blacklist}" : ""
+
     """
     computeMatrix \\
-        $args \\
-        --regionsFileName $bed \\
-        --scoreFileName $bigwig \\
+        ${args} \\
+        --regionsFileName ${bed} \\
+        --scoreFileName ${bigwig} \\
         --outFileName ${prefix}.computeMatrix.mat.gz \\
         --outFileNameMatrix ${prefix}.computeMatrix.vals.mat.tab \\
-        --numberOfProcessors $task.cpus
+        --numberOfProcessors ${task.cpus} \\
+        ${blacklist_cmd}
     """
 
     stub:

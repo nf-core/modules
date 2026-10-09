@@ -33,7 +33,8 @@ process MAFFT_ALIGN {
     def addprofile_opt   = addprofile      ? "--addprofile <(unpigz -cdf ${addprofile})"     : ''
     def addlong_opt      = addlong         ? "--addlong <(unpigz -cdf ${addlong})"           : ''
     def write_output     = compress ? " | pigz -cp ${task.cpus} > ${prefix}.fas.gz" : "> ${prefix}.fas"
-    // this will not preserve MAFFTs return value, but mafft crashes when it receives a process substitution
+    // Piping the output loses MAFFT's return value, but MAFFT cannot write into a process
+    // substitution. Reading from one is fine, which is how the gzip-capable inputs work.
     if ("$fasta" == "${prefix}.fas" ) error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     mafft \\
@@ -44,7 +45,7 @@ process MAFFT_ALIGN {
         ${addprofile_opt} \\
         ${addlong_opt} \\
         ${args} \\
-        ${fasta} \\
+        <(unpigz -cdf ${fasta}) \\
         ${write_output}
     """
 

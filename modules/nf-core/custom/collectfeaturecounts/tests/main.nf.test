@@ -36,6 +36,31 @@ nextflow_process {
         }
     }
 
+    test("sample name containing sorted and bam") {
+
+        when {
+            process {
+                """
+                def fc = file("\${workDir}/rawsorted_bam.featureCounts.tsv")
+                fc.text = [
+                    '# Program:featureCounts',
+                    ['Geneid', 'Chr', 'Start', 'End', 'Strand', 'Length', 'rawsorted_bam.sorted.bam'].join('\\t'),
+                    ['gene1', 'contig1', '1', '300', '+', '300', '10'].join('\\t')
+                ].join('\\n') + '\\n'
+
+                input[0] = [ [ id:'test' ], [ fc ] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.counts.get(0).get(1)).linesGzip[1].split('\t')[6] == 'rawsorted_bam' }
+            )
+        }
+    }
+
     test("two samples - stub") {
 
         options "-stub"

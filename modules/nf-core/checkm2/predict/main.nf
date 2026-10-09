@@ -23,12 +23,15 @@ process CHECKM2_PREDICT {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    # Passing the database via CHECKM2DB instead of --database_path skips CheckM2's
+    # hardcoded checksum check, allowing custom/reduced databases (e.g. for testing)
+    export CHECKM2DB=${db}
+
     checkm2 \\
         predict \\
         --input ${fasta} \\
         --output-directory ${prefix} \\
         --threads ${task.cpus} \\
-        --database_path ${db} \\
         ${args}
 
     cp ${prefix}/quality_report.tsv ${prefix}_checkm2_report.tsv
