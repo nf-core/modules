@@ -175,8 +175,8 @@ def multiConfig(
         gex_section << '[gene-expression]'
         gex_section << "reference,\$PWD/${gex_reference.name}"
 
-        // still allow frna probe-set for flex, but avoid adding when CMO or OCM barcodes are present, since those are mutually exclusive with frna
-        if (gex_frna_probeset && !has_cmo && !has_ocm) gex_section << "probe-set,\$PWD/${gex_frna_probeset.name}"
+        // still allow frna probe-set for flex, but avoid adding when CMO or OCM barcodes or V(D)J libraries are present, since those are mutually exclusive with frna
+        if (gex_frna_probeset && !has_cmo && !has_ocm && !has_any_vdj) gex_section << "probe-set,\$PWD/${gex_frna_probeset.name}"
 
         // GEX options forwarded from the gex_options input map
         ['filter-probes', 'r1-length', 'r2-length', 'chemistry', 'expect-cells', 'force-cells',
