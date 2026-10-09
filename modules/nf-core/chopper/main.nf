@@ -14,6 +14,7 @@ process CHOPPER {
     output:
     tuple val(meta), path("*.fastq.gz") , emit: fastq
     tuple val("${task.process}"), val('chopper'), eval("chopper --version 2>&1 | cut -d ' ' -f 2"), topic: versions, emit: versions_chopper
+    tuple val("${task.process}"), val('pigz'),    eval('pigz --version | sed "s/pigz //g"'),        topic: versions, emit: versions_chopper
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,20 +28,20 @@ process CHOPPER {
 
     if ("$fastq" == "${prefix}.fastq.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
-    zcat \\
+    pigz \\
         $args \\
         $fastq | \\
     chopper \\
         --threads $task.cpus \\
         $fasta_filtering \\
         $args2 | \\
-    gzip \\
+    pigz \\
         $args3 > ${prefix}.fastq.gz
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo | gzip > ${prefix}.fastq.gz
+    echo | pigz > ${prefix}.fastq.gz
     """
 }
