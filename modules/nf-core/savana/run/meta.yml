@@ -69,7 +69,7 @@ input:
           e.g. `[ id:'contigs' ]`
     - contigs:
         type: file
-        description: Optional contigs list file for SAVANA to restrict analysis to specific contigs
+        description: Optional file listing the contigs to analyse, one contig per line. All contigs in the bam files are analysed when empty.
         pattern: "*.txt"
         optional: true
         ontologies:
