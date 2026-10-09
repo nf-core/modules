@@ -29,8 +29,9 @@ process CHOPPER {
     if ("$fastq" == "${prefix}.fastq.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     pigz \\
-        -dc \\
-        -p ${task.cpus} \\
+        --decompress \\
+        --processes $task.cpus \\
+        --stdout \\
         $args \\
         $fastq | \\
     chopper \\
@@ -38,7 +39,8 @@ process CHOPPER {
         $fasta_filtering \\
         $args2 | \\
     pigz \\
-        -p ${task.cpus} \\
+        --processes $task.cpus \\
+        --stdout \\
         $args3 > ${prefix}.fastq.gz
     """
 
