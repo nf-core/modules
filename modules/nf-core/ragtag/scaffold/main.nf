@@ -14,9 +14,12 @@ process RAGTAG_SCAFFOLD {
     tuple val(meta4), path(skip), path(hard_skip)
 
     output:
-    tuple val(meta), path("*.fasta"),   emit: corrected_assembly
-    tuple val(meta), path("*.agp"),     emit: corrected_agp
-    tuple val(meta), path("*.stats"),   emit: corrected_stats
+    tuple val(meta), path("*.fasta"), emit: corrected_assembly
+    tuple val(meta), path("*.agp"), emit: corrected_agp
+    tuple val(meta), path("*.stats"), emit: corrected_stats
+    tuple val(meta), path("*.paf.gz"), emit: ragtag_paf
+    tuple val(meta), path("*.paf.log"), emit: ragtag_log
+    tuple val(meta), path("*.confidence.txt"), emit: confidence_txt
     tuple val("${task.process}"), val('ragtag'), eval("ragtag.py -v | sed 's/v//'"), emit: versions_ragtag, topic: versions
 
     when:
@@ -57,6 +60,11 @@ process RAGTAG_SCAFFOLD {
     mv ${prefix}/ragtag.scaffold.fasta ${prefix}.fasta
     mv ${prefix}/ragtag.scaffold.agp ${prefix}.agp
     mv ${prefix}/ragtag.scaffold.stats ${prefix}.stats
+    mv ${prefix}/ragtag.scaffold.asm.paf ${prefix}.asm.paf
+    mv ${prefix}/ragtag.scaffold.confidence.txt ${prefix}.confidence.txt
+    mv ${prefix}/ragtag.scaffold.asm.paf.log ${prefix}.asm.paf.log
+
+    gzip ${prefix}.asm.paf
     """
 
     stub:
@@ -69,5 +77,8 @@ process RAGTAG_SCAFFOLD {
     touch ${prefix}.fasta
     touch ${prefix}.agp
     touch ${prefix}.stats
+    echo "" | gzip > ${prefix}.asm.paf.gz
+    touch ${prefix}.paf.log
+    touch ${prefix}.confidence.txt
     """
 }

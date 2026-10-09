@@ -101,6 +101,39 @@ output:
           description: Statistics on the scaffold
           pattern: "*.stats"
           ontologies: []
+  ragtag_paf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.paf.gz":
+          type: file
+          description: PAF file of alignments between reference and input
+          pattern: "*.paf.gz"
+          ontologies: []
+  ragtag_log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.paf.log":
+          type: file
+          description: Log file of the ragtag alignment
+          pattern: "*.paf.log"
+          ontologies: []
+  confidence_txt:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.confidence.txt":
+          type: file
+          description: Confidence scores used in scaffolding
+          pattern: "*.confidence.txt"
+          ontologies: []
   versions_ragtag:
     - - ${task.process}:
           type: string
