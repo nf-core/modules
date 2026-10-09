@@ -100,3 +100,27 @@ authors:
   - "@OlivierCoen"
 maintainers:
   - "@FynnFreyer"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/chopper_pigz:4ae8a43e228724c3
+      build_id: bd-4ae8a43e228724c3_1
+      scan_id: sc-e8bd76256f3bd20f_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/chopper_pigz:57b62781bc909af2
+      build_id: bd-57b62781bc909af2_1
+      scan_id: sc-769b822031474e4b_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/chopper_pigz:9de9198c1c8f3cd2
+      build_id: bd-9de9198c1c8f3cd2_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b9/b9dd927988112cce2d9586eaebaba7d32a12e569531a7559c76692ca35862cca/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/chopper_pigz:c471cb3c3a5a7a5f
+      build_id: bd-c471cb3c3a5a7a5f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/84/84b92e11d04608cf8f0b0b85ff71d24d4a9e75a15a0eefed4d0f2d2d6b4e79b3/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/chopper/.conda-lock/linux_amd64-bd-4ae8a43e228724c3_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/chopper/.conda-lock/linux_arm64-bd-57b62781bc909af2_1.txt
