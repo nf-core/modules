@@ -4,12 +4,13 @@ process SAVANA_RUN {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/savana:1.3.7--pyhdfd78af_0'
-        : 'quay.io/biocontainers/savana:1.3.7--pyhdfd78af_0'}"
+        ? 'https://depot.galaxyproject.org/singularity/savana:1.3.8--pyhdfd78af_0'
+        : 'quay.io/biocontainers/savana:1.3.8--pyhdfd78af_0'}"
 
     input:
     tuple val(meta), path(tumour), path(tumour_index), path(normal), path(normal_index)
     tuple val(meta2), path(ref), path(ref_index)
+    tuple val(meta3), path(contigs)
 
     output:
     tuple val(meta), path("${prefix}.sv_breakpoints.vcf"), emit: sv_breakpoints_vcf
@@ -23,6 +24,7 @@ process SAVANA_RUN {
 
     script:
     def args = task.ext.args ?: ''
+    def contigs_arg = contigs ? "--contigs ${contigs}" : ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     savana run \\
@@ -33,6 +35,7 @@ process SAVANA_RUN {
         --outdir "./outdir" \\
         --sample ${prefix} \\
         --threads ${task.cpus} \\
+        ${contigs_arg} \\
         ${args}
 
     mv ./outdir/* .

@@ -9,11 +9,13 @@ nextflow_process {
     tag "savana"
     tag "savana/run"
 
-    test("homo_sapiens - nanopore") {
+    test("homo_sapiens - nanopore - chr22") {
 
         when {
             process {
                 """
+                def contig_list = file('contigs.txt')
+                contig_list.text = "chr22"
                 input[0] = [
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam', checkIfExists: true),
@@ -26,6 +28,11 @@ nextflow_process {
                     [ id:'ref' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+
+                input[2] = [
+                    [ id:'contigs' ],
+                    [contig_list]
                 ]
                 """
             }
@@ -45,23 +52,69 @@ nextflow_process {
         }
     }
 
-    test("homo_sapiens - pacbio") {
+    test("homo_sapiens - nanopore - chr1 - empty output") {
 
         when {
             process {
                 """
+                def contig_list = file('contigs.txt')
+                contig_list.text = "chr1"
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_to_assembly.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_to_assembly.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true)
                 ]
 
                 input[1] = [
                     [ id:'ref' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+
+                input[2] = [
+                    [ id:'contigs' ],
+                    [contig_list]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.sv_breakpoints_vcf.get(0).get(1)).vcf.summary.contains('variantCount=0') }, // VCF summary has no variants
+                { assert file(process.out.sv_breakpoints_bedpe.get(0).get(1)).size() == 0 }, // BEDPE file is empty
+                { assert file(process.out.sv_breakpoints_read_support.get(0).get(1)).readLines().size() == 1 }, // read support file has only header line
+                { assert file(process.out.inserted_sequences.get(0).get(1)).size() == 0 }, // inserted sequences file is empty
+                { assert process.out.findAll { key, val -> key.startsWith('versions') } }
+            )
+        }
+    }
+
+    test("homo_sapiens - nanopore - no contig") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true)
+                ]
+
+                input[1] = [
+                    [ id:'ref' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+
+                input[2] = [
+                    [ id:'contigs' ],
+                    []
                 ]
                 """
             }
@@ -88,6 +141,8 @@ nextflow_process {
         when {
             process {
                 """
+                def contig_list = file('contigs.txt')
+                contig_list.text = "chr22"
                 input[0] = [
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam', checkIfExists: true),
@@ -100,6 +155,11 @@ nextflow_process {
                     [ id:'ref' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+
+                input[2] = [
+                    [ id:'contigs' ],
+                    [contig_list]
                 ]
                 """
             }
