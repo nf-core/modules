@@ -1,0 +1,48 @@
+nextflow_process {
+
+    name "Test Process EXOMISER_ANALYSE"
+    script "../main.nf"
+    process "EXOMISER_ANALYSE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "exomiser"
+    tag "exomiser/analyse"
+
+    test("homo_sapiens - vcf - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/test.vcf.gz'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/ped/test.ped'),
+                    "GRCh38",
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/phenopacket/test.yml'),
+                    []
+                ]
+                input[1] = [
+                    [ id:'test' ],
+                    file("s3://nf-core-reference-data/exomiser/GRCh38/1234/reference_cache"),
+                    "1234"
+                ]
+                input[2] = [
+                    [ id:'test' ],
+                    file("s3://nf-core-reference-data/exomiser/GRCh38/1234/phenotype_cache"),
+                    "1234"
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll (
+                { assert process.success },
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions") }).match() }
+            )
+        }
+    }
+}
