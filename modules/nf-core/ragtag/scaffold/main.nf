@@ -3,9 +3,9 @@ process RAGTAG_SCAFFOLD {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/ragtag:2.1.0--pyhb7b1952_0'
-        : 'quay.io/biocontainers/ragtag:2.1.0--pyhb7b1952_0'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/38/3836fefb293bbbf2be52f760b1833819ae30fe71cd3becf270a4bd5149e5b9b6/data'
+        : 'community.wave.seqera.io/library/ragtag_gzip:5de7cc3ac89b3ac4' }"
 
     input:
     tuple val(meta), path(assembly, name: 'assembly/*')
