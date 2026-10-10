@@ -1,0 +1,68 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "pmlst_prepare_pmlst_db"
+description: Prepare a pMLST database directory for use with pMLST by running INSTALL.py kma_index.
+keywords:
+  - plasmid
+  - typing
+  - mlst
+  - bacterial genomics
+tools:
+  - "pmlst":
+      description: "Plasmid MLST typing based on the pubMLST database schemes."
+      homepage: "https://bitbucket.org/genomicepidemiology/pmlst/src/master/"
+      documentation: "https://bitbucket.org/genomicepidemiology/pmlst/src/master/"
+      tool_dev_url: "https://bitbucket.org/genomicepidemiology/pmlst/src/master/"
+      licence: ["Apache-2.0"]
+      identifier: biotools:pmlst
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - db_dir:
+        type: directory
+        description: Unprepared pMLST database directory containing INSTALL.py.
+        pattern: "*"
+
+output:
+  db:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - pmlst_db:
+          type: directory
+          description: Prepared pMLST database directory.
+          pattern: "pmlst_db"
+
+  versions_pmlst:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - pmlst:
+          type: string
+          description: The tool name
+      - echo 2.0.3:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - pmlst:
+          type: string
+          description: The tool name
+      - echo 2.0.3:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@eit-maxlcummins"
+maintainers:
+  - "@eit-maxlcummins"

@@ -1,0 +1,104 @@
+// nf-core modules test pmlst
+nextflow_process {
+
+    name "Test Process PMLST_PMLST"
+    script "../main.nf"
+    process "PMLST_PMLST"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pmlst"
+    tag "pmlst/pmlst"
+    tag "pmlst/prepare_pmlst_db"
+    tag "wget"
+    tag "untar"
+
+    test("E. coli - fasta") {
+        setup {
+            run("WGET", alias: "WGET_PMLST_DB") {
+                script "modules/nf-core/wget/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id: 'pmlst_db' ],
+                        'https://bitbucket.org/genomicepidemiology/pmlst_db/get/master.tar.gz'
+                    ]
+                    """
+                }
+            }
+
+            run("UNTAR", alias: "UNTAR_PMLST_DB") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                    """
+                    input[0] = WGET_PMLST_DB.out.outfile
+                    """
+                }
+            }
+
+            run("PMLST_PREPARE_PMLST_DB", alias: "PREPARE_PMLST_DB") {
+                script "modules/nf-core/pmlst/prepare_pmlst_db/main.nf"
+                process {
+                    """
+                    input[0] = UNTAR_PMLST_DB.out.untar
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/plasmids/pUTI89/pUTI89.fna.gz', checkIfExists: true)
+                ]
+                input[1] = PREPARE_PMLST_DB.out.db.map { it[1] }
+                input[2] = "incf"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out
+                ).match() }
+            )
+        }
+
+    }
+
+    test("E. coli - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                def pmlst_db = file("pmlst_db")
+                pmlst_db.mkdirs()
+
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/plasmids/pUTI89/pUTI89.fna.gz', checkIfExists: true)
+                ]
+                input[1] = pmlst_db
+                input[2] = "incf"
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out
+                ).match() }
+            )
+        }
+
+    }
+
+}
