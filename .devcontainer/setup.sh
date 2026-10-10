@@ -5,8 +5,7 @@ echo "export PROMPT_DIRTRIM=2" >> $HOME/.bashrc
 echo "export PS1='\[\e[3;36m\]\w ->\[\e[0m\\] '" >> $HOME/.bashrc
 export PS1='\[\e[3;36m\]\w ->\[\e[0m\\] '
 
-# Update Nextflow
-nextflow self-update
+sudo chown vscode .pixi && pixi shell
 
 # Install prek hooks
 pip install prek
