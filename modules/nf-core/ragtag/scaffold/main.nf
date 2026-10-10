@@ -14,7 +14,7 @@ process RAGTAG_SCAFFOLD {
     tuple val(meta4), path(skip), path(hard_skip)
 
     output:
-    tuple val(meta), path("*.fasta"), emit: corrected_assembly
+    tuple val(meta), path("*.fasta.gz"), emit: corrected_assembly
     tuple val(meta), path("*.agp"), emit: corrected_agp
     tuple val(meta), path("*.stats"), emit: corrected_stats
     tuple val(meta), path("*.paf.gz"), emit: ragtag_paf
@@ -49,7 +49,7 @@ process RAGTAG_SCAFFOLD {
     fi
 
     ragtag.py scaffold reference.fa assembly.fa \\
-        -o "${prefix}" \\
+        -o . \\
         -t ${task.cpus} \\
         ${arg_exclude} \\
         ${arg_skip} \\
@@ -58,34 +58,19 @@ process RAGTAG_SCAFFOLD {
         2>| >( tee ${prefix}.stderr.log >&2 ) \\
         | tee ${prefix}.stdout.log
 
-    mv ${prefix}/ragtag.scaffold.fasta ${prefix}.fasta
-    mv ${prefix}/ragtag.scaffold.agp ${prefix}.agp
-    mv ${prefix}/ragtag.scaffold.stats ${prefix}.stats
-    mv ${prefix}/ragtag.scaffold.confidence.txt ${prefix}.confidence.txt
+    for file in ragtag.scaffold.*; do
+        mv \$file \${file/ragtag.scaffold/${prefix}}
+    done
 
-    if [ -f "${prefix}/ragtag.scaffold.asm.paf" ]; then
-        mv ${prefix}/ragtag.scaffold.asm.paf ${prefix}.asm.paf
-        if [ -f "${prefix}/ragtag.scaffold.asm.paf.log" ]; then
-            mv ${prefix}/ragtag.scaffold.asm.paf.log ${prefix}.asm.paf.log
-        fi
-        gzip ${prefix}.asm.paf
-    fi
-
-    if [ -f "${prefix}/ragtag.scaffold.asm.delta" ]; then
-        mv ${prefix}/ragtag.scaffold.asm.delta ${prefix}.asm.delta
-        mv ${prefix}/ragtag.scaffold.asm.delta.log ${prefix}.asm.delta.log
-        gzip ${prefix}.asm.delta
-    fi
+    gzip *.fasta 2>/dev/null || true
+    gzip *.delta 2>/dev/null || true
+    gzip *.paf 2>/dev/null || true
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def _args = task.ext.args ?: ''
-    def _arg_exclude = exclude ? "-e ${exclude}" : ""
-    def _arg_skip = skip ? "-j ${skip}" : ""
-    def _arg_hard_skip = hard_skip ? "-J ${hard_skip}" : ""
     """
-    touch ${prefix}.fasta
+    echo "" | gzip > ${prefix}.fasta.gz
     touch ${prefix}.agp
     touch ${prefix}.stats
     echo "" | gzip > ${prefix}.asm.paf.gz

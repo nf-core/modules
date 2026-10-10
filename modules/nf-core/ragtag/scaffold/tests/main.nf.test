@@ -10,7 +10,7 @@ nextflow_process {
     tag "ragtag/scaffold"
     config "./nextflow.config"
 
-    test("A. thaliana Col-0 test data - ragtag - minimap2 - scaffold") {
+    test("sarscov2 test data - ragtag - minimap2 - scaffold") {
 
         when {
             params {
@@ -48,7 +48,7 @@ nextflow_process {
 
     }
 
-    test("A. thaliana Col-0 test data - ragtag - nucmer - scaffold") {
+    test("sarscov2 test data - ragtag - nucmer - scaffold") {
 
         when {
             params {
@@ -86,7 +86,7 @@ nextflow_process {
 
     }
 
-    test("A. thaliana Col-0 test data - ragtag - scaffold - stub") {
+    test("sarscov2 test data - ragtag - scaffold - stub") {
 
         options "-stub"
 
