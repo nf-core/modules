@@ -42,7 +42,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["ragtag_paf_log", "ragtag_delta_log"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["ragtag_paf_log", "ragtag_delta", "ragtag_delta_log"])).match() }
             )
         }
 
@@ -80,7 +80,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["ragtag_paf_log", "ragtag_delta_log"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["ragtag_paf_log", "ragtag_delta", "ragtag_delta_log"])).match() }
             )
         }
 
