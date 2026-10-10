@@ -1,0 +1,45 @@
+// nf-core modules test nextdenovo
+nextflow_process {
+
+    name "Test Process NEXTDENOVO"
+    script "../main.nf"
+    process "NEXTDENOVO"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "nextdenovo"
+
+    
+    test("nextdenovo_ont") {
+
+        
+        when {
+            process {
+                """
+               
+                
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists: true),
+                ]
+                input[1] = file("${moduleDir}/tests/config.cfg")
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.fasta.get(0).get(1)).name,
+                    path(process.out.stat.get(0).get(1)).readLines()[1].contains("N50"),
+                    process.out.versions
+                    ).match() }
+            )
+        }
+
+    }
+
+    
+
+}
