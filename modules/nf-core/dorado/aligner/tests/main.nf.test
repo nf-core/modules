@@ -1,0 +1,89 @@
+nextflow_process {
+
+    name "Test Process DORADO_ALIGNER"
+    script "../main.nf"
+    process "DORADO_ALIGNER"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "dorado"
+    tag "dorado/aligner"
+
+    test("homo sapiens - nanopore bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id: 'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("homo sapiens - nanopore bam") {
+
+        // dorado aligner accepts any HTS input; the reads in this fixture are
+        // realigned against the chr22 subset reference.
+        //
+        // Neither a whole-file md5 nor nft-bam's readsMD5 is usable here: the BAM
+        // header carries environment-dependent values (@PG CL: paths, @SQ UR:), and
+        // dorado writes records in a thread-dependent order with SO:unknown, so the
+        // reads md5 differs between runs on the same input. The record count is
+        // snapshotted instead, with the alignment itself checked by assertion.
+        //
+        // test2.sorted.bam is used rather than test.sorted.phased.bam because the
+        // latter's records each carry two RG tags (one from minimap2 -R, one from
+        // the original dorado basecall) while its header declares only one. dorado
+        // preserves both, so the output trips htsjdk's READ_GROUP_NOT_FOUND check.
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test2.sorted.bam', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id: 'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.bam },
+                // --emit-summary is set in nextflow.config, so the optional
+                // summary channel must be populated and correctly prefixed
+                { assert process.out.summary },
+                { assert file(process.out.summary[0][1]).name == 'test.sequencing_summary.txt' },
+                { assert path(process.out.summary[0][1]).readLines().size() > 1 },
+                { assert snapshot([
+                    bam_name : file(process.out.bam[0][1]).name,
+                    n_records: bam(process.out.bam[0][1]).getReads().size(),
+                    versions : process.out.versions_dorado
+                ]).match() }
+            )
+        }
+    }
+}
