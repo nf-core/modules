@@ -2,6 +2,9 @@
     "sarscov2 - gzip - (re)compress - no index": {
         "content": [
             {
+                "gzi": [
+                    
+                ],
                 "index": [
                     
                 ],
@@ -29,7 +32,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-07-10T08:07:32.981182",
+        "timestamp": "2026-10-11T14:08:59.995948",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
@@ -38,6 +41,9 @@
     "metagenome - xz - (re)compress - no index": {
         "content": [
             {
+                "gzi": [
+                    
+                ],
                 "index": [
                     
                 ],
@@ -65,7 +71,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-07-10T08:08:57.748138",
+        "timestamp": "2026-10-11T14:10:00.395037",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
@@ -74,6 +80,9 @@
     "metagenome - bz2 - decompress": {
         "content": [
             {
+                "gzi": [
+                    
+                ],
                 "index": [
                     
                 ],
@@ -101,7 +110,51 @@
                 ]
             }
         ],
-        "timestamp": "2026-07-10T08:07:44.215383",
+        "timestamp": "2026-10-11T14:09:07.872533",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "sarscov2 - vcf - compress - gzi - stub": {
+        "content": [
+            {
+                "gzi": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.vcf.gz.gzi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "index": [
+                    
+                ],
+                "output": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions_htslib": [
+                    [
+                        "HTSLIB_BGZIPTABIX",
+                        "htslib",
+                        "1.24"
+                    ]
+                ],
+                "versions_xz": [
+                    [
+                        "HTSLIB_BGZIPTABIX",
+                        "xz",
+                        "5.8.3"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-11T14:11:20.779204",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
@@ -110,6 +163,9 @@
     "sarscov2 - vcf - decompress - stub": {
         "content": [
             {
+                "gzi": [
+                    
+                ],
                 "index": [
                     
                 ],
@@ -137,7 +193,51 @@
                 ]
             }
         ],
-        "timestamp": "2026-07-10T08:10:11.941036",
+        "timestamp": "2026-10-11T14:11:08.17501",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "sarscov2 - vcf - compress - gzi": {
+        "content": [
+            {
+                "gzi": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.vcf.gz.gzi:md5,26fd00d4e26141cd11561f6e7d4a2ad0"
+                    ]
+                ],
+                "index": [
+                    
+                ],
+                "output": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.vcf.gz:md5,8e722884ffb75155212a3fc053918766"
+                    ]
+                ],
+                "versions_htslib": [
+                    [
+                        "HTSLIB_BGZIPTABIX",
+                        "htslib",
+                        "1.24"
+                    ]
+                ],
+                "versions_xz": [
+                    [
+                        "HTSLIB_BGZIPTABIX",
+                        "xz",
+                        "5.8.3"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-11T14:10:14.495151",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
@@ -146,6 +246,9 @@
     "sarscov2 - gzip - decompress": {
         "content": [
             {
+                "gzi": [
+                    
+                ],
                 "index": [
                     
                 ],
@@ -173,7 +276,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-07-10T08:07:28.301585",
+        "timestamp": "2026-10-11T14:08:56.744648",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
@@ -182,6 +285,9 @@
     "sarscov2 - vcf - compress - index - stub": {
         "content": [
             {
+                "gzi": [
+                    
+                ],
                 "index": [
                     [
                         {
@@ -214,7 +320,100 @@
                 ]
             }
         ],
-        "timestamp": "2026-07-10T08:09:24.961486",
+        "timestamp": "2026-10-11T14:10:54.243319",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "sarscov2 - bgzip - compress - index - gzi": {
+        "content": [
+            {
+                "gzi": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.vcf.gz.gzi:md5,7dea362b3fac8e00956a4952a3d4f474"
+                    ]
+                ],
+                "index": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.vcf.gz.tbi:md5,d22e5b84e4fcd18792179f72e6da702e"
+                    ]
+                ],
+                "output": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.vcf.gz:md5,8e722884ffb75155212a3fc053918766"
+                    ]
+                ],
+                "versions_htslib": [
+                    [
+                        "HTSLIB_BGZIPTABIX",
+                        "htslib",
+                        "1.24"
+                    ]
+                ],
+                "versions_xz": [
+                    [
+                        "HTSLIB_BGZIPTABIX",
+                        "xz",
+                        "5.8.3"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-11T14:10:28.115679",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "sarscov2 - gzip - (re)compress - gzi": {
+        "content": [
+            {
+                "gzi": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.fastq.gz.gzi:md5,952c4ddf93eadae96d8f6d7b7b448028"
+                    ]
+                ],
+                "index": [
+                    
+                ],
+                "output": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.fastq.gz:md5,4161df271f9bfcd25d5845a1e220dbec"
+                    ]
+                ],
+                "versions_htslib": [
+                    [
+                        "HTSLIB_BGZIPTABIX",
+                        "htslib",
+                        "1.24"
+                    ]
+                ],
+                "versions_xz": [
+                    [
+                        "HTSLIB_BGZIPTABIX",
+                        "xz",
+                        "5.8.3"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-11T14:10:41.577004",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
@@ -223,6 +422,9 @@
     "sarscov2 - vcf - decompress": {
         "content": [
             {
+                "gzi": [
+                    
+                ],
                 "index": [
                     
                 ],
@@ -250,7 +452,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-07-10T08:07:05.41219",
+        "timestamp": "2026-10-11T14:08:39.55638",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
@@ -259,6 +461,9 @@
     "metagenome - bz2 - (re)compress - no index": {
         "content": [
             {
+                "gzi": [
+                    
+                ],
                 "index": [
                     
                 ],
@@ -286,7 +491,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-07-10T08:07:51.772557",
+        "timestamp": "2026-10-11T14:09:13.19205",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
@@ -295,6 +500,9 @@
     "sarscov2 - vcf - compress - index": {
         "content": [
             {
+                "gzi": [
+                    
+                ],
                 "index": [
                     [
                         {
@@ -327,7 +535,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-07-10T08:07:09.68169",
+        "timestamp": "2026-10-11T14:08:42.734076",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
@@ -348,18 +556,24 @@
                     
                 ],
                 "2": [
+                    
+                ],
+                "3": [
                     [
                         "HTSLIB_BGZIPTABIX",
                         "htslib",
                         "1.24"
                     ]
                 ],
-                "3": [
+                "4": [
                     [
                         "HTSLIB_BGZIPTABIX",
                         "xz",
                         "5.8.3"
                     ]
+                ],
+                "gzi": [
+                    
                 ],
                 "index": [
                     
@@ -404,7 +618,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-07-10T08:08:19.920765",
+        "timestamp": "2026-10-11T14:09:34.546457",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
@@ -413,6 +627,9 @@
     "sarscov2 - bgzip - compress - no index": {
         "content": [
             {
+                "gzi": [
+                    
+                ],
                 "index": [
                     
                 ],
@@ -440,7 +657,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-07-10T08:07:23.405306",
+        "timestamp": "2026-10-11T14:08:53.402936",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
@@ -449,6 +666,9 @@
     "sarscov2 - vcf + regions - compress - index": {
         "content": [
             {
+                "gzi": [
+                    
+                ],
                 "index": [
                     [
                         {
@@ -482,7 +702,7 @@
             },
             "bc7bf3ee9e8430e064c539eb81e59bf9"
         ],
-        "timestamp": "2026-07-10T08:07:15.187648",
+        "timestamp": "2026-10-11T14:08:47.194495",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
@@ -491,6 +711,9 @@
     "sarscov2 - bgzip - decompress": {
         "content": [
             {
+                "gzi": [
+                    
+                ],
                 "index": [
                     
                 ],
@@ -518,7 +741,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-07-10T08:07:19.313945",
+        "timestamp": "2026-10-11T14:08:50.337306",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
