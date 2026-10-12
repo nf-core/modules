@@ -4,8 +4,8 @@ process SPADES {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7b/7b7b68c7f8471d9111841dbe594c00a41cdd3b713015c838c4b22705cfbbdfb2/data' :
-        'community.wave.seqera.io/library/spades:4.1.0--77799c52e1d1054a' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bd/bd1aa46fe63e43f2a7bcd7cafded3236b4830bd8ec78adec0c9140e5330d908f/data' :
+        'community.wave.seqera.io/library/spades:4.3.0--ca99aa8b3ff910f5' }"
 
     input:
     tuple val(meta), path(illumina), path(pacbio), path(nanopore)
