@@ -20,6 +20,11 @@ process CUSTOM_BED12CODONPOSITIONS {
     script:
     prefix = task.ext.prefix ?: "${meta.id}"
     args   = task.ext.args ?: ''
+
+    """
+    echo ${args}
+    """
+
     template 'bed12codonpositions.py'
 
     stub:

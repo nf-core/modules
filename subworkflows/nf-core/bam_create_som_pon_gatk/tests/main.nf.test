@@ -62,6 +62,8 @@ nextflow_workflow {
                         if (key in ["mutect2_index", "mutect2_stats", "mutect2_vcf"]) {
                             def array = [file(val[0][1]).name, file(val[1][1]).name]
                             return [key, array.sort().unique()]
+                        } else if (key == "genomicsdb") {
+                            return [key, new File(val[0][1][0].toString()).parentFile.name]
                         } else {
                             return [key, file(val[0][1]).name]
                         }
@@ -131,6 +133,8 @@ nextflow_workflow {
                         if (key in ["mutect2_index", "mutect2_stats", "mutect2_vcf"]) {
                             def array = [file(val[0][1]).name, file(val[1][1]).name]
                             return [key, array.sort().unique()]
+                        } else if (key == "genomicsdb") {
+                            return [key, new File(val[0][1][0].toString()).parentFile.name]
                         } else {
                             return [key, file(val[0][1]).name]
                         }

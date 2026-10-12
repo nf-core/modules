@@ -4,8 +4,8 @@ process GAPSEQ_DOALL {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/93/933e301b11c1ec1699da6382e9e35b0e4e31edb80763eb2fa1b69ad7d6d1e5c7/data'
-:         'community.wave.seqera.io/library/gapseq:2.1.0--c32b876ebb5e5f5b' }"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/93/933e301b11c1ec1699da6382e9e35b0e4e31edb80763eb2fa1b69ad7d6d1e5c7/data'
+        : 'community.wave.seqera.io/library/gapseq:2.1.0--c32b876ebb5e5f5b' }"
 
     input:
     tuple val(meta), path(fasta), path(medium)
@@ -24,28 +24,27 @@ process GAPSEQ_DOALL {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     def medium_arg = medium ? "-m $medium" : ''
     def db_arg = db ? "-D $db" : ''
     """
     gapseq \\
         doall \\
         -t Bacteria \\
-        $medium_arg \\
+        ${medium_arg} \\
         -K ${task.cpus} \\
-        $db_arg \\
-        $args \\
-        $fasta
+        ${db_arg} \\
+        ${args} \\
+        ${fasta}
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def fasta_name = fasta.getBaseName()
     """
-    touch ${prefix}_model-filled.RDS
-    touch ${prefix}_model-filled.xml
-    touch ${prefix}_pathways.tbl
-    touch ${prefix}_transporters.tbl
-    touch ${prefix}.fna
-    touch ${prefix}.log
+    touch ${fasta_name}_model-filled.RDS
+    touch ${fasta_name}_model-filled.xml
+    touch ${fasta_name}_pathways.tbl
+    touch ${fasta_name}_transporters.tbl
+    touch ${fasta_name}.fna
+    touch ${fasta_name}.log
     """
 }

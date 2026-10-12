@@ -19,7 +19,7 @@ process OPENMS_MAPALIGNERIDENTIFICATION {
 
     script:
     def args      = task.ext.args ?: ''
-    def trafo_out = id_files.collect { "${it.baseName}.trafoXML" }.join(' ')
+    def trafo_out = id_files.collect { item -> "${item.baseName}.trafoXML" }.join(' ')
     """
     MapAlignerIdentification \\
         -in $id_files \\
@@ -29,7 +29,7 @@ process OPENMS_MAPALIGNERIDENTIFICATION {
     """
 
     stub:
-    def trafo_out = id_files.collect { "${it.baseName}.trafoXML" }.join(' ')
+    def trafo_out = id_files.collect { item -> "${item.baseName}.trafoXML" }.join(' ')
     """
     touch $trafo_out
     """

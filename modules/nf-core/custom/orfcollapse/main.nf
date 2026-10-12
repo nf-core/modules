@@ -27,6 +27,11 @@ process CUSTOM_ORFCOLLAPSE {
     script:
     prefix = task.ext.prefix ?: "${meta.id}.catalogue"
     args   = task.ext.args ?: ''
+
+    """
+    echo ${args}
+    """
+
     template 'orfcollapse.py'
 
     stub:

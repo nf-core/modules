@@ -4,9 +4,8 @@ process CADDSV_RUN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/75/7580fd97186cafd35f9b898de8ef33a503b42649c99b9b2a50d4cf4eada0bd0d/data'
-:         'community.wave.seqera.io/library/caddsv:2.0.1--1bd7ba3bc0ff7a4e' }"
-
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d2/d2fd85e11209001044c0b5f8cd663e8058cf006b8e6a0d8712a50857677ab664/data'
+:         'community.wave.seqera.io/library/caddsv_snakemake_pulp_bedops_pruned:799f9464989eb8fe' }"
     input:
     tuple val(meta), path(variants)
     path(annotations_dir)
@@ -44,10 +43,16 @@ process CADDSV_RUN {
         cp -L "${variants}" "${run_input}"
     fi
 
+    # The module environment provides every workflow rule dependency, so the
+    # inner Snakemake must not create conda envs or pull rule containers.
+    # --drop-metadata: Snakemake 8 otherwise calls `conda info` to hash each
+    # rule's conda env when recording job metadata, even with conda disabled.
     caddsv run "${run_input}" \\
         --annotations-dir "${annotations_dir}" \\
         --output-dir caddsv_results \\
         --threads ${task.cpus} \\
+        --no-use-conda \\
+        --snakemake-args "--drop-metadata" \\
         ${config_arg} \\
         ${args}
     """

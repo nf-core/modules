@@ -21,8 +21,13 @@ process RPBP_PREPAREGENOME {
     task.ext.when == null || task.ext.when
 
     script:
-    task_ext_args = task.ext.args ?: ''
+    args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: meta.id
+
+    """
+    echo ${args}
+    """
+
     template 'prepare_rpbp_genome.py'
 
     stub:

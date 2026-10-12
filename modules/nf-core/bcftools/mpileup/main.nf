@@ -13,7 +13,7 @@ process BCFTOOLS_MPILEUP {
     val save_mpileup
 
     output:
-    tuple val(meta), path("*vcf.gz"), emit: vcf
+    tuple val(meta), path("*.{bcf,vcf}{,.gz}"), emit: vcf
     tuple val(meta), path("*.{tbi,csi}"), emit: index, optional: true
     tuple val(meta), path("*stats.txt"), emit: stats
     tuple val(meta), path("*.mpileup.gz"), emit: mpileup, optional: true
@@ -31,6 +31,15 @@ process BCFTOOLS_MPILEUP {
     def bgzip_mpileup = save_mpileup ? "bgzip ${prefix}.mpileup" : ""
     def intervals_mpileup_cmd = intervals_mpileup ? "-T ${intervals_mpileup}" : ""
     def intervals_call_cmd = intervals_call ? "-T ${intervals_call}" : ""
+    def extension = args3.contains("--output-type b") || args3.contains("-Ob")
+        ? "bcf.gz"
+        : args3.contains("--output-type u") || args3.contains("-Ou")
+            ? "bcf"
+            : args3.contains("--output-type z") || args3.contains("-Oz")
+                ? "vcf.gz"
+                : args.contains("--output-type v") || args3.contains("-Ov")
+                    ? "vcf"
+                    : "vcf"
     """
     echo "${meta.id}" > sample_name.list
 
@@ -43,21 +52,39 @@ process BCFTOOLS_MPILEUP {
         ${mpileup} \\
         | bcftools call --output-type v ${args2} ${intervals_call_cmd} \\
         | bcftools reheader --samples sample_name.list \\
-        | bcftools view --output-file ${prefix}.vcf.gz --output-type z ${args3}
+        | bcftools view --output-file ${prefix}.${extension} ${args3}
 
     ${bgzip_mpileup}
 
-    tabix -p vcf -f ${prefix}.vcf.gz
-
-    bcftools stats ${prefix}.vcf.gz > ${prefix}.bcftools_stats.txt
+    bcftools stats ${prefix}.${extension} > ${prefix}.bcftools_stats.txt
     """
 
     stub:
+    def args3 = task.ext.args3 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def extension = args3.contains("--output-type b") || args3.contains("-Ob")
+        ? "bcf.gz"
+        : args3.contains("--output-type u") || args3.contains("-Ou")
+            ? "bcf"
+            : args3.contains("--output-type z") || args3.contains("-Oz")
+                ? "vcf.gz"
+                : args3.contains("--output-type v") || args3.contains("-Ov")
+                    ? "vcf"
+                    : "vcf"
+    def index = args3.contains("--write-index=tbi") || args3.contains("-W=tbi")
+        ? "tbi"
+        : args3.contains("--write-index=csi") || args3.contains("-W=csi")
+            ? "csi"
+            : args3.contains("--write-index") || args3.contains("-W")
+                ? "csi"
+                : ""
+    def create_cmd = extension.endsWith(".gz") ? "echo '' | gzip >" : "touch"
+    def create_index = extension.endsWith(".gz") && index.matches("csi|tbi") ? "touch ${prefix}.${extension}.${index}" : ""
+    def create_mpileup = save_mpileup ? "echo '' | gzip > ${prefix}.mpileup.gz" : ""
     """
     touch ${prefix}.bcftools_stats.txt
-    echo "" | gzip > ${prefix}.vcf.gz
-    touch ${prefix}.vcf.gz.tbi
-    echo "" | gzip > ${prefix}.mpileup.gz
+    ${create_cmd} ${prefix}.${extension}
+    ${create_index}
+    ${create_mpileup}
     """
 }
