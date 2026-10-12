@@ -1,0 +1,206 @@
+name: simpleaf_multiplexquant
+description: |
+  Quantify a sample-multiplexed single-cell library (e.g. 10x Chromium Fixed RNA
+  Profiling / Flex) end-to-end with simpleaf — auto-resolves probe set and sample
+  barcode rotation map from the chemistry preset, builds a piscem probe index if one
+  is not supplied, maps reads with `piscem map-sc`, performs hierarchical cell-barcode
+  + sample-barcode correction, collates, and quantifies. Barcodes in the resulting
+  count matrix are prefixed with the demultiplexed sample name.
+keywords:
+  - quantification
+  - gene expression
+  - multiplexed
+  - flex
+  - SimpleAF
+tools:
+  - simpleaf:
+      description: |
+        SimpleAF is a program to simplify and customize the running and configuration of single-cell processing with alevin-fry.
+      homepage: https://github.com/COMBINE-lab/simpleaf
+      documentation: https://simpleaf.readthedocs.io/en/latest/flex-quant-command.html
+      tool_dev_url: https://github.com/COMBINE-lab/simpleaf
+      licence:
+        - "BSD-3-Clause"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - chemistry:
+        type: string
+        description: |
+          Chemistry preset name. Typical values: `10x-flexv1-gex-3p`,
+          `10x-flexv2-gex-3p`. The preset drives auto-resolution of the probe set,
+          sample-BC TSV, and cell-BC whitelist (each overridable via the inputs
+          below). Pass `[]` to skip the preset entirely — in that case you must
+          supply geometry / orientation through ext.args (e.g. `--geometry '...'`,
+          `--expected-ori fw`). UMI resolution is also passed via ext.args
+          (e.g. `--resolution cr-like`).
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files for paired-end data, grouped by pairs.
+          Example: [ [R1_1.fastq.gz, R2_1.fastq.gz], [R1_2.fastq.gz, R2_2.fastq.gz] ]
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map describing the (optional) pre-built piscem probe index input.
+          e.g. [ tool:'piscem' ]
+    - index:
+        type: directory
+        description: |
+          Folder containing a pre-built piscem probe index (the directory holding `simpleaf_index.json`
+          or its parent). When set, simpleaf will skip auto-building the probe index. Pass `[]`
+          to let simpleaf auto-build from `probe_set` (or the chemistry default).
+    - t2g_map:
+        type: file
+        description: |
+          Transcript-to-gene map. Use this when running against a transcriptome reference
+          instead of a probe set. Pass `[]` for probe-set-based runs.
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map describing (optional) probe-set / barcode-list overrides.
+          e.g. [ probe_set:'custom_10xFlex_v1' ]
+    - probe_set:
+        type: file
+        description: |
+          Probe set CSV or FASTA. Overrides the chemistry-preset default probe set. Pass `[]`
+          to use whatever the chemistry preset (and `--organism` in ext.args) auto-resolves.
+        ontologies: []
+    - sample_bc_list:
+        type: file
+        description: |
+          Three-column TSV listing the sample barcodes used by the experiment:
+          `observed_seq<TAB>canonical_seq<TAB>sample_name`. Required when overriding the
+          chemistry default. Pass `[]` to use the chemistry-preset default.
+        ontologies: []
+    - cell_bc_list:
+        type: file
+        description: |
+          Cell barcode whitelist (one barcode per line). Overrides the chemistry-preset
+          default. Pass `[]` to use the chemistry-preset default.
+        ontologies: []
+  - organism:
+      type: string
+      description: |
+        Organism passed to `simpleaf multiplex-quant --organism` for auto-resolution of
+        the chemistry-preset default probe set and sample-BC TSV. Required by simpleaf
+        when no `--probe-set` override is supplied; ignored otherwise. Typical values:
+        `human`, `mouse`. Pass any value (e.g. `human`) when overriding probe_set
+        explicitly.
+output:
+  map:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - ${prefix}/af_map:
+          type: directory
+          description: |
+            piscem `map-sc` output directory. Contains `map.rad`, `map_info.json` and
+            `unmapped_bc_count.bin`.
+  quant:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - ${prefix}/af_quant:
+          type: directory
+          description: |
+            alevin-fry quantification output directory. Contains `quant.json`,
+            `generate_permit_list.json`, `alevin/quants_mat.mtx`, and barcode/feature TSVs.
+            Barcodes in `quants_mat_rows.txt` are prefixed with the demultiplexed sample name.
+  h5ad:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - ${prefix}/af_quant/alevin/quants.h5ad:
+          type: file
+          description: |
+            AnnData representation of the count matrix, emitted because `--anndata-out`
+            is set by default in this module.
+          ontologies: []
+  t2g:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - ${prefix}/probe_t2g.tsv:
+          type: file
+          description: |
+            Gene-level transcript-to-gene map resolved by multiplex-quant from the probe set.
+          ontologies: []
+  probe_index:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - ${prefix}/probe_index/index:
+          type: directory
+          description: |
+            Auto-built piscem probe index, emitted only when no pre-built `index` was provided
+            on input. Useful for caching the index between runs.
+  versions_alevin_fry:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - alevin-fry:
+          type: string
+          description: The name of the tool
+      - alevin-fry --version | sed 's/alevin-fry //':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_piscem:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - piscem:
+          type: string
+          description: The name of the tool
+      - piscem --version | sed 's/piscem //':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_simpleaf:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - simpleaf:
+          type: string
+          description: The name of the tool
+      - simpleaf --version | sed 's/simpleaf //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - alevin-fry:
+          type: string
+          description: The name of the tool
+      - alevin-fry --version | sed 's/alevin-fry //':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - piscem:
+          type: string
+          description: The name of the tool
+      - piscem --version | sed 's/piscem //':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - simpleaf:
+          type: string
+          description: The name of the tool
+      - simpleaf --version | sed 's/simpleaf //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@an-altosian"
+maintainers:
+  - "@an-altosian"
