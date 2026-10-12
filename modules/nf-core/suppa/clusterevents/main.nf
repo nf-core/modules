@@ -21,6 +21,7 @@ process SUPPA_CLUSTEREVENTS {
     output:
     tuple val(meta), path("*.clustvec"), emit: clustvec
     tuple val("${task.process}"), val('suppa'), eval("suppa.py -v | sed '1!d;s/.* //'"), topic: versions, emit: versions_suppa
+    tuple val("${task.process}"), val('statsmodels'), eval("python -c 'import statsmodels; print(statsmodels.__version__)'"), topic: versions, emit: versions_statsmodels
 
     when:
     task.ext.when == null || task.ext.when
