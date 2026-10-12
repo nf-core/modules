@@ -41,6 +41,9 @@ process VUEGEN {
     fi
     set -u
 
+    # Same fix as in modules/nf-core/huggingface/download.
+    export SSL_CERT_FILE="\${SSL_CERT_FILE:-\$(python -m certifi)}"
+
     # Execute VueGen based on the input type
     if [ "${input_type}" == "config" ]; then
         echo "Running VueGen with config file: ${input_path}"
