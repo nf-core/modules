@@ -1,0 +1,74 @@
+nextflow_process {
+
+    name "Test Process DSHBIO_FASTATOPARQUET3"
+    script "../main.nf"
+    process "DSHBIO_FASTATOPARQUET3"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "dshbio"
+    tag "dshbio/fastatoparquet3"
+
+    test("sarscov2 - DNA fasta") {
+
+        when {
+            process {
+                """
+                input[0] = file(params.test_data['sarscov2']['genome']['genome_fasta_gz'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - protein fasta") {
+
+        config './modules.config'
+
+        when {
+            params {
+                fastatoparquet {
+                    args = '--alphabet protein'
+                }
+            }
+            process {
+                """
+                input[0] = file(params.test_data['sarscov2']['genome']['proteome_fasta_gz'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = file(params.test_data['sarscov2']['genome']['genome_fasta_gz'], checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
