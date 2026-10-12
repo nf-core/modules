@@ -354,7 +354,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '-i'
+                module_args = '--index'
             }
             process {
                 """
@@ -386,7 +386,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '-i'
+                module_args = '--index'
             }
             process {
                 """
@@ -418,7 +418,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '-i'
+                module_args = '--index'
             }
             process {
                 """
@@ -510,7 +510,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '-i'
+                module_args = '--index'
             }
             process {
                 """
@@ -530,6 +530,39 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - vcf - decompress - gzi - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--index'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
+                    [],
+                    []
+                ]
+                input[1] = 'decompress' // action
+                input[2] = false // make_index
+                input[3] = 'vcf' // out_ext
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert process.out.gzi.isEmpty() },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }

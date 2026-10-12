@@ -89,7 +89,9 @@ output:
           type: file
           description: BGZF block index for the compressed output file. Only
             created if `action` is `compress` and `ext.args` contains `-i` or
-            `--index`
+            `--index` as a separate argument. Bundled short flags (e.g. `-ci`)
+            and `-I`/`--index-name` are not detected. No .gzi is created when
+            `action` is `decompress`.
           pattern: "*.gzi"
           ontologies: []
   versions_htslib:

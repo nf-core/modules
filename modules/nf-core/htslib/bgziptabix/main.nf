@@ -36,7 +36,11 @@ process HTSLIB_BGZIPTABIX {
 
     // bgzip -c -i names the .gzi after the input and a BGZF input is only linked, so the .gzi is built afterwards with bgzip -r
     def args_list = (task.ext.args ?: '').tokenize()
-    def make_gzi = action == "compress" && args_list.any { arg -> arg in ['-i', '--index'] }
+    def gzi_requested = args_list.any { arg -> arg in ['-i', '--index'] }
+    if (action == "decompress" && gzi_requested) {
+        log.warn("htslib/bgziptabix: Cannot create a .gzi index when decompressing. Ignoring -i/--index in ext.args.")
+    }
+    def make_gzi = action == "compress" && gzi_requested
     def args = (args_list - ['-i', '--index']).join(' ')
     def args2 = task.ext.args2 ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
@@ -50,18 +54,6 @@ process HTSLIB_BGZIPTABIX {
     def link_tabix_cmd = make_index && infile_tbi ? "ln -s ${infile_tbi} ${outfile}.${infile_tbi.extension}" : ""
     def uncompressed_cmd = action == "compress" ? "${compress_cmd} ${infile} > ${outfile}" : (infile.getName() == outfile ? "" : "ln -s ${infile} ${outfile}")
     def gzi_cmd = make_gzi ? "bgzip -r -@ ${task.cpus} ${outfile}" : ""
-    // Commands run, in order (args = ext.args without -i/--index, args2 = ext.args2):
-    //   1. make_index, with infile_tbi:  ln -s infile_tbi outfile.{tbi,csi}
-    //   2. by input type (htsfile):
-    //                compress                                        | decompress
-    //        BGZF    ln -s infile outfile (if the names differ)      | bgzip -c -d args infile > outfile
-    //        gzip    bgzip -d -c infile | bgzip -c args > outfile    | bgzip -d -c infile > outfile
-    //        bzip2   bzcat infile | bgzip -c args > outfile          | bzcat infile > outfile
-    //        xz      xzcat infile | bgzip -c args > outfile          | xzcat infile > outfile
-    //        other   bgzip -c args infile > outfile                  | ln -s infile outfile (if the names differ)
-    //      A gzip infile fails if it has the same name as outfile.
-    //   3. compress, with -i/--index in ext.args:  bgzip -r outfile (writes outfile.gzi)
-    //   4. make_index, without infile_tbi:  tabix [-R regions] args2 -f outfile
     """
     ${link_tabix_cmd}
 
@@ -87,7 +79,11 @@ process HTSLIB_BGZIPTABIX {
 
     stub:
     def args_list = (task.ext.args ?: '').tokenize()
-    def make_gzi = action == "compress" && args_list.any { arg -> arg in ['-i', '--index'] }
+    def gzi_requested = args_list.any { arg -> arg in ['-i', '--index'] }
+    if (action == "decompress" && gzi_requested) {
+        log.warn("htslib/bgziptabix: Cannot create a .gzi index when decompressing. Ignoring -i/--index in ext.args.")
+    }
+    def make_gzi = action == "compress" && gzi_requested
     def args = (args_list - ['-i', '--index']).join(' ')
     def args2 = task.ext.args2 ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
