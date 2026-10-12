@@ -1,0 +1,85 @@
+name: "flumut_run"
+description: Run the FluMut tool to search for molecular markers with potential
+  impact on the biological characteristics of Influenza A viruses of the A(H5N1)
+  subtype.
+keywords:
+  - FluMut
+  - mutations
+  - surveillance
+  - H5N1
+  - Avian Influenza Virus
+tools:
+  - "flumut":
+      description: "A tool to search for molecular markers with potential impact on
+        the biological characteristics of Influenza A viruses of the A(H5N1) subtype."
+      homepage: "https://github.com/izsvenezie-virology/FluMut"
+      documentation: "https://izsvenezie-virology.github.io/FluMut/"
+      tool_dev_url: "https://github.com/izsvenezie-virology/FluMut"
+      doi: "10.1093/ve/veaf011"
+      licence:
+        - "AGPL v3-or-later"
+      identifier: biotools:flumut
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: The FASTA containing al the sequences to be analyzed
+        pattern: "*.{fa,fasta,fas}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+output:
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.tsv":
+          type: file
+          description: TSV files containing results
+          pattern: "*.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475"
+  xlsm:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.xlsm":
+          type: file
+          description: Excel file containing results
+          pattern: "*.{xlsm}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3468"
+  versions_flumut:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - flumut:
+          type: string
+          description: The name of the tool
+      - flumut --all-versions:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - flumut:
+          type: string
+          description: The name of the tool
+      - flumut --all-versions:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@EdoardoGiussani"
+  - "@AlexSartori"
+maintainers:
+  - "@EdoardoGiussani"
+  - "@AlexSartori"
