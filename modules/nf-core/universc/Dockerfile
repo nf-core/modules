@@ -7,8 +7,10 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends patch procps rename wget \
     && apt-get clean -y && rm -rf /var/lib/apt/lists/*
 
-COPY environment.yml /tmp/
-RUN conda env create -y -p /opt/env -f /tmp/environment.yml \
+RUN conda create -y -p /opt/env -c conda-forge -c bioconda \
+        fastq-pair=1.0 \
+        multiqc=1.35 \
+        samtools=1.16.1 \
     && conda clean -afy
 
 # Pre-downloaded from the 10x Genomics website; ADD extracts it
