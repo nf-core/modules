@@ -15,8 +15,7 @@ process SMUDGEPLOT_ALL {
     tuple val(meta), path("*_centralities.txt"), emit: centrality_txt
     tuple val(meta), path("*.smudge_report.tsv"), emit: smudge_report
     tuple val(meta), path("*.sma"), emit: sma
-    tuple val("${task.process}"), val('smudgeplot'), eval('smudgeplot -v |& sed "s/.*v//"'), emit: versions_smudgeplot, topic: versions
-    // FASTK does not report version to cli
+    tuple val("${task.process}"), val('smudgeplot'), eval('smudgeplot -v |& grep -i smudgeplot | sed "s/.*v//"'), emit: versions_smudgeplot, topic: versions    // FASTK does not report version to cli
     tuple val("${task.process}"), val('fastk'), val('1.2'), emit: versions_fastk, topic: versions
 
     when:
@@ -28,6 +27,7 @@ process SMUDGEPLOT_ALL {
 
     // Export HOME to avoid issues with MATPLOTLIB needing a
     // writable config directory
+    //     export HOME=\$PWD/nxf_home
     """
     export HOME=\$PWD/nxf_home
 
