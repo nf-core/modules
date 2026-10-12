@@ -1,0 +1,113 @@
+nextflow_process {
+
+    name "Test Process DEXSEQ_DTU"
+    script "../main.nf"
+    process "DEXSEQ_DTU"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "dexseq"
+    tag "dexseq/dtu"
+    tag "untar"
+    tag "custom/tx2gene"
+    tag "tximeta/tximport"
+
+    // Transcript counts of two GBR and two YRI samples on human chrX, from the Salmon
+    // results of the rnasplice test data
+    setup {
+        run("UNTAR") {
+            script "../../../untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'salmon_quant' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/rnasplice/testdata/salmon_quant/salmon_quant.tar.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+        run("CUSTOM_TX2GENE") {
+            script "../../../custom/tx2gene/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'genes_chrX' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/rnasplice/reference/genes_chrX.gtf', checkIfExists: true)
+                ]
+                input[1] = UNTAR.out.untar.map { meta, dir -> [ meta, dir.listFiles().collect() ] }
+                input[2] = 'salmon'
+                input[3] = 'gene_id'
+                input[4] = 'gene_name'
+                """
+            }
+        }
+        run("TXIMETA_TXIMPORT") {
+            script "../../../tximeta/tximport/main.nf"
+            process {
+                """
+                input[0] = UNTAR.out.untar.map { meta, dir -> [ meta, dir.listFiles().collect() ] }
+                input[1] = CUSTOM_TX2GENE.out.tx2gene
+                input[2] = 'salmon'
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens - chrX - GBR vs YRI") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'GBR_vs_YRI' ], 'condition', 'YRI', 'GBR' ]
+                input[1] = TXIMETA_TXIMPORT.out.counts_transcript.map { _meta, counts ->
+                    [
+                        [ id:'study' ],
+                        file('https://raw.githubusercontent.com/nf-core/test-datasets/rnasplice/samplesheet/samplesheet_bam.csv', checkIfExists: true),
+                        counts
+                    ]
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["dataset_rds", "results_rds", "gene_qvalues_rds", "session_info"])
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - chrX - GBR vs YRI - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'GBR_vs_YRI' ], 'condition', 'YRI', 'GBR' ]
+                input[1] = TXIMETA_TXIMPORT.out.counts_transcript.map { _meta, counts ->
+                    [
+                        [ id:'study' ],
+                        file('https://raw.githubusercontent.com/nf-core/test-datasets/rnasplice/samplesheet/samplesheet_bam.csv', checkIfExists: true),
+                        counts
+                    ]
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
