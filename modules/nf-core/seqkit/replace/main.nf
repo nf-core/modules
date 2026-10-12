@@ -20,7 +20,7 @@ process SEQKIT_REPLACE {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_replaced"
     def extension = "fastq"
     if ("${fastx}" ==~ /.+\.fasta|.+\.fasta.gz|.+\.fa|.+\.fa.gz|.+\.fas|.+\.fas.gz|.+\.fna|.+\.fna.gz|.+\.faa|.+\.faa.gz/) {
         extension = "fasta"
@@ -30,18 +30,19 @@ process SEQKIT_REPLACE {
         isgz = ".gz"
     }
     def endswith = out_ext ?: "${extension}${isgz}"
+    if ("${fastx}" == "${prefix}.${endswith}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
     seqkit \\
         replace \\
         ${args} \\
         --threads ${task.cpus} \\
-        -i ${fastx} \\
+        ${fastx} \\
         -o ${prefix}.${endswith}
     """
 
     stub:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}_replaced"
     def extension = "fastq"
     if ("${fastx}" ==~ /.+\.fasta|.+\.fasta.gz|.+\.fa|.+\.fa.gz|.+\.fas|.+\.fas.gz|.+\.fna|.+\.fna.gz|.+\.faa|.+\.faa.gz/) {
         extension = "fasta"
@@ -51,6 +52,7 @@ process SEQKIT_REPLACE {
         isgz = ".gz"
     }
     def endswith = out_ext ?: "${extension}${isgz}"
+    if ("${fastx}" == "${prefix}.${endswith}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
 
     def create_cmd = endswith.endsWith('gz') ? "echo '' | gzip >" : "touch"
     """
