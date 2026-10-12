@@ -35,7 +35,10 @@ nextflow_process {
             }
         }
     }
-
+// The below test has been disabled due to a bug with Smudgeplot detailed here:
+// https://github.com/KamilSJaron/smudgeplot/issues/263
+// Effectively, the tool currently only supports large and complete data and fixes will be
+// added in the next release
     // test("Acropora_cervicornis - reads") {
 
     //     when {
