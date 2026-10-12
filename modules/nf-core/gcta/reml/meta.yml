@@ -1,0 +1,104 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "gcta_reml"
+description: Run univariate REML heritability estimation with a dense GRM
+keywords:
+  - gcta
+  - genome-wide complex trait analysis
+  - reml
+  - restricted maximum likelihood
+  - grm
+  - genetic relationship matrix
+  - genetics
+tools:
+  - "gcta":
+      description: "Genome-wide Complex Trait Analysis (GCTA) estimates genetic relationships, variance components, and association statistics from genome-wide data."
+      homepage: "https://yanglab.westlake.edu.cn/software/gcta/"
+      documentation: "https://yanglab.westlake.edu.cn/software/gcta/static/gcta_doc_latest.pdf"
+      tool_dev_url: "https://yanglab.westlake.edu.cn/software/gcta/"
+      licence: ["GPL-3.0-only"]
+      identifier: "biotools:gcta"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy map containing dense GRM metadata
+          `meta.id` must be the GRM basename passed to `--grm`
+          (for example `plink_simulated_dense` for `plink_simulated_dense.grm.{id,bin,N.bin}`)
+    - grm_files:
+        type: file
+        description: Dense GRM bundle containing sample identifier, binary matrix,
+          and sample-count matrix files
+        pattern: "*.grm.*"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy map containing phenotype metadata; should carry the same sample
+          identity as `meta`, for example `[ id:'plink_simulated_dense' ]`
+    - phenotypes_file:
+        type: file
+        description: Phenotype file passed to `--pheno`
+        pattern: "*.{phe,pheno,txt,tsv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
+  - - meta3:
+        type: map
+        description: |
+          Groovy map containing quantitative covariate metadata; should carry the
+          same sample identity as `meta`, for example `[ id:'plink_simulated_dense' ]`
+    - quant_covariates_file:
+        type: file
+        description: Quantitative covariates file, pass `[]` when absent
+        pattern: "*.{covar,cov,txt,tsv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
+  - - meta4:
+        type: map
+        description: |
+          Groovy map containing categorical covariate metadata; should carry the
+          same sample identity as `meta`, for example `[ id:'plink_simulated_dense' ]`
+    - cat_covariates_file:
+        type: file
+        description: Categorical covariates file, pass `[]` when absent
+        pattern: "*.{covar,cov,txt,tsv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
+output:
+  reml_results:
+    - - meta:
+          type: map
+          description: |
+            Groovy map containing dense GRM metadata
+            `meta.id` must be the GRM basename passed to `--grm`
+            (for example `plink_simulated_dense` for `plink_simulated_dense.grm.{id,bin,N.bin}`)
+      - "*.hsq":
+          type: file
+          description: REML result file
+          pattern: "*.{hsq}"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330"
+  versions_gcta:
+    - - "${task.process}":
+          type: string
+          description: The process the version was collected from
+      - "gcta":
+          type: string
+          description: The tool name
+      - "gcta --version | sed -En 's/^[*] version v([0-9.]*).*/\\1/p'":
+          type: eval
+          description: The command used to retrieve the GCTA version
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the version was collected from
+      - gcta:
+          type: string
+          description: The tool name
+      - "gcta --version | sed -En 's/^[*] version v([0-9.]*).*/\\1/p'":
+          type: eval
+          description: The command used to retrieve the GCTA version
+authors:
+  - "@lyh970817"
+maintainers:
+  - "@lyh970817"

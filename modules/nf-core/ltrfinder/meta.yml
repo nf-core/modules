@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "ltrfinder"
 description: |
   Finds full-length LTR retrotranspsons in genome sequences using the
@@ -17,16 +16,18 @@ tools:
       documentation: "https://github.com/oushujun/LTR_FINDER_parallel"
       tool_dev_url: "https://github.com/oushujun/LTR_FINDER_parallel"
       doi: "10.1186/s13100-019-0193-0"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
   - "LTR_Finder":
-      description: An efficient program for finding full-length LTR retrotranspsons
-        in genome sequences
+      description: An efficient program for finding full-length LTR
+        retrotranspsons in genome sequences
       homepage: "https://github.com/xzhub/LTR_Finder"
       documentation: "https://github.com/xzhub/LTR_Finder"
       tool_dev_url: "https://github.com/xzhub/LTR_Finder"
       doi: "10.1093/nar/gkm286"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -62,13 +63,46 @@ output:
           description: Annotation in gff3 format
           pattern: "*.gff3"
           ontologies: []
+  versions_ltr_finder_parallel:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - LTR_FINDER_parallel:
+          type: string
+          description: The name of the tool
+      - "LTR_FINDER_parallel -h 2>&1 | sed -n 's/Version: v//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_ltr_finder:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ltr_finder:
+          type: string
+          description: The name of the tool
+      - ltr_finder -h 2>&1 | sed -n 's/ltr_finder v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - LTR_FINDER_parallel:
+          type: string
+          description: The name of the tool
+      - "LTR_FINDER_parallel -h 2>&1 | sed -n 's/Version: v//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ltr_finder:
+          type: string
+          description: The name of the tool
+      - ltr_finder -h 2>&1 | sed -n 's/ltr_finder v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@GallVp"
 maintainers:

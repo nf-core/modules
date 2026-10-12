@@ -2,68 +2,10 @@
     "sarscov2 - fasta - stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        [
-                            "test1.fasta:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test2.fasta:md5,d41d8cd98f00b204e9800998ecf8427e"
-                        ]
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        [
-                            "Bdb.csv:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "Cdb.csv:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "Chdb.csv:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "Mdb.csv:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "Ndb.csv:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "Sdb.csv:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "Wdb.csv:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "Widb.csv:md5,d41d8cd98f00b204e9800998ecf8427e"
-                        ]
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        [
-                            "Cluster_scoring.pdf:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "Clustering_scatterplots.pdf:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "Primary_clustering_dendrogram.pdf:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "Secondary_clustering_dendrograms.pdf:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "Winning_genomes.pdf:md5,d41d8cd98f00b204e9800998ecf8427e"
-                        ]
-                    ]
-                ],
-                "3": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "logger.log:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "4": [
-                    "versions.yml:md5,1a0e131e40151b15f31a4c47438b9c62"
-                ],
                 "fastas": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test"
                         },
                         [
                             "test1.fasta:md5,d41d8cd98f00b204e9800998ecf8427e",
@@ -74,8 +16,7 @@
                 "figures": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test"
                         },
                         [
                             "Cluster_scoring.pdf:md5,d41d8cd98f00b204e9800998ecf8427e",
@@ -89,8 +30,7 @@
                 "log": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test"
                         },
                         "logger.log:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
@@ -98,8 +38,7 @@
                 "summary_tables": [
                     [
                         {
-                            "id": "test",
-                            "single_end": false
+                            "id": "test"
                         },
                         [
                             "Bdb.csv:md5,d41d8cd98f00b204e9800998ecf8427e",
@@ -113,16 +52,20 @@
                         ]
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,1a0e131e40151b15f31a4c47438b9c62"
+                "versions_drep": [
+                    [
+                        "DREP_DEREPLICATE",
+                        "drep",
+                        "3.6.2"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-04-27T17:36:12.231962022",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-08-14T13:23:58.149516719"
+            "nf-test": "0.9.5",
+            "nextflow": "26.03.2"
+        }
     },
     "sarscov2 - premade workdir": {
         "content": [
@@ -145,8 +88,7 @@
             [
                 [
                     {
-                        "id": "test",
-                        "single_end": false
+                        "id": "test"
                     },
                     [
                         "genome.fa:md5,923a0a268ad29fee3c3437d00f9970de",
@@ -155,15 +97,21 @@
                 ]
             ],
             true,
-            [
-                "versions.yml:md5,1a0e131e40151b15f31a4c47438b9c62"
-            ]
+            {
+                "versions_drep": [
+                    [
+                        "DREP_DEREPLICATE",
+                        "drep",
+                        "3.6.2"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-04-27T17:35:58.507467596",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-08-15T08:23:52.843015622"
+            "nf-test": "0.9.5",
+            "nextflow": "26.03.2"
+        }
     },
     "sarscov2 - fasta": {
         "content": [
@@ -186,8 +134,7 @@
             [
                 [
                     {
-                        "id": "test",
-                        "single_end": false
+                        "id": "test"
                     },
                     [
                         "genome.fa:md5,923a0a268ad29fee3c3437d00f9970de",
@@ -196,14 +143,20 @@
                 ]
             ],
             true,
-            [
-                "versions.yml:md5,1a0e131e40151b15f31a4c47438b9c62"
-            ]
+            {
+                "versions_drep": [
+                    [
+                        "DREP_DEREPLICATE",
+                        "drep",
+                        "3.6.2"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-04-27T17:35:24.028312659",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-08-15T08:23:35.666361369"
+            "nf-test": "0.9.5",
+            "nextflow": "26.03.2"
+        }
     }
 }

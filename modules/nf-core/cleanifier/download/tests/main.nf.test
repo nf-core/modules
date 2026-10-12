@@ -1,0 +1,49 @@
+nextflow_process {
+
+    name "Test Process CLEANIFIER_DOWNLOAD"
+    script "../main.nf"
+    process "CLEANIFIER_DOWNLOAD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cleanifier"
+    tag "cleanifier/download"
+
+    test("human - probabilistic - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test_prob' ], 'probabilistic' ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("human - exact - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test_prob' ], 'exact' ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

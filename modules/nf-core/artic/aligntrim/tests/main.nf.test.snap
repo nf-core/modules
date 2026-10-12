@@ -1,9 +1,15 @@
 {
     "sarscov2 - unpaired_bam_sort": {
         "content": [
-            [
-                "versions.yml:md5,1aa4a2e8444cf2cac0cdfd2445030ac7"
-            ],
+            {
+                "versions_align_trim": [
+                    [
+                        "ARTIC_ALIGNTRIM",
+                        "align_trim",
+                        "1.2.0"
+                    ]
+                ]
+            },
             "test.primertrimmed.sorted.bam",
             [
                 [
@@ -18,21 +24,43 @@
                     {
                         "id": "test"
                     },
-                    "test.amp_depth_report.tsv:md5,38d5a8326ddcdb531d224545d640702e"
+                    "test.amp_depth_report.tsv:md5,537d9901f58855e15e7d9904eca0a2fe"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.pre-normalisation.coverage.tsv:md5,bb7024a67ccd9353982b08310f6d2d8d"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.post-normalisation.coverage.tsv:md5,bb7024a67ccd9353982b08310f6d2d8d"
                 ]
             ]
         ],
+        "timestamp": "2026-06-23T16:35:35.596648",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.4"
-        },
-        "timestamp": "2025-08-29T08:52:05.734112"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     },
     "sarscov2 - unpaired_bam": {
         "content": [
-            [
-                "versions.yml:md5,1aa4a2e8444cf2cac0cdfd2445030ac7"
-            ],
+            {
+                "versions_align_trim": [
+                    [
+                        "ARTIC_ALIGNTRIM",
+                        "align_trim",
+                        "1.2.0"
+                    ]
+                ]
+            },
             "test.primertrimmed.bam",
             [
                 [
@@ -49,84 +77,88 @@
                     },
                     "test.amp_depth_report.tsv:md5,6e8a69818cd475203f7cc4347dc00b70"
                 ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.pre-normalisation.coverage.tsv:md5,1a78318100f1854471162b1a8068dab3"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.post-normalisation.coverage.tsv:md5,1a78318100f1854471162b1a8068dab3"
+                ]
             ]
         ],
+        "timestamp": "2026-06-23T16:35:25.698625",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.4"
-        },
-        "timestamp": "2025-08-29T08:51:59.216843"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     },
     "sarscov2 - paired_bam - stub": {
         "content": [
             {
                 "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.primertrimmed.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
+                    
                 ],
                 "1": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.align_trim_report.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
+                    
                 ],
                 "2": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.amp_depth_report.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
+                    
                 ],
                 "3": [
-                    "versions.yml:md5,1aa4a2e8444cf2cac0cdfd2445030ac7"
+                    
+                ],
+                "4": [
+                    
+                ],
+                "5": [
+                    
                 ],
                 "align_trim_report": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.align_trim_report.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
+                    
                 ],
                 "amp_depth_report": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.amp_depth_report.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
+                    
+                ],
+                "post_normalisation_coverage_report": [
+                    
+                ],
+                "pre_normalisation_coverage_report": [
+                    
                 ],
                 "primertrimmed_bam": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.primertrimmed.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
+                    
                 ],
-                "versions": [
-                    "versions.yml:md5,1aa4a2e8444cf2cac0cdfd2445030ac7"
+                "versions_align_trim": [
+                    
                 ]
             }
         ],
+        "timestamp": "2026-06-23T16:35:44.653739",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.4"
-        },
-        "timestamp": "2025-08-29T08:52:11.155119"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     },
     "sarscov2 - paired_bam": {
         "content": [
-            [
-                "versions.yml:md5,1aa4a2e8444cf2cac0cdfd2445030ac7"
-            ],
+            {
+                "versions_align_trim": [
+                    [
+                        "ARTIC_ALIGNTRIM",
+                        "align_trim",
+                        "1.2.0"
+                    ]
+                ]
+            },
             "test.primertrimmed.bam",
             [
                 [
@@ -141,14 +173,30 @@
                     {
                         "id": "test"
                     },
-                    "test.amp_depth_report.tsv:md5,ec8bb66e31b225422a40e52ab969a70a"
+                    "test.amp_depth_report.tsv:md5,da3dcc4f6d43f2a47735120d427e1dfd"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.pre-normalisation.coverage.tsv:md5,658f4600ebc4a125debda4341a508bb0"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test"
+                    },
+                    "test.post-normalisation.coverage.tsv:md5,cc3287e10f6e5c3312e9d0d937dbb2d9"
                 ]
             ]
         ],
+        "timestamp": "2026-06-23T16:35:15.711021",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.4"
-        },
-        "timestamp": "2025-08-29T08:51:52.105076"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     }
 }

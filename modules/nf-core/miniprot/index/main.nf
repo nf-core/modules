@@ -3,16 +3,16 @@ process MINIPROT_INDEX {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/miniprot:0.11--he4a0461_2':
-        'biocontainers/miniprot:0.11--he4a0461_2' }"
+        'quay.io/biocontainers/miniprot:0.11--he4a0461_2' }"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
     tuple val(meta), path("*.mpi"), emit: index
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('miniprot'), eval("miniprot --version"), topic: versions, emit: versions_miniprot
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,20 +25,10 @@ process MINIPROT_INDEX {
         -d ${fasta.baseName}.mpi \\
         $args \\
         $fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        miniprot: \$(miniprot --version 2>&1)
-    END_VERSIONS
     """
 
     stub:
     """
     touch ${fasta.baseName}.mpi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        miniprot: \$(miniprot --version 2>&1)
-    END_VERSIONS
     """
 }

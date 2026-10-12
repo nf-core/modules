@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "quantmsutils_dianncfg"
 description: |
   Generate DIA-NN configuration arguments from enzyme and Unimod modification parameters.
@@ -18,7 +17,8 @@ tools:
       homepage: "https://github.com/bigbio/quantms-utils"
       documentation: "https://github.com/bigbio/quantms-utils"
       tool_dev_url: "https://github.com/bigbio/quantms-utils"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: "biotools:quantms-utils"
 input:
   - - meta:
@@ -45,22 +45,41 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "diann_config.cfg":
+      - diann_config.cfg:
           type: file
           description: DIA-NN configuration file containing command-line arguments
           pattern: "diann_config.cfg"
+          ontologies:
+            - edam: http://edamontology.org/format_4005 # Configuration file format
   log:
     - "*.log":
         type: file
         description: Log file from configuration generation
         pattern: "*.log"
+        ontologies: []
+  versions_quantmsutils:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - quantms-utils:
+          type: string
+          description: The name of the tool
+      - quantmsutilsc --version 2>&1 | sed -n 's/quantmsutils //p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - quantms-utils:
+          type: string
+          description: The name of the tool
+      - quantmsutilsc --version 2>&1 | sed -n 's/quantmsutils //p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@daichengxin"
   - "@pinin4fjords"

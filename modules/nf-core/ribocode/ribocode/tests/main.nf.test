@@ -85,7 +85,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.orf_txt[0][1][0].toString().endsWith('.txt') },
+                { assert process.out.orf_txt[0][1].toString().endsWith('.txt') },
                 { assert process.out.orf_txt_collapsed[0][1].toString().endsWith('_collapsed.txt') },
                 { assert process.out.orf_pdf[0][1].toString().endsWith('.pdf') },
                 { assert process.out.psites_hd5[0][1].toString().endsWith('.hd5') }

@@ -3,9 +3,9 @@ process NANOFILT {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/nanofilt:2.8.0--py_0':
-        'biocontainers/nanofilt:2.8.0--py_0' }"
+        'quay.io/biocontainers/nanofilt:2.8.0--py_0' }"
 
     input:
     tuple val(meta), path(reads)
@@ -14,7 +14,7 @@ process NANOFILT {
     output:
     tuple val(meta), path("*.fastq.gz"), emit: filtreads
     path "*.log"                       , optional: true, emit: log_file
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('nanofilt'), eval('NanoFilt -v | sed "s/NanoFilt //"'), emit: versions_nanofilt, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,10 +31,6 @@ process NANOFILT {
         $args \\
         | gzip > ${prefix}.fastq.gz
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        nanofilt: \$(NanoFilt -v | sed 's/NanoFilt //')
-    END_VERSIONS
     """
 
     stub:
@@ -43,9 +39,5 @@ process NANOFILT {
     echo "" | gzip > ${prefix}.fastq.gz
     touch ${prefix}.log
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        nanofilt: \$(NanoFilt -v | sed 's/NanoFilt //')
-    END_VERSIONS
     """
 }

@@ -1,0 +1,142 @@
+name: "raxmlng_search"
+description: Maximum-likelihood tree search with RAxML-NG, optionally combined with its integrated automatic model selection (MOOSE)
+keywords:
+  - phylogeny
+  - newick
+  - maximum likelihood
+  - model selection
+tools:
+  - "raxmlng":
+      description: RAxML-NG is a phylogenetic tree inference tool which uses maximum-likelihood (ML) optimality criterion.
+      homepage: https://github.com/amkozlov/raxml-ng
+      documentation: https://github.com/amkozlov/raxml-ng/wiki
+      tool_dev_url: https://github.com/amkozlov/raxml-ng
+      doi: 10.1093/bioinformatics/btz305
+      licence:
+        - "GPL v2-or-later"
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information (e.g. [ id:'sample1' ])
+    - alignment:
+        type: file
+        description: A FASTA/PHYLIP format multiple sequence alignment file
+        pattern: "*.{fasta,fas,fa,mfa,phy}"
+        ontologies: []
+    - model:
+        type: string
+        description: |
+          The substitution model to use for the phylogenetic inference (e.g. "GTR+G"),
+          or "DNA"/"AA"/"auto" to trigger RAxML-NG's integrated automatic model selection
+          (MOOSE) instead of a fixed model. Ignored if `partitions` is also given.
+  - tree:
+      type: file
+      description: |
+        Optional starting tree in Newick format. If not given, RAxML-NG generates its
+        own starting tree(s) (parsimony/random, auto-detected count based on MSA
+        difficulty).
+      pattern: "*.{nwk,newick,tree,treefile}"
+      ontologies: []
+      optional: true
+  - tree_constraint:
+      type: file
+      description: A backbone/topology constraint tree in Newick format
+      pattern: "*.{nwk,newick,tree,treefile}"
+      ontologies: []
+      optional: true
+  - partitions:
+      type: file
+      description: |
+        A RAxML-NG partition/model-definition file, used in place of the `model`
+        string input when given (e.g. for partitioned analyses, or `--model auto=FILE`
+        for MOOSE on partitioned data).
+      pattern: "*.{txt,part,partitions}"
+      ontologies: []
+      optional: true
+  - site_weights:
+      type: file
+      description: A file of positive-integer MSA column weights
+      pattern: "*.{txt}"
+      ontologies: []
+      optional: true
+
+output:
+  phylogeny:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.raxml.bestTree":
+          type: file
+          description: The best-scoring ML tree found, in Newick format
+          pattern: "*.raxml.bestTree"
+          ontologies: []
+  best_model:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.raxml.bestModel":
+          type: file
+          description: |
+            The optimized substitution model in RAxML-NG's own machine-readable model
+            string format -- whether `model` was a fixed model string or MOOSE picked it
+            automatically
+          pattern: "*.raxml.bestModel"
+          ontologies: []
+  ml_trees:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.raxml.mlTrees":
+          type: file
+          description: All ML trees from every independent tree search, in Newick format
+          pattern: "*.raxml.mlTrees"
+          optional: true
+          ontologies: []
+  start_tree:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.raxml.startTree":
+          type: file
+          description: The starting tree(s) used for the search, in Newick format
+          pattern: "*.raxml.startTree"
+          optional: true
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.raxml.log":
+          type: file
+          description: RAxML-NG's run log
+          pattern: "*.raxml.log"
+          ontologies: []
+  versions_raxmlng:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - raxmlng:
+          type: string
+          description: The name of the tool
+      - raxml-ng --version 2>&1 | sed '/RAxML-NG v/!d;s/.*v. //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - raxmlng:
+          type: string
+          description: The name of the tool
+      - raxml-ng --version 2>&1 | sed '/RAxML-NG v/!d;s/.*v. //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@erikrikarddaniel"
+maintainers:
+  - "@erikrikarddaniel"

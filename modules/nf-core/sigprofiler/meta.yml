@@ -6,22 +6,20 @@ keywords:
   - cancer genomics
 tools:
   - sigprofilermatrixgenerator:
-      description: Sigprofilermatrixgenerator is a Python-based tool. It creates
-        mutational matrices for all types of somatic mutations (SBS, DBS, and IDs)
+      description: Sigprofilermatrixgenerator is a Python-based tool. It creates mutational matrices for all types of somatic mutations (SBS, DBS, and IDs)
       documentation: https://osf.io/s93d5/wiki/home/
       tool_dev_url: https://github.com/AlexandrovLab/SigProfilerMatrixGenerator/tree/master/SigProfilerMatrixGenerator
       doi: "10.1186/s12864-019-6041-2"
-      licence: ["BSD-2-clause"]
+      licence:
+        - "BSD-2-clause"
       identifier: biotools:sigprofilermatrixgenerator
   - sigprofilerextractor:
-      description: SigProfilerExtractor is a Python-based tool. It allows de novo
-        extraction of mutational signatures from data generated in a matrix
-        format, identification of the number of operative mutational signatures,
-        and their activities in each sample.
+      description: SigProfilerExtractor is a Python-based tool. It allows de novo extraction of mutational signatures from data generated in a matrix format, identification of the number of operative mutational signatures, and their activities in each sample.
       documentation: https://osf.io/t6j7u/wiki/home/
       tool_dev_url: https://github.com/AlexandrovLab/SigProfilerExtractor
       doi: "10.1016/j.xgen.2022.100179 "
-      licence: ["BSD-2-clause"]
+      licence:
+        - "BSD-2-clause"
       identifier: biotools:sigprofilerextractor
 input:
   - - meta:
@@ -37,12 +35,15 @@ input:
           - edam: http://edamontology.org/format_3475 # TSV
   - genome:
       type: string
-      description: Reference genome name to use with SigProfiler (e.g. "GRCh37",
-        "GRCh38")
+      description: Reference genome name to use with SigProfiler (e.g. "GRCh37", "GRCh38")
       ontologies: []
   - genome_installed_path:
       type: file
       description: path to installed reference genome (optional)
+      ontologies: []
+  - seeds:
+      type: file
+      description: Seeds file from previous run for reproducible resamples or "random" (default is "random").
       ontologies: []
 output:
   results_sigprofiler:
@@ -54,6 +55,14 @@ output:
           description: folder with saved output results
           pattern: "results/*"
           ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+topics:
   versions:
     - versions.yml:
         type: file

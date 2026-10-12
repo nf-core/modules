@@ -3,9 +3,9 @@ process BIOHANSEL {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bio_hansel:2.6.1--py_0':
-        'biocontainers/bio_hansel:2.6.1--py_0' }"
+        'quay.io/biocontainers/bio_hansel:2.6.1--py_0' }"
 
     input:
     tuple val(meta), path(seqs)
@@ -15,7 +15,7 @@ process BIOHANSEL {
     tuple val(meta), path("${prefix}-summary.txt")       , emit: summary
     tuple val(meta), path("${prefix}-kmer-results.txt")  , emit: kmer_results
     tuple val(meta), path("${prefix}-simple-summary.txt"), emit: simple_summary
-    path "versions.yml"                                  , emit: versions
+    tuple val("${task.process}"), val('biohansel'), eval("hansel --version 2>&1 | sed 's/^.*hansel //'"), topic: versions, emit: versions_biohansel
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,11 +35,6 @@ process BIOHANSEL {
         --output-simple-summary ${prefix}-simple-summary.txt \\
         $input_type \\
         $seqs
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        biohansel: \$(echo \$(hansel --version 2>&1) | sed 's/^.*hansel //' )
-    END_VERSIONS
     """
 
     stub:
@@ -48,9 +43,5 @@ process BIOHANSEL {
     touch ${prefix}-summary.txt
     touch ${prefix}-kmer-results.txt
     touch ${prefix}-simple-summary.txt
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        biohansel: \$(echo \$(hansel --version 2>&1) | sed 's/^.*hansel //' )
-    END_VERSIONS
     """
 }

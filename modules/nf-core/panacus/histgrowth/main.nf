@@ -3,9 +3,9 @@ process PANACUS_HISTGROWTH {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/panacus:0.2.3--h031d066_0'
-        : 'biocontainers/panacus:0.2.3--h031d066_0'}"
+        : 'quay.io/biocontainers/panacus:0.2.3--h031d066_0'}"
 
     input:
     tuple val(meta), path(gfa)
@@ -14,8 +14,8 @@ process PANACUS_HISTGROWTH {
     path tsv_groupby
 
     output:
-    tuple val(meta), path("*.{tsv, html}"), emit: tsv
-    path "versions.yml", emit: versions
+    tuple val(meta), path("*.{tsv,html}"), emit: tsv
+    tuple val("${task.process}"), val('panacus'), eval("panacus --version | sed 's/panacus //'") , emit: versions_panacus, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,11 +40,6 @@ process PANACUS_HISTGROWTH {
         ${groupby_query} \\
         --threads ${task.cpus} \\
         ${gfa} > ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        panacus: \$(echo \$(panacus --version) | sed 's/^panacus //' ))
-    END_VERSIONS
     """
 
     stub:
@@ -57,10 +52,5 @@ process PANACUS_HISTGROWTH {
             : "tsv"
     """
     touch ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        panacus: \$(echo \$(panacus --version) | sed 's/^panacus //' ))
-    END_VERSIONS
     """
 }

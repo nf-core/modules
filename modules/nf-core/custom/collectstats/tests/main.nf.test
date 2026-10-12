@@ -1,0 +1,172 @@
+nextflow_process {
+
+    name "Test Process CUSTOM_COLLECTSTATS"
+    script "../main.nf"
+    process "CUSTOM_COLLECTSTATS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "custom"
+    tag "custom/collectstats"
+
+    test("two samples - all optional inputs provided") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'run' ],
+                    [
+                        [ id: 'sample1', single_end: false ],
+                        [ id: 'sample2', single_end: true ]
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'generic/txt/sample1_1.fastq.gz_trimming_report.txt', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/txt/sample2.fastq.gz_trimming_report.txt', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'generic/txt/sample1.bbduk.log', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/txt/sample2.bbduk.log', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'generic/txt/sample1.idxstats', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/txt/sample2.idxstats', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample1.CDS.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample1.rRNA.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample1.Unassigned_NoFeatures.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample1.Unassigned_Ambiguity.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample1.Unassigned_MultiMapping.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample1.Unassigned_Unmapped.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample2.CDS.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample2.rRNA.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample2.Unassigned_NoFeatures.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample2.Unassigned_Ambiguity.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample2.Unassigned_MultiMapping.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample2.Unassigned_Unmapped.featureCounts.tsv', checkIfExists: true)
+                    ],
+                    file(params.modules_testdata_base_path + 'generic/tsv/mergetab.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.overall_stats,
+                    path(process.out.overall_stats.get(0).get(1)).linesGzip,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("two samples - optional inputs absent") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'run' ],
+                    [
+                        [ id: 'sample1', single_end: false ],
+                        [ id: 'sample2', single_end: true ]
+                    ],
+                    [],
+                    [],
+                    [
+                        file(params.modules_testdata_base_path + 'generic/txt/sample1.idxstats', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/txt/sample2.idxstats', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample1.CDS.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample1.rRNA.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample1.Unassigned_NoFeatures.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample1.Unassigned_Ambiguity.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample1.Unassigned_MultiMapping.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample1.Unassigned_Unmapped.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample2.CDS.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample2.rRNA.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample2.Unassigned_NoFeatures.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample2.Unassigned_Ambiguity.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample2.Unassigned_MultiMapping.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample2.Unassigned_Unmapped.featureCounts.tsv', checkIfExists: true)
+                    ],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.overall_stats,
+                    path(process.out.overall_stats.get(0).get(1)).linesGzip,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("two samples - all optional inputs provided - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'run' ],
+                    [
+                        [ id: 'sample1', single_end: false ],
+                        [ id: 'sample2', single_end: true ]
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'generic/txt/sample1_1.fastq.gz_trimming_report.txt', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/txt/sample2.fastq.gz_trimming_report.txt', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'generic/txt/sample1.bbduk.log', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/txt/sample2.bbduk.log', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'generic/txt/sample1.idxstats', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/txt/sample2.idxstats', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample1.CDS.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample1.rRNA.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample1.Unassigned_NoFeatures.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample1.Unassigned_Ambiguity.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample1.Unassigned_MultiMapping.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample1.Unassigned_Unmapped.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample2.CDS.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample2.rRNA.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample2.Unassigned_NoFeatures.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample2.Unassigned_Ambiguity.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample2.Unassigned_MultiMapping.featureCounts.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/tsv/sample2.Unassigned_Unmapped.featureCounts.tsv', checkIfExists: true)
+                    ],
+                    file(params.modules_testdata_base_path + 'generic/tsv/mergetab.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

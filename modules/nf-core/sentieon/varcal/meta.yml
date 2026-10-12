@@ -26,7 +26,7 @@ input:
         description: input vcf file containing the variants to be recalibrated
         pattern: "*.vcf.gz"
         ontologies:
-          - edam: http://edamontology.org/format_3989 # GZIP format
+          - edam: http://edamontology.org/format_3989
     - tbi:
         type: file
         description: tbi file matching with -vcf
@@ -34,21 +34,22 @@ input:
         ontologies: []
   - resource_vcf:
       type: file
-      description: all resource vcf files that are used with the corresponding '--resource'
-        label
+      description: all resource vcf files that are used with the corresponding
+        '--resource' label
       pattern: "*.vcf.gz"
       ontologies:
-        - edam: http://edamontology.org/format_3989 # GZIP format
+        - edam: http://edamontology.org/format_3989
   - resource_tbi:
       type: file
-      description: all resource tbi files that are used with the corresponding '--resource'
-        label
+      description: all resource tbi files that are used with the corresponding
+        '--resource' label
       pattern: "*.vcf.gz.tbi"
       ontologies: []
   - labels:
       type: string
-      description: necessary arguments for Sentieon's VarCal. Specified to directly
-        match the resources provided. More information can be found at https://support.sentieon.com/manual/usages/general/#varcal-algorithm
+      description: necessary arguments for Sentieon's VarCal. Specified to
+        directly match the resources provided. More information can be found at
+        https://support.sentieon.com/manual/usages/general/#varcal-algorithm
   - fasta:
       type: file
       description: The reference fasta file
@@ -101,11 +102,11 @@ output:
           ontologies: []
       - "*plots.R":
           type: file
-          description: Optional output rscript file to aid in visualization of the input
-            data and learned model.
+          description: Optional output rscript file to aid in visualization of the
+            input data and learned model.
           pattern: "*plots.R"
           ontologies:
-            - edam: http://edamontology.org/format_3999 # R script
+            - edam: http://edamontology.org/format_3999
   versions_sentieon:
     - - ${task.process}:
           type: string
@@ -114,13 +115,8 @@ output:
           type: string
           description: The tool name
       - 'sentieon driver --version | sed "s/.*-//g"':
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
-authors:
-  - "@asp8200"
-maintainers:
-  - "@asp8200"
-
 topics:
   versions:
     - - ${task.process}:
@@ -130,5 +126,9 @@ topics:
           type: string
           description: The tool name
       - 'sentieon driver --version | sed "s/.*-//g"':
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
+authors:
+  - "@asp8200"
+maintainers:
+  - "@asp8200"

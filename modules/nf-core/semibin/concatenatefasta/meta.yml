@@ -1,0 +1,103 @@
+name: "semibin_concatenatefasta"
+description: Concatenate multiple sample FASTAs to a single FASTA with the correct header format for SemiBin2
+keywords:
+  - concatenate
+  - fasta
+  - binning
+tools:
+  - "semibin":
+      description: "Metagenomic binning with semi-supervised siamese neural network"
+      homepage: "https://github.com/BigDataBiology/SemiBin"
+      documentation: "https://semibin.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/BigDataBiology/SemiBin"
+      doi: "10.1038/s41467-022-29843-y"
+      licence: ["MIT"]
+      identifier: biotools:semibin
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fastas:
+        type: file
+        description: Input FASTAs, per sample.
+        pattern: "*.{fa,fa.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_3989 # GZIP
+output:
+  concat_fasta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.fasta*":
+          type: file
+          description: Output concatenated FASTA.
+          pattern: "*.{fasta,fasta.gz}"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+            - edam: http://edamontology.org/format_3989 # GZIP
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.log":
+          type: file
+          description: Log file of run
+          pattern: "*.log"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Text
+  versions_semibin:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - semibin:
+          type: string
+          description: The name of the tool
+      - SemiBin2 --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - semibin:
+          type: string
+          description: The name of the tool
+      - SemiBin2 --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@prototaxites"
+maintainers:
+  - "@prototaxites"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/semibin:2.4.1--594344a862aee1b8
+      build_id: bd-594344a862aee1b8_1
+      scan_id: sc-053cbcebe5fc843e_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/semibin:2.4.1--f56bcc59d929ffa0
+      build_id: bd-f56bcc59d929ffa0_1
+      scan_id: sc-ac89c91c6cbc8252_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/semibin:2.4.1--85b6858e3b6df529
+      build_id: bd-85b6858e3b6df529_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7b/7b2b3f8ee7844ec6f6ab7e89eb0397435eea5ff1c7866f055af6aac5969caf16/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/semibin:2.4.1--eefeb0dcf2ca104c
+      build_id: bd-eefeb0dcf2ca104c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4c/4c049230e87478349b2ecca53156faedfb077df85a4f6deaa8d0b22bd8a975c4/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/semibin/concatenatefasta/.conda-lock/linux_amd64-bd-594344a862aee1b8_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/semibin/concatenatefasta/.conda-lock/linux_arm64-bd-f56bcc59d929ffa0_1.txt

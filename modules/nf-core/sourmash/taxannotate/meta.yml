@@ -1,6 +1,6 @@
 name: "sourmash_taxannotate"
-description: Annotate list of metagenome members (based on sourmash signature matches)
-  with taxonomic information.
+description: Annotate list of metagenome members (based on sourmash signature
+  matches) with taxonomic information.
 keywords:
   - fracminhash sketch
   - signature
@@ -18,9 +18,9 @@ tools:
       documentation: https://sourmash.readthedocs.io/
       tool_dev_url: https://github.com/sourmash-bio/sourmash
       doi: "10.21105/joss.00027"
-      licence: ["BSD-3-clause"]
+      licence:
+        - "BSD-3-clause"
       identifier: biotools:sourmash
-## Description of all of the variables used as input
 input:
   - - meta:
         type: map
@@ -52,13 +52,27 @@ output:
             containing the taxonomic information for each database match.
           pattern: "*{csv.gz}"
           ontologies: []
+  versions_sourmash:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sourmash:
+          type: string
+          description: The name of the tool
+      - sourmash --version 2>&1 | sed 's/^sourmash //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sourmash:
+          type: string
+          description: The name of the tool
+      - sourmash --version 2>&1 | sed 's/^sourmash //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@vmikk"
   - "@taylorreiter"

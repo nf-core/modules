@@ -3,9 +3,9 @@ process EMU_ABUNDANCE {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/89/89f51e5b1961b27efc33dbafe25ae7f85c1ccfc2e2df5341849237a6db2023a1/data'
-        : 'community.wave.seqera.io/library/emu:3.5.4--c9ac9572d0d77ae9'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/66/66a9b54eaa307623ad2900c87069a5731bf3c3e91f855303aa70476f9535640f/data'
+        : 'community.wave.seqera.io/library/emu:3.6.2--0adcfa4809f061f6'}"
 
     input:
     tuple val(meta), path(reads)
@@ -17,7 +17,7 @@ process EMU_ABUNDANCE {
     tuple val(meta), path("${prefix}_emu_alignments.sam")               , emit: samfile          , optional: true
     tuple val(meta), path("${prefix}_unclassified_mapped.*")            , emit: unclassified     , optional: true
     tuple val(meta), path("${prefix}_unmapped.*")                       , emit: unmapped         , optional: true
-    path "versions.yml"                                                 , emit: versions
+    tuple val("${task.process}"), val('emu'), eval('emu --version 2>&1 | sed "s/^.*emu //; s/Using.*$//"'), topic: versions, emit: versions_emu
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,11 +37,6 @@ process EMU_ABUNDANCE {
     if [ -d results ]; then
         mv results/* .
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        emu: \$(echo \$(emu --version 2>&1) | sed 's/^.*emu //; s/Using.*\$//' )
-    END_VERSIONS
     """
 
     stub:
@@ -54,10 +49,5 @@ process EMU_ABUNDANCE {
     touch ${prefix}_emu_alignments.sam
     touch ${prefix}_unclassified_mapped.fasta
     touch ${prefix}_unmapped.fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        emu: \$(echo \$(emu --version 2>&1) | sed 's/^.*emu //; s/Using.*\$//' )
-    END_VERSIONS
     """
 }

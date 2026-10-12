@@ -1,0 +1,78 @@
+nextflow_process {
+
+    name "Test Process RPBP_ESTIMATEORFBAYESFACTORS"
+    script "../main.nf"
+    process "RPBP_ESTIMATEORFBAYESFACTORS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "rpbp"
+    tag "rpbp/estimateorfbayesfactors"
+
+    test("homo_sapiens chr20 - estimate orf bayes factors") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:true, strandedness:'forward' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/rpbp/SRX11780888_chr20.profiles.mtx.gz", checkIfExists: true)
+                ])
+                input[1] = [
+                    [ id:'reference' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/rpbp/reference.orfs-genomic.annotated.bed.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            def bayes_factors = file(process.out.bayes_factors[0][1])
+            def rows = path(process.out.bayes_factors[0][1]).linesGzip
+            def header = rows[0].split("\t")
+            // These columns are MCMC estimates whose floats differ between the conda and
+            // container toolchains; exclude them and snapshot only the deterministic columns.
+            def mcmc_cols = ["#p_translated_mean", "#p_translated_var", "#p_background_mean", "#p_background_var", "#bayes_factor_mean", "#bayes_factor_var"]
+            def stable_idx = (0..<header.size()).findAll { !(header[it] in mcmc_cols) }
+            def stable = rows.collect { line -> def fields = line.split("\t"); stable_idx.collect { fields[it] }.join("\t") }.join("\n")
+            def stable_md5 = java.security.MessageDigest.getInstance("MD5").digest(stable.bytes).encodeHex().toString()
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    bayes_factors.name,
+                    rows.size(),
+                    rows[0],
+                    stable_md5,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens chr20 - estimate orf bayes factors - stub") {
+
+        options '-stub'
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:true, strandedness:'forward' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/rpbp/SRX11780888_chr20.profiles.mtx.gz", checkIfExists: true)
+                ])
+                input[1] = [
+                    [ id:'reference' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/rpbp/reference.orfs-genomic.annotated.bed.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

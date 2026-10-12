@@ -11,7 +11,8 @@ tools:
       documentation: http://sanger-pathogens.github.io/Roary/
       tool_dev_url: https://github.com/sanger-pathogens/Roary/
       doi: "10.1093/bioinformatics/btv421"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:roary
 input:
   - - meta:
@@ -31,7 +32,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - results/*:
+      - ${prefix}/*:
           type: directory
           description: Directory containing Roary result files
           pattern: "*/*"
@@ -41,18 +42,34 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - results/*.aln:
+      - ${prefix}/*.aln:
           type: file
           description: Core-genome alignment produced by Roary (Optional)
           pattern: "*.{aln}"
           ontologies: []
+  versions_roary:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - roary:
+          type: string
+          description: The name of the tool
+      - roary --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - roary:
+          type: string
+          description: The name of the tool
+      - roary --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@rpetit3"
 maintainers:

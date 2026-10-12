@@ -1,26 +1,26 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "find_unpigz"
-description: A module for decompressing a large number of gzipped files, getting around
-  the UNIX terminal argument limit
+description: A module for decompressing a large number of gzipped files, getting
+  around the UNIX terminal argument limit
 keywords:
   - gzip
   - find
   - pigz
 tools:
   - find:
-      description: GNU find searches the directory tree rooted at each given starting-point
-        by evaluating the given expression
+      description: GNU find searches the directory tree rooted at each given
+        starting-point by evaluating the given expression
       documentation: https://man7.org/linux/man-pages/man1/find.1.html
-      licence: ["GPL-3.0-or-later"]
+      licence:
+        - "GPL-3.0-or-later"
       identifier: ""
   - pigz:
-      description: pigz, which stands for Parallel Implementation of GZip, is a fully
-        functional replacement for gzip that exploits multiple processors and multiple
-        cores to the hilt when compressing data.
+      description: pigz, which stands for Parallel Implementation of GZip, is a
+        fully functional replacement for gzip that exploits multiple processors
+        and multiple cores to the hilt when compressing data.
       documentation: https://zlib.net/pigz/pigz.pdf
-      licence: ["other"]
+      licence:
+        - "other"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -31,9 +31,8 @@ input:
         type: file
         description: List of gzipped files to decompress
         pattern: "*.gz"
-
         ontologies:
-          - edam: http://edamontology.org/format_3989 # GZIP format
+          - edam: http://edamontology.org/format_3989
 output:
   file_out:
     - - meta:
@@ -48,13 +47,46 @@ output:
             Files that have been decompressed
           pattern: "*"
           ontologies: []
+  versions_find:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - find:
+          type: string
+          description: The tool name
+      - find --version | sed '1!d; s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_pigz:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - pigz:
+          type: string
+          description: The tool name
+      - pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - find:
+          type: string
+          description: The tool name
+      - find --version | sed '1!d; s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - pigz:
+          type: string
+          description: The tool name
+      - pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@Biowilko"
 maintainers:

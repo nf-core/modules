@@ -1,0 +1,113 @@
+nextflow_process {
+
+    name "Test Process TRTOOLS_MERGESTR"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "TRTOOLS_MERGESTR"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gangstr"
+    tag "trtools"
+    tag "trtools/mergestr"
+
+    setup {
+        run("GANGSTR", alias: "GANGSTR1") {
+            script "modules/nf-core/gangstr/main.nf"
+
+            process {
+                """
+                bed1 = Channel.of('chr22\t3000\t3020\t5\tCGCGC')
+                    .collectFile(name: 'genome1.bed', newLine: true)
+
+                input[0] = Channel.of([
+                    [id:'test1'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists:true)
+                ]).combine(bed1)
+
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
+                """
+            }
+        }
+
+        run("GANGSTR", alias: "GANGSTR2") {
+            script "modules/nf-core/gangstr/main.nf"
+
+            process {
+                """
+                bed2 = Channel.of('chr22\t3000\t3020\t5\tCGCGC')
+                    .collectFile(name: 'genome2.bed', newLine: true)
+
+                input[0] = Channel.of([
+                    [id:'test2'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists:true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists:true)
+                ]).combine(bed2)
+
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists:true)
+                input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists:true)
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens - gangstr vcfs") {
+
+        when {
+            process {
+                """
+                input[0] = GANGSTR1.out.vcf.join(GANGSTR1.out.index)
+                    .mix(GANGSTR2.out.vcf.join(GANGSTR2.out.index))
+                    .map { meta, vcf, tbi ->
+                        [
+                            [id: 'test'],
+                            vcf,
+                            tbi
+                        ]
+                    }.groupTuple()
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.vcf.collect { it.collect { it instanceof Map ? it : file(it).name + ":variantsMD5," + path(it).vcf.variantsMD5 }},
+                    file(process.out.tbi[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - gangstr vcfs - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = GANGSTR1.out.vcf.join(GANGSTR1.out.index)
+                    .mix(GANGSTR2.out.vcf.join(GANGSTR2.out.index))
+                    .map { meta, vcf, tbi ->
+                        [
+                            [id: 'test'],
+                            vcf,
+                            tbi
+                        ]
+                    }.groupTuple()
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

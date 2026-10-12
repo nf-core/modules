@@ -10,62 +10,62 @@ components:
   - bcftools/mpileup
   - ngscheckmate/ncm
 input:
-  - meta1:
-      type: map
+  - ch_input:
+      type: file
       description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - bam:
+        BAM/CRAM file for each sample.
+
+        Structure: [ val(meta1), path(bam) ]
+      pattern: "*.{bam,cram}"
+  - ch_snp_bed:
       type: file
-      description: BAM files for each sample
-      pattern: "*.{bam}"
-  - meta2:
-      type: map
       description: |
-        Groovy Map containing bed file information
-        e.g. [ id:'sarscov2' ]
-  - snp_bed:
+        BED file containing the SNPs to analyse. NGSCheckMate provides some default ones for hg19/hg38.
+
+        Structure: [ val(meta2), path(snp_bed) ]
+      pattern: "*.bed"
+  - ch_fasta:
       type: file
-      description: BED file containing the SNPs to analyse. NGSCheckMate provides some default ones for hg19/hg38.
-      pattern: "*.{bed}"
-  - meta3:
-      type: map
       description: |
-        Groovy Map containing reference genome meta information
-        e.g. [ id:'sarscov2' ]
-  - fasta:
-      type: file
-      description: fasta file for the genome
-      pattern: "*.{fasta}"
-  - fai:
-      type: file
-      description: fasta file index for the genome
-      pattern: "*.{fai}"
+        Fasta file for the genome and its index.
+
+        Structure: [ val(meta3), path(fasta), path(fai) ]
 output:
-  - pdf:
-      type: file
-      description: A pdf containing a dendrogram showing how the samples match up
-      pattern: "*.{pdf}"
   - corr_matrix:
       type: file
-      description: A text file containing the correlation matrix between each sample
+      description: |
+        A text file containing the correlation matrix between each sample.
+
+        Structure: [ val(meta), path(corr_matrix) ]
       pattern: "*corr_matrix.txt"
   - matched:
       type: file
-      description: A txt file containing only the samples that match with each other
+      description: |
+        A txt file containing only the samples that match with each other.
+
+        Structure: [ val(meta), path(matched) ]
       pattern: "*matched.txt"
   - all:
       type: file
-      description: A txt file containing all the sample comparisons, whether they match or not
+      description: |
+        A txt file containing all the sample comparisons, whether they match or not.
+
+        Structure: [ val(meta), path(all) ]
       pattern: "*all.txt"
   - vcf:
       type: file
-      description: vcf files for each sample giving the SNP calls
-      pattern: "*.vcf"
-  - versions:
+      description: |
+        vcf file for each sample giving the SNP calls.
+
+        Structure: [ val(meta), path(vcf) ]
+      pattern: "*.vcf.gz"
+  - pdf:
       type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      description: |
+        A pdf containing a dendrogram showing how the samples match up.
+
+        Structure: [ val(meta), path(pdf) ]
+      pattern: "*.pdf"
 authors:
   - "@SPPearce"
 maintainers:

@@ -12,7 +12,8 @@ tools:
       documentation: "https://bitbucket.org/genomicepidemiology/plasmidfinder"
       tool_dev_url: "https://bitbucket.org/genomicepidemiology/plasmidfinder"
       doi: "10.1128/AAC.02412-14"
-      licence: ["Apache-2.0"]
+      licence:
+        - "Apache-2.0"
       identifier: biotools:PlasmidFinder
 input:
   - - meta:
@@ -20,7 +21,7 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
-    - seqs:
+    - fasta:
         type: file
         description: Input FASTA or FASTQ formatted genome sequences
         pattern: "*.{fastq.gz,fq.gz,fastq.gz,fna.gz,fa.gz}"
@@ -37,7 +38,7 @@ output:
           description: The results from analysis in JSON format
           pattern: "*.json"
           ontologies:
-            - edam: http://edamontology.org/format_3464 # JSON
+            - edam: http://edamontology.org/format_3464
   txt:
     - - meta:
           type: map
@@ -60,7 +61,7 @@ output:
           description: The results from analysis in TSV format
           pattern: "*.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   genome_seq:
     - - meta:
           type: map
@@ -83,14 +84,29 @@ output:
           description: FASTA of plasmid sequences with a hit against the input
           pattern: "*-plasmid_seqs.fsa"
           ontologies: []
+  versions_plasmidfinder:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - plasmidfinder:
+          type: string
+          description: The name of the tool
+      - 2.1.6:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - plasmidfinder:
+          type: string
+          description: The name of the tool
+      - 2.1.6:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
+  - "@eit-maxlcummins"
   - "@rpetit3"
 maintainers:
   - "@rpetit3"

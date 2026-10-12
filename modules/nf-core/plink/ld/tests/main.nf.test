@@ -37,7 +37,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.ld,
                     process.out.nosex,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -73,7 +73,7 @@ nextflow_process {
                 { assert process.out.log.get(0).get(1) ==~ ".*/*.log" },
                 { assert snapshot(
                     process.out.ld,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -108,7 +108,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.ld,
                     process.out.nosex,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )

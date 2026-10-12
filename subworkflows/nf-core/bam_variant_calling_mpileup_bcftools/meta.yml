@@ -86,9 +86,6 @@ input:
         Whether to annotate the merged VCF file with bcftools/annotate to give
         an ID for each variants
 output:
-  - multiqc_files:
-      description: Channel containing stat files of bcftools mpileup and call
-      type: file
   - vcf_index:
       description: Channel with one VCF files by chromosomes
       structure:
@@ -104,6 +101,9 @@ output:
           type: file
           description: VCF index file
           pattern: "*.{tbi,csi}"
+  - multiqc_files:
+      description: Channel containing stat files of bcftools mpileup and call
+      type: file
 authors:
   - "@louislenezet"
 maintainers:

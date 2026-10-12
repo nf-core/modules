@@ -1,0 +1,60 @@
+nextflow_process {
+
+    name "Test Process HYPHY_GARD"
+    script "../main.nf"
+    process "HYPHY_GARD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hyphy"
+    tag "hyphy/gard"
+
+    test("gard - fasta") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'generic/msa_tree_pairs/mammals_codon_msa_small.fasta', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["json", "log"])
+                ).match() }
+            )
+        }
+    }
+
+    test("gard - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'generic/msa_tree_pairs/mammals_codon_msa_small.fasta', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out)
+                ).match() }
+            )
+        }
+
+    }
+
+}

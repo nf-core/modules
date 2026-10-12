@@ -1,0 +1,95 @@
+nextflow_process {
+
+    name "Test Process TOBIAS_BINDETECT"
+    script "../main.nf"
+    process "TOBIAS_BINDETECT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "tobias"
+    tag "tobias/bindetect"
+
+    test("sarscov2 - footprints") {
+
+        setup {
+            new File("${launchDir}/bindetect_peaks.bed").text = """
+            MT192765.1\t1252\t1274
+            MT192765.1\t1573\t1595
+            MT192765.1\t1613\t1631
+            MT192765.1\t1942\t1964
+            """.stripIndent().trim()
+
+            new File("${launchDir}/bindetect_motifs.txt").text = """
+            >CTCF_MA0139.1
+            A  [    87    167    281     56      8    744     40    107    851      5    333     54     12     56    104    372     82    117    402 ]
+            C  [   291    145     49    800    903     13    528    433     11      0      3     12      0      8    733     13    482    322    181 ]
+            G  [    76    414    449     21      0     65    334     48     32    903    566    504    890    775      5    507    307     73    266 ]
+            T  [   459    187    134     36      2     91     11    324     18      3      9    341      8     71     67     17     37    396     59 ]
+            >SPI1_MA0080.4
+            A  [  3946   4976   5053   5044   4868     49   1793     29      0   5105   5122      0     21   2535 ]
+            C  [   555     26      2      0      4    246   4068      1      1      2      1    184     69    288 ]
+            G  [  1142    377      8      0     15   5255    727   5300   5330      0      1   5246     12    733 ]
+            T  [   476     82     30     99    524      2      1      2      0      1      5      1   4962   1439 ]
+            >TP53_MA0106.3
+            A  [  7544  10514     45  11931   1710      8    244   1228   1145   3851   3584   7104      0  12925   1825    327    879   1472 ]
+            C  [  1037    116  19689    204    374      2  12014  17286  11875   1474    756     26  19350    250    118     33   3338   9183 ]
+            G  [  6563   2433     13    653    137  20393    109    417   2151   9954  17846   8821      4    157     89  20549    116    825 ]
+            T  [  2268    735    837    739  18893      0   7106   2642   3774   2118   1546    190      1   1155  17864     68  17859   9120 ]
+            """.stripIndent().trim()
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'all_samples' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bigwig/test.bigwig', checkIfExists: true),
+                    file("${launchDir}/bindetect_peaks.bed", checkIfExists: true),
+                    file("${launchDir}/bindetect_motifs.txt", checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert process.out.outdir },
+                { assert process.out.results },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["outdir", "figures", "results_xlsx"])).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - footprints - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'all_samples' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bigwig/test.bigwig', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bed/test.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome_motifs.txt', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert process.out.outdir },
+                { assert process.out.results },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

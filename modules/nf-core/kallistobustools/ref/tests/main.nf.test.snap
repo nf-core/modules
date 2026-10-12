@@ -1,82 +1,89 @@
 {
     "genome.fasta + genome.gtf + 'standard'": {
         "content": [
-            [
-                "versions.yml:md5,d3d08c3c5638ae540965f77b8178b3c1"
-            ],
-            [
-                "t2g.txt:md5,d1a8a22c59b9cb0bda39c0c9bb3f6afe"
-            ],
-            [
-                "cdna.fa:md5,7bca59288fab822451de250d2eee48dc"
-            ],
-            [
-                
-            ],
-            [
-                
-            ],
-            [
-                
-            ]
+            {
+                "cdna": [
+                    "cdna.fa:md5,7bca59288fab822451de250d2eee48dc"
+                ],
+                "cdna_t2c": [
+                    
+                ],
+                "index": [
+                    [
+                        {
+                            "id": "genome"
+                        },
+                        "kb_ref_out.idx"
+                    ]
+                ],
+                "intron": [
+                    
+                ],
+                "intron_t2c": [
+                    
+                ],
+                "t2g": [
+                    "t2g.txt:md5,d1a8a22c59b9cb0bda39c0c9bb3f6afe"
+                ],
+                "versions_kallistobustools": [
+                    [
+                        "KALLISTOBUSTOOLS_REF",
+                        "kallistobustools",
+                        "0.28.2"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-07-07T10:18:12.021311",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-02-29T23:37:43.739374859"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
     },
     "genome.fasta + genome.gtf + 'nac'": {
         "content": [
-            [
-                "versions.yml:md5,d3d08c3c5638ae540965f77b8178b3c1"
-            ],
-            [
-                "t2g.txt:md5,58591306b33bb948bac7b40f346d0cd7"
-            ],
-            [
-                "cdna.fa:md5,7bca59288fab822451de250d2eee48dc"
-            ],
-            [
-                "intron.fa:md5,1aad4e3f5d006f495cc6647fa0bbf6ff"
-            ],
-            [
-                "cdna_t2c.txt:md5,23861cf43033e7c596e6989a88a3a373"
-            ],
-            [
-                "intron_t2c.txt:md5,fe6d5501923867b514a0447aa4b4995f"
-            ]
+            {
+                "cdna": [
+                    "cdna.fa:md5,7bca59288fab822451de250d2eee48dc"
+                ],
+                "cdna_t2c": [
+                    "cdna_t2c.txt:md5,23861cf43033e7c596e6989a88a3a373"
+                ],
+                "index": [
+                    [
+                        {
+                            "id": "genome"
+                        },
+                        "kb_ref_out.idx"
+                    ]
+                ],
+                "intron": [
+                    "intron.fa:md5,1aad4e3f5d006f495cc6647fa0bbf6ff"
+                ],
+                "intron_t2c": [
+                    "intron_t2c.txt:md5,fe6d5501923867b514a0447aa4b4995f"
+                ],
+                "t2g": [
+                    "t2g.txt:md5,58591306b33bb948bac7b40f346d0cd7"
+                ],
+                "versions_kallistobustools": [
+                    [
+                        "KALLISTOBUSTOOLS_REF",
+                        "kallistobustools",
+                        "0.28.2"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-07-07T10:18:27.610065",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-02-29T23:37:59.436989671"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
     },
     "genome.fasta + genome.gtf + 'standard' - stub": {
         "content": [
             {
-                "0": [
-                    "versions.yml:md5,d3d08c3c5638ae540965f77b8178b3c1"
-                ],
-                "1": [
-                    "kb_ref_out.idx:md5,d41d8cd98f00b204e9800998ecf8427e"
-                ],
-                "2": [
-                    "t2g.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
-                ],
-                "3": [
-                    "cdna.fa:md5,d41d8cd98f00b204e9800998ecf8427e"
-                ],
-                "4": [
-                    
-                ],
-                "5": [
-                    
-                ],
-                "6": [
-                    
-                ],
                 "cdna": [
                     "cdna.fa:md5,d41d8cd98f00b204e9800998ecf8427e"
                 ],
@@ -84,7 +91,12 @@
                     
                 ],
                 "index": [
-                    "kb_ref_out.idx:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    [
+                        {
+                            "id": "genome"
+                        },
+                        "kb_ref_out.idx"
+                    ]
                 ],
                 "intron": [
                     
@@ -95,42 +107,60 @@
                 "t2g": [
                     "t2g.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                 ],
-                "versions": [
-                    "versions.yml:md5,d3d08c3c5638ae540965f77b8178b3c1"
+                "versions_kallistobustools": [
+                    [
+                        "KALLISTOBUSTOOLS_REF",
+                        "kallistobustools",
+                        "0.28.2"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-07-07T10:18:35.01396",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-02-29T23:38:09.578411047"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
     },
     "genome.fasta + genome.gtf + 'nac' - stub": {
         "content": [
-            [
-                "versions.yml:md5,d3d08c3c5638ae540965f77b8178b3c1"
-            ],
-            [
-                "t2g.txt:md5,58591306b33bb948bac7b40f346d0cd7"
-            ],
-            [
-                "cdna.fa:md5,7bca59288fab822451de250d2eee48dc"
-            ],
-            [
-                "intron.fa:md5,1aad4e3f5d006f495cc6647fa0bbf6ff"
-            ],
-            [
-                "cdna_t2c.txt:md5,23861cf43033e7c596e6989a88a3a373"
-            ],
-            [
-                "intron_t2c.txt:md5,fe6d5501923867b514a0447aa4b4995f"
-            ]
+            {
+                "cdna": [
+                    "cdna.fa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "cdna_t2c": [
+                    "cdna_t2c.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "index": [
+                    [
+                        {
+                            "id": "genome"
+                        },
+                        "kb_ref_out.idx"
+                    ]
+                ],
+                "intron": [
+                    "intron.fa:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "intron_t2c": [
+                    "intron_t2c.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "t2g": [
+                    "t2g.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                ],
+                "versions_kallistobustools": [
+                    [
+                        "KALLISTOBUSTOOLS_REF",
+                        "kallistobustools",
+                        "0.28.2"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-07-07T10:18:41.616397",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-02-29T23:38:25.355912473"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
     }
 }

@@ -6,17 +6,18 @@ keywords:
   - cram
 tools:
   - ascat:
-      description: ASCAT is a method to derive copy number profiles of tumour cells,
-        accounting for normal cell admixture and tumour aneuploidy. ASCAT infers tumour
-        purity (the fraction of tumour cells) and ploidy (the amount of DNA per tumour
-        cell), expressed as multiples of haploid genomes from SNP array or massively
-        parallel sequencing data, and calculates whole-genome allele-specific copy number
-        profiles (the number of copies of both parental alleles for all SNP loci across
-        the genome).
+      description: ASCAT is a method to derive copy number profiles of tumour
+        cells, accounting for normal cell admixture and tumour aneuploidy. ASCAT
+        infers tumour purity (the fraction of tumour cells) and ploidy (the amount
+        of DNA per tumour cell), expressed as multiples of haploid genomes from
+        SNP array or massively parallel sequencing data, and calculates
+        whole-genome allele-specific copy number profiles (the number of copies of
+        both parental alleles for all SNP loci across the genome).
       documentation: https://github.com/VanLoo-lab/ascat/tree/master/man
       tool_dev_url: https://github.com/VanLoo-lab/ascat
       doi: "10.1093/bioinformatics/btaa538"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:ascat
 input:
   - - meta:
@@ -26,8 +27,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - input_normal:
         type: file
-        description: BAM/CRAM file, must adhere to chr1, chr2, ...chrX notation For
-          modifying chromosome notation in bam files please follow
+        description: BAM/CRAM file, must adhere to chr1, chr2, ...chrX notation
+          For modifying chromosome notation in bam files please follow
           https://josephcckuo.wordpress.com/2016/11/17/modify-chromosome-notation-in-bam-file/.
         pattern: "*.{bam,cram}"
         ontologies: []
@@ -48,17 +49,19 @@ input:
         ontologies: []
   - allele_files:
       type: file
-      description: allele files for ASCAT WGS. Can be downloaded here https://github.com/VanLoo-lab/ascat/tree/master/ReferenceFiles/WGS
+      description: allele files for ASCAT WGS. Can be downloaded here
+        https://github.com/VanLoo-lab/ascat/tree/master/ReferenceFiles/WGS
       ontologies: []
   - loci_files:
       type: file
-      description: loci files for ASCAT WGS. Loci files without chromosome notation
-        can be downloaded here https://github.com/VanLoo-lab/ascat/tree/master/ReferenceFiles/WGS
-        Make sure the chromosome notation matches the bam/cram input files. To add the
-        chromosome notation to loci files (hg19/hg38) if necessary, you can run this
-        command `if [[ $(samtools view <your_bam_file.bam> | head -n1 | cut -f3)\" ==
-        *\"chr\"* ]]; then for i in {1..22} X; do sed -i 's/^/chr/' G1000_loci_hg19_chr_${i}.txt;
-        done; fi`
+      description: loci files for ASCAT WGS. Loci files without chromosome
+        notation can be downloaded here
+        https://github.com/VanLoo-lab/ascat/tree/master/ReferenceFiles/WGS Make
+        sure the chromosome notation matches the bam/cram input files. To add the
+        chromosome notation to loci files (hg19/hg38) if necessary, you can run
+        this command `if [[ $(samtools view <your_bam_file.bam> | head -n1 | cut
+        -f3)\" == *\"chr\"* ]]; then for i in {1..22} X; do sed -i 's/^/chr/'
+        G1000_loci_hg19_chr_${i}.txt; done; fi`
       ontologies: []
   - bed_file:
       type: file
@@ -70,13 +73,13 @@ input:
       ontologies: []
   - gc_file:
       type: file
-      description: GC correction file (optional) - Used to do logR correction of the
-        tumour sample(s) with genomic GC content
+      description: GC correction file (optional) - Used to do logR correction of
+        the tumour sample(s) with genomic GC content
       ontologies: []
   - rt_file:
       type: file
-      description: replication timing correction file (optional, provide only in combination
-        with gc_file)
+      description: replication timing correction file (optional, provide only in
+        combination with gc_file)
       ontologies: []
 output:
   allelefreqs:
@@ -164,13 +167,46 @@ output:
           description: File with segments data
           pattern: "*.{segments.txt}"
           ontologies: []
+  versions_ascat:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bioconductor-ascat:
+          type: string
+          description: The name of the tool
+      - Rscript -e "library(ASCAT); cat(as.character(packageVersion('ASCAT')))":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_allelecounter:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - alleleCounter:
+          type: string
+          description: The name of the tool
+      - alleleCounter --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bioconductor-ascat:
+          type: string
+          description: The name of the tool
+      - Rscript -e "library(ASCAT); cat(as.character(packageVersion('ASCAT')))":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - alleleCounter:
+          type: string
+          description: The name of the tool
+      - alleleCounter --version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@aasNGC"
   - "@lassefolkersen"

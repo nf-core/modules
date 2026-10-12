@@ -2,7 +2,7 @@ process BCLCONVERT {
     tag "${ meta.lane ? meta.id + "." + meta.lane : meta.id }"
     label 'process_high'
 
-    container "nf-core/bclconvert:4.4.6"
+    container "quay.io/nf-core/bclconvert:4.5.4"
 
     input:
     tuple val(meta), path(samplesheet), path(run_dir)
@@ -12,8 +12,8 @@ process BCLCONVERT {
     tuple val(meta), path("output/**_S[1-9]*_I?_00?.fastq.gz"), emit: fastq_idx, optional: true
     tuple val(meta), path("output/**Undetermined_S0*_R?_00?.fastq.gz"), emit: undetermined, optional: true
     tuple val(meta), path("output/**Undetermined_S0*_I?_00?.fastq.gz"), emit: undetermined_idx, optional: true
-    tuple val(meta), path("output/Reports/*.{csv,xml,bin}"), emit: reports
-    tuple val(meta), path("output/Logs/*.{log,txt}"), emit: logs
+    tuple val(meta), path("output/Reports"), emit: reports
+    tuple val(meta), path("output/Logs"), emit: logs
     tuple val(meta), path("output/InterOp/*.bin"), emit: interop, optional: true
     tuple val("${task.process}"), val('bclconvert'), eval("bcl-convert -V 2>&1 | head -n 1 | sed 's/^.*Version //'"), topic: versions, emit: versions_bclconvert
 
@@ -70,8 +70,8 @@ process BCLCONVERT {
     stub:
     """
     mkdir -p output
-    echo "fake fastq file" | gzip > output/Sample1_S1_L001_R1_001.fastq.gz
-    echo "fake fastq file" | gzip > output/Undetermined_S0_L001_R1_001.fastq.gz
+    echo "" | gzip > output/Sample1_S1_L001_R1_001.fastq.gz
+    echo "" | gzip > output/Undetermined_S0_L001_R1_001.fastq.gz
 
     mkdir -p output/Reports
     echo "fake report file" > output/Reports/Adapter_Cycle_Metrics.csv

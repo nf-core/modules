@@ -14,7 +14,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/MBC_315.ctDNA.reads.wig", checkIfExists: true)
+                input[0] = [
+                    [id: "test"],
+                    file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/MBC_315.ctDNA.reads.wig", checkIfExists: true)
+                ]
                 input[1] = file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/gc_hg19_1000kb.wig", checkIfExists: true)
                 input[2] = file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/map_hg19_1000kb.wig", checkIfExists: true)
                 input[3] = file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/GRCh37.p13_centromere_UCSC-gapTable.txt", checkIfExists: true)
@@ -28,10 +31,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.rds[0]).name,
-                    file(process.out.txt[0]).name,
-                    process.out.versions
-                    ).match() }
+                    sanitizeOutput(process.out, unstableKeys:["rds", "txt"]),
+                    path(process.out.versions[0]).yaml
+                ).match() }
             )
         }
 
@@ -43,9 +45,13 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/MBC_315.ctDNA.reads.wig", checkIfExists: true),
-                            file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/MBC_315_T2.ctDNA.reads.wig", checkIfExists: true)
-                            ]
+                input[0] = [
+                    [id: "test"],
+                    [
+                        file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/MBC_315.ctDNA.reads.wig", checkIfExists: true),
+                        file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/MBC_315_T2.ctDNA.reads.wig", checkIfExists: true)
+                    ]
+                ]
                 input[1] = file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/gc_hg19_1000kb.wig", checkIfExists: true)
                 input[2] = file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/map_hg19_1000kb.wig", checkIfExists: true)
                 input[3] = file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/GRCh37.p13_centromere_UCSC-gapTable.txt", checkIfExists: true)
@@ -59,10 +65,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.rds[0]).name,
-                    file(process.out.txt[0]).name,
-                    process.out.versions
-                    ).match() }
+                    sanitizeOutput(process.out, unstableKeys:["rds", "txt"]),
+                    path(process.out.versions[0]).yaml
+                ).match() }
             )
         }
     }
@@ -72,7 +77,13 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = []
+                input[0] = [
+                    [id: "test"],
+                    [
+                        file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/MBC_315.ctDNA.reads.wig", checkIfExists: true),
+                        file("https://raw.githubusercontent.com/gavinhalab/ichorCNA/master/inst/extdata/MBC_315_T2.ctDNA.reads.wig", checkIfExists: true)
+                    ]
+                ]
                 input[1] = []
                 input[2] = []
                 input[3] = []
@@ -86,10 +97,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.rds[0]).name,
-                    file(process.out.txt[0]).name,
-                    process.out.versions
-                    ).match() }
+                    sanitizeOutput(process.out),
+                    path(process.out.versions[0]).yaml
+                ).match() }
             )
         }
     }

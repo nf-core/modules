@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "helitronscanner_draw"
 description: HelitronScanner draw tool for Helitron transposons in genomes
 keywords:
@@ -13,9 +12,9 @@ tools:
       documentation: "https://sourceforge.net/projects/helitronscanner"
       tool_dev_url: "https://sourceforge.net/projects/helitronscanner"
       doi: "10.1073/pnas.1410068111"
-      licence: ["GPL v3-or-later"]
+      licence:
+        - "GPL v3-or-later"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -60,13 +59,27 @@ output:
           description: |
             The draw output from HelitronScanner
           pattern: "*.{draw}"
+  versions_helitronscanner:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - helitronscanner:
+          type: string
+          description: The name of the tool
+      - HelitronScanner |& sed -n 's/HelitronScanner V//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - helitronscanner:
+          type: string
+          description: The name of the tool
+      - HelitronScanner |& sed -n 's/HelitronScanner V//p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@GallVp"
   - "@jguhlin"

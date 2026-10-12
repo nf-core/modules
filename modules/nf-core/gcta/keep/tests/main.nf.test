@@ -1,0 +1,131 @@
+nextflow_process {
+
+    name "Test Process GCTA_KEEP"
+    script "../main.nf"
+    process "GCTA_KEEP"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gcta"
+    tag "gcta/keep"
+    tag "gcta/makegrm"
+    tag "gcta/grmcutoff"
+
+    setup {
+        run("GCTA_MAKEGRM", alias: "GCTA_MAKEGRM_DENSE") {
+            script "../../makegrm/main.nf"
+            process {
+                """
+                file('plink_simulated.mpfile').text = 'plink_simulated plink_simulated.pgen plink_simulated.psam plink_simulated.pvar\\n'
+
+                input[0] = [
+                    [ id:'plink_simulated_dense' ],
+                    file('plink_simulated.mpfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pgen', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pvar', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.psam', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        run("GCTA_GRMCUTOFF", alias: "GCTA_GRMCUTOFF_KEEP") {
+            script "../../grmcutoff/main.nf"
+            process {
+                """
+                dense_grm = GCTA_MAKEGRM_DENSE.out.grm_files
+                    .map { meta, grm_files -> [[ id:meta.id ], grm_files] }
+
+                input[0] = dense_grm
+                input[1] = 0.05
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens popgen - filter dense GRM with keep file") {
+        when {
+            process {
+                """
+                input[0] = GCTA_MAKEGRM_DENSE.out.grm_files.map { meta, grm_files -> [[ id:meta.id ], grm_files] }
+                input[1] = GCTA_GRMCUTOFF_KEEP.out.keep_file
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.filtered_grm.size() == 1 },
+                { assert process.out.filtered_grm.get(0).get(0).id == "plink_simulated_dense" },
+                {
+                    def row = process.out.filtered_grm.get(0)
+                    assert row.get(1).every { file(it).exists() }
+                    assert row.get(1).collect { file(it).name }.sort() == [
+                        "plink_simulated_dense_keep.grm.N.bin",
+                        "plink_simulated_dense_keep.grm.bin",
+                        "plink_simulated_dense_keep.grm.id"
+                    ]
+                },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - fail when meta id does not match dense GRM basename") {
+        when {
+            process {
+                """
+                input[0] = GCTA_MAKEGRM_DENSE.out.grm_files.map { meta, grm_files ->
+                    [[ id:'contract_dense_mismatch' ], grm_files]
+                }
+                input[1] = GCTA_GRMCUTOFF_KEEP.out.keep_file
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert !process.success },
+                { assert process.exitStatus != 0 }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - filter dense GRM with keep file - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = GCTA_MAKEGRM_DENSE.out.grm_files.map { meta, grm_files -> [[ id:meta.id ], grm_files] }
+                input[1] = GCTA_GRMCUTOFF_KEEP.out.keep_file
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.filtered_grm.size() == 1 },
+                { assert process.out.filtered_grm.get(0).get(0).id == "plink_simulated_dense" },
+                {
+                    def row = process.out.filtered_grm.get(0)
+                    assert row.get(1).every { file(it).exists() }
+                    assert row.get(1).collect { file(it).name }.sort() == [
+                        "plink_simulated_dense_keep.grm.N.bin",
+                        "plink_simulated_dense_keep.grm.bin",
+                        "plink_simulated_dense_keep.grm.id"
+                    ]
+                },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

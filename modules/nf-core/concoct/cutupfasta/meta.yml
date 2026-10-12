@@ -1,5 +1,6 @@
 name: "concoct_cutupfasta"
-description: Cut up fasta file in non-overlapping or overlapping parts of equal length.
+description: Cut up fasta file in non-overlapping or overlapping parts of equal
+  length.
 keywords:
   - contigs
   - fragment
@@ -15,7 +16,8 @@ tools:
       documentation: "https://concoct.readthedocs.io/en/latest/index.html"
       tool_dev_url: "https://github.com/BinPro/CONCOCT"
       doi: "10.1038/nmeth.3103"
-      licence: ["FreeBSD"]
+      licence:
+        - "FreeBSD"
       identifier: biotools:concoct
 input:
   - - meta:
@@ -30,8 +32,8 @@ input:
         ontologies: []
   - bed:
       type: boolean
-      description: Specify whether to generate a BED file describing where each contig
-        was cut up
+      description: Specify whether to generate a BED file describing where each
+        contig was cut up
 output:
   fasta:
     - - meta:
@@ -41,8 +43,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.fasta":
           type: file
-          description: Cut up fasta file in non-overlapping or overlapping parts of
-            equal length.
+          description: Cut up fasta file in non-overlapping or overlapping parts
+            of equal length.
           pattern: "*.fasta"
           ontologies: []
   bed:
@@ -53,17 +55,31 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.bed":
           type: file
-          description: Optional BED File containing locations on original contigs where
-            they were cut up.
+          description: Optional BED File containing locations on original contigs
+            where they were cut up.
           pattern: "*.bed"
           ontologies: []
+  versions_concoct:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - concoct:
+          type: string
+          description: The name of the tool
+      - concoct --version | cut -d " " -f2:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - concoct:
+          type: string
+          description: The name of the tool
+      - concoct --version | cut -d " " -f2:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:

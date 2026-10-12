@@ -3,9 +3,9 @@ process PLINK_LD {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/plink:1.90b6.21--h031d066_5':
-        'biocontainers/plink:1.90b6.21--h031d066_5' }"
+        'quay.io/biocontainers/plink:1.90b6.21--h031d066_5' }"
 
     input:
     tuple val(meta), path(bed),  path(bim), path(fam)
@@ -17,7 +17,7 @@ process PLINK_LD {
     tuple val(meta), path("*.ld")   , emit: ld
     tuple val(meta), path("*.log")  , emit: log
     tuple val(meta), path("*.nosex"), emit: nosex, optional:true
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('plink'), eval("plink --version 2>&1 | sed 's/^PLINK v//;s/ .*//'"), emit: versions_plink, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -52,11 +52,6 @@ process PLINK_LD {
         $snpfile \\
         --r2 $args2 \\
         --out $prefix
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        plink: \$(echo \$(plink --version) | sed 's/^PLINK v//;s/64.*//')
-    END_VERSIONS
     """
 
 
@@ -83,10 +78,5 @@ process PLINK_LD {
     touch ${prefix}.ld
     touch ${prefix}.log
     touch ${prefix}.nosex
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        plink: \$(echo \$(plink --version) | sed 's/^PLINK v//;s/64.*//')
-    END_VERSIONS
     """
 }

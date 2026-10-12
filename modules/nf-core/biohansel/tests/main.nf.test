@@ -66,7 +66,6 @@ nextflow_process {
     }
 
     test("test_biohansel_assembly") {
-        tag "test"
         when {
             params {
                 module_args = "--scheme typhi"
@@ -86,7 +85,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith("versions")},
                     process.out.simple_summary.collect{ [it[0], path(it[1]).readLines()[0]] },
                     process.out.kmer_results.collect{ [it[0], path(it[1]).readLines()[0]] },
                     process.out.summary.collect{ [it[0], path(it[1]).readLines().collect { line ->
@@ -119,10 +118,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    process.out.versions.collect{ path(it).yaml}
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

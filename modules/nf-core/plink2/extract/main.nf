@@ -3,9 +3,9 @@ process PLINK2_EXTRACT {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/plink2:2.00a2.3--h712d239_1' :
-        'biocontainers/plink2:2.00a2.3--h712d239_1' }"
+        'quay.io/biocontainers/plink2:2.00a2.3--h712d239_1' }"
 
     input:
     tuple val(meta), path(pgen), path(psam), path(pvar), path(variants)
@@ -14,7 +14,7 @@ process PLINK2_EXTRACT {
     tuple val(meta), path("*.pgen")    , emit: extract_pgen
     tuple val(meta), path("*.psam")    , emit: extract_psam
     tuple val(meta), path("*.pvar.zst"), emit: extract_pvar
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('plink2'), eval("plink2 --version 2>&1 | sed 's/^PLINK v//; s/ 64.*\$//'"), topic: versions, emit: versions_plink2
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,10 +33,12 @@ process PLINK2_EXTRACT {
         --extract $variants \\
         --make-pgen vzs \\
         --out ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        plink2: \$(plink2 --version 2>&1 | sed 's/^PLINK v//; s/ 64.*\$//' )
-    END_VERSIONS
+    """
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.pgen
+    touch ${prefix}.psam
+    touch ${prefix}.pvar.zst
     """
 }

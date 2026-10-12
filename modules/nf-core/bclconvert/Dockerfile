@@ -4,7 +4,7 @@
 
 # Build stage: unpack the RPM file
 FROM debian:bullseye-slim AS build
-ARG BCLCONVERT_VERSION="4.4.6"
+ARG BCLCONVERT_VERSION="4.5.4"
 
 # Install tools needed to extract RPM
 RUN apt-get update \
@@ -15,13 +15,13 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # Extract bcl-convert from RPM
-COPY bcl-convert-4.4.6-2.el8.x86_64.rpm bcl-convert.rpm
+COPY bcl-convert-${BCLCONVERT_VERSION}-2.el8.x86_64.rpm bcl-convert.rpm
 RUN rpm2cpio bcl-convert.rpm | cpio -idmv \
     && rm bcl-convert.rpm
 
 # Final stage: minimal image with only necessary components
 FROM debian:bullseye-slim
-ARG BCLCONVERT_VERSION="4.4.6"
+ARG BCLCONVERT_VERSION="4.5.4"
 LABEL org.opencontainers.image.description="Docker image containing bcl-convert"
 LABEL org.opencontainers.image.version="$BCLCONVERT_VERSION"
 LABEL org.opencontainers.image.documentation="https://github.com/nf-core/modules/blob/master/modules/nf-core/bclconvert/README.md"

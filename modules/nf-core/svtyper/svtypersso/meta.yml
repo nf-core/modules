@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "svtyper_svtypersso"
-description: SVTyper-sso computes structural variant (SV) genotypes based on breakpoint
-  depth on a SINGLE sample
+description: SVTyper-sso computes structural variant (SV) genotypes based on
+  breakpoint depth on a SINGLE sample
 keywords:
   - sv
   - structural variants
@@ -14,7 +13,8 @@ tools:
       documentation: "https://github.com/hall-lab/svtyper"
       tool_dev_url: "https://github.com/hall-lab/svtyper"
       doi: "10.1038/nmeth.3505"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:svtyper
 
 input:
@@ -45,7 +45,8 @@ input:
           e.g. [ id:'fasta']
     - fasta:
         type: file
-        description: indexed reference FASTA file (recommended for reading CRAM files)
+        description: indexed reference FASTA file (recommended for reading CRAM
+          files)
         pattern: "*.{fa,fasta}"
         ontologies: []
 output:
@@ -72,13 +73,29 @@ output:
           pattern: "*.json"
           ontologies:
             - edam: http://edamontology.org/format_3464 # JSON
+  versions_svtyper:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - svtyper:
+          type: string
+          description: The name of the tool
+      - "svtyper-sso -h 2>&1 | grep 'version:' | sed 's/^version: v//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - svtyper:
+          type: string
+          description: The name of the tool
+      - "svtyper-sso -h 2>&1 | grep 'version:' | sed 's/^version: v//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@tstoeriko"
 maintainers:

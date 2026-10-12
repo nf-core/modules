@@ -3,7 +3,7 @@ process SAWFISH_JOINTCALL {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ca/ca71c93b472a8b9a7701a744a5f123e4474ce9bf1e0d110aae5b84b5134dd74c/data' :
         'community.wave.seqera.io/library/sawfish:2.2.0--430c21f2b465b4f7' }"
 
@@ -25,7 +25,7 @@ process SAWFISH_JOINTCALL {
     tuple val(meta), path("*/samples/*/copynum.summary.json")                                    , emit: copynum_summary           , optional: true
     tuple val(meta), path("*/samples/*/maf.bw")                                                  , emit: maf_bw                    , optional: true
     tuple val(meta), path("*/sawfish.log")                                                       , emit: log
-    tuple val("${task.process}"), val("sawfish"), eval('sawfish --version | sed "s/sawfish //g"'), emit: versions_sawfish          , topic: versions
+    tuple val("${task.process}"), val("sawfish"), eval('sawfish --version | sed "s/.* //g"')     , emit: versions_sawfish          , topic: versions
 
     when:
     task.ext.when == null || task.ext.when

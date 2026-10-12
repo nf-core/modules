@@ -61,8 +61,8 @@ output:
       - hmmcopy:
           type: string
           description: The name of the tool
-      - echo 0.1.1:
-          type: eval
+      - 0.1.1:
+          type: string
           description: The expression to obtain the version of the tool
   versions_samtools:
     - - ${task.process}:
@@ -74,7 +74,6 @@ output:
       - samtools version | sed '1!d;s/.* //':
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -83,8 +82,8 @@ topics:
       - hmmcopy:
           type: string
           description: The name of the tool
-      - echo 0.1.1:
-          type: eval
+      - 0.1.1:
+          type: string
           description: The expression to obtain the version of the tool
     - - ${task.process}:
           type: string
@@ -95,7 +94,6 @@ topics:
       - samtools version | sed '1!d;s/.* //':
           type: eval
           description: The expression to obtain the version of the tool
-
 authors:
   - "@sppearce"
 maintainers:

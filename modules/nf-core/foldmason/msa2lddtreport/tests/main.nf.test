@@ -67,7 +67,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert file(process.out.html.get(0).get(1)).exists() },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
 
@@ -94,7 +94,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert file(process.out.html.get(0).get(1)).exists() },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
 

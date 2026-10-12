@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "gem2_gemindexer"
 description: Create a GEM index from a FASTA file
 keywords:
@@ -11,7 +10,8 @@ tools:
       description: "GEM2 is a high-performance mapping tool. It also provide a unique
         tool to evaluate mappability."
       homepage: "https://paoloribeca.science/gem"
-      licence: ["Custom"]
+      licence:
+        - "Custom"
       identifier: ""
 input:
   - - meta:
@@ -47,13 +47,27 @@ output:
           description: The execution log
           pattern: "*.log"
           ontologies: []
+  versions_gem2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gem2:
+          type: string
+          description: The name of the tool
+      - "20200110":
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gem2:
+          type: string
+          description: The name of the tool
+      - "20200110":
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:

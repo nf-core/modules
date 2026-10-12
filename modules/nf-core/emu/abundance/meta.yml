@@ -78,13 +78,27 @@ output:
           type: file
           description: Output file with unmapped sequences
           pattern: "*{.fasta,.fastq}"
+  versions_emu:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - emu:
+          type: string
+          description: The tool name
+      - 'emu --version 2>&1 | sed "s/^.*emu //; s/Using.*$//"':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - emu:
+          type: string
+          description: The name of the tool
+      - 'emu --version 2>&1 | sed "s/^.*emu //; s/Using.*$//"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@fwa93"
   - "@sofstam"

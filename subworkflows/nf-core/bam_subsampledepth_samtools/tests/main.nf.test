@@ -11,25 +11,22 @@ nextflow_workflow {
     tag "subworkflows/bam_subsampledepth_samtools"
 
     tag "samtools"
-    tag "samtools/depth"
+    tag "samtools/coverage"
     tag "samtools/view"
-    tag "gawk"
 
     test("Downsample to 4X and 2X") {
         when {
             workflow {
                 """
-                input[0] = channel.fromList([
-                    [
-                        [id: "NA12878"],
-                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/individuals/NA12878/NA12878.s.bam", checkIfExist:true),
-                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/individuals/NA12878/NA12878.s.bam.bai", checkIfExist:true),
-                    ],
-                    [
-                        [id: "NA19401"],
-                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/individuals/NA19401/NA19401.s.bam", checkIfExist:true),
-                        file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/individuals/NA19401/NA19401.s.bam.bai", checkIfExist:true),
-                    ],
+                regions_file = channel.of("chr21\t16570000\t16610000","chr22\t16570000\t16610000").collectFile(name: "regions.bed", newLine: true)
+                input[0] = channel.of([
+                    [id: "NA12878"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.bam", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.bam.bai", checkIfExists:true),
+                ], [
+                    [id: "NA19401"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA19401.chr21_22.bam", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA19401.chr21_22.bam.bai", checkIfExists:true),
                 ])
                 input[1] = channel.of([
                     [my_depth: "2x"], 2
@@ -38,9 +35,10 @@ nextflow_workflow {
                 ])
                 input[2] = channel.of([
                     [id: "GRCh38"],
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/reference_genome/GRCh38.s.fa.gz", checkIfExist:true),
-                    file("https://raw.githubusercontent.com/nf-core/test-datasets/phaseimpute/hum_data/reference_genome/GRCh38.s.fa.gz.fai", checkIfExist:true)
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genomeGRCh38_chr21_22.fa.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genomeGRCh38_chr21_22.fa.gz.fai", checkIfExists:true)
                 ]).collect()
+                input[3] = channel.of([[id: "regions"]]).combine(regions_file).collect()
                 """
             }
         }
@@ -53,6 +51,91 @@ nextflow_workflow {
                     bam(bam_file).getReads().size()
                 ]}
             ).match()
+        }
+    }
+
+    test("Downsample to 2X - no region -- error") {
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [id: "NA12878"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.bam", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.bam.bai", checkIfExists:true),
+                ])
+                input[1] = channel.of([[my_depth: "2x"], 2])
+                input[2] = channel.of([
+                    [id: "GRCh38"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genomeGRCh38_chr21_22.fa.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genomeGRCh38_chr21_22.fa.gz.fai", checkIfExists:true)
+                ]).collect()
+                input[3] = channel.of([[id: "regions"], []]).collect()
+                """
+            }
+        }
+
+        then {
+            assert workflow.failed
+            assert workflow.errorMessage.contains("Sample NA12878 has mean depth of 0.02665365021675825 and requested depth of 2, resulting in a subsampling fraction of 75.03662664345003. As this is >= 1, no subsampling can be performed for this sample.")
+        }
+    }
+
+    test("Downsample to 2X - no region") {
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [id: "NA12878"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.bam", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.bam.bai", checkIfExists:true),
+                ])
+                input[1] = channel.of([[my_depth: "0.01x"], 0.01]) // Lower valued as we don't have the full chromosome
+                input[2] = channel.of([
+                    [id: "GRCh38"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genomeGRCh38_chr21_22.fa.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genomeGRCh38_chr21_22.fa.gz.fai", checkIfExists:true)
+                ]).collect()
+                input[3] = channel.of([[id: "regions"], []]).collect()
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert snapshot(
+                workflow.out.bam_subsampled.collect{ meta, bam_file, bai_file -> [
+                    meta, bam_file, bai_file,
+                    bam(bam_file).getReads().size()
+                ]}
+            ).match()
+        }
+    }
+
+    test("Downsample to 2X - no region -- stub") {
+        tag "stub"
+        options "-stub"
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [id: "NA12878"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.bam", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/bam/NA12878.chr21_22.bam.bai", checkIfExists:true),
+                ])
+                input[1] = channel.of([[my_depth: "2x"], 2])
+                input[2] = channel.of([
+                    [id: "GRCh38"],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genomeGRCh38_chr21_22.fa.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genomeGRCh38_chr21_22.fa.gz.fai", checkIfExists:true)
+                ]).collect()
+                input[3] = channel.of([[], []])
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assert snapshot(sanitizeOutput(workflow.out)).match()
         }
     }
 }

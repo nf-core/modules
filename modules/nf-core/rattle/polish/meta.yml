@@ -1,0 +1,100 @@
+name: "rattle_polish"
+description: Reference-free polishing and reconstruction of transcriptomes from long-read sequencing consensus sequences
+keywords:
+  - transcriptomes
+  - polishing
+  - long-read
+  - nanopore
+  - fastq
+tools:
+  - "rattle":
+      description: "Reference-free reconstruction and quantification of transcriptomes from long-read sequencing"
+      homepage: "https://github.com/comprna/RATTLE"
+      documentation: "https://github.com/comprna/RATTLE"
+      tool_dev_url: "https://github.com/comprna/RATTLE"
+      doi: "10.1186/s13059-022-02715-w"
+      licence:
+        - "GPL-3.0"
+      identifier: biotools:rattle
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - consensi:
+        type: file
+        description: RATTLE consensus sequences in FASTA or FASTQ format
+        pattern: "*.{fasta,fastq,fasta.gz,fastq.gz,fa,fq,fa.gz,fq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_3989 # GZIP
+output:
+  transcriptome:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.transcriptome.fq:
+          type: file
+          description: Final polished transcriptome in FASTQ format
+          pattern: "${prefix}.transcriptome.fq"
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+  summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.polish_summary.tsv:
+          type: file
+          description: |
+            Optional. Summary of the transcript, gene, and new cluster IDs used to generate the transcriptome,
+            produced when `--summary` is supplied.
+          pattern: "${prefix}.polish_summary.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.log:
+          type: file
+          description: RATTLE polish log
+          pattern: "${prefix}.log"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Textual format
+  versions_rattle:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rattle:
+          type: string
+          description: The name of the tool
+      - "1.0":
+          type: string
+          description: The version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rattle:
+          type: string
+          description: The name of the tool
+      - "1.0":
+          type: string
+          description: The version of the tool
+
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@chriswyatt1"
+  - "@srisarya"
+  - "@vagkaratzas"

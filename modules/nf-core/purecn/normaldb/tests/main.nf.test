@@ -38,7 +38,7 @@ nextflow_process {
 					file(process.out.rds[0][1]).name,
 					file(process.out.png[0][1]).name,
 					process.out.low_cov_bed,
-					process.out.versions
+					process.out.findAll { key, val -> key.startsWith('versions') }
 					).match()
 				}
             )
@@ -79,7 +79,7 @@ nextflow_process {
 					file(process.out.bias_rds[0][1]).name,
 					process.out.bias_bed,
 					process.out.low_cov_bed,
-					process.out.versions
+					process.out.findAll { key, val -> key.startsWith('versions') }
 					).match()
 				}
             )

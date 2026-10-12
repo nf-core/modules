@@ -10,13 +10,11 @@ nextflow_process {
     tag "gunc"
     tag "gunc/downloaddb"
 
-    /* Disable tests that download the full database, as it is large (~12 GB) and may cause issues with CI environments.
     test("test-gunc-downloaddb") {
-
         when {
             process {
                 """
-                input[0] = 'progenomes'
+                input[0] = 'test_data'
                 """
             }
         }
@@ -25,13 +23,13 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.db[0]).name, // ~ 12 GB file
-                    process.out.versions
+                    file(process.out.db[0]).name,
+                    process.out.versions_gunc
                     ).match()
                 }
             )
         }
-    }*/
+    }
 
     test("test-gunc-downloaddb-stub") {
         options '-stub'

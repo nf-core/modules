@@ -3,9 +3,9 @@ process METAMDBG_ASM {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/metamdbg:1.2--h077b44d_0':
-        'biocontainers/metamdbg:1.2--h077b44d_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/metamdbg:1.4--h3be2455_0':
+        'quay.io/biocontainers/metamdbg:1.4--h3be2455_0' }"
 
     input:
     tuple val(meta), path(reads, arity: '1..*')
@@ -44,6 +44,6 @@ process METAMDBG_ASM {
     """
     echo ${args}
     touch ${prefix}.metaMDBG.log
-    touch ${prefix}.contigs.fasta.gz
+    echo "" | gzip > ${prefix}.contigs.fasta.gz
     """
 }

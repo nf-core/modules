@@ -1,0 +1,61 @@
+nextflow_process {
+
+    name "Test Process PRIDEPY_DOWNLOADFILE"
+    script "../main.nf"
+    process "PRIDEPY_DOWNLOADFILE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pridepy"
+    tag "pridepy/downloadfile"
+
+    test("pride - PXD004684 - sdrf.tsv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    'sdrf.tsv',
+                    'PXD004684'
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.file[0][1]).text.contains('Source Name') },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("pride - PXD004684 - sdrf.tsv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    'sdrf.tsv',
+                    'PXD004684'
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

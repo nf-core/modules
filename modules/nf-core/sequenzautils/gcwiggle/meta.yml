@@ -1,20 +1,17 @@
 name: sequenzautils_gcwiggle
-description: Sequenza-utils gc_wiggle computes the GC percentage across the sequences,
-  and returns a file in the UCSC wiggle format, given a fasta file and a window size.
+description: Sequenza-utils gc_wiggle computes the GC percentage across the sequences, and returns a file in the UCSC wiggle format, given a fasta file and a window size.
 keywords:
   - sequenzautils
   - copy number
   - gc_wiggle
 tools:
   - sequenzautils:
-      description: Sequenza-utils provides 3 main command line programs to transform
-        common NGS file format - such as FASTA, BAM - to input files for the Sequenza
-        R package. The program -gc_wiggle- takes fasta file as an input, computes GC
-        percentage across the sequences and returns a file in the UCSC wiggle format.
+      description: Sequenza-utils provides 3 main command line programs to transform common NGS file format - such as FASTA, BAM - to input files for the Sequenza R package. The program -gc_wiggle- takes fasta file as an input, computes GC percentage across the sequences and returns a file in the UCSC wiggle format.
       homepage: https://sequenza-utils.readthedocs.io/en/latest/index.html
       documentation: https://sequenza-utils.readthedocs.io/en/latest/index.html
       doi: 10.1093/annonc/mdu479
-      licence: ["GPL-3.0-or-later"]
+      licence:
+        - "GPL-3.0-or-later"
       identifier: ""
 input:
   - - meta:
@@ -39,13 +36,29 @@ output:
           description: GC Wiggle track file
           pattern: "*.{wig.gz}"
           ontologies: []
+  versions_sequenzautils:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sequenzautils:
+          type: string
+          description: The name of the tool
+      - sequenza-utils 2>&1 | sed '/version/!d;s/.*version //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sequenzautils:
+          type: string
+          description: The name of the tool
+      - sequenza-utils 2>&1 | sed '/version/!d;s/.*version //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@kaurravneet4123"
 maintainers:

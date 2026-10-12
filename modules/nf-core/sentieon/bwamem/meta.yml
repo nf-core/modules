@@ -1,5 +1,6 @@
 name: sentieon_bwamem
-description: Performs fastq alignment to a fasta reference using Sentieon's BWA MEM
+description: Performs the alignment of fastq files to a fasta reference using
+  Sentieon's BWA MEM
 keywords:
   - mem
   - bwa
@@ -81,7 +82,7 @@ output:
           type: string
           description: The tool name
       - 'sentieon bwa 2>&1 | sed -n "s/^Version: *//p"':
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
   versions_sentieon:
     - - ${task.process}:
@@ -91,9 +92,8 @@ output:
           type: string
           description: The tool name
       - sentieon driver --version | sed "s/.*-//g":
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -103,7 +103,7 @@ topics:
           type: string
           description: The tool name
       - 'sentieon bwa 2>&1 | sed -n "s/^Version: *//p"':
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
     - - ${task.process}:
           type: string
@@ -112,9 +112,8 @@ topics:
           type: string
           description: The tool name
       - sentieon driver --version | sed "s/.*-//g":
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
-
 authors:
   - "@asp8200"
 maintainers:

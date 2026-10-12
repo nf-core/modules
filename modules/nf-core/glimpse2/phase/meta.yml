@@ -11,7 +11,7 @@ tools:
       description: "GLIMPSE2 is a phasing and imputation method for large-scale low-coverage
         sequencing studies."
       homepage: "https://odelaneau.github.io/GLIMPSE"
-      documentation: "https://odelaneau.github.io/GLIMPSE/commands.html"
+      documentation: "https://odelaneau.github.io/GLIMPSE/"
       tool_dev_url: "https://github.com/odelaneau/GLIMPSE"
       doi: "10.1038/s41588-020-00756-0"
       licence:
@@ -101,6 +101,11 @@ input:
           Necessary for CRAM files.
         pattern: "*.fai"
         ontologies: []
+  - output_suffix:
+      type: string
+      description: |
+        Output file suffix used to choose the GLIMPSE2 output format. Defaults to `vcf.gz` when empty. Supported values: `vcf`, `vcf.gz`, `bcf`, `bgen`.
+      pattern: "vcf|vcf.gz|bcf|bgen"
 output:
   phased_variants:
     - - meta:
@@ -111,8 +116,8 @@ output:
       - "*.{vcf,vcf.gz,bcf,bgen}":
           type: file
           description: |
-            Output VCF/BCF file containing genotype probabilities (GP field), imputed dosages (DS field), best guess genotypes (GT field), sampled haplotypes in the last (max 16) main iterations (HS field) and info-score.
-          pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
+            Output VCF/BCF/BGEN file containing genotype probabilities (GP field), imputed dosages (DS field), best guess genotypes (GT field), sampled haplotypes in the last (max 16) main iterations (HS field) and info-score.
+          pattern: "*.{vcf,vcf.gz,bcf,bgen}"
           ontologies: []
   stats_coverage:
     - - meta:

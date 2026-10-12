@@ -118,14 +118,28 @@ output:
           description: Ambiguous sex ID file
           pattern: "*.{nosex}"
           ontologies: []
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+  versions_plink:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - plink:
+          type: string
+          description: The name of the tool
+      - "plink --version 2>&1 | sed 's/^PLINK v//;s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@davidebag"
 maintainers:
   - "@davidebag"
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - plink:
+          type: string
+          description: The name of the tool
+      - "plink --version 2>&1 | sed 's/^PLINK v//;s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool

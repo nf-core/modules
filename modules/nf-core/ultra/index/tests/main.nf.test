@@ -20,7 +20,8 @@ nextflow_process {
                     """
                     input[0] = [
                         [id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists:true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists:true),
+                        "gtf"
                     ]
                     """
                 }
@@ -45,9 +46,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.database,
-                    process.out.pickle[0][1].collect { file(it).name },
-                    process.out.versions
+                    sanitizeOutput(process.out, unstableKeys: ["pickle"])
                 ).match() }
             )
         }
@@ -74,8 +73,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
+                    sanitizeOutput(process.out)
                 ).match() }
             )
         }

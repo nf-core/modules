@@ -1,6 +1,6 @@
 name: "gvcftools_extractvariants"
-description: Removes all non-variant blocks from a gVCF file to produce a smaller
-  variant-only VCF file.
+description: Removes all non-variant blocks from a gVCF file to produce a
+  smaller variant-only VCF file.
 keywords:
   - gvcftools
   - extract_variants
@@ -14,7 +14,8 @@ tools:
       homepage: "https://sites.google.com/site/gvcftools/home"
       documentation: "https://sites.google.com/site/gvcftools/home/configuration-and-analysis"
       tool_dev_url: "https://github.com/sequencing/gvcftools"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -39,14 +40,28 @@ output:
           description: Converted variant-only VCF file
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989 # GZIP
+  versions_gvcftools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gvcftools:
+          type: string
+          description: The name of the tool
+      - "extract_variants --help 2>&1 | sed -n 's/version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gvcftools:
+          type: string
+          description: The name of the tool
+      - "extract_variants --help 2>&1 | sed -n 's/version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:

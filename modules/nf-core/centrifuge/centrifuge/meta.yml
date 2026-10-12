@@ -11,7 +11,8 @@ tools:
       homepage: https://ccb.jhu.edu/software/centrifuge/
       documentation: https://ccb.jhu.edu/software/centrifuge/manual.shtml
       doi: 10.1101/gr.210641.116
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:centrifuge
 input:
   - - meta:
@@ -83,7 +84,7 @@ output:
           description: Mapped fastq files
           pattern: "*.mapped.fastq.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989 # GZIP
   fastq_unmapped:
     - - meta:
           type: map
@@ -95,14 +96,28 @@ output:
           description: Unmapped fastq files
           pattern: "*.unmapped.fastq.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989 # GZIP
+  versions_centrifuge:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - centrifuge:
+          type: string
+          description: The name of the tool
+      - centrifuge --version 2>&1 | sed '1!d;s/.* version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - centrifuge:
+          type: string
+          description: The name of the tool
+      - centrifuge --version 2>&1 | sed '1!d;s/.* version //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@sofstam"
   - "@jfy133"

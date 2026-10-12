@@ -10,7 +10,7 @@ nextflow_workflow {
     tag "subworkflows/fasta_gxf_busco_plot"
     tag "busco"
     tag "busco/busco"
-    tag "busco/generateplot"
+    tag "busco/plot"
     tag "gffread"
 
     test("candidatus_portiera_aleyrodidarum - bacteroides_fragilis - genome") {
@@ -53,8 +53,7 @@ nextflow_workflow {
                 { assert workflow.success},
                 { assert snapshot(
                     workflow.out.assembly_batch_summary,
-                    workflow.out.annotation_batch_summary,
-                    workflow.out.versions,
+                    workflow.out.annotation_batch_summary
                     ).match()
                 },
 

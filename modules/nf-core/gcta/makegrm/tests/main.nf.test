@@ -1,0 +1,110 @@
+nextflow_process {
+
+    name "Test Process GCTA_MAKEGRM"
+    script "../main.nf"
+    process "GCTA_MAKEGRM"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gcta"
+    tag "gcta/makegrm"
+
+    test("homo_sapiens popgen - plink2") {
+        when {
+            process {
+                """
+                file('gcta_grm.mpfile').text = 'plink_simulated plink_simulated.pgen plink_simulated.psam plink_simulated.pvar\\n'
+
+                input[0] = [
+                    [ id:'gcta_grm' ],
+                    file('gcta_grm.mpfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pgen', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.pvar', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.psam', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(path(process.out.grm_files.get(0).get(1)[0]).parent.toString() + '/.command.sh').text.contains('--make-grm') },
+                { assert file(path(process.out.grm_files.get(0).get(1)[0]).parent.toString() + '/.command.sh').text.contains('--mpfile') },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - plink1") {
+        when {
+            process {
+                """
+                file('gcta_grm.mbfile').text = 'plink_simulated\\n'
+
+                input[0] = [
+                    [ id:'gcta_grm_bed' ],
+                    file('gcta_grm.mbfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(path(process.out.grm_files.get(0).get(1)[0]).parent.toString() + '/.command.sh').text.contains('--make-grm') },
+                { assert file(path(process.out.grm_files.get(0).get(1)[0]).parent.toString() + '/.command.sh').text.contains('--mbfile') },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - plink1 - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                file('gcta_grm.mbfile').text = 'plink_simulated\\n'
+
+                input[0] = [
+                    [ id:'gcta_grm_bed' ],
+                    file('gcta_grm.mbfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

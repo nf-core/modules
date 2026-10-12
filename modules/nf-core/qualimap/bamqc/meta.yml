@@ -14,14 +14,17 @@ tools:
       homepage: http://qualimap.bioinfo.cipf.es/
       documentation: http://qualimap.conesalab.org/doc_html/index.html
       doi: 10.1093/bioinformatics/bts503
-      licence: ["GPL-2.0-only"]
+      licence:
+        - "GPL-2.0-only"
       identifier: biotools:qualimap
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          e.g. [ id:'test', single_end:false, strandedness:'forward' ]
+          meta.strandedness can be use in ext.args to set `-p` argument
+          (see ./tests/nextflow.config)
     - bam:
         type: file
         description: BAM file

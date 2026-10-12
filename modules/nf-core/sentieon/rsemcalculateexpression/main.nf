@@ -4,7 +4,7 @@ process SENTIEON_RSEMCALCULATEEXPRESSION {
     label 'sentieon'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/39/39a3e1a85912520836ad054c8ac0497b463bb5170e0e907183dbd08509dad997/data' :
         'community.wave.seqera.io/library/rsem_sentieon:3e4315fa0b636313' }"
 
@@ -32,6 +32,10 @@ process SENTIEON_RSEMCALCULATEEXPRESSION {
     script:
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
+
+    if (!args.contains('--temporary-folder')) {
+        args += ' --temporary-folder ./tmp/'
+    }
 
     def strandedness = ''
     if (meta.strandedness == 'forward') {
@@ -73,7 +77,6 @@ process SENTIEON_RSEMCALCULATEEXPRESSION {
 
     rsem-calculate-expression \\
         --num-threads $task.cpus \\
-        --temporary-folder ./tmp/ \\
         $alignment_mode \\
         $strandedness \\
         \$PAIRED_END_FLAG \\

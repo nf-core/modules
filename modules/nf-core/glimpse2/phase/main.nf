@@ -1,6 +1,6 @@
 process GLIMPSE2_PHASE {
     tag "${meta.id}"
-    label 'process_medium'
+    label 'process_single'
 
     beforeScript """
     if cat /proc/cpuinfo | grep avx2 -q
@@ -13,13 +13,14 @@ process GLIMPSE2_PHASE {
     """
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/glimpse-bio:2.0.1--h46b9e50_1'
-        : 'biocontainers/glimpse-bio:2.0.1--h46b9e50_1'}"
+        : 'quay.io/biocontainers/glimpse-bio:2.0.1--h46b9e50_1'}"
 
     input:
     tuple val(meta), path(input, arity: '1..*'), path(input_index), path(bamlist), path(samples_file), val(input_region), val(output_region), path(reference), path(reference_index), path(map)
     tuple val(meta2), path(fasta_reference), path(fasta_reference_index)
+    val(output_suffix)
 
     output:
     tuple val(meta), path("*.{vcf,vcf.gz,bcf,bgen}"), emit: phased_variants
@@ -33,7 +34,10 @@ process GLIMPSE2_PHASE {
     def region = input_region ? "${output_region.replace(":", "_")}" : "${reference}"
     def args = task.ext.args ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}_${region}"
-    def suffix = task.ext.suffix ?: "vcf.gz"
+    def suffix = output_suffix ?: "vcf.gz"
+    if (!(suffix in ["vcf", "vcf.gz", "bcf", "bgen"])) {
+        error("Output suffix must be one of vcf, vcf.gz, bcf, bgen. Found: ${suffix}")
+    }
 
     def map_command = map ? "--map ${map}" : ""
     def samples_file_command = samples_file ? "--samples-file ${samples_file}" : ""
@@ -100,7 +104,10 @@ process GLIMPSE2_PHASE {
     stub:
     def region = input_region ? "${output_region.replace(":", "_")}" : "${reference}"
     def prefix = task.ext.prefix ?: "${meta.id}_${region}"
-    def suffix = task.ext.suffix ?: "vcf.gz"
+    def suffix = output_suffix ?: "vcf.gz"
+    if (!(suffix in ["vcf", "vcf.gz", "bcf", "bgen"])) {
+        error("Output suffix must be one of vcf, vcf.gz, bcf, bgen. Found: ${suffix}")
+    }
     def create_cmd = suffix.endsWith(".gz") ? "echo | gzip > ${prefix}.${suffix}" : "touch ${prefix}.${suffix}"
     """
     ${create_cmd}

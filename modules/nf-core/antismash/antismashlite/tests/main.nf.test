@@ -19,7 +19,7 @@ nextflow_process {
             process {
             """
             input[0] = [
-                [ ],
+                [],
                 file('https://github.com/nf-core/test-datasets/raw/59ddeb5929f89ddddaff292d67f9025812762b87/data/delete_me/antismash/css.tar.gz', checkIfExists: true)
             ]
             """
@@ -31,7 +31,7 @@ nextflow_process {
             process {
             """
             input[0] = [
-                [ ],
+                [],
                 file('https://github.com/nf-core/test-datasets/raw/59ddeb5929f89ddddaff292d67f9025812762b87/data/delete_me/antismash/detection.tar.gz', checkIfExists: true)
             ]
             """
@@ -43,7 +43,7 @@ nextflow_process {
             process {
             """
             input[0] = [
-                [ ],
+                [],
                 file('https://github.com/nf-core/test-datasets/raw/59ddeb5929f89ddddaff292d67f9025812762b87/data/delete_me/antismash/modules.tar.gz', checkIfExists: true)
             ]
             """
@@ -75,7 +75,7 @@ nextflow_process {
     }
 
     test("antismashlite - bacteroides_fragilis - genome") {
-
+        tag "test"
         when {
             process {
                 """
@@ -89,6 +89,12 @@ nextflow_process {
 
         then {
             assertAll(
+                /*{ assert process.success },
+                { assert snapshot(
+                    process.out.html_accessory_files,
+                    process.out.gbk_input[0][1].collect{ f -> file(f).name }.sort(),
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match()}*/
                 { assert process.failed },
                 { assert process.errorReport.contains("WARNING: This module has been deprecated.")},
             )
@@ -96,7 +102,6 @@ nextflow_process {
     }
 
     test("antismashlite - bacteroides_fragilis - genome - stub") {
-
         options "-stub"
 
         when {
@@ -112,6 +117,8 @@ nextflow_process {
 
         then {
             assertAll(
+                //{ assert process.success },
+                //{ assert snapshot(sanitizeOutput(process.out)).match()}
                 { assert process.failed },
                 { assert process.errorReport.contains("WARNING: This module has been deprecated.")},
             )

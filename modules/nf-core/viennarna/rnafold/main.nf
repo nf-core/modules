@@ -3,17 +3,17 @@ process VIENNARNA_RNAFOLD {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/viennarna:2.6.4--py310pl5321h6cc9453_1':
-        'biocontainers/viennarna:2.6.4--py310pl5321h6cc9453_1' }"
+        'quay.io/biocontainers/viennarna:2.6.4--py310pl5321h6cc9453_1' }"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("*.fold")      , emit: rnafold_txt
-    tuple val(meta), path("*.ps")        , emit: rnafold_ps
-    tuple val(meta), path("versions.yml"), emit: versions
+    tuple val(meta), path("*.fold")                                                             , emit: rnafold_txt
+    tuple val(meta), path("*.ps")                                                               , emit: rnafold_ps
+    tuple val("${task.process}"), val('RNAfold'), eval("RNAfold --version 2>&1 | sed -n '1s/RNAfold //p'"), emit: versions_rnafold, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,11 +27,6 @@ process VIENNARNA_RNAFOLD {
         --jobs=${task.cpus} \\
         --infile=${fasta} \\
         --outfile=${prefix}.fold
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        RNAfold: \$( RNAfold --version |& sed '1!d ; s/RNAfold //')
-    END_VERSIONS
     """
 
     stub:
@@ -39,10 +34,5 @@ process VIENNARNA_RNAFOLD {
     """
     touch ${prefix}.fold
     touch ${prefix}.ps
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        RNAfold: \$( RNAfold --version |& sed '1!d ; s/RNAfold //')
-    END_VERSIONS
     """
 }

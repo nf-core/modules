@@ -3,7 +3,7 @@ process DYSGU_RUN {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1a/1a8c4c95342498790fe752b702051dc40eb71114d4c0b36e844daad1fea7b593/data':
         'community.wave.seqera.io/library/dysgu:1.8.7--a06ec137d500dc83' }"
 
@@ -17,9 +17,9 @@ process DYSGU_RUN {
     tuple val(meta7), path(exclude_bed)
 
     output:
-    tuple val(meta), path('*.vcf.gz')       , emit: vcf
-    tuple val(meta), path('*.vcf.gz.tbi')   , emit: tbi
-    path 'versions.yml'                     , emit: versions
+    tuple val(meta), path('*.vcf.gz')    , emit: vcf
+    tuple val(meta), path('*.vcf.gz.tbi'), emit: tbi
+    tuple val("${task.process}"), val('dysgu'), eval("dysgu --version 2>&1 | sed 's/.*version //'"), emit: versions_dysgu, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -48,11 +48,6 @@ process DYSGU_RUN {
         . \\
         $input \\
         | bgzip ${args2} --threads ${task.cpus} --stdout > ${prefix}.vcf.gz && tabix ${args3} ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        dysgu: \$(dysgu --version 2>&1)
-    END_VERSIONS
     """
 
     stub:
@@ -60,10 +55,5 @@ process DYSGU_RUN {
     """
     echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        dysgu: \$(dysgu --version 2>&1)
-    END_VERSIONS
     """
 }

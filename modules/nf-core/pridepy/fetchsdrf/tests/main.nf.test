@@ -1,0 +1,59 @@
+nextflow_process {
+
+    name "Test Process PRIDEPY_FETCHSDRF"
+    script "../main.nf"
+    process "PRIDEPY_FETCHSDRF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pridepy"
+    tag "pridepy/fetchsdrf"
+
+    test("pride - PXD004684") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'PXD004684' ],
+                    'PXD004684'
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.sdrf[0][1]).text.contains('Source Name') },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("pride - PXD004684 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'PXD004684' ],
+                    'PXD004684'
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

@@ -11,7 +11,7 @@ nextflow_process {
     test("cellpose - with flows, no model") {
 
         when {
-            config "./nextflow_wflows.config"
+            config "./nextflow.config"
             process {
                 """
                 input[0] = [
@@ -24,11 +24,13 @@ nextflow_process {
         }
 
         then {
+            def mask_files = process.out.mask[0][1].collect { file(it) }
             assertAll (
                 { assert process.success },
-                { assert snapshot(process.out.mask).match("mask") },
-                { assert snapshot(process.out.flows).match("flows") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert mask_files.size() == 3 },
+                { assert snapshot(mask_files.collect { it.name }).match("mask_files") },
+                { assert mask_files.every { it.size() > 0 } },
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match("versions") }
             )
         }
 

@@ -10,16 +10,10 @@ workflow H5AD_REMOVEBACKGROUND_BARCODES_CELLBENDER_ANNDATA {
     ch_unfiltered // channel: [mandatory] meta, h5ad
 
     main:
-    ch_versions = channel.empty()
-
     CELLBENDER_REMOVEBACKGROUND(ch_unfiltered)
-    ch_versions = ch_versions.mix(CELLBENDER_REMOVEBACKGROUND.out.versions)
 
     ANNDATA_BARCODES(ch_unfiltered.join(CELLBENDER_REMOVEBACKGROUND.out.barcodes))
-    ch_versions = ch_versions.mix(ANNDATA_BARCODES.out.versions)
 
     emit:
     h5ad = ANNDATA_BARCODES.out.h5ad  // channel: [ val(meta), path(h5ad) ]
-
-    versions = ch_versions  // channel: [ path(versions.yml) ]
 }

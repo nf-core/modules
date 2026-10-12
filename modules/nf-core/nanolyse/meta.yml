@@ -50,13 +50,27 @@ output:
         description: Log of the Nanolyse run.
         pattern: "*.log"
         ontologies: []
+  versions_nanolyse:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - nanolyse:
+          type: string
+          description: The name of the tool
+      - NanoLyse --version 2>&1 | sed -e "s/NanoLyse //g":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - nanolyse:
+          type: string
+          description: The name of the tool
+      - NanoLyse --version 2>&1 | sed -e "s/NanoLyse //g":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@yuukiiwa"
 maintainers:

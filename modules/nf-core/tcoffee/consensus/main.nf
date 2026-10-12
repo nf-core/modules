@@ -3,7 +3,7 @@ process TCOFFEE_CONSENSUS {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5e/5e5c1c07cc0099dacea172348bc78f9a9baab592ce3ece89873703b9e963d269/data':
         'community.wave.seqera.io/library/t-coffee_pigz:c98a6c87c62d9df6' }"
 
@@ -16,7 +16,7 @@ process TCOFFEE_CONSENSUS {
     output:
     tuple val(meta), path("*.{aln,aln.gz}")          , emit: alignment
     tuple val(meta), path("*.{score_html,sp_ascii}") , emit: eval, optional: true
-    tuple val("${task.process}"), val('tcoffee'), eval('t_coffee -version | awk \'{gsub("Version_", ""); print \\$3}\''), emit: versions_tcoffee, topic: versions
+    tuple val("${task.process}"), val('tcoffee'), eval('t_coffee -version | sed -n \'s/.*Version_\\([^ ]*\\).*/\\1/p\''), emit: versions_tcoffee, topic: versions
     tuple val("${task.process}"), val('pigz'), eval('pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//"'), emit: versions_pigz, topic: versions
 
     when:

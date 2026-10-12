@@ -2,21 +2,6 @@
     "rgi/cardannotation - stub": {
         "content": [
             {
-                "0": [
-                    [
-                        "card.fasta:md5,d41d8cd98f00b204e9800998ecf8427e",
-                        "card_all.fasta:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    "6.0.5"
-                ],
-                "2": [
-                    "stub_version"
-                ],
-                "3": [
-                    "versions.yml:md5,c42c7e6566b41df0310a5a4c1fd8f949"
-                ],
                 "db": [
                     [
                         "card.fasta:md5,d41d8cd98f00b204e9800998ecf8427e",
@@ -27,94 +12,97 @@
                     "stub_version"
                 ],
                 "tool_version": [
-                    "6.0.5"
+                    "6.0.8"
                 ],
-                "versions": [
-                    "versions.yml:md5,c42c7e6566b41df0310a5a4c1fd8f949"
+                "versions_db": [
+                    [
+                        "RGI_CARDANNOTATION",
+                        "rgi-database",
+                        "stub_version"
+                    ]
+                ],
+                "versions_kma": [
+                    [
+                        "RGI_CARDANNOTATION",
+                        "kma",
+                        "1.6.11"
+                    ]
+                ],
+                "versions_rgi": [
+                    [
+                        "RGI_CARDANNOTATION",
+                        "rgi",
+                        "6.0.8"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-08-13T15:46:27.816621723",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-09-03T10:10:40.229702375"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     },
     "rgi/cardannotation": {
         "content": [
             {
-                "0": [
-                    [
-                        "CARD-Download-README.txt:md5,b57364cc1a5fab0541e13a01fabe5dea",
-                        "PMID.tsv:md5,e3ce79c4b5dcf0a9e3117ed683f96e54",
-                        "aro_categories.tsv:md5,6f9c4b0410b9e2b3cf5867a2a3f1db07",
-                        "aro_categories_index.tsv:md5,d5fbc673c0de6601b07c8016b3909f8e",
-                        "aro_index.tsv:md5,0f183c7869876fa32c8f86aade0df7b5",
-                        "card.json:md5,72156d00155f69e637664bfb5d3b5395",
-                        "card_database_v4.0.1.fasta:md5,5ead0b239c312ebb068a3b5aa9676b2d",
-                        "card_database_v4.0.1_all.fasta:md5,f389ce15fac30e9ab394ca8a49f6451f",
-                        "nucleotide_fasta_protein_homolog_model.fasta:md5,696d1aa4f04bd08fc4bdeea33ab9db43",
-                        "nucleotide_fasta_protein_knockout_model.fasta:md5,d8224ce019ad69a041d83ccf7877b4e0",
-                        "nucleotide_fasta_protein_overexpression_model.fasta:md5,80a1e7957c79d311446e06c6dd49db8e",
-                        "nucleotide_fasta_protein_variant_model.fasta:md5,7450e559045c9d1d8f13c73054c64f4c",
-                        "nucleotide_fasta_rRNA_gene_variant_model.fasta:md5,bd53f46d630f652c9f6b7584c2126e1f",
-                        "protein_fasta_protein_homolog_model.fasta:md5,36ea300133fd7c5a45de2fee4c5050bf",
-                        "protein_fasta_protein_knockout_model.fasta:md5,f16667df70d1a5f910d3ae45f5250c3d",
-                        "protein_fasta_protein_overexpression_model.fasta:md5,723e8762be5c96aed8c379a6499cecee",
-                        "protein_fasta_protein_variant_model.fasta:md5,8c02d8fc84c9a90953f8534355244019",
-                        "shortname_antibiotics.tsv:md5,9a4ba742fd8a3a49c7f50744001a4129",
-                        "shortname_pathogens.tsv:md5,5211712be4f4c3306cbe4052cafae1d7",
-                        "snps.txt:md5,529d4fdb74c8940c0930ec1a7a6d4980"
-                    ]
-                ],
-                "1": [
-                    "6.0.5"
-                ],
-                "2": [
-                    "4.0.1"
-                ],
-                "3": [
-                    "versions.yml:md5,bbd7b05923d280ece1cc3c426aa98ea9"
-                ],
                 "db": [
                     [
                         "CARD-Download-README.txt:md5,b57364cc1a5fab0541e13a01fabe5dea",
-                        "PMID.tsv:md5,e3ce79c4b5dcf0a9e3117ed683f96e54",
-                        "aro_categories.tsv:md5,6f9c4b0410b9e2b3cf5867a2a3f1db07",
-                        "aro_categories_index.tsv:md5,d5fbc673c0de6601b07c8016b3909f8e",
-                        "aro_index.tsv:md5,0f183c7869876fa32c8f86aade0df7b5",
-                        "card.json:md5,72156d00155f69e637664bfb5d3b5395",
-                        "card_database_v4.0.1.fasta:md5,5ead0b239c312ebb068a3b5aa9676b2d",
-                        "card_database_v4.0.1_all.fasta:md5,f389ce15fac30e9ab394ca8a49f6451f",
-                        "nucleotide_fasta_protein_homolog_model.fasta:md5,696d1aa4f04bd08fc4bdeea33ab9db43",
+                        "PMID.tsv:md5,6aac0b0e6fc3ee1e1e53cf9251522af3",
+                        "aro_categories.tsv:md5,1a45f02fdc6a8b0b64b84ca7cda8dff3",
+                        "aro_categories_index.tsv:md5,9a65b210f7c446d7a4e6dc8aa97fd51c",
+                        "aro_index.tsv:md5,57163f33db066882971eb4e4df4a062b",
+                        "card.json:md5,b73e9f02206e13f02af3809a1ebdf5b5",
+                        "card_database_v4.0.2.fasta:md5,500f594b42c6ac97fdbe17a2f788ffd8",
+                        "card_database_v4.0.2_all.fasta:md5,aa8bb51771f095348d37c72b59b181e9",
+                        "nucleotide_fasta_protein_homolog_model.fasta:md5,e2645d3cfee5bda65d9b7e0956df6463",
                         "nucleotide_fasta_protein_knockout_model.fasta:md5,d8224ce019ad69a041d83ccf7877b4e0",
-                        "nucleotide_fasta_protein_overexpression_model.fasta:md5,80a1e7957c79d311446e06c6dd49db8e",
-                        "nucleotide_fasta_protein_variant_model.fasta:md5,7450e559045c9d1d8f13c73054c64f4c",
-                        "nucleotide_fasta_rRNA_gene_variant_model.fasta:md5,bd53f46d630f652c9f6b7584c2126e1f",
-                        "protein_fasta_protein_homolog_model.fasta:md5,36ea300133fd7c5a45de2fee4c5050bf",
+                        "nucleotide_fasta_protein_overexpression_model.fasta:md5,7d81c25204b97213d7cc7aaf16aba0ba",
+                        "nucleotide_fasta_protein_variant_model.fasta:md5,7d2df2efed96e790c4c0d429025a0361",
+                        "nucleotide_fasta_rRNA_gene_variant_model.fasta:md5,1321456b509ffa30f3ba69fe631b643a",
+                        "protein_fasta_protein_homolog_model.fasta:md5,ba91b130bd7dd8a5eba31e600f7782cc",
                         "protein_fasta_protein_knockout_model.fasta:md5,f16667df70d1a5f910d3ae45f5250c3d",
-                        "protein_fasta_protein_overexpression_model.fasta:md5,723e8762be5c96aed8c379a6499cecee",
-                        "protein_fasta_protein_variant_model.fasta:md5,8c02d8fc84c9a90953f8534355244019",
-                        "shortname_antibiotics.tsv:md5,9a4ba742fd8a3a49c7f50744001a4129",
-                        "shortname_pathogens.tsv:md5,5211712be4f4c3306cbe4052cafae1d7",
-                        "snps.txt:md5,529d4fdb74c8940c0930ec1a7a6d4980"
+                        "protein_fasta_protein_overexpression_model.fasta:md5,711e3e9acc87a3c1379e0ddbf6652c92",
+                        "protein_fasta_protein_variant_model.fasta:md5,88e30f42525980a63667336a24945900",
+                        "shortname_antibiotics.tsv:md5,eab9bb0394aef8c7d04e0453532d2581",
+                        "shortname_pathogens.tsv:md5,76cd65af74163663f6fa8dc92ab30e6b",
+                        "snps.txt:md5,1f4148e4a8c66f88c99652197bc73023"
                     ]
                 ],
                 "db_version": [
-                    "4.0.1"
+                    "4.0.2"
                 ],
                 "tool_version": [
-                    "6.0.5"
+                    "6.0.8"
                 ],
-                "versions": [
-                    "versions.yml:md5,bbd7b05923d280ece1cc3c426aa98ea9"
+                "versions_db": [
+                    [
+                        "RGI_CARDANNOTATION",
+                        "rgi-database",
+                        "4.0.2"
+                    ]
+                ],
+                "versions_kma": [
+                    [
+                        "RGI_CARDANNOTATION",
+                        "kma",
+                        "1.6.11"
+                    ]
+                ],
+                "versions_rgi": [
+                    [
+                        "RGI_CARDANNOTATION",
+                        "rgi",
+                        "6.0.8"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-08-13T15:46:04.142183916",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-09-03T10:10:17.719519729"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     }
 }

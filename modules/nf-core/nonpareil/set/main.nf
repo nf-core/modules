@@ -3,16 +3,16 @@ process NONPAREIL_SET {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/nonpareil:3.5.5--r43hdcf5f25_0':
-        'biocontainers/nonpareil:3.5.5--r43hdcf5f25_0' }"
+        'quay.io/biocontainers/nonpareil:3.5.5--r43hdcf5f25_0' }"
 
     input:
     tuple val(meta), path(npos)
 
     output:
     tuple val(meta), path("*.png"), emit: png
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('Nonpareil'), eval('Rscript -e "library(Nonpareil); cat(paste(unlist(packageVersion(\'Nonpareil\')), collapse = \'.\'))"'), emit: versions_nonpareil, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,29 +22,17 @@ process NONPAREIL_SET {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def args_cmd = args != '' ? ", ${args}" : ""
     """
-    #!/usr/bin/env Rscript
+    Rscript - <<EOF
     library(Nonpareil)
-
     png(file='${prefix}.png')
     Nonpareil.set(list.files(pattern='*.npo')${args_cmd})
     dev.off()
-
-    version_file_path <- "versions.yml"
-    version_nonpareil <- paste(unlist(packageVersion("Nonpareil")), collapse = ".")
-    f <- file(version_file_path, "w")
-    writeLines('"${task.process}":', f)
-    writeLines("    nonpareil: ", f, sep = "")
-    writeLines(version_nonpareil, f)
-    close(f)
+    EOF
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.png
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}": \$(Rscript -e 'library('Nonpareil'); cat(paste(unlist(packageVersion("Nonpareil")),collapse="."))')
-    END_VERSIONS
     """
 }

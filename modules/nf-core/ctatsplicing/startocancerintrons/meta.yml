@@ -1,11 +1,5 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "ctatsplicing_startocancerintrons"
 description: "Detection and annotation of aberrant splicing isoforms in cancer transcriptomes"
-long_description: |
-  This module detects and annotates aberrant splicing isoforms in cancer transcriptomes using CTAT-splicing.
-  It takes STAR alignment files, a sorted BAM file, and a CTAT genome library reference as input, and outputs various files related to cancer introns.
-  The output can be used for further analysis of splicing aberrations in cancer.
-  Make sure to provide the correct STAR alignment files and CTAT genome library reference.
 keywords:
   - splicing
   - cancer
@@ -17,7 +11,7 @@ tools:
       homepage: "https://github.com/TrinityCTAT/CTAT-SPLICING"
       documentation: "https://github.com/TrinityCTAT/CTAT-SPLICING"
       tool_dev_url: "https://github.com/TrinityCTAT/CTAT-SPLICING"
-
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -28,10 +22,13 @@ input:
         type: file
         description: "STAR alignment splice junction tab file"
         pattern: "*.SJ.out.tab"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
     - junction:
         type: file
         description: "STAR alignment chimeric junction file"
         pattern: "*.out.junction"
+        ontologies: []
     - bam:
         type: file
         description: "Sorted BAM/CRAM/SAM file"
@@ -55,7 +52,7 @@ input:
         type: file
         description: "CTAT genome library reference with integrated cancer intron annotation"
         pattern: "*"
-
+        ontologies: []
 output:
   cancer_introns_sorted_bam:
     - - meta:
@@ -89,7 +86,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.gene_reads.sorted.sifted.bam":
           type: file
-          description: "Sorted BAM file containing reads mapped to gene regions after downsampling coverage"
+          description: "Sorted BAM file containing reads mapped to gene regions after
+            downsampling coverage"
           pattern: "*.gene_reads.sorted.sifted.bam"
           ontologies:
             - edam: "http://edamontology.org/format_2572"
@@ -113,8 +111,10 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.cancer.introns":
           type: file
-          description: "File containing detected and filtered introns that are found to be enriched in cancer transcriptomes"
+          description: "File containing detected and filtered introns that are found
+            to be enriched in cancer transcriptomes"
           pattern: "*.cancer.introns"
+          ontologies: []
   cancer_introns_prelim:
     - - meta:
           type: map
@@ -123,8 +123,10 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.cancer.introns.prelim":
           type: file
-          description: "File containing detected introns that have at least one supporting read and are found to be enriched in cancer transcriptomes"
+          description: "File containing detected introns that have at least one supporting
+            read and are found to be enriched in cancer transcriptomes"
           pattern: "*.cancer.introns.prelim"
+          ontologies: []
   introns:
     - - meta:
           type: map
@@ -135,6 +137,7 @@ output:
           type: file
           description: "File containing all detected introns"
           pattern: "*${prefix}.introns"
+          ontologies: []
   introns_igv_bed:
     - - meta:
           type: map
@@ -143,7 +146,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.introns.for_IGV.bed":
           type: file
-          description: "Bed file used as input for IGV-report visualization, containing cancer introns"
+          description: "Bed file used as input for IGV-report visualization, containing
+            cancer introns"
           pattern: "*.introns.for_IGV.bed"
           ontologies:
             - edam: "http://edamontology.org/format_3586"
@@ -155,8 +159,10 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.ctat-splicing.igv.html":
           type: file
-          description: "Self-contained IGV-report in HTML format for visualization of cancer introns"
+          description: "Self-contained IGV-report in HTML format for visualization of
+            cancer introns"
           pattern: "*.ctat-splicing.igv.html"
+          ontologies: []
   igv_tracks:
     - - meta:
           type: map
@@ -167,6 +173,7 @@ output:
           type: file
           description: "IGV tracks file for visualizing cancer introns in IGV"
           pattern: "*.igv.tracks"
+          ontologies: []
   chckpts:
     - - meta:
           type: map
@@ -175,15 +182,38 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.chckpts":
           type: file
-          description: "Checkpoint files for CTAT-SPLICING, useful for debugging or resuming interrupted runs"
+          description: "Checkpoint files for CTAT-SPLICING, useful for debugging or
+            resuming interrupted runs"
           pattern: "*.chckpts"
+          ontologies: []
+  versions_ctatsplicing:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ctatsplicing:
+          type: string
+          description: The name of the tool
+      - 0.0.3:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ctatsplicing:
+          type: string
+          description: The name of the tool
+      - 0.0.3:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@anoronh4"
   - "@nvnieuwk"
 maintainers:
   - "@anoronh4"
+long_description: |
+  This module detects and annotates aberrant splicing isoforms in cancer transcriptomes using CTAT-splicing.
+  It takes STAR alignment files, a sorted BAM file, and a CTAT genome library reference as input, and outputs various files related to cancer introns.
+  The output can be used for further analysis of splicing aberrations in cancer.
+  Make sure to provide the correct STAR alignment files and CTAT genome library reference.

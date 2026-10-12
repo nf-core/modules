@@ -36,6 +36,10 @@ input:
         bed file of pseudoautosomal regions (optional)
         Structure: [ val(meta5), val(par_bed) ]
       pattern: "*.bed"
+  - with_phasing:
+      type: boolean
+      description: |
+        Whether to enable haplotype phasing of the variant calls
 output:
   - vcf:
       type: file
@@ -43,11 +47,11 @@ output:
         Variant calls
         Structure: [ val(meta), path(vcf) ]
       pattern: "*.vcf.gz"
-  - vcf_tbi:
+  - vcf_index:
       type: file
       description: |
         Index for variant call file
-        Structure: [ val(meta), path(vcf_tbi) ]
+        Structure: [ val(meta), path(vcf_index) ]
       pattern: "*.tbi"
   - gvcf:
       type: file
@@ -55,18 +59,12 @@ output:
         Variant call file with genomic coverage information
         Structure: [ val(meta), path(gvcf) ]
       pattern: "*.g.vcf.gz"
-  - gvcf_tbi:
+  - gvcf_index:
       type: file
       description: |
         Index for the GVCF.
-        Structure: [ val(meta), path(gvcf_tbi) ]
+        Structure: [ val(meta), path(gvcf_index) ]
       pattern: "*.tbi"
-  - versions:
-      type: file
-      description: |
-        File containing software versions
-        Structure: path(versions.yml)
-      pattern: "versions.yml"
 authors:
   - "@abhi18av"
   - "@ramprasadn"

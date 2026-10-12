@@ -3,7 +3,7 @@ process PROPR_GREA {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b6/b65f7192866fbd9a947df15b104808abb720e7a224bbe3ca8f7f8f680f52c97a/data' :
         'community.wave.seqera.io/library/bioconductor-limma_r-propr:f52f1d4fea746393' }"
 
@@ -13,7 +13,7 @@ process PROPR_GREA {
 
     output:
     tuple val(meta), path("*.grea.tsv"), emit: results
-    path "versions.yml",                 emit: versions
+    path "versions.yml",                 emit: versions, topic: versions
     path "*.R_sessionInfo.log",          emit: session_info
 
     when:
@@ -21,4 +21,16 @@ process PROPR_GREA {
 
     script:
     template 'grea.R'
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.grea.tsv
+    touch ${prefix}.R_sessionInfo.log
+
+    cat <<-END_VERSIONS > versions.yml
+    "${task.process}":
+        r-propr: \$(Rscript -e "cat(as.character(packageVersion('propr')))")
+    END_VERSIONS
+    """
 }

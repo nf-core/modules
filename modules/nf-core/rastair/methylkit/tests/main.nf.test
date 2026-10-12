@@ -55,10 +55,35 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert file(process.out.methylkit[0][1]).exists()
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ['mbias_processed_pdf'])
+                    ).match()
                 }
+            )
+        }
+    }
+
+    test("sarscov2 paired-end methylated [bam] / sarscov2 genome [fasta] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match()}
             )
         }
     }

@@ -1,11 +1,12 @@
 process TOPAS_GENCONS {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/topas:1.0.1--hdfd78af_1':
-        'biocontainers/topas:1.0.1--hdfd78af_1' }"
+        'quay.io/biocontainers/topas:1.0.1--hdfd78af_1' }"
 
     input:
     tuple val(meta), path(vcf)
@@ -19,7 +20,8 @@ process TOPAS_GENCONS {
     tuple val(meta), path("*.vcf.gz")  , emit: vcf     , optional: true
     tuple val(meta), path("*.ccf")     , emit: ccf
     tuple val(meta), path("*.log")     , emit: log
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('topas'), val('1.0.1'), emit: versions_topas, topic: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,50 +33,38 @@ process TOPAS_GENCONS {
     def optionalfai       = fai             ? "-fai ${fai}"            : ""
     def optionalvcfindels = vcf_indels      ? "-indels ${vcf_indels}"  : ""
 
-    if ("$reference" == "${prefix}.fasta" || "$reference" == "${prefix}.fasta.gz")
+    if ("${reference}" == "${prefix}.fasta" || "${reference}" == "${prefix}.fasta.gz")
         error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
-    def VERSION = '1.0.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
 
     topas \\
         GenConS \\
-        $args \\
+        ${args} \\
         -o ${prefix}.fasta \\
-        -snps $vcf \\
-        $optionalvcfindels \\
-        $optionalfai \\
-        $vcfoutput \\
-        -ref $reference
+        -snps ${vcf} \\
+        ${optionalvcfindels} \\
+        ${optionalfai} \\
+        ${vcfoutput} \\
+        -ref ${reference}
 
     gzip -n ${prefix}.fasta
 
     if [[ -f ${prefix}.vcf ]];then
         gzip -n ${prefix}.vcf
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        topas: $VERSION
-    END_VERSIONS
     """
 
     stub:
     def prefix    = task.ext.prefix ?: "${meta.id}"
-    def vcfoutput = vcf_output      ? "echo | gzip > ${prefix}.vcf.gz" : ""
+    def vcfoutput = vcf_output      ? "echo \"\" | gzip > ${prefix}.vcf.gz" : ""
 
-    if ("$reference" == "${prefix}.fasta" || "$reference" == "${prefix}.fasta.gz")
+    if ("${reference}" == "${prefix}.fasta" || "${reference}" == "${prefix}.fasta.gz")
         error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
-    def VERSION   = '1.0.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
-    echo | gzip > ${prefix}.fasta.gz
+    echo "" | gzip > ${prefix}.fasta.gz
     touch ${prefix}.fastq.ccf
     touch ${prefix}.fastq.log
-    $vcfoutput
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        topas: $VERSION
-    END_VERSIONS
+    ${vcfoutput}
     """
 
 }

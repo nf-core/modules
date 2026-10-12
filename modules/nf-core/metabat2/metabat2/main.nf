@@ -3,9 +3,9 @@ process METABAT2_METABAT2 {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/metabat2:2.17--hd498684_0'
-        : 'biocontainers/metabat2:2.17--hd498684_0'}"
+        : 'quay.io/biocontainers/metabat2:2.17--hd498684_0'}"
 
     input:
     tuple val(meta), path(fasta, stageAs: 'input_bins/'), path(depth)
@@ -48,11 +48,11 @@ process METABAT2_METABAT2 {
     def decompress_depth = depth ? "gzip -d -f ${depth}" : ""
     def depth_file = depth ? "-a ${depth.baseName}" : ""
     """
-    echo "" | gzip -c > ${prefix}.1.fa.gz
-    echo "" | gzip -c > ${prefix}.1.tooShort.fa.gz
-    echo "" | gzip -c > ${prefix}.1.lowDepth.fa.gz
-    echo "" | gzip -c > ${prefix}.1.unbinned.fa.gz
-    echo "" | gzip -c > ${prefix}.tsv.gz
+    echo "" | gzip > ${prefix}.1.fa.gz
+    echo "" | gzip > ${prefix}.1.tooShort.fa.gz
+    echo "" | gzip > ${prefix}.1.lowDepth.fa.gz
+    echo "" | gzip > ${prefix}.1.unbinned.fa.gz
+    echo "" | gzip > ${prefix}.tsv.gz
     echo "${args}"
     echo "${decompress_depth}"
     echo "${depth_file}"

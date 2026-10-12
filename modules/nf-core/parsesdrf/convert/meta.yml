@@ -1,0 +1,181 @@
+name: "parsesdrf_convert"
+description: |
+  Convert an SDRF (Sample and Data Relationship Format) file into a
+  pipeline-specific samplesheet/configuration using the `parse_sdrf
+  convert-<format>` subcommands of the sdrf-pipelines package. The chosen
+  `format` selects the subcommand; the module owns the output filenames and
+  emits one tuple per supported format (mhcquant, openms, maxquant, msstats,
+  normalyzerde, diann).
+keywords:
+  - sdrf
+  - sdrf-pipelines
+  - samplesheet
+  - proteomics
+  - immunopeptidomics
+  - mhcquant
+  - openms
+  - maxquant
+  - msstats
+  - normalyzerde
+  - diann
+  - metadata
+tools:
+  - "sdrf-pipelines":
+      description: "A set of tools to validate and convert SDRF files for proteomics
+        pipelines."
+      homepage: "https://github.com/bigbio/sdrf-pipelines"
+      documentation: "https://github.com/bigbio/sdrf-pipelines"
+      tool_dev_url: "https://github.com/bigbio/sdrf-pipelines"
+      doi: "10.1021/acs.jproteome.1c00505"
+      licence:
+        - "Apache-2.0"
+      identifier: "biotools:sdrf-pipelines"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample/run information
+          e.g. `[ id:'PXD009752' ]`
+    - sdrf:
+        type: file
+        description: SDRF file describing the experimental design and sample metadata.
+        pattern: "*.{tsv,sdrf.tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
+    - fasta:
+        type: file
+        description: |
+          Protein database FASTA. Required when `format == 'maxquant'`
+          (passed to `-f`); pass `[]` otherwise.
+        pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929
+    - raw_folder:
+        type: string
+        description: |
+          Directory prefix embedded as a literal string into the
+          `<filePaths>` block of the generated MaxQuant `mqpar.xml`; must
+          resolve on the host that later runs MaxQuant. Required when
+          `format == 'maxquant'`; pass `''` otherwise.
+  - format:
+      type: string
+      description: |
+        Target converter. One of: `mhcquant`, `openms`, `maxquant`,
+        `msstats`, `normalyzerde`, `diann`. Selects the
+        `parse_sdrf convert-<format>` subcommand.
+output:
+  mhcquant:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample/run information
+      - "${prefix}_samplesheet.tsv":
+          type: file
+          description: MHCquant samplesheet TSV (`-os`).
+          pattern: "*_samplesheet.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+      - "${prefix}_presets.tsv":
+          type: file
+          description: MHCquant search-preset TSV (`-op`).
+          pattern: "*_presets.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  openms:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample/run information
+      - "${prefix}_samplesheet.tsv":
+          type: file
+          description: OpenMS samplesheet TSV (renamed from `openms.tsv`).
+          pattern: "*_samplesheet.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+      - "${prefix}_experimental_design.tsv":
+          type: file
+          description: OpenMS experimental design TSV.
+          pattern: "*_experimental_design.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  maxquant:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample/run information
+      - "${prefix}.xml":
+          type: file
+          description: MaxQuant `mqpar.xml` (`-o1`).
+          pattern: "*.xml"
+          ontologies:
+            - edam: http://edamontology.org/format_2332
+      - "${prefix}_design.txt":
+          type: file
+          description: MaxQuant experimental design TXT (`-o2`).
+          pattern: "*_design.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  msstats:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample/run information
+      - "${prefix}.csv":
+          type: file
+          description: MSstats annotation CSV (`-o`).
+          pattern: "*.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
+  normalyzerde:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample/run information
+      - "${prefix}_design.csv":
+          type: file
+          description: NormalyzerDE design CSV (`-o`).
+          pattern: "*_design.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
+      - "${prefix}_comparisons.csv":
+          type: file
+          description: NormalyzerDE comparisons CSV (`-oc`).
+          pattern: "*_comparisons.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
+  diann:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample/run information
+      - "${prefix}.cfg":
+          type: file
+          description: DIA-NN config (renamed from `diann_config.cfg`).
+          pattern: "*.cfg"
+          ontologies:
+            - edam: http://edamontology.org/format_2330
+      - "${prefix}_design.tsv":
+          type: file
+          description: DIA-NN experimental design TSV (renamed from `diann_design.tsv`).
+          pattern: "*_design.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  versions_sdrfpipelines:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "sdrf-pipelines":
+          type: string
+          description: The name of the tool
+      - "parse_sdrf --version | cut -d ' ' -f 2":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "sdrf-pipelines":
+          type: string
+          description: The name of the tool
+      - "parse_sdrf --version | cut -d ' ' -f 2":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@jonasscheid"
+maintainers:
+  - "@jonasscheid"

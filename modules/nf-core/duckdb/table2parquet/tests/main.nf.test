@@ -1,0 +1,201 @@
+nextflow_process {
+
+    name "Test Process DUCKDB_TABLE2PARQUET"
+    script "../main.nf"
+    process "DUCKDB_TABLE2PARQUET"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "duckdb"
+    tag "duckdb/table2parquet"
+    tag "pigz/compress"
+
+    test("csv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/generic/csv/test.csv', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("csv - gzipped") {
+
+        setup {
+            run("PIGZ_COMPRESS") {
+                script "../../../pigz/compress/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/generic/csv/test.csv', checkIfExists: true),
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = PIGZ_COMPRESS.out.archive
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("tsv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/generic/tsv/test.tsv', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("tsv - gzipped") {
+
+        setup {
+            run("PIGZ_COMPRESS") {
+                script "../../../pigz/compress/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/generic/tsv/test.tsv', checkIfExists: true),
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = PIGZ_COMPRESS.out.archive
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    // `$(touch pwned)` surviving verbatim in the output filename proves it wasn't executed --
+    // a real expansion would vanish (touch has no stdout).
+    test("csv - meta.id containing an apostrophe and shell metacharacters") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: "O'Brien" + '\$(touch pwned)`echo also_pwned`' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/generic/csv/test.csv', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.parquet[0][1].toString().tokenize('/').last() == "O'Brien\$(touch pwned)`echo also_pwned`.parquet" },
+                { assert !new File(process.out.parquet[0][1].toString()).parentFile.toPath().resolve('pwned').toFile().exists() }
+            )
+        }
+
+    }
+
+    // A newline followed by the heredoc's own delimiter must not let a trailing shell command
+    // escape it -- the delimiter is randomized per task specifically to block this. The payload
+    // rides in ext.prefix (see tests/nextflow.config), not meta.id itself: a literal newline in
+    // meta.id would also hit an unrelated Nextflow issue in how it embeds the process `tag` into
+    // .command.run's own header comment, unrelated to this module's own defense.
+    test("csv - ext.prefix containing a newline and the heredoc delimiter") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'heredoc-forge' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/generic/csv/test.csv', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.parquet[0][1].toString().tokenize('/').last() == '''safe\nSQL\ntouch pwned.parquet''' },
+                { assert !new File(process.out.parquet[0][1].toString()).parentFile.toPath().resolve('pwned').toFile().exists() }
+            )
+        }
+
+    }
+
+    test("csv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/generic/csv/test.csv', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

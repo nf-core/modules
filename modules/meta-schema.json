@@ -1,5 +1,5 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "Meta yaml",
     "description": "Validate the meta yaml file for an nf-core module",
     "type": "object",
@@ -11,6 +11,10 @@
         "description": {
             "type": "string",
             "description": "Description of the module"
+        },
+        "deprecated": {
+            "type": "boolean",
+            "description": "Whether the module is deprecated and should not be used in new pipelines"
         },
         "keywords": {
             "type": "array",
@@ -53,14 +57,13 @@
                                 "pattern": "^https?://.*$"
                             },
                             "doi": {
+                                "type": "string",
                                 "description": "DOI of the tool",
                                 "anyOf": [
                                     {
-                                        "type": "string",
                                         "pattern": "^10\\.\\d{4,9}\\/[^,]+$"
                                     },
                                     {
-                                        "type": "string",
                                         "enum": ["no DOI available"]
                                     }
                                 ]
@@ -79,6 +82,39 @@
                                 "type": "string",
                                 "description": "bio.tools identifier of the tool",
                                 "pattern": "^(biotools:.*)?$"
+                            },
+                            "publication": {
+                                "type": "object",
+                                "description": "Publication metadata for citation",
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "description": "Title of the publication"
+                                    },
+                                    "author": {
+                                        "type": "string",
+                                        "description": "Author(s) of the publication (recommended: Harvard style 'Last, F. M.' separated by commas, with '& ' before the final author, e.g. 'Einstein, A., Feynman, R. P. & Hawking, S.')"
+                                    },
+                                    "source": {
+                                        "type": "string",
+                                        "description": "Journal, conference, workshop, or preprint server name"
+                                    },
+                                    "year": {
+                                        "type": "integer",
+                                        "description": "Publication year"
+                                    }
+                                },
+                                "if": {
+                                    "anyOf": [
+                                        { "required": ["title"] },
+                                        { "required": ["author"] },
+                                        { "required": ["source"] },
+                                        { "required": ["year"] }
+                                    ]
+                                },
+                                "then": {
+                                    "required": ["title", "author", "source", "year"]
+                                }
                             }
                         },
                         "required": ["description"],
@@ -114,39 +150,16 @@
             }
         },
         "input": {
-            "type": "array",
-            "description": "Input channels for the module",
-            "items": {
-                "oneOf": [
-                    {
-                        "$ref": "#/definitions/channelElement"
-                    },
-                    {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/definitions/channelElement"
-                        }
-                    }
-                ]
-            }
+            "$ref": "#/$defs/channelArray",
+            "description": "Input channels for the module"
         },
         "output": {
-            "type": "object",
-            "description": "Output channels for the module",
-            "patternProperties": {
-                ".*": {
-                    "$ref": "#/definitions/channelArray"
-                }
-            }
+            "$ref": "#/$defs/channelMap",
+            "description": "Output channels for the module"
         },
         "topics": {
-            "type": "object",
-            "description": "Topics of the module",
-            "patternProperties": {
-                ".*": {
-                    "$ref": "#/definitions/channelArray"
-                }
-            }
+            "$ref": "#/$defs/channelMap",
+            "description": "Topics of the module"
         },
         "authors": {
             "type": "array",
@@ -170,44 +183,55 @@
                     "type": "object",
                     "description": "Docker containers for different architectures",
                     "additionalProperties": {
-                        "$ref": "#/definitions/container"
+                        "$ref": "#/$defs/container"
                     }
                 },
                 "singularity": {
                     "type": "object",
                     "description": "Singularity containers for different architectures",
                     "additionalProperties": {
-                        "allOf": [
-                            {
-                                "$ref": "#/definitions/container"
-                            },
-                            {
-                                "properties": {
-                                    "name": {
-                                        "pattern": "^oras://.*$"
-                                    }
-                                },
-                                "required": ["https"]
+                        "$ref": "#/$defs/container",
+                        "properties": {
+                            "name": {
+                                "pattern": "^oras://.*$"
                             }
-                        ]
+                        },
+                        "required": ["https"]
                     }
                 },
                 "conda": {
                     "type": "object",
                     "description": "Conda lock files for different architectures",
                     "additionalProperties": {
-                        "$ref": "#/definitions/condaLockFile"
+                        "type": "object",
+                        "description": "Conda lock file information",
+                        "properties": {
+                            "lock_file": {
+                                "type": "string",
+                                "description": "Path to the conda lock file, relative to the repository root",
+                                "pattern": "^.*\\.conda-lock/.*\\.txt$"
+                            }
+                        },
+                        "required": ["lock_file"]
                     }
                 }
             }
         }
     },
-    "definitions": {
+    "$defs": {
+        "channelMap": {
+            "type": "object",
+            "patternProperties": {
+                ".*": {
+                    "$ref": "#/$defs/channelArray"
+                }
+            }
+        },
         "channelElement": {
             "type": "object",
             "patternProperties": {
                 ".*": {
-                    "$ref": "#/definitions/elementProperties"
+                    "$ref": "#/$defs/elementProperties"
                 }
             }
         },
@@ -216,12 +240,12 @@
             "items": {
                 "oneOf": [
                     {
-                        "$ref": "#/definitions/channelElement"
+                        "$ref": "#/$defs/channelElement"
                     },
                     {
                         "type": "array",
                         "items": {
-                            "$ref": "#/definitions/channelElement"
+                            "$ref": "#/$defs/channelElement"
                         }
                     }
                 ]
@@ -291,18 +315,6 @@
                 }
             },
             "required": ["name", "build_id"]
-        },
-        "condaLockFile": {
-            "type": "object",
-            "description": "Conda lock file information",
-            "properties": {
-                "lock_file": {
-                    "type": "string",
-                    "description": "URL to the conda lock file",
-                    "pattern": "^https://.*$"
-                }
-            },
-            "required": ["lock_file"]
         }
     },
     "required": ["name", "description", "keywords", "authors", "output", "tools"]

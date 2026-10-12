@@ -16,7 +16,8 @@ tools:
       documentation: "https://bioinf.shenwei.me/kmcp/usage/#profile"
       tool_dev_url: "https://github.com/shenwei356/kmcp"
       doi: "10.1093/bioinformatics/btac845"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -29,10 +30,13 @@ input:
         description: Gzipped file output from kmcp search module
         pattern: "*.gz"
         ontologies:
-          - edam: http://edamontology.org/format_3989 # GZIP format
+          - edam: http://edamontology.org/format_3989
   - db:
       type: directory
       description: Database directory containing taxdump files and taxid file
+  - level:
+      type: string
+      description: Taxonomic rank to generate profile at (e.g. "species", "strain", "assembly")
 output:
   profile:
     - - meta:
@@ -45,13 +49,27 @@ output:
           description: Tab-delimited format file with 17 columns.
           pattern: "*.profile"
           ontologies: []
+  versions_kmcp:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kmcp:
+          type: string
+          description: The name of the tool
+      - kmcp version 2>&1 | sed 's/^.*kmcp v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kmcp:
+          type: string
+          description: The name of the tool
+      - kmcp version 2>&1 | sed 's/^.*kmcp v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@sofstam"
 maintainers:

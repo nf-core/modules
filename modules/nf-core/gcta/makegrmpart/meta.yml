@@ -1,0 +1,118 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "gcta_makegrmpart"
+description: Compute one partition of a GCTA genetic relationship matrix
+keywords:
+  - gcta
+  - genome-wide complex trait analysis
+  - grm
+  - genetic relationship matrix
+  - genetics
+tools:
+  - "gcta":
+      description: "GCTA is a tool for genome-wide complex trait analysis."
+      homepage: "https://yanglab.westlake.edu.cn/software/gcta/"
+      documentation: "https://yanglab.westlake.edu.cn/software/gcta/static/gcta_doc_latest.pdf"
+      tool_dev_url: "https://github.com/jianyangqt/gcta"
+      licence:
+        - "GPL-3.0-only"
+      identifier: biotools:gcta
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing GRM-partition sample metadata
+          e.g. `[ id:'gcta_grm' ]`
+    - nparts_gcta:
+        type: integer
+        description: Total number of GRM partitions requested via
+          `--make-grm-part`; defaults to `1` when `null`
+        default: 1
+    - part_gcta_job:
+        type: integer
+        description: One-based index of the GRM partition to compute via
+          `--make-grm-part`; defaults to `1` when `null`
+        default: 1
+    - mfile:
+        type: file
+        description: GCTA multi-input manifest consumed by `--mbfile` or
+          `--mpfile`
+        pattern: "*.{mbfile,mpfile,txt}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2330"
+    - bed_pgen:
+        type: file
+        description: Collection of PLINK primary genotype files referenced by the
+          multi-input manifest
+        pattern: "*.{bed,pgen}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
+    - bim_pvar:
+        type: file
+        description: Collection of PLINK variant metadata files referenced by the
+          multi-input manifest
+        pattern: "*.{bim,pvar}"
+        ontologies: []
+    - fam_psam:
+        type: file
+        description: Collection of PLINK sample metadata files referenced by the
+          multi-input manifest
+        pattern: "*.{fam,psam}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing SNP-selection metadata
+          e.g. `[ id:'snp_group1' ]`
+    - snp_group_file:
+        type: file
+        description: Optional SNP extraction file passed to `--extract`; provide
+          `[]` when absent
+        pattern: "*.{txt,list}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2330"
+output:
+  grm_files:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing GRM-partition sample metadata
+            e.g. `[ id:'gcta_grm' ]`
+      - "*.part_${nparts}_${part}.grm.*":
+          type: file
+          description: Partitioned GRM output files, including ID, binary matrix,
+            and sample-count matrix files
+          pattern: "*.part_${nparts}_${part}.grm.*"
+          ontologies: []
+      - nparts_gcta:
+          type: integer
+          description: Total number of GRM partitions requested via
+            `--make-grm-part`
+      - part_gcta_job:
+          type: integer
+          description: One-based index of the GRM partition computed via
+            `--make-grm-part`
+  versions_gcta:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - gcta:
+          type: string
+          description: The tool name
+      - "gcta --version | sed -En 's/^[*] version v([0-9.]*).*/\\1/p'":
+          type: eval
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - gcta:
+          type: string
+          description: The tool name
+      - "gcta --version | sed -En 's/^[*] version v([0-9.]*).*/\\1/p'":
+          type: eval
+          description: The command used to generate the version of the tool
+authors:
+  - "@lyh970817"
+maintainers:
+  - "@lyh970817"

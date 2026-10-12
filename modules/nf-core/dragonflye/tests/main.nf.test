@@ -19,7 +19,7 @@ nextflow_process {
                 """
 
                 input[0] = [
-                    [ id:'test', single_end:true ], // meta map
+                    [ id:'test' ],
                     [],
                     file(params.modules_testdata_base_path + "nanopore/subset15000.fq.gz", checkIfExists: true)
                 ]
@@ -34,8 +34,7 @@ nextflow_process {
                 process.out.gfa,
                 process.out.contigs[0][1].collect{ file(it).name }, // MD5sum not reproducible (contig order)
                 file(process.out.log[0][1]).name, // MD5sum not reproducible (timestamp)
-                process.out.versions,
-                path(process.out.versions[0]).yaml
+                process.out.findAll { key, val -> key.startsWith('versions') }
             ).match()
         }
 
@@ -50,7 +49,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:true ], // meta map
+                    [ id:'test' ],
                     [],
                     file(params.modules_testdata_base_path + "nanopore/subset15000.fq.gz", checkIfExists: true)
                 ]
@@ -65,8 +64,7 @@ nextflow_process {
                 process.out.gfa,
                 process.out.contigs[0][1].collect{ file(it).name }, // MD5sum not reproducible (contig order)
                 file(process.out.log[0][1]).name, // MD5sum not reproducible (timestamp)
-                process.out.versions,
-                path(process.out.versions[0]).yaml
+                process.out.findAll { key, val -> key.startsWith('versions') }
             ).match()
         }
 
@@ -82,7 +80,7 @@ nextflow_process {
                 """
 
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     [
                         file(params.modules_testdata_base_path + "A1403KPN_R1.fastq.gz", checkIfExists: true),
                         file(params.modules_testdata_base_path + "A1403KPN_R2.fastq.gz", checkIfExists: true)
@@ -100,8 +98,7 @@ nextflow_process {
                 process.out.gfa,
                 process.out.contigs[0][1].collect{ file(it).name }, // MD5sum not reproducible (contig order)
                 file(process.out.log[0][1]).name, // MD5sum not reproducible (timestamp)
-                process.out.versions,
-                path(process.out.versions[0]).yaml
+                process.out.findAll { key, val -> key.startsWith('versions') }
             ).match()
         }
 
@@ -109,7 +106,6 @@ nextflow_process {
 
     test("Dragonflye hybrid -- stub") {
         options "-stub"
-        tag "stub"
         when {
             params {
                 modules_testdata_base_path = 'https://raw.githubusercontent.com/nf-core/test-datasets/bacass/'
@@ -119,7 +115,7 @@ nextflow_process {
                 """
 
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     [
                         file(params.modules_testdata_base_path + "A1403KPN_R1.fastq.gz", checkIfExists: true),
                         file(params.modules_testdata_base_path + "A1403KPN_R2.fastq.gz", checkIfExists: true)
@@ -132,17 +128,13 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(
-                process.out,
-                path(process.out.versions[0]).yaml
-            ).match()
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
 
     }
 
     test("Dragonflye no assembler -- stub") {
         options "-stub"
-        tag "stub"
         when {
             params {
                 modules_testdata_base_path = 'https://raw.githubusercontent.com/nf-core/test-datasets/bacass/'
@@ -152,7 +144,7 @@ nextflow_process {
                 """
 
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     [],
                     file(params.modules_testdata_base_path + "nanopore/A1403KPN.fq.gz", checkIfExists: true)
                 ]
@@ -162,10 +154,7 @@ nextflow_process {
 
         then {
             assert process.success
-            assert snapshot(
-                process.out,
-                path(process.out.versions[0]).yaml
-            ).match()
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
 
     }

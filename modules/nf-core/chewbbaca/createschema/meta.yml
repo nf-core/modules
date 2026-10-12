@@ -11,9 +11,9 @@ tools:
       documentation: "https://chewbbaca.readthedocs.io/en/latest/index.html"
       tool_dev_url: "https://github.com/B-UMMI/chewBBACA"
       doi: "10.1099/mgen.0.000166"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -48,23 +48,38 @@ output:
   cds_coordinates:
     - results/cds_coordinates.tsv:
         type: file
-        description: File containing the coordinates of the CDS in the input sample
+        description: File containing the coordinates of the CDS in the input
+          sample
         pattern: "*_cds_coordinates.tsv"
         ontologies:
-          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3475
   invalid_cds:
     - results/invalid_cds.txt:
         type: file
-        description: File containing the list of alleles predicted by Prodigal that
-          were excluded
+        description: File containing the list of alleles predicted by Prodigal
+          that were excluded
         pattern: "*_invalid_cds.txt"
         ontologies: []
+  versions_chewbbaca:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - chewbbaca:
+          type: string
+          description: The name of the tool
+      - "chewie --version 2>&1 | sed 's/chewBBACA version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - chewbbaca:
+          type: string
+          description: The name of the tool
+      - "chewie --version 2>&1 | sed 's/chewBBACA version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@anwarMZ"

@@ -15,7 +15,9 @@ tools:
       documentation: https://github.com/AnantharamanLab/vRhyme
       tool_dev_url: https://github.com/AnantharamanLab/vRhyme
       doi: 10.1093/nar/gkac341
-      licence: ["GPL v3 license", "GPL v3"]
+      licence:
+        - "GPL v3 license"
+        - "GPL v3"
       identifier: biotools:vrhyme
 input:
   - - meta:
@@ -25,8 +27,8 @@ input:
           e.g. [ id:'test' ]
     - bins:
         type: directory
-        description: Directory file containing bin FASTA files output by vRhyme (each
-          bin having multiple sequences)
+        description: Directory file containing bin FASTA files output by vRhyme
+          (each bin having multiple sequences)
 output:
   linked_bins:
     - - meta:
@@ -39,14 +41,28 @@ output:
           description: FASTA file containing all bins that have been linked by N's
           pattern: "*_linked_bins.fasta"
           ontologies:
-            - edam: http://edamontology.org/format_1929 # FASTA
+            - edam: http://edamontology.org/format_1929
+  versions_vrhyme:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vrhyme:
+          type: string
+          description: The name of the tool
+      - vRhyme --version 2>&1 | sed 's/^.*vRhyme v//; s/Using.*\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vrhyme:
+          type: string
+          description: The name of the tool
+      - vRhyme --version 2>&1 | sed 's/^.*vRhyme v//; s/Using.*\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@CarsonJM"
 maintainers:

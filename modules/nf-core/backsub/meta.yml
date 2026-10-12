@@ -1,5 +1,6 @@
 name: "backsub"
-description: Pixel-by-pixel channel subtraction tool for multiplexed immunofluorescence data.
+description: Pixel-by-pixel channel subtraction tool for multiplexed
+  immunofluorescence data.
 keywords:
   - background
   - cycif
@@ -9,11 +10,13 @@ keywords:
   - highly_multiplexed_imaging
 tools:
   - "backsub":
-      description: "Pixel-by-pixel channel subtraction tool for multiplexed immunofluorescence data"
+      description: "Pixel-by-pixel channel subtraction tool for multiplexed immunofluorescence
+        data"
       homepage: "https://github.com/SchapiroLabor/Background_subtraction"
       documentation: "https://github.com/SchapiroLabor/Background_subtraction/blob/master/README.md"
       tool_dev_url: "https://github.com/SchapiroLabor/Background_subtraction"
-      licence: ["MIT licence"]
+      licence:
+        - "MIT licence"
       identifier: ""
 input:
   - - meta:
@@ -34,8 +37,8 @@ input:
           e.g. [ id:'test' ]
     - markerfile:
         type: file
-        description: Marker file with channel names, exposure times, and specified background
-          to subtract (and remove to exclude channels from output)
+        description: Marker file with channel names, exposure times, and specified
+          background to subtract (and remove to exclude channels from output)
         pattern: "*.csv"
         ontologies:
           - edam: http://edamontology.org/format_3752 # CSV
@@ -60,17 +63,32 @@ output:
             e.g. [ id:'test' ]
       - "*.csv":
           type: file
-          description: Marker file adjusted to match the background corrected image
+          description: Marker file adjusted to match the background corrected
+            image
           pattern: "*.{csv}"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
+  versions_backsub:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - backsub:
+          type: string
+          description: The name of the tool
+      - "backsub --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - backsub:
+          type: string
+          description: The name of the tool
+      - "backsub --version":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@kbestak"
 maintainers:

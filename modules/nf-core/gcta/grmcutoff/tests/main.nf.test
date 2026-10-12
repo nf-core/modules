@@ -1,0 +1,163 @@
+nextflow_process {
+
+    name "Test Process GCTA_GRMCUTOFF"
+    script "../main.nf"
+    process "GCTA_GRMCUTOFF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gcta"
+    tag "gcta/grmcutoff"
+    tag "gcta/makegrm"
+
+    setup {
+        run("GCTA_MAKEGRM", alias: "GCTA_MAKEGRM_CONTRACT") {
+            script "../../makegrm/main.nf"
+            process {
+                """
+                file('tiny_dense.mbfile').text = 'plink_simulated\\n'
+
+                input[0] = [
+                    [ id:'tiny_dense' ],
+                    file('tiny_dense.mbfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+
+        run("GCTA_MAKEGRM", alias: "GCTA_MAKEGRM_STUB") {
+            script "../../makegrm/main.nf"
+            process {
+                """
+                file('stub_dense.mbfile').text = 'plink_simulated\\n'
+
+                input[0] = [
+                    [ id:'stub_dense' ],
+                    file('stub_dense.mbfile'),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bed', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.bim', checkIfExists: true)
+                    ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated.fam', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens popgen - apply GRM cutoff to dense GRM") {
+        when {
+            process {
+                """
+                input[0] = GCTA_MAKEGRM_CONTRACT.out.grm_files
+                input[1] = 0.05
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.grm_files.size() == 1 },
+                { assert process.out.keep_file.size() == 1 },
+                { assert process.out.grm_files.get(0).get(0).id == "tiny_dense" },
+                {
+                    def grm_row = process.out.grm_files.get(0)
+                    def expected_prefix = "${grm_row.get(0).id}_grmcutoff"
+                    assert grm_row.get(1).collect { file(it).name }.sort() == [
+                        "${expected_prefix}.grm.N.bin",
+                        "${expected_prefix}.grm.bin",
+                        "${expected_prefix}.grm.id"
+                    ]
+                    assert file(process.out.keep_file.get(0).get(1)).name == "${expected_prefix}.grm.id"
+                },
+                {
+                    assert snapshot(sanitizeOutput(process.out)).match()
+                }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - GRM cutoff fails when meta.id is not GRM basename") {
+        when {
+            process {
+                """
+                input[0] = GCTA_MAKEGRM_CONTRACT.out.grm_files.map { meta, grm_files ->
+                    [[ id:'tiny_dense_mismatched' ], grm_files]
+                }
+                input[1] = 0.05
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert !process.success },
+                { assert process.exitStatus != 0 }
+            )
+        }
+    }
+
+    test("homo_sapiens popgen - GRM cutoff fails for malformed GRM tuple") {
+        when {
+            process {
+                """
+                input[0] = GCTA_MAKEGRM_CONTRACT.out.grm_files.map { meta, grm_files ->
+                    [[ id:meta.id ]]
+                }
+                input[1] = 0.05
+                """
+            }
+        }
+
+        then {
+            assert !process.success
+        }
+    }
+
+    test("homo_sapiens popgen - apply GRM cutoff to dense GRM - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = GCTA_MAKEGRM_STUB.out.grm_files
+                input[1] = 0.125
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.grm_files.get(0).get(0).id == "stub_dense" },
+                {
+                    def grm_row = process.out.grm_files.get(0)
+                    def expected_prefix = "${grm_row.get(0).id}_grmcutoff"
+                    assert grm_row.get(1).collect { file(it).name }.sort() == [
+                        "${expected_prefix}.grm.N.bin",
+                        "${expected_prefix}.grm.bin",
+                        "${expected_prefix}.grm.id"
+                    ]
+                    assert file(process.out.keep_file.get(0).get(1)).name == "${expected_prefix}.grm.id"
+                },
+                {
+                    assert snapshot(sanitizeOutput(process.out)).match()
+                }
+            )
+        }
+    }
+}

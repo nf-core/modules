@@ -19,37 +19,23 @@ input:
         description: |
           Groovy Map containing sample information.
           e.g. [ id:'test' ]
-    - bam:
+    - input:
         type: file
-        description: BAM file
-        pattern: "*.bam"
+        description: Input BAM / CRAM file
+        pattern: "*.{bam,cram}"
         ontologies:
           - edam: "http://edamontology.org/format_2572" # BAM
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing sample information.
-          e.g. [ id:'test' ]
-    - bam_index:
+          - edam: "http://edamontology.org/format_3462" # CRAM
+    - input_index:
         type: file
-        description: BAM index file
-        pattern: "*.bam.bai"
+        description: BAM / CRAM index file
+        pattern: "*.{bam.bai,cram.crai}"
         ontologies: []
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing sample information.
-          e.g. [ id:'test' ]
     - bqsr_table:
         type: file
         description: Table from calculating BQSR. Output from parabricks/fq2bam or gatk4/baserecalibrator.
         pattern: "*.table"
         ontologies: []
-  - - meta4:
-        type: map
-        description: |
-          Groovy Map containing sample information.
-          e.g. [ id:'test' ]
     - intervals:
         type: file
         description: intervals
@@ -65,6 +51,10 @@ input:
         pattern: "*.fasta"
         ontologies:
           - edam: "http://edamontology.org/format_1929" # FASTA
+  - output_fmt:
+      type: string
+      description: Output format for the alignment. Options are 'bam' or 'cram'
+      pattern: "{bam,cram}"
 output:
   bam:
     - - meta:
@@ -88,6 +78,29 @@ output:
           type: file
           description: bai index corresponding to output bam file.
           pattern: "*.bam.bai"
+          ontologies: []
+  cram:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+            e.g. [ id:'test' ]
+      - "*.cram":
+          type: file
+          description: CRAM file after applying BQSR.
+          pattern: "*.cram"
+          ontologies:
+            - edam: "http://edamontology.org/format_3462" # CRAM
+  crai:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+            e.g. [ id:'test' ]
+      - "*.crai":
+          type: file
+          description: crai index corresponding to output cram file.
+          pattern: "*.cram.crai"
           ontologies: []
   versions_parabricks:
     - - ${task.process}:

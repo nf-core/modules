@@ -2,9 +2,9 @@ process MAXQUANT_LFQ {
     tag "$meta.id"
     label 'process_long'
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/maxquant:2.0.3.0--py310hdfd78af_1' :
-        'biocontainers/maxquant:2.0.3.0--py310hdfd78af_1' }"
+        'quay.io/biocontainers/maxquant:2.0.3.0--py310hdfd78af_1' }"
 
     input:
     tuple val(meta), path(fasta), path(paramfile)
@@ -12,7 +12,7 @@ process MAXQUANT_LFQ {
 
     output:
     tuple val(meta), path("${prefix}/*.txt"), emit: maxquant_txt
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val("maxquant"), eval("maxquant --version 2>&1 | sed 's/MaxQuantCmd //' || true"), emit: versions_maxquant, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,11 +29,6 @@ process MAXQUANT_LFQ {
         ${args} \\
         mqpar_changed.xml
     mv combined/txt/*.txt ${prefix}/
-
-    cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            maxquant: \$(maxquant --version 2>&1 > /dev/null | cut -f2 -d\" \")
-    END_VERSIONS
     """
 
     stub:
@@ -54,10 +49,5 @@ process MAXQUANT_LFQ {
     touch ${prefix}/peptides.txt
     touch ${prefix}/proteinGroups.txt
     touch ${prefix}/summary.txt
-
-    cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            maxquant: \$(maxquant --version 2>&1 > /dev/null | cut -f2 -d\" \")
-    END_VERSIONS
     """
 }

@@ -10,14 +10,14 @@ nextflow_process {
     tag "snpeff"
     tag "snpeff/snpeff"
 
-    test("SNPEFF annotate with WBcel235.99") {
+    test("SNPEFF annotate with WBcel235.105") {
 
         when {
             process {
                 """
                 snpeff_cache = Channel.of([
-                    [ id:'WBcel235.99' ],
-                    file('s3://annotation-cache/snpeff_cache/WBcel235.99/')
+                    [ id:'WBcel235.105' ],
+                    file('s3://annotation-cache/snpeff_cache/WBcel235.105/')
                 ]).collect()
 
                 input[0] = Channel.of([
@@ -44,7 +44,7 @@ nextflow_process {
         }
     }
 
-    test("SNPEFF annotate with WBcel235.99 - stub") {
+    test("SNPEFF annotate with WBcel235.105 - stub") {
 
         options "-stub"
 
@@ -52,7 +52,7 @@ nextflow_process {
             process {
                 """
                 snpeff_cache = Channel.of([
-                    [ id:'WBcel235.99' ],
+                    [ id:'WBcel235.105' ],
                     file("${projectDir}")
                 ]).collect()
 

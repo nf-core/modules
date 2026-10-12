@@ -8,7 +8,7 @@ keywords:
 components:
   - snpeff
   - snpeff/snpeff
-  - tabix/bgziptabix
+  - htslib/bgziptabix
 input:
   - ch_vcf:
       description: |
@@ -38,10 +38,6 @@ output:
       description: |
         html reports
         Structure: [ path(txt) ]
-  - versions:
-      description: |
-        Files containing software versions
-        Structure: [ path(versions.yml) ]
 authors:
   - "@maxulysse"
 maintainers:
