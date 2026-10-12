@@ -71,7 +71,7 @@ output:
       - universc:
           type: string
           description: The name of the tool
-      - universc --version | sed -n 's/launch_universc.sh version //p':
+      - sed -n 's/^universcversion="\(.*\)"/\1/p' \$(which launch_universc.sh):
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -93,7 +93,7 @@ topics:
       - universc:
           type: string
           description: The name of the tool
-      - universc --version | sed -n 's/launch_universc.sh version //p':
+      - sed -n 's/^universcversion="\(.*\)"/\1/p' \$(which launch_universc.sh):
           type: eval
           description: The expression to obtain the version of the tool
 
