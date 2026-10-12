@@ -1,0 +1,145 @@
+nextflow_process {
+
+    name "Test Process DEXSEQ_EXON"
+    script "../main.nf"
+    process "DEXSEQ_EXON"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "dexseq"
+    tag "dexseq/exon"
+    tag "dexseq/count"
+
+    // Two GBR and two YRI samples aligned to human chrX, from the rnasplice test data,
+    // counted on the matching flattened DEXSeq annotation
+    setup {
+        run("DEXSEQ_COUNT") {
+            script "../../count/main.nf"
+            process {
+                """
+                input[0] = channel.of('ERR188383', 'ERR188428', 'ERR188454', 'ERR204916').map { id ->
+                    [
+                        [ id:id, single_end:false ],
+                        file("https://raw.githubusercontent.com/nf-core/test-datasets/rnasplice/testdata/\${id}.Aligned.out.bam", checkIfExists: true)
+                    ]
+                }
+                input[1] = [
+                    [ id:'genes_chrX' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/rnasplice/testdata/dexseq/genes_chrX.DEXSeq.gff.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens - chrX - GBR vs YRI") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'GBR_vs_YRI' ], 'condition', 'YRI', 'GBR' ]
+                input[1] = DEXSEQ_COUNT.out.counts
+                    .map { _meta, counts -> counts }
+                    .collect()
+                    .map { counts ->
+                        [
+                            [ id:'study' ],
+                            file('https://raw.githubusercontent.com/nf-core/test-datasets/rnasplice/samplesheet/samplesheet_bam.csv', checkIfExists: true),
+                            counts
+                        ]
+                    }
+                input[2] = [
+                    [ id:'genes_chrX' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/rnasplice/testdata/dexseq/genes_chrX.DEXSeq.gff.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["dataset_rds", "results_rds", "gene_qvalues_rds", "plots", "session_info"])
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - chrX - GBR vs YRI - no plots") {
+
+        when {
+            params {
+                module_args = '--n_plot 0'
+            }
+            process {
+                """
+                input[0] = [ [ id:'GBR_vs_YRI' ], 'condition', 'YRI', 'GBR' ]
+                input[1] = DEXSEQ_COUNT.out.counts
+                    .map { _meta, counts -> counts }
+                    .collect()
+                    .map { counts ->
+                        [
+                            [ id:'study' ],
+                            file('https://raw.githubusercontent.com/nf-core/test-datasets/rnasplice/samplesheet/samplesheet_bam.csv', checkIfExists: true),
+                            counts
+                        ]
+                    }
+                input[2] = [
+                    [ id:'genes_chrX' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/rnasplice/testdata/dexseq/genes_chrX.DEXSeq.gff.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.plots.size() == 0 },
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["dataset_rds", "results_rds", "gene_qvalues_rds", "session_info"])
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - chrX - GBR vs YRI - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'GBR_vs_YRI' ], 'condition', 'YRI', 'GBR' ]
+                input[1] = DEXSEQ_COUNT.out.counts
+                    .map { _meta, counts -> counts }
+                    .collect()
+                    .map { counts ->
+                        [
+                            [ id:'study' ],
+                            file('https://raw.githubusercontent.com/nf-core/test-datasets/rnasplice/samplesheet/samplesheet_bam.csv', checkIfExists: true),
+                            counts
+                        ]
+                    }
+                input[2] = [
+                    [ id:'genes_chrX' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/rnasplice/testdata/dexseq/genes_chrX.DEXSeq.gff.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
