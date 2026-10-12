@@ -1,0 +1,90 @@
+nextflow_process {
+
+    name "Test Process YLEAF"
+    script "../main.nf"
+    process "YLEAF"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "yleaf"
+
+    def VCF_FILE = "/20tb/2025-01-project-drive/2024-12-19-yhaplo/ancient0003.chrY.vcf.gz"
+    def REF_GENOME_FULL = "/references/reference_genomes/hg38.analysisSet.fa"
+    def REF_GENOME_Y = "/references/reference_genomes/hg38.chrY.analysisSet.fa"
+
+    test("real_data - vcf - with all parameters") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'ancient0003' ],
+                    file("${VCF_FILE}", checkIfExists: true)
+                ]
+                input[1] = file("${REF_GENOME_FULL}", checkIfExists: true)
+                input[2] = file("${REF_GENOME_Y}", checkIfExists: true)
+                input[3] = "hg38"
+                input[4] = 10
+                input[5] = 20
+                input[6] = 90
+                input[7] = 0.95
+                input[8] = true
+                input[9] = false
+                input[10] = true
+                input[11] = true
+                input[12] = 0.01
+                """
+            }
+            """
+            process.ext.args = "--force --reanalyze"
+            """
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.versions != null },
+                { assert process.out.haplogroup != null },
+                { assert process.out.tree != null },
+                { assert process.out.log != null }
+            )
+        }
+    }
+
+    test("real_data - vcf - minimal parameters") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'ancient0003' ],
+                    file("${VCF_FILE}", checkIfExists: true)
+                ]
+                input[1] = file("${REF_GENOME_FULL}", checkIfExists: true)
+                input[2] = file("${REF_GENOME_Y}", checkIfExists: true)
+                input[3] = "hg38"
+                input[4] = null
+                input[5] = null
+                input[6] = null
+                input[7] = null
+                input[8] = null
+                input[9] = null
+                input[10] = null
+                input[11] = null
+                input[12] = null
+                """
+            }
+            """
+            process.ext.args = "--force --reanalyze"
+            """
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.versions != null },
+                { assert process.out.haplogroup != null },
+                { assert process.out.tree != null },
+                { assert process.out.log != null }
+            )
+        }
+    }
+}
