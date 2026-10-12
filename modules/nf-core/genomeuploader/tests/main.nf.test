@@ -1,0 +1,100 @@
+nextflow_process {
+
+    name "Test Process GENOMEUPLOADER"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "GENOMEUPLOADER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "genomeuploader"
+
+    test("genome - fasta - gz") {
+
+        when {
+            process {
+                """
+                // This module uses a csv as input, which contains the paths to the genomes/bins to upload
+                // That is why it contains a second parameter that accepts a Path with all the fasta files (mags and bins) to upload
+                // and that is why the path is genomes/<name> in the manifest
+                def metadata_content = [
+                    ["genome_name", "genome_path", "accessions", "assembly_software", "binning_software", "binning_parameters", "stats_generation_software", "completeness", "contamination", "genome_coverage", "metagenome", "co-assembly", "broad_environment", "local_environment", "environmental_medium", "rRNA_presence", "NCBI_lineage"].join("\t"),
+                    ["test_mag", "genomes/GCA_002688505.1_ASM268850v1_genomic.fna.gz", "ERR4647712", "SPAdes_4.1.0", "nf-core/mag", "default", "CheckM2_1.1.0", "90.0", "1.0", "10.0", "chicken gut metagenome", "False", "chicken gut", "chicken gut mucosa", "chicken gut mucosa", "True", "d__Bacteria;p__Firmicutes;c__Bacilli;o__Lactobacillales;f__Lactobacillaceae;g__Lactobacillus;s__Lactobacillus_crispatus"].join("\t")
+                ].join("\\n")
+
+                def metadata_file = file('genomes_metadata.tsv')
+                metadata_file.text = metadata_content
+
+                input[0] = [
+                    [
+                        id: 'test',
+                        study_accession: 'ERP159782',
+                        center_name: 'nf-core'
+                    ],
+                    metadata_file
+                ]
+                input[1] = file('https://github.com/nf-core/test-datasets/raw/refs/heads/magmap/testdata/GCA_002688505.1_ASM268850v1_genomic.fna.gz', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.submission,
+                    process.out.versions,
+                    // Check registered_MAGs contains expected genome name (starts with test_mag)
+                    file(process.out.registered_mags.get(0).get(1)).readLines()[0].split('\t')[0].startsWith('test_mag'),
+                    // Check genome_samples.xml contains expected elements
+                    file(process.out.genome_samples.get(0).get(1)).readLines().any { it.contains('<SAMPLE') },
+                    file(process.out.genome_samples.get(0).get(1)).readLines().any { it.contains('alias="test_mag"') },
+                    // Check manifest file exists and has content
+                    file(process.out.manifests.get(0).get(1)).readLines().size() > 0,
+                    file(process.out.manifests.get(0).get(1)).readLines().any { it.contains('STUDY') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("genome - fasta - gz -stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                // This module uses a csv as input, which contains the paths to the genomes/bins to upload
+                // That is why it contains a second parameter that accepts a Path with all the fasta files (mags and bins) to upload
+                // and that is why the path is genomes/<name> in the manifest
+                def metadata_content = [
+                    ["genome_name", "genome_path", "accessions", "assembly_software", "binning_software", "binning_parameters", "stats_generation_software", "completeness", "contamination", "genome_coverage", "metagenome", "co-assembly", "broad_environment", "local_environment", "environmental_medium", "rRNA_presence", "NCBI_lineage"].join("\t"),
+                    ["test_mag", "genomes/GCA_002688505.1_ASM268850v1_genomic.fna.gz", "ERR4647712", "SPAdes_4.1.0", "nf-core/mag", "default", "CheckM2_1.1.0", "90.0", "1.0", "10.0", "chicken gut metagenome", "False", "chicken gut", "chicken gut mucosa", "chicken gut mucosa", "True", "d__Bacteria;p__Firmicutes;c__Bacilli;o__Lactobacillales;f__Lactobacillaceae;g__Lactobacillus;s__Lactobacillus_crispatus"].join("\t")
+                ].join("\\n")
+
+                def metadata_file = file('genomes_metadata.tsv')
+                metadata_file.text = metadata_content
+
+                input[0] = [
+                    [
+                        id: 'test',
+                        study_accession: 'ERP159782',
+                        center_name: 'nf-core'
+                    ],
+                    metadata_file
+                ]
+                input[1] = file('https://github.com/nf-core/test-datasets/raw/refs/heads/magmap/testdata/GCA_002688505.1_ASM268850v1_genomic.fna.gz', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}
