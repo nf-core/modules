@@ -1,6 +1,5 @@
 name: "reseq_illuminape"
-description: Simulate realistic Illumina paired-end reads from a reference
-  genome using profiles extracted from real sequencing data
+description: Simulate realistic Illumina paired-end reads from a reference genome using profiles extracted from real sequencing data
 keywords:
   - simulate
   - fastq
@@ -28,8 +27,7 @@ input:
           e.g. `[ id:'test' ]`
     - bam:
         type: file
-        description: Position-sorted BAM file from which to extract sequencing
-          profiles
+        description: Position-sorted BAM file from which to extract sequencing profiles
         pattern: "*.bam"
         ontologies:
           - edam: "http://edamontology.org/format_2572"
@@ -76,7 +74,7 @@ output:
           type: string
           description: The name of the tool
       - "reseq --version 2>&1 | sed 's/^.*ReSeq version //'":
-          type: string
+          type: eval
           description: The version of the tool
 topics:
   versions:
@@ -87,7 +85,7 @@ topics:
           type: string
           description: The name of the tool
       - "reseq --version 2>&1 | sed 's/^.*ReSeq version //'":
-          type: string
+          type: eval
           description: The version of the tool
 authors:
   - "@adamrtalbot"

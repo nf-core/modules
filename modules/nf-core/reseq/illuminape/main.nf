@@ -4,8 +4,8 @@ process RESEQ_ILLUMINAPE {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/reseq:1.1--py310hfb68e69_5' :
-        'biocontainers/reseq:1.1--py310hfb68e69_5' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/49/494dd5224f3e7314d36af63a0740e51ecfd5373fe993ab3acf914754870e963a/data' :
+        'community.wave.seqera.io/library/reseq:1.1--8536b4889ef6d3b8' }"
 
     input:
     tuple val(meta), path(bam), path(fasta), path(adapter_fasta), path(adapter_matrix)
@@ -34,14 +34,14 @@ process RESEQ_ILLUMINAPE {
         -1 ${prefix}_R1.fq \\
         -2 ${prefix}_R2.fq
 
-    gzip ${prefix}_R1.fq
-    gzip ${prefix}_R2.fq
+    gzip -n ${prefix}_R1.fq
+    gzip -n ${prefix}_R2.fq
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo '' | gzip > ${prefix}_R1.fq.gz
-    echo '' | gzip > ${prefix}_R2.fq.gz
+    echo "" | gzip > ${prefix}_R1.fq.gz
+    echo "" | gzip > ${prefix}_R2.fq.gz
     """
 }
