@@ -1,0 +1,86 @@
+name: fairy_coverage
+description: |
+  Computes coverage depth statistics for assembled contigs from one or more
+  fairy sketch files, producing a MetaBAT2-compatible TSV with per-contig
+  mean depth and variance columns.
+keywords:
+  - metagenomics
+  - coverage
+  - binning
+  - alignment-free
+  - contig
+tools:
+  - fairy:
+      description: |
+        fairy is a fast, alignment-free, k-mer-based tool for computing
+        coverage depth statistics for metagenomic samples. It is orders of
+        magnitude faster than alignment-based approaches and produces output
+        directly compatible with MetaBAT2.
+      homepage: https://github.com/bluenote-1577/fairy
+      documentation: https://github.com/bluenote-1577/fairy
+      tool_dev_url: https://github.com/bluenote-1577/fairy
+      licence:
+        - "MIT"
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - sketches:
+        type: file
+        description: One or more fairy sketch files (.bcsp) produced by `fairy sketch`
+        pattern: "*.bcsp"
+        ontologies: []
+    - contigs:
+        type: file
+        description: Assembled contigs in FASTA format
+        pattern: "*.{fa,fasta,fna,fa.gz,fasta.gz,fna.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+
+output:
+  coverage:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.tsv:
+          type: file
+          description: |
+            MetaBAT2-compatible TSV file with per-contig coverage statistics.
+            Columns: contigName, contigLen, totalAvgDepth, and per-sample
+            mean depth and variance.
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions_fairy:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fairy:
+          type: string
+          description: The name of the tool
+      - fairy --version 2>&1 | sed 's/fairy //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fairy:
+          type: string
+          description: The name of the tool
+      - fairy --version 2>&1 | sed 's/fairy //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"

@@ -3,7 +3,9 @@ process BACKSUB {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "ghcr.io/schapirolabor/background_subtraction:v0.5.1"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ab/ab42ea4815af3fd8a6ab667a7cd682b17808bac13214ddab2467dbcb80ed5dd8/data' :
+        'community.wave.seqera.io/library/pip_backsub:1f25bcdea7241dd7'}"
 
     input:
     tuple val(meta) , path(image)
@@ -12,7 +14,7 @@ process BACKSUB {
     output:
     tuple val(meta), path("*.ome.tif"), emit: backsub_tif
     tuple val(meta2), path("*.csv")   , emit: markerout
-    path "versions.yml"               , emit: versions
+    tuple val("${task.process}"), val('backsub'), eval('backsub --version'), emit: versions_backsub, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,11 +30,6 @@ process BACKSUB {
         --output "${prefix}.ome.tif" \
         --marker-output "${prefix}.csv" \
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        backsub: \$(backsub --version | sed 's/v//g')
-    END_VERSIONS
     """
 
     stub:
@@ -40,9 +37,5 @@ process BACKSUB {
     """
     touch "${prefix}.ome.tif"
     touch "${prefix}.csv"
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        backsub: \$(backsub --version | sed 's/v//g')
-    END_VERSIONS
     """
 }

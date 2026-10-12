@@ -3,9 +3,9 @@ process GENMAP_MAP {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/genmap:1.3.0--h1b792b2_1' :
-        'biocontainers/genmap:1.3.0--h1b792b2_1' }"
+        'quay.io/biocontainers/genmap:1.3.0--h1b792b2_1' }"
 
     input:
     tuple val(meta), path(index)
@@ -16,7 +16,7 @@ process GENMAP_MAP {
     tuple val(meta), path("*.bedgraph") , optional:true, emit: bedgraph
     tuple val(meta), path("*.txt")      , optional:true, emit: txt
     tuple val(meta), path("*.csv")      , optional:true, emit: csv
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('genmap'), eval("genmap --version |& sed -n 's/GenMap version: //p'"), emit: versions_genmap, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,11 +35,6 @@ process GENMAP_MAP {
         --threads ${task.cpus} \\
         --index ${index} \\
         --output ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        genmap: \$(genmap --version | sed 's/GenMap version: //; s/SeqAn.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -57,10 +52,5 @@ process GENMAP_MAP {
     ${bg}
     ${txt}
     ${csv}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        genmap: \$(genmap --version | sed 's/GenMap version: //; s/SeqAn.*\$//')
-    END_VERSIONS
     """
 }

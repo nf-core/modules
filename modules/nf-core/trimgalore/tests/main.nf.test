@@ -26,9 +26,9 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.reads,
-                    file(process.out.log[0][1]).readLines()[0..9], // line 11 changes
-                    file(process.out.log[0][1]).readLines()[11..59],
-                    process.out.findAll { key, val -> key.startsWith("versions")}
+                    process.out.json,
+                    path(process.out.log[0][1]).readLines().dropWhile { !it.startsWith("=== Summary") }.join('\n').md5(),
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -53,13 +53,11 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    process.out.reads[0][1][0],
-                    process.out.reads[0][1][1],
-                    file(process.out.log[0][1][0]).readLines()[0..9], // line 11 changes
-                    file(process.out.log[0][1][0]).readLines()[11..58],
-                    file(process.out.log[0][1][1]).readLines()[0..9], // line 11 changes
-                    file(process.out.log[0][1][1]).readLines()[11..60],
-                    process.out.findAll { key, val -> key.startsWith("versions")}
+                    process.out.reads,
+                    process.out.json,
+                    path(process.out.log[0][1][0]).readLines().dropWhile { !it.startsWith("=== Summary") }.join('\n').md5(),
+                    path(process.out.log[0][1][1]).readLines().dropWhile { !it.startsWith("=== Summary") }.join('\n').md5(),
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -90,15 +88,12 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    process.out.reads[0][1][0],
-                    process.out.reads[0][1][1],
-                    process.out.unpaired[0][1][0],
-                    process.out.unpaired[0][1][1],
-                    file(process.out.log[0][1][0]).readLines()[0..9], // line 11 changes
-                    file(process.out.log[0][1][0]).readLines()[11..59],
-                    file(process.out.log[0][1][1]).readLines()[0..9], // line 11 changes
-                    file(process.out.log[0][1][1]).readLines()[11..63],
-                    process.out.findAll { key, val -> key.startsWith("versions")}
+                    process.out.reads,
+                    process.out.unpaired,
+                    process.out.json,
+                    path(process.out.log[0][1][0]).readLines().dropWhile { !it.startsWith("=== Summary") }.join('\n').md5(),
+                    path(process.out.log[0][1][1]).readLines().dropWhile { !it.startsWith("=== Summary") }.join('\n').md5(),
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -125,7 +120,8 @@ nextflow_process {
                 { assert snapshot(
                     process.out.reads,
                     process.out.log,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
+                    process.out.json,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -133,7 +129,7 @@ nextflow_process {
 
     test("sarscov2 - fastq - paired-end - stub") {
 
-    options "-stub"
+        options "-stub"
 
         when {
             process {
@@ -154,7 +150,8 @@ nextflow_process {
                 { assert snapshot(
                     process.out.reads,
                     process.out.log,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
+                    process.out.json,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }

@@ -9,7 +9,39 @@ nextflow_process {
     tag "modules_nfcore"
     tag "minia"
 
-    test("test-minia") {
+    test("sarscov2 - fastq - se") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+				    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_interleaved.fastq.gz', checkIfExists: true),                    ]
+				]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.contigs[0][1]).linesGzip.any { it.contains('AAA') } },
+                { assert path(process.out.unitigs[0][1]).linesGzip.any { it.contains('CCC') } },
+                { assert snapshot(
+                    file(process.out.contigs[0][1]).name,
+                    file(process.out.unitigs[0][1]).name,
+                    file(process.out.h5[0][1]).name,
+                    file(process.out.log[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
+            )
+        }
+    }
+
+    test("sarscov2 - fastq - pe") {
 
         when {
             process {
@@ -29,13 +61,14 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert file(process.out.contigs[0][1]).text.contains('AAA') },
-                { assert file(process.out.unitigs[0][1]).text.contains('CCC') },
+                { assert path(process.out.contigs[0][1]).linesGzip.any { it.contains('AAA') } },
+                { assert path(process.out.unitigs[0][1]).linesGzip.any { it.contains('CCC') } },
                 { assert snapshot(
                     file(process.out.contigs[0][1]).name,
                     file(process.out.unitigs[0][1]).name,
                     file(process.out.h5[0][1]).name,
-                    process.out.versions,
+                    file(process.out.log[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
                     ).match()
                 }
             )

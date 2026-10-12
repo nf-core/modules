@@ -3,7 +3,7 @@ process UNTARFILES {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/88/88e03525287eaeb8bb74114aaee2c67118c1cdcfb99ee52e3ddc71a1acce35d4/data' :
         'community.wave.seqera.io/library/grep_sed_tar:db2951cd23a1ffde' }"
 
@@ -12,8 +12,7 @@ process UNTARFILES {
 
     output:
     tuple val(meta), path("${prefix}/**") , emit: files
-    path "versions.yml"                   , emit: versions
-
+    tuple val("${task.process}"), val('tar'), eval("tar --version 2>&1 | sed '1s/^.*(GNU tar) //;q'"), topic: versions, emit: versions_tar
     when:
     task.ext.when == null || task.ext.when
 
@@ -38,11 +37,6 @@ This module is no longer recommended for use. It is recommended to use nf-core/m
         $args \\
         $archive \\
         $args2
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        untar: \$(echo \$(tar --version 2>&1) | sed 's/^.*(GNU tar) //; s/ Copyright.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -57,10 +51,5 @@ This module is no longer recommended for use. It is recommended to use nf-core/m
     """
     mkdir $prefix
     touch ${prefix}/file.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        untar: \$(echo \$(tar --version 2>&1) | sed 's/^.*(GNU tar) //; s/ Copyright.*\$//')
-    END_VERSIONS
     """
 }

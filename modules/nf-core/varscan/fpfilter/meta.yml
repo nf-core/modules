@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "varscan_fpfilter"
 description: VarScan2 is a tool for variant detection in massively parallel
   sequencing data. It can detect SNPs, indels, and copy number variations in
@@ -19,9 +18,9 @@ tools:
       documentation: "https://dkoboldt.github.io/varscan/"
       tool_dev_url: "https://github.com/dkoboldt/varscan"
       doi: "10.1101/gr.129684.111"
-      licence: ["The Non-Profit Open Software License version 3.0 (NPOSL-3.0)"]
+      licence:
+        - "The Non-Profit Open Software License version 3.0 (NPOSL-3.0)"
       identifier: biotools:varscan
-
 input:
   - - meta:
         type: map
@@ -53,7 +52,7 @@ output:
           pattern: "*.pass.vcf.gz"
           ontologies:
             - edam: "http://edamontology.org/format_3016" # VCF
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: "http://edamontology.org/format_3989" # GZIP format
   fail_vcf:
     - - meta:
           type: map
@@ -66,14 +65,30 @@ output:
           pattern: "*.fail.vcf.gz"
           ontologies:
             - edam: "http://edamontology.org/format_3016" # VCF
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: "http://edamontology.org/format_3989" # GZIP format
+  versions_varscan:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - varscan:
+          type: string
+          description: The name of the tool
+      - varscan 2>&1 | sed -n 's/VarScan v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: versions.yml
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - varscan:
+          type: string
+          description: The name of the tool
+      - varscan 2>&1 | sed -n 's/VarScan v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@vmelichar"
 maintainers:

@@ -1,7 +1,6 @@
-# name matches directory structure
 name: "lsa_cosine"
-description: Calculates the cosine similarity matrix between samples based on a gene
-  expression matrix.
+description: Calculates the cosine similarity matrix between samples based on a
+  gene expression matrix.
 keywords:
   - similarity
   - cosine
@@ -13,13 +12,15 @@ tools:
       description: "Latent Semantic Analysis (LSA) package for R."
       homepage: "https://cran.r-project.org/web/packages/lsa/index.html"
       documentation: "https://cran.r-project.org/web/packages/lsa/lsa.pdf"
-      licence: ["GPL-2"]
+      licence:
+        - "GPL-2"
       identifier: ""
   - "pheatmap":
       description: "Pretty Heatmaps package for R."
       homepage: "https://cran.r-project.org/web/packages/pheatmap/index.html"
       documentation: "https://cran.r-project.org/web/packages/pheatmap/pheatmap.pdf"
-      licence: ["GPL-2"]
+      licence:
+        - "GPL-2"
       identifier: biotools:pheatmap
 
 input:
@@ -43,7 +44,8 @@ output:
             Groovy Map containing sample information, e.g. [ id:'test' ].
       - "*_matrix.csv":
           type: file
-          description: A square matrix (CSV) containing pairwise similarity scores.
+          description: A square matrix (CSV) containing pairwise similarity
+            scores.
           pattern: "*_matrix.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
@@ -62,7 +64,14 @@ output:
         type: file
         description: File containing software versions.
         pattern: "versions.yml"
-
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions.
+        pattern: "versions.yml"
         ontologies:
           - edam: http://edamontology.org/format_3750 # YAML
 authors:

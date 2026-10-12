@@ -1,0 +1,79 @@
+name: "echtvar_encode"
+description: Make (encode) a new echtvar file from decomposed vcf
+keywords:
+  - vcf
+  - echtvar
+  - encode
+  - annotation
+  - allele-frequency
+tools:
+  - "echtvar":
+      description: "Using all the bits for echt rapid variant annotation and filtering."
+      homepage: "https://github.com/brentp/echtvar/blob/v0.2.2/README.md"
+      documentation: "https://github.com/brentp/echtvar/blob/v0.2.2/README.md"
+      tool_dev_url: "https://github.com/brentp/echtvar"
+      doi: "10.1093/nar/gkac931"
+      licence:
+        - "MIT"
+      identifier: biotools:echtvar
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - vcf:
+        type: file
+        description: VCF file
+        pattern: "*.vcf"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - json_filters:
+        type: file
+        description: JSON file containing the configuration for the encoding process (which columns are pulled from the input VCF and how they are stored)
+        pattern: "*.json"
+        ontologies:
+          - edam: "http://edamontology.org/format_3464"
+output:
+  db:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.zip":
+          type: file
+          description: Encoded ECHTVAR file
+          pattern: "*.zip"
+          ontologies:
+            - edam: "http://edamontology.org/format_3987"
+  versions_echtvar:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "echtvar":
+          type: string
+          description: The name of the tool
+      - "echtvar --version | sed 's/echtvar //g'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "echtvar":
+          type: string
+          description: The name of the tool
+      - "echtvar --version | sed 's/echtvar //g'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@sofiademmou"
+maintainers:
+  - "@sofiademmou"

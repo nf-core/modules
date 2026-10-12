@@ -1,0 +1,185 @@
+nextflow_process {
+
+    name "Test Process PORTELLO"
+    script "../main.nf"
+    process "PORTELLO"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "portello"
+
+    test("portello - [bam, bai, bam, bai], fasta, partially-phased, false") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_assembly.bam'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_assembly.bam.bai'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_to_assembly.bam'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_to_assembly.bam.bai'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
+                    "partially-phased",
+                    false
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(
+                process.out.bam.collect { meta, bam_file -> [ meta, file(bam_file).name + ":md5," + bam(bam_file, stringency: "silent").getReadsMD5() ] },
+                // no unmapped reads in the test, so only check file name here (empty file)
+                process.out.unassembled_bam.collect { meta, bam_file -> [ meta, file(bam_file).name ] },
+                process.out.findAll { key, val -> key.startsWith('versions') }
+            ).match()
+        }
+    }
+
+
+    test("portello - [bam, bai, bam, bai], fasta, partially-phased, true") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_assembly.bam'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_assembly.bam.bai'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_to_assembly.bam'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_to_assembly.bam.bai'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
+                    "partially-phased",
+                    true
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(
+                process.out.bam.collect { meta, bam_file -> [ meta, file(bam_file).name + ":md5," + bam(bam_file, stringency: "silent").getReadsMD5() ] },
+                // no unmapped reads in the test, so only check file name here (empty file)
+                process.out.unassembled_bam.collect { meta, bam_file -> [ meta, file(bam_file).name ] },
+                process.out.vcf.collect { meta, vcf_file -> [ meta, file(vcf_file).name ] },
+                process.out.tbi.collect { meta, tbi_file -> [ meta, file(tbi_file).name ] },
+                process.out.findAll { key, val -> key.startsWith('versions') }
+            ).match()
+            assert process.out.vcf.size() > 0
+            assert process.out.tbi.size() > 0
+        }
+    }
+
+
+    test("portello - [bam, bai, bam, bai], fasta, fully-phased, false") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_assembly.bam'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_assembly.bam.bai'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_to_assembly.bam'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_to_assembly.bam.bai'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
+                    "fully-phased",
+                    false
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(
+                process.out.bam.collect { meta, bam_file -> [ meta, file(bam_file).name + ":md5," + bam(bam_file, stringency: "silent").getReadsMD5() ] },
+                // no unmapped reads in the test, so only check file name here (empty file)
+                process.out.unassembled_bam.collect { meta, bam_file -> [ meta, file(bam_file).name ] },
+                process.out.findAll { key, val -> key.startsWith('versions') }
+            ).match()
+        }
+    }
+
+    test("portello - [bam, bai, bam, bai], fasta, partially-phased, false - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_assembly.bam'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_assembly.bam.bai'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_to_assembly.bam'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_to_assembly.bam.bai'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
+                    "partially-phased",
+                    false
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
+        }
+    }
+
+    test("portello - [bam, bai, bam, bai], fasta, fully-phased, false - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_assembly.bam'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_assembly.bam.bai'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_to_assembly.bam'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_to_assembly.bam.bai'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
+                    "fully-phased",
+                    false
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
+        }
+    }
+
+    test("portello - [bam, bai, bam, bai], fasta, partially-phased, true - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_assembly.bam'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_assembly.bam.bai'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_to_assembly.bam'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test_hifi_aligned_to_assembly.bam.bai'),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true),
+                    "partially-phased",
+                    true
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
+        }
+    }
+
+}

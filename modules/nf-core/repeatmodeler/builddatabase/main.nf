@@ -3,16 +3,16 @@ process REPEATMODELER_BUILDDATABASE {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/repeatmodeler:2.0.5--pl5321hdfd78af_0':
-        'biocontainers/repeatmodeler:2.0.5--pl5321hdfd78af_0' }"
+        'quay.io/biocontainers/repeatmodeler:2.0.5--pl5321hdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
     tuple val(meta), path("${prefix}.*")    , emit: db
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('repeatmodeler'), eval("RepeatModeler --version  2>&1 | sed 's/RepeatModeler version //'") , emit: versions_repeatmodeler, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,13 +21,8 @@ process REPEATMODELER_BUILDDATABASE {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     BuildDatabase \\
-        -name $prefix \\
-        $fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        repeatmodeler: \$(RepeatModeler --version | sed 's/RepeatModeler version //')
-    END_VERSIONS
+        -name ${prefix} \\
+        ${fasta}
     """
 
     stub:
@@ -41,10 +36,5 @@ process REPEATMODELER_BUILDDATABASE {
     touch ${prefix}.nog
     touch ${prefix}.nsq
     touch ${prefix}.translation
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        repeatmodeler: \$(RepeatModeler --version | sed 's/RepeatModeler version //')
-    END_VERSIONS
     """
 }

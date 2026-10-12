@@ -1,0 +1,61 @@
+nextflow_process {
+
+    name "Test Process FINALETOOLKIT_FRAGLENGTHBINS"
+    script "../main.nf"
+    process "FINALETOOLKIT_FRAGLENGTHBINS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "finaletoolkit"
+    tag "finaletoolkit/fraglengthbins"
+
+    test("homo_sapiens - bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam.bai', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match()  }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/NA12878.chr22.bam.bai', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

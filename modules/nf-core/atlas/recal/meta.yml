@@ -6,12 +6,13 @@ keywords:
   - bias
 tools:
   - "atlas":
-      description: "ATLAS, a suite of methods to accurately genotype and estimate genetic
-        diversity"
+      description: "ATLAS, a suite of methods to accurately genotype and estimate genetic\
+        \ diversity"
       homepage: "https://bitbucket.org/wegmannlab/atlas/wiki/Home"
       documentation: "https://bitbucket.org/wegmannlab/atlas/wiki/Home"
       doi: "10.1101/105346"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:atlas_db
 input:
   - - meta:
@@ -61,13 +62,27 @@ output:
             pools
           pattern: "*.txt"
           ontologies: []
+  versions_atlas:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - atlas:
+          type: string
+          description: The name of the tool
+      - "((atlas 2>&1) | grep Atlas | head -n 1 | sed -e 's/^[ \t]*Atlas //')":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - atlas:
+          type: string
+          description: The name of the tool
+      - "((atlas 2>&1) | grep Atlas | head -n 1 | sed -e 's/^[ \t]*Atlas //')":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ltcrod"
 maintainers:

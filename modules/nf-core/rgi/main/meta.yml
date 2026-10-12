@@ -6,17 +6,13 @@ keywords:
   - antibiotic resistance
 tools:
   - rgi:
-      description: This tool provides a preliminary annotation of your DNA sequence(s)
-        based upon the data available in The Comprehensive Antibiotic Resistance Database
-        (CARD). Hits to genes tagged with Antibiotic Resistance ontology terms will
-        be highlighted. As CARD expands to include more pathogens, genomes, plasmids,
-        and ontology terms this tool will grow increasingly powerful in providing first-pass
-        detection of antibiotic resistance associated genes. See license at CARD website
+      description: This tool provides a preliminary annotation of your DNA sequence(s) based upon the data available in The Comprehensive Antibiotic Resistance Database (CARD). Hits to genes tagged with Antibiotic Resistance ontology terms will be highlighted. As CARD expands to include more pathogens, genomes, plasmids, and ontology terms this tool will grow increasingly powerful in providing first-pass detection of antibiotic resistance associated genes. See license at CARD website
       homepage: https://card.mcmaster.ca
       documentation: https://github.com/arpcard/rgi
       tool_dev_url: https://github.com/arpcard/rgi
       doi: "10.1093/nar/gkz935"
-      licence: ["https://card.mcmaster.ca/about"]
+      licence:
+        - "https://card.mcmaster.ca/about"
       identifier: ""
 input:
   - - meta:
@@ -31,15 +27,11 @@ input:
         ontologies: []
   - card:
       type: directory
-      description: Directory containing the CARD database. This is expected to be the
-        unarchived but otherwise unaltered download folder (see RGI documentation for
-        download instructions).
+      description: Directory containing the CARD database. This is expected to be the unarchived but otherwise unaltered download folder (see RGI documentation for download instructions).
       pattern: "*/"
   - wildcard:
       type: directory
-      description: Directory containing the WildCARD database (optional). This is expected
-        to be the unarchived but otherwise unaltered download folder (see RGI documentation
-        for download instructions).
+      description: Directory containing the WildCARD database (optional). This is expected to be the unarchived but otherwise unaltered download folder (see RGI documentation for download instructions).
       pattern: "*/"
 output:
   json:
@@ -48,10 +40,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.json":
+      - "${prefix}.json":
           type: file
           description: JSON formatted file with RGI results
-          pattern: "*.{json}"
+          pattern: "${prefix}.{json}"
           ontologies:
             - edam: http://edamontology.org/format_3464 # JSON
   tsv:
@@ -60,10 +52,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.txt":
+      - "${prefix}.txt":
           type: file
           description: Tab-delimited file with RGI results
-          pattern: "*.{txt}"
+          pattern: "${prefix}.txt"
           ontologies: []
   tmp:
     - - meta:
@@ -78,20 +70,76 @@ output:
   tool_version:
     - RGI_VERSION:
         type: string
-        description: The version of the tool in string format (useful for downstream
-          tools such as hAMRronization)
+        description: The version of the tool in string format (useful for downstream tools such as hAMRronization)
   db_version:
     - DB_VERSION:
         type: string
-        description: The version of the used database in string format (useful for downstream
-          tools such as hAMRronization)
+        description: The version of the used database in string format (useful for downstream tools such as hAMRronization)
+  versions_rgi:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rgi:
+          type: string
+          description: The name of the tool
+      - rgi main --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+  versions_db:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rgi-database:
+          type: string
+          description: The name of the tool
+      - echo \$DB_VERSION:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+  versions_kma:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kma:
+          type: string
+          description: The name of the tool
+      - kma -v | sed 's/KMA-//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rgi:
+          type: string
+          description: The name of the tool
+      - rgi main --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rgi-database:
+          type: string
+          description: The name of the tool
+      - echo \$DB_VERSION:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kma:
+          type: string
+          description: The name of the tool
+      - kma -v | sed 's/KMA-//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@rpetit3"
   - "@jfy133"

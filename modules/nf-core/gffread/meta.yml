@@ -23,13 +23,15 @@ input:
           e.g. [ id:'test' ]
     - gff:
         type: file
-        description: A reference file in either the GFF3, GFF2 or GTF format.
-        pattern: "*.{gff, gtf}"
+        description: A reference file in either the GFF3, GFF2 or GTF format,
+          optionally gzipped.
+        pattern: "*.{gff,gff3,gtf}{,.gz}"
         ontologies: []
   - fasta:
       type: file
-      description: A multi-fasta file with the genomic sequences
-      pattern: "*.{fasta,fa,faa,fas,fsa}"
+      description: A multi-fasta file with the genomic sequences, optionally
+        gzipped
+      pattern: "*.{fasta,fa,faa,fas,fsa}{,.gz}"
       ontologies: []
 output:
   gtf:
@@ -67,6 +69,18 @@ output:
           description: Fasta file produced when either of '-w', '-x', '-y' parameters
             is present
           pattern: "*.fasta"
+          ontologies: []
+  bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing meta data
+            e.g. [ id:'test' ]
+      - "*.bed":
+          type: file
+          description: BED file resulting from the conversion of the GFF input file
+            when the '--bed' argument is present
+          pattern: "*.bed"
           ontologies: []
   versions_gffread:
     - - ${task.process}:

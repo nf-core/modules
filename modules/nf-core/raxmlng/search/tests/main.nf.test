@@ -1,0 +1,125 @@
+nextflow_process {
+
+    name "Test Process RAXMLNG_SEARCH"
+    script "../main.nf"
+    process "RAXMLNG_SEARCH"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "raxmlng"
+    tag "raxmlng/search"
+
+    test("sarscov2 - fixed model") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists: true),
+                    'GTR+G'
+                ]
+                input[1] = []
+                input[2] = []
+                input[3] = []
+                input[4] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["log"])).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - moose automatic model selection") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists: true),
+                    'DNA'
+                ]
+                input[1] = []
+                input[2] = []
+                input[3] = []
+                input[4] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["log"])).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - tree constraint") {
+
+        when {
+            process {
+                """
+                // A comprehensive (fully-resolved) tree is rejected by raxml-ng as a
+                // topological constraint ("almost certainly not what you intended"), so
+                // this is deliberately an unresolved polytomy over the same four sample
+                // names as informative_sites.fas -- a minimal, valid constraint, not a
+                // fixture file.
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists: true),
+                    'GTR+G'
+                ]
+                input[1] = []
+                def constraint_tree = new File(System.getProperty('java.io.tmpdir'), "raxmlng_search_constraint_test.nwk")
+                constraint_tree.text = '(sample1,sample2,sample3,sample4);'
+                input[2] = file(constraint_tree)
+                input[3] = []
+                input[4] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["log"])).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - fixed model - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_stub' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists: true),
+                    'GTR+G'
+                ]
+                input[1] = []
+                input[2] = []
+                input[3] = []
+                input[4] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["log"])).match() }
+            )
+        }
+    }
+
+}

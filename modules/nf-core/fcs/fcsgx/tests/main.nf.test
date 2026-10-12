@@ -15,8 +15,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    "6973"
                 ]
                 input[1] = []
                 """
@@ -25,6 +26,8 @@ nextflow_process {
 
         then {
             assertAll(
+                //{ assert process.success },
+                //{ assert snapshot(sanitizeOutput(process.out)).match()},
                 { assert process.failed },
                 { assert process.errorReport.contains("WARNING: This module has been deprecated. Please use nf-core/modules/fcsgx/rungx")}
             )
@@ -40,8 +43,9 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    "6973"
                 ]
                 input[1] = []
                 """
@@ -50,6 +54,8 @@ nextflow_process {
 
         then {
             assertAll(
+                //{ assert process.success },
+                //{ assert snapshot(sanitizeOutput(process.out)).match()},
                 { assert process.failed },
                 { assert process.errorReport.contains("WARNING: This module has been deprecated. Please use nf-core/modules/fcsgx/rungx")}
             )

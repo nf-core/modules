@@ -1,6 +1,6 @@
 name: sentieon_readwriter
-description: Merges BAM files, and/or convert them into cram files. Also, outputs
-  the result of applying the Base Quality Score Recalibration to a file.
+description: Merges BAM files, and/or convert them into cram files. Also,
+  outputs the result of applying the Base Quality Score Recalibration to a file.
 keywords:
   - merge
   - convert
@@ -59,8 +59,9 @@ output:
             e.g. [ id:'test', single_end:false ]
       - ${prefix}:
           type: file
-          description: BAM/CRAM file. Depends on how ext.prefix is set. BAM "ext.prefix
-            = <filename>.bam", CRAM "ext.prefix = <filename>.cram". Defaults to cram
+          description: BAM/CRAM file. Depends on how ext.prefix is set. BAM
+            "ext.prefix = <filename>.bam", CRAM "ext.prefix = <filename>.cram".
+            Defaults to cram
           pattern: "*.{bam,cram}"
           ontologies: []
   index:
@@ -82,8 +83,9 @@ output:
             e.g. [ id:'test', single_end:false ]
       - ${prefix}:
           type: file
-          description: BAM/CRAM file. Depends on how ext.prefix is set. BAM "ext.prefix
-            = <filename>.bam", CRAM "ext.prefix = <filename>.cram". Defaults to cram
+          description: BAM/CRAM file. Depends on how ext.prefix is set. BAM
+            "ext.prefix = <filename>.bam", CRAM "ext.prefix = <filename>.cram".
+            Defaults to cram
           pattern: "*.{bam,cram}"
           ontologies: []
       - ${prefix}.${index}:
@@ -99,7 +101,7 @@ output:
           type: string
           description: The tool name
       - sentieon driver --version | sed "s/.*-//g":
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 topics:
   versions:
@@ -110,7 +112,7 @@ topics:
           type: string
           description: The tool name
       - sentieon driver --version | sed "s/.*-//g":
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 authors:
   - "@ramprasadn"

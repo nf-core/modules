@@ -3,9 +3,9 @@ process ALLELECOUNTER {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/cancerit-allelecount:4.3.0--h41abebc_0' :
-        'biocontainers/cancerit-allelecount:4.3.0--h41abebc_0' }"
+        'quay.io/biocontainers/cancerit-allelecount:4.3.0--h41abebc_0' }"
 
     input:
     tuple val(meta), path(input), path(input_index)
@@ -14,7 +14,7 @@ process ALLELECOUNTER {
 
     output:
     tuple val(meta), path("*.alleleCount"), emit: allelecount
-    path "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val('alleleCounter'), eval('alleleCounter --version'), emit: versions_allelecounter, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,21 +30,11 @@ process ALLELECOUNTER {
         -b ${input} \\
         ${reference_options} \\
         -o ${prefix}.alleleCount
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        allelecounter: \$(alleleCounter --version)
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.alleleCount
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        allelecounter: \$(alleleCounter --version)
-    END_VERSIONS
     """
 }

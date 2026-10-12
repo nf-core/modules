@@ -33,7 +33,7 @@ nextflow_process {
 					file(process.out.merged_reads[0][1]).name,
 					file(process.out.unstitched_read1[0][1]).name,
 					file(process.out.unstitched_read2[0][1]).name,
-					process.out.versions
+					process.out.findAll { key, val -> key.startsWith('versions') }
 					).match()
 				}
             )

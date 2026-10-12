@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "vizgenpostprocessing_runsegmentationontile"
 description: |
   The module runs the segmentation algorithm on a specific tile using Vizgen's
@@ -15,9 +14,9 @@ tools:
       homepage: "https://github.com/Vizgen/vizgen-postprocessing"
       documentation: "https://vizgen.github.io/vizgen-postprocessing"
       tool_dev_url: "https://github.com/Vizgen/vizgen-postprocessing"
-      licence: ["Apache-2.0"]
+      licence:
+        - "Apache-2.0"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -54,7 +53,6 @@ input:
         Directory containing custom weights for the segmentation algorithm.
         Must be defined in the algorithm JSON file under "custom_weights"
         as directory name only (not full path).
-
 output:
   segmented_tile:
     - - meta:
@@ -67,14 +65,46 @@ output:
           description: |
             Parquet file containing the segmentation results for the specified tile.
           ontologies: []
+  versions_vpt:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vpt:
+          type: string
+          description: The name of the tool
+      - "pip show vpt | sed -n 's/Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_vptplugincellpose2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vpt-plugin-cellpose2:
+          type: string
+          description: The name of the tool
+      - "pip show vpt-plugin-cellpose2 | sed -n 's/Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vpt:
+          type: string
+          description: The name of the tool
+      - "pip show vpt | sed -n 's/Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vpt-plugin-cellpose2:
+          type: string
+          description: The name of the tool
+      - "pip show vpt-plugin-cellpose2 | sed -n 's/Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@mcmero"
 maintainers:

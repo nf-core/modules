@@ -1,0 +1,75 @@
+name: svdss_index
+description: Index a reference genome FASTA file using SVDSS (via ropebwt3), producing either an FMD or FMR index for use with SVDSS smooth and search subcommands
+keywords:
+  - structural variants
+  - sv calling
+  - indexing
+  - reference genome
+  - fm-index
+tools:
+  - svdss:
+      description: |
+        SVDSS is a tool for structural variant discovery from short-read sequencing data.
+        It implements an FM-index-based approach to efficiently detect SVs against a reference genome.
+      homepage: https://github.com/Parsoa/SVDSS
+      documentation: https://github.com/Parsoa/SVDSS
+      tool_dev_url: https://github.com/Parsoa/SVDSS
+      doi: "10.1038/s41592-022-01674-1"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: Reference genome in FASTA format
+        pattern: "*.{fasta,fa,fna}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - output_format:
+      type: string
+      description: |
+        Output index format. Use 'fmd' for the fermi-delta format (adds -d flag)
+        or 'fmr' for the ropebwt format (adds -b flag).
+      pattern: "fmd|fmr"
+output:
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.${output_format}:
+          type: file
+          description: FM-index file produced by SVDSS index, used as input for SVDSS smooth and search
+          pattern: "*.{fmd,fmr}"
+          ontologies: []
+  versions_svdss:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - svdss:
+          type: string
+          description: The name of the tool
+      - SVDSS --version 2>&1 | sed 's/SVDSS, v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - svdss:
+          type: string
+          description: The name of the tool
+      - SVDSS --version 2>&1 | sed 's/SVDSS, v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"

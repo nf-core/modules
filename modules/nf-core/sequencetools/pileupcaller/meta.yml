@@ -1,6 +1,6 @@
 name: "sequencetools_pileupcaller"
-description: PileupCaller is a tool to create genotype calls from bam files using
-  read-sampling methods
+description: PileupCaller is a tool to create genotype calls from bam files
+  using read-sampling methods
 keywords:
   - genotyping
   - mpileup
@@ -17,10 +17,10 @@ tools:
       homepage: "https://github.com/stschiff/sequenceTools"
       documentation: "https://github.com/stschiff/sequenceTools#readme"
       tool_dev_url: "https://github.com/stschiff/sequenceTools"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
-  # Only when we have meta
   - - meta:
         type: map
         description: |
@@ -41,7 +41,6 @@ input:
       description: File containing the sample names
       ontologies: []
 output:
-  #Only when we have meta
   eigenstrat:
     - - meta:
           type: map
@@ -50,20 +49,20 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.geno":
           type: file
-          description: A tuple containing the output Eigenstrat-formatted geno, snp
-            and ind files.
+          description: A tuple containing the output Eigenstrat-formatted geno,
+            snp and ind files.
           pattern: "*.{geno,snp,ind}.txt"
           ontologies: []
       - "*.snp":
           type: file
-          description: A tuple containing the output Eigenstrat-formatted geno, snp
-            and ind files.
+          description: A tuple containing the output Eigenstrat-formatted geno,
+            snp and ind files.
           pattern: "*.{geno,snp,ind}.txt"
           ontologies: []
       - "*.ind":
           type: file
-          description: A tuple containing the output Eigenstrat-formatted geno, snp
-            and ind files.
+          description: A tuple containing the output Eigenstrat-formatted geno,
+            snp and ind files.
           pattern: "*.{geno,snp,ind}.txt"
           ontologies: []
   plink:
@@ -74,20 +73,20 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.bed":
           type: file
-          description: A tuple containing the output Plink-formatted bed, bim and fam
-            files.
+          description: A tuple containing the output Plink-formatted bed, bim and
+            fam files.
           pattern: "*.{bed,bim,fam}"
           ontologies: []
       - "*.bim":
           type: file
-          description: A tuple containing the output Plink-formatted bed, bim and fam
-            files.
+          description: A tuple containing the output Plink-formatted bed, bim and
+            fam files.
           pattern: "*.{bed,bim,fam}"
           ontologies: []
       - "*.fam":
           type: file
-          description: A tuple containing the output Plink-formatted bed, bim and fam
-            files.
+          description: A tuple containing the output Plink-formatted bed, bim and
+            fam files.
           pattern: "*.{bed,bim,fam}"
           ontologies: []
   freqsum:
@@ -101,14 +100,28 @@ output:
           description: The output freqsum-formatted file.
           pattern: "*.freqsum.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
+  versions_pileupcaller:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sequencetools:
+          type: string
+          description: The name of the tool
+      - pileupCaller --version 2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sequencetools:
+          type: string
+          description: The name of the tool
+      - pileupCaller --version 2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@TCLamnidis"
 maintainers:

@@ -3,7 +3,7 @@ process RSEM_CALCULATEEXPRESSION {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/23/23651ffd6a171ef3ba867cb97ef615f6dd6be39158df9466fe92b5e844cd7d59/data' :
         'community.wave.seqera.io/library/rsem_star:5acb4e8c03239c32' }"
 
@@ -29,6 +29,10 @@ process RSEM_CALCULATEEXPRESSION {
     script:
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
+
+    if (!args.contains('--temporary-folder')) {
+        args += ' --temporary-folder ./tmp/'
+    }
 
     def strandedness = ''
     if (meta.strandedness == 'forward') {
@@ -60,7 +64,6 @@ process RSEM_CALCULATEEXPRESSION {
 
     rsem-calculate-expression \\
         --num-threads $task.cpus \\
-        --temporary-folder ./tmp/ \\
         $alignment_mode \\
         $strandedness \\
         \$PAIRED_END_FLAG \\

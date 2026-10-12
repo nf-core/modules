@@ -1,0 +1,119 @@
+nextflow_process {
+
+    name "Test Process FOLDDISCO_QUERY"
+    script "../main.nf"
+    process "FOLDDISCO_QUERY"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "folddisco"
+    tag "folddisco/query"
+    tag "folddisco/index"
+
+    setup {
+        run("FOLDDISCO_INDEX") {
+            script "../../index/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'proteomics/pdb/1tim.pdb', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'proteomics/pdb/8tim.pdb', checkIfExists: true)
+                    ]
+                ]
+                """
+            }
+        }
+    }
+
+    test("proteomics - pdb - tsv") {
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/pdb/1tim.pdb', checkIfExists: true),
+                    'A13,A95,A167'
+                ]
+                input[1] = FOLDDISCO_INDEX.out.index.map { meta2, index -> [
+                    meta2,
+                    index,
+                    [
+                        file(params.modules_testdata_base_path + 'proteomics/pdb/1tim.pdb', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'proteomics/pdb/8tim.pdb', checkIfExists: true)
+                    ]
+                ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("proteomics - pdb - tsv - skip-match") {
+        when {
+            params {
+                module_args = '--skip-match'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/pdb/1tim.pdb', checkIfExists: true),
+                    'A13,A95,A167'
+                ]
+                input[1] = FOLDDISCO_INDEX.out.index.map { meta2, index -> [ meta2, index, [] ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("proteomics - pdb - tsv - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/pdb/1tim.pdb', checkIfExists: true),
+                    'A13,A95,A167'
+                ]
+                input[1] = FOLDDISCO_INDEX.out.index.map { meta2, index -> [ meta2, index, [] ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

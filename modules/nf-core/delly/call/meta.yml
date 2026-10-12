@@ -69,6 +69,13 @@ input:
         description: Index of reference fasta file to identify split-reads
         pattern: "*.fai"
         ontologies: []
+  - suffix:
+      type: string
+      description: A flag to specify whether the output should be in BCF or VCF
+        format
+      enum:
+        - "bcf"
+        - "vcf"
 output:
   bcf:
     - - meta:
@@ -78,8 +85,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.{bcf,vcf.gz}":
           type: file
-          description: Called variants in BCF/VCF format. Specify either "bcf" or
-            "vcf" in ext.suffix to define the output type
+          description: Called variants in BCF/VCF format. Set suffix to either
+            "bcf" or "vcf" to define the output type
           pattern: "*.{bcf,vcf.gz}"
           ontologies: []
   csi:

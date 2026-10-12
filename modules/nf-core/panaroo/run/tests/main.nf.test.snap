@@ -1,15 +1,110 @@
 {
     "test-panaroo-run": {
         "content": [
-            "core_gene_alignment.aln",
-            [
-                "versions.yml:md5,49ee9fe842e7bd81615491cdb6148fc2"
-            ]
+            {
+                "aln": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "core_gene_alignment.aln"
+                    ]
+                ],
+                "results": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "aligned_gene_sequences",
+                            "alignment_entropy.csv",
+                            "combined_DNA_CDS.fasta",
+                            "combined_protein_CDS.fasta",
+                            "combined_protein_cdhit_out.txt",
+                            "combined_protein_cdhit_out.txt.clstr",
+                            "core_alignment_filtered_header.embl",
+                            "core_alignment_header.embl",
+                            "core_gene_alignment.aln",
+                            "core_gene_alignment_filtered.aln",
+                            "final_graph.gml",
+                            "gene_data.csv",
+                            "gene_presence_absence.Rtab",
+                            "gene_presence_absence.csv",
+                            "gene_presence_absence_roary.csv",
+                            "pan_genome_reference.fa",
+                            "pre_filt_graph.gml",
+                            "struct_presence_absence.Rtab",
+                            "summary_statistics.txt"
+                        ]
+                    ]
+                ],
+                "versions_panaroo": [
+                    [
+                        "PANAROO_RUN",
+                        "panaroo",
+                        "1.6.0"
+                    ]
+                ]
+            }
         ],
-        "timestamp": "2026-02-16T20:49:05.381248688",
+        "timestamp": "2026-08-03T22:25:32.391835534",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "test-panaroo-run -- stub": {
+        "content": [
+            {
+                "aln": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "core_gene_alignment.aln:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "results": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "aligned_gene_sequences:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "alignment_entropy.csv:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "combined_DNA_CDS.fasta:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "combined_protein_CDS.fasta:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "combined_protein_cdhit_out.txt:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "combined_protein_cdhit_out.txt.clstr:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "core_alignment_filtered_header.embl:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "core_alignment_header.embl:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "core_gene_alignment.aln:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "core_gene_alignment_filtered.aln:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "final_graph.gml:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "gene_data.csv:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "gene_presence_absence.Rtab:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "gene_presence_absence.csv:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "gene_presence_absence_roary.csv:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "pan_genome_reference.fa:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "pre_filt_graph.gml:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "struct_presence_absence.Rtab:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "summary_statistics.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "versions_panaroo": [
+                    [
+                        "PANAROO_RUN",
+                        "panaroo",
+                        "1.6.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-08-03T22:17:57.647423955",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
         }
     }
 }

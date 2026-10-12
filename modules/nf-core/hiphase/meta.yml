@@ -1,105 +1,300 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "hiphase"
-description: pacbio structural variant calling tool
+description: Small and structural variant phasing tool for PacBio HiFi reads,
+  supporting co-phasing of SNVs and SVs across multiple BAM files and samples
 keywords:
   - pacbio
   - structural variant
   - phasing
   - pacbio hifi
+  - snv
+  - haplotagging
 tools:
   - "hiphase":
       description: "Small and structural variant phasing tool for PacBio HiFi reads"
       homepage: "https://github.com/PacificBiosciences/HiPhase"
       documentation: "https://github.com/PacificBiosciences/HiPhase"
       tool_dev_url: "https://github.com/PacificBiosciences/HiPhase"
-      licence: ["Pacific Biosciences Software License Agreement"]
+      licence:
+        - "Pacific Biosciences Software License Agreement"
       identifier: biotools:hiphase
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - vcf:
+          e.g. `[ id:'sample1' ]`
+    - bams:
         type: file
-        description: VCF File
-        pattern: "*.{vcf}"
-        ontologies: []
-    - csi:
+        description: One or more sorted BAM/CRAM files
+        pattern: "*.{bam,cram}"
+        ontologies:
+          - edam: http://edamontology.org/format_2572
+    - bais:
         type: file
-        description: CSI File associated with VCF
-        pattern: "*.{csi}"
+        description: Index files associated with the BAM/CRAM files
+        pattern: "*.{bai,crai,csi}"
         ontologies: []
+    - snv:
+        type: file
+        description: Compressed VCF file containing SNV/small variants to phase
+          (optional)
+        pattern: "*.{vcf.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_3016
+    - snv_index:
+        type: file
+        description: Index file for the SNV VCF (optional)
+        pattern: "*.{tbi,csi}"
+        ontologies: []
+    - sv:
+        type: file
+        description: Compressed VCF file containing structural variants to
+          co-phase (optional)
+        pattern: "*.{vcf.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_3016
+    - sv_index:
+        type: file
+        description: Index file for the SV VCF (optional)
+        pattern: "*.{tbi,csi}"
+        ontologies: []
+    - samples:
+        type: list
+        description: "List of sample names to phase within the VCF, if empty only the
+          first sample is phased."
   - - meta2:
         type: map
         description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
-    - bam:
-        type: file
-        description: Sorted BAM/CRAM/SAM file
-        pattern: "*.{bam}"
-        ontologies: []
-    - bai:
-        type: file
-        description: Index File BAI associated with BAM file
-        pattern: "*.{bai}"
-        ontologies: []
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
+          Groovy Map containing reference genome information
+          e.g. `[ id:'GRCh38' ]`
     - fasta:
         type: file
-        description: FASTA File (used for the alignment of the BAM file)
-        pattern: "*.{fasta}"
+        description: Reference genome FASTA file used for the BAM alignment
+        pattern: "*.{fasta,fa}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929
+    - fai:
+        type: file
+        description: FASTA index file (.fai) for the reference genome
+        pattern: "*.fai"
         ontologies: []
+  - output_bam:
+      type: boolean
+      description: Whether to output haplotagged BAM files. Set to true to emit
+        phased BAM files with haplotag information.
+  - summary_file:
+      type: boolean
+      description: Whether to output a phasing summary file.
+  - blocks_file:
+      type: boolean
+      description: Whether to output a phasing blocks file.
+  - stats_file:
+      type: boolean
+      description: Whether to output a per-read phasing statistics file.
+  - haplotag_file:
+      type: boolean
+      description: Whether to output a haplotag assignments file.
+  - file_format:
+      type: string
+      description: Output file format for summary/blocks/stats/haplotag files,
+        either 'tsv' or 'csv'.
 output:
-  bam:
+  vcfs:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
+            e.g. `[ id:'sample1' ]`
+      - "*_snv_phased.vcf.gz":
+          type: file
+          description: Phased and compressed SNV VCF file (optional, only emitted
+            when SNV VCF input is provided)
+          pattern: "*_snv_phased.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3016
+            - edam: http://edamontology.org/format_3989
+  sv_vcfs:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_sv_phased.vcf.gz":
+          type: file
+          description: Phased and compressed SV VCF file (optional, only emitted
+            when SV VCF input is provided)
+          pattern: "*_sv_phased.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3016
+            - edam: http://edamontology.org/format_3989
+  vcfs_indexes:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_snv_phased.vcf.gz.{tbi,csi}":
+          type: file
+          description: Index file for the phased SNV VCF (optional)
+          pattern: "*_snv_phased.vcf.gz.{tbi,csi}"
+          ontologies: []
+  sv_vcfs_indexes:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_sv_phased.vcf.gz.{tbi,csi}":
+          type: file
+          description: Index file for the phased SV VCF (optional)
+          pattern: "*_sv_phased.vcf.gz.{tbi,csi}"
+          ontologies: []
+  summary_tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.summary.tsv":
+          type: file
+          description: TSV file containing phasing summary statistics (optional)
+          pattern: "*.summary.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  summary_csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.summary.csv":
+          type: file
+          description: CSV file containing phasing summary statistics (optional)
+          pattern: "*.summary.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
+  blocks_tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.blocks.tsv":
+          type: file
+          description: TSV file containing phasing block information (optional)
+          pattern: "*.blocks.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  blocks_csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.blocks.csv":
+          type: file
+          description: CSV file containing phasing block information (optional)
+          pattern: "*.blocks.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
+  stats_tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.stats.tsv":
+          type: file
+          description: TSV file containing per-read phasing statistics (optional)
+          pattern: "*.stats.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  stats_csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.stats.csv":
+          type: file
+          description: CSV file containing per-read phasing statistics (optional)
+          pattern: "*.stats.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
+  haplotag_tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.haplotag.tsv":
+          type: file
+          description: TSV file containing haplotag assignments per read
+            (optional)
+          pattern: "*.haplotag.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  haplotag_csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.haplotag.csv":
+          type: file
+          description: CSV file containing haplotag assignments per read
+            (optional)
+          pattern: "*.haplotag.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752
+  bams:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
       - "*.bam":
           type: file
-          description: Phased BAM file with haplotag information
+          description: Haplotagged BAM file(s) with haplotype information in the
+            HP tag (optional, only emitted when output_bam is true)
           pattern: "*.bam"
           ontologies:
-            - edam: http://edamontology.org/format_2572 # BAM
-  vcf:
+            - edam: http://edamontology.org/format_2572
+  bams_indexes:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "*.vcf":
+            e.g. `[ id:'sample1' ]`
+      - "*.bam.{bai,csi}":
           type: file
-          description: Phased VCF file
-          pattern: "*.vcf"
-          ontologies:
-            - edam: http://edamontology.org/format_3016 # VCF
-  csv:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1', single_end:false ]`
-      - "*.csv":
-          type: file
-          description: stats associated with the phasing
-          pattern: "*.csv"
-          ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+          description: Index file(s) for the haplotagged BAM file(s) (optional,
+            only emitted when output_bam is true)
+          pattern: "*.bam.{bai,csi}"
+          ontologies: []
+  versions_hiphase:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - hiphase:
+          type: string
+          description: Name of the tool
+      - "hiphase --version | sed 's/.* //g'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - hiphase:
+          type: string
+          description: Name of the tool
+      - "hiphase --version | sed 's/.* //g'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@tanyasarkjain"
+  - "@fellen31"
 maintainers:
-  - "@tanyasarkjain"
+  - "@fellen31"

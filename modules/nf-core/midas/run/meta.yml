@@ -12,7 +12,8 @@ tools:
       documentation: "https://github.com/snayfach/MIDAS"
       tool_dev_url: "https://github.com/snayfach/MIDAS"
       doi: "10.1101/gr.201863.115"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:midashla
 input:
   - - meta:
@@ -51,13 +52,29 @@ output:
           description: A directory of results from MIDAS run
           pattern: "*"
           ontologies: []
+  versions_midas:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - midas:
+          type: string
+          description: The name of the tool
+      - 1.3.2:
+          type: string
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - midas:
+          type: string
+          description: The name of the tool
+      - 1.3.2:
+          type: string
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@rpetit3"
 maintainers:

@@ -12,7 +12,8 @@ tools:
       homepage: https://github.com/genomehubs/goat-cli
       documentation: https://github.com/genomehubs/goat-cli/wiki
       tool_dev_url: https://genomehubs.github.io/goat-cli/goat_cli/
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:goat
 input:
   - - meta:
@@ -43,14 +44,28 @@ output:
           description: TSV file containing search results.
           pattern: "*.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
+  versions_goat:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - goat:
+          type: string
+          description: The name of the tool
+      - goat-cli --version | cut -d' ' -f2:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - goat:
+          type: string
+          description: The name of the tool
+      - goat-cli --version | cut -d' ' -f2:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@alxndrdiaz"
 maintainers:

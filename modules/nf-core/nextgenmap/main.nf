@@ -3,9 +3,9 @@ process NEXTGENMAP {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/nextgenmap%3A0.5.5--hc9558a2_4' :
-        'biocontainers/nextgenmap:0.5.5--hc9558a2_4' }"
+        'quay.io/biocontainers/nextgenmap:0.5.5--hc9558a2_4' }"
 
     input:
     tuple val(meta), path(reads)
@@ -13,7 +13,7 @@ process NEXTGENMAP {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path  "versions.yml"          , emit: versions
+    tuple val("${task.process}"), val('nextgenmap'), eval("ngm --version 2>&1 | sed -n '1s/^.*NextGenMap //p'"), emit: versions_nextgenmap, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,11 +32,6 @@ process NEXTGENMAP {
             --bam \\
             -o ${prefix}.bam \\
             $args
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            NextGenMap: \$(ngm 2>&1 | head -1 | grep -o -E '[[:digit:]]+.[[:digit:]]+.[[:digit:]]+')
-        END_VERSIONS
         """
     } else{
         """
@@ -48,11 +43,6 @@ process NEXTGENMAP {
             --bam \\
             -o ${prefix}.bam \\
             $args
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            NextGenMap: \$(ngm 2>&1 | head -1 | grep -o -E '[[:digit:]]+.[[:digit:]]+.[[:digit:]]+')
-        END_VERSIONS
         """
     }
 
@@ -60,10 +50,5 @@ process NEXTGENMAP {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        NextGenMap: \$(ngm 2>&1 | head -1 | grep -o -E '[[:digit:]]+.[[:digit:]]+.[[:digit:]]+')
-    END_VERSIONS
     """
 }

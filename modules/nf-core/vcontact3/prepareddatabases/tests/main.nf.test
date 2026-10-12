@@ -1,0 +1,55 @@
+nextflow_process {
+
+    name "Test Process VCONTACT3_PREPAREDDATABASES"
+    script "../main.nf"
+    process "VCONTACT3_PREPAREDDATABASES"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "vcontact3"
+    tag "vcontact3/prepareddatabases"
+
+    test("vcontact3_prepare_databases - latest_version") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    'latest'
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["database"])).match() }
+            )
+        }
+    }
+
+    test("vcontact3_prepare_databases - latest_version - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    'latest'
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

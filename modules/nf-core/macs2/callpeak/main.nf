@@ -3,22 +3,21 @@ process MACS2_CALLPEAK {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/macs2:2.2.9.1--py39hff71179_1':
-        'biocontainers/macs2:2.2.9.1--py39hff71179_1' }"
+        'quay.io/biocontainers/macs2:2.2.9.1--py39hff71179_1' }"
 
     input:
     tuple val(meta), path(ipbam), path(controlbam)
-    val   macs2_gsize
+    val macs2_gsize
 
     output:
     tuple val(meta), path("*.{narrowPeak,broadPeak}"), emit: peak
     tuple val(meta), path("*.xls")                   , emit: xls
-    path  "versions.yml"                             , emit: versions
-
-    tuple val(meta), path("*.gappedPeak"), optional:true, emit: gapped
-    tuple val(meta), path("*.bed")       , optional:true, emit: bed
-    tuple val(meta), path("*.bdg")       , optional:true, emit: bdg
+    tuple val(meta), path("*.gappedPeak")            , emit: gapped, optional:true
+    tuple val(meta), path("*.bed")                   , emit: bed, optional:true
+    tuple val(meta), path("*.bdg")                   , emit: bdg, optional:true
+    tuple val("${task.process}"), val('macs2'), eval("macs2 --version | sed 's/macs2 //'"), emit: versions_macs2, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,16 +38,11 @@ process MACS2_CALLPEAK {
     macs2 \\
         callpeak \\
         ${args_list.join(' ')} \\
-        --gsize $macs2_gsize \\
-        --format $format \\
-        --name $prefix \\
-        --treatment $ipbam \\
-        $control
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        macs2: \$(macs2 --version | sed -e "s/macs2 //g")
-    END_VERSIONS
+        --gsize ${macs2_gsize} \\
+        --format ${format} \\
+        --name ${prefix} \\
+        --treatment ${ipbam} \\
+        ${control}
     """
 
     stub:
@@ -59,10 +53,5 @@ process MACS2_CALLPEAK {
     touch ${prefix}.bdg
     touch ${prefix}.narrowPeak
     touch ${prefix}.xls
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        macs3: \$(macs3 --version | sed -e "s/macs3 //g")
-    END_VERSIONS
     """
 }

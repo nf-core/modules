@@ -6,13 +6,14 @@ keywords:
   - cluster
 tools:
   - mobsuite:
-      description: Software tools for clustering, reconstruction and typing of plasmids
-        from draft assemblies.
+      description: Software tools for clustering, reconstruction and typing of
+        plasmids from draft assemblies.
       homepage: https://github.com/phac-nml/mob-suite
       documentation: https://github.com/phac-nml/mob-suite
       tool_dev_url: https://github.com/phac-nml/mob-suite
       doi: "10.1099/mgen.0.000435"
-      licence: ["Apache License, Version 2.0"]
+      licence:
+        - "Apache License, Version 2.0"
       identifier: ""
 input:
   - - meta:
@@ -45,8 +46,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - results/contig_report.txt:
           type: file
-          description: Assignment of the contig to chromosome or a particular plasmid
-            grouping
+          description: Assignment of the contig to chromosome or a particular
+            plasmid grouping
           pattern: "contig_report.txt"
           ontologies: []
   plasmids:
@@ -71,13 +72,29 @@ output:
           description: Aggregate MOB-typer report files for all identified plasmid
           pattern: "mobtyper_results.txt"
           ontologies: []
+  versions_mobsuite:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mobsuite:
+          type: string
+          description: The name of the tool
+      - mob_recon --version 2>&1 | sed 's/.*mob_recon //; s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mobsuite:
+          type: string
+          description: The name of the tool
+      - mob_recon --version 2>&1 | sed 's/.*mob_recon //; s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@rpetit3"
 maintainers:

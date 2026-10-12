@@ -45,12 +45,17 @@ input:
       type: integer
       description: |
         which version of the cache to annotate with
-  - cache:
-      type: file
-      description: |
-        path to VEP cache (optional)
-      ontologies: []
   - - meta2:
+        type: map
+        description: |
+          Groovy Map containing cache information
+          e.g. [ id:'test' ]
+    - cache:
+        type: file
+        description: |
+          path to VEP cache (optional)
+        ontologies: []
+  - - meta3:
         type: map
         description: |
           Groovy Map containing fasta reference information
@@ -66,6 +71,19 @@ input:
       description: |
         path to file(s) needed for plugins  (optional)
       ontologies: []
+  - - gtf:
+        type: file
+        description: |
+          sorted, bgzipped GTF file to annotate with instead of a cache (optional).
+          Mutually exclusive with `cache`.
+        pattern: "*.gtf.gz"
+        ontologies: []
+    - gtf_tbi:
+        type: file
+        description: |
+          tabix index of the GTF file (optional)
+        pattern: "*.gtf.gz.tbi"
+        ontologies: []
 output:
   vcf:
     - - meta:

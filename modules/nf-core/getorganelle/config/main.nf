@@ -3,16 +3,16 @@ process GETORGANELLE_CONFIG {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/getorganelle:1.7.7.0--pyh7cba7a3_0':
-        'biocontainers/getorganelle:1.7.7.0--pyh7cba7a3_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/getorganelle:1.7.7.1--pyhdfd78af_0'
+        : 'quay.io/biocontainers/getorganelle:1.7.7.1--pyhdfd78af_0'}"
 
     input:
     val(organelle_type)
 
     output:
     tuple val(organelle_type), path("getorganelle"), emit: db
-    path "versions.yml"                            , emit: versions
+    tuple val("${task.process}"), val('getorganelle'), eval("get_organelle_config.py --version |& sed 's/^GetOrganelle v//'"), topic: versions, emit: versions_getorganelle
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,25 +21,14 @@ process GETORGANELLE_CONFIG {
     def args = task.ext.args ?: ''
     """
     get_organelle_config.py \\
-        $args \\
+        ${args} \\
         -a ${organelle_type} \\
         --config-dir getorganelle
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        getorganelle: \$(get_organelle_config.py --version | sed 's/^GetOrganelle v//g')
-    END_VERSIONS
     """
 
     stub:
-
     """
     mkdir -p getorganelle/{LabelDatabase,SeedDatabase}
     touch getorganelle/{LabelDatabase,SeedDatabase}/${organelle_type}.fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        getorganelle: \$(get_organelle_config.py --version | sed 's/^GetOrganelle v//g')
-    END_VERSIONS
     """
 }

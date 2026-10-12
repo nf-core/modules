@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "toulligqc"
 description: "A post sequencing QC tool for Oxford Nanopore sequencers"
 keywords:
@@ -11,9 +10,9 @@ tools:
       homepage: https://github.com/GenomiqueENS/toulligQC
       documentation: https://github.com/GenomiqueENS/toulligQC
       tool_dev_url: https://github.com/GenomiqueENS/toulligQC
-      licence: ["CECILL-2.1"]
+      licence:
+        - "CECILL-2.1"
       identifier: biotools:ToulligQC
-
 input:
   - - meta:
         type: map
@@ -25,7 +24,7 @@ input:
         description: Input ONT file
         pattern: "*.{fastq,fastq.gz,fq,fq.gz,txt,txt.gz,bam}"
         ontologies:
-          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_1930
 output:
   report_data:
     - - meta:
@@ -81,7 +80,6 @@ output:
       - toulligqc --version:
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -93,7 +91,6 @@ topics:
       - toulligqc --version:
           type: eval
           description: The expression to obtain the version of the tool
-
 authors:
   - "@Salome-Brunon"
 maintainers:

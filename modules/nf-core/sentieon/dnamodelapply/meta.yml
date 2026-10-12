@@ -1,5 +1,6 @@
 name: sentieon_dnamodelapply
-description: modifies the input VCF file by adding the MLrejected FILTER to the variants
+description: modifies the input VCF file by adding the MLrejected FILTER to
+  variants that are rejected by the selected machine learning model
 keywords:
   - dnamodelapply
   - vcf
@@ -68,7 +69,7 @@ output:
             e.g. `[ id:'test', single_end:false ]`
       - "*.vcf.gz":
           type: file
-          description: INPUT VCF file
+          description: Output VCF file
           pattern: "*.{vcf,vcf.gz}"
           ontologies: []
   tbi:
@@ -79,7 +80,7 @@ output:
             e.g. `[ id:'test', single_end:false ]`
       - "*.vcf.gz.tbi":
           type: file
-          description: Index of the input VCF file
+          description: Index of the output VCF file
           pattern: "*.{tbi}"
           ontologies: []
   versions_sentieon:
@@ -90,7 +91,7 @@ output:
           type: string
           description: The tool name
       - sentieon driver --version | sed "s/.*-//g":
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 topics:
   versions:
@@ -101,9 +102,33 @@ topics:
           type: string
           description: The tool name
       - sentieon driver --version | sed "s/.*-//g":
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
 authors:
   - "@ramprasadn"
 maintainers:
   - "@ramprasadn"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/sentieon:202503.03--493a9352fdfbacc5
+      build_id: bd-493a9352fdfbacc5_1
+      scan_id: sc-cb424814848a20d9_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/sentieon:202503.03--5e34aa16344b911c
+      build_id: bd-5e34aa16344b911c_1
+      scan_id: sc-8746dd39a4711178_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/sentieon:202503.03--5a01457f1db078c1
+      build_id: bd-5a01457f1db078c1_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/af/af478c78e4ddb4fc9c570e47f3d64d86bb02e5c5467c6c095f21f95f59a7c3ab/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/sentieon:202503.03--95eea6ffae22db3c
+      build_id: bd-95eea6ffae22db3c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2c/2c157e27981ec529b03e7ae5cfc88e51b6158332d2a82db399eef8dd8f2b1d5d/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/sentieon/dnamodelapply/.conda-lock/linux_amd64-bd-5e34aa16344b911c_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/sentieon/dnamodelapply/.conda-lock/linux_arm64-bd-493a9352fdfbacc5_1.txt

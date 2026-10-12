@@ -65,9 +65,9 @@ output:
       - gridss:
           type: string
           description: The tool name
-      - "echo \\$(GeneratePonBedpe --version 2>&1) | sed 's/-gridss//'":
+      - GeneratePonBedpe --version 2>&1 | sed 's/-gridss//':
           type: eval
-          description: The command used to generate the version of the tool
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -76,9 +76,9 @@ topics:
       - gridss:
           type: string
           description: The tool name
-      - "echo \\$(GeneratePonBedpe --version 2>&1) | sed 's/-gridss//'":
+      - GeneratePonBedpe --version 2>&1 | sed 's/-gridss//':
           type: eval
-          description: The command used to generate the version of the tool
+          description: The expression to obtain the version of the tool
 authors:
   - "@kubranarci"
 maintainers:

@@ -8,7 +8,6 @@ keywords:
   - function
   - install
   - database
-
 tools:
   - "pharokka":
       description: "Fast Phage Annotation Program"
@@ -16,7 +15,8 @@ tools:
       documentation: "https://pharokka.readthedocs.io"
       tool_dev_url: "https://github.com/gbouras13/pharokka"
       doi: "10.1093/bioinformatics/btac776"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:pharokka
 
 output:
@@ -25,13 +25,29 @@ output:
         type: directory
         description: Directory pointing to Pharokka's database
         pattern: "${prefix}/"
+  versions_pharokka:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pharokka:
+          type: string
+          description: The name of the tool
+      - pharokka.py --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pharokka:
+          type: string
+          description: The name of the tool
+      - pharokka.py --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@CarsonJM"
 maintainers:

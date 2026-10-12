@@ -37,7 +37,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.bcf_gz,
-                    process.out.tbi.collect{meta, tbi -> file(tbi).name},
+                    process.out.index.collect{meta, index -> file(index).name},
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
@@ -104,7 +104,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.vcf_gz,
-                    process.out.csi.collect{meta, csi -> file(csi).name},
+                    process.out.index.collect{meta, index -> file(index).name},
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )

@@ -30,6 +30,8 @@ nextflow_process {
                 { assert process.success  },
                 { assert process.out.html },
                 { assert process.out.html[0][1] ==~ /.*test_report\.html$/ },
+                { assert path(process.out.html[0][1]).getText().contains("Predicted best k: ") },
+                { assert path(process.out.log[0][1]).getText().readLines().last().contains("best k: ") },
                 { assert snapshot(
                     process.out.histo,
                     process.out.dat,

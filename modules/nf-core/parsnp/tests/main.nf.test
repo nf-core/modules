@@ -1,0 +1,120 @@
+nextflow_process {
+
+    name "Test Process PARSNP"
+    script "../main.nf"
+    process "PARSNP"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "parsnp"
+
+    test("candidatus_portiera_aleyrodidarum - fasta") {
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                def genome = file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta', checkIfExists: true)
+                def genome2 = genome.copyTo('portiera_2.fa')
+
+                input[0] = [[ id:'test' ], [genome, genome2]]
+                input[1] = genome
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("candidatus_portiera_aleyrodidarum - fasta - stub") {
+        options "-stub"
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                def genome = file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta', checkIfExists: true)
+                def genome2 = genome.copyTo('portiera_2.fa')
+                input[0] = [[ id:'test' ], [genome, genome2]]
+                input[1] = genome
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("candidatus_portiera_aleyrodidarum - fasta - partition") {
+        when {
+            params {
+                module_args = '--min-partition-size 1'
+            }
+            process {
+                """
+                def genome = file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta', checkIfExists: true)
+                def genome2 = genome.copyTo('portiera_2.fa')
+                def genome3 = genome.copyTo('portiera_3.fa')
+                input[0] = [[ id:'test' ], [genome, genome2, genome3]]
+                input[1] = genome
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.xmfa,
+                    process.out.ggr,
+                    process.out.snps_mblocks,
+                    process.out.tree,
+                    process.out.versions_parsnp,
+                    file(process.out.partition[0][1]).name
+                ).match() }
+            )
+        }
+
+    }
+
+    test("candidatus_portiera_aleyrodidarum - fasta - partition - stub") {
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--min-partition-size 1'
+            }
+            process {
+                """
+                def genome = file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/genome.fasta', checkIfExists: true)
+                def genome2 = genome.copyTo('portiera_2.fa')
+                def genome3 = genome.copyTo('portiera_3.fa')
+                input[0] = [[ id:'test' ], [genome, genome2, genome3]]
+                input[1] = genome
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

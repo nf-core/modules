@@ -1,0 +1,82 @@
+nextflow_process {
+
+    name "Test Process OARFISH_ALIGNMENTPROJECTIONMODE"
+    script "../main.nf"
+    process "OARFISH_ALIGNMENTPROJECTIONMODE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "oarfish"
+    tag "oarfish/alignmentprojectionmode"
+    tag "samtools/collate"
+
+    setup {
+        run("SAMTOOLS_COLLATE") {
+            script "modules/nf-core/samtools/collate/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true)
+                ]
+                input[1] = [[], [], []]
+                """
+            }
+        }
+    }
+
+    test("pacbio - bam") {
+
+        when {
+            process {
+                """
+                input[0] = SAMTOOLS_COLLATE.out.bam
+                input[1] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
+                input[2] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ['meta_info'])).match() }
+            )
+        }
+    }
+
+    test("pacbio - bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = SAMTOOLS_COLLATE.out.bam
+                input[1] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
+                input[2] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

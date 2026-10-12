@@ -10,7 +10,8 @@ tools:
         A demultiplexer for Nanopore samples
       homepage: https://github.com/nanoporetech/qcat
       documentation: https://github.com/nanoporetech/qcat#qcat
-      licence: ["MPL-2.0"]
+      licence:
+        - "MPL-2.0"
       identifier: ""
 input:
   - - meta:
@@ -39,13 +40,29 @@ output:
           pattern: "*.fastq.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_qcat:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - qcat:
+          type: string
+          description: The name of the tool
+      - qcat --version | sed 's/.*qcat //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - qcat:
+          type: string
+          description: The name of the tool
+      - qcat --version | sed 's/.*qcat //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@yuukiiwa"
   - "@drpatelh"

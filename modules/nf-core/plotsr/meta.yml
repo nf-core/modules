@@ -1,7 +1,5 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "plotsr"
-description: Plotsr generates high-quality visualisation of synteny and
-  structural rearrangements between multiple genomes.
+description: Plotsr generates high-quality visualisation of synteny and structural rearrangements between multiple genomes.
 keywords:
   - genomics
   - synteny
@@ -14,7 +12,8 @@ tools:
       documentation: "https://github.com/schneebergerlab/plotsr"
       tool_dev_url: "https://github.com/schneebergerlab/plotsr"
       doi: "10.1093/bioinformatics/btac196"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:plotsr
 input:
   - - meta:
@@ -116,13 +115,29 @@ output:
           description: Synteny plot
           pattern: "*.png"
           ontologies: []
+  versions_plotsr:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - plotsr:
+          type: string
+          description: The name of the tool
+      - plotsr --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - plotsr:
+          type: string
+          description: The name of the tool
+      - plotsr --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@GallVp"
 maintainers:

@@ -1,11 +1,11 @@
 process SAMTOOLS_GETRG {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.22.1--h96c455f_0' :
-        'biocontainers/samtools:1.22.1--h96c455f_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e9/e994bf4eb3731150511a14f5706b7bdfd64df1b6d40898fff334286c027e0859/data'
+        : 'community.wave.seqera.io/library/htslib_samtools:1.24--d697cfb9dce007cd'}"
 
     input:
     tuple val(meta), path(input)
@@ -25,7 +25,7 @@ Reason:
 This module has been renamed to samtools/splitheader, which has the same functionality but
 extends the outputs to include other types of SAM header.
 """
-    assert false: deprecation_message
+    assert false : deprecation_message
     """
     """
 
@@ -37,7 +37,7 @@ Reason:
 This module has been renamed to samtools/splitheader, which has the same functionality but
 extends the outputs to include other types of SAM header.
 """
-    assert false: deprecation_message
+    assert false : deprecation_message
     """
     """
 }

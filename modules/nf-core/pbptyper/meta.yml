@@ -7,12 +7,12 @@ keywords:
   - assembly
 tools:
   - "pbptyper":
-      description: "In silico Penicillin Binding Protein (PBP) typer for Streptococcus
-        pneumoniae assemblies"
+      description: "In silico Penicillin Binding Protein (PBP) typer for Streptococcus pneumoniae assemblies"
       homepage: "https://github.com/rpetit3/pbptyper"
       documentation: "https://github.com/rpetit3/pbptyper"
       tool_dev_url: "https://github.com/rpetit3/pbptyper"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -55,13 +55,29 @@ output:
           pattern: "*.tblastn.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
+  versions_pbptyper:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pbptyper:
+          type: string
+          description: The name of the tool
+      - pbptyper --version 2>&1 | sed 's/^.*pbptyper, version //;':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pbptyper:
+          type: string
+          description: The name of the tool
+      - pbptyper --version 2>&1 | sed 's/^.*pbptyper, version //;':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@rpetit3"
 maintainers:

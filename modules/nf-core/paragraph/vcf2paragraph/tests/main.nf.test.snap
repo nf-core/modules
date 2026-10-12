@@ -10,36 +10,32 @@
                     "test.json.gz:md5,68dce3f3713b691f9ab45744500871bf"
                 ]
             ],
-            [
-                "versions.yml:md5,a7024dd35463d16da31df17264fdad6d"
-            ],
-            [
-                "\"PARAGRAPH_VCF2PARAGRAPH\":",
-                "paragraph: 2.3",
-                "bgzip: 1.10.2"
-            ]
+            {
+                "versions_bgzip": [
+                    [
+                        "PARAGRAPH_VCF2PARAGRAPH",
+                        "bgzip",
+                        "1.10.2"
+                    ]
+                ],
+                "versions_paragraph": [
+                    [
+                        "PARAGRAPH_VCF2PARAGRAPH",
+                        "paragraph",
+                        "2.3"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-07-31T20:04:25.929331954",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-08-30T10:55:01.125722"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     },
     "test-paragraph-vcf2paragraph-stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.json.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,a7024dd35463d16da31df17264fdad6d"
-                ],
                 "graph": [
                     [
                         {
@@ -49,15 +45,26 @@
                         "test.json.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,a7024dd35463d16da31df17264fdad6d"
+                "versions_bgzip": [
+                    [
+                        "PARAGRAPH_VCF2PARAGRAPH",
+                        "bgzip",
+                        "1.10.2"
+                    ]
+                ],
+                "versions_paragraph": [
+                    [
+                        "PARAGRAPH_VCF2PARAGRAPH",
+                        "paragraph",
+                        "2.3"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-07-31T20:04:33.219349699",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-08-29T16:42:34.344697"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     }
 }

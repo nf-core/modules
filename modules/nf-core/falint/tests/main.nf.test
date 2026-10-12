@@ -70,7 +70,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() },
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() },
                 { assert process.out.success_log == [] },
                 { assert file(process.out.error_log[0][1]).text.contains('Fasta file must start with a header line') }
             )

@@ -41,14 +41,27 @@ output:
           type: directory
           description: Directory of KMA index files
           pattern: "*.{comp.b,length.b,name,seq.b}"
+  versions_kma:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kma:
+          type: string
+          description: The name of the tool
+      - kma_index -v 2>&1 | sed "s/^KMA_index-//":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kma:
+          type: string
+          description: The name of the tool
+      - kma_index -v 2>&1 | sed "s/^KMA_index-//":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@krannich479"
 maintainers:

@@ -1,11 +1,12 @@
 process SENTIEON_QUALCAL {
     tag "${meta.id}"
     label 'process_medium'
+    label 'sentieon'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ae/ae67a134620c3af22c8563a2913c4639caa0d75ce25764e7b10c996b242aa023/data'
-        : 'community.wave.seqera.io/library/sentieon_gnuplot:41931fca35668c97'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cc/cc38c6c54118622727fc9495edd2b318f3d85f45b84c00681cb8eae623ec12e0/data'
+        : 'community.wave.seqera.io/library/sentieon_gnuplot:84874a80b33697db'}"
 
     input:
     tuple val(meta), path(input), path(input_index)

@@ -1,0 +1,84 @@
+nextflow_process {
+
+    name "Test Process OCTOPUSV_CLEAN"
+    script "../main.nf"
+    process "OCTOPUSV_CLEAN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "octopusv"
+    tag "octopusv/clean"
+
+    test("clean vcf") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz', checkIfExists: true),
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.vcf.get(0).get(1)).vcf.summary,
+                    path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("clean vcf with reference fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    path(process.out.vcf.get(0).get(1)).vcf.summary,
+                    path(process.out.vcf.get(0).get(1)).vcf.variantsMD5,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/vcf/chr21/simulated_sv.vcf.gz', checkIfExists: true),
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
+        }
+    }
+}

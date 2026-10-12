@@ -1,5 +1,6 @@
 name: "vrhyme_extractunbinned"
-description: Extracting sequences that were unbinnned by vRhyme into a FASTA file
+description: Extracting sequences that were unbinnned by vRhyme into a FASTA
+  file
 keywords:
   - bin
   - binning
@@ -15,7 +16,9 @@ tools:
       documentation: https://github.com/AnantharamanLab/vRhyme
       tool_dev_url: https://github.com/AnantharamanLab/vRhyme
       doi: 10.1093/nar/gkac341
-      licence: ["GPL v3 license", "GPL v3"]
+      licence:
+        - "GPL v3 license"
+        - "GPL v3"
       identifier: biotools:vrhyme
 input:
   - - meta:
@@ -25,11 +28,11 @@ input:
           e.g. [ id:'test' ]
     - membership:
         type: file
-        description: TSV file containing information regarding which bins input sequences
-          were placed information
+        description: TSV file containing information regarding which bins input
+          sequences were placed information
         pattern: "*.{tsv}"
         ontologies:
-          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3475
   - - meta2:
         type: map
         description: |
@@ -40,7 +43,7 @@ input:
         description: FASTA file containing contigs/scaffolds input into vRhyme
         pattern: "*.{fasta,fna,fa,fasta.gz,fna.gz,fa.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_1929
 output:
   unbinned_sequences:
     - - meta:
@@ -53,14 +56,28 @@ output:
           description: FASTA file containing unbinned sequences
           pattern: "*_unbinned_sequences.fasta"
           ontologies:
-            - edam: http://edamontology.org/format_1929 # FASTA
+            - edam: http://edamontology.org/format_1929
+  versions_vrhyme:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vrhyme:
+          type: string
+          description: The name of the tool
+      - vRhyme --version 2>&1 | sed 's/^.*vRhyme v//; s/Using.*\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vrhyme:
+          type: string
+          description: The name of the tool
+      - vRhyme --version 2>&1 | sed 's/^.*vRhyme v//; s/Using.*\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@CarsonJM"
 maintainers:

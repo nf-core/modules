@@ -35,10 +35,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.bins[0][1]).listFiles().collect { it.name }.toSorted(), // Some files are unstable
-                    process.out.membership,
-                    file(process.out.summary[0][1]).name, // unstable
-                    process.out.versions
+                    sanitizeOutput(process.out, unstableKeys: ["bins", "summary"])
                     ).match()
                 }
             )
@@ -68,7 +65,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

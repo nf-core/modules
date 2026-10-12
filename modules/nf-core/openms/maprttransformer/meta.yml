@@ -1,0 +1,78 @@
+name: "openms_maprttransformer"
+description: Applies a retention time transformation (trafoXML) to a spectra or
+  identification/feature map.
+keywords:
+  - alignment
+  - retention time
+  - trafoXML
+  - openms
+  - proteomics
+tools:
+  - "openms":
+      description: "OpenMS is an open-source software C++ library for LC-MS data management and analyses"
+      homepage: "https://openms.de"
+      documentation: "https://openms.readthedocs.io/en/latest/index.html"
+      tool_dev_url: "https://github.com/OpenMS/OpenMS"
+      doi: "10.1038/s41592-024-02197-7"
+      licence: ["BSD"]
+      identifier: "biotools:openms"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test', single_end:false ]`
+    - in_file:
+        type: file
+        description: Spectra or identification/feature map to transform.
+        pattern: "*.{mzML,idXML,featureXML,consensusXML}"
+        ontologies:
+          - edam: http://edamontology.org/data_2536 # Mass spectrometry data
+    - trafoxml:
+        type: file
+        description: Retention time transformation to apply.
+        pattern: "*.trafoXML"
+        ontologies:
+          - edam: http://edamontology.org/data_2536 # Mass spectrometry data
+output:
+  aligned:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test', single_end:false ]`
+      - "${prefix}.${in_file.extension}":
+          type: file
+          description: Input map with transformed retention times, same format as
+            the input.
+          pattern: "*.{mzML,idXML,featureXML,consensusXML}"
+          ontologies:
+            - edam: http://edamontology.org/data_2536 # Mass spectrometry data
+  versions_openms:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - openms:
+          type: string
+          description: The name of the tool
+      - "FileInfo --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - openms:
+          type: string
+          description: The name of the tool
+      - "FileInfo --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@jonasscheid"
+maintainers:
+  - "@jonasscheid"

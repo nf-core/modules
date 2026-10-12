@@ -11,7 +11,7 @@ keywords:
   - quality control
   - adapter removal
 tools:
-  - hifi_trimmer:
+  - hifi-trimmer:
       description: |
         hifi_trimmer: tools for processing HiFi read BLAST results and filtering/trimming
         BAM files to output processed FASTA/FASTQ and accompanying summary and hit (optional) files.
@@ -27,8 +27,8 @@ input:
     - blast:
         type: file
         description: BLAST TSV output file used by hifi_trimmer (e.g. .blast, .out). Must be generated using "blastn -query <reads> -db <adapter_db> -outfmt '6 std qlen'".
-        pattern: "*.blast"
-  - - meta1:
+        pattern: "*.{blast,out}"
+  - - meta2:
         type: map
         description: |
           Groovy Map containing sample information
@@ -79,10 +79,10 @@ output:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - hifi_trimmer:
+      - hifi-trimmer:
           type: string
           description: The name of the tool
-      - hifi_trimmer --version | cut -d' ' -f3:
+      - hifi-trimmer --version | cut -d' ' -f3:
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -91,10 +91,10 @@ topics:
     - - ${task.process}:
           type: string
           description: The name of the process
-      - hifi_trimmer:
+      - hifi-trimmer:
           type: string
           description: The name of the tool
-      - hifi_trimmer --version | cut -d' ' -f3:
+      - hifi-trimmer --version | cut -d' ' -f3:
           type: eval
           description: The expression to obtain the version
 authors:

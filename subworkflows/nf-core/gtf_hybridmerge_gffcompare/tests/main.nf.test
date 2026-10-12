@@ -1,0 +1,122 @@
+nextflow_workflow {
+
+    name "Test Subworkflow GTF_HYBRIDMERGE_GFFCOMPARE"
+    script "../main.nf"
+    config "../nextflow.config"
+
+    workflow "GTF_HYBRIDMERGE_GFFCOMPARE"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/gtf_hybridmerge_gffcompare"
+
+    tag "gffcompare"
+    tag "gawk"
+    tag "bedtools"
+    tag "bedtools/intersect"
+
+    test("chr21 reference + chr22 novel - no blacklist") {
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [id: 'chr22_novel'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ])
+                input[1] = channel.value([
+                    [id: 'chr21_reference'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true)
+                ])
+                input[2] = channel.value([
+                    [id: 'chr21_backbone'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true)
+                ])
+                input[3] = channel.value("u,j,i,k,m,n,o,p,r,s,x,y,=")
+                input[4] = channel.empty()
+                """
+            }
+        }
+
+        then {
+            def hybridLines = path(workflow.out.hybrid_gtf[0][1]).readLines().findAll { !it.startsWith('#') }
+            def chr22Rows   = hybridLines.findAll { it.split('\t', -1)[0] == 'chr22' }
+            def synthGenes  = chr22Rows.findAll { it.split('\t', -1)[2] == 'gene' }
+            def synthSpanMatchesUnion = {
+                def geneSpans = [:]
+                def txStarts  = [:].withDefault { [] }
+                def txEnds    = [:].withDefault { [] }
+                chr22Rows.each { line ->
+                    def c = line.split('\t', -1)
+                    def gid = (c[8] =~ /gene_id "([^"]+)"/)[0][1]
+                    if (c[2] == 'gene') geneSpans[gid] = [c[3] as int, c[4] as int]
+                    if (c[2] == 'transcript') { txStarts[gid] << (c[3] as int); txEnds[gid] << (c[4] as int) }
+                }
+                geneSpans.every { gid, span -> span[0] == txStarts[gid].min() && span[1] == txEnds[gid].max() }
+            }
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.hybrid_gtf.size() == 1 },
+                { assert hybridLines.every { it ==~ /.*gene_id "[^"]+";.*/ },
+                    "hybrid GTF has lines without a well-formed gene_id \"...\"; attribute" },
+                { assert workflow.out.hybrid_gtf[0][0] == [id: 'chr21_backbone'],
+                    "hybrid_gtf meta should equal the backbone meta but was ${workflow.out.hybrid_gtf[0][0]}" },
+                { assert synthGenes.size() > 0,
+                    "no synthesised gene rows on chr22; the concat awk did not graft any novel genes" },
+                { assert synthSpanMatchesUnion(),
+                    "synthesised gene row spans do not match the union of their child transcripts; concat awk has regressed on gene-span correctness" },
+                { assert snapshot(
+                    workflow.out.hybrid_gtf,
+                    workflow.out.gffcompare_stats,
+                    workflow.out.gffcompare_tracking,
+                    workflow.out.gffcompare_loci
+                ).match() }
+            )
+        }
+    }
+
+    test("chr21 reference + chr22 novel - with chr22 blacklist") {
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [id: 'chr22_novel'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ])
+                input[1] = channel.value([
+                    [id: 'chr21_reference'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true)
+                ])
+                input[2] = channel.value([
+                    [id: 'chr21_backbone'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/chr21_gencode.gtf', checkIfExists: true)
+                ])
+                input[3] = channel.value("u,j,i,k,m,n,o,p,r,s,x,y,=")
+                input[4] = channel.of([
+                    [id: 'chr22_blacklist'],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.blacklist_intervals.bed', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            def hybridLines = path(workflow.out.hybrid_gtf[0][1]).readLines().findAll { !it.startsWith('#') }
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.hybrid_gtf.size() == 1 },
+                { assert hybridLines.every { it ==~ /.*gene_id "[^"]+";.*/ },
+                    "hybrid GTF has lines without a well-formed gene_id \"...\"; attribute" },
+                { assert workflow.out.hybrid_gtf[0][0] == [id: 'chr21_backbone'],
+                    "hybrid_gtf meta should equal the backbone meta but was ${workflow.out.hybrid_gtf[0][0]}" },
+                { assert snapshot(
+                    workflow.out.hybrid_gtf,
+                    workflow.out.gffcompare_stats,
+                    workflow.out.gffcompare_tracking,
+                    workflow.out.gffcompare_loci
+                ).match() }
+            )
+        }
+    }
+}

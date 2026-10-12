@@ -28,8 +28,8 @@ nextflow_process {
                 { assert snapshot(process.out.spp,
                                   file(process.out.pdf.get(0).get(1)).name,
                                   file(process.out.rdata.get(0).get(1)).name,
-                                  process.out.versions)
-                                  .match()
+                                  process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match()
                 }
             )
         }
@@ -55,8 +55,8 @@ nextflow_process {
                 { assert snapshot(process.out.spp,
                                   file(process.out.pdf.get(0).get(1)).name,
                                   file(process.out.rdata.get(0).get(1)).name,
-                                  process.out.versions)
-                                  .match()
+                                  process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match()
                 }
             )
         }

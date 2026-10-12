@@ -47,14 +47,28 @@ output:
             - edam: http://edamontology.org/format_1930 # FASTQ
             - edam: http://edamontology.org/format_3464 # JSON
             - edam: http://edamontology.org/format_3750 # YAML
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+  versions_bamtools:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - bamtools:
+          type: string
+          description: The name of the tool
+      - "bamtools --version | sed '2!d;s/bamtools //g'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@sguizard"
 maintainers:
   - "@sguizard"
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - bamtools:
+          type: string
+          description: The name of the tool
+      - "bamtools --version | sed '2!d;s/bamtools //g'":
+          type: eval
+          description: The expression to obtain the version of the tool

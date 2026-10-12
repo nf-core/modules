@@ -16,7 +16,8 @@ tools:
       documentation: "https://github.com/grenaud/leeHom"
       tool_dev_url: "https://github.com/grenaud/leeHom"
       doi: "10.1093/nar/gku699"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:leehom
 input:
   - - meta:
@@ -124,13 +125,27 @@ output:
           description: Log file of command
           pattern: "*.log"
           ontologies: []
+  versions_last:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - last:
+          type: string
+          description: The name of the tool
+      - 1.2.15:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - last:
+          type: string
+          description: The name of the tool
+      - 1.2.15:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:

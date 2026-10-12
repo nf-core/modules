@@ -11,23 +11,60 @@ tools:
       homepage: "https://lbgi.fr/AnnotSV/"
       documentation: "https://lbgi.fr/AnnotSV/"
       tool_dev_url: "https://github.com/lgmgeo/AnnotSV"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:AnnotSV
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - annotsv_version:
+        type: string
+        description: |
+          The AnnotSV annotations version to install e.g. 3.5, 3.4.3
+          If left empty then exomiser_version must also be empty and
+          default versions for the version of AnnotSV tool will be used
+    - exomiser_version:
+        type: string
+        description: |
+          The Exomiser annotations version to install e.g. 2406
+          If left empty then annotsv_versions must also be empty and
+          default versions for the version of AnnotSV tool will be used
 output:
   annotations:
-    - AnnotSV_annotations:
-        type: file
-        description: A folder containing the annotations
-        pattern: "AnnotSV_annotations"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - AnnotSV_annotations:
+          type: file
+          description: A folder containing the annotations
+          pattern: "AnnotSV_annotations"
+          ontologies: []
+  versions_annotsv:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - annotsv:
+          type: string
+          description: The name of the tool
+      - AnnotSV --version | sed 's/AnnotSV //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - annotsv:
+          type: string
+          description: The name of the tool
+      - AnnotSV --version | sed 's/AnnotSV //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:

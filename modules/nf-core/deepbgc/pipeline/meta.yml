@@ -158,13 +158,46 @@ output:
           description: BGC detection scores of each Pfam domain in genomic order
           pattern: "*.{score.png}"
           ontologies: []
+  versions_deepbgc:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deepbgc:
+          type: string
+          description: The name of the tool
+      - deepbgc info 2>&1 | sed '6!d;s/.*= version //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_prodigal:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - prodigal:
+          type: string
+          description: The name of the tool
+      - prodigal -v 2>&1 | sed '2!d;s/Prodigal V//;s/:.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deepbgc:
+          type: string
+          description: The name of the tool
+      - deepbgc info 2>&1 | sed '6!d;s/.*= version //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - prodigal:
+          type: string
+          description: The name of the tool
+      - prodigal -v 2>&1 | sed '2!d;s/Prodigal V//;s/:.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@louperelo"
   - "@jfy133"

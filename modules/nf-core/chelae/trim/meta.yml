@@ -1,0 +1,106 @@
+name: chelae_trim
+description: Adapter and quality trimming of short-read FASTQ data using chelae.
+keywords:
+  - trimming
+  - quality control
+  - fastq
+  - adapter
+  - umi
+tools:
+  - chelae:
+      description: |
+        A fast, accurate, multi-threaded toolkit for trimming and filtering short-read
+        FASTQ data, written in Rust. Outputs BGZF-compressed FASTQ and a fastp-compatible
+        JSON report suitable for MultiQC.
+      homepage: https://github.com/fulcrumgenomics/chelae
+      documentation: https://github.com/fulcrumgenomics/chelae
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information. Use 'single_end: true' to specify
+          single-end FASTQs, or 'single_end: false' for paired-end reads.
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files. One file for single-end data, two files for
+          paired-end data (R1 and R2).
+        pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1930" # FASTQ
+  - adapter_fasta:
+      type: file
+      description: |
+        Optional FASTA file of adapter sequences. The best-matching adapter will
+        be trimmed. Use an empty list [] when not supplying an adapter file;
+        adapter kits can be specified via ext.args using --kit instead.
+      pattern: "*.{fasta,fna,fas,fa}"
+      ontologies: []
+output:
+  reads:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.chelae.fastq.gz":
+          type: file
+          description: |
+            Trimmed FASTQ file(s), BGZF-compressed. Single file for SE; R1 and R2
+            files for PE.
+          pattern: "*.chelae.fastq.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_1930" # FASTQ
+            - edam: "http://edamontology.org/format_3989" # GZIP format
+  json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.chelae.json":
+          type: file
+          description: fastp-compatible JSON trimming report, consumable by MultiQC.
+          pattern: "*.chelae.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464" # JSON
+  metrics:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.chelae.tsv":
+          type: file
+          description: Tab-separated trimming metrics summary.
+          pattern: "*.chelae.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  versions_chelae:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - chelae:
+          type: string
+          description: The name of the tool
+      - chelae --version 2>&1 | sed 's/chelae //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - chelae:
+          type: string
+          description: The name of the tool
+      - chelae --version 2>&1 | sed 's/chelae //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@emmcauley"
+maintainers:
+  - "@emmcauley"

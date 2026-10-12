@@ -7,9 +7,7 @@ keywords:
   - proteome
 tools:
   - busco:
-      description: BUSCO provides measures for quantitative assessment of genome assembly,
-        gene set, and transcriptome completeness based on evolutionarily informed expectations
-        of gene content from near-universal single-copy orthologs selected from OrthoDB.
+      description: BUSCO provides measures for quantitative assessment of genome assembly, gene set, and transcriptome completeness based on evolutionarily informed expectations of gene content from near-universal single-copy orthologs selected from OrthoDB.
       homepage: https://busco.ezlab.org/
       documentation: https://busco.ezlab.org/busco_userguide.html
       tool_dev_url: https://gitlab.com/ezlab/busco
@@ -19,8 +17,7 @@ tools:
 input:
   - lineage:
       type: string
-      description: The BUSCO lineage to use, or "auto", "auto_prok" or "auto_euk" to
-        automatically select lineage
+      description: The BUSCO lineage to use, or "auto", "auto_prok" or "auto_euk" to automatically select lineage
 output:
   download_dir:
     - busco_downloads:
@@ -49,8 +46,21 @@ topics:
       - busco --version 2> /dev/null | sed 's/BUSCO //g':
           type: eval
           description: The expression to obtain the version of the tool
-
 authors:
   - "@zachary-foster"
 maintainers:
   - "@zachary-foster"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/busco:6.1.0--6d1f7006d91892b3
+      build_id: bd-6d1f7006d91892b3_1
+      scan_id: sc-7ee408324c396471_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/busco:6.1.0--c7528d5825eb19b5
+      build_id: bd-c7528d5825eb19b5_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/96/963bad66c10646cf0adb1967cc462ad04d02789ddbfae4fbb94182291dbddf8c/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/busco/download/.conda-lock/linux_amd64-bd-6d1f7006d91892b3_1.txt

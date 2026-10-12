@@ -1,0 +1,59 @@
+nextflow_process {
+
+    name "Test Process BIGSLICE_DOWNLOADDB"
+    script "../main.nf"
+    process "BIGSLICE_DOWNLOADDB"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bigslice"
+    tag "bigslice_downloaddb"
+    tag "bigslice/downloaddb"
+
+    test("bigslice - downloaddb") {
+
+        when {
+            process {
+                """
+                input[0] = [ id: 'test' ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            def dbDir = file(process.out.db[0][1])
+            def topDirs = []
+            dbDir.eachDir { topDirs << it.name }
+            assertAll(
+                { assert dbDir.isDirectory() },
+                { assert snapshot(
+                    topDirs.sort(),
+                    ["versions_bigslice": process.out.versions_bigslice]
+                ).match() },
+                { assert process.out.versions_python }
+            )
+        }
+
+    }
+
+    test("bigslice - downloaddb - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ id: 'test' ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
+        }
+
+    }
+
+}

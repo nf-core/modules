@@ -35,7 +35,12 @@ input:
     - fasta:
         type: file
         description: FASTA ref file
-        pattern: "*.fasta"
+        pattern: "*.{fasta,fa,fna}"
+        ontologies: []
+    - fai:
+        type: file
+        description: FASTA ref index file
+        pattern: "*.{fasta,fa,fna}.fai"
         ontologies: []
 output:
   bam:
@@ -74,3 +79,4 @@ authors:
   - "@JackCurragh"
 maintainers:
   - "@JackCurragh"
+  - "@matthdsm"

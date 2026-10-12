@@ -111,13 +111,27 @@ output:
             generated if there are low coverage targets
           pattern: "low_coverage_targets*.bed"
           ontologies: []
+  versions_purecn:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - purecn:
+          type: string
+          description: The name of the tool
+      - Rscript -e 'cat(as.character(packageVersion("PureCN")))':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - purecn:
+          type: string
+          description: The name of the tool
+      - Rscript -e 'cat(as.character(packageVersion("PureCN")))':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@aldosr"
   - "@lbeltrame"

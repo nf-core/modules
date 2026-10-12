@@ -7,11 +7,12 @@ keywords:
   - fastq
 tools:
   - bbmap:
-      description: BBMap is a short read aligner, as well as various other bioinformatic
-        tools.
+      description: BBMap is a short read aligner, as well as various other
+        bioinformatic tools.
       homepage: https://jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/
       documentation: https://jgi.doe.gov/data-and-tools/software-tools/bbtools/bb-tools-user-guide/
-      licence: ["UC-LBL license (see package)"]
+      licence:
+        - "UC-LBL license (see package)"
       identifier: biotools:bbmap
 input:
   - - meta:
@@ -42,7 +43,7 @@ output:
           description: The trimmed/modified fastq reads
           pattern: "*fastq.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989 # GZIP
   log:
     - - meta:
           type: map
@@ -54,13 +55,27 @@ output:
           description: Bbduk log file
           pattern: "*bbduk.log"
           ontologies: []
+  versions_bbmap:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - bbmap:
+          type: string
+          description: The name of the tool
+      - bbversion.sh | grep -v "Duplicate cpuset":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - bbmap:
+          type: string
+          description: The name of the tool
+      - bbversion.sh | grep -v "Duplicate cpuset":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@MGordon09"
 maintainers:

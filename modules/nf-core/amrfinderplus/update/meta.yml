@@ -6,15 +6,16 @@ keywords:
   - antibiotic resistance
 tools:
   - amrfinderplus:
-      description: AMRFinderPlus finds antimicrobial resistance and other genes in protein
-        or nucleotide sequences.
+      description: AMRFinderPlus finds antimicrobial resistance and other genes in
+        protein or nucleotide sequences.
       homepage: https://github.com/ncbi/amr/wiki
       documentation: https://github.com/ncbi/amr/wiki
       tool_dev_url: https://github.com/ncbi/amr
       doi: "10.1038/s41598-021-91456-0"
-      licence: ["Public Domain"]
+      licence:
+        - "Public Domain"
       identifier: biotools:amrfinderplus
-# this module does have any input.
+input: []
 output:
   db:
     - amrfinderdb.tar.gz:
@@ -24,13 +25,27 @@ output:
         ontologies:
           - edam: "http://edamontology.org/format_3981" # TAR format
           - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_amrfinder:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - amrfinder:
+          type: string
+          description: The name of the tool
+      - amrfinder --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - amrfinder:
+          type: string
+          description: The name of the tool
+      - amrfinder --version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@rpetit3"
 maintainers:

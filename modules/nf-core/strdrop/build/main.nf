@@ -3,7 +3,7 @@ process STRDROP_BUILD {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f8/f860e6cdc0d4222f89145d5e5f6aba15368eefc50b65bc78890613d976344a7f/data':
         'community.wave.seqera.io/library/pip_strdrop:b1aa6c1a4a3357f2' }"
 

@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "taxonkit_name2taxid"
 description: Convert taxon names to TaxIds
 keywords:
@@ -13,7 +12,8 @@ tools:
       documentation: "https://bioinf.shenwei.me/taxonkit/usage/#name2taxid"
       tool_dev_url: "https://github.com/shenwei356/taxonkit"
       doi: "10.1016/j.jgg.2021.03.006"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:taxonkit
 
 input:
@@ -24,15 +24,17 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - name:
         type: string
-        description: Taxon name to look up (provide either this or names.txt, not both)
+        description: Taxon name to look up (provide either this or names.txt, not
+          both)
     - names_txt:
         type: file
-        description: File with taxon names to look up, each on their own line (provide
-          either this or name, not both)
+        description: File with taxon names to look up, each on their own line
+          (provide either this or name, not both)
         ontologies: []
   - taxdb:
       type: file
-      description: Taxonomy database unpacked from ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz
+      description: Taxonomy database unpacked from
+        ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz
       ontologies: []
 output:
   tsv:
@@ -47,13 +49,29 @@ output:
           pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
+  versions_taxonkit:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - taxonkit:
+          type: string
+          description: The name of the tool
+      - taxonkit version | sed 's/.* v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - taxonkit:
+          type: string
+          description: The name of the tool
+      - taxonkit version | sed 's/.* v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@mahesh-panchal"
 maintainers:

@@ -59,7 +59,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.config,
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
                     path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/filtered_peak_bc_matrix.h5"                        ),
                     path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/filtered_peak_bc_matrix/barcodes.tsv"              ),
                     path( "${process.out.outs[0][1][1].split('/')[0..-2].join('/')}/filtered_peak_bc_matrix/peaks.bed"                 ),
@@ -99,13 +99,8 @@ nextflow_process {
             }
         }
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    process.out.versions.collect{ path(it).yaml }
-                    ).match() }
-            )
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
     }
 }

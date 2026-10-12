@@ -1,0 +1,110 @@
+{
+    "isoseq groupdedup - bam": {
+        "content": [
+            [
+                "@HD\tVN:1.6\tSO:unknown\tpb:5.0.0",
+                "@RG\tID:aeeb0c82\tPL:PACBIO\tDS:READTYPE=TRANSCRIPT\tPU:molecule\tPM:SEQUEL",
+                "@PG\tID:isoseq groupdedup\tVN:26.2.0 (commit v26.2.0)\tCL:groupdedup -j 1 mini.bam mini.dedup.bam"
+            ],
+            "d74fe619c13fea599070510c52936c3e",
+            [
+                "mini.dedup.bam.pbi"
+            ],
+            [
+                [
+                    {
+                        "id": "mini"
+                    },
+                    "mini.dedup.fasta.gz:md5,a2865970d49928a321b8dfa5cc294774"
+                ]
+            ],
+            {
+                "versions_isoseq": [
+                    [
+                        "ISOSEQ_GROUPDEDUP",
+                        "isoseq",
+                        "26.2.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-09-02T17:23:46.816138",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "isoseq groupdedup - bam - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "mini"
+                        },
+                        "mini.dedup.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "mini"
+                        },
+                        "mini.dedup.bam.pbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "mini"
+                        },
+                        "mini.dedup.fasta.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "3": [
+                    [
+                        "ISOSEQ_GROUPDEDUP",
+                        "isoseq",
+                        "26.2.0"
+                    ]
+                ],
+                "bam": [
+                    [
+                        {
+                            "id": "mini"
+                        },
+                        "mini.dedup.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "fasta": [
+                    [
+                        {
+                            "id": "mini"
+                        },
+                        "mini.dedup.fasta.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "pbi": [
+                    [
+                        {
+                            "id": "mini"
+                        },
+                        "mini.dedup.bam.pbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_isoseq": [
+                    [
+                        "ISOSEQ_GROUPDEDUP",
+                        "isoseq",
+                        "26.2.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-09-02T16:15:59.524422",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    }
+}

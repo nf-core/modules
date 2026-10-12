@@ -21,7 +21,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.rnalfold_txt, process.out.versions).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["rnalfold_ps"])).match() }
             )
         }
 
@@ -42,7 +42,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.rnalfold_txt, process.out.versions).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

@@ -30,7 +30,7 @@ nextflow_process {
                 { assert process.out.kfinal_contigs[0][1].each{path(it).linesGzip.toString().contains(">k")}},
                 { assert snapshot(
                         path(process.out.log[0][1]).readLines().last().contains("ALL DONE. Time elapsed"),
-                        process.out.versions
+                        process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -61,7 +61,7 @@ nextflow_process {
                 { assert process.out.kfinal_contigs[0][1].each{path(it).linesGzip.toString().contains(">k")}},
                 { assert snapshot(
                         path(process.out.log[0][1]).readLines().last().contains("ALL DONE. Time elapsed"),
-                        process.out.versions
+                        process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -92,7 +92,7 @@ nextflow_process {
                 { assert process.out.kfinal_contigs[0][1].each{path(it).linesGzip.toString().contains(">k")}},
                 { assert snapshot(
                         path(process.out.log[0][1]).readLines().last().contains("ALL DONE. Time elapsed"),
-                        process.out.versions
+                        process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )

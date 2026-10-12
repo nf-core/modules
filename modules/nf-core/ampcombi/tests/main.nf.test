@@ -27,6 +27,8 @@ nextflow_process {
 
         then {
             assertAll(
+                //{ assert process.success },
+                //{ assert snapshot(sanitizeOutput(process.out)).match()},
                 { assert process.failed },
                 { assert process.errorReport.contains("WARNING: This module has been deprecated.")}
             )
@@ -64,7 +66,7 @@ nextflow_process {
                     process.out.faa.collect { file(it[1]).readLines()[0] } +
                     process.out.log.collect { file(it[1]).readLines().contains("ampir") } +
                     process.out.summary_csv.collect { file(it[1]).readLines().contains("Structure_Description") } +
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }

@@ -3,16 +3,16 @@ process MSISENSOR_SCAN {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/msisensor:0.5--hb3646a4_2' :
-        'biocontainers/msisensor:0.5--hb3646a4_2' }"
+        'quay.io/biocontainers/msisensor:0.5--hb3646a4_2' }"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
     tuple val(meta), path("*.tab"), emit: txt
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('msisensor'), eval("msisensor 2>&1 | sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p'"), emit: versions_msisensor, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,10 +35,6 @@ process MSISENSOR_SCAN {
         -o ${prefix}.msisensor_scan.tab \\
         $args
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        msisensor: \$(msisensor 2>&1 | sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p')
-    END_VERSIONS
     """
 
     stub:

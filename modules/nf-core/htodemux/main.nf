@@ -3,7 +3,7 @@ process HTODEMUX {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f9/f96b7927142847485eff858170a4cfd2d3924fb4f09de7043dd6677ac6acd09e/data':
         'community.wave.seqera.io/library/r-seurat_r-seuratobject:b11306d1bdc82827' }"
 
@@ -15,7 +15,7 @@ process HTODEMUX {
     tuple val(meta), path("*_assignment_htodemux.csv")    , emit: assignment
     tuple val(meta), path("*_classification_htodemux.csv"), emit: classification
     tuple val(meta), path("*_htodemux.rds")               , emit: rds
-    path "versions.yml"                                   , emit: versions
+    path "versions.yml", emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,7 +33,8 @@ process HTODEMUX {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
-        htodemux: \$(htodemux --version)
+        r-base: \$(Rscript -e "cat(strsplit(R.version[['version.string']], ' ')[[1]][3])")
+        r-seurat: \$(Rscript -e "cat(as.character(packageVersion('Seurat')))")
     END_VERSIONS
     """
 }

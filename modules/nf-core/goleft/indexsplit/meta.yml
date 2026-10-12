@@ -1,6 +1,6 @@
 name: "goleft_indexsplit"
-description: Quickly generate evenly sized (by amount of data) regions across a number
-  of bam/cram files
+description: Quickly generate evenly sized (by amount of data) regions across a
+  number of bam/cram files
 keywords:
   - bam
   - bed
@@ -15,7 +15,8 @@ tools:
       documentation: "https://github.com/brentp/goleft"
       tool_dev_url: "https://github.com/brentp/goleft"
       doi: "10.1093/gigascience/gix090"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -53,13 +54,27 @@ output:
           description: Bed file containing split regions
           pattern: "*.bed"
           ontologies: []
+  versions_goleft:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - goleft:
+          type: string
+          description: The name of the tool
+      - "goleft --version 2>&1 | sed '1!d;s/^.*goleft Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - goleft:
+          type: string
+          description: The name of the tool
+      - "goleft --version 2>&1 | sed '1!d;s/^.*goleft Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@matthdsm"
 maintainers:

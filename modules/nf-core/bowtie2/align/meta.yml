@@ -46,9 +46,10 @@ input:
           e.g. [ id:'test', single_end:false ]
     - fasta:
         type: file
-        description: Bowtie2 genome fasta file
-        pattern: "*.fasta"
-        ontologies: []
+        description: Reference genome FASTA file
+        pattern: "*.{fa,fasta,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
   - save_unaligned:
       type: boolean
       description: |
@@ -130,7 +131,7 @@ output:
       - bowtie2:
           type: string
           description: The name of the tool
-      - "bowtie2 --version 2>&1 | sed -n '1s/.*bowtie2-align-s version //p'":
+      - "bowtie2 --version 2>&1 | sed -n 's/.*bowtie2-align-s version //p'":
           type: eval
           description: The expression to obtain the version of bowtie2
   versions_samtools:
@@ -162,7 +163,7 @@ topics:
       - bowtie2:
           type: string
           description: The name of the tool
-      - "bowtie2 --version 2>&1 | sed -n '1s/.*bowtie2-align-s version //p'":
+      - "bowtie2 --version 2>&1 | sed -n 's/.*bowtie2-align-s version //p'":
           type: eval
           description: The expression to obtain the version of bowtie2
     - - ${task.process}:

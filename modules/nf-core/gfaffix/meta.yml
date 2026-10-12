@@ -1,5 +1,7 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: gfaffix
-description: Collapse walk-preserving shared affixes in variation graphs in GFA format
+description: Collapse walk-preserving shared affixes in variation graphs in GFA
+  format
 keywords:
   - gfa
   - graph
@@ -12,7 +14,8 @@ tools:
         collapses them into a non-redundant graph structure.
       homepage: https://github.com/marschall-lab/GFAffix
       documentation: https://github.com/marschall-lab/GFAffix
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -50,13 +53,27 @@ output:
           description: Shared affixes in tab-separated values (TSV) text format
           pattern: "*.{txt}"
           ontologies: []
+  versions_gfaffix:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gfaffix:
+          type: string
+          description: The name of the tool
+      - gfaffix --version | cut -d" " -f2:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gfaffix:
+          type: string
+          description: The name of the tool
+      - gfaffix --version | cut -d" " -f2:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@heuermh"
 maintainers:

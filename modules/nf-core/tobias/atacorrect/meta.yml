@@ -1,0 +1,132 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "tobias_atacorrect"
+description: Correct ATAC-seq signal for Tn5 sequence bias with TOBIAS ATACorrect
+keywords:
+  - ATAC-seq
+  - footprinting
+  - Tn5
+  - bigWig
+tools:
+  - tobias:
+      description: "Transcription factor Occupancy prediction By Investigation of ATAC-seq Signal"
+      homepage: "https://github.com/loosolab/TOBIAS"
+      documentation: "https://github.com/loosolab/TOBIAS/wiki"
+      tool_dev_url: "https://github.com/loosolab/TOBIAS"
+      doi: "10.1038/s41467-020-18035-1"
+      licence: ["MIT"]
+      identifier: "biotools:tobias"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam:
+        type: file
+        description: Coordinate-sorted BAM file
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+    - bai:
+        type: file
+        description: BAM index file
+        pattern: "*.{bai,csi}"
+        ontologies: []
+    - peaks:
+        type: file
+        description: BED file containing ATAC-seq peaks for bias correction
+        pattern: "*.bed"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
+    - fasta:
+        type: file
+        description: Reference genome FASTA file
+        pattern: "*.{fa,fasta,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+output:
+  corrected:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*_corrected.bw":
+          type: file
+          description: Tn5 bias-corrected ATAC-seq signal track
+          pattern: "*_corrected.bw"
+          ontologies:
+            - edam: "http://edamontology.org/format_3006"
+  expected:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*_expected.bw":
+          type: file
+          description: Expected ATAC-seq signal track estimated from Tn5 bias
+          pattern: "*_expected.bw"
+          ontologies:
+            - edam: "http://edamontology.org/format_3006"
+  uncorrected:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*_uncorrected.bw":
+          type: file
+          description: Uncorrected ATAC-seq signal track
+          pattern: "*_uncorrected.bw"
+          ontologies:
+            - edam: "http://edamontology.org/format_3006"
+  bias:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*_bias.bw":
+          type: file
+          description: Tn5 sequence-bias signal track
+          pattern: "*_bias.bw"
+          ontologies:
+            - edam: "http://edamontology.org/format_3006"
+  report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*_atacorrect.pdf":
+          type: file
+          description: TOBIAS ATACorrect diagnostic PDF
+          pattern: "*_atacorrect.pdf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3508"
+  versions_tobias:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tobias:
+          type: string
+          description: The name of the tool
+      - TOBIAS --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tobias:
+          type: string
+          description: The name of the tool
+      - TOBIAS --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@PFRoux"
+maintainers:
+  - "@PFRoux"

@@ -1,6 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "circularmapper_circulargenerator"
-description: A method to improve mappings on circular genomes, using the BWA mapper.
+description: A method to improve mappings on circular genomes, using the BWA
+  mapper.
 keywords:
   - bwa
   - circular
@@ -14,7 +14,8 @@ tools:
       documentation: "https://github.com/apeltzer/CircularMapper/blob/master/docs/contents/userguide.rst"
       tool_dev_url: "https://github.com/apeltzer/CircularMapper"
       doi: "no DOI available"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 input:
   - - meta:
@@ -34,8 +35,8 @@ input:
           e.g. `[ id:'sample1' ]`
     - elongation_factor:
         type: integer
-        description: The number of bases that the ends of the target chromosome in the
-          reference genome should be elongated by
+        description: The number of bases that the ends of the target chromosome in
+          the reference genome should be elongated by
   - - meta3:
         type: map
         description: |
@@ -43,8 +44,8 @@ input:
           e.g. `[ id:'sample1' ]`
     - target:
         type: string
-        description: The name of the chromosome in the reference genome that should
-          be elongated
+        description: The name of the chromosome in the reference genome that
+          should be elongated
 output:
   fasta:
     - - meta:
@@ -68,13 +69,27 @@ output:
           description: File listing the chromosomes that were elongated
           pattern: "*_elongated"
           ontologies: []
+  versions_circulargenerator:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - circulargenerator:
+          type: string
+          description: The name of the tool
+      - "circulargenerator -h | sed -n 's/usage: CircularGeneratorv//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - circulargenerator:
+          type: string
+          description: The name of the tool
+      - "circulargenerator -h | sed -n 's/usage: CircularGeneratorv//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@apalleja"
   - "@TCLamnidis"

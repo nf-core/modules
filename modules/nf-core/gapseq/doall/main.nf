@@ -1,0 +1,50 @@
+process GAPSEQ_DOALL {
+    tag "${meta.id}"
+    label 'process_high'
+
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/93/933e301b11c1ec1699da6382e9e35b0e4e31edb80763eb2fa1b69ad7d6d1e5c7/data'
+        : 'community.wave.seqera.io/library/gapseq:2.1.0--c32b876ebb5e5f5b' }"
+
+    input:
+    tuple val(meta), path(fasta), path(medium)
+    path(db)
+
+    output:
+    tuple val(meta), path("*.RDS")  , emit: model
+    tuple val(meta), path("*.xml")  , emit: xml
+    tuple val(meta), path("*.tbl")  , emit: tbl
+    tuple val(meta), path("*.fna")  , emit: fna      , optional: true
+    tuple val(meta), path("*.log")  , emit: log      , optional: true
+    tuple val("${task.process}"), val('gapseq'), eval('gapseq -v 2>&1 | grep -oP "\\d+\\.\\d+\\.\\d+"'), topic: versions, emit: versions_gapseq
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args = task.ext.args ?: ''
+    def medium_arg = medium ? "-m $medium" : ''
+    def db_arg = db ? "-D $db" : ''
+    """
+    gapseq \\
+        doall \\
+        -t Bacteria \\
+        ${medium_arg} \\
+        -K ${task.cpus} \\
+        ${db_arg} \\
+        ${args} \\
+        ${fasta}
+    """
+
+    stub:
+    def fasta_name = fasta.getBaseName()
+    """
+    touch ${fasta_name}_model-filled.RDS
+    touch ${fasta_name}_model-filled.xml
+    touch ${fasta_name}_pathways.tbl
+    touch ${fasta_name}_transporters.tbl
+    touch ${fasta_name}.fna
+    touch ${fasta_name}.log
+    """
+}

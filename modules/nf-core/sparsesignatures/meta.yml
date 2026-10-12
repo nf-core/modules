@@ -111,13 +111,21 @@ output:
           description: File containing the generated plots
           pattern: "*{_plot_all.pdf}"
           ontologies: []
+  versions_sparsesignatures:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
+topics:
   versions:
     - versions.yml:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
         ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+          - edam: http://edamontology.org/format_3750
 authors:
   - "@kdavydzenka"
   - "@elena-buscaroli"

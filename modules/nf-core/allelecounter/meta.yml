@@ -6,12 +6,14 @@ keywords:
   - coverage
 tools:
   - allelecounter:
-      description: Takes a file of locations and a [cr|b]am file and generates a count
-        of coverage of each allele at that location (given any filter settings)
+      description: Takes a file of locations and a [cr|b]am file and generates a
+        count of coverage of each allele at that location (given any filter
+        settings)
       homepage: https://github.com/cancerit/alleleCount
       documentation: https://github.com/cancerit/alleleCount
       tool_dev_url: https://github.com/cancerit/alleleCount
-      licence: ["GPL 3.0"]
+      licence:
+        - "GPL 3.0"
       identifier: ""
 input:
   - - meta:
@@ -57,13 +59,27 @@ output:
           description: Allele count file
           pattern: "*.{alleleCount}"
           ontologies: []
+  versions_allelecounter:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - alleleCounter:
+          type: string
+          description: The name of the tool
+      - alleleCounter --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - alleleCounter:
+          type: string
+          description: The name of the tool
+      - alleleCounter --version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@fullama"
   - "@fbdtemme"

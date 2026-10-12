@@ -3,7 +3,7 @@ process LIMMA_DIFFERENTIAL {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/af/afd9579a0ff62890ff451d82b360d85e82a0d61a3da40736ee0eee4e45926269/data' :
         'community.wave.seqera.io/library/bioconductor-edger_bioconductor-limma:176c202c82450990' }"
 
@@ -18,7 +18,7 @@ process LIMMA_DIFFERENTIAL {
     tuple val(meta), path("*.limma.model.txt")            , emit: model
     tuple val(meta), path("*.R_sessionInfo.log")          , emit: session_info
     tuple val(meta), path("*.normalised_counts.tsv")      , emit: normalised_counts, optional: true
-    path "versions.yml"                                   , emit: versions
+    path "versions.yml"                                   , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

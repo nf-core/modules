@@ -8,29 +8,27 @@ process MCSTAGING_IMC2MC {
 
     output:
     tuple val(meta), path("*.tif"), emit: tif
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('imc2mc'), eval("python /imc2mc/scripts/imc2mc.py --version | sed 's/v//g'"), emit: versions_imc2mc, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "imc2mc module in conda does not exist. Please use Docker / Singularity / Podman instead."
-    }
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/modules/imc2mc
+
+Reason:
+Renamed module to match the tool/subtool convention
+"""
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
+    assert false: deprecation_message
     """
     python /imc2mc/scripts/imc2mc.py \
         -i ${txtfile} \
         -o "${prefix}.tif" \
         $args
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        imc2mc: \$(python /imc2mc/scripts/imc2mc.py --version | sed 's/v//g')
-    END_VERSIONS
     """
 
     stub:
@@ -42,9 +40,5 @@ process MCSTAGING_IMC2MC {
     """
     touch ${prefix}.tif
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        imc2mc: \$(python /imc2mc/scripts/imc2mc.py --version | sed 's/v//g')
-    END_VERSIONS
     """
 }

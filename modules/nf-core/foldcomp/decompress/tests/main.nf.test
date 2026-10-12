@@ -39,7 +39,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.sort()).match() }
+                { assert snapshot(
+                    process.out.pdb.sort { a, b -> file(a[1]).name <=> file(b[1]).name },
+                    process.out.versions_foldcomp.first()
+                ).match() }
             )
         }
 

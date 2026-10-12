@@ -17,7 +17,7 @@ tools:
         - "MIT"
       identifier: biotools:samtools
 input:
-  - - meta1:
+  - - meta:
         type: map
         description: |
           Groovy Map containing sample information
@@ -32,19 +32,29 @@ input:
         description: BAM/CRAM index file
         pattern: "*.{bai,crai}"
         ontologies: []
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test' ]
     - intervals:
         type: file
         description: list of positions or regions in specified bed file
         pattern: "*.{bed}"
         ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test', genome:'hg38' ]
+    - fasta:
+        type: file
+        description: Reference genome in FASTA format
+        pattern: "*.{fasta,fa,fna}"
+        ontologies: []
+    - fai:
+        type: file
+        description: Index file for the reference genome
+        pattern: "*.{fai}"
+        ontologies: []
 output:
   tsv:
-    - - meta1:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
@@ -84,3 +94,4 @@ authors:
 maintainers:
   - "@louperelo"
   - "@nevinwu"
+  - "@matthdsm"

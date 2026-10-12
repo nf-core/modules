@@ -1,6 +1,6 @@
 name: deeparg_predict
-description: A deep learning based approach to predict Antibiotic Resistance Genes
-  (ARGs) from metagenomes
+description: A deep learning based approach to predict Antibiotic Resistance
+  Genes (ARGs) from metagenomes
 keywords:
   - deeparg
   - antimicrobial resistance
@@ -12,13 +12,14 @@ keywords:
   - metagenomes
 tools:
   - deeparg:
-      description: A deep learning based approach to predict Antibiotic Resistance Genes
-        (ARGs) from metagenomes
+      description: A deep learning based approach to predict Antibiotic Resistance
+        Genes (ARGs) from metagenomes
       homepage: https://github.com/gaarangoa/deeparg
       documentation: https://github.com/gaarangoa/deeparg
       tool_dev_url: https://github.com/gaarangoa/deeparg
       doi: "10.1186/s40168-018-0401-z"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -33,8 +34,8 @@ input:
         ontologies: []
     - model:
         type: string
-        description: Which model to use, depending on input data. Either 'LS' or 'SS'
-          for long or short sequences respectively
+        description: Which model to use, depending on input data. Either 'LS' or
+          'SS' for long or short sequences respectively
         pattern: "LS|LS"
   - db:
       type: directory
@@ -60,7 +61,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.align.daa.tsv":
           type: file
-          description: Alignments scores against ARG-like sequences from DIAMOND alignment
+          description: Alignments scores against ARG-like sequences from DIAMOND
+            alignment
           pattern: "*.align.daa.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -72,8 +74,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.mapping.ARG":
           type: file
-          description: Table containing sequences with an ARG-like probability of more
-            than specified thresholds
+          description: Table containing sequences with an ARG-like probability of
+            more than specified thresholds
           pattern: "*.mapping.ARG"
           ontologies: []
   potential_arg:
@@ -84,17 +86,31 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.mapping.potential.ARG":
           type: file
-          description: Table containing sequences with an ARG-like probability of less
-            than specified thresholds, and requires manual inspection
+          description: Table containing sequences with an ARG-like probability of
+            less than specified thresholds, and requires manual inspection
           pattern: "*.mapping.potential.ARG"
           ontologies: []
+  versions_deeparg:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deeparg:
+          type: string
+          description: The name of the tool
+      - 1.0.4:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deeparg:
+          type: string
+          description: The name of the tool
+      - 1.0.4:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:

@@ -2,33 +2,6 @@
     "test-svtyper-svtyper-stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.json:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.vcf:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "3": [
-                    "versions.yml:md5,5b07f609bf901ea4272e8754d9fc3693"
-                ],
                 "bam": [
                     [
                         {
@@ -53,16 +26,20 @@
                         "test.json:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,5b07f609bf901ea4272e8754d9fc3693"
+                "versions_svtyper": [
+                    [
+                        "SVTYPER_SVTYPER",
+                        "svtyper",
+                        "0.7.1"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-07-08T13:15:38.361699047",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-08-28T16:34:49.952166"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     },
     "test-svtyper-svtyper": {
         "content": [
@@ -76,14 +53,20 @@
             ],
             "test.vcf",
             "41df0897716b5d3a8c4494fdba136bbc",
-            [
-                "versions.yml:md5,5b07f609bf901ea4272e8754d9fc3693"
-            ]
+            {
+                "versions_svtyper": [
+                    [
+                        "SVTYPER_SVTYPER",
+                        "svtyper",
+                        "0.7.1"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-07-08T13:15:30.887628079",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-08-28T16:40:03.168797"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     }
 }

@@ -3,9 +3,9 @@ process PANGOLIN_RUN {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5f/5f10f9bd63d24e2382406b2b348c65ae1ac74118e6eb17f5e30b310fbc1bc4b9/data' :
-        'community.wave.seqera.io/library/pangolin-data_pangolin_pip_snakemake:7987089a2a044e70' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/85/858e91f6972f0d8d71dae844bf0232656f5d91112b9a5610f559659b33414c86/data' :
+        'community.wave.seqera.io/library/pangolin-data_pangolin_snakemake-minimal:638a1eb68adff9c7' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -13,7 +13,7 @@ process PANGOLIN_RUN {
 
     output:
     tuple val(meta), path('*.csv'), emit: report
-    path  "versions.yml"          , emit: versions
+    tuple val("${task.process}"), val('pangolin'), eval("pangolin -v | sed 's/pangolin //'"), emit: versions_pangolin, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,11 +31,6 @@ process PANGOLIN_RUN {
         --outfile ${prefix}.pangolin.csv \\
         --threads $task.cpus \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pangolin: \$(pangolin --version | sed "s/pangolin //g")
-    END_VERSIONS
     """
 
     stub:
@@ -44,10 +39,5 @@ process PANGOLIN_RUN {
     export XDG_CACHE_HOME=/tmp/.cache
 
     touch ${prefix}.pangolin.csv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pangolin: \$(pangolin --version | sed "s/pangolin //g")
-    END_VERSIONS
     """
 }

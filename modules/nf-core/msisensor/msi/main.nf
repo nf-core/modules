@@ -3,9 +3,9 @@ process MSISENSOR_MSI {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/msisensor:0.5--hb3646a4_2' :
-        'biocontainers/msisensor:0.5--hb3646a4_2' }"
+        'quay.io/biocontainers/msisensor:0.5--hb3646a4_2' }"
 
     input:
     tuple val(meta), path(normal_bam), path(normal_bai), path(tumor_bam), path(tumor_bai), val(metascan), path(homopolymers)
@@ -15,7 +15,7 @@ process MSISENSOR_MSI {
     tuple val(meta), path("${prefix}_dis")     , emit: output_dis
     tuple val(meta), path("${prefix}_germline"), emit: output_germline
     tuple val(meta), path("${prefix}_somatic") , emit: output_somatic
-    path "versions.yml"                        , emit: versions
+    tuple val("${task.process}"), val('msisensor'), eval("msisensor 2>&1 | sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p'"), emit: versions_msisensor, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,10 +40,6 @@ process MSISENSOR_MSI {
         -o $prefix \\
         $args
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        msisensor: \$(msisensor 2>&1 | sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p')
-    END_VERSIONS
     """
 
     stub:

@@ -3,7 +3,7 @@ process PDB2PQR {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6b/6b84828ce9f75233b610b5778c4bb93078958515bbd8c6fe6aa77882dd22f211/data':
         'community.wave.seqera.io/library/python_pip_pdb2pqr:dfc1bd7d388ba091' }"
 

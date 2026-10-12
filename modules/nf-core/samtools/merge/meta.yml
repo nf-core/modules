@@ -53,6 +53,10 @@ input:
           (optional)
         pattern: "*.gzi"
         ontologies: []
+  - index_format:
+      type: string
+      description: Index format to use (optional)
+      pattern: "bai|csi|crai"
 output:
   bam:
     - - meta:
@@ -76,27 +80,16 @@ output:
           description: CRAM file
           pattern: "*.{cram}"
           ontologies: []
-  csi:
+  index:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.csi":
+      - "${prefix}.${file_type}.{bai,crai,csi}":
           type: file
-          description: BAM index file (optional)
-          pattern: "*.csi"
-          ontologies: []
-  crai:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.crai":
-          type: file
-          description: CRAM index file (optional)
-          pattern: "*.crai"
+          description: BAM/CRAM index file, generated when index_format is specified. Can only be generated if the input files are coordinate sorted.
+          pattern: "*.{bai,crai,csi}"
           ontologies: []
   versions_samtools:
     - - ${task.process}:
@@ -130,3 +123,4 @@ maintainers:
   - "@maxulysse"
   - "@FriederikeHanssen"
   - "@ramprasadn"
+  - "@matthdsm"

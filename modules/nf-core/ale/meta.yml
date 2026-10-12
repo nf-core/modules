@@ -11,9 +11,9 @@ tools:
       documentation: "https://portal.nersc.gov/dna/RD/Adv-Seq/ALE-doc/index.html#document-install"
       tool_dev_url: "https://github.com/sc932/ALE"
       doi: "10.1093/bioinformatics/bts723"
-      licence: ["NCSA"]
+      licence:
+        - "NCSA"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -45,13 +45,27 @@ output:
           pattern: "*_ALEoutput.{txt}"
           ontologies:
             - edam: "http://edamontology.org/format_2330" # Textual format
+  versions_ale:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ALE:
+          type: string
+          description: The name of the tool
+      - "20180904":
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ALE:
+          type: string
+          description: The name of the tool
+      - "20180904":
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@rodtheo"
 maintainers:

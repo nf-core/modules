@@ -27,13 +27,13 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
                     process.out.results.collect { meta, dir -> [
                         meta, file(dir).list().sort().collect { // Do not check md5sum for .pdf .svg and .log as unstable
                             file ->
                             file.endsWith(".pdf") || file.endsWith(".svg") || file.endsWith(".log") ? file : path(dir).resolve(file)
                         }
-                    ]}
+                    ]},
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -59,13 +59,13 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
                     process.out.results.collect { meta, dir -> [
                         meta, file(dir).list().sort().collect { // Do not check md5sum for .pdf .svg and .log as unstable
                             file ->
                             file.endsWith(".pdf") || file.endsWith(".svg") || file.endsWith(".log") ? file : path(dir).resolve(file)
                         }
-                    ]}
+                    ]},
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -89,14 +89,14 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
                     process.out.results.collect { meta, dir -> [
                         meta, file(dir).listFiles().findAll { it.isDirectory() }.collect { subdir ->
                             subdir.listFiles().sort().collect { file ->
                                 file.name.endsWith(".pdf") || file.name.endsWith(".svg") || file.name.endsWith(".log") ? file.name : file
                             }
                         }.flatten()
-                    ]}
+                    ]},
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -120,10 +120,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

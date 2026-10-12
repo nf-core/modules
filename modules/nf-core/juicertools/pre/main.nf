@@ -3,7 +3,7 @@ process JUICERTOOLS_PRE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a2/a268a257cdea987bd60f7717686134f1a3c949e2ae268284642f1ce5a0434289/data' :
         'community.wave.seqera.io/library/juicertools_openjdk:fe58dd49794d6603' }"
 

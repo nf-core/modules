@@ -22,11 +22,13 @@ workflow UTILS_NFSCHEMA_PLUGIN {
     before_text         // string:   text to show before the help message and parameters summary
     after_text          // string:   text to show after the help message and parameters summary
     command             // string:   an example command of the pipeline
+    cli_typecast        // boolean:  whether to perform typecasting of CLI parameters. Set this to `null` to use the default behaviour
 
     main:
 
     if(help || help_full) {
         help_options = [
+            parameter: (help instanceof String && help != "true") ? help : null,
             beforeText: before_text,
             afterText: after_text,
             command: command,
@@ -34,12 +36,10 @@ workflow UTILS_NFSCHEMA_PLUGIN {
             fullHelp: help_full,
         ]
         if(parameters_schema) {
-            help_options << [parametersSchema: parameters_schema]
+            help_options << [parameters_schema: parameters_schema]
         }
-        log.info paramsHelp(
-            help_options,
-            (params.help instanceof String && params.help != "true") ? params.help : "",
-        )
+
+        log.info paramsHelp(help_options)
         exit 0
     }
 
@@ -50,10 +50,10 @@ workflow UTILS_NFSCHEMA_PLUGIN {
 
     summary_options = [:]
     if(parameters_schema) {
-        summary_options << [parametersSchema: parameters_schema]
+        summary_options << [parameters_schema: parameters_schema]
     }
     log.info before_text
-    log.info paramsSummaryLog(summary_options, input_workflow)
+    log.info paramsSummaryLog(summary_options)
     log.info after_text
 
     //
@@ -63,7 +63,10 @@ workflow UTILS_NFSCHEMA_PLUGIN {
     if(validate_params) {
         validateOptions = [:]
         if(parameters_schema) {
-            validateOptions << [parametersSchema: parameters_schema]
+            validateOptions << [parameters_schema: parameters_schema]
+        }
+        if(cli_typecast != null) {
+            validateOptions << [cast_cli_params: cli_typecast]
         }
         validateParameters(validateOptions)
     }

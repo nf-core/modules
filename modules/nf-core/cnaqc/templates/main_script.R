@@ -60,7 +60,9 @@ opt <- list(
   min_VAF = 0,
   muts_per_karyotype = 25,
   cutoff_QC_PASS = 0.1,
-  method = "ENTROPY"
+  method = "ENTROPY",
+  blacklist_indels = TRUE,
+  qc_chr = FALSE
 )
 opt_types <- lapply(opt, class)
 
@@ -79,6 +81,7 @@ for ( ao in names(args_opt)){
     opt[[ao]] <- args_opt[[ao]]
   }
 }
+opt[["qc_chr"]] = as.logical(toupper(opt[["qc_chr"]]))
 
 # Script #####
 
@@ -86,6 +89,7 @@ for ( ao in names(args_opt)){
 
 library(dplyr)
 library(CNAqc)
+library(gridExtra)
 
 SNV = readRDS("$snv_rds") %>%
   purrr::pluck("$tumour_sample", "mutations") %>%
@@ -97,16 +101,19 @@ x = CNAqc::init(
   mutations = SNV,
   cna = CNA\$segments,
   purity = CNA\$purity ,
-  ref = opt[["genome"]])
+  ref = opt[["genome"]],
+  sample = "$tumour_sample",
+  blacklist_indels = opt[['blacklist_indels']])
 
 x = CNAqc::analyze_peaks(x,
                           matching_strategy = opt[["matching_strategy"]],
                           min_absolute_karyotype_mutations = as.numeric(opt[["min_absolute_karyotype_mutations"]]),
-                          purity_error = as.numeric(opt[["purity_error"]]))
+                          purity_error = as.numeric(opt[["purity_error"]]),
+                          min_VAF = opt[['min_VAF']])
 
 x = CNAqc::compute_CCF(x,
-                        muts_per_karyotype = as.numeric(opt[["muts_per_karyotype"]])
-)
+                        muts_per_karyotype = as.numeric(opt[["muts_per_karyotype"]]),
+                        min_VAF = opt[['min_VAF']])
 
 # this is needed in order to plot the results without the 0 VAF mutations
 tmp_x <- x
@@ -150,11 +157,72 @@ saveRDS(object = pl_qc, file = paste0(opt[["prefix"]], "_qc_plot.rds"))
 ggplot2::ggsave(plot = pl_exp, filename = paste0(opt[["prefix"]], "_data.pdf"), width = 210, height = 297, units="mm", dpi = 200)
 ggplot2::ggsave(plot = pl_qc, filename = paste0(opt[["prefix"]], "_qc.pdf"), width = 210, height = 297, units="mm", dpi = 200)
 
+if(opt[["qc_chr"]] == TRUE) {
+
+  x_by_chr = split_by_chromosome(x)
+  x_by_chr = lapply(x_by_chr, function(dd) {
+      analyze_peaks(dd,
+          matching_strategy = opt[["matching_strategy"]],
+          min_absolute_karyotype_mutations = as.numeric(opt[["min_absolute_karyotype_mutations"]]),
+          purity_error = as.numeric(opt[["purity_error"]])
+      )
+  })
+
+  x_by_chr = lapply(x_by_chr, function(dd) {
+    CNAqc::compute_CCF(dd,
+                        muts_per_karyotype = as.numeric(opt[["muts_per_karyotype"]]),
+                        min_VAF = opt[['min_VAF']])
+  })
+
+  # now add the plots
+  # this is needed in order to plot the results without the 0 VAF mutations
+  tmp_x <- x_by_chr
+  tmp_x = lapply(tmp_x, function(chr) {
+      chr\$mutations <- chr\$mutations %>%
+          dplyr::filter(VAF > 0)
+
+      new_id = paste(chr\$sample, unique(chr\$mutations\$chr), sep = '_')
+
+      chr\$sample = new_id
+
+      return(chr)
+  })
+
+  # plot per chr
+  pa_plt = lapply(tmp_x, function(cc) {
+
+    qc = tryCatch({
+      CNAqc::plot_qc(cc)
+    }, error = function(e) {
+      CNAqc:::eplot()
+    })
+
+    pl_qc = ggpubr::ggarrange(
+      plotlist = list(
+        CNAqc::plot_peaks_analysis(cc, what = 'common', empty_plot = FALSE),
+        qc,
+        CNAqc::plot_CCF(cc, assembly_plot = TRUE, empty_plot = FALSE)),
+      nrow = 3,
+      heights = c(1,1.5,1))
+    pl_qc = ggpubr::annotate_figure(pl_qc, top = ggpubr::text_grob(cc\$sample, size = 14))
+
+  })
+  pa_plt <- marrangeGrob(pa_plt, nrow = 1, ncol = 1, top = NULL)
+
+  saveRDS(object = x_by_chr, file = paste0(opt[["prefix"]], "_qc_by_chr.rds"))
+  saveRDS(object = pa_plt, file = paste0(opt[["prefix"]], "_qc_by_chr_plot.rds"))
+
+  ggplot2::ggsave(plot = pa_plt, filename = paste0(opt[["prefix"]], "_qc_by_chr.pdf"), width = 210, height = 297, units="mm", dpi = 200)
+
+}
+
 # version export
 f <- file("versions.yml","w")
 dplyr_version <- sessionInfo()\$otherPkgs\$dplyr\$Version
 cnaqc_version <- sessionInfo()\$otherPkgs\$CNAqc\$Version
+gridextra_version <- sessionInfo()\$otherPkgs\$gridextra\$Version
 writeLines(paste0('"', "$task.process", '"', ":"), f)
 writeLines(paste("    CNAqc:", cnaqc_version), f)
 writeLines(paste("    dplyr:", dplyr_version), f)
+writeLines(paste("    gridExtra:", gridextra_version), f)
 close(f)

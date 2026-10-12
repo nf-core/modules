@@ -14,7 +14,8 @@ tools:
       documentation: "https://cran.r-project.org/web/packages/ampir/index.html"
       tool_dev_url: "https://github.com/Legana/ampir"
       doi: "10.1093/bioinformatics/btaa653"
-      licence: ["GPL v2"]
+      licence:
+        - "GPL v2"
       identifier: biotools:ampir
 input:
   - - meta:
@@ -65,13 +66,27 @@ output:
           pattern: "*.tsv"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
+  versions_ampir:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ampir:
+          type: string
+          description: The name of the tool
+      - Rscript -e "library(ampir); cat(paste((unlist(packageVersion('ampir'))), collapse = '.'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ampir:
+          type: string
+          description: The name of the tool
+      - Rscript -e "library(ampir); cat(paste((unlist(packageVersion('ampir'))), collapse = '.'))":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jasmezz"
 maintainers:

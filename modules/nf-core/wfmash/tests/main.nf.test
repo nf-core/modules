@@ -15,13 +15,13 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test', single_end:false ], // meta map
+                    [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'pangenomics/homo_sapiens/pangenome.fa.gz', checkIfExists: true),
-                    [], // empty paf input
-                    file(params.modules_testdata_base_path + 'pangenomics/homo_sapiens/pangenome.fa.gz.gzi', checkIfExists: true), // gzi
-                    file(params.modules_testdata_base_path + 'pangenomics/homo_sapiens/pangenome.fa.gz.fai', checkIfExists: true) // fai
+                    [],
+                    file(params.modules_testdata_base_path + 'pangenomics/homo_sapiens/pangenome.fa.gz.gzi', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'pangenomics/homo_sapiens/pangenome.fa.gz.fai', checkIfExists: true)
                 ]
-                input[1] = true // empty paf input
+                input[1] = true
                 input[2] = []
                 """
             }
@@ -30,7 +30,36 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["paf"])).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - pangenome - pangenome_fa_bgzip - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'pangenomics/homo_sapiens/pangenome.fa.gz', checkIfExists: true),
+                    [],
+                    file(params.modules_testdata_base_path + 'pangenomics/homo_sapiens/pangenome.fa.gz.gzi', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'pangenomics/homo_sapiens/pangenome.fa.gz.fai', checkIfExists: true)
+                ]
+                input[1] = true
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

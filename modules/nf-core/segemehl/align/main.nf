@@ -3,21 +3,20 @@ process SEGEMEHL_ALIGN {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/segemehl:0.3.4--hc2ea5fd_5':
-        'biocontainers/segemehl:0.3.4--hc2ea5fd_5' }"
+        'quay.io/biocontainers/segemehl:0.3.4--hc2ea5fd_5' }"
 
     input:
     tuple val(meta), path(reads)
-    path(fasta)
-    path(index)
+    tuple val(meta2), path(fasta), path(index)
 
     output:
     tuple val(meta), path("${prefix}/${prefix}.${suffix}"), emit: alignment
     tuple val(meta), path("${prefix}/${prefix}.trns.txt") , emit: trans_alignments, optional: true
-    tuple val(meta), path("${prefix}/${prefix}.mult.bed") , emit: multi_bed, optional: true
-    tuple val(meta), path("${prefix}/${prefix}.sngl.bed") , emit: single_bed, optional: true
-    path "versions.yml"                                   , emit: versions
+    tuple val(meta), path("${prefix}/${prefix}.mult.bed") , emit: multi_bed       , optional: true
+    tuple val(meta), path("${prefix}/${prefix}.sngl.bed") , emit: single_bed      , optional: true
+    tuple val("${task.process}"), val('segemehl'), eval("segemehl.x 2>&1 | sed '/^  [0-9]\\.[0-9\\.]*/!d;s/^  //;s/ .*//'"), topic: versions, emit: versions_segemehl
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,32 +27,23 @@ process SEGEMEHL_ALIGN {
     def reads_opt = meta.single_end ? "-q ${reads}" : "-q ${reads[0]} -p ${reads[1]}"
     suffix = ( args.contains("-b") || args.contains("--bamabafixoida") ) ? "bam" : "sam"
     """
-    mkdir -p $prefix
+    mkdir -p ${prefix}
 
     segemehl.x \\
-        -t $task.cpus \\
-        -d $fasta \\
-        -i $index \\
-        $reads_opt \\
-        $args \\
+        -t ${task.cpus} \\
+        -d ${fasta} \\
+        -i ${index} \\
+        ${reads_opt} \\
+        ${args} \\
         -o ${prefix}/${prefix}.${suffix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        segemehl: \$(echo \$(segemehl.x 2>&1 | grep "ge5dee" | awk -F Z '{print substr(\$1, 2, 6)}' ))
-    END_VERSIONS
     """
 
     stub:
+    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     suffix = ( args.contains("-b") || args.contains("--bamabafixoida") ) ? "bam" : "sam"
     """
-    mkdir -p $prefix
+    mkdir -p ${prefix}
     touch ${prefix}/${prefix}.${suffix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        segemehl: \$(echo \$(segemehl.x 2>&1 | grep "ge5dee" | awk -F Z '{print substr(\$1, 2, 6)}' ))
-    END_VERSIONS
     """
 }
