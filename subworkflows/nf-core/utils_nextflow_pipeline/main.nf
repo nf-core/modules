@@ -40,7 +40,7 @@ workflow UTILS_NEXTFLOW_PIPELINE {
     }
 
     emit:
-    dummy_emit = true
+    true
 }
 
 /*
