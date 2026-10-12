@@ -24,11 +24,11 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/gatk/test.baserecalibrator.table', checkIfExists: true),
                     []  // no intervals
                 ]
-                input[2] = [
+                input[1] = [
                     [ id:'reference'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[3] = 'bam'
+                input[2] = 'bam'
                 """
             }
         }
@@ -58,11 +58,11 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/gatk/test.baserecalibrator.table', checkIfExists: true),
                     []  // no intervals
                 ]
-                input[2] = [
+                input[1] = [
                     [ id:'reference'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
-                input[4] = 'cram'
+                input[2] = 'cram'
                 """
             }
         }
@@ -126,11 +126,11 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/test.baserecalibrator.table', checkIfExists: true),
                     []  // no intervals
                 ]
-                input[2] = [
+                input[1] = [
                     [ id:'reference'],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
                    ]
-                input[3] = 'cram'
+                input[2] = 'cram'
                 """
             }
         }
@@ -195,11 +195,11 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/gatk/test.baserecalibrator.table', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
                 ]
-                input[2] = [
+                input[1] = [
                     [ id:'reference'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                    ]
-                input[3] = 'bam'
+                input[2] = 'bam'
                 """
             }
         }
