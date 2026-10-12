@@ -18,6 +18,6 @@ jobs:
       contents: read
       issues: write
       pull-requests: write
-    uses: nf-core/actions/.github/workflows/fix-linting.yml@v1
+    uses: nf-core/actions/.github/workflows/fix-linting.yml@7fb34a05569ea1555e81c47c300a817c98501695 # v1
     secrets:
       BOT_TOKEN: ${{ secrets.nf_core_bot_auth_token }}
