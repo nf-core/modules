@@ -24,21 +24,15 @@ process GATK4_APPLYBQSR {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def file_type = output_format[0]
-    def index_fmt = output_format[1]
+    // default to cram output with crai index
+    def file_type = output_format ? output_format[0] : 'cram'
+    def index_format = output_format ? output_format[1] : 'crai'
 
-    def valid_formats = [
-        'bam'  : ['bai', 'csi'],
-        'cram' : ['crai']
-    ]
-    if (!valid_formats.containsKey(file_type)) {
-        error("GATK4_APPLYBQSR: invalid file type '${file_type}'. Must be 'bam' or 'cram'.")
-    }
-    if (!valid_formats[file_type].contains(index_fmt)) {
-        error("GATK4_APPLYBQSR: invalid index format '${index_fmt}' for '${file_type}' output. Must be one of: ${valid_formats[file_type]}.")
+    if ((file_type == 'bam' && index_format == 'crai') || (file_type == 'cram' && ['bai', 'csi'].contains(index_format))) {
+        error("GATK4_APPLYBQSR: invalid index format '${index_format}' for '${file_type}' output.")
     }
 
-    def samtools_index_args = index_fmt == 'csi' ? '-c' : ''
+    def samtools_index_args = index_format == 'csi' ? '-c' : ''
 
     def interval_command = intervals ? "--intervals ${intervals}" : ""
 
@@ -66,22 +60,16 @@ process GATK4_APPLYBQSR {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    def file_type = output_format[0]
-    def index_fmt = output_format[1]
+    // default to cram output with crai index
+    def file_type = output_format ? output_format[0] : 'cram'
+    def index_format = output_format ? output_format[1] : 'crai'
 
-    def valid_formats = [
-        'bam'  : ['bai', 'csi'],
-        'cram' : ['crai']
-    ]
-    if (!valid_formats.containsKey(file_type)) {
-        error("GATK4_APPLYBQSR: invalid file type '${file_type}'. Must be 'bam' or 'cram'.")
-    }
-    if (!valid_formats[file_type].contains(index_fmt)) {
-        error("GATK4_APPLYBQSR: invalid index format '${index_fmt}' for '${file_type}' output. Must be one of: ${valid_formats[file_type]}.")
+    if ((file_type == 'bam' && index_format == 'crai') || (file_type == 'cram' && ['bai', 'csi'].contains(index_format))) {
+        error("GATK4_APPLYBQSR: invalid index format '${index_format}' for '${file_type}' output.")
     }
 
     """
     touch ${prefix}.${file_type}
-    touch ${prefix}.${file_type}.${index_fmt}
+    touch ${prefix}.${file_type}.${index_format}
     """
 }
