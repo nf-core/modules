@@ -27,7 +27,7 @@ nextflow_process {
 
         then {
             // The fitted values differ in the last digits between the OpenBLAS kernels selected for each CPU
-            def rounded = { f -> path(f).readLines().collect { l -> l.split('\t', -1).collect { v -> v.isNumber() ? String.format('%.6f', v as double) : v }.join('\t') }.join('\n').md5() }
+            def rounded = { f -> path(f).readLines().collect { l -> l.split('\t', -1).collect { v -> v.isNumber() ? String.format(Locale.ROOT, '%.6f', v as double) : v }.join('\t') }.join('\n').md5() }
             assertAll(
                 { assert process.success },
                 { assert path(process.out.results[0][1]).readLines()[0].split('\t').contains('log2fold_GBR_YRI') },
