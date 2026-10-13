@@ -13,7 +13,7 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
     output:
     tuple val(meta), path("*_genotyped_intervals.vcf.gz"), emit: intervals, optional: true
     tuple val(meta), path("*_genotyped_segments.vcf.gz"), emit: segments, optional: true
-    tuple val(meta), path("*_denoised.vcf.gz"), emit: denoised, optional: true
+    tuple val(meta), path("*_denoised.tsv"), emit: denoised, optional: true
     tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
@@ -47,7 +47,7 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
         ${args} \\
         --output-genotyped-intervals ${prefix}_genotyped_intervals.vcf.gz \\
         --output-genotyped-segments ${prefix}_genotyped_segments.vcf.gz \\
-        --output-denoised-copy-ratios ${prefix}_denoised.vcf.gz
+        --output-denoised-copy-ratios ${prefix}_denoised.tsv
     """
 
     stub:
@@ -55,6 +55,6 @@ process GATK4_POSTPROCESSGERMLINECNVCALLS {
     """
     echo "" | gzip > ${prefix}_genotyped_intervals.vcf.gz
     echo "" | gzip > ${prefix}_genotyped_segments.vcf.gz
-    echo "" | gzip > ${prefix}_denoised.vcf.gz
+    touch ${prefix}_denoised.tsv
     """
 }

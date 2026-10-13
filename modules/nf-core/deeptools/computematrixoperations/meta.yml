@@ -1,0 +1,63 @@
+name: deeptools_computematrixoperations
+description: Modify computeMatrix output with computeMatrixOperations, e.g. filterStrand, filterValues, relabel, subset or sort. The subcommand is set with `ext.args`, its options with `ext.args2`. Subcommands that take several matrices (rbind, cbind) or write no matrix (info, dataRange) are not supported.
+keywords:
+  - genome
+  - regions
+  - genomics
+  - matrix
+tools:
+  - deeptools:
+      description: A set of user-friendly tools for normalization and
+        visualization of deep-sequencing data
+      documentation: https://deeptools.readthedocs.io/en/develop/index.html
+      tool_dev_url: https://github.com/deeptools/deepTools
+      doi: "10.1093/nar/gku365"
+      licence:
+        - "GPL v3"
+      identifier: biotools:deeptools
+
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information e.g. [ id:'test', single_end:false ]
+    - matrix:
+        type: file
+        description: gzipped matrix file produced by deeptools_computematrix
+        pattern: "*.mat.gz"
+        ontologies: []
+output:
+  matrix:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. [ id:'test', single_end:false ]
+      - "*.mat.gz":
+          type: file
+          description: modified gzipped matrix file needed by the plotHeatmap and plotProfile deeptools utilities
+          pattern: "*.mat.gz"
+          ontologies: []
+  versions_deeptools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deeptools:
+          type: string
+          description: The name of the tool
+      - deeptools --version | sed "s/deeptools //g":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - deeptools:
+          type: string
+          description: The name of the tool
+      - deeptools --version | sed "s/deeptools //g":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@Kevin-Brockers"
+maintainers:
+  - "@Kevin-Brockers"
