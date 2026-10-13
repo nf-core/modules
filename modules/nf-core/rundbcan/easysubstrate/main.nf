@@ -23,6 +23,8 @@ process RUNDBCAN_EASYSUBSTRATE {
     tuple val(meta), path("${prefix}_TF_hmm_results.tsv"), emit: tf_hmm_results, optional: true
     tuple val(meta), path("${prefix}_STP_hmm_results.tsv"), emit: stp_hmm_results
     tuple val(meta), path("${prefix}_total_cgc_info.tsv"), emit: total_cgc_info
+    tuple val(meta), path("${prefix}_CGC.faa"), emit: cgc_faa
+    tuple val(meta), path("${prefix}_PUL_blast.out"), emit: pul_blast
     tuple val(meta), path("${prefix}_substrate_prediction.tsv"), emit: substrate_prediction
     tuple val(meta), path("${prefix}_synteny_pdf/"), optional: true, emit: synteny_pdf
     tuple val("${task.process}"), val('rundbcan'), eval("run_dbcan version | sed 's/dbCAN version: //g'"), emit: versions_rundbcan, topic: versions

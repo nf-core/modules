@@ -22,6 +22,7 @@ process RUNDBCAN_EASYCGC {
     tuple val(meta), path("${prefix}_diamond.out.tc"), emit: diamond_out_tc
     tuple val(meta), path("${prefix}_TF_hmm_results.tsv"), emit: tf_hmm_results, optional: true
     tuple val(meta), path("${prefix}_STP_hmm_results.tsv"), emit: stp_hmm_results
+    tuple val(meta), path("${prefix}_total_cgc_info.tsv"), emit: total_cgc_info
     tuple val("${task.process}"), val('rundbcan'), eval("run_dbcan version | sed 's/dbCAN version: //g'"), emit: versions_rundbcan, topic: versions
 
     when:

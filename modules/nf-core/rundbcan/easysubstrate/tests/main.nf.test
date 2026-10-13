@@ -45,11 +45,17 @@ nextflow_process {
 
         then {
             def substrates = path(process.out.substrate_prediction[0][1]).readLines()
+            def cgc_faa = path(process.out.cgc_faa[0][1]).readLines()
+            def pul_blast = path(process.out.pul_blast[0][1]).readLines()
             assertAll(
                 { assert process.success },
                 { assert substrates.size() == 11 },
                 { assert substrates.any { it.startsWith('NZ_CP069563.1|CGC10\tPUL0420\tpectin\t') } },
                 { assert substrates.any { it.startsWith('NZ_CP069563.1|CGC14\tPUL0328\txylan\t') } },
+                { assert cgc_faa.count { it.startsWith('>') } == 122 },
+                { assert cgc_faa.contains('>NZ_CP069563.1|CGC1|WP_005784783.1|TC|8.A.46 WP_005784783.1') },
+                { assert pul_blast.size() == 992 },
+                { assert pul_blast.any { it.startsWith('NZ_CP069563.1|CGC1|WP_005784783.1|TC|8.A.46\tPUL0467_8:PUL0467:AAO76737.1:TC:8.A.46.3.4\t') } },
                 // run_dbcan writes substrate predictions in varying row order
                 { assert snapshot(sanitizeOutput(process.out, unstableKeys: ['substrate_prediction', 'synteny_pdf']), substrates.sort(false)).match() }
             )

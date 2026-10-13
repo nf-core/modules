@@ -148,6 +148,17 @@ output:
           description: |
             TSV file containing the results of signaling transduction proteins (STP) annotation.
           ontologies: []
+  total_cgc_info:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${prefix}_total_cgc_info.tsv:
+          type: file
+          description: |
+            TSV file summarizing the total additional genes in the genome.
+          ontologies: []
   versions_rundbcan:
     - - ${task.process}:
           type: string

@@ -49,10 +49,13 @@ nextflow_process {
 
         then {
             def cgc = path(process.out.cgc_standard_out[0][1]).readLines()
+            def cgc_info = path(process.out.total_cgc_info[0][1]).readLines()
             assertAll(
                 { assert process.success },
                 { assert cgc.drop(1).collect { it.split('\t')[0] }.unique().size() == 15 },
                 { assert cgc.contains('CGC1\tTC\tNZ_CP069563.1\tWP_005784783.1\t2500426\t2502108\t-\tTC|8.A.46.3.4') },
+                { assert cgc_info.size() == 167 },
+                { assert cgc_info.any { it.startsWith('2.A.95.1.4\t216\tWP_005778522.1\t214\t') } },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
