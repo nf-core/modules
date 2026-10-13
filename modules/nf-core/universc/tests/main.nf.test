@@ -58,7 +58,7 @@ nextflow_process {
                 input[0] = channel.of([ id:'test', single_end:false ])
                     .combine(SAMPLE_READ1.out.reads.map { meta, read -> read } )
                     .combine(SAMPLE_READ2.out.reads.map { meta, read -> read } )
-                    .map{ meta, read1, read2 -> [meta, [read1, read2]] }
+                    .map { meta, read1, read2 -> [meta, [read1, read2]] }
                 input[1] = UNTAR.out.untar
                 input[2] = "10x"
                 """
