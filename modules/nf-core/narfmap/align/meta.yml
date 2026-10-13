@@ -51,23 +51,34 @@ input:
       type: boolean
       description: Sort the BAM file after alignment
 output:
-  bam:
+  mapped:
     - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.{bam,cram}":
           type: file
           description: Output BAM file containing read alignments
           pattern: "*.{bam}"
           ontologies: []
-      - "*.bam":
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.{csi,bai,crai}":
           type: file
-          description: Output BAM file containing read alignments
-          pattern: "*.{bam}"
+          description: Output read alignments index file
+          pattern: "*.{csi,bai,crai}"
           ontologies: []
   log:
     - - meta:
-          type: file
-          description: Output BAM file containing read alignments
-          pattern: "*.{bam}"
-          ontologies: []
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
       - "*.log":
           type: file
           description: Log file of NARFMAP run
