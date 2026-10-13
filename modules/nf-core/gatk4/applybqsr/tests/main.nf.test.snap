@@ -2,27 +2,21 @@
     "sarscov2 - bam - stub": {
         "content": [
             {
-                "bai": [
+                "index": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "bam": [
+                "reads": [
                     [
                         {
                             "id": "test"
                         },
                         "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
-                ],
-                "crai": [
-                    
-                ],
-                "cram": [
-                    
                 ],
                 "versions_gatk4": [
                     [
@@ -40,7 +34,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-10-13T18:22:27.411656597",
+        "timestamp": "2026-10-13T22:29:08.435909526",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.10.0"
@@ -49,27 +43,21 @@
     "sarscov2 - bam - intervals": {
         "content": [
             {
-                "bai": [
+                "index": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.bai"
+                        "test.bam.bai"
                     ]
                 ],
-                "bam": [
+                "reads": [
                     [
                         {
                             "id": "test"
                         },
                         "test.bam:md5Reads,b194021b699cc5cf4b2b1f715e0b7b4c"
                     ]
-                ],
-                "crai": [
-                    
-                ],
-                "cram": [
-                    
                 ],
                 "versions_gatk4": [
                     [
@@ -87,7 +75,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-10-13T18:21:27.958105337",
+        "timestamp": "2026-10-13T22:28:21.742490125",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.10.0"
@@ -96,13 +84,7 @@
     "sarscov2 - cram": {
         "content": [
             {
-                "bai": [
-                    
-                ],
-                "bam": [
-                    
-                ],
-                "crai": [
+                "index": [
                     [
                         {
                             "id": "test"
@@ -110,7 +92,7 @@
                         "test.cram.crai:md5,68ec803b3882e66a3981c71aea2d0bb2"
                     ]
                 ],
-                "cram": [
+                "reads": [
                     [
                         {
                             "id": "test"
@@ -134,7 +116,48 @@
                 ]
             }
         ],
-        "timestamp": "2026-10-13T18:21:53.934454765",
+        "timestamp": "2026-10-13T22:28:42.058764931",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.0"
+        }
+    },
+    "sarscov2 - bam - csi": {
+        "content": [
+            {
+                "index": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bam.csi:md5,c26ef27adefd89013d8e373fd12b5a32"
+                    ]
+                ],
+                "reads": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bam:md5Reads,894549ee3ced6b5ca2eed2563a985217"
+                    ]
+                ],
+                "versions_gatk4": [
+                    [
+                        "GATK4_APPLYBQSR",
+                        "gatk4",
+                        "4.7.0.0"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "GATK4_APPLYBQSR",
+                        "samtools",
+                        "1.24"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-13T22:27:52.905241664",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.10.0"
@@ -143,13 +166,7 @@
     "sarscov2 - bam in, cram out": {
         "content": [
             {
-                "bai": [
-                    
-                ],
-                "bam": [
-                    
-                ],
-                "crai": [
+                "index": [
                     [
                         {
                             "id": "test"
@@ -157,7 +174,7 @@
                         "test.cram.crai:md5,7e31992fe11f050b30769f795a3142d3"
                     ]
                 ],
-                "cram": [
+                "reads": [
                     [
                         {
                             "id": "test"
@@ -181,7 +198,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-10-13T18:21:11.844823519",
+        "timestamp": "2026-10-13T22:28:07.565277919",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.10.0"
@@ -190,13 +207,7 @@
     "sarscov2 - cram - stub": {
         "content": [
             {
-                "bai": [
-                    
-                ],
-                "bam": [
-                    
-                ],
-                "crai": [
+                "index": [
                     [
                         {
                             "id": "test"
@@ -204,7 +215,7 @@
                         "test.cram.crai:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "cram": [
+                "reads": [
                     [
                         {
                             "id": "test"
@@ -228,7 +239,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-10-13T21:40:36.694445218",
+        "timestamp": "2026-10-13T22:28:56.624706068",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.10.0"
@@ -237,27 +248,21 @@
     "sarscov2 - bam": {
         "content": [
             {
-                "bai": [
+                "index": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.bai:md5,0f9522e0ddd11eb427c43456c65ba58d"
+                        "test.bam.bai:md5,ce9990fe66f7621573132fd233133046"
                     ]
                 ],
-                "bam": [
+                "reads": [
                     [
                         {
                             "id": "test"
                         },
                         "test.bam:md5Reads,894549ee3ced6b5ca2eed2563a985217"
                     ]
-                ],
-                "crai": [
-                    
-                ],
-                "cram": [
-                    
                 ],
                 "versions_gatk4": [
                     [
@@ -275,7 +280,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-10-13T18:20:51.340509881",
+        "timestamp": "2026-10-13T22:27:38.558993141",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.10.0"

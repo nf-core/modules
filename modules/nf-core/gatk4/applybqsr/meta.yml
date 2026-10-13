@@ -33,8 +33,8 @@ input:
           - edam: "http://edamontology.org/format_3462" #CRAM
     - input_index:
         type: file
-        description: BAI/CRAI file from alignment
-        pattern: "*.{bai,crai}"
+        description: BAI/CSI/CRAI file from alignment
+        pattern: "*.{bai,csi,crai}"
         ontologies:
           - edam: "http://edamontology.org/format_3327" #BAI
     - bqsr_table:
@@ -68,56 +68,40 @@ input:
         description: GATK sequence dictionary
         pattern: "*.dict"
         ontologies: []
-  - output_suffix:
-      type: string
-      description: Output file format, either "bam" or "cram" (cram is the default)
+  - output_format:
+      type: list
+      description: |
+        Output file type and index format as a two-element list.
+        First element: 'bam' or 'cram'.
+        Second element: 'bai', 'csi', or 'crai'.
+
+        Valid combinations: ['bam', 'bai'], ['bam', 'csi'], ['cram', 'crai'].
+      pattern: "{bam,cram}"
 output:
-  bam:
+  reads:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*bam":
+      - "*.{bam,cram}":
           type: file
-          description: Recalibrated BAM file
-          pattern: "*.bam"
+          description: Recalibrated BAM or CRAM file
+          pattern: "*.{bam,cram}"
           ontologies:
             - edam: "http://edamontology.org/format_2572" #BAM
-  bai:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.bai":
-          type: file
-          description: Recalibrated BAM index file
-          pattern: "*.{bam.bai}"
-          ontologies: []
-  crai:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.crai":
-          type: file
-          description: Recalibrated CRAM index file
-          pattern: "*.{cram.crai}"
-          ontologies: []
-  cram:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*cram":
-          type: file
-          description: Recalibrated CRAM file
-          pattern: "*.cram"
-          ontologies:
             - edam: "http://edamontology.org/format_3462" #CRAM
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.{bai,csi,crai}":
+          type: file
+          description: Index of the recalibrated BAM or CRAM file
+          pattern: "*.{bai,csi,crai}"
+          ontologies: []
   versions_gatk4:
     - - ${task.process}:
           type: string

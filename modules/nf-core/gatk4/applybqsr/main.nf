@@ -10,13 +10,11 @@ process GATK4_APPLYBQSR {
     input:
     tuple val(meta), path(input), path(input_index), path(bqsr_table), path(intervals)
     tuple val(meta2), path(fasta), path(fai), path(dict)
-    val output_suffix
+    val output_format
 
     output:
-    tuple val(meta), path("*cram"), emit: cram, optional: true
-    tuple val(meta), path("*bam"), emit: bam, optional: true
-    tuple val(meta), path("*.crai"), emit: crai, optional: true
-    tuple val(meta), path("*.bai"), emit: bai, optional: true
+    tuple val(meta), path("*.{bam,cram}"), emit: reads
+    tuple val(meta), path("*.{bai,csi,crai}"), emit: index
     tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
@@ -26,9 +24,21 @@ process GATK4_APPLYBQSR {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    // suffix can only be bam or cram, cram being the sensible default
-    def suffix = output_suffix == "bam" ? "bam" : "cram"
-    def gatk_index = suffix == "cram" ? "-OBI false" : ""
+    def file_type = output_format[0]
+    def index_fmt = output_format[1]
+
+    def valid_formats = [
+        'bam'  : ['bai', 'csi'],
+        'cram' : ['crai']
+    ]
+    if (!valid_formats.containsKey(file_type)) {
+        error("GATK4_APPLYBQSR: invalid file type '${file_type}'. Must be 'bam' or 'cram'.")
+    }
+    if (!valid_formats[file_type].contains(index_fmt)) {
+        error("GATK4_APPLYBQSR: invalid index format '${index_fmt}' for '${file_type}' output. Must be one of: ${valid_formats[file_type]}.")
+    }
+
+    def samtools_index_args = index_fmt == 'csi' ? '-c' : ''
 
     def interval_command = intervals ? "--intervals ${intervals}" : ""
 
@@ -43,29 +53,35 @@ process GATK4_APPLYBQSR {
     gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         ApplyBQSR \\
         --input ${input} \\
-        --output ${prefix}.${suffix} \\
+        --output ${prefix}.${file_type} \\
         --reference ${fasta} \\
         --bqsr-recal-file ${bqsr_table} \\
         ${interval_command} \\
-        ${gatk_index} \\
+        -OBI false \\
         --tmp-dir . \\
         ${args}
 
-    if [[ ${suffix} == cram ]]; then
-        samtools index ${prefix}.cram
-    fi
+    samtools index ${samtools_index_args} ${prefix}.${file_type}
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = output_suffix == "bam" ? "bam" : "cram"
+    def file_type = output_format[0]
+    def index_fmt = output_format[1]
+
+    def valid_formats = [
+        'bam'  : ['bai', 'csi'],
+        'cram' : ['crai']
+    ]
+    if (!valid_formats.containsKey(file_type)) {
+        error("GATK4_APPLYBQSR: invalid file type '${file_type}'. Must be 'bam' or 'cram'.")
+    }
+    if (!valid_formats[file_type].contains(index_fmt)) {
+        error("GATK4_APPLYBQSR: invalid index format '${index_fmt}' for '${file_type}' output. Must be one of: ${valid_formats[file_type]}.")
+    }
 
     """
-    touch ${prefix}.${suffix}
-    if [[ ${suffix} == cram ]]; then
-        touch ${prefix}.cram.crai
-    else
-        touch ${prefix}.bai
-    fi
+    touch ${prefix}.${file_type}
+    touch ${prefix}.${file_type}.${index_fmt}
     """
 }
