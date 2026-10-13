@@ -1,7 +1,23 @@
 # Dockerfile to create container with UniverSC and Cell Ranger
-# Disclaimer: this container is not provided nor supported by 10x Genomics.
+
+# DISCLAIMER:
+# Cell Ranger is proprietary software owned by 10x Genomics.
+# Redistribution is generally restricted by the applicable 10x Genomics
+# license and terms. Do not redistribute this image containing Cell Ranger
+# unless you are explicitly authorized to do so.
+#
+# This image is intended for the authorized nf-core use case under the
+# applicable agreement with 10x Genomics. This does not grant permission
+# to redistribute Cell Ranger independently or outside the scope of that
+# authorization.
 
 FROM continuumio/miniconda3:26.7.1-1
+
+ARG CELLRANGER_REDISTRIBUTION_AUTHORIZED=false
+RUN if [ "$CELLRANGER_REDISTRIBUTION_AUTHORIZED" != "true" ]; then \
+        echo >&2 "ERROR: Building this image bundles Cell Ranger. Confirm redistribution authorization before proceeding."; \
+        exit 1; \
+    fi
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends patch procps rename wget \
