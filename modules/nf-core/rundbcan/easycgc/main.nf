@@ -36,6 +36,7 @@ process RUNDBCAN_EASYCGC {
         --db_dir ${dbcan_db} \\
         --input_raw_data ${input_raw_data} \\
         --output_dir . \\
+        --threads ${task.cpus} \\
         --input_gff ${input_gff} \\
         --gff_type ${gff_type} \\
         ${args}
