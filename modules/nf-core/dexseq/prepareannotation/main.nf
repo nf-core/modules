@@ -4,8 +4,8 @@ process DEXSEQ_PREPAREANNOTATION {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/07/0718f75da083443fe7acb310d3f8ef8216fb4561395226a48fff870d17323f4e/data'
-        : 'community.wave.seqera.io/library/bioconductor-dexseq_htseq:4266bf085c9883ac'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5f/5f3e6fbbab7a2e4b6e1d57be3e4aa40b18810e3a72b7d6a8c0fcbb2bf0cc7c63/data'
+        : 'community.wave.seqera.io/library/bioconductor-dexseq_htseq_python:dfa2c806cf6767c6'}"
 
     input:
     tuple val(meta), path(gtf)
@@ -22,7 +22,9 @@ process DEXSEQ_PREPAREANNOTATION {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     // The script ships with the DEXSeq R package and is not on the PATH.
-    // A fixed hash seed keeps the order of the transcripts attribute reproducible.
+    // The script iterates over Python sets, so a fixed hash seed is needed to keep the
+    // order of the aggregate gene IDs and of the transcripts attribute reproducible.
+    // The order under a given seed depends on the Python version, which is pinned in environment.yml.
     """
     dexseq_scripts=\$(Rscript -e 'cat(system.file("python_scripts", package = "DEXSeq"))')
 

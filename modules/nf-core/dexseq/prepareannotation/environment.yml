@@ -6,3 +6,5 @@ channels:
 dependencies:
   - bioconda::bioconductor-dexseq=1.56.0
   - bioconda::htseq=2.1.2
+  # Pinned because the order of the aggregate gene IDs depends on the Python version
+  - conda-forge::python=3.13.16
