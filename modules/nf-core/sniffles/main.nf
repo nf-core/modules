@@ -31,8 +31,8 @@ process SNIFFLES {
     def tandem_repeats = tandem_file ? "--tandem-repeats ${tandem_file}" : ''
     def vcf = vcf_output ? "--vcf ${prefix}.vcf.gz": ''
     def snf = snf_output ? "--snf ${prefix}.snf": ''
-    // Sniffles reads the sites file as plain text, a gzipped one is decompressed first (fritzsedlazeck/Sniffles#613)
-    def decompress = genotype_vcf && genotype_vcf.name.endsWith('.gz') ? "gzip -dc ${genotype_vcf} > ${prefix}.sites.vcf" : ''
+    // Sniffles reads the sites file as plain text, so a compressed one is decompressed first (fritzsedlazeck/Sniffles#613)
+    def decompress = genotype_vcf && genotype_vcf.name.endsWith('.gz') ? "bgzip -dc ${genotype_vcf} > ${prefix}.sites.vcf" : ''
     def genotype = genotype_vcf ? "--genotype-vcf ${genotype_vcf.name.endsWith('.gz') ? prefix + '.sites.vcf' : genotype_vcf}" : ''
 
     """
