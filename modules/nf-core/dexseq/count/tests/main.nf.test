@@ -46,6 +46,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert path(process.out.counts[0][1]).readLines().contains('ENSG00000239435:001\t71') },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
@@ -98,6 +99,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert path(process.out.counts[0][1]).readLines().contains('ENSG00000239435:001\t132') },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
