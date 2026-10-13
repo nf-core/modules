@@ -31,6 +31,7 @@ process DEXSEQ_COUNT {
     python \${dexseq_scripts}/dexseq_count.py \\
         --paired ${paired} \\
         --format bam \\
+        --order pos \\
         ${args} \\
         ${gff} \\
         ${bam} \\

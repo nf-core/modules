@@ -31,8 +31,9 @@ input:
     - bam:
         type: file
         description: |
-          BAM file of the aligned reads. Sort it by name, or by position and
-          pass `-r pos` through `ext.args`.
+          BAM file of the aligned reads, sorted by position. For a BAM sorted
+          by name, pass `--order name` through `ext.args`; a mismatched sort
+          order gives wrong counts without any error.
         pattern: "*.bam"
         ontologies:
           - edam: "http://edamontology.org/format_2572"

@@ -29,7 +29,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--order pos --stranded no'
+                module_args = '--stranded no'
             }
             process {
                 """
@@ -55,12 +55,38 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--order pos --stranded reverse --minaqual 10'
+                module_args = '--stranded reverse --minaqual 10'
             }
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.bam', checkIfExists: true)
+                ]
+                input[1] = DEXSEQ_PREPAREANNOTATION.out.gff
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - single_end - bam") {
+
+        when {
+            params {
+                module_args = '--stranded no'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.rna.paired_end.sorted.bam', checkIfExists: true)
                 ]
                 input[1] = DEXSEQ_PREPAREANNOTATION.out.gff
