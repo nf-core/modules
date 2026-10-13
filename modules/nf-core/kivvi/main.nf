@@ -25,7 +25,7 @@ process KIVVI {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def threads = command == "d4z4" ? "--threads $task.cpus" : ""
+    def threads = command == "d4z4" ? "--threads ${Math.min(task.cpus as int, 2)}" : ""
     """
     kivvi \\
         $args \\
