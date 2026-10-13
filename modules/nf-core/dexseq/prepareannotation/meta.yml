@@ -35,6 +35,12 @@ input:
         pattern: "*.gtf"
         ontologies:
           - edam: "http://edamontology.org/format_2306"
+  - random_seed:
+      type: integer
+      description: |
+        Optional seed for the Python hash function (`PYTHONHASHSEED`), which sets the order of
+        the aggregate gene IDs and of the transcripts attribute. Pass `[]` to leave it unset,
+        in which case the order may change between runs.
 output:
   gff:
     - - meta:

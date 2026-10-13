@@ -19,6 +19,7 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
                 ]
+                input[1] = 0
                 """
             }
         }
@@ -46,6 +47,7 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
                 ]
+                input[1] = 0
                 """
             }
         }
@@ -55,6 +57,34 @@ nextflow_process {
                 { assert process.success },
                 { assert !(path(process.out.gff[0][1]).text =~ /gene_id "[^"]*\+[^"]*"/) },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - gtf - no seed") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            // Without a hash seed the order of the aggregate gene IDs changes between runs
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.gff[0][1]).text =~ /gene_id "[^"]*\+[^"]*"/ },
+                { assert snapshot(
+                    file(process.out.gff[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
 
@@ -71,6 +101,7 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
                 ]
+                input[1] = []
                 """
             }
         }

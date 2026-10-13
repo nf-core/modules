@@ -9,6 +9,7 @@ process DEXSEQ_PREPAREANNOTATION {
 
     input:
     tuple val(meta), path(gtf)
+    val random_seed
 
     output:
     tuple val(meta), path("*.gff"), emit: gff
@@ -21,14 +22,15 @@ process DEXSEQ_PREPAREANNOTATION {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    // The script iterates over Python sets, so the order of the aggregate gene IDs and of the
+    // transcripts attribute depends on the Python hash seed. The order under a given seed also
+    // depends on the Python version, which is pinned in environment.yml.
+    def seed_env = random_seed in [null, []] ? '' : "PYTHONHASHSEED=${random_seed}"
     // The script ships with the DEXSeq R package and is not on the PATH.
-    // The script iterates over Python sets, so a fixed hash seed is needed to keep the
-    // order of the aggregate gene IDs and of the transcripts attribute reproducible.
-    // The order under a given seed depends on the Python version, which is pinned in environment.yml.
     """
     dexseq_scripts=\$(Rscript -e 'cat(system.file("python_scripts", package = "DEXSeq"))')
 
-    PYTHONHASHSEED=0 python \${dexseq_scripts}/dexseq_prepare_annotation.py \\
+    ${seed_env} python \${dexseq_scripts}/dexseq_prepare_annotation.py \\
         ${args} \\
         ${gtf} \\
         ${prefix}.gff
