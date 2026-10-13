@@ -34,12 +34,15 @@ process RUNDBCAN_EASYSUBSTRATE {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    # substrate_prediction has no --threads and falls back to os.cpu_count()
+    export PYTHON_CPU_COUNT=${task.cpus}
 
     run_dbcan easy_substrate \\
         --mode protein \\
         --db_dir ${dbcan_db} \\
         --input_raw_data ${input_raw_data} \\
         --output_dir . \\
+        --threads ${task.cpus} \\
         --input_gff ${input_gff} \\
         --gff_type ${gff_type} \\
         ${args}
