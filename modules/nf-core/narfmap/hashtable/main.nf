@@ -11,7 +11,7 @@ process NARFMAP_HASHTABLE {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("narfmap")    , emit: hashmap
+    tuple val(meta), path("narfmap"), emit: hashmap
     tuple val("${task.process}"), val('narfmap'), eval("dragen-os --version 2>&1"), topic: versions, emit: versions_narfmap
 
     when:

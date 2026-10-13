@@ -32,17 +32,10 @@ output:
             Groovy Map containing reference information
             e.g. [ id:'test', single_end:false ]
       - narfmap:
-          type: file
+          type: string
           description: NARFMAP hash table
           pattern: "*.{cmp,.bin,.txt}"
           ontologies: []
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
   versions_narfmap:
     - - ${task.process}:
           type: string
