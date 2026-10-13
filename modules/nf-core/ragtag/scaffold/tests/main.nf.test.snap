@@ -1,36 +1,13 @@
 {
-    "A. thaliana Col-0 test data - ragtag - scaffold": {
+    "sarscov2 test data - ragtag - minimap2 - scaffold": {
         "content": [
             {
-                "0": [
+                "confidence_txt": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.fasta:md5,70b661fab5364a1c389972a771f97905"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.agp:md5,40fbf2d081c32880d8ce8187c529a80b"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.stats:md5,209e973e4bac1653b8d5fddb7fa13b63"
-                    ]
-                ],
-                "3": [
-                    [
-                        "RAGTAG_SCAFFOLD",
-                        "ragtag",
-                        "2.1.0"
+                        "test.confidence.txt:md5,4c7bc2c5128996cd72161c39fbfc3ce3"
                     ]
                 ],
                 "corrected_agp": [
@@ -46,7 +23,7 @@
                         {
                             "id": "test"
                         },
-                        "test.fasta:md5,70b661fab5364a1c389972a771f97905"
+                        "test.fasta.gz:md5,70b661fab5364a1c389972a771f97905"
                     ]
                 ],
                 "corrected_stats": [
@@ -55,6 +32,28 @@
                             "id": "test"
                         },
                         "test.stats:md5,209e973e4bac1653b8d5fddb7fa13b63"
+                    ]
+                ],
+                "ragtag_delta": [
+                    
+                ],
+                "ragtag_delta_log": [
+                    
+                ],
+                "ragtag_paf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.asm.paf.gz:md5,6bb30eea71e41b573e789e8d601dd778"
+                    ]
+                ],
+                "ragtag_paf_log": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.asm.paf.log"
                     ]
                 ],
                 "versions_ragtag": [
@@ -66,44 +65,98 @@
                 ]
             }
         ],
-        "timestamp": "2026-02-16T15:16:15.735574744",
+        "timestamp": "2026-10-10T15:03:43.037641",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "26.01.1"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.7"
         }
     },
-    "A. thaliana Col-0 test data - ragtag - scaffold - stub": {
+    "sarscov2 test data - ragtag - nucmer - scaffold": {
         "content": [
             {
-                "0": [
+                "confidence_txt": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.fasta:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.confidence.txt:md5,4c7bc2c5128996cd72161c39fbfc3ce3"
                     ]
                 ],
-                "1": [
+                "corrected_agp": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.agp:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.agp:md5,40fbf2d081c32880d8ce8187c529a80b"
                     ]
                 ],
-                "2": [
+                "corrected_assembly": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.stats:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.fasta.gz:md5,70b661fab5364a1c389972a771f97905"
                     ]
                 ],
-                "3": [
+                "corrected_stats": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.stats:md5,209e973e4bac1653b8d5fddb7fa13b63"
+                    ]
+                ],
+                "ragtag_delta": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.asm.delta.gz"
+                    ]
+                ],
+                "ragtag_delta_log": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.asm.delta.log"
+                    ]
+                ],
+                "ragtag_paf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.asm.paf.gz:md5,cb9db2cc6fef62f1f1aa3bc7700d94e6"
+                    ]
+                ],
+                "ragtag_paf_log": [
+                    
+                ],
+                "versions_ragtag": [
                     [
                         "RAGTAG_SCAFFOLD",
                         "ragtag",
                         "2.1.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-10T15:16:13.849885",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.7"
+        }
+    },
+    "sarscov2 test data - ragtag - scaffold - stub": {
+        "content": [
+            {
+                "confidence_txt": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.confidence.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "corrected_agp": [
@@ -119,7 +172,7 @@
                         {
                             "id": "test"
                         },
-                        "test.fasta:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.fasta.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "corrected_stats": [
@@ -128,6 +181,38 @@
                             "id": "test"
                         },
                         "test.stats:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "ragtag_delta": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.asm.delta.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "ragtag_delta_log": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.delta.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "ragtag_paf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.asm.paf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "ragtag_paf_log": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.paf.log:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "versions_ragtag": [
@@ -139,10 +224,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-02-16T15:16:24.915889235",
+        "timestamp": "2026-10-10T14:57:10.490567",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "26.01.1"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.7"
         }
     }
 }
