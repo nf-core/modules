@@ -1,11 +1,194 @@
 {
-    "homo_sapiens - target, ref, chunks - no scaffold - two chromosomes": {
+    "homo_sapiens - target, ref, one chunk only - no scaffold - two chromosomes in two vcf": {
+        "content": [
+            {
+                "chunks": [
+                    
+                ],
+                "vcf_index": [
+                    [
+                        {
+                            "chr": "chr21",
+                            "id": "NA12878",
+                            "panel_id": "1000GP"
+                        },
+                        "NA12878_chr21-0016570065-0016597215.phased.bcf",
+                        "NA12878_chr21-0016570065-0016597215.phased.bcf.csi"
+                    ],
+                    [
+                        {
+                            "chr": "chr21",
+                            "id": "NA19401",
+                            "panel_id": "1000GP"
+                        },
+                        "NA19401_chr21-0016570065-0016597215.phased.bcf",
+                        "NA19401_chr21-0016570065-0016597215.phased.bcf.csi"
+                    ],
+                    [
+                        {
+                            "chr": "chr22",
+                            "id": "NA12878",
+                            "panel_id": "1000GP"
+                        },
+                        "NA12878_chr22-0016570065-0016597215.phased.bcf",
+                        "NA12878_chr22-0016570065-0016597215.phased.bcf.csi"
+                    ],
+                    [
+                        {
+                            "chr": "chr22",
+                            "id": "NA19401",
+                            "panel_id": "1000GP"
+                        },
+                        "NA19401_chr22-0016570065-0016597215.phased.bcf",
+                        "NA19401_chr22-0016570065-0016597215.phased.bcf.csi"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-09-29T17:04:12.405591682",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
+    },
+    "homo_sapiens - target - no chunks, no ref, no scaffold, no map - two chromosomes in one vcf": {
+        "content": [
+            {
+                "chunks": [
+                    [
+                        {
+                            "chr": "21",
+                            "id": "test",
+                            "panelid": "ref_panel",
+                            "scaffoldid": "scaffold"
+                        },
+                        "chr21:16570070-16609998"
+                    ],
+                    [
+                        {
+                            "chr": "22",
+                            "id": "test",
+                            "panelid": "ref_panel",
+                            "scaffoldid": "scaffold"
+                        },
+                        "chr22:16570065-16609999"
+                    ]
+                ],
+                "vcf_index": [
+                    [
+                        {
+                            "chr": "21",
+                            "id": "test",
+                            "panelid": "ref_panel",
+                            "scaffoldid": "scaffold"
+                        },
+                        "test_chr21-0016570070-0016609998.phased.bcf",
+                        "test_chr21-0016570070-0016609998.phased.bcf.csi"
+                    ],
+                    [
+                        {
+                            "chr": "22",
+                            "id": "test",
+                            "panelid": "ref_panel",
+                            "scaffoldid": "scaffold"
+                        },
+                        "test_chr22-0016570065-0016609999.phased.bcf",
+                        "test_chr22-0016570065-0016609999.phased.bcf.csi"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-01T17:47:15.586593218",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "homo_sapiens - target - no error -- stub": {
+        "content": [
+            {
+                "chunks": [
+                    
+                ],
+                "vcf_index": [
+                    [
+                        {
+                            "chr": "22",
+                            "id": "test"
+                        },
+                        "test_chr22-0016570065-0016597215.phased.bcf:md5,d41d8cd98f00b204e9800998ecf8427e",
+                        "test_chr22-0016570065-0016597215.phased.bcf.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-09-29T17:05:11.090899754",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
+    },
+    "homo_sapiens - target - no chunks, no ref, no scaffold, no map - two chromosomes in two vcf": {
+        "content": [
+            {
+                "chunks": [
+                    [
+                        {
+                            "chr": "21",
+                            "id": "test",
+                            "panelid": "panel",
+                            "scaffoldid": "scaffold"
+                        },
+                        "chr21:16570070-16609998"
+                    ],
+                    [
+                        {
+                            "chr": "22",
+                            "id": "test",
+                            "panelid": "panel",
+                            "scaffoldid": "scaffold"
+                        },
+                        "chr22:16570065-16609999"
+                    ]
+                ],
+                "vcf_index": [
+                    [
+                        {
+                            "chr": "21",
+                            "id": "test",
+                            "panelid": "panel",
+                            "scaffoldid": "scaffold"
+                        },
+                        "test_chr21-0016570070-0016609998.phased.bcf",
+                        "test_chr21-0016570070-0016609998.phased.bcf.csi"
+                    ],
+                    [
+                        {
+                            "chr": "22",
+                            "id": "test",
+                            "panelid": "panel",
+                            "scaffoldid": "scaffold"
+                        },
+                        "test_chr22-0016570065-0016609999.phased.bcf",
+                        "test_chr22-0016570065-0016609999.phased.bcf.csi"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-01T17:47:00.749402067",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "homo_sapiens - target, ref, chunks - no scaffold - two chromosomes in two vcf": {
         "content": [
             [
                 [
                     {
-                        "id": "NA12878",
-                        "chr": "chr21"
+                        "panel_id": "1000GP",
+                        "chr": "chr21",
+                        "id": "NA12878"
                     },
                     "NA12878_chr21.ligate.vcf.gz",
                     "NA12878_chr21.ligate.vcf.gz.csi",
@@ -17,8 +200,23 @@
                 ],
                 [
                     {
-                        "id": "NA12878",
-                        "chr": "chr22"
+                        "panel_id": "1000GP",
+                        "chr": "chr21",
+                        "id": "NA19401"
+                    },
+                    "NA19401_chr21.ligate.vcf.gz",
+                    "NA19401_chr21.ligate.vcf.gz.csi",
+                    "VcfFile [chromosomes=[chr21], sampleCount=1, variantCount=836, phased=true, phasedAutodetect=true]",
+                    [
+                        "NA19401"
+                    ],
+                    "1533910b53a188b77706c055228ef5dc"
+                ],
+                [
+                    {
+                        "panel_id": "1000GP",
+                        "chr": "chr22",
+                        "id": "NA12878"
                     },
                     "NA12878_chr22.ligate.vcf.gz",
                     "NA12878_chr22.ligate.vcf.gz.csi",
@@ -27,103 +225,30 @@
                         "NA12878"
                     ],
                     "4865103995e99b948f11a963056c37c6"
+                ],
+                [
+                    {
+                        "panel_id": "1000GP",
+                        "chr": "chr22",
+                        "id": "NA19401"
+                    },
+                    "NA19401_chr22.ligate.vcf.gz",
+                    "NA19401_chr22.ligate.vcf.gz.csi",
+                    "VcfFile [chromosomes=[chr22], sampleCount=1, variantCount=903, phased=true, phasedAutodetect=true]",
+                    [
+                        "NA19401"
+                    ],
+                    "efeb6e0c44f0a9059abfc76fab6d2563"
                 ]
             ],
             [
-                [
-                    {
-                        "id": "NA12878",
-                        "chr": "chr21"
-                    },
-                    "chr21:16570065-16597215"
-                ],
-                [
-                    {
-                        "id": "NA12878",
-                        "chr": "chr21"
-                    },
-                    "chr21:16587172-16609999"
-                ],
-                [
-                    {
-                        "id": "NA12878",
-                        "chr": "chr22"
-                    },
-                    "chr22:16570065-16597215"
-                ],
-                [
-                    {
-                        "id": "NA12878",
-                        "chr": "chr22"
-                    },
-                    "chr22:16587172-16609999"
-                ]
+                
             ]
         ],
+        "timestamp": "2026-09-29T17:00:28.744433022",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.3"
-        },
-        "timestamp": "2026-02-26T15:58:42.837552781"
-    },
-    "homo_sapiens - target - no error -- stub": {
-        "content": [
-            {
-                "chunks": [
-                    [
-                        {
-                            "id": "test",
-                            "chr": "22"
-                        },
-                        "chr22:16570065-16597215"
-                    ]
-                ],
-                "vcf_index": [
-                    [
-                        {
-                            "id": "test",
-                            "chr": "22"
-                        },
-                        "test_22.ligate.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
-                        "test_22.ligate.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ]
-            }
-        ],
-        "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.3"
-        },
-        "timestamp": "2026-02-26T15:58:57.935325434"
-    },
-    "homo_sapiens - target - no chunks, no ref, no scaffold, no map - one chromosome": {
-        "content": [
-            [
-                [
-                    {
-                        "id": "test",
-                        "chr": "22"
-                    },
-                    "test_22.ligate.vcf.gz",
-                    "test_22.ligate.vcf.gz.csi",
-                    "VcfFile [chromosomes=[chr22], sampleCount=3202, variantCount=903, phased=true, phasedAutodetect=true]",
-                    "affeabaf0b686b35f66536890fa35c4b"
-                ]
-            ],
-            [
-                [
-                    {
-                        "id": "test",
-                        "chr": "22"
-                    },
-                    "chr22:16570065-16609999"
-                ]
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.3"
-        },
-        "timestamp": "2026-02-26T15:58:12.716778842"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
     }
 }

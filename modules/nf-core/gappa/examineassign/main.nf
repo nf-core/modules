@@ -24,13 +24,19 @@ process GAPPA_EXAMINEASSIGN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    // gappa reads a gzipped jplace natively, but a gzipped taxon file is read as text and
+    // fails with "A line in the taxon file didn't have two tab separated columns".
+    def taxonfile = taxonomy.name.endsWith('.gz') ? taxonomy.baseName : "${taxonomy}"
+    def gunzip    = taxonomy.name.endsWith('.gz') ? "gzip -cd ${taxonomy} > ${taxonfile}" : ""
     """
+    $gunzip
+
     gappa \\
         examine assign \\
         ${args} \\
         --threads ${task.cpus} \\
         --jplace-path ${jplace} \\
-        --taxon-file ${taxonomy} \\
+        --taxon-file ${taxonfile} \\
         --file-prefix ${prefix}.
     """
 

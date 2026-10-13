@@ -26,7 +26,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["images", "logs", "data", "database", "kmer"])).match() }
+                { assert snapshot(sanitizeOutput(
+                    process.out,
+                    unstableKeys:["images", "logs", "data", "database"],
+                    unstablePatterns: ["**/database*"],
+                    ignorePatterns: ["**/mashclust_*.log"]
+                )).match() }
             )
         }
     }

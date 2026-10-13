@@ -1,3 +1,12 @@
+// The resolved sequences keep the input's own extension, with any '.gz' stripped first so a
+// compressed input is not written as "*.resolved.gz". Falls back to 'fasta' when the input has
+// no extension at all (e.g. a download URL with no filename suffix), which would otherwise
+// produce a malformed "*.resolved." name matching nothing.
+def resolvedExtension(sequences) {
+    def stem = sequences.name.endsWith('.gz') ? sequences.baseName : sequences.name
+    stem.contains('.') ? stem.substring(stem.lastIndexOf('.') + 1) : 'fasta'
+}
+
 process CUSTOM_RESOLVETAXONOMY {
     tag "$meta.id"
     label 'process_low'
@@ -11,12 +20,9 @@ process CUSTOM_RESOLVETAXONOMY {
     tuple val(meta), path(taxonomy), path(sequences), val(taxonomy_required)
 
     output:
-    // The fallback to 'fasta' matters when sequences has no extension at all (e.g. a
-    // download URL with no filename suffix) -- Path.extension is '' there, which
-    // would otherwise produce a malformed "*.resolved." glob matching nothing.
-    tuple val(meta), path("*.resolved.tax"),                                emit: taxonomy
-    tuple val(meta), path("*.resolved.${sequences.extension ?: 'fasta'}"),  emit: sequences
-    tuple val(meta), path("*.warnings.txt"),                                emit: warnings
+    tuple val(meta), path("*.resolved.tax"),                                  emit: taxonomy
+    tuple val(meta), path("*.resolved.${resolvedExtension(sequences)}"),      emit: sequences
+    tuple val(meta), path("*.warnings.txt"),                                  emit: warnings
     tuple val("${task.process}"), val('biopython'), eval("python3 -c 'import Bio; print(Bio.__version__)'"), emit: versions_biopython, topic: versions
 
     when:
@@ -24,10 +30,7 @@ process CUSTOM_RESOLVETAXONOMY {
 
     script:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    // Falls back to 'fasta' when sequences has no extension at all (e.g. a
-    // download URL with no filename suffix) -- Path.extension is '' there, which
-    // would otherwise produce a malformed "${prefix}.resolved." output name.
-    def ext = sequences.extension ?: 'fasta'
+    def ext = resolvedExtension(sequences)
     // Nextflow stages an absent optional path(taxonomy) as an empty list -- falsy in
     // Groovy -- rather than as a file, so this correctly distinguishes "no taxonomy
     // file given" from a real one, without ever interpolating the literal text "[]"
@@ -35,15 +38,23 @@ process CUSTOM_RESOLVETAXONOMY {
     def taxonomy_in = taxonomy ? "${taxonomy}" : ''
     """
     python3 - "${taxonomy_in}" "${sequences}" "${taxonomy_required}" "${prefix}.resolved.tax" "${prefix}.resolved.${ext}" "${prefix}.warnings.txt" << 'PYEOF'
+import gzip
 import sys
 from Bio import SeqIO
 
 taxonomy_in, sequences_in, taxonomy_required, taxonomy_out, sequences_out, warnings_out = sys.argv[1:7]
 taxonomy_required = taxonomy_required == 'true'
 
+def opentext(path):
+    # Sniffed from the magic bytes rather than the suffix: an input can arrive with any
+    # name, and reading a gzip member as text yields mojibake instead of an error.
+    with open(path, 'rb') as fh:
+        compressed = fh.read(2) == b'\\x1f\\x8b'
+    return gzip.open(path, 'rt') if compressed else open(path)
+
 # Format sniffed from content (FASTA, Clustal or PHYLIP -- sequences can be any of
 # these, depending on the caller).
-with open(sequences_in) as fh:
+with opentext(sequences_in) as fh:
     first_line = next((l.strip() for l in fh if l.strip()), '')
 if first_line.startswith('>'):
     sequences_format = 'fasta'
@@ -52,7 +63,8 @@ elif first_line.upper().startswith('CLUSTAL'):
 else:
     sequences_format = 'phylip-relaxed'
 
-records = list(SeqIO.parse(sequences_in, sequences_format))
+with opentext(sequences_in) as fh:
+    records = list(SeqIO.parse(fh, sequences_format))
 warnings = []
 
 def embedded_taxonomy(record):
@@ -69,7 +81,7 @@ if taxonomy_in:
             'An explicit taxonomy file was provided; ignoring embedded taxonomy '
             'text found in sequence record headers.'
         )
-    with open(taxonomy_in) as fh_in, open(taxonomy_out, 'w') as fh_out:
+    with opentext(taxonomy_in) as fh_in, open(taxonomy_out, 'w') as fh_out:
         fh_out.write(fh_in.read())
 else:
     missing = [record.id for record in records if not embedded_taxonomy(record)]
@@ -103,7 +115,7 @@ PYEOF
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def ext = sequences.extension ?: 'fasta'
+    def ext = resolvedExtension(sequences)
     """
     touch ${prefix}.resolved.tax ${prefix}.resolved.${ext} ${prefix}.warnings.txt
     """

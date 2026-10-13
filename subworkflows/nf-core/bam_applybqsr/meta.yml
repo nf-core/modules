@@ -42,10 +42,15 @@ input:
         Structure: [ path(intervals), val(num_intervals) ]
       pattern: "*.{bed,interval_list}"
 
-  - output_suffix:
-      type: string
+  - output_format:
+      type: tuple
       description: |
-        Output file type, either 'bam' or 'cram'.
+        Output file type and index format as a two-element tuple.
+        First element: 'bam' or 'cram' (passed to GATK4 ApplyBQSR).
+        Second element: 'bai', 'csi', or 'crai' (passed to samtools merge).
+
+        Valid combinations: ['bam', 'bai'], ['bam', 'csi'], ['cram', 'crai'].
+      pattern: "{bam,cram}"
 output:
   - recal_out:
       type: file

@@ -4,8 +4,8 @@ process SNIFFLES {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a3/a392a64ae046bd1b8679f2ae590f88d84fed26d569ab70810df969741722dbcc/data'
-:         'community.wave.seqera.io/library/sniffles:2.8.0--c25a97c10afa095a' }"
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6d/6de188cc5ba7548d54fc6d257336c8c6f57c9b403823b7ccc9978ca08d8d1945/data'
+:         'community.wave.seqera.io/library/sniffles:2.8.1--b8c26c44b42620c5' }"
 
     input:
     tuple val(meta), path(input), path(index)

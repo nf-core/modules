@@ -36,7 +36,7 @@ output:
           description: |
             Groovy Map containing genome information
             e.g. `[ id:'genome1' ]`
-      - index:
+      - ${prefix}:
           type: file
           description: Processed MISO index file
           pattern: "*.{shelve}"

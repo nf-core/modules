@@ -4,8 +4,8 @@ process OPENMS_MAPALIGNERIDENTIFICATION {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/openms:3.5.0--h78fb946_0' :
-        'quay.io/biocontainers/openms:3.5.0--h78fb946_0' }"
+        'https://depot.galaxyproject.org/singularity/openms:3.6.0--hc52dbad_0' :
+        'quay.io/biocontainers/openms:3.6.0--hc52dbad_0' }"
 
     input:
     tuple val(meta), path(id_files)
@@ -19,7 +19,7 @@ process OPENMS_MAPALIGNERIDENTIFICATION {
 
     script:
     def args      = task.ext.args ?: ''
-    def trafo_out = id_files.collect { "${it.baseName}.trafoXML" }.join(' ')
+    def trafo_out = id_files.collect { item -> "${item.baseName}.trafoXML" }.join(' ')
     """
     MapAlignerIdentification \\
         -in $id_files \\
@@ -29,7 +29,7 @@ process OPENMS_MAPALIGNERIDENTIFICATION {
     """
 
     stub:
-    def trafo_out = id_files.collect { "${it.baseName}.trafoXML" }.join(' ')
+    def trafo_out = id_files.collect { item -> "${item.baseName}.trafoXML" }.join(' ')
     """
     touch $trafo_out
     """

@@ -26,6 +26,11 @@ process CUSTOM_ORFMERGE {
     script:
     prefix = task.ext.prefix ?: "${meta.id}.catalogue"
     args   = task.ext.args ?: ''
+
+    """
+    echo ${args}
+    """
+
     template 'orfmerge.py'
 
     stub:
