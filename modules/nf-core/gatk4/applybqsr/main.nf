@@ -63,7 +63,7 @@ process GATK4_APPLYBQSR {
     """
     touch ${prefix}.${suffix}
     if [[ ${suffix} == cram ]]; then
-        touch ${prefix}.crai
+        touch ${prefix}.cram.crai
     else
         touch ${prefix}.bai
     fi
