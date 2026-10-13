@@ -4,8 +4,8 @@ process GATK4_APPLYBQSR {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ce/ce8f4142326abbb74e28b97633a200b09439c54480803343b1cf13dc19e51ae5/data'
-        : 'community.wave.seqera.io/library/gatk4-lite:4.7.0.0--79918b8b2632f4b1'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3b/3b33544fcc9268dad01801b928e566f1beaacd078b1d58d7904d7c6aa68eba9a/data'
+        : 'community.wave.seqera.io/library/gatk4-lite_samtools:9b6806e26dd32afe'}"
 
     input:
     tuple val(meta), path(input), path(input_index), path(bqsr_table), path(intervals)
@@ -13,10 +13,12 @@ process GATK4_APPLYBQSR {
     val output_suffix
 
     output:
-    tuple val(meta), path("${prefix}.bam"), emit: bam, optional: true
-    tuple val(meta), path("${prefix}*bai"), emit: bai, optional: true
-    tuple val(meta), path("${prefix}.cram"), emit: cram, optional: true
+    tuple val(meta), path("*cram"), emit: cram, optional: true
+    tuple val(meta), path("*bam"), emit: bam, optional: true
+    tuple val(meta), path("*.crai"), emit: crai, optional: true
+    tuple val(meta), path("*.bai"), emit: bai, optional: true
     tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,6 +28,7 @@ process GATK4_APPLYBQSR {
     prefix = task.ext.prefix ?: "${meta.id}"
     // suffix can only be bam or cram, cram being the sensible default
     def suffix = output_suffix == "bam" ? "bam" : "cram"
+    def gatk_index = suffix == "cram" ? "-OBI false" : ""
 
     def interval_command = intervals ? "--intervals ${intervals}" : ""
 
@@ -44,8 +47,13 @@ process GATK4_APPLYBQSR {
         --reference ${fasta} \\
         --bqsr-recal-file ${bqsr_table} \\
         ${interval_command} \\
+        ${gatk_index} \\
         --tmp-dir . \\
         ${args}
+
+    if [[ ${suffix} == cram ]]; then
+        samtools index ${prefix}.cram
+    fi
     """
 
     stub:
@@ -55,7 +63,7 @@ process GATK4_APPLYBQSR {
     """
     touch ${prefix}.${suffix}
     if [[ ${suffix} == cram ]]; then
-        touch ${prefix}.cram.bai
+        touch ${prefix}.crai
     else
         touch ${prefix}.bai
     fi

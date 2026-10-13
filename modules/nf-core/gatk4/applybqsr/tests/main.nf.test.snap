@@ -3,6 +3,9 @@
         "content": [
             {
                 "0": [
+                    
+                ],
+                "1": [
                     [
                         {
                             "id": "test"
@@ -10,7 +13,10 @@
                         "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "1": [
+                "2": [
+                    
+                ],
+                "3": [
                     [
                         {
                             "id": "test"
@@ -18,14 +24,18 @@
                         "test.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "2": [
-                    
-                ],
-                "3": [
+                "4": [
                     [
                         "GATK4_APPLYBQSR",
                         "gatk4",
                         "4.7.0.0"
+                    ]
+                ],
+                "5": [
+                    [
+                        "GATK4_APPLYBQSR",
+                        "samtools",
+                        "1.24"
                     ]
                 ],
                 "bai": [
@@ -44,6 +54,9 @@
                         "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
+                "crai": [
+                    
+                ],
                 "cram": [
                     
                 ],
@@ -53,19 +66,29 @@
                         "gatk4",
                         "4.7.0.0"
                     ]
+                ],
+                "versions_samtools": [
+                    [
+                        "GATK4_APPLYBQSR",
+                        "samtools",
+                        "1.24"
+                    ]
                 ]
             }
         ],
-        "timestamp": "2026-08-18T10:46:47.148238",
+        "timestamp": "2026-10-13T17:10:08.660374079",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.6"
+            "nextflow": "26.10.0"
         }
     },
     "sarscov2 - bam - intervals": {
         "content": [
             {
                 "0": [
+                    
+                ],
+                "1": [
                     [
                         {
                             "id": "test"
@@ -73,7 +96,10 @@
                         "test.bam:md5,ae0c07410efe5e9e58202e6541ad5386"
                     ]
                 ],
-                "1": [
+                "2": [
+                    
+                ],
+                "3": [
                     [
                         {
                             "id": "test"
@@ -81,14 +107,18 @@
                         "test.bai:md5,ecc5b60177a5448269a86693fd331a96"
                     ]
                 ],
-                "2": [
-                    
-                ],
-                "3": [
+                "4": [
                     [
                         "GATK4_APPLYBQSR",
                         "gatk4",
                         "4.7.0.0"
+                    ]
+                ],
+                "5": [
+                    [
+                        "GATK4_APPLYBQSR",
+                        "samtools",
+                        "1.24"
                     ]
                 ],
                 "bai": [
@@ -107,6 +137,9 @@
                         "test.bam:md5,ae0c07410efe5e9e58202e6541ad5386"
                     ]
                 ],
+                "crai": [
+                    
+                ],
                 "cram": [
                     
                 ],
@@ -116,19 +149,26 @@
                         "gatk4",
                         "4.7.0.0"
                     ]
+                ],
+                "versions_samtools": [
+                    [
+                        "GATK4_APPLYBQSR",
+                        "samtools",
+                        "1.24"
+                    ]
                 ]
             }
         ],
-        "timestamp": "2026-08-18T10:46:16.697101",
+        "timestamp": "2026-10-13T17:09:16.095189288",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.6"
+            "nextflow": "26.10.0"
         }
     },
     "sarscov2 - cram": {
         "content": [
             "test.cram",
-            "test.cram.bai",
+            "test.cram.crai",
             {
                 "versions_gatk4": [
                     [
@@ -136,19 +176,26 @@
                         "gatk4",
                         "4.7.0.0"
                     ]
+                ],
+                "versions_samtools": [
+                    [
+                        "GATK4_APPLYBQSR",
+                        "samtools",
+                        "1.24"
+                    ]
                 ]
             }
         ],
-        "timestamp": "2026-08-18T10:46:30.581075",
+        "timestamp": "2026-10-13T17:09:38.925574801",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.6"
+            "nextflow": "26.10.0"
         }
     },
     "sarscov2 - bam in, cram out": {
         "content": [
             "test.cram",
-            "test.cram.bai",
+            "test.cram.crai",
             {
                 "versions_gatk4": [
                     [
@@ -156,30 +203,26 @@
                         "gatk4",
                         "4.7.0.0"
                     ]
+                ],
+                "versions_samtools": [
+                    [
+                        "GATK4_APPLYBQSR",
+                        "samtools",
+                        "1.24"
+                    ]
                 ]
             }
         ],
-        "timestamp": "2026-08-18T10:46:04.501058",
+        "timestamp": "2026-10-13T17:08:56.857874676",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.6"
+            "nextflow": "26.10.0"
         }
     },
     "sarscov2 - cram - stub": {
         "content": [
             {
                 "0": [
-                    
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.cram.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
                     [
                         {
                             "id": "test"
@@ -187,23 +230,47 @@
                         "test.cram:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
+                "1": [
+                    
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.crai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
                 "3": [
+                    
+                ],
+                "4": [
                     [
                         "GATK4_APPLYBQSR",
                         "gatk4",
                         "4.7.0.0"
                     ]
                 ],
+                "5": [
+                    [
+                        "GATK4_APPLYBQSR",
+                        "samtools",
+                        "1.24"
+                    ]
+                ],
                 "bai": [
+                    
+                ],
+                "bam": [
+                    
+                ],
+                "crai": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.cram.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.crai:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
-                ],
-                "bam": [
-                    
                 ],
                 "cram": [
                     [
@@ -219,13 +286,20 @@
                         "gatk4",
                         "4.7.0.0"
                     ]
+                ],
+                "versions_samtools": [
+                    [
+                        "GATK4_APPLYBQSR",
+                        "samtools",
+                        "1.24"
+                    ]
                 ]
             }
         ],
-        "timestamp": "2026-08-18T10:46:38.950638",
+        "timestamp": "2026-10-13T17:09:54.1850039",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.6"
+            "nextflow": "26.10.0"
         }
     },
     "sarscov2 - bam": {
@@ -248,13 +322,20 @@
                         "gatk4",
                         "4.7.0.0"
                     ]
+                ],
+                "versions_samtools": [
+                    [
+                        "GATK4_APPLYBQSR",
+                        "samtools",
+                        "1.24"
+                    ]
                 ]
             }
         ],
-        "timestamp": "2026-08-19T09:30:37.160222",
+        "timestamp": "2026-10-13T17:08:36.365592968",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.6"
+            "nextflow": "26.10.0"
         }
     }
 }
