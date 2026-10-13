@@ -1,6 +1,5 @@
 name: "kivvi"
-description: Calls copy number and sequence variants in large-unit variable
-  number tandem repeats from PacBio HiFi reads
+description: Calls copy number and sequence variants in large-unit variable number tandem repeats from PacBio HiFi reads
 keywords:
   - kivvi
   - genotyper
@@ -40,8 +39,7 @@ input:
           - edam: "http://edamontology.org/format_2573"
   - command:
       type: string
-      description: The command used to run the tool, i.e. kiv2 (LPA KIV2 repeat)
-        or d4z4 (D4Z4 repeat)
+      description: The command used to run the tool, i.e. kiv2 (LPA KIV2 repeat) or d4z4 (D4Z4 repeat)
 output:
   json:
     - - meta:
@@ -129,3 +127,17 @@ authors:
   - "@sofiademmou"
 maintainers:
   - "@sofiademmou"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/kivvi:1.1.0--0ab7895bae051106
+      build_id: bd-0ab7895bae051106_1
+      scan_id: sc-ad3d1b149c0da9d7_2
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/kivvi:1.1.0--fd0e9004280a5067
+      build_id: bd-fd0e9004280a5067_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e7/e7fd42f324e6d2711bf04f023e7a50494bb96d20b440cb410402e2ea7f4e707f/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/kivvi/.conda-lock/linux_amd64-bd-0ab7895bae051106_1.txt
