@@ -35,7 +35,7 @@ workflow BAM_APPLYBQSR {
 
     reads_applybqsr = GATK4_APPLYBQSR.out.bam
         .mix(GATK4_APPLYBQSR.out.cram)
-        .join(GATK4_APPLYBQSR.out.bai, remainder: true)
+        .join(GATK4_APPLYBQSR.out.bai.mix(GATK4_APPLYBQSR.out.crai), remainder: true)
         .branch { meta, _reads, _index ->
             single: meta.num_intervals <= 1
             multiple: meta.num_intervals > 1
