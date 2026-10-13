@@ -3,9 +3,9 @@ process KIVVI {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e7/e7fd42f324e6d2711bf04f023e7a50494bb96d20b440cb410402e2ea7f4e707f/data'
-:         'community.wave.seqera.io/library/kivvi:1.1.0--0ab7895bae051106' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e7/e7fd42f324e6d2711bf04f023e7a50494bb96d20b440cb410402e2ea7f4e707f/data'
+        : 'community.wave.seqera.io/library/kivvi:1.1.0--0ab7895bae051106'}"
 
     input:
     tuple val(meta), path(bam), path(bai)
