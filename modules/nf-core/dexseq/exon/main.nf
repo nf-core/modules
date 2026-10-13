@@ -4,8 +4,8 @@ process DEXSEQ_EXON {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/20/207d06e1b293fa8f8bc2bc15469953280c027838f943b52ad8ca3b6734e63588/data'
-        : 'community.wave.seqera.io/library/bioconductor-dexseq_libopenblas_r-base:0e896643c0f13c85'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e4/e42feb37a257a80b9a48a628d05a6f3a1283bed077b0bb0a6a97bb7a57c25c5f/data'
+        : 'community.wave.seqera.io/library/bioconductor-dexseq:1.56.0--548bf2f0349db29a'}"
 
     input:
     tuple val(meta), val(contrast_variable), val(reference), val(target)

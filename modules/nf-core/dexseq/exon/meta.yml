@@ -160,25 +160,25 @@ maintainers:
   - "@piplus2"
 containers:
   docker:
-    linux/amd64:
-      name: community.wave.seqera.io/library/bioconductor-dexseq_libopenblas_r-base:0e896643c0f13c85
-      build_id: bd-0e896643c0f13c85_1
-      scan_id: sc-2e11ae7382d0a699_1
     linux/arm64:
-      name: community.wave.seqera.io/library/bioconductor-dexseq_libopenblas_r-base:7e98b2b6a33e76c1
-      build_id: bd-7e98b2b6a33e76c1_1
-      scan_id: sc-876b09355d5c3b90_1
+      name: community.wave.seqera.io/library/bioconductor-dexseq:1.56.0--67969e95327c513f
+      build_id: bd-67969e95327c513f_1
+      scan_id: sc-a5ab2ee96f9b89b4_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/bioconductor-dexseq:1.56.0--548bf2f0349db29a
+      build_id: bd-548bf2f0349db29a_1
+      scan_id: sc-193504248b0b9b1f_1
   singularity:
-    linux/arm64:
-      name: oras://community.wave.seqera.io/library/bioconductor-dexseq_libopenblas_r-base:5607ed60e19c49f3
-      build_id: bd-5607ed60e19c49f3_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/dc/dc4806f8082d83df0e2ead02de691caced316e807dcfc101d66a28aaddb4319a/data
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/bioconductor-dexseq_libopenblas_r-base:6e5ece98eb676446
-      build_id: bd-6e5ece98eb676446_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/20/207d06e1b293fa8f8bc2bc15469953280c027838f943b52ad8ca3b6734e63588/data
+      name: oras://community.wave.seqera.io/library/bioconductor-dexseq:1.56.0--1e6406dafe30519b
+      build_id: bd-1e6406dafe30519b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e4/e42feb37a257a80b9a48a628d05a6f3a1283bed077b0bb0a6a97bb7a57c25c5f/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bioconductor-dexseq:1.56.0--f47df91b5de8abc9
+      build_id: bd-f47df91b5de8abc9_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f5/f55adfb9b57806acfb7d48892631d9f09e1a54e417c1930db12ccce9d4eb066d/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/dexseq/exon/.conda-lock/linux_amd64-bd-0e896643c0f13c85_1.txt
+      lock_file: modules/nf-core/dexseq/exon/.conda-lock/linux_amd64-bd-548bf2f0349db29a_1.txt
     linux/arm64:
-      lock_file: modules/nf-core/dexseq/exon/.conda-lock/linux_arm64-bd-7e98b2b6a33e76c1_1.txt
+      lock_file: modules/nf-core/dexseq/exon/.conda-lock/linux_arm64-bd-67969e95327c513f_1.txt

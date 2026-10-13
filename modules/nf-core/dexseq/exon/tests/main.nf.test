@@ -9,29 +9,6 @@ nextflow_process {
     tag "modules_nfcore"
     tag "dexseq"
     tag "dexseq/exon"
-    tag "dexseq/count"
-
-    // Two GBR and two YRI samples aligned to human chrX, from the rnasplice test data,
-    // counted on the matching flattened DEXSeq annotation
-    setup {
-        run("DEXSEQ_COUNT") {
-            script "../../count/main.nf"
-            process {
-                """
-                input[0] = channel.of('ERR188383', 'ERR188428', 'ERR188454', 'ERR204916').map { id ->
-                    [
-                        [ id:id, single_end:false ],
-                        file("https://raw.githubusercontent.com/nf-core/test-datasets/rnasplice/testdata/\${id}.Aligned.out.bam", checkIfExists: true)
-                    ]
-                }
-                input[1] = [
-                    [ id:'genes_chrX' ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/rnasplice/testdata/dexseq/genes_chrX.DEXSeq.gff.gz', checkIfExists: true)
-                ]
-                """
-            }
-        }
-    }
 
     test("homo_sapiens - chrX - GBR vs YRI") {
 
@@ -39,29 +16,37 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'GBR_vs_YRI' ], 'condition', 'YRI', 'GBR' ]
-                input[1] = DEXSEQ_COUNT.out.counts
-                    .map { _meta, counts -> counts }
-                    .collect()
-                    .map { counts ->
-                        [
-                            [ id:'study' ],
-                            file('https://raw.githubusercontent.com/nf-core/test-datasets/rnasplice/samplesheet/samplesheet_bam.csv', checkIfExists: true),
-                            counts
-                        ]
+                input[1] = [
+                    [ id:'study' ],
+                    file(params.modules_testdata_base_path + 'delete_me/dexseq/exon/chrX.samplesheet.csv', checkIfExists: true),
+                    ['ERR188383', 'ERR188428', 'ERR188454', 'ERR204916'].collect { id ->
+                        file(params.modules_testdata_base_path + "delete_me/dexseq/exon/\${id}.txt", checkIfExists: true)
                     }
+                ]
                 input[2] = [
-                    [ id:'genes_chrX' ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/rnasplice/testdata/dexseq/genes_chrX.DEXSeq.gff.gz', checkIfExists: true)
+                    [ id:'chrX' ],
+                    file(params.modules_testdata_base_path + 'delete_me/dexseq/exon/chrX.DEXSeq.gff.gz', checkIfExists: true)
                 ]
                 """
             }
         }
 
         then {
+            // The fitted values depend on the OpenBLAS kernel selected for the CPU, so only IDs, counts and significant calls are snapshotted
+            def results = path(process.out.results[0][1]).readLines()*.split('\t', -1)
+            def qvalues = path(process.out.gene_qvalues[0][1]).readLines()*.split('\t', -1)
+            def stable = (0..<results[0].size()).findAll { results[0][it] ==~ /groupID|featureID|countData\..+/ }
+            def padj = results[0].findIndexOf { it == 'padj' }
             assertAll(
                 { assert process.success },
+                { assert 'log2fold_GBR_YRI' in results[0] },
                 { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ["dataset_rds", "results_rds", "gene_qvalues_rds", "plots", "session_info"])
+                    sanitizeOutput(process.out, unstableKeys: ["results", "gene_qvalues", "dataset_rds", "results_rds", "gene_qvalues_rds", "plots", "session_info"]),
+                    results[0],
+                    results.collect { it[stable].join('\t') }.join('\n').md5(),
+                    results.tail().findAll { it[padj] != 'NA' && (it[padj] as double) < 0.05 }.collect { "${it[0]}:${it[1]}" },
+                    qvalues*.getAt(0).join('\n').md5(),
+                    qvalues.tail().findAll { it[1] != 'NA' && (it[1] as double) < 0.05 }*.getAt(0)
                 ).match() }
             )
         }
@@ -77,30 +62,38 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'GBR_vs_YRI' ], 'condition', 'YRI', 'GBR' ]
-                input[1] = DEXSEQ_COUNT.out.counts
-                    .map { _meta, counts -> counts }
-                    .collect()
-                    .map { counts ->
-                        [
-                            [ id:'study' ],
-                            file('https://raw.githubusercontent.com/nf-core/test-datasets/rnasplice/samplesheet/samplesheet_bam.csv', checkIfExists: true),
-                            counts
-                        ]
+                input[1] = [
+                    [ id:'study' ],
+                    file(params.modules_testdata_base_path + 'delete_me/dexseq/exon/chrX.samplesheet.csv', checkIfExists: true),
+                    ['ERR188383', 'ERR188428', 'ERR188454', 'ERR204916'].collect { id ->
+                        file(params.modules_testdata_base_path + "delete_me/dexseq/exon/\${id}.txt", checkIfExists: true)
                     }
+                ]
                 input[2] = [
-                    [ id:'genes_chrX' ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/rnasplice/testdata/dexseq/genes_chrX.DEXSeq.gff.gz', checkIfExists: true)
+                    [ id:'chrX' ],
+                    file(params.modules_testdata_base_path + 'delete_me/dexseq/exon/chrX.DEXSeq.gff.gz', checkIfExists: true)
                 ]
                 """
             }
         }
 
         then {
+            // The fitted values depend on the OpenBLAS kernel selected for the CPU, so only IDs, counts and significant calls are snapshotted
+            def results = path(process.out.results[0][1]).readLines()*.split('\t', -1)
+            def qvalues = path(process.out.gene_qvalues[0][1]).readLines()*.split('\t', -1)
+            def stable = (0..<results[0].size()).findAll { results[0][it] ==~ /groupID|featureID|countData\..+/ }
+            def padj = results[0].findIndexOf { it == 'padj' }
             assertAll(
                 { assert process.success },
+                { assert 'log2fold_GBR_YRI' in results[0] },
                 { assert process.out.plots.size() == 0 },
                 { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ["dataset_rds", "results_rds", "gene_qvalues_rds", "session_info"])
+                    sanitizeOutput(process.out, unstableKeys: ["results", "gene_qvalues", "dataset_rds", "results_rds", "gene_qvalues_rds", "session_info"]),
+                    results[0],
+                    results.collect { it[stable].join('\t') }.join('\n').md5(),
+                    results.tail().findAll { it[padj] != 'NA' && (it[padj] as double) < 0.05 }.collect { "${it[0]}:${it[1]}" },
+                    qvalues*.getAt(0).join('\n').md5(),
+                    qvalues.tail().findAll { it[1] != 'NA' && (it[1] as double) < 0.05 }*.getAt(0)
                 ).match() }
             )
         }
@@ -115,19 +108,16 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'GBR_vs_YRI' ], 'condition', 'YRI', 'GBR' ]
-                input[1] = DEXSEQ_COUNT.out.counts
-                    .map { _meta, counts -> counts }
-                    .collect()
-                    .map { counts ->
-                        [
-                            [ id:'study' ],
-                            file('https://raw.githubusercontent.com/nf-core/test-datasets/rnasplice/samplesheet/samplesheet_bam.csv', checkIfExists: true),
-                            counts
-                        ]
+                input[1] = [
+                    [ id:'study' ],
+                    file(params.modules_testdata_base_path + 'delete_me/dexseq/exon/chrX.samplesheet.csv', checkIfExists: true),
+                    ['ERR188383', 'ERR188428', 'ERR188454', 'ERR204916'].collect { id ->
+                        file(params.modules_testdata_base_path + "delete_me/dexseq/exon/\${id}.txt", checkIfExists: true)
                     }
+                ]
                 input[2] = [
-                    [ id:'genes_chrX' ],
-                    file('https://raw.githubusercontent.com/nf-core/test-datasets/rnasplice/testdata/dexseq/genes_chrX.DEXSeq.gff.gz', checkIfExists: true)
+                    [ id:'chrX' ],
+                    file(params.modules_testdata_base_path + 'delete_me/dexseq/exon/chrX.DEXSeq.gff.gz', checkIfExists: true)
                 ]
                 """
             }
