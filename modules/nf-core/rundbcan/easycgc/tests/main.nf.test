@@ -70,7 +70,7 @@ nextflow_process {
         }
     }
 
-    test("bacteroides_fragilis - faa, gff - fungi, no prokaryotic") {
+    test("bacteroides_fragilis - faa, gff - fungi") {
 
         setup {
             run("UNTAR") {
@@ -88,7 +88,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--fungi --no-prokaryotic'
+                module_args = '--fungi'
             }
             process {
                 """
@@ -112,7 +112,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert tf.size() == 20 },
-                { assert process.out.diamond_out_tf == [] },
+                { assert process.out.diamond_out_tf.size() == 1 },
                 { assert tf.any { it.startsWith('Sigma70_r2\t71\tWP_005784022.1\t') } },
                 { assert cgc.contains('CGC8\tTF\tNZ_CP069563.1\tWP_008769331.1\t2701693\t2702253\t+\tTF|Sigma70_r2+STP|Sigma70_r4_2') },
                 { assert snapshot(sanitizeOutput(process.out)).match() }

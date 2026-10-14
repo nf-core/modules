@@ -65,7 +65,10 @@ process RUNDBCAN_EASYCGC {
     """
 
     stub:
+    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    def touch_tf_diamond = args.contains('--no-prokaryotic') ? '' : "touch ${prefix}_diamond.out.tf"
+    def touch_tf_hmm     = args.contains('--fungi') ? "touch ${prefix}_TF_hmm_results.tsv" : ''
     """
     touch ${prefix}_overview.tsv
     touch ${prefix}_dbCAN_hmm_results.tsv
@@ -74,10 +77,10 @@ process RUNDBCAN_EASYCGC {
     touch ${prefix}_cgc.gff
     touch ${prefix}_cgc_standard_out.tsv
     touch ${prefix}_diamond.out.tc
-    touch ${prefix}_diamond.out.tf
+    ${touch_tf_diamond}
     touch ${prefix}_diamond.out.peptidase
     touch ${prefix}_diamond.out.sulfatase
-    touch ${prefix}_TF_hmm_results.tsv
+    ${touch_tf_hmm}
     touch ${prefix}_STP_hmm_results.tsv
     touch ${prefix}_total_cgc_info.tsv
     """
