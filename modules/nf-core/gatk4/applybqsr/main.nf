@@ -32,7 +32,7 @@ process GATK4_APPLYBQSR {
         error("GATK4_APPLYBQSR: invalid index format '${index_format}' for '${file_type}' output.")
     }
 
-    // GATK/htsjdk writes CRAM 3.0, which cannot be read by some downstream tools,
+    // GATK/htsjdk writes CRAM 3.1 by default (or 3.0), and only htsjdk 4.1+/5 can read those files back,
     // so GATK streams BAM to stdout and samtools does the cram conversion and indexing
     def samtools_view_args = file_type == 'cram' ? "--reference ${fasta} -C" : "-b"
     def output_file = "${prefix}.${file_type}##idx##${prefix}.${file_type}.${index_format}"
