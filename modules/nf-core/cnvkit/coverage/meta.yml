@@ -41,18 +41,13 @@ input:
         ontologies:
           - edam: "http://edamontology.org/format_3327"
           - edam: "http://edamontology.org/format_3616"
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[id: 'sample1']`
     - interval:
         type: file
         description: bed file containing the target or antitarget regions.
         pattern: "*.{target,antitarget}.bed"
         ontologies:
           - edam: "http://edamontology.org/format_3003"
-  - - meta3:
+  - - meta2:
         type: map
         description: |
           Groovy map containing reference information

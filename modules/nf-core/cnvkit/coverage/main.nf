@@ -9,9 +9,8 @@ process CNVKIT_COVERAGE {
 :         'community.wave.seqera.io/library/cnvkit:0.9.14--288e98d6210b7304' }"
 
     input:
-    tuple val(meta), path(alignment_file), path(alignment_index)
-    tuple val(meta2), path(interval)
-    tuple val(meta3), path(fasta), path(fai)
+    tuple val(meta), path(alignment_file), path(alignment_index), path(interval)
+    tuple val(meta2), path(fasta), path(fai) // optional fasta for when CRAM is used as input
 
     output:
     tuple val(meta), path("*.cnn"), emit: coverage
@@ -39,13 +38,9 @@ process CNVKIT_COVERAGE {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    echo $args
-
     touch ${prefix}.cnn
-
     """
 }
