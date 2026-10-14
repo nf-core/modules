@@ -23,6 +23,7 @@ process GATK4_APPLYBQSR {
 
     script:
     def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     // default to cram output with crai index
     def file_type = output_format ? output_format[0] : 'cram'
@@ -56,7 +57,7 @@ process GATK4_APPLYBQSR {
         ${interval_command} \\
         -OBI false \\
         --tmp-dir . \\
-        ${args} | samtools view --write-index ${samtools_view_args} -o ${output_file} -
+        ${args} | samtools view --write-index ${samtools_view_args} -o ${output_file} ${args2} -
     """
 
     stub:
