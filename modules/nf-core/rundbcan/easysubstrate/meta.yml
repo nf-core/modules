@@ -125,7 +125,47 @@ output:
           type: file
           description: |
             TSV file containing the diamond output for transporter annotation.
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  diamond_out_tf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${prefix}_diamond.out.tf:
+          type: file
+          description: |
+            TSV file containing the diamond output for prokaryotic transcription factor annotation. Not written with `--no-prokaryotic`.
+          pattern: "*_diamond.out.tf"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  diamond_out_peptidase:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${prefix}_diamond.out.peptidase:
+          type: file
+          description: |
+            TSV file containing the diamond output for peptidase annotation.
+          pattern: "*_diamond.out.peptidase"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  diamond_out_sulfatase:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${prefix}_diamond.out.sulfatase:
+          type: file
+          description: |
+            TSV file containing the diamond output for sulfatase annotation.
+          pattern: "*_diamond.out.sulfatase"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   tf_hmm_results:
     - - meta:
           type: map
@@ -157,8 +197,35 @@ output:
       - ${prefix}_total_cgc_info.tsv:
           type: file
           description: |
-            TSV file summarizing the total additional genes in the genome.
+            TSV file summarising the total additional genes in the genome.
+          pattern: "*_total_cgc_info.tsv"
           ontologies: []
+  cgc_faa:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${prefix}_CGC.faa:
+          type: file
+          description: |
+            Protein sequences of the genes in the CAZyme gene clusters (CGC), the query for the dbCAN-PUL DIAMOND search.
+          pattern: "*_CGC.faa"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+  pul_blast:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${prefix}_PUL_blast.out:
+          type: file
+          description: |
+            DIAMOND tabular output of the CGC proteins searched against dbCAN-PUL.
+          pattern: "*_PUL_blast.out"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   substrate_prediction:
     - - meta:
           type: map
