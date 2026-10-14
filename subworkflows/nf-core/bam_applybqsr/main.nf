@@ -9,21 +9,6 @@ workflow BAM_APPLYBQSR {
     output_format // tuple: [mandatory] [ file_type, index_format ] — ['bam','bai'], ['bam','csi'], or ['cram','crai']
 
     main:
-    def file_type = output_format[0]
-    def index_fmt = output_format[1]
-
-    def valid_formats = [
-        'bam'  : ['bai', 'csi'],
-        'cram' : ['crai']
-    ]
-
-    if (!valid_formats.containsKey(file_type)) {
-        error("BAM_APPLYBQSR: invalid file type '${file_type}'. Must be 'bam' or 'cram'.")
-    }
-    if (!valid_formats[file_type].contains(index_fmt)) {
-        error("BAM_APPLYBQSR: invalid index format '${index_fmt}' for '${file_type}' output. Must be one of: ${valid_formats[file_type]}.")
-    }
-
     reads_interval = input
         .combine(intervals)
         .map { meta, reads_, index, recal, intervals_, num_intervals ->
@@ -31,17 +16,16 @@ workflow BAM_APPLYBQSR {
         }
 
     // RUN APPLYBQSR
-    GATK4_APPLYBQSR(reads_interval, references, file_type)
+    GATK4_APPLYBQSR(reads_interval, references, output_format)
 
-    reads_applybqsr = GATK4_APPLYBQSR.out.bam
-        .mix(GATK4_APPLYBQSR.out.cram)
-        .join(GATK4_APPLYBQSR.out.bai, remainder: true)
+    reads_applybqsr = GATK4_APPLYBQSR.out.reads
+        .join(GATK4_APPLYBQSR.out.index, failOnMismatch: true)
         .branch { meta, _reads, _index ->
             single: meta.num_intervals <= 1
             multiple: meta.num_intervals > 1
         }
 
-    // For multiple intervals, gather and merge the recalibrated cram files
+    // For multiple intervals, gather and merge the recalibrated files
     reads_to_merge = reads_applybqsr.multiple
         .map { meta, reads, index ->
             def merge_meta = meta - meta.subMap('interval')
@@ -49,7 +33,7 @@ workflow BAM_APPLYBQSR {
         }
         .groupTuple()
 
-    SAMTOOLS_MERGE(reads_to_merge, references.map { meta, fasta, fai, _dict -> [meta, fasta, fai, []] }, index_fmt)
+    SAMTOOLS_MERGE(reads_to_merge, references.map { meta, fasta, fai, _dict -> [meta, fasta, fai, []] }, output_format[1])
 
     // Unified output — bam or cram depending on what was produced
     recal_out = SAMTOOLS_MERGE.out.bam
@@ -59,5 +43,5 @@ workflow BAM_APPLYBQSR {
         .map { meta, reads, index -> [meta - meta.subMap('num_intervals', 'interval'), reads, index] }
 
     emit:
-    recal_out = recal_out // channel: [ meta, file, index ]
+    recal_out = recal_out // channel: [ meta, reads, index ]
 }
