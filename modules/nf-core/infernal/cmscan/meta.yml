@@ -1,5 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "infernal_cmsearch"
+name: "infernal_cmscan"
 description: Search covariance models against a sequence collection using cmscan
 keywords:
   - rrna
@@ -8,8 +7,7 @@ keywords:
   - cmscan
 tools:
   - "infernal":
-      description: "Infernal is for searching DNA sequence databases for RNA structure
-        and sequence similarities."
+      description: "Infernal is for searching DNA sequence databases for RNA structure and sequence similarities."
       homepage: "http://eddylab.org/infernal/Userguide.pdf"
       documentation: "http://eddylab.org/infernal/Userguide.pdf"
       tool_dev_url: "https://github.com/EddyRivasLab/infernal"
@@ -44,10 +42,10 @@ input:
   - clanin:
       type: file
       description: |
-          A clan inflation file (clanin) for clan detection during search.
-          When provided, cmscan automatically uses --clanin, --fmt 2, and --oclan.
+        A clan inflation file (clanin) for clan detection during search.
+        When provided, cmscan automatically uses --clanin, --fmt 2, and --oclan.
       ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+        - edam: http://edamontology.org/format_3475 # TSV
 output:
   txt:
     - - meta:
@@ -74,34 +72,43 @@ output:
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
   versions_infernal:
-    - - ${task.process}:
+    - - "${task.process}":
           type: string
           description: The name of the process
       - infernal:
           type: string
           description: The name of the tool
-      - cmscan -h | sed '2!d;s/.*INFERNAL //;s/ .*//':
+      - "cmsearch -h | sed '2!d;s/.*INFERNAL //;s/ .*//'":
           type: eval
           description: The expression to obtain the version of the tool
   versions_gzip:
-    - - ${task.process}:
+    - - "${task.process}":
           type: string
           description: The name of the process
       - gzip:
           type: string
           description: The name of the tool
-      - gzip --version |& sed '1!d;s/gzip //':
+      - "gzip --version |& sed '1!d;s/gzip //'":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
   versions:
-    - - ${task.process}:
+    - - "${task.process}":
           type: string
           description: The name of the process
       - infernal:
           type: string
           description: The name of the tool
-      - cmscan -h | sed '2!d;s/.*INFERNAL //;s/ .*//':
+      - "cmsearch -h | sed '2!d;s/.*INFERNAL //;s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - gzip:
+          type: string
+          description: The name of the tool
+      - "gzip --version |& sed '1!d;s/gzip //'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
