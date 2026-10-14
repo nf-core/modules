@@ -43,7 +43,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert overview.size() == 58 },
-                { assert overview.find { it.startsWith('WP_005784055.1\t') }.endsWith('\tGH127_e5\tpectin') },
+                { assert overview.any { it.startsWith('WP_005784055.1\t') && it.endsWith('\tGH127_e5\tpectin') } },
                 { assert path(process.out.dbcanhmm_results[0][1]).text.contains('GH76') },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )

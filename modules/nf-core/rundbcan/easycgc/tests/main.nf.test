@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process RUNDBCAN_EASYCGC"
     script "../main.nf"
     process "RUNDBCAN_EASYCGC"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -27,6 +28,9 @@ nextflow_process {
         }
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [
@@ -54,11 +58,63 @@ nextflow_process {
         }
     }
 
+    test("bacteroides_fragilis - faa, gff - fungi") {
+
+        setup {
+            run("UNTAR") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [],
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/db/dbcan.tar.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = '--fungi'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/region_2500000-3000000.faa.gz', checkIfExists: true)
+                ]
+                input[1] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/region_2500000-3000000.gff', checkIfExists: true),
+                    'NCBI_prok'
+                ]
+                input[2] = UNTAR.out.untar.map { _meta, db -> db }
+                """
+            }
+        }
+
+        then {
+            def tf = path(process.out.tf_hmm_results[0][1]).readLines()
+            def cgc = path(process.out.cgc_standard_out[0][1]).readLines()
+            assertAll(
+                { assert process.success },
+                { assert tf.size() == 20 },
+                { assert tf.any { it.startsWith('Sigma70_r2\t71\tWP_005784022.1\t') } },
+                { assert cgc.contains('CGC8\tTF\tNZ_CP069563.1\tWP_008769331.1\t2701693\t2702253\t+\tTF|Sigma70_r2+STP|Sigma70_r4_2') },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
     test("bacteroides_fragilis - faa, gff - stub") {
 
         options "-stub"
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [[id: 'stub'], file('stub')]

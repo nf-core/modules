@@ -48,8 +48,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert substrates.size() == 11 },
-                { assert substrates.find { it.startsWith('NZ_CP069563.1|CGC10\t') }.startsWith('NZ_CP069563.1|CGC10\tPUL0420\tpectin\t') },
-                { assert substrates.find { it.startsWith('NZ_CP069563.1|CGC14\t') }.startsWith('NZ_CP069563.1|CGC14\tPUL0328\txylan\t') },
+                { assert substrates.any { it.startsWith('NZ_CP069563.1|CGC10\tPUL0420\tpectin\t') } },
+                { assert substrates.any { it.startsWith('NZ_CP069563.1|CGC14\tPUL0328\txylan\t') } },
                 // run_dbcan writes substrate predictions in varying row order
                 { assert snapshot(sanitizeOutput(process.out, unstableKeys: ['substrate_prediction', 'synteny_pdf']), substrates.sort(false)).match() }
             )
