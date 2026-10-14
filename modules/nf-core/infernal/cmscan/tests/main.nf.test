@@ -1,0 +1,161 @@
+nextflow_process {
+
+    name "Test Process INFERNAL_CMSCAN"
+    script "../main.nf"
+    process "INFERNAL_CMSCAN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "gunzip"
+    tag "untar"
+    tag "infernal"
+    tag "infernal/cmscan"
+
+    test("rfam - bacteroides fragilis") {
+
+        setup {
+            run("GUNZIP") {
+                script "../../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+            run("UNTAR") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'delete_me/infernal/cmscan/bacsmallSRP_tRNA_RNasePbacta.cmdb.tar.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = UNTAR.out.untar
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            // Output file lines with comments can contain timestamps and runtimes - strip them out
+            def txtout = new File("${outputDir}/txtout.txt")
+            path(process.out.txt[0][1]).linesGzip.findAll { ! it.startsWith("#") }.each { txtout << ("${it}\n") }
+
+            def tblout = new File("${outputDir}/tblout.txt")
+            path(process.out.tbl[0][1]).linesGzip.findAll { ! it.startsWith("#") }.each { tblout << ("${it}\n") }
+
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    txtout.toPath(),
+                    tblout.toPath(),
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("ecoli - with clanin - gz") {
+
+        setup {
+            run("UNTAR") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'delete_me/infernal/cmscan/bacsmallSRP_tRNA_RNasePbacta.cmdb.tar.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                ]
+                input[1] = UNTAR.out.untar
+                input[2] = file(params.modules_testdata_base_path + 'delete_me/infernal/cmscan/bacsmallSRP_tRNA_RNasePbacta.clanin', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            // Output file lines with comments can contain timestamps and runtimes - strip them out
+            def txtout = new File("${outputDir}/txtout.txt")
+            path(process.out.txt[0][1]).linesGzip.findAll { ! it.startsWith("#") }.collect { txtout.write(it) }
+
+            def tblout = new File("${outputDir}/tblout.txt")
+            path(process.out.tbl[0][1]).linesGzip.findAll { ! it.startsWith("#") }.collect { tblout.write(it) }
+
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    txtout.toPath(),
+                    tblout.toPath(),
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("ecoli - stub") {
+
+        options "-stub"
+
+        setup {
+            run("UNTAR") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ], // meta map
+                        file(params.modules_testdata_base_path + 'delete_me/infernal/cmscan/bacsmallSRP_tRNA_RNasePbacta.cmdb.tar.gz', checkIfExists: true)
+                    ]
+                    """
+
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                ]
+                input[1] = UNTAR.out.untar
+                input[2] = file(params.modules_testdata_base_path + 'delete_me/infernal/cmscan/bacsmallSRP_tRNA_RNasePbacta.clanin', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
