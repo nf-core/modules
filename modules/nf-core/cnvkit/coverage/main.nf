@@ -10,7 +10,7 @@ process CNVKIT_COVERAGE {
 
     input:
     tuple val(meta), path(alignment_file), path(alignment_index), path(interval)
-    tuple val(meta2), path(fasta), path(fai) // optional fasta for when CRAM is used as input
+    tuple val(meta2), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("*.cnn"), emit: coverage
