@@ -47,6 +47,9 @@ nextflow_process {
             def substrates = path(process.out.substrate_prediction[0][1]).readLines()
             def cgc_faa = path(process.out.cgc_faa[0][1]).readLines()
             def pul_blast = path(process.out.pul_blast[0][1]).readLines()
+            def tf_diamond = path(process.out.diamond_out_tf[0][1]).readLines()
+            def peptidase = path(process.out.diamond_out_peptidase[0][1]).readLines()
+            def sulfatase = path(process.out.diamond_out_sulfatase[0][1]).readLines()
             assertAll(
                 { assert process.success },
                 { assert substrates.size() == 11 },
@@ -56,6 +59,9 @@ nextflow_process {
                 { assert cgc_faa.contains('>NZ_CP069563.1|CGC1|WP_005784783.1|TC|8.A.46 WP_005784783.1') },
                 { assert pul_blast.size() == 992 },
                 { assert pul_blast.any { it.startsWith('NZ_CP069563.1|CGC1|WP_005784783.1|TC|8.A.46\tPUL0467_8:PUL0467:AAO76737.1:TC:8.A.46.3.4\t') } },
+                { assert tf_diamond.any { it.startsWith('ARGR_PSEAE\t329\tWP_005813432.1\t335\t') } },
+                { assert peptidase.any { it.startsWith('M28.UPA\t225\tWP_008769399.1\t333\t') } },
+                { assert sulfatase.any { it.startsWith('S1_27\t4331\tWP_008769404.1\t1061\t') } },
                 // run_dbcan writes substrate predictions in varying row order
                 { assert snapshot(sanitizeOutput(process.out, unstableKeys: ['substrate_prediction', 'synteny_pdf']), substrates.sort(false)).match() }
             )
