@@ -32,7 +32,10 @@ process GATK4_APPLYBQSR {
         error("GATK4_APPLYBQSR: invalid index format '${index_format}' for '${file_type}' output.")
     }
 
-    def samtools_index_args = index_format == 'csi' ? '-c' : ''
+    // GATK/htsjdk writes CRAM 3.0, which cannot be read by some downstream tools,
+    // so GATK streams BAM to stdout and samtools does the cram conversion and indexing
+    def samtools_view_args = file_type == 'cram' ? "--reference ${fasta} -C" : "-b"
+    def output_file = "${prefix}.${file_type}##idx##${prefix}.${file_type}.${index_format}"
 
     def interval_command = intervals ? "--intervals ${intervals}" : ""
 
@@ -47,15 +50,13 @@ process GATK4_APPLYBQSR {
     gatk --java-options "-Xmx${avail_mem}M -XX:-UsePerfData" \\
         ApplyBQSR \\
         --input ${input} \\
-        --output ${prefix}.${file_type} \\
+        --output /dev/stdout \\
         --reference ${fasta} \\
         --bqsr-recal-file ${bqsr_table} \\
         ${interval_command} \\
         -OBI false \\
         --tmp-dir . \\
-        ${args}
-
-    samtools index ${samtools_index_args} ${prefix}.${file_type}
+        ${args} | samtools view --write-index ${samtools_view_args} -o ${output_file} -
     """
 
     stub:
