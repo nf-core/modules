@@ -106,7 +106,7 @@ nextflow_process {
             def fasta = 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/genome.fasta'
             assertAll(
                 { assert snapshot(
-                    sanitizeOutput(process.out, readsMD5Keys: ["reads"], referenceFasta: fasta)
+                    sanitizeOutput(process.out, readsMD5Keys: ["reads"], unstableKeys: ["index"], referenceFasta: fasta)
                 ).match() }
             )
         }
@@ -173,7 +173,7 @@ nextflow_process {
             def fasta = 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/genome/genome.fasta'
             assertAll(
                 { assert snapshot(
-                    sanitizeOutput(process.out, readsMD5Keys: ["reads"], referenceFasta: fasta)
+                    sanitizeOutput(process.out, readsMD5Keys: ["reads"], unstableKeys: ["index"], referenceFasta: fasta)
                 ).match() }
             )
         }
