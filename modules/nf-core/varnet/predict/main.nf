@@ -2,22 +2,21 @@ process VARNET_PREDICT {
     tag "$meta.id"
     label 'process_medium'
 
-    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/varnet:1.5.3--pyhdfd78af_0':
-        'quay.io/biocontainers/varnet:1.5.3--pyhdfd78af_0' }"
+        'https://depot.galaxyproject.org/singularity/varnet:1.5.4--pyhdfd78af_0':
+        'quay.io/biocontainers/varnet:1.5.4--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(input_tumor), path(index_tumor), path(input_normal), path(index_normal), path(candidates, stageAs: 'candidates')
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
+    tuple val(meta4), path(resource_dir)
 
     output:
     tuple val(meta), path("${prefix}/${prefix}.vcf.gz"), emit: vcf
     tuple val(meta), path("${prefix}/predictions"), emit: predictions
-    tuple val("${task.process}"), val("varnet"), val("1.5.3"), emit: versions_varnet, topic: versions
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val("varnet"), eval("varnet-predict --version | sed 's/VarNet //'"), emit: versions_varnet, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,8 +24,10 @@ process VARNET_PREDICT {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    if (!input_normal) {
-        error "VARNET_PREDICT requires a matched normal BAM. Tumor-only mode needs large germline resource files (dbSNP and gnomAD) that are not shipped with the conda package, so it is not supported by this module. To run tumor-only, use the VarNet Docker image directly: https://github.com/skandlab/VarNet"
+    def normal = input_normal ? "--normal_bam ${input_normal}" : ""
+    def resources = resource_dir ? "--resource_dir ${resource_dir}" : ""
+    if (!input_normal && !resource_dir) {
+        error "VARNET_PREDICT tumor-only mode needs the germline filtering resources folder (download it with varnet-download-resources, see https://doi.org/10.6084/m9.figshare.34420128)."
     }
     """
     export TF_CPP_MIN_LOG_LEVEL=3
@@ -37,11 +38,12 @@ process VARNET_PREDICT {
 
     varnet-predict \\
         --sample_name ${prefix} \\
-        --normal_bam ${input_normal} \\
+        ${normal} \\
         --tumor_bam ${input_tumor} \\
         --reference ${fasta} \\
         --output_dir . \\
         --processes ${task.cpus} \\
+        ${resources} \\
         ${args}
     """
 

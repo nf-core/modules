@@ -36,7 +36,7 @@ input:
           - edam: http://edamontology.org/format_3327 # BAI
     - input_normal:
         type: file
-        description: BAM file from matched normal sample (required; tumor-only mode is not supported)
+        description: BAM file from matched normal sample (optional; omit for tumor-only mode)
         pattern: "*.bam"
         ontologies:
           - edam: http://edamontology.org/format_2572 # BAM
@@ -76,6 +76,15 @@ input:
         pattern: "*.fai"
         ontologies:
           - edam: http://edamontology.org/format_3475 # TSV
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing resource information
+    - resource_dir:
+        type: directory
+        description: Folder with the germline filtering resources for tumor-only mode
+          (GRCh38), from https://doi.org/10.6084/m9.figshare.34420128. Required when
+          no normal BAM is given, otherwise optional.
 output:
   candidates:
     - - meta:
@@ -95,8 +104,8 @@ output:
       - varnet:
           type: string
           description: The name of the tool
-      - "1.5.3":
-          type: string
+      - "varnet-filter --version | sed 's/VarNet //'":
+          type: eval
           description: The expression to obtain the version of the tool
 topics:
   versions:
@@ -106,8 +115,8 @@ topics:
       - varnet:
           type: string
           description: The name of the tool
-      - "1.5.3":
-          type: string
+      - "varnet-filter --version | sed 's/VarNet //'":
+          type: eval
           description: The expression to obtain the version of the tool
 authors:
   - "@kiranchari"

@@ -35,6 +35,7 @@ nextflow_process {
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
                 ]
+                input[4] = [ [], [] ]
                 """
             }
         }
@@ -62,6 +63,7 @@ nextflow_process {
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
                 ]
+                input[3] = [ [], [] ]
                 """
             }
         }
@@ -100,6 +102,49 @@ nextflow_process {
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
                 ]
+                input[3] = [ [], [] ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("tumor_only - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                // the real resources are 3.9 GB, so the stub test stages an empty placeholder folder
+                def resource_dir = workDir.resolve('varnet_resources')
+                resource_dir.mkdirs()
+
+                input[0] = VARNET_FILTER.out.candidates
+                    .map { meta, candidates -> [
+                        meta,
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true),
+                        [],
+                        [],
+                        candidates
+                    ] }
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[3] = [ [ id:'resources' ], resource_dir ]
                 """
             }
         }
