@@ -43,6 +43,13 @@ process VARNET_FILTER {
         ${regions} \\
         ${resources} \\
         ${args}
+
+    # varnet-filter joins its batch files in directory listing order, which differs between
+    # filesystems, so sort the candidates to make the output reproducible
+    # (-snv or -indel in ext.args writes only one of the two files)
+    for candidates in ${prefix}/candidates/*/Positions.csv; do
+        LC_ALL=C sort -k1,1 -k2,2n -o \$candidates \$candidates
+    done
     """
 
     stub:
