@@ -69,3 +69,17 @@ authors:
   - "@eit-maxlcummins"
 maintainers:
   - "@thanhleviet"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/rasusa:0.3.0--e22d5c77ebcbec79
+      build_id: bd-e22d5c77ebcbec79_1
+      scan_id: sc-941976fc47b64d8c_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/rasusa:0.3.0--64440735253eb6cb
+      build_id: bd-64440735253eb6cb_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c7/c7c52048426ed5860a231ffe6fb4c40acb23121969d87a231d5e1c7c3cc8661c/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/rasusa/.conda-lock/linux_amd64-bd-e22d5c77ebcbec79_1.txt
