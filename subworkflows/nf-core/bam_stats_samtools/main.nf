@@ -1,3 +1,5 @@
+nextflow.enable.types = true
+
 //
 // Run SAMtools stats, flagstat and idxstats
 //
@@ -8,8 +10,8 @@ include { SAMTOOLS_FLAGSTAT } from '../../../modules/nf-core/samtools/flagstat/m
 
 workflow BAM_STATS_SAMTOOLS {
     take:
-    ch_bam_bai // channel: [ val(meta), path(bam), path(bai) ]
-    ch_fasta_fai // channel: [ val(meta), path(fasta) ]
+    ch_bam_bai   // channel: records of [ meta, bam, bai ]
+    ch_fasta_fai // channel: records of [ meta, fasta, fai ]
 
     main:
     SAMTOOLS_STATS(ch_bam_bai, ch_fasta_fai)
@@ -19,7 +21,7 @@ workflow BAM_STATS_SAMTOOLS {
     SAMTOOLS_IDXSTATS(ch_bam_bai)
 
     emit:
-    stats    = SAMTOOLS_STATS.out.stats // channel: [ val(meta), path(stats) ]
-    flagstat = SAMTOOLS_FLAGSTAT.out.flagstat // channel: [ val(meta), path(flagstat) ]
-    idxstats = SAMTOOLS_IDXSTATS.out.idxstats // channel: [ val(meta), path(idxstats) ]
+    stats    = SAMTOOLS_STATS.out    // channel: records of [ meta, stats ]
+    flagstat = SAMTOOLS_FLAGSTAT.out // channel: records of [ meta, flagstat ]
+    idxstats = SAMTOOLS_IDXSTATS.out // channel: records of [ meta, idxstats ]
 }
