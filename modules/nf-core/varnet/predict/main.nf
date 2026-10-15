@@ -11,7 +11,8 @@ process VARNET_PREDICT {
     tuple val(meta), path(input_tumor), path(index_tumor), path(input_normal), path(index_normal), path(candidates, stageAs: 'candidates')
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(fai)
-    tuple val(meta4), path(resource_dir)
+    // tumor-only panel of normals: varnet-predict finds it by this name in --resource_dir
+    tuple val(meta4), path(pon, stageAs: 'varnet_resources/1000g_pon.hg38.vcf.gz')
 
     output:
     tuple val(meta), path("${prefix}/${prefix}.vcf.gz"), emit: vcf
@@ -25,9 +26,9 @@ process VARNET_PREDICT {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def normal = input_normal ? "--normal_bam ${input_normal}" : ""
-    def resources = resource_dir ? "--resource_dir ${resource_dir}" : ""
-    if (!input_normal && !resource_dir) {
-        error "VARNET_PREDICT tumor-only mode needs the germline filtering resources folder (download it with varnet-download-resources, see https://doi.org/10.6084/m9.figshare.34420128)."
+    def resources = pon ? "--resource_dir varnet_resources" : ""
+    if (!input_normal && !resources) {
+        error "VARNET_PREDICT tumor-only mode needs the panel of normals from https://doi.org/10.6084/m9.figshare.34420128 (or varnet-download-resources)."
     }
     """
     export TF_CPP_MIN_LOG_LEVEL=3

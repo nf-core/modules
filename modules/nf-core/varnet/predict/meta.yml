@@ -75,11 +75,15 @@ input:
         type: map
         description: |
           Groovy Map containing resource information
-    - resource_dir:
-        type: directory
-        description: Folder with the germline filtering resources for tumor-only mode
-          (GRCh38), from https://doi.org/10.6084/m9.figshare.34420128. Required when
-          no normal BAM is given, otherwise optional.
+    - pon:
+        type: file
+        description: Panel of normals used by VarNet-T (GRCh38), 1000g_pon.hg38.vcf.gz
+          from https://doi.org/10.6084/m9.figshare.34420128 (the GATK best-practices
+          1000 Genomes panel of normals). Required when no normal BAM is given, otherwise
+          optional.
+        pattern: "*.vcf.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3016 # VCF
 output:
   vcf:
     - - meta:

@@ -35,6 +35,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
                 ]
                 input[4] = [ [], [] ]
+                input[5] = [ [], [] ]
                 """
             }
         }
@@ -75,6 +76,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
                 ]
                 input[4] = [ [], [] ]
+                input[5] = [ [], [] ]
                 """
             }
         }
@@ -95,9 +97,11 @@ nextflow_process {
         when {
             process {
                 """
-                // the real resources are 3.9 GB, so the stub test stages an empty placeholder folder
-                def resource_dir = workDir.resolve('varnet_resources')
-                resource_dir.mkdirs()
+                // the real resources are 3.9 GB, so the stub test stages empty placeholder files
+                def dbsnp = workDir.resolve('dbsnp_placeholder.npz')
+                def gnomad = workDir.resolve('gnomad_placeholder.npz')
+                dbsnp.text = ''
+                gnomad.text = ''
 
                 input[0] = [
                     [ id:'test' ],
@@ -118,7 +122,8 @@ nextflow_process {
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
                 ]
-                input[4] = [ [ id:'resources' ], resource_dir ]
+                input[4] = [ [ id:'dbsnp' ], dbsnp ]
+                input[5] = [ [ id:'gnomad' ], gnomad ]
                 """
             }
         }

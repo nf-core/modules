@@ -12,7 +12,9 @@ process VARNET_FILTER {
     tuple val(meta2), path(intervals)
     tuple val(meta3), path(fasta)
     tuple val(meta4), path(fai)
-    tuple val(meta5), path(resource_dir)
+    // tumor-only germline filtering resources: varnet-filter finds them by these names in --resource_dir
+    tuple val(meta5), path(dbsnp, stageAs: 'varnet_resources/GrCh38-dbSNP-build-156-common-variants-0-indexed-CHROMPOS.npz')
+    tuple val(meta6), path(gnomad, stageAs: 'varnet_resources/combined_gnomAD_v4.1_genomes_exomes_dict.hg38.chunks.npz')
 
     output:
     tuple val(meta), path("${prefix}/candidates"), emit: candidates
@@ -26,9 +28,9 @@ process VARNET_FILTER {
     prefix = task.ext.prefix ?: "${meta.id}"
     def regions = intervals ? "--region_bed ${intervals}" : ""
     def normal = input_normal ? "--normal_bam ${input_normal}" : ""
-    def resources = resource_dir ? "--resource_dir ${resource_dir}" : ""
-    if (!input_normal && !resource_dir) {
-        error "VARNET_FILTER tumor-only mode needs the germline filtering resources folder (download it with varnet-download-resources, see https://doi.org/10.6084/m9.figshare.34420128)."
+    def resources = dbsnp && gnomad ? "--resource_dir varnet_resources" : ""
+    if (!input_normal && !resources) {
+        error "VARNET_FILTER tumor-only mode needs the dbSNP and gnomAD germline filtering resources from https://doi.org/10.6084/m9.figshare.34420128 (or varnet-download-resources)."
     }
     """
     export TF_CPP_MIN_LOG_LEVEL=3
