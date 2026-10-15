@@ -22,7 +22,7 @@ process BEDTOOLS_INTERSECT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def extension = suffix ?: "${intervals1.extension}"
+    extension = suffix ?: "${intervals1.extension}"
     def sizes = chrom_sizes ? "-g ${chrom_sizes}" : ''
     if ("${intervals1}" == "${prefix}.${extension}" || "${intervals2}" == "${prefix}.${extension}") {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
@@ -39,7 +39,7 @@ process BEDTOOLS_INTERSECT {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    extension = task.ext.suffix ?: "bed"
+    extension = suffix ?: "bed"
     if ("${intervals1}" == "${prefix}.${extension}" || "${intervals2}" == "${prefix}.${extension}") {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
