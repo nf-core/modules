@@ -10,26 +10,33 @@ setDTthreads($task.cpus)
 
 prefix <- ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix')
 
-rbindlist(lapply(Sys.glob('input/*'), function(file) {
+# One file at a time: memory use is set by the largest file, not by the number of samples.
+out <- gzfile(paste0(prefix, '.counts.tsv.gz'), 'wb')
+first <- TRUE
+
+for ( file in Sys.glob('input/*') ) {
     fread(file, sep = '\t', skip = 1) %>%
-        melt(measure.vars = c(ncol(.)), variable.name = 'sample', value.name = 'count')
-})) %>%
-    lazy_dt() %>%
-    filter(count > 0) %>%
-    mutate(
-        sample = str_remove(sample, '[.]sorted[.]bam\$'),
-        r = count/Length
-    ) %>%
-    rename(orf = Geneid, chr = Chr, start = Start, end = End, strand = Strand, length = Length) %>%
-    group_by(sample) %>%
-    # Rounded so tables independently computed elsewhere from the same underlying
-    # counts (e.g. after a caller-consolidation step using a different R backend)
-    # stay byte-comparable -- data.table/dtplyr and plain dplyr can otherwise round
-    # the last significant digit of the same mathematical value differently.
-    mutate(tpm = round(r/sum(r) * 1e6, 6)) %>% ungroup() %>%
-    select(-r) %>%
-    as_tibble() %>%
-    write_tsv(paste0(prefix, '.counts.tsv.gz'))
+        melt(measure.vars = c(ncol(.)), variable.name = 'sample', value.name = 'count') %>%
+        lazy_dt() %>%
+        filter(count > 0) %>%
+        mutate(
+            sample = str_remove(sample, '[.]sorted[.]bam\$'),
+            r = count/Length
+        ) %>%
+        rename(orf = Geneid, chr = Chr, start = Start, end = End, strand = Strand, length = Length) %>%
+        group_by(sample) %>%
+        # Rounded so tables independently computed elsewhere from the same underlying
+        # counts (e.g. after a caller-consolidation step using a different R backend)
+        # stay byte-comparable -- data.table/dtplyr and plain dplyr can otherwise round
+        # the last significant digit of the same mathematical value differently.
+        mutate(tpm = round(r/sum(r) * 1e6, 6)) %>% ungroup() %>%
+        select(-r) %>%
+        as_tibble() %>%
+        write_tsv(out, col_names = first)
+    first <- FALSE
+}
+
+close(out)
 
 writeLines(
     c(

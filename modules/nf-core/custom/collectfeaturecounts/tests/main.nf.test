@@ -61,6 +61,33 @@ nextflow_process {
         }
     }
 
+    test("first sample without counts") {
+
+        when {
+            process {
+                """
+                def dir = java.nio.file.Files.createTempDirectory('collectfeaturecounts')
+                def header = "# Program:featureCounts\\nGeneid\\tChr\\tStart\\tEnd\\tStrand\\tLength\\t"
+                def a = dir.resolve('a.featureCounts.tsv')
+                def b = dir.resolve('b.featureCounts.tsv')
+                a.text = header + "A.sorted.bam\\ng1\\tc\\t1\\t100\\t+\\t100\\t0\\ng2\\tc\\t200\\t399\\t+\\t200\\t0\\n"
+                b.text = header + "B.sorted.bam\\ng1\\tc\\t1\\t100\\t+\\t100\\t3\\ng2\\tc\\t200\\t399\\t+\\t200\\t0\\n"
+                input[0] = [ [ id:'test' ], [ a, b ] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.counts.get(0).get(1)).linesGzip == [
+                    "orf\tchr\tstart\tend\tstrand\tlength\tsample\tcount\ttpm",
+                    "g1\tc\t1\t100\t+\t100\tB\t3\t1000000"
+                ] }
+            )
+        }
+    }
+
     test("two samples - stub") {
 
         options "-stub"
