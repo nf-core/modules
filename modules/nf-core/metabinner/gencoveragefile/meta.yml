@@ -1,0 +1,130 @@
+name: "metabinner_gencoveragefile"
+description: |
+  Generates per-contig coverage profiles from an assembly and sequencing reads
+  (bwa mem, samtools sort and jgi_summarize_bam_contig_depths) for MetaBinner
+keywords:
+  - metagenomics
+  - binning
+  - coverage
+  - depth
+  - contigs
+  - alignment
+tools:
+  - "metabinner":
+      description: "Ensemble binning method to recover individual genomes from complex microbial communities"
+      homepage: "https://github.com/ziyewang/MetaBinner"
+      documentation: "https://github.com/ziyewang/MetaBinner"
+      tool_dev_url: "https://github.com/ziyewang/MetaBinner"
+      doi: "10.1186/s13059-022-02832-6"
+      licence:
+        - "GPL-3.0-only"
+      identifier: biotools:metabinner
+      args_id: "$args"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - assembly:
+        type: file
+        description: Assembly contigs in FASTA format, optionally gzipped
+        pattern: "*.{fasta,fa,fna}{,.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+    - reads:
+        type: file
+        description: |
+          FASTQ reads (optionally gzipped) from one or more samples. Paired-end reads must be ordered as R1, R2 pairs per sample; single-end and interleaved inputs take one file per sample.
+          Interleaved input requires `--interleaved` in `ext.args`.
+        pattern: "*.{fastq,fq}{,.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+output:
+  coverage:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}_coverage_profile.tsv:
+          type: file
+          description: Per-contig mean depth for each sample, as input for MetaBinner
+          pattern: "*_coverage_profile.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  coverage_f1k:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}_coverage_profile_f1k.tsv:
+          type: file
+          description: Coverage profile restricted to contigs longer than 1000 bp
+          pattern: "*_coverage_profile_f1k.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  depth:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}_depth.txt:
+          type: file
+          description: Contig depth table from jgi_summarize_bam_contig_depths, including contigLen and totalAvgDepth columns
+          pattern: "*_depth.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - ${prefix}_s*.bam:
+          type: file
+          description: Coordinate-sorted alignments of each sample's reads against the assembly
+          pattern: "*_s*.bam"
+          ontologies:
+            - edam: http://edamontology.org/format_2572 # BAM
+  versions_metabinner:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metabinner:
+          type: string
+          description: The name of the tool
+      - 1.4.4:
+          type: string
+          description: Hardcoded tool version, as gen_coverage_file.sh has no version flag
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metabinner:
+          type: string
+          description: The name of the tool
+      - 1.4.4:
+          type: string
+          description: Hardcoded tool version, as gen_coverage_file.sh has no version flag
+authors:
+  - "@HR-cruk"
+maintainers:
+  - "@HR-cruk"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/metabinner:1.4.4--60cf94125f522897
+      build_id: bd-60cf94125f522897_1
+      scan_id: sc-38141ed8aab03bc0_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/metabinner:1.4.4--3e7202043cbd1697
+      build_id: bd-3e7202043cbd1697_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8d/8dab51352a1e2701daf87620104c5c6e7148811ee132769f299e8fa434fc194e/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/metabinner/gencoveragefile/.conda-lock/linux_amd64-bd-60cf94125f522897_1.txt
