@@ -129,7 +129,7 @@ nextflow_process {
 
         setup {
             // Prodigal, TransDecoder, etc. leave a '*' stop-codon marker on every protein;
-            // InterProScan hard-rejects it (see #13130) unless this is stripped first.
+            // InterProScan hard-rejects it unless this is stripped first.
             def fasta_with_asterisk = new File("${launchDir}/fasta_with_asterisk.faa")
             fasta_with_asterisk.text = ">protein_with_stop_codon\nMAEGEITTFTALTEKFNLPPGNYKKPKLLYCSNGGHFLRILPDGTVDGTRDRSDQHIQLQLSAESVGEVYIKSTETGQYLAMDTSGLLYGSQTPSEECLFLERLEENHYNTYTSKKHAEKNWFVGLKKNGSCKRGPRTHYGQKAILFLPLPVSSD*\n"
         }
