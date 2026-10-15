@@ -1,0 +1,178 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: plink_homozyg
+description: Runs of homozygosity (ROH) detection with PLINK 1.9 and the Goat ROH summary steps (F_ROH, length bins, plots)
+keywords:
+  - roh
+  - homozyg
+  - plink
+  - inbreeding
+  - F_ROH
+tools:
+  - plink:
+      description: Whole genome association analysis toolset.
+      homepage: https://www.cog-genomics.org/plink
+      documentation: https://www.cog-genomics.org/plink/1.9/
+      licence: ["GPL"]
+      identifier: biotools:plink
+  - python:
+      description: Python scripts for F_ROH, ROH bins and plots (ported from the Goat ROH analysis).
+      homepage: https://www.python.org
+      licence: ["PSF"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information
+    - bed:
+        type: file
+        description: PLINK binary genotype table
+        pattern: "*.bed"
+    - bim:
+        type: file
+        description: PLINK extended MAP file
+        pattern: "*.bim"
+    - fam:
+        type: file
+        description: PLINK sample information file (FID = breed, IID = animal)
+        pattern: "*.fam"
+output:
+  hom:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.hom":
+          type: file
+          description: PLINK ROH segments
+          pattern: "*.hom"
+  hom_indiv:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.hom.indiv":
+          type: file
+          description: PLINK per-individual ROH totals
+          pattern: "*.hom.indiv"
+  hom_summary:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.hom.summary":
+          type: file
+          description: PLINK ROH summary
+          pattern: "*.hom.summary"
+  log:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.log":
+          type: file
+          description: PLINK log file
+          pattern: "*.log"
+  froh_breed:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - F_ROH_estimates.csv:
+          type: file
+          description: F_ROH per FID (breed)
+          pattern: "F_ROH_estimates.csv"
+  froh_individual:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - F_ROH_per_individual.csv:
+          type: file
+          description: F_ROH per animal
+          pattern: "F_ROH_per_individual.csv"
+  metadata:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*_metadata.csv":
+          type: file
+          description: IID to breed table
+          pattern: "*_metadata.csv"
+  bins_individual:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - ROH_bins_per_individual.csv:
+          type: file
+          description: ROH count per length bin per animal
+          pattern: "ROH_bins_per_individual.csv"
+  bins_breed:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - ROH_bins_per_breed.csv:
+          type: file
+          description: ROH count per length bin, breed means
+          pattern: "ROH_bins_per_breed.csv"
+  length_individual:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - ROH_total_length_per_individual.csv:
+          type: file
+          description: Total ROH length (Mb) per length bin per animal
+          pattern: "ROH_total_length_per_individual.csv"
+  length_breed:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - ROH_total_length_per_breed.csv:
+          type: file
+          description: Total ROH length (Mb) per length bin, breed means
+          pattern: "ROH_total_length_per_breed.csv"
+  plots:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.png":
+          type: file
+          description: ROH plots
+          pattern: "*.png"
+  versions_plink:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - plink:
+          type: string
+          description: The name of the tool
+      - plink --version 2>&1 | sed 's/^PLINK v//;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of PLINK
+  versions_python:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python3 --version 2>&1 | sed 's/^Python //':
+          type: eval
+          description: The expression to obtain the version of Python
+authors:
+  - "@Othmanaljurayyad"
+maintainers:
+  - "@Othmanaljurayyad"
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - plink:
+          type: string
+          description: The name of the tool
+      - plink --version 2>&1 | sed 's/^PLINK v//;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of PLINK
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python3 --version 2>&1 | sed 's/^Python //':
+          type: eval
+          description: The expression to obtain the version of Python
