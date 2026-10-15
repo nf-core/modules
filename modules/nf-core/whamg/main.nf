@@ -3,9 +3,9 @@ process WHAMG {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-fb3127231a8f88daa68d5eb0eec49593cd98b440:e6a1c182ebdfe372b5e3cdc05a6cece64cef7274-0':
-        'quay.io/biocontainers/mulled-v2-fb3127231a8f88daa68d5eb0eec49593cd98b440:e6a1c182ebdfe372b5e3cdc05a6cece64cef7274-0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b5/b5cba56edb5c342cde8d5747311d90b4678391ee383bbfbf74dd2d524e2cbcc6/data'
+:         'community.wave.seqera.io/library/tabix_wham:0eb67c2c9cb26529' }"
 
     input:
     tuple val(meta), path(bam), path(bai)

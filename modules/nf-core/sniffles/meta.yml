@@ -1,5 +1,5 @@
 name: sniffles
-description: structural-variant calling with sniffles
+description: structural-variant calling and genotyping of known structural variants (forced calling with --genotype-vcf) with sniffles.
 keywords:
   - sniffles
   - structural-variant calling
@@ -30,6 +30,12 @@ input:
         description: Index of BAM/CAM file
         pattern: "*.{bai,crai}"
         ontologies: []
+    - genotype_vcf:
+        type: file
+        description: Optional VCF of known structural variants to genotype in the input BAM/CRAM (forced calling), plain or gzipped. Use an empty list (`[]`) for regular SV calling.
+        pattern: "*.{vcf,vcf.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_3016
   - - meta2:
         type: map
         description: |
@@ -126,24 +132,24 @@ maintainers:
 containers:
   docker:
     linux/amd64:
-      name: community.wave.seqera.io/library/sniffles:2.8.1--b8c26c44b42620c5
-      build_id: bd-b8c26c44b42620c5_1
-      scan_id: sc-be686545d29b5d3e_1
+      name: community.wave.seqera.io/library/htslib_sniffles:14a95caca8d8452b
+      build_id: bd-14a95caca8d8452b_1
+      scan_id: sc-edfb8dc7743dd1fc_1
     linux/arm64:
-      name: community.wave.seqera.io/library/sniffles:2.8.1--db3310e27781522c
-      build_id: bd-db3310e27781522c_1
-      scan_id: sc-47a2cf0d175ec349_1
+      name: community.wave.seqera.io/library/htslib_sniffles:0caddb2114424a6f
+      build_id: bd-0caddb2114424a6f_1
+      scan_id: sc-e40ae47ee821020d_1
   singularity:
-    linux/amd64:
-      name: oras://community.wave.seqera.io/library/sniffles:2.8.1--4efaba9191b482de
-      build_id: bd-4efaba9191b482de_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6d/6de188cc5ba7548d54fc6d257336c8c6f57c9b403823b7ccc9978ca08d8d1945/data
     linux/arm64:
-      name: oras://community.wave.seqera.io/library/sniffles:2.8.1--d26f781cc4513316
-      build_id: bd-d26f781cc4513316_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/58/58fa6579cc0531a6a36d35c574ef3063c7afbd3f5549cc981a789c70175a7852/data
+      name: oras://community.wave.seqera.io/library/htslib_sniffles:d6622685f53e8d89
+      build_id: bd-d6622685f53e8d89_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0f/0fce44cce1f2abd393d39dfe4f80b15b780ade83f850a9739c73d3769dec0651/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/htslib_sniffles:576e74b26ca5211a
+      build_id: bd-576e74b26ca5211a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/21/211f5d256e62a50ad9c6806ce42da3dd11420f548a3307faa82068305cfcbfc2/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/sniffles/.conda-lock/linux_amd64-bd-b8c26c44b42620c5_1.txt
+      lock_file: modules/nf-core/sniffles/.conda-lock/linux_amd64-bd-14a95caca8d8452b_1.txt
     linux/arm64:
-      lock_file: modules/nf-core/sniffles/.conda-lock/linux_arm64-bd-db3310e27781522c_1.txt
+      lock_file: modules/nf-core/sniffles/.conda-lock/linux_arm64-bd-0caddb2114424a6f_1.txt

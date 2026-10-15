@@ -65,3 +65,27 @@ authors:
   - "@jianhong"
 maintainers:
   - "@jianhong"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/ucsc-bigwigaverageoverbed:482--09b4685dee7c8b33
+      build_id: bd-09b4685dee7c8b33_1
+      scan_id: sc-12516a0a135fea48_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/ucsc-bigwigaverageoverbed:482--8e872cbd04957de0
+      build_id: bd-8e872cbd04957de0_1
+      scan_id: sc-b9891e61a2950fd7_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/ucsc-bigwigaverageoverbed:482--4be8b8f14a941530
+      build_id: bd-4be8b8f14a941530_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/96/96d5dedcf4cb3e65e3badb2bd4dabb72beb7fafe919febfbe29a7807a6e60413/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/ucsc-bigwigaverageoverbed:482--5c034b311ddf9a37
+      build_id: bd-5c034b311ddf9a37_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/05/0594a0be8f00c909874672ded6062ca6d7d61e6922bc6e4041a740f981326fa6/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/ucsc/bigwigaverageoverbed/.conda-lock/linux_amd64-bd-09b4685dee7c8b33_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/ucsc/bigwigaverageoverbed/.conda-lock/linux_arm64-bd-8e872cbd04957de0_1.txt

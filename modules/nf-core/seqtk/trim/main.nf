@@ -3,9 +3,9 @@ process SEQTK_TRIM {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/seqtk:1.4--he4a0461_1' :
-        'quay.io/biocontainers/seqtk:1.4--he4a0461_1' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2d/2dae00435c9dff9202076069bf0d252db26a3e8c708741f17b5fbd053886ff9a/data'
+:         'community.wave.seqera.io/library/seqtk:1.4--3fa479d3961a5b8d' }"
 
     input:
     tuple val(meta), path(reads)

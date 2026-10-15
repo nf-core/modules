@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "varlociraptor_filterfdr"
 description: Filter Varlociraptor variant calls using FDR control.
 keywords:
@@ -9,8 +8,7 @@ keywords:
   - variant filtering
 tools:
   - "varlociraptor":
-      description: "Flexible, uncertainty-aware variant calling with parameter free
-        filtration via FDR control."
+      description: "Flexible, uncertainty-aware variant calling with parameter free filtration via FDR control."
       homepage: "https://varlociraptor.github.io/docs/estimating/"
       documentation: "https://varlociraptor.github.io/docs/estimating/"
       tool_dev_url: "https://github.com/varlociraptor/varlociraptor"
@@ -74,3 +72,17 @@ authors:
   - "@famosab"
 maintainers:
   - "@famosab"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/varlociraptor:8.9.5--9445270256470baf
+      build_id: bd-9445270256470baf_1
+      scan_id: sc-7576fc5ce0e29679_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/varlociraptor:8.9.5--8503a32f53215922
+      build_id: bd-8503a32f53215922_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f1/f1d2b5a7830e21d0407be9958b69810f16fac8008fb899c345f635ff5636de04/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/varlociraptor/filterfdr/.conda-lock/linux_amd64-bd-9445270256470baf_1.txt
