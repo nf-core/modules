@@ -3,9 +3,9 @@ process CONTROLFREEC_FREEC {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/control-freec:11.6b--hde5307d_3'
-        : 'quay.io/biocontainers/control-freec:11.6b--hde5307d_3'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/86/86e7bfef8a43af72880501e04fb817268228715f4854102ce4a90fd3ad2cd66a/data'
+:         'community.wave.seqera.io/library/control-freec:11.6b--6482bd27b629122a' }"
 
     input:
     tuple val(meta), path(mpileup_normal), path(mpileup_tumor), path(cpn_normal), path(cpn_tumor), path(minipileup_normal), path(minipileup_tumor)
