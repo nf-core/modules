@@ -1,0 +1,65 @@
+nextflow_process {
+
+    name "Test Process DNAAPLER_ALL"
+    script "../main.nf"
+    process "DNAAPLER_ALL"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "dnaapler"
+    tag "dnaapler/all"
+
+    test("bacteroides_fragilis - genome.fna.gz") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true),
+                    [],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["log"]),
+                    path(process.out.log[0][1]).text.contains('dnaapler has finished')
+                ).match() }
+            )
+        }
+
+    }
+
+    test("bacteroides_fragilis - genome.fna.gz - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true),
+                    [],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

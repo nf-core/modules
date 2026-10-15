@@ -1,0 +1,164 @@
+name: dnaapler_all
+description: Reorients complete bacterial chromosomes, plasmids and phages to start at a conserved gene
+keywords:
+  - reorientation
+  - genome assembly
+  - chromosome
+  - plasmid
+  - phage
+  - dnaA
+  - fasta
+  - gfa
+tools:
+  - dnaapler:
+      description: |
+        Reorients complete microbial chromosomes, plasmids and phages to begin with
+        a conserved start gene (e.g. dnaA, repA or terL) using MMseqs2 searches
+        against a bundled protein database.
+      homepage: https://github.com/gbouras13/dnaapler
+      documentation: https://dnaapler.readthedocs.io
+      tool_dev_url: https://github.com/gbouras13/dnaapler
+      doi: "10.21105/joss.05968"
+      licence:
+        - "MIT"
+      identifier: ""
+      args_id: "$args"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - assembly:
+        type: file
+        description: Complete assembly in FASTA (optionally gzipped) or GFA format
+        pattern: "*.{fasta,fa,fna,fasta.gz,fa.gz,fna.gz,gfa}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_3975 # GFA 1
+    - ignore:
+        type: file
+        description: |
+          Optional. Text file listing full contig header lines (one per line) to leave
+          un-reoriented. Each line must match the whole FASTA header line.
+        pattern: "*.{txt,list}"
+        ontologies:
+          - edam: http://edamontology.org/format_2330 # Textual format
+    - custom_db:
+        type: file
+        description: |
+          Optional. Amino acid FASTA file used as a custom database
+          instead of the bundled one (passed with `--custom_db`).
+        pattern: "*.{fasta,fa,faa}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+output:
+  fasta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_reoriented.fasta:
+          type: file
+          description: Reoriented assembly in FASTA format
+          pattern: "*_reoriented.fasta"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+  gfa:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_reoriented.gfa:
+          type: file
+          description: Optional. Reoriented assembly graph, only emitted for GFA input
+          pattern: "*_reoriented.gfa"
+          ontologies:
+            - edam: http://edamontology.org/format_3975 # GFA 1
+  summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_all_reorientation_summary.tsv:
+          type: file
+          description: Per-contig summary of the reorientation performed
+          pattern: "*_all_reorientation_summary.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  hits:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_MMseqs2_output.txt:
+          type: file
+          description: Tabular MMseqs2 hits against the reorientation database
+          pattern: "*_MMseqs2_output.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.log:
+          type: file
+          description: dnaapler run log
+          pattern: "*.log"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Textual format
+  versions_dnaapler:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dnaapler:
+          type: string
+          description: The name of the tool
+      - dnaapler --version | sed 's/.*version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dnaapler:
+          type: string
+          description: The name of the tool
+      - dnaapler --version | sed 's/.*version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@ManuelMurez"
+maintainers:
+  - "@ManuelMurez"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/dnaapler:1.4.0--af5056b6d6282137
+      build_id: bd-af5056b6d6282137_1
+      scan_id: sc-45d57861bd293a4c_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/dnaapler:1.4.0--da1c8ba3b41e40c6
+      build_id: bd-da1c8ba3b41e40c6_1
+      scan_id: sc-b03a49a7625b6153_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/dnaapler:1.4.0--60867d0c7408c8ce
+      build_id: bd-60867d0c7408c8ce_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fb/fbc00c44dc1ece3b5c578ab5bc5688ffaec54d785cf86b9f0ff35ba2d5e723a8/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/dnaapler:1.4.0--116b29b6b57ad78b
+      build_id: bd-116b29b6b57ad78b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e7/e78ff2b68785061949b030afb1ff73db6a8d21d5d11c032236f1a1ef93477afa/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/dnaapler/all/.conda-lock/linux_amd64-bd-da1c8ba3b41e40c6_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/dnaapler/all/.conda-lock/linux_arm64-bd-af5056b6d6282137_1.txt
