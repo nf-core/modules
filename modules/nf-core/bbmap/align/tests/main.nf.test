@@ -41,11 +41,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    file(process.out.log[0][1]).name,
-                    process.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5()},
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["log", "reads"])).match() }
             )
         }
 
@@ -71,11 +67,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    file(process.out.log[0][1]).name,
-                    process.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5()},
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["log", "reads"])).match() }
             )
         }
 
@@ -100,11 +92,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    file(process.out.log[0][1]).name,
-                    process.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5()},
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["log", "reads"])).match() }
             )
         }
 
@@ -133,11 +121,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    file(process.out.log[0][1]).name,
-                    process.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5()},
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["log", "reads"])).match() }
             )
         }
 
@@ -163,11 +147,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    file(process.out.log[0][1]).name,
-                    process.out.bam.collect { meta, bamfile -> bam(bamfile).getReadsMD5()},
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
@@ -194,12 +174,10 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    file(process.out.log[0][1]).name,
-                    process.out.bam,
+                    sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["log", "reads"]),
                     process.out.reads.collect { meta, reads -> [ reads ].flatten().collect { fastq ->
                         [ file(fastq).name, path(fastq).linesGzip.size(), path(fastq).linesGzip.sort().join('\n').md5() ]
-                    } },
-                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    } }
                     ).match() }
             )
         }
@@ -227,12 +205,10 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    file(process.out.log[0][1]).name,
-                    process.out.bam,
+                    sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["log", "reads"]),
                     process.out.reads.collect { meta, reads -> [ reads ].flatten().collect { fastq ->
                         [ file(fastq).name, path(fastq).linesGzip.size(), path(fastq).linesGzip.sort().join('\n').md5() ]
-                    } },
-                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    } }
                     ).match() }
             )
         }
@@ -260,12 +236,10 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    file(process.out.log[0][1]).name,
-                    process.out.bam,
+                    sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["log", "reads"]),
                     process.out.reads.collect { meta, reads -> [ reads ].flatten().collect { fastq ->
                         [ file(fastq).name, path(fastq).linesGzip.size(), path(fastq).linesGzip.sort().join('\n').md5() ]
-                    } },
-                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    } }
                     ).match() }
             )
         }
@@ -292,12 +266,10 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    file(process.out.log[0][1]).name,
-                    process.out.bam,
+                    sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["log", "reads"]),
                     process.out.reads.collect { meta, reads -> [ reads ].flatten().collect { fastq ->
                         [ file(fastq).name, path(fastq).linesGzip.size(), path(fastq).linesGzip.sort().join('\n').md5() ]
-                    } },
-                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    } }
                     ).match() }
             )
         }
@@ -323,12 +295,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(
-                    file(process.out.log[0][1]).name,
-                    process.out.bam.collect { meta, bamfile -> [ file(bamfile).name, bam(bamfile).getReadsMD5() ] },
-                    process.out.reads,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["log", "reads"])).match() }
             )
         }
 
