@@ -118,13 +118,12 @@ process CUSTOM_COLLECTSTATS {
     # feature-counts input's columns existing and being correctly typed, not also on
     # their order, so a future column reorder upstream won't silently misparse here.
     # Only sample and count are read, one file at a time, so memory does not grow with
-    # the number of files or with the columns a counts table carries besides these.
-    counts <- purrr::map_dfr(
+    # the number of files, and the files need not have the same other columns.
+    counts <- map(
         c('${fcs.join("', '")}'),
         function(f) {
             read_tsv(
                 f,
-                col_select = c(sample, count),
                 col_types = cols_only(sample = col_character(), count = col_integer())
             ) %>%
                 group_by(sample) %>%
@@ -132,6 +131,7 @@ process CUSTOM_COLLECTSTATS {
                 mutate(feature = str_replace(f, '^[^.]+\\\\.([^.]+)\\\\..*', '\\\\1'))
         }
     ) %>%
+        list_rbind() %>%
         group_by(sample, feature) %>%
         summarise(count = sum(count), .groups = 'drop') %>%
         pivot_wider(names_from = feature, values_from = count, values_fill = 0)
