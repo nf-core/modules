@@ -1,0 +1,108 @@
+name: spoligotyper
+description: In silico spoligotyping, species check and lineage of Mycobacterium tuberculosis complex samples
+keywords:
+  - Mycobacterium tuberculosis
+  - Mycobacterium bovis
+  - spoligotyping
+  - genotyping
+  - lineage
+tools:
+  - spoligotyper:
+      description: |
+        In silico spoligotyping of Mycobacterium tuberculosis complex samples from reads or assemblies, with a
+        species check (regions of difference) and the lineage (SNP barcode), and a PDF report for quality assurance
+      homepage: https://github.com/duceppemo/spoligotyper
+      documentation: https://github.com/duceppemo/spoligotyper/wiki
+      tool_dev_url: https://github.com/duceppemo/spoligotyper
+      doi: "10.5281/zenodo.22926160"
+      licence:
+        - "MIT"
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: Single-end or paired-end reads (fastq), or an assembly (fasta), gzipped or not
+        pattern: "*.{fastq,fq,fasta,fa,fna,fas}{,.gz}"
+        ontologies: []
+output:
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_spoligotyping.txt":
+          type: file
+          description: Tab-separated table with the spoligotype, species, lineage and warnings
+          pattern: "*_spoligotyping.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_spoligotyping.json":
+          type: file
+          description: All the results and run information
+          pattern: "*_spoligotyping.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  pdf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_spoligotyping.pdf":
+          type: file
+          description: PDF report for quality assurance (not written with --no-pdf)
+          pattern: "*_spoligotyping.pdf"
+          ontologies:
+            - edam: http://edamontology.org/format_3508 # PDF
+  multiqc:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_spoligotyping_mqc.json":
+          type: file
+          description: MultiQC custom content table
+          pattern: "*_spoligotyping_mqc.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  versions_spoligotyper:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - spoligotyper:
+          type: string
+          description: The tool name
+      - "spoligotyper --version | sed 's/spoligotyper //'":
+          type: eval
+          description: The version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - spoligotyper:
+          type: string
+          description: The tool name
+      - "spoligotyper --version | sed 's/spoligotyper //'":
+          type: eval
+          description: The version of the tool
+
+authors:
+  - "@duceppemo"
+maintainers:
+  - "@duceppemo"
