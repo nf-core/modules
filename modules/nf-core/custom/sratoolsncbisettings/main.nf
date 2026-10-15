@@ -3,9 +3,9 @@ process CUSTOM_SRATOOLSNCBISETTINGS {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sra-tools:3.2.1--h4304569_1' :
-        'quay.io/biocontainers/sra-tools:3.2.1--h4304569_1' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/12/1296a3f79e700d7479f4a294669da501d851daf93b0a246a4d951d630d908a53/data'
+        : 'community.wave.seqera.io/library/sra-tools:3.2.1--c221ea63b92c74bf' }"
 
     input:
     val ids

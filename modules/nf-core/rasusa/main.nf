@@ -3,9 +3,9 @@ process RASUSA {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/rasusa:0.3.0--h779adbc_1' :
-        'quay.io/biocontainers/rasusa:0.3.0--h779adbc_1' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c7/c7c52048426ed5860a231ffe6fb4c40acb23121969d87a231d5e1c7c3cc8661c/data'
+:         'community.wave.seqera.io/library/rasusa:0.3.0--e22d5c77ebcbec79' }"
 
     input:
     tuple val(meta), path(reads), val(genome_size)
