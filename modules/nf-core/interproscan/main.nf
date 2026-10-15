@@ -29,8 +29,7 @@ process INTERPROSCAN {
     def is_compressed    = fasta.getExtension() == "gz"
     def fasta_name       = is_compressed ? fasta.getBaseName() : "stripped_${fasta}"
     // InterProScan hard-rejects '*' (the stop-codon marker Prodigal/TransDecoder/etc. leave on
-    // every protein), so strip it here, in the step that already rewrites the input either way.
-    // #13130.
+    // every protein).
     def uncompress_input = is_compressed ?
         "gzip -c -d ${fasta} | sed '/^>/! s/\\*//g' > ${fasta_name}" :
         "sed '/^>/! s/\\*//g' ${fasta} > ${fasta_name}"
