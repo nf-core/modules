@@ -37,6 +37,11 @@ input:
         description: Chromosome sizes file
         pattern: "*{.sizes,.txt}"
         ontologies: []
+  - val suffix:
+      type: string
+      description: |
+        Extension of the output file (e.g. "bed", "bam", "txt"), which depends on the arguments used.
+        If empty, the extension of intervals1 is used.
 output:
   intersect:
     - - meta:
