@@ -1,5 +1,5 @@
 {
-    "bacteroides_fragilis - fasta - fastq - paired_end": {
+    "sarscov2 - fasta - fastq - interleaved": {
         "content": [
             {
                 "bam": [
@@ -8,7 +8,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test_s1.bam"
+                        "test_s001_test_interleaved.bam"
                     ]
                 ],
                 "coverage": [
@@ -17,7 +17,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test_coverage_profile.tsv:md5,3f27752142c187ca1fc8b818ef950d0e"
+                        "test_coverage_profile.tsv:md5,8bd78bdeb487e97f4aa710be37ece69e"
                     ]
                 ],
                 "coverage_f1k": [
@@ -26,7 +26,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test_coverage_profile_f1k.tsv:md5,3f27752142c187ca1fc8b818ef950d0e"
+                        "test_coverage_profile_f1k.tsv:md5,8bd78bdeb487e97f4aa710be37ece69e"
                     ]
                 ],
                 "depth": [
@@ -35,7 +35,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test_depth.txt:md5,d251b8ea2e003e4087741cb83bfa71ab"
+                        "test_depth.txt:md5,bf693abcdb1b3b21d01b76f9499a28af"
                     ]
                 ],
                 "versions_metabinner": [
@@ -47,7 +47,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-10-15T11:27:00.456034671",
+        "timestamp": "2026-10-15T13:47:09.383340745",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.0"
@@ -62,7 +62,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test_s1.bam"
+                        "test_s001_test1_1.bam"
                     ]
                 ],
                 "coverage": [
@@ -71,7 +71,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test_coverage_profile.tsv:md5,dd6d66bb902b6ef0fc3adcfe0d1e7c9b"
+                        "test_coverage_profile.tsv:md5,16c7dd0b0d00699e26479c702c52e19e"
                     ]
                 ],
                 "coverage_f1k": [
@@ -80,7 +80,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test_coverage_profile_f1k.tsv:md5,dd6d66bb902b6ef0fc3adcfe0d1e7c9b"
+                        "test_coverage_profile_f1k.tsv:md5,16c7dd0b0d00699e26479c702c52e19e"
                     ]
                 ],
                 "depth": [
@@ -89,7 +89,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test_depth.txt:md5,a002b8f71c35812cd33b27e91cadf881"
+                        "test_depth.txt:md5,26fa0bf1d5078b56c069c8613cb1c112"
                     ]
                 ],
                 "versions_metabinner": [
@@ -101,13 +101,13 @@
                 ]
             }
         ],
-        "timestamp": "2026-10-15T11:28:18.233161447",
+        "timestamp": "2026-10-15T13:46:30.66637039",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.0"
         }
     },
-    "bacteroides_fragilis - fasta - fastq - paired_end - multiple samples": {
+    "bacteroides_fragilis - fasta - fastq - paired_end - multiple samples - stub": {
         "content": [
             {
                 "bam": [
@@ -117,63 +117,9 @@
                             "single_end": false
                         },
                         [
-                            "test_s1.bam",
-                            "test_s2.bam"
+                            "test_s001_test1.bam:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test_s002_test2.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
                         ]
-                    ]
-                ],
-                "coverage": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test_coverage_profile.tsv:md5,c66b155b2064cf069bf12d09c5110f00"
-                    ]
-                ],
-                "coverage_f1k": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test_coverage_profile_f1k.tsv:md5,c66b155b2064cf069bf12d09c5110f00"
-                    ]
-                ],
-                "depth": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test_depth.txt:md5,2394121512eccb7f6c924cca77619f57"
-                    ]
-                ],
-                "versions_metabinner": [
-                    [
-                        "METABINNER_GENCOVERAGEFILE",
-                        "metabinner",
-                        "1.4.4"
-                    ]
-                ]
-            }
-        ],
-        "timestamp": "2026-10-15T11:27:43.213676142",
-        "meta": {
-            "nf-test": "0.9.5",
-            "nextflow": "26.04.0"
-        }
-    },
-    "bacteroides_fragilis - fasta - fastq - paired_end - stub": {
-        "content": [
-            {
-                "bam": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test_s1.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "coverage": [
@@ -212,7 +158,118 @@
                 ]
             }
         ],
-        "timestamp": "2026-10-15T11:28:47.649099537",
+        "timestamp": "2026-10-15T13:48:11.359269508",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "bacteroides_fragilis - fasta - fastq - paired_end - multiple samples": {
+        "content": [
+            {
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test_s001_test1.bam",
+                            "test_s002_test2.bam"
+                        ]
+                    ]
+                ],
+                "coverage": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test_coverage_profile.tsv:md5,1f6f4ede95bf3a18b44510b01c8b39ac"
+                    ]
+                ],
+                "coverage_f1k": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test_coverage_profile_f1k.tsv:md5,1f6f4ede95bf3a18b44510b01c8b39ac"
+                    ]
+                ],
+                "depth": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test_depth.txt:md5,2454886f3e41006bc7add102520f099a"
+                    ]
+                ],
+                "versions_metabinner": [
+                    [
+                        "METABINNER_GENCOVERAGEFILE",
+                        "metabinner",
+                        "1.4.4"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-15T13:46:08.088523487",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "bacteroides_fragilis - contigs - fastq - paired_end": {
+        "content": [
+            {
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test_s001_test1.bam"
+                    ]
+                ],
+                "coverage": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test_coverage_profile.tsv:md5,95dfd5df31c01276dade7a7eb64db96a"
+                    ]
+                ],
+                "coverage_f1k": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test_coverage_profile_f1k.tsv:md5,62bf9523be8851ee173b1bb21b69d3a3"
+                    ]
+                ],
+                "depth": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test_depth.txt:md5,45eae9129914fd3f43ac7f099ebef0c6"
+                    ]
+                ],
+                "versions_metabinner": [
+                    [
+                        "METABINNER_GENCOVERAGEFILE",
+                        "metabinner",
+                        "1.4.4"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-15T13:45:33.136474645",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.0"

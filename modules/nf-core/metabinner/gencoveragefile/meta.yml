@@ -25,7 +25,8 @@ input:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. `[ id:'sample1', single_end:false ]`
+          e.g. `[ id:'sample1', single_end:false ]`.
+          `single_end` is required unless `--interleaved` is set in `ext.args`.
     - assembly:
         type: file
         description: Assembly contigs in FASTA format, optionally gzipped
@@ -36,7 +37,7 @@ input:
         type: file
         description: |
           FASTQ reads (optionally gzipped) from one or more samples. Paired-end reads must be ordered as R1, R2 pairs per sample; single-end and interleaved inputs take one file per sample.
-          Interleaved input requires `--interleaved` in `ext.args`.
+          The read mode is set by `meta.single_end`, or by `--interleaved` in `ext.args` for interleaved input; `--single-end` must not be passed in `ext.args`.
         pattern: "*.{fastq,fq}{,.gz}"
         ontologies:
           - edam: http://edamontology.org/format_1930 # FASTQ
@@ -61,7 +62,9 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - ${prefix}_coverage_profile_f1k.tsv:
           type: file
-          description: Coverage profile restricted to contigs longer than 1000 bp
+          description: |
+            Coverage profile restricted to contigs longer than 1000 bp.
+            The threshold is fixed in metabinner 1.4.4, so `-l` in `ext.args` has no effect.
           pattern: "*_coverage_profile_f1k.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -85,7 +88,10 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - ${prefix}_s*.bam:
           type: file
-          description: Coordinate-sorted alignments of each sample's reads against the assembly
+          description: |
+            Coordinate-sorted alignments of each sample's reads against the assembly, named
+            `${prefix}_s<index>_<read file name>.bam` with a zero-padded index following the input order
+            (these names are also the column headers of the coverage profiles)
           pattern: "*_s*.bam"
           ontologies:
             - edam: http://edamontology.org/format_2572 # BAM
