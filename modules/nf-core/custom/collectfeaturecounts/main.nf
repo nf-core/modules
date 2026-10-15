@@ -1,6 +1,6 @@
 process CUSTOM_COLLECTFEATURECOUNTS {
     tag "$meta.id"
-    label 'process_high'
+    label 'process_low'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
