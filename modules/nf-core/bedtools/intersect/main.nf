@@ -22,8 +22,7 @@ process BEDTOOLS_INTERSECT {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    //Extension of the output file. It is set by the user via "ext.suffix" in the config. Corresponds to the file format which depends on arguments (e. g., ".bed", ".bam", ".txt", etc.).
-    extension = suffix ?: "${intervals1.extension}"
+    def extension = suffix ?: "${intervals1.extension}"
     def sizes = chrom_sizes ? "-g ${chrom_sizes}" : ''
     if ("${intervals1}" == "${prefix}.${extension}" || "${intervals2}" == "${prefix}.${extension}") {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
