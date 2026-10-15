@@ -1,5 +1,6 @@
 name: colabfold
-description: Predicts protein structure with AlphaFold2, taking the multiple sequence alignment from an MMseqs2 server rather than local databases
+description: Predicts protein structure with AlphaFold2, taking the multiple
+  sequence alignment from an MMseqs2 server rather than local databases
 keywords:
   - protein structure
   - structure prediction
@@ -10,10 +11,12 @@ tools:
   - colabfold:
       description: |
         ColabFold runs AlphaFold2 (and other folding models) while sourcing its
-        multiple sequence alignment from a remote MMseqs2 server. That removes
-        the ~2.6 TB of reference databases a local AlphaFold2 install needs,
-        which is what makes structure prediction runnable on an ordinary
-        workstation. A GPU speeds inference up but is not required.
+        multiple sequence alignment from a remote MMseqs2 server, which removes
+        the ~2.6 TB of reference databases a local AlphaFold2 install needs.
+        The public server (api.colabfold.com) is used by default; pass
+        `--host-url` through `ext.args` to use your own instance. A GPU speeds
+        inference up but is not required; Amber relaxation is enabled with
+        `--amber` (and `--use-gpu-relax` on a GPU).
       homepage: https://github.com/sokrypton/ColabFold
       documentation: https://github.com/sokrypton/ColabFold
       doi: 10.1038/s41592-022-01488-1
@@ -29,15 +32,20 @@ input:
     - fasta:
         type: file
         description: |
-          Protein sequences to fold. May be empty — an upstream screen that
-          found no candidate is a legitimate outcome, and the module then emits
-          no structure rather than a placeholder.
+          Protein sequences to fold, one prediction per record. An empty file
+          is accepted and produces no output.
         pattern: "*.{fa,faa,fasta}"
-  - weights:
-      type: directory
-      description: |
-        AlphaFold2 parameter directory. Pass `[]` to let colabfold_batch
-        download the weights into its own cache on first use.
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing weights information
+          e.g. [ id:'alphafold2_params' ]
+    - weights:
+        type: directory
+        description: |
+          ColabFold data directory containing the AlphaFold2 parameters
+          (`params/`). Pass `[]` to let colabfold_batch download them into its
+          own cache on first use.
 
 output:
   pdb:
@@ -46,32 +54,54 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'sample1' ]
-      - "*.colabfold.pdb":
+      - ${prefix}/*_rank_*.pdb:
           type: file
-          description: Best-ranked predicted structure (rank_001), one file per query sequence
-          pattern: "*.colabfold.pdb"
-  plddt:
+          description: |
+            Predicted structures, named
+            <query>_{unrelaxed,relaxed}_rank_<rank>_<model>_seed_<seed>.pdb;
+            rank_001 is the best model. Per-residue pLDDT is stored in the
+            B-factor column.
+          pattern: "*_rank_*.pdb"
+  json:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'sample1' ]
-      - "*.plddt.tsv":
+      - ${prefix}/*_scores_rank_*.json:
           type: file
-          description: |
-            Mean per-model pLDDT, so a reader can tell a confidently folded
-            domain from a disordered tail without opening the structure.
-          pattern: "*.plddt.tsv"
-  raw:
+          description: Per-model scores (per-residue pLDDT, PAE, pTM)
+          pattern: "*_scores_rank_*.json"
+  a3m:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'sample1' ]
-      - "raw/**":
+      - ${prefix}/*.a3m:
           type: file
-          description: colabfold_batch's full output, every model and its scores
-          pattern: "raw/**"
+          description: Multiple sequence alignment used for each query
+          pattern: "*.a3m"
+  png:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}/*.png:
+          type: file
+          description: pLDDT, PAE and MSA coverage plots
+          pattern: "*.png"
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}/log.txt:
+          type: file
+          description: colabfold_batch log
+          pattern: "log.txt"
   versions_colabfold:
     - - ${task.process}:
           type: string

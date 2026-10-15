@@ -1,36 +1,62 @@
 {
-    "protein fasta - stub": {
+    "empty fasta": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.colabfold.pdb:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
+                "a3m": [
+                    
                 ],
-                "1": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.plddt.tsv:md5,8572024a10c4589f01f58e524f116f0d"
-                    ]
+                "json": [
+                    
                 ],
-                "2": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_unrelaxed_rank_001_model.pdb:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
+                "log": [
+                    
                 ],
-                "3": [
+                "pdb": [
+                    
+                ],
+                "png": [
+                    
+                ],
+                "versions_colabfold": [
                     [
                         "COLABFOLD",
                         "colabfold",
                         "1.5.5"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-15T11:47:31.473614942",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "proteomics - faa - stub": {
+        "content": [
+            {
+                "a3m": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.a3m:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "json": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_scores_rank_001_alphafold2_ptm_model_1_seed_000.json:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "log": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "log.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "pdb": [
@@ -38,23 +64,15 @@
                         {
                             "id": "test"
                         },
-                        "test.colabfold.pdb:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test_unrelaxed_rank_001_alphafold2_ptm_model_1_seed_000.pdb:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "plddt": [
+                "png": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.plddt.tsv:md5,8572024a10c4589f01f58e524f116f0d"
-                    ]
-                ],
-                "raw": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test_unrelaxed_rank_001_model.pdb:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test_plddt.png:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "versions_colabfold": [
@@ -66,25 +84,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-09-30T19:09:38.216264026",
-        "meta": {
-            "nf-test": "0.9.5",
-            "nextflow": "26.04.0"
-        }
-    },
-    "empty fasta - no structure emitted": {
-        "content": [
-            {
-                "versions_colabfold": [
-                    [
-                        "COLABFOLD",
-                        "colabfold",
-                        "1.5.5"
-                    ]
-                ]
-            }
-        ],
-        "timestamp": "2026-09-30T19:09:19.808293056",
+        "timestamp": "2026-10-15T11:47:47.417058992",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.0"
