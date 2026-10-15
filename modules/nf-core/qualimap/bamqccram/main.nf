@@ -3,9 +3,9 @@ process QUALIMAP_BAMQCCRAM {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-d3934ca6bb4e61334891ffa2e9a4c87a530e3188:00d3c18496ddf07ea580fd00d1dd203cf31ab630-0' :
-        'quay.io/biocontainers/mulled-v2-d3934ca6bb4e61334891ffa2e9a4c87a530e3188:00d3c18496ddf07ea580fd00d1dd203cf31ab630-0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a6/a67cd2fed2d1e951052fdea57c914851c08a3d8e32a11937636d1d84ba36b201/data'
+:         'community.wave.seqera.io/library/qualimap_samtools:36c0048b499c176d' }"
 
     input:
     tuple val(meta), path(cram), path(crai)
