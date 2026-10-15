@@ -35,6 +35,8 @@ nextflow_process {
                 { assert process.success },
                 { assert path(process.out.html.get(0).get(1)).getText().contains("single end (151 cycles)") },
                 { assert path(process.out.log.get(0).get(1)).getText().contains("reads passed filter: 99") },
+                // task.cpus = 4, minus 1 reader thread
+                { assert path(process.out.json.get(0).get(1)).getText().contains("--thread 3 ") },
                 { assert snapshot(
                     process.out.reads,
                     process.out.reads_fail,
@@ -76,6 +78,8 @@ nextflow_process {
                 { assert process.success },
                 { assert path(process.out.html.get(0).get(1)).getText().contains("The input has little adapter percentage (~0.000000%), probably it's trimmed before.") },
                 { assert path(process.out.log.get(0).get(1)).getText().contains("Q30 bases: 12281(88.3716%)") },
+                // task.cpus = 4, minus 2 reader threads
+                { assert path(process.out.json.get(0).get(1)).getText().contains("--thread 2 ") },
                 { assert snapshot(
                     process.out.reads,
                     process.out.reads_fail,
@@ -113,6 +117,8 @@ nextflow_process {
                 { assert process.success },
                 { assert path(process.out.html.get(0).get(1)).getText().contains("paired end (151 cycles + 151 cycles)") },
                 { assert path(process.out.log.get(0).get(1)).getText().contains("reads passed filter: 162") },
+                // task.cpus = 4, minus 1 reader thread, 1 stdout writer thread and gzip
+                { assert path(process.out.json.get(0).get(1)).getText().contains("--thread 1 ") },
                 { assert process.out.reads_fail == [] },
                 { assert process.out.reads_merged == [] },
                 { assert snapshot(

@@ -32,16 +32,23 @@ process FASTP {
     def fail_fastq = save_trimmed_fail && meta.single_end ? "--failed_out ${prefix}.fail.fastq.gz" : save_trimmed_fail && !meta.single_end ? "--failed_out ${prefix}.paired.fail.fastq.gz --unpaired1 ${prefix}_R1.fail.fastq.gz --unpaired2 ${prefix}_R2.fail.fastq.gz" : ''
     def out_fq1 = discard_trimmed_pass ?: ( meta.single_end ? "--out1 ${prefix}.fastp.fastq.gz" : "--out1 ${prefix}_R1.fastp.fastq.gz" )
     def out_fq2 = discard_trimmed_pass ?: "--out2 ${prefix}_R2.fastp.fastq.gz"
+    // fastp --thread only sets the number of worker threads. On top of these, fastp runs one reader
+    // thread per input file (two for paired-end), and for the interleaved branch a writer thread
+    // streaming to stdout plus an external gzip process. Gzipped output files are compressed by
+    // the worker threads themselves. Reserve the extra CPUs so the total stays within task.cpus.
+    def is_interleaved = task.ext.args?.contains('--interleaved_in')
+    def extra_threads  = is_interleaved ? 3 : meta.single_end ? 1 : 2
+    def threads        = Math.max(1, task.cpus - extra_threads)
     // Added soft-links to original fastqs for consistent naming in MultiQC
     // Use single ended for interleaved. Add --interleaved_in in config.
-    if ( task.ext.args?.contains('--interleaved_in') ) {
+    if ( is_interleaved ) {
         """
         [ ! -f  ${prefix}.fastq.gz ] && ln -sf $reads ${prefix}.fastq.gz
 
         fastp \\
             --stdout \\
             --in1 ${prefix}.fastq.gz \\
-            --thread $task.cpus \\
+            --thread $threads \\
             --json ${prefix}.fastp.json \\
             --html ${prefix}.fastp.html \\
             $adapter_list \\
@@ -57,7 +64,7 @@ process FASTP {
         fastp \\
             --in1 ${prefix}.fastq.gz \\
             $out_fq1 \\
-            --thread $task.cpus \\
+            --thread $threads \\
             --json ${prefix}.fastp.json \\
             --html ${prefix}.fastp.html \\
             $adapter_list \\
@@ -80,7 +87,7 @@ process FASTP {
             $adapter_list \\
             $fail_fastq \\
             $merge_fastq \\
-            --thread $task.cpus \\
+            --thread $threads \\
             --detect_adapter_for_pe \\
             $args \\
             2>| >(tee ${prefix}.fastp.log >&2)
