@@ -1,6 +1,6 @@
 name: "mobsuite_cluster"
 description: |
-  Build a new plasmid MOB-cluster database, or add new sequences to an existing one
+  Build a new plasmid MOB-cluster database, or assign new plasmids to the clusters of an existing one
 keywords:
   - bacteria
   - plasmid
@@ -9,8 +9,7 @@ keywords:
   - genomics
 tools:
   - "mobsuite":
-      description: "MOB-suite is a set of tools for finding, typing and reconstruction
-        of plasmids from draft and complete genome assemblies."
+      description: "MOB-suite is a set of tools for finding, typing and reconstruction of plasmids from draft and complete genome assemblies."
       homepage: "https://github.com/phac-nml/mob-suite"
       documentation: "https://github.com/phac-nml/mob-suite/blob/master/README.md"
       tool_dev_url: "https://github.com/phac-nml/mob-suite"
@@ -27,8 +26,8 @@ input:
           e.g. `[ id:'sample1' ]`
     - fasta:
         type: file
-        description: Plasmid sequences to cluster; IDs must match the `sample_id` column of the MOB-typer report
-        pattern: "*.{fasta,fa,fna}"
+        description: Plasmid sequences to cluster, optionally gzipped; IDs must match the `sample_id` column of the MOB-typer report
+        pattern: "*.{fasta,fa,fna}{,.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_1929" # FASTA
     - mobtyper_report:
@@ -52,16 +51,24 @@ input:
         type: file
         description: |
           Optional. Existing MOB-cluster file (`clusters.txt`) to extend.
-          If provided together with `ref_fasta`, the module runs in `update` mode, otherwise in `build` mode.
+          Must be provided together with `ref_fasta` (`update` mode); if both are empty the module runs in `build` mode. Providing only one raises an error.
         pattern: "*.txt"
         ontologies:
           - edam: "http://edamontology.org/format_3475" # TSV
     - ref_fasta:
         type: file
-        description: Optional. Sequences of the existing MOB-cluster database (`references_updated.fasta` from a previous run)
+        description: |
+          Optional. Sequences of the existing MOB-cluster database (`references_updated.fasta` from a previous run).
+          Must be provided together with `ref_cluster` (`update` mode); if both are empty the module runs in `build` mode. Providing only one raises an error.
         pattern: "*.{fasta,fa,fna}"
         ontologies:
           - edam: "http://edamontology.org/format_1929" # FASTA
+  - db:
+      type: directory
+      description: |
+        Optional local copy of the MOB-suite database directory (`--database_directory`).
+        Must contain `taxa.sqlite` (ETE3 NCBI taxonomy), which the Seqera container does not ship; without `db`, mob_cluster tries to download it into the read-only package directory and fails under Singularity/Apptainer, so supply it in practice.
+      pattern: "databases/"
 output:
   clusters:
     - - meta:
@@ -71,7 +78,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - ${prefix}/clusters.txt:
           type: file
-          description: Plasmid cluster assignments (TSV)
+          description: Plasmid cluster assignments (TSV); in `update` mode it also lists the new plasmids
           pattern: "*/clusters.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
@@ -83,7 +90,9 @@ output:
             e.g. `[ id:'sample1' ]`
       - ${prefix}/references_updated.fasta:
           type: file
-          description: All reference sequences of the (updated) MOB-cluster database
+          description: |
+            Reference sequences of the MOB-cluster database.
+            In `update` mode, emitted with the sample `meta` (`meta2` is not propagated), and mob_cluster 3.1.9 does not append the new input sequences, so it only holds the original references ([mob-suite#184](https://github.com/phac-nml/mob-suite/issues/184)).
           pattern: "*/references_updated.fasta"
           ontologies:
             - edam: "http://edamontology.org/format_1929" # FASTA
@@ -95,7 +104,9 @@ output:
             e.g. `[ id:'sample1' ]`
       - ${prefix}/references_updated.fasta.msh:
           type: file
-          description: Mash sketch of the reference sequences
+          description: |
+            Mash sketch of the reference sequences.
+            In `update` mode, it lacks the new input sequences ([mob-suite#184](https://github.com/phac-nml/mob-suite/issues/184)).
           pattern: "*/references_updated.fasta.msh"
           ontologies:
             - edam: "http://edamontology.org/format_3911" # Mash sketch
@@ -107,7 +118,9 @@ output:
             e.g. `[ id:'sample1' ]`
       - ${prefix}/references_updated.fasta.n*:
           type: file
-          description: BLAST nucleotide database files (ndb, nhr, nin, njs, not, nsq, ntf, nto) of the reference sequences
+          description: |
+            BLAST nucleotide database files (ndb, nhr, nin, njs, not, nsq, ntf, nto) of the reference sequences.
+            In `update` mode, they lack the new input sequences ([mob-suite#184](https://github.com/phac-nml/mob-suite/issues/184)).
           pattern: "*/references_updated.fasta.n*"
           ontologies: []
   versions_mobsuite:
@@ -135,3 +148,27 @@ authors:
   - "@vagkaratzas"
 maintainers:
   - "@vagkaratzas"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/mob_suite:3.1.9--eaef3d58d6b4b3f2
+      build_id: bd-eaef3d58d6b4b3f2_1
+      scan_id: sc-26651cfec61b996b_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/mob_suite:3.1.9--34c920b7a3839a73
+      build_id: bd-34c920b7a3839a73_1
+      scan_id: sc-f877f40cff97106a_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/mob_suite:3.1.9--3123fd8f8911148a
+      build_id: bd-3123fd8f8911148a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7c/7ca9972cb410cbd9e028437e0dd286bb76986565610432ecbb8e38ac63744bc4/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/mob_suite:3.1.9--b894a0724eae9245
+      build_id: bd-b894a0724eae9245_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/35/3562998d94aa4dea23d8311bc5d496ec2c7e3678d3fa8e4e3af562c7c4fb11b0/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/mobsuite/cluster/.conda-lock/linux_amd64-bd-eaef3d58d6b4b3f2_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/mobsuite/cluster/.conda-lock/linux_arm64-bd-34c920b7a3839a73_1.txt
