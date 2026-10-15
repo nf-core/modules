@@ -8,7 +8,7 @@ process CHOPPER {
 :         'community.wave.seqera.io/library/chopper_pigz:4ae8a43e228724c3' }"
 
     input:
-    tuple val(meta), path(fastq)
+    tuple val(meta), path(fastq, stageAs: 'input/*')
     path  fasta
 
     output:
@@ -23,7 +23,7 @@ process CHOPPER {
     def args   = task.ext.args   ?: ''
     def args2  = task.ext.args2  ?: ''
     def args3  = task.ext.args3  ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}.chopper"
     def fasta_filtering = fasta ? "--contam ${fasta}" : ""
 
     if ("$fastq" == "${prefix}.fastq.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
@@ -45,7 +45,7 @@ process CHOPPER {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}.chopper"
     """
     echo "" | gzip > ${prefix}.fastq.gz
     """
