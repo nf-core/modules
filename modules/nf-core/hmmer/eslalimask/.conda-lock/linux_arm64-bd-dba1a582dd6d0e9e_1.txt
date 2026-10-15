@@ -5,14 +5,12 @@ default:
 channels:
 - url: https://conda.anaconda.org/conda-forge/
 - url: https://conda.anaconda.org/bioconda/
-- url: https://conda.anaconda.org/conda-forge/
 - url: https://conda.anaconda.org/bioconda/
 options:
 pypi-prerelease-mode: if-necessary-or-explicit
 packages:
 linux-aarch64:
 - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/_openmp_mutex-4.5-20_gnu.conda
-- conda: https://conda.anaconda.org/conda-forge/linux-aarch64/coreutils-9.5-h31becfc_0.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/gsl-2.7-h294027d_0.tar.bz2
 - conda: https://conda.anaconda.org/bioconda/linux-aarch64/hmmer-3.4-h9766944_5.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libblas-3.11.0-11_haddc8a3_openblas.conda
@@ -46,15 +44,6 @@ license: BSD-3-Clause
 license_family: BSD
 size: 28926
 timestamp: 1770939656741
-- conda: https://conda.anaconda.org/conda-forge/linux-aarch64/coreutils-9.5-h31becfc_0.conda
-sha256: 812c6f285b0073d93f3c5148d15f27cde85a29dbb8bf234c309a4696cc2aeabf
-md5: 1c1921fdfebcaa18132711524e64259b
-depends:
-- libgcc-ng >=12
-license: GPL-3.0-or-later
-license_family: GPL
-size: 3334202
-timestamp: 1711658928010
 - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/gsl-2.7-h294027d_0.tar.bz2
 sha256: be506a418cc648996bf3376a626826cbe0fa5d9de913598c4d3965a61ddc7a7b
 md5: 8b9533e21be7fa232ab64e85f184e0b3
