@@ -1,14 +1,12 @@
 name: "varlociraptor_callvariants"
-description: Call variants for a given scenario specified with the varlociraptor calling
-  grammar, preprocessed by varlociraptor preprocessing
+description: Call variants for a given scenario specified with the varlociraptor calling grammar, preprocessed by varlociraptor preprocessing
 keywords:
   - observations
   - variants
   - calling
 tools:
   - "varlociraptor":
-      description: "Flexible, uncertainty-aware variant calling with parameter free
-        filtration via FDR control."
+      description: "Flexible, uncertainty-aware variant calling with parameter free filtration via FDR control."
       homepage: "https://varlociraptor.github.io/docs/estimating/"
       documentation: "https://varlociraptor.github.io/docs/calling/"
       tool_dev_url: "https://github.com/varlociraptor/varlociraptor"
@@ -23,8 +21,7 @@ input:
           e.g. [ id:'test', single_end:false ]
     - vcfs:
         type: file
-        description: Sorted VCF/BCF file containing sample observations, Can also be
-          a list of files
+        description: Sorted VCF/BCF file containing sample observations, Can also be a list of files
         pattern: "*.{vcf,bcf,vcf.gz}"
         ontologies:
           - edam: http://edamontology.org/format_3016 # VCF
@@ -77,3 +74,17 @@ authors:
 maintainers:
   - "@FriederikeHanssen"
   - "@famosab"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/varlociraptor:8.9.5--9445270256470baf
+      build_id: bd-9445270256470baf_1
+      scan_id: sc-7576fc5ce0e29679_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/varlociraptor:8.9.5--8503a32f53215922
+      build_id: bd-8503a32f53215922_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f1/f1d2b5a7830e21d0407be9958b69810f16fac8008fb899c345f635ff5636de04/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/varlociraptor/callvariants/.conda-lock/linux_amd64-bd-9445270256470baf_1.txt
