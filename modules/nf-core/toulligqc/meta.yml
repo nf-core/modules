@@ -95,3 +95,27 @@ authors:
   - "@Salome-Brunon"
 maintainers:
   - "@Salome-Brunon"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/toulligqc_huggingface_hub_matplotlib_numpy_pruned:6794431f01aedd68
+      build_id: bd-6794431f01aedd68_1
+      scan_id: sc-fa0eb7956da49b04_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/toulligqc_huggingface_hub_matplotlib_numpy_pruned:30ed42003347882d
+      build_id: bd-30ed42003347882d_1
+      scan_id: sc-f7fe375474814ba0_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/toulligqc_huggingface_hub_matplotlib_numpy_pruned:5a857b85377c698b
+      build_id: bd-5a857b85377c698b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/86/8646daf243414b5584b1a4ade297040f0e4734bb92c6b061c43d81e50eb44838/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/toulligqc_huggingface_hub_matplotlib_numpy_pruned:3249a2e7fdcf2ce4
+      build_id: bd-3249a2e7fdcf2ce4_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/95/958e7692f05dbbae6937b082b0e2863f1ec26be7dd6d2b016ae130eaef6cdc85/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/toulligqc/.conda-lock/linux_amd64-bd-30ed42003347882d_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/toulligqc/.conda-lock/linux_arm64-bd-6794431f01aedd68_1.txt

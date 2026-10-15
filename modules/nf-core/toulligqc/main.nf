@@ -3,9 +3,9 @@ process TOULLIGQC {
     tag "${meta.id}"
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/toulligqc:2.8.4--pyhdfd78af_0'
-        : 'quay.io/biocontainers/toulligqc:2.8.4--pyhdfd78af_0'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/95/958e7692f05dbbae6937b082b0e2863f1ec26be7dd6d2b016ae130eaef6cdc85/data'
+:         'community.wave.seqera.io/library/toulligqc_huggingface_hub_matplotlib_numpy_pruned:30ed42003347882d' }"
 
     input:
 
