@@ -3,9 +3,9 @@ process VARLOCIRAPTOR_ESTIMATEALIGNMENTPROPERTIES {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/varlociraptor%3A8.9.5--h24073b4_0'
-        : 'quay.io/biocontainers/varlociraptor:8.9.5--h24073b4_0'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f1/f1d2b5a7830e21d0407be9958b69810f16fac8008fb899c345f635ff5636de04/data'
+:         'community.wave.seqera.io/library/varlociraptor:8.9.5--9445270256470baf' }"
 
     input:
     tuple val(meta), path(bam), path(bai), path(fasta), path(fai)
