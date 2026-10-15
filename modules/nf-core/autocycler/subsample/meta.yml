@@ -11,8 +11,9 @@ tools:
       documentation: "https://github.com/rrwick/Autocycler/wiki"
       tool_dev_url: "https://github.com/rrwick/Autocycler"
       doi: "10.1093/bioinformatics/btaf474"
-      licence: ["GPL-3.0"]
-
+      licence:
+        - "GPL-3.0"
+      identifier: biotools:autocycler
 input:
   - - meta:
         type: map
@@ -43,7 +44,7 @@ output:
           pattern: "*/*.fastq.gz"
           ontologies:
             - edam: "http://edamontology.org/format_1930" # FASTQ
-            - edam: "http://edamontology.org/format_3989" # GZIP
+            - edam: "http://edamontology.org/format_3989" # GZIP format
   versions_autocycler:
     - - ${task.process}:
           type: string

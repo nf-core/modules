@@ -37,8 +37,7 @@ process AUTOCYCLER_SUBSAMPLE {
     stub:
     prefix   = task.ext.prefix ?: "${meta.id}"
     """
-
     mkdir $prefix
-    echo | gzip > ${prefix}/sample_00.fastq.gz
+    echo "" | gzip > ${prefix}/sample_00.fastq.gz
     """
 }
