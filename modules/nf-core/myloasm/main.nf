@@ -9,6 +9,7 @@ process MYLOASM {
 
     input:
     tuple val(meta), path(reads)
+    val input_type
 
     output:
     tuple val(meta), path("${prefix}"), emit: results
@@ -26,11 +27,16 @@ process MYLOASM {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    if (!(input_type in ["hifi", "ont"])) {
+        error("ERROR: input_type must be one of either 'hifi' or 'ont'.")
+    }
+
     """
     myloasm \\
         ${reads} \\
         -o ${prefix} \\
         -t ${task.cpus} \\
+        ${input_type == 'hifi' ? '--hifi' : ''} \\
         ${args}
 
     find "${prefix}" \\( -name "*.fa" -o -name "*.gfa" -o -name "*.edges" -o -name "*.paf.gz" \\) -type f | while read file; do

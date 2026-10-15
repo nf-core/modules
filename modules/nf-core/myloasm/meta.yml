@@ -30,6 +30,10 @@ input:
         ontologies:
           - edam: http://edamontology.org/format_1930 # FASTQ
           - edam: http://edamontology.org/format_1929 # FASTA
+  - input_type:
+      type: string
+      description: Sequencing technology for reads - either "hifi" for PacBio reads
+        or "ont" for Oxford Nanopore reads.
 output:
   results:
     - - meta:
