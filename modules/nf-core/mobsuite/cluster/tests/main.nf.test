@@ -1,0 +1,163 @@
+nextflow_process {
+
+    name "Test Process MOBSUITE_CLUSTER"
+    script "../main.nf"
+    process "MOBSUITE_CLUSTER"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mobsuite"
+    tag "mobsuite/cluster"
+    tag "mobsuite/typer"
+
+    test("sarscov2 - contigs - build") {
+
+        setup {
+            run("MOBSUITE_TYPER") {
+                script "../../typer/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
+                    ]
+                    input[1] = []
+                    input[2] = []
+                    input[3] = []
+                    input[4] = []
+                    input[5] = []
+                    input[6] = []
+                    input[7] = []
+                    input[8] = []
+                    input[9] = false
+                    input[10] = false
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = MOBSUITE_TYPER.out.report.combine(
+                    channel.fromPath(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
+                    .splitFasta(record: [id: true])
+                    .map { rec -> rec.id + '\\tSevere acute respiratory syndrome coronavirus 2' }
+                    .collectFile(name: 'taxonomy.tsv', newLine: true, seed: 'sample_id\\torganism\\n')
+                ).map { meta, report, taxonomy ->
+                    [ meta, file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true), report, taxonomy ]
+                }
+                input[1] = [ [ id:'ref' ], [], [] ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["blastdb"]),
+                    process.out.blastdb[0][1].size()
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - contigs - update") {
+
+        setup {
+            run("MOBSUITE_TYPER") {
+                script "../../typer/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
+                    ]
+                    input[1] = []
+                    input[2] = []
+                    input[3] = []
+                    input[4] = []
+                    input[5] = []
+                    input[6] = []
+                    input[7] = []
+                    input[8] = []
+                    input[9] = false
+                    input[10] = false
+                    """
+                }
+            }
+
+            run("MOBSUITE_CLUSTER", alias: "MOBSUITE_CLUSTER_BUILD") {
+                script "../main.nf"
+                process {
+                    """
+                    input[0] = MOBSUITE_TYPER.out.report.combine(
+                        channel.fromPath(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
+                            .splitFasta(record: [id: true])
+                            .map { rec -> rec.id + '\\tSevere acute respiratory syndrome coronavirus 2' }
+                            .collectFile(name: 'taxonomy.tsv', newLine: true, seed: 'sample_id\\torganism\\n')
+                    ).map { meta, report, taxonomy ->
+                        [ meta, file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true), report, taxonomy ]
+                    }
+                    input[1] = [ [ id:'ref' ], [], [] ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = MOBSUITE_TYPER.out.report.combine(
+                    channel.fromPath(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
+                    .splitFasta(record: [id: true])
+                    .map { rec -> rec.id + '\\tSevere acute respiratory syndrome coronavirus 2' }
+                    .collectFile(name: 'taxonomy.tsv', newLine: true, seed: 'sample_id\\torganism\\n')
+                ).map { meta, report, taxonomy ->
+                    [ meta, file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true), report, taxonomy ]
+                }
+                input[1] = MOBSUITE_CLUSTER_BUILD.out.clusters.join(MOBSUITE_CLUSTER_BUILD.out.fasta)
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["blastdb"]),
+                    process.out.blastdb[0][1].size()
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - contigs - build - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3', checkIfExists: true)
+                ]
+                input[1] = [ [ id:'ref' ], [], [] ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

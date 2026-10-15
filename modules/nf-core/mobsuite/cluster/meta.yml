@@ -1,0 +1,137 @@
+name: "mobsuite_cluster"
+description: |
+  Build a new plasmid MOB-cluster database, or add new sequences to an existing one
+keywords:
+  - bacteria
+  - plasmid
+  - cluster
+  - database
+  - genomics
+tools:
+  - "mobsuite":
+      description: "MOB-suite is a set of tools for finding, typing and reconstruction
+        of plasmids from draft and complete genome assemblies."
+      homepage: "https://github.com/phac-nml/mob-suite"
+      documentation: "https://github.com/phac-nml/mob-suite/blob/master/README.md"
+      tool_dev_url: "https://github.com/phac-nml/mob-suite"
+      doi: "10.1099/mgen.0.000206"
+      licence:
+        - "Apache-2.0"
+      identifier: biotools:mob_suite
+      args_id: "$args"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: Plasmid sequences to cluster; IDs must match the `sample_id` column of the MOB-typer report
+        pattern: "*.{fasta,fa,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+    - mobtyper_report:
+        type: file
+        description: MOB-typer report (TSV), e.g. from `mob_typer --multi`
+        pattern: "*.{txt,tsv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+    - taxonomy:
+        type: file
+        description: Taxonomy table (TSV) with header `sample_id<TAB>organism`
+        pattern: "*.{txt,tsv}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference database information
+          e.g. `[ id:'database' ]`
+    - ref_cluster:
+        type: file
+        description: |
+          Optional. Existing MOB-cluster file (`clusters.txt`) to extend.
+          If provided together with `ref_fasta`, the module runs in `update` mode, otherwise in `build` mode.
+        pattern: "*.txt"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+    - ref_fasta:
+        type: file
+        description: Optional. Sequences of the existing MOB-cluster database (`references_updated.fasta` from a previous run)
+        pattern: "*.{fasta,fa,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+output:
+  clusters:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}/clusters.txt:
+          type: file
+          description: Plasmid cluster assignments (TSV)
+          pattern: "*/clusters.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  fasta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}/references_updated.fasta:
+          type: file
+          description: All reference sequences of the (updated) MOB-cluster database
+          pattern: "*/references_updated.fasta"
+          ontologies:
+            - edam: "http://edamontology.org/format_1929" # FASTA
+  mash:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}/references_updated.fasta.msh:
+          type: file
+          description: Mash sketch of the reference sequences
+          pattern: "*/references_updated.fasta.msh"
+          ontologies:
+            - edam: "http://edamontology.org/format_3911" # Mash sketch
+  blastdb:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}/references_updated.fasta.n*:
+          type: file
+          description: BLAST nucleotide database files (ndb, nhr, nin, njs, not, nsq, ntf, nto) of the reference sequences
+          pattern: "*/references_updated.fasta.n*"
+          ontologies: []
+  versions_mobsuite:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mobsuite:
+          type: string
+          description: The name of the tool
+      - mob_cluster --version | sed 's/mob_cluster //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mobsuite:
+          type: string
+          description: The name of the tool
+      - mob_cluster --version | sed 's/mob_cluster //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"
