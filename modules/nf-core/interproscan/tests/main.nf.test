@@ -124,6 +124,37 @@ nextflow_process {
 
     }
 
+    test("protein with trailing asterisk") {
+        config "./nextflow.config"
+
+        setup {
+            // Prodigal, TransDecoder, etc. leave a '*' stop-codon marker on every protein;
+            // InterProScan hard-rejects it (see #13130) unless this is stripped first.
+            def fasta_with_asterisk = new File("${launchDir}/fasta_with_asterisk.faa")
+            fasta_with_asterisk.text = ">protein_with_stop_codon\nMAEGEITTFTALTEKFNLPPGNYKKPKLLYCSNGGHFLRILPDGTVDGTRDRSDQHIQLQLSAESVGEVYIKSTETGQYLAMDTSGLLYGSQTPSEECLFLERLEENHYNTYTSKKHAEKNWFVGLKKNGSCKRGPRTHYGQKAILFLPLPVSSD*\n"
+        }
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file("${launchDir}/fasta_with_asterisk.faa")
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            // Before the fix, this exact input made InterProScan exit with
+            // "You have submitted a protein sequence which contains an asterix (*)".
+            // No analysis is expected to match this short synthetic sequence, so the
+            // regression coverage is that the task completes at all, not its content.
+            assert process.success
+        }
+    }
+
     test("sarscov2 - proteome_fasta_gz - stub") {
         config "./nextflow.config"
         options '-stub'
