@@ -10,6 +10,7 @@ process BEDTOOLS_SORT {
     input:
     tuple val(meta), path(intervals)
     path genome_file
+    val suffix
 
     output:
     tuple val(meta), path("*.${extension}"), emit: sorted
@@ -22,7 +23,7 @@ process BEDTOOLS_SORT {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def genome_cmd = genome_file ? "-g ${genome_file}" : ""
-    extension = task.ext.suffix ?: intervals.extension
+    extension = suffix ?: intervals.extension
     if ("${intervals}" == "${prefix}.${extension}") {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
@@ -37,7 +38,7 @@ process BEDTOOLS_SORT {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    extension = task.ext.suffix ?: intervals.extension
+    extension = suffix ?: intervals.extension
     """
     touch ${prefix}.${extension}
     """

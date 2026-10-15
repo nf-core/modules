@@ -29,6 +29,11 @@ input:
         Optional reference genome 2 column file that defines the expected chromosome order.
       pattern: "*.{fai,txt,chromsizes}"
       ontologies: []
+  - suffix:
+      type: string
+      description: |
+        Extension of the output file (e.g. "bed", "bam", "txt"), which depends on the arguments used.
+        If empty, the extension of intervals1 is used.
 output:
   sorted:
     - - meta:
