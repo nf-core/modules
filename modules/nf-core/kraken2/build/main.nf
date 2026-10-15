@@ -2,9 +2,9 @@ process KRAKEN2_BUILD {
     tag "${meta.id}"
     label 'process_medium'
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0f/0f827dcea51be6b5c32255167caa2dfb65607caecdc8b067abd6b71c267e2e82/data'
-        : 'community.wave.seqera.io/library/kraken2_coreutils_pigz:920ecc6b96e2ba71'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ec/ec5af88da27c32c52b667af2af67ce76ffc96715c1a40e0f4ab72dd87623adfa/data' :
+        'community.wave.seqera.io/library/kraken2_coreutils_pigz:b111fc3860b64b23' }"
 
     input:
     tuple val(meta), path(library_added_files, stageAs: "kraken2-database/library/added/")
