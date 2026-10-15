@@ -35,17 +35,6 @@ nextflow_process {
             .combine(ch_taxonomy)
     """
 
-    // mob_cluster needs a taxa.sqlite (ETE3 NCBI taxonomy) in the database directory, which the container does not ship.
-    // Each process gets its own directory as the setup and test channels are evaluated concurrently.
-    def db_input = { name -> """
-        ch_db = XZ_DECOMPRESS.out.file.map { meta, sqlite ->
-            def db = file(workflow.workDir.toString() + '/mobsuite_db_${name}')
-            db.mkdirs()
-            sqlite.copyTo(db.resolve('taxa.sqlite'))
-            db
-        }
-    """ }
-
     def typer_setup = """
         ${split_contigs}
         input[0] = ch_halves
@@ -73,6 +62,7 @@ nextflow_process {
             .combine(channel.of('sample_id\\tnum_contigs').collectFile(name: 'mobtyper_results.txt', newLine: true))
             .combine(channel.of('sample_id\\torganism').collectFile(name: 'taxonomy.tsv', newLine: true))
             .map { fasta, report, taxonomy -> [ [ id:'test' ], fasta, report, taxonomy ] }
+        ch_stub_db = channel.of('placeholder').collectFile(name: 'taxa.sqlite', newLine: true)
     """
 
     test("sarscov2 - contigs - build") {
@@ -97,10 +87,9 @@ nextflow_process {
             process {
                 """
                 ${cluster_inputs}
-                ${db_input('build')}
                 input[0] = ch_input.filter { meta, fasta, report, taxonomy -> meta.id == 'ref' }
                 input[1] = [ [ id:'ref' ], [], [] ]
-                input[2] = ch_db
+                input[2] = XZ_DECOMPRESS.out.file.map { meta, sqlite -> sqlite }
                 """
             }
         }
@@ -138,10 +127,9 @@ nextflow_process {
                 process {
                     """
                     ${cluster_inputs}
-                    ${db_input('build')}
                     input[0] = ch_input.filter { meta, fasta, report, taxonomy -> meta.id == 'ref' }
                     input[1] = [ [ id:'ref' ], [], [] ]
-                    input[2] = ch_db
+                    input[2] = XZ_DECOMPRESS.out.file.map { meta, sqlite -> sqlite }
                     """
                 }
             }
@@ -151,10 +139,9 @@ nextflow_process {
             process {
                 """
                 ${cluster_inputs}
-                ${db_input('update')}
                 input[0] = ch_input.filter { meta, fasta, report, taxonomy -> meta.id == 'test' }
                 input[1] = MOBSUITE_CLUSTER_BUILD.out.clusters.join(MOBSUITE_CLUSTER_BUILD.out.fasta)
-                input[2] = ch_db
+                input[2] = XZ_DECOMPRESS.out.file.map { meta, sqlite -> sqlite }
                 """
             }
         }
@@ -181,7 +168,7 @@ nextflow_process {
                 ${stub_inputs}
                 input[0] = ch_stub
                 input[1] = [ [ id:'ref' ], [], [] ]
-                input[2] = []
+                input[2] = ch_stub_db
                 """
             }
         }
@@ -204,7 +191,7 @@ nextflow_process {
                 ${stub_inputs}
                 input[0] = ch_stub
                 input[1] = [ [ id:'ref' ], [], file(${contigs}, checkIfExists: true) ]
-                input[2] = []
+                input[2] = ch_stub_db
                 """
             }
         }

@@ -63,12 +63,14 @@ input:
         pattern: "*.{fasta,fa,fna}"
         ontologies:
           - edam: "http://edamontology.org/format_1929" # FASTA
-  - db:
-      type: directory
+  - taxa_sqlite:
+      type: file
       description: |
-        Optional local copy of the MOB-suite database directory (`--database_directory`).
-        Must contain `taxa.sqlite` (ETE3 NCBI taxonomy), which the Seqera container does not ship; without `db`, mob_cluster tries to download it into the read-only package directory and fails under Singularity/Apptainer, so supply it in practice.
-      pattern: "databases/"
+        Required. ETE3 NCBI taxonomy SQLite database (`taxa.sqlite`), any filename; the Seqera container does not ship it.
+        The module links it as `taxa.sqlite` into a `db/` directory passed to `--database_directory`.
+      pattern: "*"
+      ontologies:
+        - edam: "http://edamontology.org/format_3621" # SQLite
 output:
   clusters:
     - - meta:
