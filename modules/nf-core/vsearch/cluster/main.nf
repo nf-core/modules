@@ -3,9 +3,9 @@ process VSEARCH_CLUSTER {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c9/c94475a0cc7e44a967584e09e39343c138ce5fa7231ae11c6b5b72b28de58c92/data':
-        'community.wave.seqera.io/library/samtools_vsearch:8a419aba60edb7b2' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/36/363cb3f920602951d1dee4e0d248eb7171b4dfd2611db3a581a480500ac25996/data'
+:         'community.wave.seqera.io/library/samtools_vsearch:36d56b7ebe9ea248' }"
 
     input:
     tuple val(meta), path(fasta)

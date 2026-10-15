@@ -3,9 +3,9 @@ process VSEARCH_SINTAX {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vsearch:2.31.0--hd2be7a0_0':
-        'quay.io/biocontainers/vsearch:2.31.0--hd2be7a0_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ee/eec4fdf832cbd591111a702a1942476674a71e76fafbd5ae3fc18018b9ebe2e2/data'
+:         'community.wave.seqera.io/library/vsearch:2.31.0--80e3b2da3ae2f3d8' }"
 
     input:
     tuple val(meta), path(queryfasta)
