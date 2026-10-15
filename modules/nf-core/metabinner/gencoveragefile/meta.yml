@@ -90,7 +90,7 @@ output:
           type: file
           description: |
             Coordinate-sorted alignments of each sample's reads against the assembly, named
-            `${prefix}_s<index>_<read file name>.bam` with a zero-padded index following the input order
+            `${prefix}_s<index>.bam` with a zero-padded index following the input order
             (these names are also the column headers of the coverage profiles)
           pattern: "*_s*.bam"
           ontologies:

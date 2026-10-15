@@ -39,12 +39,7 @@ process METABINNER_GENCOVERAGEFILE {
     def samples = reads_list.collate(paired ? 2 : 1)
     // Zero-padded so that the lexically sorted *.bam glob, and hence the coverage columns, follow input order
     def width = Math.max(3, samples.size().toString().length())
-    // Staged names include the reads/<n>/ directory
-    def names = samples.withIndex().collect { files, i ->
-        def label = files[0].name.tokenize('/').last().replaceAll(/(\.(fastq|fq))?(\.gz)?$/, '')
-        label = paired ? label.replaceAll(/[._]R?1(_001)?$/, '') : label
-        "${prefix}_s${String.format("%0${width}d", i + 1)}_${label.replaceAll(/[^A-Za-z0-9_.-]/, '_')}"
-    }
+    def names = samples.indices.collect { i -> "${prefix}_s${String.format("%0${width}d", i + 1)}" }
     def link_reads = [samples, names].transpose().collect { files, name ->
         paired
             ? "ln -s ${files[0]} ${name}_1.fastq.gz; ln -s ${files[1]} ${name}_2.fastq.gz"
@@ -78,11 +73,7 @@ process METABINNER_GENCOVERAGEFILE {
     def paired = !meta.single_end && !args.contains('--interleaved')
     def samples = reads_list.collate(paired ? 2 : 1)
     def width = Math.max(3, samples.size().toString().length())
-    def touch_bams = samples.withIndex().collect { files, i ->
-        def label = files[0].name.tokenize('/').last().replaceAll(/(\.(fastq|fq))?(\.gz)?$/, '')
-        label = paired ? label.replaceAll(/[._]R?1(_001)?$/, '') : label
-        "touch ${prefix}_s${String.format("%0${width}d", i + 1)}_${label.replaceAll(/[^A-Za-z0-9_.-]/, '_')}.bam"
-    }.join('\n    ')
+    def touch_bams = samples.indices.collect { i -> "touch ${prefix}_s${String.format("%0${width}d", i + 1)}.bam" }.join('\n    ')
     """
     echo "${args}"
 
