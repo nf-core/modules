@@ -1,5 +1,3 @@
-
-
 process DNAAPLER_ALL {
     tag "$meta.id"
     label 'process_low'
@@ -10,13 +8,14 @@ process DNAAPLER_ALL {
 :         'community.wave.seqera.io/library/dnaapler:1.4.0--da1c8ba3b41e40c6' }"
 
     input:
-    tuple val(meta), path(assembly), path(ignore), path(custom_db)
+    tuple val(meta), path(assembly), path(ignore)
+    tuple val(meta2), path(custom_db)
 
     output:
     tuple val(meta), path("${prefix}_reoriented.fasta")                  , emit: fasta
     tuple val(meta), path("${prefix}_reoriented.gfa")                    , emit: gfa    , optional: true
     tuple val(meta), path("${prefix}_all_reorientation_summary.tsv")     , emit: summary
-    tuple val(meta), path("${prefix}_MMseqs2_output.txt")                , emit: hits
+    tuple val(meta), path("${prefix}_MMseqs2_output.txt")                , emit: hits   , optional: true
     tuple val(meta), path("${prefix}.log")                               , emit: log
     tuple val("${task.process}"), val('dnaapler'), eval("dnaapler --version | sed 's/.*version //'"), topic: versions, emit: versions_dnaapler
 
@@ -26,7 +25,8 @@ process DNAAPLER_ALL {
     script:
     def args          = task.ext.args ?: ''
     prefix            = task.ext.prefix ?: "${meta.id}"
-    def ignore_arg    = ignore ? "--ignore ${ignore}" : ''
+    // dnaapler only treats --ignore as a file if the value contains '/' or a '.'
+    def ignore_arg    = ignore ? "--ignore ./${ignore}" : ''
     def custom_db_arg = custom_db ? "--custom_db ${custom_db}" : ''
     """
     dnaapler all \\
@@ -40,21 +40,25 @@ process DNAAPLER_ALL {
 
     mv ${prefix}_dnaapler/${prefix}_reoriented.fasta .
     mv ${prefix}_dnaapler/${prefix}_all_reorientation_summary.tsv .
-    mv ${prefix}_dnaapler/${prefix}_MMseqs2_output.txt .
     mv ${prefix}_dnaapler/dnaapler_*.log ${prefix}.log
+    # Not produced for a GFA without circular contigs (no MMseqs2 search is run)
+    if [ -f ${prefix}_dnaapler/${prefix}_MMseqs2_output.txt ]; then
+        mv ${prefix}_dnaapler/${prefix}_MMseqs2_output.txt .
+    fi
     if [ -f ${prefix}_dnaapler/${prefix}_reoriented.gfa ]; then
         mv ${prefix}_dnaapler/${prefix}_reoriented.gfa .
     fi
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}"
+    def args     = task.ext.args ?: ''
+    prefix       = task.ext.prefix ?: "${meta.id}"
+    def is_gfa   = assembly.name ==~ /.*\.gfa(\.(gz|bz2|xz))?$/
     """
     echo "${args}"
 
     touch ${prefix}_reoriented.fasta
-    touch ${prefix}_reoriented.gfa
+    ${is_gfa ? "touch ${prefix}_reoriented.gfa" : ''}
     touch ${prefix}_all_reorientation_summary.tsv
     touch ${prefix}_MMseqs2_output.txt
     touch ${prefix}.log

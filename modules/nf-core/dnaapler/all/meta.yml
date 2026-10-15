@@ -31,23 +31,30 @@ input:
           e.g. `[ id:'sample1' ]`
     - assembly:
         type: file
-        description: Complete assembly in FASTA (optionally gzipped) or GFA format
-        pattern: "*.{fasta,fa,fna,fasta.gz,fa.gz,fna.gz,gfa}"
+        description: |
+          Complete assembly in FASTA or GFA format, optionally compressed
+          with gzip, bzip2 or xz
+        pattern: "*.{fasta,fa,fna,gfa}{,.gz,.bz2,.xz}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
           - edam: http://edamontology.org/format_3975 # GFA 1
     - ignore:
         type: file
         description: |
-          Optional. Text file listing full contig header lines (one per line) to leave
-          un-reoriented. Each line must match the whole FASTA header line.
-        pattern: "*.{txt,list}"
+          Optional. Text file listing contig IDs (one per line) to leave
+          un-reoriented. Only the first whitespace-delimited token of each line is used.
+        pattern: "*"
         ontologies:
           - edam: http://edamontology.org/format_2330 # Textual format
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing custom database information
+          e.g. `[ id:'custom_db' ]`
     - custom_db:
         type: file
         description: |
-          Optional. Amino acid FASTA file used as a custom database
+          Optional. Uncompressed amino acid FASTA file used as a custom database
           instead of the bundled one (passed with `--custom_db`).
         pattern: "*.{fasta,fa,faa}"
         ontologies:
@@ -97,7 +104,9 @@ output:
             e.g. `[ id:'sample1' ]`
       - ${prefix}_MMseqs2_output.txt:
           type: file
-          description: Tabular MMseqs2 hits against the reorientation database
+          description: |
+            Optional. Tabular MMseqs2 hits against the reorientation database.
+            Not emitted for a GFA input without circular contigs
           pattern: "*_MMseqs2_output.txt"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV

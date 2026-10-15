@@ -8,6 +8,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "dnaapler"
     tag "dnaapler/all"
+    tag "gunzip"
 
     test("bacteroides_fragilis - genome.fna.gz") {
 
@@ -17,9 +18,9 @@ nextflow_process {
                 input[0] = [
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true),
-                    [],
                     []
                 ]
+                input[1] = [ [:], [] ]
                 """
             }
         }
@@ -36,6 +37,78 @@ nextflow_process {
 
     }
 
+    test("sarscov2 - assembly.gfa - no circular contigs") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/gfa/assembly.gfa', checkIfExists: true),
+                    []
+                ]
+                input[1] = [ [:], [] ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["log"]),
+                    path(process.out.log[0][1]).text.contains('contains no circular sequences')
+                ).match() }
+            )
+        }
+
+    }
+
+    test("bacteroides_fragilis - genome.fna.gz - ignore - custom_db") {
+
+        setup {
+            run("GUNZIP") {
+                script "../../../gunzip/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'custom_db' ],
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/region_2500000-3000000.faa.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                // No extension on purpose: dnaapler would read a bare name as a contig ID
+                ignore = channel.of('NZ_CP069564.1').collectFile(name: 'contigs_to_ignore', newLine: true)
+                input[0] = ignore.map { ignore_file ->
+                    [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true),
+                        ignore_file
+                    ]
+                }
+                input[1] = GUNZIP.out.gunzip
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["log"]),
+                    path(process.out.log[0][1]).text.contains('You have specified contigs to ignore: NZ_CP069564.1')
+                ).match() }
+            )
+        }
+
+    }
+
     test("bacteroides_fragilis - genome.fna.gz - stub") {
 
         options "-stub"
@@ -46,9 +119,35 @@ nextflow_process {
                 input[0] = [
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true),
-                    [],
                     []
                 ]
+                input[1] = [ [:], [] ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - assembly.gfa - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/gfa/assembly.gfa', checkIfExists: true),
+                    []
+                ]
+                input[1] = [ [:], [] ]
                 """
             }
         }
