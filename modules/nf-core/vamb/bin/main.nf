@@ -4,13 +4,9 @@ process VAMB_BIN {
     label 'process_gpu'
 
     conda "${task.accelerator ? "${moduleDir}/environment.gpu.yml" : "${moduleDir}/environment.yml"}"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? (task.accelerator
-            ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f9/f98e65a913123ddbfdb2259e67efc1f8f2c8c23b0ee86a3bc2cc80f80447b76d/data'
-            : 'https://depot.galaxyproject.org/singularity/vamb:5.0.4--pyhdfd78af_0')
-        : (task.accelerator
-            ? 'community.wave.seqera.io/library/vamb_gzip_pytorch-gpu_cuda-version:0858dbff3db380e6'
-            : 'quay.io/biocontainers/vamb:5.0.4--pyhdfd78af_0')}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ac/acc0dab9e84f35ef1ede8f74409791796fec3417cde24c5647138267cc284e3b/data'
+:         'community.wave.seqera.io/library/vamb:5.0.4--8494f2d6a8ca319a' }"
 
     input:
     tuple val(meta), path(assembly), path(abundance_tsv), path(bams, stageAs: "bams/*"), path(taxonomy)
