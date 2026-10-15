@@ -66,7 +66,9 @@ process VSEARCH_CLUSTER {
     then
         gzip -n ${prefix}.${out_ext}
     else
-        samtools view -T $fasta -S -b ${prefix}.${out_ext} > ${prefix}.bam
+        # samtools needs an uncompressed (or bgzipped) reference to build @SQ lines
+        gzip -cdf $fasta > ${prefix}.reference
+        samtools view -T ${prefix}.reference -S -b ${prefix}.${out_ext} > ${prefix}.bam
     fi
     """
 
