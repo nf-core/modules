@@ -4,8 +4,8 @@ process TOULLIGQC {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/95/958e7692f05dbbae6937b082b0e2863f1ec26be7dd6d2b016ae130eaef6cdc85/data'
-:         'community.wave.seqera.io/library/toulligqc_huggingface_hub_matplotlib_numpy_pruned:30ed42003347882d' }"
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b1/b11e9914580bb058958bd3b2496f9bce00b001a38b0888252415ebee5c828207/data'
+:         'community.wave.seqera.io/library/toulligqc_huggingface_hub_matplotlib_numpy_pruned:190ebbd12957a8dd' }"
 
     input:
 
@@ -34,7 +34,8 @@ process TOULLIGQC {
     """
     toulligqc \\
         ${input_file} \\
-        --output-directory ${prefix} \\
+        --output-directory . \\
+        --report-name ${prefix} \\
         ${args}
     """
 
