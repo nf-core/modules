@@ -21,6 +21,107 @@
             "nextflow": "25.10.4"
         }
     },
+    "sarscov2 - single_end - fasta - mapped - bam": {
+        "content": [
+            "test.bbmap.log",
+            [
+                [
+                    "test.mapped.bam",
+                    "798439cbd7fd81cbcc5078022dc5479d"
+                ]
+            ],
+            [
+                
+            ],
+            {
+                "versions_bbmap": [
+                    [
+                        "BBMAP_ALIGN",
+                        "bbmap",
+                        "39.18"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-15T11:23:33.087573",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.0"
+        }
+    },
+    "sarscov2 - paired_end - fasta - unmapped - fastq.gz - stub": {
+        "content": [
+            {
+                "0": [
+                    
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test.unmapped_1.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "test.unmapped_2.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        ]
+                    ]
+                ],
+                "2": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bbmap.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "3": [
+                    [
+                        "BBMAP_ALIGN",
+                        "bbmap",
+                        "39.18"
+                    ]
+                ],
+                "bam": [
+                    
+                ],
+                "log": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bbmap.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "reads": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        [
+                            "test.unmapped_1.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "test.unmapped_2.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        ]
+                    ]
+                ],
+                "versions_bbmap": [
+                    [
+                        "BBMAP_ALIGN",
+                        "bbmap",
+                        "39.18"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-15T11:23:37.853033",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.0"
+        }
+    },
     "paired_end - index": {
         "content": [
             "test.bbmap.log",
@@ -41,6 +142,42 @@
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "25.10.4"
+        }
+    },
+    "sarscov2 - paired_end - index - unmapped - fastq.gz": {
+        "content": [
+            "test.bbmap.log",
+            [
+                
+            ],
+            [
+                [
+                    [
+                        "test.unmapped_1.fastq.gz",
+                        400,
+                        "4de5088852e098ec6bd5dfb05425fe16"
+                    ],
+                    [
+                        "test.unmapped_2.fastq.gz",
+                        400,
+                        "e79e5570171ab63573c2c704aa1c0c6b"
+                    ]
+                ]
+            ],
+            {
+                "versions_bbmap": [
+                    [
+                        "BBMAP_ALIGN",
+                        "bbmap",
+                        "39.18"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-15T11:25:26.294938",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.0"
         }
     },
     "paired_end - fasta": {
@@ -85,6 +222,35 @@
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "25.10.4"
+        }
+    },
+    "sarscov2 - paired_end - fasta - mapped - fastq.gz - interleaved": {
+        "content": [
+            "test.bbmap.log",
+            [
+                
+            ],
+            [
+                [
+                    "test.mapped.fastq.gz",
+                    800,
+                    "e2e05c79516b10cb3634a4439ea4d5aa"
+                ]
+            ],
+            {
+                "versions_bbmap": [
+                    [
+                        "BBMAP_ALIGN",
+                        "bbmap",
+                        "39.18"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-15T11:23:24.056637",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.0"
         }
     },
     "paired_end - index - stub": {
