@@ -5,8 +5,8 @@ process RATTLE_POLISH {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/rattle:1.0--h5ca1c30_0'
-        : 'quay.io/biocontainers/rattle:1.0--h5ca1c30_0'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/59/597c4110442b53dc0d73420af28bc774518719d974b2be3190dfa478da17acac/data'
+        : 'community.wave.seqera.io/library/rattle:1.0--ae3dd63e7a98745b'}"
 
     input:
     tuple val(meta), path(consensi)
