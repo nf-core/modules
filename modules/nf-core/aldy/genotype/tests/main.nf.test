@@ -1,0 +1,109 @@
+nextflow_process {
+
+    name "Test Process ALDY_GENOTYPE"
+    script "../main.nf"
+    process "ALDY_GENOTYPE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "aldy"
+    tag "aldy/genotype"
+
+    // Pharmacogene test data is not available in nf-core/test-datasets
+    def aldy_resources = 'https://raw.githubusercontent.com/0xTCG/aldy/4.8.3/aldy/tests/resources/'
+
+    test("homo_sapiens - vcf - slco1b1") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file('${aldy_resources}NA07000_SLCO1B1.vcf.gz', checkIfExists: true),
+                    file('${aldy_resources}NA07000_SLCO1B1.vcf.gz.tbi', checkIfExists: true)
+                ]
+                input[1] = [ [], [] ]
+                input[2] = [ [], [] ]
+                input[3] = 'SLCO1B1'
+                input[4] = 'illumina'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.aldy,
+                    process.out.log.collect { meta, log -> [ meta, file(log).name ] },
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - bam - cyp2d6 - custom profile") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file('${aldy_resources}NA10860.bam', checkIfExists: true),
+                    file('${aldy_resources}NA10860.bai', checkIfExists: true)
+                ]
+                input[1] = [ [], [] ]
+                input[2] = [
+                    [ id:'NA10860' ],
+                    file('${aldy_resources}NA10860.profile', checkIfExists: true)
+                ]
+                input[3] = 'CYP2D6'
+                input[4] = ''
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.aldy,
+                    process.out.log.collect { meta, log -> [ meta, file(log).name ] },
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - vcf - slco1b1 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file('${aldy_resources}NA07000_SLCO1B1.vcf.gz', checkIfExists: true),
+                    file('${aldy_resources}NA07000_SLCO1B1.vcf.gz.tbi', checkIfExists: true)
+                ]
+                input[1] = [ [], [] ]
+                input[2] = [ [], [] ]
+                input[3] = 'SLCO1B1'
+                input[4] = 'illumina'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
