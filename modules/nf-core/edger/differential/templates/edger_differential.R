@@ -89,8 +89,7 @@ opt <- list(
     test = "QLF",                # QLF or LRT
     adjust.method = "BH",        # topTags
     prior.count = 2,             # cpm, for normalised counts
-    round_digits = NULL,
-    seed = NULL
+    round_digits = NULL
 )
 opt_types <- lapply(opt, class)
 
@@ -111,10 +110,6 @@ for ( ao in names(args_opt)){
 }
 if ( ! is.null(opt\$round_digits)){
     opt\$round_digits <- as.numeric(opt\$round_digits)
-}
-if ( ! is.null(opt\$seed)){
-    opt\$seed <- as.numeric(opt\$seed)
-    set.seed(opt\$seed)
 }
 
 # If there is no option supplied, convert string "null" to NULL
@@ -158,9 +153,10 @@ count.table <-
         header = TRUE,
         row.names = opt\$probe_id_col
     )
-sample.sheet <- read_delim_flexible(file = opt\$sample_file)
+# Syntactic column names let sample sheet columns be used in model formulas;
+# user-supplied column names are passed through make.names() to match
+sample.sheet <- read_delim_flexible(file = opt\$sample_file, check.names = TRUE)
 
-# Deal with spaces that may be in sample column
 opt\$sample_id_col <- make.names(opt\$sample_id_col)
 
 if (! opt\$sample_id_col %in% colnames(sample.sheet)){
@@ -229,6 +225,8 @@ if (!is.null(opt\$contrast_variable)) {
             )
         }
     }
+} else if (!is.null(opt\$blocking_variables)) {
+    warning("blocking_variables is ignored when a formula is supplied; include blocking terms in the formula instead")
 }
 
 # Optionally, subset to only the samples involved in the contrast
@@ -248,6 +246,7 @@ if (opt\$subset_to_contrast_samples){
 
 if ((! is.null(opt\$exclude_samples_col)) && (! is.null(opt\$exclude_samples_values))){
     exclude_values = unlist(strsplit(opt\$exclude_samples_values, split = ';'))
+    opt\$exclude_samples_col <- make.names(opt\$exclude_samples_col)
 
     if (! opt\$exclude_samples_col %in% colnames(sample.sheet)){
         stop(paste(opt\$exclude_samples_col, ' specified to subset samples is not a valid sample sheet column'))
@@ -341,12 +340,7 @@ if (as.logical(opt\$filter_by_expr)) {
     y <- y[keep, , keep.lib.sizes = FALSE]
 }
 
-# normLibSizes() supersedes calcNormFactors() in recent edgeR versions
-if (exists("normLibSizes", where = asNamespace("edgeR"))) {
-    y <- normLibSizes(y, method = opt\$norm_method)
-} else {
-    y <- calcNormFactors(y, method = opt\$norm_method)
-}
+y <- normLibSizes(y, method = opt\$norm_method)
 
 y <- estimateDisp(y, design, robust = as.logical(opt\$robust))
 
@@ -371,8 +365,7 @@ comp.results <- topTags(
 ################################################
 ################################################
 
-contrast.name <- paste(opt\$target_level, opt\$reference_level, sep = "_vs_")
-cat("Saving results for ", contrast.name, " ...\n", sep = "")
+cat("Saving results for ", contrast_string, " ...\n", sep = "")
 
 # Differential expression table
 

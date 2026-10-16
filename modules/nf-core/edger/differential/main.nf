@@ -29,7 +29,7 @@ process EDGER_DIFFERENTIAL {
     template 'edger_differential.R'
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.edger.results.tsv
     touch ${prefix}.edger.mean_difference.png

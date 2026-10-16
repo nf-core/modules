@@ -71,6 +71,7 @@ input:
         pattern: "*.{csv,tsv,txt}"
         ontologies:
           - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3752 # CSV
     - counts:
         type: file
         description: |
@@ -79,6 +80,7 @@ input:
         pattern: "*.{csv,tsv,txt}"
         ontologies:
           - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3752 # CSV
 output:
   results:
     - - meta:
@@ -89,7 +91,10 @@ output:
             [ id:'contrast1', blocking:'patient' ].
       - "*.edger.results.tsv":
           type: file
-          description: TSV-format table of differential expression results as output by edgeR
+          description: |
+            TSV-format table of differential expression results as output by
+            edgeR. The adjusted p-value column is named `FDR`, or `FWER` when
+            `adjust.method` is `bonferroni` or `holm`.
           pattern: "*.edger.results.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
