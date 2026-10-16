@@ -32,8 +32,13 @@ input:
           - edam: http://edamontology.org/format_1929 # FASTA
   - lib:
       type: file
-      description: Custom library (e.g. from another species)
-      pattern: "*.{fasta,fa,fas,fsa,faa,fna}"
+      description: |
+        Custom repeat library (e.g. from another species), in FASTA or HMM format
+        (HMM libraries require `-engine hmmer` in `ext.args`).
+        Note: the module container does not bundle the Dfam database, so either
+        provide a library here or point RepeatMasker to a local Dfam/FamDB
+        installation via `ext.args` (e.g. `-libdir`).
+      pattern: "*.{fasta,fa,fas,fsa,faa,fna,hmm}"
       ontologies:
         - edam: http://edamontology.org/format_1929 # FASTA
 output:
