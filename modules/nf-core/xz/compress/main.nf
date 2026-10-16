@@ -3,9 +3,9 @@ process XZ_COMPRESS {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-796b0610595ad1995b121d0b85375902097b78d4:a3a3220eb9ee55710d743438b2ab9092867c98c6-0' :
-        'quay.io/biocontainers/mulled-v2-796b0610595ad1995b121d0b85375902097b78d4:a3a3220eb9ee55710d743438b2ab9092867c98c6-0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/db/db54d725f04a667223c103459fb70612a72f9766bfd74b26f2d566e1b190a65d/data'
+:         'community.wave.seqera.io/library/xz:5.2.6--5bcc1ddb5aafa435' }"
 
     input:
     tuple val(meta), path(raw_file)

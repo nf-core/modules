@@ -3,9 +3,9 @@ process PLINK2_SCORE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/plink2:2.00a2.3--h712d239_1' :
-        'quay.io/biocontainers/plink2:2.00a2.3--h712d239_1' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/27/278e4e95ad25ec7048ab124f16a7cf8b8141ced9e05c51f61803567cd9017f4d/data'
+:         'community.wave.seqera.io/library/plink2:2.00a2.3--1c05b6e0948ac0c2' }"
 
     input:
     tuple val(meta), path(pgen), path(psam), path(pvar)

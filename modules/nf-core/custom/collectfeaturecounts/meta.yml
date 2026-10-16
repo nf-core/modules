@@ -25,7 +25,7 @@ input:
         type: file
         description: |
           One or more raw featureCounts output files (as produced by `subread/featurecounts`),
-          typically one per sample against the same feature set/ORF caller. The sample name
+          exactly one per sample, against the same feature set/ORF caller. The sample name
           is taken from each file's count column header (its BAM filename, with a trailing
           `.sorted.bam` stripped).
         pattern: "*.featureCounts.tsv"

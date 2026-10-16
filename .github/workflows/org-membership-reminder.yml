@@ -1,0 +1,31 @@
+name: Invite PR authors to join the nf-core org
+
+# pull_request_target is needed to comment on PRs from forks.
+# This workflow never checks out or runs code from the PR.
+on:
+  pull_request_target: # zizmor: ignore[dangerous-triggers] only PR metadata is used, no checkout
+    types: [opened]
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    if: >-
+      github.event.pull_request.user.type != 'Bot' &&
+      !contains(fromJSON('["MEMBER", "OWNER", "COLLABORATOR"]'), github.event.pull_request.author_association)
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Invite author to join the nf-core org
+        run: gh pr comment "$PR_NUMBER" --repo "$GITHUB_REPOSITORY" --body "$BODY"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          BODY: |
+            Hi @${{ github.event.pull_request.user.login }}, thanks for your contribution!
+
+            It looks like you are not yet a member of the [nf-core GitHub organisation](https://github.com/nf-core).
+            Joining makes contributing easier, besides other things, it will enable CI runs on your PRs without waiting for maintainer approval.
+
+            To join, sign up to the [nf-core Slack](https://nf-co.re/join) and ask for an invite in the [#github-invitations](https://nfcore.slack.com/channels/github-invitations) channel.
+
+            > If you are already a member, you can ignore this message (or make your membership [public](https://github.com/orgs/nf-core/people) so this bot recognises you).

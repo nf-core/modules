@@ -7,8 +7,7 @@ keywords:
   - whole genome association
 tools:
   - "plink":
-      description: "Whole genome association analysis toolset, designed to perform a
-        range of basic, large-scale analyses in a computationally efficient manner."
+      description: "Whole genome association analysis toolset, designed to perform a range of basic, large-scale analyses in a computationally efficient manner."
       homepage: "https://www.cog-genomics.org/plink"
       documentation: "https://www.cog-genomics.org/plink/1.9/data#recode"
       tool_dev_url: "https://www.cog-genomics.org/plink/1.9/dev"
@@ -44,8 +43,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.ped":
           type: file
-          description: PLINK/MERLIN/Haploview text pedigree + genotype table file. Produced
-            by the default "--recode" or by "--recode 12".
+          description: PLINK/MERLIN/Haploview text pedigree + genotype table file. Produced by the default "--recode" or by "--recode 12".
           pattern: "*.{ped}"
           ontologies: []
   map:
@@ -56,8 +54,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.map":
           type: file
-          description: PLINK text fileset variant information file. Produced by the
-            default "--recode" or by "--recode 12".
+          description: PLINK text fileset variant information file. Produced by the default "--recode" or by "--recode 12".
           pattern: "*.{map}"
           ontologies: []
   txt:
@@ -68,8 +65,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.txt":
           type: file
-          description: Text file. Produced by "--recode 23". Can only be used in a file
-            with only one sample.
+          description: Text file. Produced by "--recode 23". Can only be used in a file with only one sample.
           pattern: "*.{txt}"
           ontologies: []
   raw:
@@ -80,8 +76,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.raw":
           type: file
-          description: Additive + dominant component file. Produced by "--recode AD"
-            or "--recode A".
+          description: Additive + dominant component file. Produced by "--recode AD" or "--recode A".
           pattern: "*.{raw}"
           ontologies: []
   traw:
@@ -92,8 +87,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.traw":
           type: file
-          description: Variant-major additive component file. Produced by "--recode
-            A-transpose".
+          description: Variant-major additive component file. Produced by "--recode A-transpose".
           pattern: "*.{traw}"
           ontologies: []
   beagledat:
@@ -302,11 +296,21 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.vcf.gz":
           type: file
-          description: Compressed variant calling file (VCF). Produced by "--recode
-            vcf bgz".
+          description: Compressed variant calling file (VCF). Produced by "--recode vcf bgz".
           pattern: "*.{vcf.gz}"
           ontologies: []
   versions_plink:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - plink:
+          type: string
+          description: The name of the tool
+      - "plink --version 2>&1 | sed 's/^PLINK v//;s/ .*//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
     - - "${task.process}":
           type: string
           description: The name of the process
@@ -320,14 +324,17 @@ authors:
   - "@atrigila"
 maintainers:
   - "@atrigila"
-topics:
-  versions:
-    - - "${task.process}":
-          type: string
-          description: The name of the process
-      - plink:
-          type: string
-          description: The name of the tool
-      - "plink --version 2>&1 | sed 's/^PLINK v//;s/ .*//'":
-          type: eval
-          description: The expression to obtain the version of the tool
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/plink:1.90b6.21--0baa44af6db8f28d
+      build_id: bd-0baa44af6db8f28d_1
+      scan_id: sc-588ceddb77be18ec_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/plink:1.90b6.21--95e2ee960c26adef
+      build_id: bd-95e2ee960c26adef_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/59/5901c2e9a6b11094536c8b0ab0932bd61bb55dbfe9ad270d3babc8f7246a4759/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/plink/recode/.conda-lock/linux_amd64-bd-0baa44af6db8f28d_1.txt
