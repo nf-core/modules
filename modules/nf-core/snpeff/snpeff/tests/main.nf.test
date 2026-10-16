@@ -10,7 +10,7 @@ nextflow_process {
     tag "snpeff"
     tag "snpeff/snpeff"
 
-    test("SNPEFF annotate without a canonical transcript list") {
+    test("SNPEFF annotate with WBcel235.105") {
 
         when {
             process {
@@ -26,59 +26,25 @@ nextflow_process {
                 ])
                 input[1] = params.snpeff_db
                 input[2] = snpeff_cache
-                input[3] = []
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ["report", "summary_html"]),
-                    path(process.out.report[0][3]).readLines().size(),
-                    path(process.out.summary_html[0][3]).readLines().size()
+                    file(process.out.genes_txt[0][3]),
+                    file(process.out.report[0][3]).name,
+                    file(process.out.summary_html[0][3]).name,
+                    file(process.out.vcf[0][1]).name + ",variantsMD5:" + path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
     }
 
-    test("SNPEFF annotate with a canonical transcript list") {
-
-        when {
-            process {
-                """
-                snpeff_cache = Channel.of([
-                    [ id:'WBcel235.105' ],
-                    file('s3://annotation-cache/snpeff_cache/WBcel235.105/')
-                ]).collect()
-
-                canon_list = Channel.of('WBGene00003779\tY75B8A.2a.1').collectFile(name: 'canon_list.txt', newLine: true)
-
-                input[0] = Channel.of([
-                    [ id:'test' ], // meta map
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf', checkIfExists: true)
-                ])
-                input[1] = params.snpeff_db
-                input[2] = snpeff_cache
-                input[3] = canon_list
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ["report", "summary_html"]),
-                    path(process.out.report[0][3]).readLines().size(),
-                    path(process.out.summary_html[0][3]).readLines().size()
-                ).match() }
-            )
-        }
-    }
-
-    test("SNPEFF annotate without a canonical transcript list - stub") {
+    test("SNPEFF annotate with WBcel235.105 - stub") {
 
         options "-stub"
 
@@ -96,15 +62,20 @@ nextflow_process {
                 ])
                 input[1] = params.snpeff_db
                 input[2] = snpeff_cache
-                input[3] = []
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    file(process.out.genes_txt[0][3]),
+                    file(process.out.report[0][3]),
+                    file(process.out.summary_html[0][3]),
+                    file(process.out.vcf[0][1]),
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
     }
