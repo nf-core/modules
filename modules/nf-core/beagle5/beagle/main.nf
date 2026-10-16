@@ -3,9 +3,9 @@ process BEAGLE5_BEAGLE {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/beagle:5.5_27Feb25.75f--hdfd78af_0'
-        : 'quay.io/biocontainers/beagle:5.5_27Feb25.75f--hdfd78af_0'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/41/413c96a140d3d7277b01bf0ea4b6e374fa528fada57d65151ca4467fd2910377/data'
+        : 'community.wave.seqera.io/library/beagle:5.5_27Feb25.75f--30bdd31e53923776' }"
 
     input:
     // Including `val(region)` to prevent errors with multi-chromosome VCFs and single-chromosome reference panels.
