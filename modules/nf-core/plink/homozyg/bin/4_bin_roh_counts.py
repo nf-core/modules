@@ -9,7 +9,7 @@ def bin_roh_counts(hom_path, metadata_path, outdir):
     metadata = pd.read_csv(metadata_path)
 
     roh['Length_Mb'] = roh['KB'] / 1000
-    bins = [1, 2, 4, 8, 16, roh['Length_Mb'].max() + 1]
+    bins = [1, 2, 4, 8, 16, max(17, roh['Length_Mb'].max() + 1)]
     labels = ['1-2Mb', '2-4Mb', '4-8Mb', '8-16Mb', '>16Mb']
     roh['ROH_bin'] = pd.cut(roh['Length_Mb'], bins=bins, labels=labels, right=False)
 
