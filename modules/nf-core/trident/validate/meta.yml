@@ -1,0 +1,55 @@
+name: "trident_validate"
+description: Check Poseidon packages or package components for structural correctness
+keywords:
+  - poseidon-trident
+  - poseidon
+  - trident
+  - validate
+tools:
+  - "trident":
+      description: "A tool (trident) to work with modular genotype databases formatted using Poseidon."
+      homepage: "https://www.poseidon-adna.org/"
+      documentation: "https://www.poseidon-adna.org/#/trident?id=validate-command"
+      tool_dev_url: "https://github.com/poseidon-framework/poseidon-hs/"
+      doi: "10.7554/eLife.98317.1"
+      licence:
+        - "MIT"
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', version: "2.1.0", snpSet: "1240K", format:'EIGENSTRAT' ]
+    - input_package:
+        type: directory
+        description: Path to the directory containing the Poseidon package(s) to be validated.
+output:
+  versions_trident:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - trident:
+          type: string
+          description: The name of the tool
+      - trident --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - trident:
+          type: string
+          description: The name of the tool
+      - trident --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@TCLamnidis"
+maintainers:
+  - "@TCLamnidis"
