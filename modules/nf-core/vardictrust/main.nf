@@ -49,6 +49,6 @@ process VARDICTRUST {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    echo '' | gzip > ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.vcf.gz
     """
 }
