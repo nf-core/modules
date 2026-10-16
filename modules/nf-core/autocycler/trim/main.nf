@@ -3,9 +3,9 @@ process AUTOCYCLER_TRIM {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/autocycler:0.5.2--h3ab6199_0':
-        'quay.io/biocontainers/autocycler:0.5.2--h3ab6199_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3a/3a59a19abe50e65d964ea723d2c310a0005ef5a965beb7bc740d02894dd056e8/data'
+:         'community.wave.seqera.io/library/autocycler:0.5.2--91b58d5b8fccdfb9' }"
 
     input:
     tuple val(meta), path(gfa)

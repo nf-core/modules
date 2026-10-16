@@ -102,3 +102,17 @@ authors:
   - "@krannich479"
 maintainers:
   - "@krannich479"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bamclipper_samtools:34439705a8946c0f
+      build_id: bd-34439705a8946c0f_1
+      scan_id: sc-ddce4e25759599bd_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bamclipper_samtools:af3214359a20965e
+      build_id: bd-af3214359a20965e_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c5/c55c19c5134421e0c5c5dd846f30ca06074faef6c011806be7d35b94e19916bb/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bamclipper/.conda-lock/linux_amd64-bd-34439705a8946c0f_1.txt

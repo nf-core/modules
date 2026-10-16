@@ -3,9 +3,9 @@ process BAMTOOLS_CONVERT {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bamtools:2.5.2--hdcf5f25_2' :
-        'quay.io/biocontainers/bamtools:2.5.2--hdcf5f25_2' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c1/c1fde4cd562bddffee839570552212cbc3e01bb253ae8af6954a069106d518ba/data'
+        : 'community.wave.seqera.io/library/bamtools:2.5.2--b804fdcee08dfdd6' }"
 
     input:
     tuple val(meta), path(bam)

@@ -19,6 +19,7 @@ nextflow_process {
                  file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
                 ]
                 input[1] = []
+                input[2] = 'testtext'
                 """
             }
         }
@@ -42,6 +43,7 @@ nextflow_process {
                  file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/bed/test.bed', checkIfExists: true)
                 ]
                 input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                input[2] = 'testtext'
                 """
             }
         }
