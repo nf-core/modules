@@ -24,10 +24,16 @@ process INFERNAL_CMSCAN {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    // Infernal requires unzipped input files, so gzipped FASTA need to be unzipped
+    def fasta_input = fasta.toString() - ~/\.gz$/
+    def gunzip      = fasta.getExtension() == "gz" ? "gunzip -c ${fasta} > ${fasta_input}" : ""
+    def cleanup     = fasta.getExtension() == "gz" ? "rm ${fasta_input}" : ""
     // Infernal requirement: --clanin must accompany --fmt 2 and --tblout
     def clan_opts = clanin ? "--clanin ${clanin} --fmt 2 --oclan" : ""
     def tblout_arg = "--tblout ${prefix}.tbl"
     """
+    ${gunzip}
+
     cmscan \\
         ${args} \\
         --cpu ${task.cpus} \\
@@ -35,9 +41,11 @@ process INFERNAL_CMSCAN {
         ${tblout_arg} \\
         ${clan_opts} \\
         ${cmdb}/*.cm \\
-        ${fasta}
+        ${fasta_input}
 
     gzip --no-name ${prefix}.txt ${prefix}.tbl
+
+    ${cleanup}
     """
 
     stub:

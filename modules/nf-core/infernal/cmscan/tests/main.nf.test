@@ -93,7 +93,11 @@ nextflow_process {
 
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    txtout.toPath(),
+                    tblout.toPath(),
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
 
