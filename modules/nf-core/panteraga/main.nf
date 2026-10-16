@@ -56,6 +56,7 @@ process PANTERAGA {
     touch ${prefix}-pantera-final-pass.fa
     touch ${prefix}-pantera-final.fa
     touch ${prefix}-pantera-final.stats.tsv
+    touch ${prefix}.pantera.log
 
     for f in Copia_1.test.LTR.Copia.maf DNA_4.test.DNA.maf I.Jockey_1.test.LINE.I.Jockey.maf; do
         f=\${f/test/${prefix}}
