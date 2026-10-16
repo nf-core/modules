@@ -3,14 +3,15 @@ process SNPEFF_SNPEFF {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cb/cbd585b788eeafff9b9a018e8775de24eeb6b380d95bb22629a5f14ee3fff519/data'
-        : 'community.wave.seqera.io/library/snpeff:5.4.0c--e08ddc54579e82bd'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7d/7d292e04a3cf44f75280cb89a7f9e7dbe5b0ddc666636b894d4964bfa67c0959/data'
+:         'community.wave.seqera.io/library/snpeff:5.4.0c--2525a0a9f438a0aa' }"
 
     input:
     tuple val(meta), path(vcf)
     val db
     tuple val(meta2), path(cache)
+    path canon_list
 
     output:
     tuple val(meta), path("*.ann.vcf"), emit: vcf
@@ -33,12 +34,14 @@ process SNPEFF_SNPEFF {
     }
     def prefix = task.ext.prefix ?: "${meta.id}"
     def cache_command = cache ? "-dataDir \${PWD}/${cache}" : ""
+    def canon_list_flag = canon_list ? "-canonList ${canon_list}" : ''
     """
     snpEff \\
         -Xmx${avail_mem}M \\
         -XX:-UsePerfData \\
         ${db} \\
         ${args} \\
+        ${canon_list_flag} \\
         -csvStats ${prefix}.csv \\
         ${cache_command} \\
         ${vcf} \\
