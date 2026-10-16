@@ -44,17 +44,6 @@ nextflow_process {
                 """
             }
         }
-        run("HTSLIB_BGZIPTABIX") {
-            script "../../htslib/bgziptabix/main.nf"
-            process {
-                """
-                input[0] = BEDTOOLS_GENOMECOV.out.genomecov.map { meta, bedgraph -> [ meta, bedgraph, [], [] ] }
-                input[1] = 'compress'
-                input[2] = false
-                input[3] = 'bedgraph'
-                """
-            }
-        }
     }
 
     test("homo_sapiens - pretext - bedgraph - coverage") {
@@ -75,16 +64,27 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert new String(path(process.out.pretext[0][1]).bytes, 'ISO-8859-1').contains('psgh') },
-                { assert snapshot(
-                    process.out.pretext.collect { meta, pretext -> [ meta, file(pretext).name ] },
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["pretext"])).match() }
             )
         }
 
     }
 
     test("homo_sapiens - pretext - bedgraph.gz - coverage") {
+
+        setup {
+            run("HTSLIB_BGZIPTABIX") {
+                script "../../htslib/bgziptabix/main.nf"
+                process {
+                    """
+                    input[0] = BEDTOOLS_GENOMECOV.out.genomecov.map { meta, bedgraph -> [ meta, bedgraph, [], [] ] }
+                    input[1] = 'compress'
+                    input[2] = false
+                    input[3] = 'bedgraph'
+                    """
+                }
+            }
+        }
 
         when {
             process {
@@ -102,10 +102,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert new String(path(process.out.pretext[0][1]).bytes, 'ISO-8859-1').contains('psgh') },
-                { assert snapshot(
-                    process.out.pretext.collect { meta, pretext -> [ meta, file(pretext).name ] },
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["pretext"])).match() }
             )
         }
 
