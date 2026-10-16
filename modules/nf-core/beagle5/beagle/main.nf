@@ -53,7 +53,7 @@ process BEAGLE5_BEAGLE {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}.bglout"
     """
-    echo | gzip > ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.log
     """
 }
