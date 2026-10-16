@@ -26,6 +26,7 @@ nextflow_process {
                 ])
                 input[1] = params.snpeff_db
                 input[2] = snpeff_cache
+                input[3] = [[:], []]
                 """
             }
         }
@@ -40,6 +41,43 @@ nextflow_process {
                     file(process.out.vcf[0][1]).name + ",variantsMD5:" + path(process.out.vcf[0][1]).vcf.variantsMD5,
                     process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
+            )
+        }
+    }
+
+    test("SNPEFF annotate with WBcel235.105 - canon_list") {
+
+        when {
+            process {
+                """
+                snpeff_cache = Channel.of([
+                    [ id:'WBcel235.105' ],
+                    file('s3://annotation-cache/snpeff_cache/WBcel235.105/')
+                ]).collect()
+
+                input[0] = channel.of(
+                    "##fileformat=VCFv4.2\\n##contig=<ID=I>\\n#CHROM\\tPOS\\tID\\tREF\\tALT\\tQUAL\\tFILTER\\tINFO\\nI\\t5108100\\t.\\tT\\tC\\t.\\t.\\t."
+                ).collectFile(name: 'test.vcf', newLine: true, sort: false).map { f -> [ [ id:'test' ], f ] }
+                input[1] = params.snpeff_db
+                input[2] = snpeff_cache
+                input[3] = channel.of(
+                    "WBGene00000001\\tY110A7A.10.2"
+                ).collectFile(name: 'canon_list.txt', newLine: true).map { f -> [ [ id:'canon_list' ], f ] }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    file(process.out.genes_txt[0][3]),
+                    file(process.out.report[0][3]).name,
+                    file(process.out.summary_html[0][3]).name,
+                    file(process.out.vcf[0][1]).name + ",variantsMD5:" + path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() },
+                { assert path(process.out.vcf[0][1]).vcf.variants.every { v -> v.getAttributeAsString("ANN", "").contains("|Y110A7A.10.2|") && !v.getAttributeAsString("ANN", "").contains("|Y110A7A.10.1|") } }
             )
         }
     }
@@ -62,6 +100,7 @@ nextflow_process {
                 ])
                 input[1] = params.snpeff_db
                 input[2] = snpeff_cache
+                input[3] = [[:], []]
                 """
             }
         }
