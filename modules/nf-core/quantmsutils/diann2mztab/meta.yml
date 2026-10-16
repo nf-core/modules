@@ -137,3 +137,17 @@ authors:
 maintainers:
   - "@daichengxin"
   - "@pinin4fjords"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/quantms-utils_sdrf-pipelines_python_setuptools:a179872b9d0fa97d
+      build_id: bd-a179872b9d0fa97d_1
+      scan_id: sc-bf6865bb8ce3aafc_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/quantms-utils_sdrf-pipelines_python_setuptools:6d34cd027d046857
+      build_id: bd-6d34cd027d046857_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d7/d7caaeee055202206dc635a6f3d154eb229162e924eda945fe76c88bda497aba/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/quantmsutils/diann2mztab/.conda-lock/linux_amd64-bd-a179872b9d0fa97d_1.txt

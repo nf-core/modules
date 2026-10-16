@@ -3,9 +3,9 @@ process QUANTMSUTILS_DIANN2MZTAB {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/quantms-utils:0.0.23--pyh7e72e81_0' :
-        'quay.io/biocontainers/quantms-utils:0.0.23--pyh7e72e81_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d7/d7caaeee055202206dc635a6f3d154eb229162e924eda945fe76c88bda497aba/data'
+:         'community.wave.seqera.io/library/quantms-utils_sdrf-pipelines_python_setuptools:a179872b9d0fa97d' }"
 
     input:
     tuple val(meta), path(report), path(report_pg), path(report_pr), val(diann_version), path(exp_design), path(ms_information), path(fasta)
