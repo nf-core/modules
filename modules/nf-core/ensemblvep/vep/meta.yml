@@ -1,6 +1,5 @@
 name: ensemblvep_vep
-description: Ensembl Variant Effect Predictor (VEP). The output-file-format is
-  controlled through `task.ext.args`.
+description: Ensembl Variant Effect Predictor (VEP). The output-file-format is controlled through `task.ext.args`.
 keywords:
   - annotation
   - vcf
@@ -231,3 +230,27 @@ maintainers:
   - "@maxulysse"
   - "@matthdsm"
   - "@nvnieuwk"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/ensembl-vep_htslib_perl-math-cdf_gzip_tar:9fcc7b58e4dee2be
+      build_id: bd-9fcc7b58e4dee2be_1
+      scan_id: sc-c0a4e2aae77e4b23_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/ensembl-vep_htslib_perl-math-cdf_gzip_tar:b03c7ec128dda169
+      build_id: bd-b03c7ec128dda169_1
+      scan_id: sc-ed2f79bf6e9a8ff7_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/ensembl-vep_htslib_perl-math-cdf_gzip_tar:19251da42e4a5cea
+      build_id: bd-19251da42e4a5cea_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/98/98923d9be82bd3522f744ee8b49e1e2fe7a0bca248f277ee6c23d54fbc2b3341/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/ensembl-vep_htslib_perl-math-cdf_gzip_tar:776bcd3aa00735a6
+      build_id: bd-776bcd3aa00735a6_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cb/cbbfaef4dbe3746f9688fa390be2422ed5bbbc312a37833d0444a9196fc7520e/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/ensemblvep/vep/.conda-lock/linux_amd64-bd-b03c7ec128dda169_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/ensemblvep/vep/.conda-lock/linux_arm64-bd-9fcc7b58e4dee2be_1.txt

@@ -1,6 +1,5 @@
 name: ensemblvep_download
-description: Ensembl Variant Effect Predictor (VEP). The cache downloading
-  options are controlled through `task.ext.args`.
+description: Ensembl Variant Effect Predictor (VEP). The cache downloading options are controlled through `task.ext.args`.
 keywords:
   - annotation
   - cache
@@ -93,3 +92,27 @@ authors:
   - "@maxulysse"
 maintainers:
   - "@maxulysse"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/ensembl-vep_perl-math-cdf_htslib_gzip_tar:c1c0c273bd53fb8b
+      build_id: bd-c1c0c273bd53fb8b_1
+      scan_id: sc-6fd4378e455b8f58_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/ensembl-vep_perl-math-cdf_htslib_gzip_tar:2a10ef64424e5424
+      build_id: bd-2a10ef64424e5424_1
+      scan_id: sc-d7618596d682cfe7_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/ensembl-vep_perl-math-cdf_htslib_gzip_tar:33fa84c7426c5730
+      build_id: bd-33fa84c7426c5730_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4f/4fdc029fd2520c88d38c5f710fa92f808bb5bc35273656c03c08bc10d207c0a1/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/ensembl-vep_perl-math-cdf_htslib_gzip_tar:2d5900f7914d39e9
+      build_id: bd-2d5900f7914d39e9_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f1/f1bd8c288f1a936a39db0ce35154ed782f5b948da2d80d0149fe036e0c690d5c/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/ensemblvep/download/.conda-lock/linux_amd64-bd-2a10ef64424e5424_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/ensemblvep/download/.conda-lock/linux_arm64-bd-c1c0c273bd53fb8b_1.txt
