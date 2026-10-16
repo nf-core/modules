@@ -4,7 +4,7 @@ description: |
   Options are passed via `ext.args` as `--option value` pairs:
   `gene_id_col` (default `gene_id`), `sample_id_col` (`experiment_accession`),
   `blocking_variables` (`;`-separated sample sheet columns, not combinable with a formula),
-  `subset_to_contrast_samples` (`FALSE`), `exclude_samples_col` and `exclude_samples_values` (`;`-separated),
+  `subset_to_contrast_samples` (`FALSE`, needs a contrast variable), `exclude_samples_col` and `exclude_samples_values` (`;`-separated),
   `filter_by_expr` (`FALSE`), `min_count` (`10`), `norm_method` (`TMM`), `test_method` (`qlf` for
   glmQLFit/glmQLFTest or `lrt` for glmFit/glmLRT), `robust` (`TRUE`), `prior_count` (`2`),
   `adjust_method` (`BH`) and `round_digits` (no rounding).

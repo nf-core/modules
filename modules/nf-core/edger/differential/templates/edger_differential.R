@@ -150,6 +150,9 @@ if (!is.null(opt\$contrast_string) && is.null(opt\$formula) && is.null(opt\$cont
 if (is.null(opt\$contrast_string) && any(sapply(opt[c('contrast_variable', 'reference_level', 'target_level')], is.null))){
     stop("Please provide either a formula with a comparison string, or a contrast variable with reference and target levels")
 }
+if (opt\$subset_to_contrast_samples && is.null(opt\$contrast_variable)){
+    stop("subset_to_contrast_samples requires a contrast variable")
+}
 if (!is.null(opt\$formula) && !is.null(opt\$blocking_variables)){
     stop("blocking_variables cannot be used with a formula: add the blocking variables to the formula instead")
 }

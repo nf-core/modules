@@ -90,7 +90,7 @@
             "nextflow": "25.10.2"
         }
     },
-    "mus_musculus - rnaseq - counts - batch - subset_to_contrast": {
+    "variancepartition_dream - batch - subset_to_contrast": {
         "content": [
             {
                 "bcv_plot": [
@@ -175,7 +175,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-10-16T11:25:01.346254858",
+        "timestamp": "2026-10-16T13:35:26.425139735",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.2"
@@ -267,97 +267,6 @@
             }
         ],
         "timestamp": "2026-10-16T11:25:57.423243411",
-        "meta": {
-            "nf-test": "0.9.5",
-            "nextflow": "25.10.2"
-        }
-    },
-    "mus_musculus - rnaseq - counts - treatment - multiple blocking - robust false": {
-        "content": [
-            {
-                "bcv_plot": [
-                    [
-                        {
-                            "id": "treatment_Control_Treated",
-                            "reference": "Control",
-                            "target": "Treated",
-                            "variable": "treatment"
-                        },
-                        "treatment_Control_Treated.edger.bcv.png"
-                    ]
-                ],
-                "md_plot": [
-                    [
-                        {
-                            "id": "treatment_Control_Treated",
-                            "reference": "Control",
-                            "target": "Treated",
-                            "variable": "treatment"
-                        },
-                        "treatment_Control_Treated.edger.mean_difference.png"
-                    ]
-                ],
-                "model": [
-                    [
-                        {
-                            "id": "treatment_Control_Treated",
-                            "reference": "Control",
-                            "target": "Treated",
-                            "variable": "treatment"
-                        },
-                        "treatment_Control_Treated.edger.model.txt:md5,f85173021a0b80d062413dc3a62fe144"
-                    ]
-                ],
-                "normalised_counts": [
-                    [
-                        {
-                            "id": "treatment_Control_Treated",
-                            "reference": "Control",
-                            "target": "Treated",
-                            "variable": "treatment"
-                        },
-                        "treatment_Control_Treated.normalised_counts.tsv:md5,8d90e2a6958f308e059c600c0b47b917"
-                    ]
-                ],
-                "rdata": [
-                    [
-                        {
-                            "id": "treatment_Control_Treated",
-                            "reference": "Control",
-                            "target": "Treated",
-                            "variable": "treatment"
-                        },
-                        "treatment_Control_Treated.DGEGLM.edger.rds"
-                    ]
-                ],
-                "results": [
-                    [
-                        {
-                            "id": "treatment_Control_Treated",
-                            "reference": "Control",
-                            "target": "Treated",
-                            "variable": "treatment"
-                        },
-                        "treatment_Control_Treated.edger.results.tsv:md5,a4c97198933eee08bd6c91bb32da3d8d"
-                    ]
-                ],
-                "session_info": [
-                    [
-                        {
-                            "id": "treatment_Control_Treated",
-                            "reference": "Control",
-                            "target": "Treated",
-                            "variable": "treatment"
-                        },
-                        "treatment_Control_Treated.R_sessionInfo.log"
-                    ]
-                ],
-                "versions": [
-                    "versions.yml:md5,aa16e2b7b23cebd7d7efa784b32f0ed1"
-                ]
-            }
-        ],
-        "timestamp": "2026-10-16T13:11:24.097591298",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.2"
@@ -545,7 +454,7 @@
             "nextflow": "25.10.2"
         }
     },
-    "mus_musculus - rnaseq - counts - formula + comparison - interaction": {
+    "variancepartition_dream - formula + comparison - interaction": {
         "content": [
             {
                 "bcv_plot": [
@@ -623,7 +532,98 @@
                 ]
             }
         ],
-        "timestamp": "2026-10-16T11:24:45.853392274",
+        "timestamp": "2026-10-16T13:35:01.514179791",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.2"
+        }
+    },
+    "variancepartition_dream - treatment - multiple blocking - robust false": {
+        "content": [
+            {
+                "bcv_plot": [
+                    [
+                        {
+                            "id": "treatment_Control_Treated",
+                            "reference": "Control",
+                            "target": "Treated",
+                            "variable": "treatment"
+                        },
+                        "treatment_Control_Treated.edger.bcv.png"
+                    ]
+                ],
+                "md_plot": [
+                    [
+                        {
+                            "id": "treatment_Control_Treated",
+                            "reference": "Control",
+                            "target": "Treated",
+                            "variable": "treatment"
+                        },
+                        "treatment_Control_Treated.edger.mean_difference.png"
+                    ]
+                ],
+                "model": [
+                    [
+                        {
+                            "id": "treatment_Control_Treated",
+                            "reference": "Control",
+                            "target": "Treated",
+                            "variable": "treatment"
+                        },
+                        "treatment_Control_Treated.edger.model.txt:md5,f85173021a0b80d062413dc3a62fe144"
+                    ]
+                ],
+                "normalised_counts": [
+                    [
+                        {
+                            "id": "treatment_Control_Treated",
+                            "reference": "Control",
+                            "target": "Treated",
+                            "variable": "treatment"
+                        },
+                        "treatment_Control_Treated.normalised_counts.tsv:md5,8d90e2a6958f308e059c600c0b47b917"
+                    ]
+                ],
+                "rdata": [
+                    [
+                        {
+                            "id": "treatment_Control_Treated",
+                            "reference": "Control",
+                            "target": "Treated",
+                            "variable": "treatment"
+                        },
+                        "treatment_Control_Treated.DGEGLM.edger.rds"
+                    ]
+                ],
+                "results": [
+                    [
+                        {
+                            "id": "treatment_Control_Treated",
+                            "reference": "Control",
+                            "target": "Treated",
+                            "variable": "treatment"
+                        },
+                        "treatment_Control_Treated.edger.results.tsv:md5,a4c97198933eee08bd6c91bb32da3d8d"
+                    ]
+                ],
+                "session_info": [
+                    [
+                        {
+                            "id": "treatment_Control_Treated",
+                            "reference": "Control",
+                            "target": "Treated",
+                            "variable": "treatment"
+                        },
+                        "treatment_Control_Treated.R_sessionInfo.log"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,aa16e2b7b23cebd7d7efa784b32f0ed1"
+                ]
+            }
+        ],
+        "timestamp": "2026-10-16T13:36:03.409439012",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.2"

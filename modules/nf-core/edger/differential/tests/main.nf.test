@@ -18,9 +18,9 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = Channel.of(['id': 'treatment_hND6_mCherry', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
+                input[0] = channel.of(['id': 'treatment_hND6_mCherry', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
                     .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
-                input[1] = Channel.of([
+                input[1] = channel.of([
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
@@ -46,9 +46,9 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = Channel.of(['id': 'treatment_hND6_mCherry_sample_number', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
+                input[0] = channel.of(['id': 'treatment_hND6_mCherry_sample_number', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
                     .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
-                input[1] = Channel.of([
+                input[1] = channel.of([
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
@@ -65,7 +65,7 @@ nextflow_process {
         }
     }
 
-    test("mus_musculus - rnaseq - counts - formula + comparison - interaction") {
+    test("variancepartition_dream - formula + comparison - interaction") {
 
         when {
             params {
@@ -73,13 +73,13 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     'id': 'genotype_WT_KO_treatment_Control_Treated',
                     'formula': '~ genotype * treatment',
                     'comparison': 'genotypeWT.treatmentTreated'
                 ])
                 .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
-                input[1] = Channel.of([
+                input[1] = channel.of([
                     [ id:'test' ],
                     file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/metadata.tsv", checkIfExists: true),
                     file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/counts.tsv", checkIfExists: true)
@@ -96,7 +96,7 @@ nextflow_process {
         }
     }
 
-    test("mus_musculus - rnaseq - counts - batch - subset_to_contrast") {
+    test("variancepartition_dream - batch - subset_to_contrast") {
 
         when {
             params {
@@ -104,9 +104,9 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = Channel.of(['id': 'batch_b1_b2', 'variable': 'batch', 'reference': 'b1', 'target': 'b2'])
+                input[0] = channel.of(['id': 'batch_b1_b2', 'variable': 'batch', 'reference': 'b1', 'target': 'b2'])
                     .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
-                input[1] = Channel.of([
+                input[1] = channel.of([
                     [ id:'test' ],
                     file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/metadata.tsv", checkIfExists: true),
                     file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/counts.tsv", checkIfExists: true)
@@ -131,9 +131,9 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = Channel.of(['id': 'treatment_hND6_mCherry', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
+                input[0] = channel.of(['id': 'treatment_hND6_mCherry', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
                     .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
-                input[1] = Channel.of([
+                input[1] = channel.of([
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
@@ -150,7 +150,7 @@ nextflow_process {
         }
     }
 
-    test("mus_musculus - rnaseq - counts - treatment - multiple blocking - robust false") {
+    test("variancepartition_dream - treatment - multiple blocking - robust false") {
 
         when {
             params {
@@ -158,9 +158,9 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = Channel.of(['id': 'treatment_Control_Treated', 'variable': 'treatment', 'reference': 'Control', 'target': 'Treated'])
+                input[0] = channel.of(['id': 'treatment_Control_Treated', 'variable': 'treatment', 'reference': 'Control', 'target': 'Treated'])
                     .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
-                input[1] = Channel.of([
+                input[1] = channel.of([
                     [ id:'test' ],
                     file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/metadata.tsv", checkIfExists: true),
                     file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/counts.tsv", checkIfExists: true)
@@ -185,9 +185,9 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = Channel.of(['id': 'treatment_hND6_mCherry', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
+                input[0] = channel.of(['id': 'treatment_hND6_mCherry', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
                     .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
-                input[1] = Channel.of([
+                input[1] = channel.of([
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
@@ -209,11 +209,14 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
-                input[0] = Channel.of(['id': 'treatment_hND6_mCherry', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
+                input[0] = channel.of(['id': 'treatment_hND6_mCherry', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
                     .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
-                input[1] = Channel.of([
+                input[1] = channel.of([
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
