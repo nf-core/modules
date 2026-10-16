@@ -3,9 +3,9 @@ process GRIDSS_SOMATICFILTER {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/gridss:2.13.2--h270b39a_0'
-        : 'quay.io/biocontainers/gridss:2.13.2--h270b39a_0'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a6/a6eb03d21e6da5af38f5f2dcae878eb1e7cd627ac3f7c83bda21ceff993b941d/data'
+:         'community.wave.seqera.io/library/gridss:2.13.2--7b2fca026d981d95' }"
 
     input:
     tuple val(meta), path(vcf)
