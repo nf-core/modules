@@ -40,7 +40,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"]).findAll { key, val -> key != "versions" },
+                    sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"]),
                     path(process.out.versions[0]).yaml
                 ).match() }
             )
@@ -78,7 +78,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"]).findAll { key, val -> key != "versions" },
+                    sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"]),
                     path(process.out.versions[0]).yaml
                 ).match() }
             )
@@ -115,7 +115,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"]).findAll { key, val -> key != "versions" },
+                    sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"]),
                     path(process.out.versions[0]).yaml
                 ).match() }
             )
@@ -153,7 +153,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"]).findAll { key, val -> key != "versions" },
+                    sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"]),
                     path(process.out.versions[0]).yaml
                 ).match() }
             )
@@ -191,7 +191,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"]).findAll { key, val -> key != "versions" },
+                    sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"]),
                     path(process.out.versions[0]).yaml
                 ).match() }
             )
@@ -228,7 +228,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"]).findAll { key, val -> key != "versions" },
+                    sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"]),
                     path(process.out.versions[0]).yaml
                 ).match() }
             )
@@ -265,7 +265,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out).findAll { key, val -> key != "versions" },
+                    sanitizeOutput(process.out),
                     path(process.out.versions[0]).yaml
                 ).match() }
             )
