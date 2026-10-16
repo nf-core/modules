@@ -24,7 +24,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.cafe_significant_trees,
+                    process.out.cafe_significant_trees.collect { file(it).name },
+                    file(process.out.cafe_significant_trees[0]).readLines().size(),
                     file(process.out.cafe_base_count[0]).readLines(),
                     file(process.out.cafe_report[0]).readLines()[3..4],
                     process.out.findAll { key, val -> key.startsWith("versions") }
