@@ -24,11 +24,9 @@ process INFERNAL_CMSCAN {
     script:
     def args        = task.ext.args   ?: ''
     def prefix      = task.ext.prefix ?: "${meta.id}"
-
     // Infernal requirement: --clanin must accompany --fmt 2 and --tblout
     def clan_opts   = clanin ? "--clanin ${clanin} --fmt 2 --oclan" : ""
     def tblout_arg  = "--tblout ${prefix}.tbl"
-
     """
     cmscan \\
         ${args} \\
@@ -45,7 +43,7 @@ process INFERNAL_CMSCAN {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.txt ${prefix}.tbl
-    gzip --no-name ${prefix}.txt ${prefix}.tbl
+    echo | gzip > ${prefix}.txt.gz
+    echo | gzip > ${prefix}.tbl
     """
 }
