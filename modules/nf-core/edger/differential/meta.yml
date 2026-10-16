@@ -1,0 +1,225 @@
+name: "edger_differential"
+description: |
+  Runs a differential expression analysis on a raw count matrix with edgeR,
+  using a generalised linear model with quasi-likelihood F-tests (default) or
+  likelihood ratio tests
+keywords:
+  - differential
+  - expression
+  - rna-seq
+  - edger
+  - glm
+  - quasi-likelihood
+tools:
+  - "edger":
+      description: "Empirical Analysis of Digital Gene Expression Data in R"
+      homepage: "https://bioconductor.org/packages/release/bioc/html/edgeR.html"
+      documentation: "https://bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf"
+      tool_dev_url: "https://git.bioconductor.org/packages/edgeR"
+      doi: "10.1093/bioinformatics/btp616"
+      licence:
+        - "GPL >=2"
+      identifier: biotools:edger
+  - "limma":
+      description: "Linear Models for Microarray Data"
+      homepage: "https://bioconductor.org/packages/release/bioc/html/limma.html"
+      documentation: "https://bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf"
+      tool_dev_url: "https://github.com/cran/limma"
+      doi: "10.18129/B9.bioc.limma"
+      licence:
+        - "LGPL >=3"
+      identifier: biotools:limma
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing contrast information. This can be used at the
+          workflow level to pass optional parameters to the module, e.g.
+          [ id:'contrast1', blocking:'patient' ].
+          Optional parameters can be passed to the module through ext.args.
+    - contrast_variable:
+        type: string
+        description: |
+          (Optional, required if reference and target are used) The column in the sample sheet that should be used to define groups for
+          comparison
+    - reference:
+        type: string
+        description: |
+          (Optional, required if contrast_variable and target are used) The value within the contrast_variable column of the sample sheet that
+          should be used to derive the reference samples
+    - target:
+        type: string
+        description: |
+          (Optional, required if contrast_variable and reference are used) The value within the contrast_variable column of the sample sheet that
+          should be used to derive the target samples
+    - formula:
+        type: string
+        description: (Optional, requires comparison if used) R formula string used
+          for modeling, e.g. '~ treatment'.
+    - comparison:
+        type: string
+        description: (Optional, mandatory if formula is used) Literal string
+          passed to `limma::makeContrasts`, e.g. 'treatmentmCherry'.
+  - - meta2:
+        type: map
+        description: |
+          Groovy map containing study-wide metadata related to the sample sheet
+          and matrix
+    - samplesheet:
+        type: file
+        description: Sample sheet file (CSV or TSV) with one row per sample
+        pattern: "*.{csv,tsv,txt}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+    - counts:
+        type: file
+        description: |
+          Raw (unnormalised) count matrix in CSV or TSV format with genes by row
+          and samples by column
+        pattern: "*.{csv,tsv,txt}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+output:
+  results:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. This can be used at the
+            workflow level to pass optional parameters to the module, e.g.
+            [ id:'contrast1', blocking:'patient' ].
+      - "*.edger.results.tsv":
+          type: file
+          description: TSV-format table of differential expression results as output by edgeR
+          pattern: "*.edger.results.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  md_plot:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. This can be used at the
+            workflow level to pass optional parameters to the module, e.g.
+            [ id:'contrast1', blocking:'patient' ].
+      - "*.edger.mean_difference.png":
+          type: file
+          description: edgeR mean difference (MD) plot
+          pattern: "*.edger.mean_difference.png"
+          ontologies:
+            - edam: http://edamontology.org/format_3603 # PNG
+  bcv_plot:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. This can be used at the
+            workflow level to pass optional parameters to the module, e.g.
+            [ id:'contrast1', blocking:'patient' ].
+      - "*.edger.bcv.png":
+          type: file
+          description: edgeR biological coefficient of variation (BCV) plot
+          pattern: "*.edger.bcv.png"
+          ontologies:
+            - edam: http://edamontology.org/format_3603 # PNG
+  rdata:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. This can be used at the
+            workflow level to pass optional parameters to the module, e.g.
+            [ id:'contrast1', blocking:'patient' ].
+      - "*.DGEGLM.edger.rds":
+          type: file
+          description: Serialised DGEGLM object (RDS)
+          pattern: "*.DGEGLM.edger.rds"
+          ontologies: []
+  model:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. This can be used at the
+            workflow level to pass optional parameters to the module, e.g.
+            [ id:'contrast1', blocking:'patient' ].
+      - "*.edger.model.txt":
+          type: file
+          description: Text file containing the model formula, the contrast string and the test used (QLF or LRT)
+          pattern: "*.edger.model.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_3671 # Plain text
+  norm_factors:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. This can be used at the
+            workflow level to pass optional parameters to the module, e.g.
+            [ id:'contrast1', blocking:'patient' ].
+      - "*.edger.norm_factors.tsv":
+          type: file
+          description: TSV-format table of library sizes and normalisation factors per sample
+          pattern: "*.edger.norm_factors.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  normalised_counts:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. This can be used at the
+            workflow level to pass optional parameters to the module, e.g.
+            [ id:'contrast1', blocking:'patient' ].
+      - "*.normalised_counts.tsv":
+          type: file
+          description: Normalised (log-CPM) TSV-format expression matrix with genes by row and samples by column
+          pattern: "*.normalised_counts.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  session_info:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information. This can be used at the
+            workflow level to pass optional parameters to the module, e.g.
+            [ id:'contrast1', blocking:'patient' ].
+      - "*.R_sessionInfo.log":
+          type: file
+          description: Dump of R sessionInfo
+          pattern: "*.R_sessionInfo.log"
+          ontologies:
+            - edam: http://edamontology.org/format_3671 # Plain text
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: string
+        description: The name of the process
+authors:
+  - "@HR-cruk"
+maintainers:
+  - "@HR-cruk"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/bioconductor-edger_bioconductor-limma:c4f388435e97989b
+      build_id: bd-c4f388435e97989b_1
+      scan_id: sc-1fd8fbedf5a03cc0_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/bioconductor-edger_bioconductor-limma:9157ebf19fbdc614
+      build_id: bd-9157ebf19fbdc614_1
+      scan_id: sc-965e9f5aa4dfa45b_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bioconductor-edger_bioconductor-limma:52bbdf90078cef7d
+      build_id: bd-52bbdf90078cef7d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/50/50c7985e75608e4fde881490b5c676741486a9b8a21fd937bcd66a39c664b47b/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bioconductor-edger_bioconductor-limma:4f624b15a27bcc31
+      build_id: bd-4f624b15a27bcc31_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e3/e326b161932d5fb9c57f0b524a04c8dafba07d9aa74ae9a2131ebe0e5d1943ce/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/edger/differential/.conda-lock/linux_amd64-bd-9157ebf19fbdc614_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/edger/differential/.conda-lock/linux_arm64-bd-c4f388435e97989b_1.txt
