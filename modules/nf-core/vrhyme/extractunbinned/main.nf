@@ -3,9 +3,9 @@ process VRHYME_EXTRACTUNBINNED {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vrhyme:1.1.0--pyhdfd78af_1':
-        'quay.io/biocontainers/vrhyme:1.1.0--pyhdfd78af_1' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e2/e2b5a580b1eb2e3b5d4c50ba78df05d4e49e0bb1dfc988e719306fa9efb21d65/data'
+:         'community.wave.seqera.io/library/vrhyme_python_setuptools:2e133279ed381753' }"
 
     input:
     tuple val(meta), path(membership)

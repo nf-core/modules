@@ -3,9 +3,9 @@ process VIRUSRECOM {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/virusrecom:1.4.0--pyhdfd78af_0':
-        'quay.io/biocontainers/virusrecom:1.4.0--pyhdfd78af_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bc/bc4e9e01ce104f8f1ba09daf74ec67846a1665a057418d6e06721e9396cf66ea/data'
+:         'community.wave.seqera.io/library/virusrecom:1.4.0--b0b2c64800fa6452' }"
 
     input:
     tuple val(meta), path(alignment), path(mapping), path(iwic)

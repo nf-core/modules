@@ -3,9 +3,9 @@ process HMMER_ESLREFORMAT {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hmmer:3.4--hb6cb901_4' :
-        'quay.io/biocontainers/hmmer:3.4--hb6cb901_4' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b1/b171806a7b780537073c1e9ffe50885ba7917d8072b5941a125698df1253c4f7/data'
+:         'community.wave.seqera.io/library/hmmer:3.4--ab3efa7c16f46920' }"
 
     input:
     tuple val(meta), path(seqfile)

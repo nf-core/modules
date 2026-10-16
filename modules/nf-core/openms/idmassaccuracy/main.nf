@@ -3,9 +3,9 @@ process OPENMS_IDMASSACCURACY {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/openms:3.4.1--h81ffffe_1' :
-        'quay.io/biocontainers/openms:3.4.1--h81ffffe_1' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/23/233b3693133c970e693ef74e8a599dd8984d987e4d3e298f43bf520dd184f754/data'
+:         'community.wave.seqera.io/library/openms:3.4.1--6825b96bd18a1e9e' }"
 
     input:
     tuple val(meta), path(mzmls), path(idxmls)

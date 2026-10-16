@@ -3,9 +3,9 @@ process DEEPTOOLS_COMPUTEMATRIX {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/deeptools:3.5.6--pyhdfd78af_0':
-        'quay.io/biocontainers/deeptools:3.5.6--pyhdfd78af_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ba/ba9641d61acf134c6b989b3af5f25bcd5aadb3faf692a41c00ba4cd25f99032e/data'
+:         'community.wave.seqera.io/library/deeptools:3.5.6--511a2b05870b9ec3' }"
 
     input:
     tuple val(meta),  path(bigwig)

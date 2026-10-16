@@ -3,9 +3,9 @@ process QUANTMSUTILS_MZMLSTATISTICS {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/quantms-utils:0.0.23--pyh7e72e81_0' :
-        'quay.io/biocontainers/quantms-utils:0.0.23--pyh7e72e81_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f6/f6b1fc16337b1024b203d734a5a5d33f95ed3f15c4a776e9b3de385156f491ad/data'
+:         'community.wave.seqera.io/library/quantms-utils_sdrf-pipelines_pandas_python_setuptools:c48b017900634b1e' }"
 
     input:
     tuple val(meta), path(ms_file)

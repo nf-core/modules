@@ -3,9 +3,9 @@ process XENGSORT_CLASSIFY {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/xengsort:2.2.1--pyhdfd78af_0':
-        'quay.io/biocontainers/xengsort:2.2.1--pyhdfd78af_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/69/69087e1b7e669b929b5ff8a8d41a1156508b0feb604417a0d3388fea5a0031f6/data'
+:         'community.wave.seqera.io/library/xengsort:2.2.1--e1cfb6b5a292adf6' }"
 
     input:
     tuple val(meta), path(reads)
