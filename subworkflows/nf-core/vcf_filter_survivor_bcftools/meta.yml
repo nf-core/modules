@@ -1,6 +1,9 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "vcf_filter_survivor_bcftools"
-description: Filter a VCF file of structural variants with SURVIVOR and bcftools
+description: |
+  Filter a VCF file of structural variants with SURVIVOR and/or bcftools, and
+  return the result as a bgzipped, tabixed VCF. Note that the nextflow.config
+  shipped with this subworkflow must be included for it to work properly.
 keywords:
   - filter
   - vcf
@@ -16,23 +19,29 @@ input:
       type: file
       description: |
         The input channel containing the VCF files to filter and, optionally,
-        BED files with regions to ignore. Pass an empty list for the BED file
-        to filter genome-wide.
+        BED files with regions to ignore (pattern: "*.bed"). Pass an empty list
+        for the BED file to filter genome-wide.
 
         Structure: [ val(meta), path(vcf), path(bed) ]
       pattern: "*.{vcf,vcf.gz}"
   - minsv:
       type: integer
-      description: Min SV size passed to SURVIVOR filter (-1 to disable)
+      description: Min SV size passed to SURVIVOR filter (-1 to disable), ignored if "survivor" is not in val_tools_to_use
   - maxsv:
       type: integer
-      description: Max SV size passed to SURVIVOR filter (-1 to disable)
+      description: Max SV size passed to SURVIVOR filter (-1 to disable), ignored if "survivor" is not in val_tools_to_use
   - minallelefreq:
       type: float
-      description: Min allele frequency passed to SURVIVOR filter (0-1)
+      description: Min allele frequency passed to SURVIVOR filter (0-1), ignored if "survivor" is not in val_tools_to_use
   - minnumreads:
       type: integer
-      description: Min number of reads supporting the SV passed to SURVIVOR filter (-1 to disable)
+      description: Min number of reads supporting the SV passed to SURVIVOR filter (-1 to disable), ignored if "survivor" is not in val_tools_to_use
+  - val_tools_to_use:
+      type: list
+      description: |
+        The filtering tools to run, one or more of: '["survivor", "bcftools"]'.
+        SURVIVOR filters on size, allele frequency, read support and regions to
+        ignore; bcftools filter applies expressions passed to its ext.args.
 output:
   - vcf:
       type: file
