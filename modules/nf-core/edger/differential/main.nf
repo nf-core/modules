@@ -3,9 +3,9 @@ process EDGER_DIFFERENTIAL {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6a/6a2f2fe71499172b13396822802714ac6111e212dbfa19f189f755f52604602d/data' :
-        'community.wave.seqera.io/library/bioconductor-edger:4.10.5--b2cb5dd1fa5dfb06' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/50/50c7985e75608e4fde881490b5c676741486a9b8a21fd937bcd66a39c664b47b/data'
+:         'community.wave.seqera.io/library/bioconductor-edger_bioconductor-limma:9157ebf19fbdc614' }"
 
     input:
     tuple val(meta), val(contrast_variable), val(reference), val(target), val(formula), val(comparison)
@@ -40,7 +40,9 @@ process EDGER_DIFFERENTIAL {
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":
+        r-base: \$(Rscript -e "cat(strsplit(version[['version.string']], ' ')[[1]][3])")
         bioconductor-edger: \$(Rscript -e "cat(as.character(packageVersion('edgeR')))")
+        bioconductor-limma: \$(Rscript -e "cat(as.character(packageVersion('limma')))")
     END_VERSIONS
     """
 }

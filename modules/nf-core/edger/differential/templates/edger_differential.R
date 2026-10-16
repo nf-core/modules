@@ -141,8 +141,20 @@ if (! opt\$test_method %in% c('qlf', 'lrt')){
     stop(paste0("Invalid test_method '", opt\$test_method, "': must be 'qlf' or 'lrt'"))
 }
 
+if (!is.null(opt\$formula) && is.null(opt\$contrast_string)){
+    stop("A formula requires a comparison string")
+}
+if (!is.null(opt\$contrast_string) && is.null(opt\$formula) && is.null(opt\$contrast_variable)){
+    stop("A comparison string requires either a formula or a contrast variable")
+}
 if (is.null(opt\$contrast_string) && any(sapply(opt[c('contrast_variable', 'reference_level', 'target_level')], is.null))){
-    stop("Please provide either a comparison string, or a contrast variable with reference and target levels")
+    stop("Please provide either a formula with a comparison string, or a contrast variable with reference and target levels")
+}
+if (!is.null(opt\$formula) && !is.null(opt\$blocking_variables)){
+    stop("blocking_variables cannot be used with a formula: add the blocking variables to the formula instead")
+}
+if (!is.null(opt\$reference_level) && identical(opt\$reference_level, opt\$target_level)){
+    stop(paste0("Reference and target levels must differ (both are '", opt\$reference_level, "')"))
 }
 
 for (file_input in c('count_file', 'sample_file')){
@@ -171,9 +183,9 @@ count.table <-
         header = TRUE,
         row.names = opt\$gene_id_col
     )
-sample.sheet <- read_delim_flexible(file = opt\$sample_file)
 
-# Deal with spaces that may be in sample column
+# Headers and column options both go through make.names() so they stay aligned
+sample.sheet <- read_delim_flexible(file = opt\$sample_file, check.names = TRUE)
 opt\$sample_id_col <- make.names(opt\$sample_id_col)
 
 if (! opt\$sample_id_col %in% colnames(sample.sheet)){
@@ -206,11 +218,10 @@ count.table <- count.table[, rownames(sample.sheet)]
 ################################################
 ################################################
 
+contrast_variable <- if (is.null(opt\$contrast_variable)) NULL else make.names(opt\$contrast_variable)
 blocking.vars <- c()
 
-if (!is.null(opt\$contrast_variable)) {
-    contrast_variable <- make.names(opt\$contrast_variable)
-
+if (!is.null(contrast_variable)) {
     if (!contrast_variable %in% colnames(sample.sheet)) {
         stop(paste0('Chosen contrast variable "', contrast_variable, '" not in sample sheet'))
     } else if (any(!c(opt\$reference_level, opt\$target_level) %in% sample.sheet[[contrast_variable]])) {
@@ -239,6 +250,7 @@ if (!is.null(opt\$contrast_variable)) {
 # Optionally, remove samples with specified values in a given field
 
 if ((! is.null(opt\$exclude_samples_col)) && (! is.null(opt\$exclude_samples_values))){
+    opt\$exclude_samples_col <- make.names(opt\$exclude_samples_col)
     exclude_values <- unlist(strsplit(opt\$exclude_samples_values, split = ';'))
 
     if (! opt\$exclude_samples_col %in% colnames(sample.sheet)){
@@ -249,6 +261,10 @@ if ((! is.null(opt\$exclude_samples_col)) && (! is.null(opt\$exclude_samples_val
     selected_samples <- rownames(sample.sheet)[! sample.sheet[[opt\$exclude_samples_col]] %in% exclude_values]
     count.table <- count.table[, selected_samples]
     sample.sheet <- sample.sheet[selected_samples, ]
+
+    if (is.null(opt\$contrast_string) && any(!c(opt\$reference_level, opt\$target_level) %in% sample.sheet[[contrast_variable]])) {
+        stop('Sample exclusion removed all samples of the reference or target level')
+    }
 }
 
 ################################################
@@ -271,11 +287,10 @@ if (!is.null(opt\$formula)) {
     }
 
     design <- model.matrix(as.formula(model), data = sample.sheet)
-    colnames(design) <- sub(
-        paste0('^', contrast_variable),
-        paste0(contrast_variable, '.'),
-        colnames(design)
-    )
+
+    contrast_levels <- levels(sample.sheet[[contrast_variable]])
+    contrast_cols <- match(paste0(contrast_variable, contrast_levels), colnames(design))
+    colnames(design)[contrast_cols] <- paste0(contrast_variable, '.', contrast_levels)
 }
 colnames(design) <- make.names(colnames(design))
 cat("Design matrix columns:\n   ", paste(colnames(design), collapse = ", "), "\n")
@@ -286,16 +301,10 @@ if (!is.null(opt\$contrast_string)) {
     treatment_target <- make.names(paste0(contrast_variable, ".", opt\$target_level))
     treatment_reference <- make.names(paste0(contrast_variable, ".", opt\$reference_level))
 
-    # A level absent from the design (e.g. dropped as collinear) is compared against zero
-    if ((treatment_target %in% colnames(design)) && (treatment_reference %in% colnames(design))) {
-        contrast_string <- paste0(treatment_target, "-", treatment_reference)
-    } else if (treatment_target %in% colnames(design)) {
-        contrast_string <- paste0(treatment_target, "- 0")
-    } else if (treatment_reference %in% colnames(design)) {
-        contrast_string <- paste0("0 - ", treatment_reference)
-    } else {
-        stop(paste0(treatment_target, " and ", treatment_reference, " not found in design matrix"))
+    if (!all(c(treatment_target, treatment_reference) %in% colnames(design))) {
+        stop(paste0(treatment_target, " and/or ", treatment_reference, " not found in design matrix"))
     }
+    contrast_string <- paste0(treatment_target, "-", treatment_reference)
 }
 cat("Using contrast string:", contrast_string, "\n")
 contrast.matrix <- makeContrasts(contrasts = contrast_string, levels = colnames(design))
@@ -387,7 +396,9 @@ sink()
 writeLines(
     c(
         '"${task.process}":',
-        paste('    bioconductor-edger:', as.character(packageVersion('edgeR')))
+        paste('    r-base:', strsplit(version[['version.string']], ' ')[[1]][3]),
+        paste('    bioconductor-edger:', as.character(packageVersion('edgeR'))),
+        paste('    bioconductor-limma:', as.character(packageVersion('limma')))
     ),
     'versions.yml'
 )
