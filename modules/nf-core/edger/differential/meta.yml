@@ -2,7 +2,13 @@ name: "edger_differential"
 description: |
   Runs a differential expression analysis on a raw count matrix with edgeR,
   using a generalised linear model with quasi-likelihood F-tests (default) or
-  likelihood ratio tests
+  likelihood ratio tests. The default quasi-likelihood method is the one
+  introduced in edgeR 4 (Chen et al. 2025, doi:10.1093/nar/gkaf018).
+  Analysis options are passed through ext.args: probe_id_col, sample_id_col,
+  blocking_variables, subset_to_contrast_samples, exclude_samples_col,
+  exclude_samples_values, filter_by_expr, norm_method, robust, test,
+  adjust.method, prior_count and round_digits. Their defaults and allowed
+  values are documented at the top of templates/edger_differential.R.
 keywords:
   - differential
   - expression
@@ -24,8 +30,8 @@ tools:
       description: "Linear Models for Microarray Data"
       homepage: "https://bioconductor.org/packages/release/bioc/html/limma.html"
       documentation: "https://bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf"
-      tool_dev_url: "https://github.com/cran/limma"
-      doi: "10.18129/B9.bioc.limma"
+      tool_dev_url: "https://git.bioconductor.org/packages/limma"
+      doi: "10.1093/nar/gkv007"
       licence:
         - "LGPL >=3"
       identifier: biotools:limma
@@ -33,10 +39,10 @@ input:
   - - meta:
         type: map
         description: |
-          Groovy Map containing contrast information. This can be used at the
-          workflow level to pass optional parameters to the module, e.g.
-          [ id:'contrast1', blocking:'patient' ].
-          Optional parameters can be passed to the module through ext.args.
+          Groovy Map containing contrast information, e.g. [ id:'contrast1' ].
+          Optional parameters such as blocking variables are not read from the
+          meta map; pass them through ext.args, e.g.
+          `--blocking_variables ${meta.blocking}`.
     - contrast_variable:
         type: string
         description: |
@@ -86,15 +92,16 @@ output:
     - - meta:
           type: map
           description: |
-            Groovy Map containing contrast information. This can be used at the
-            workflow level to pass optional parameters to the module, e.g.
-            [ id:'contrast1', blocking:'patient' ].
+            Groovy Map containing contrast information, e.g. [ id:'contrast1' ]
       - "*.edger.results.tsv":
           type: file
           description: |
-            TSV-format table of differential expression results as output by
-            edgeR. The adjusted p-value column is named `FDR`, or `FWER` when
-            `adjust.method` is `bonferroni` or `holm`.
+            TSV-format table of differential expression results from edgeR
+            `topTags`, with one row per feature in input order. Columns are the
+            feature ID (named after `probe_id_col`), `logFC`, `logCPM`, `F`
+            (QLF) or `LR` (LRT), `PValue` and the adjusted p-value. The adjusted
+            p-value column is `FDR` for `adjust.method` BH, BY or fdr, `FWER`
+            for holm, hochberg, hommel or bonferroni, and absent for none.
           pattern: "*.edger.results.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -102,9 +109,7 @@ output:
     - - meta:
           type: map
           description: |
-            Groovy Map containing contrast information. This can be used at the
-            workflow level to pass optional parameters to the module, e.g.
-            [ id:'contrast1', blocking:'patient' ].
+            Groovy Map containing contrast information, e.g. [ id:'contrast1' ]
       - "*.edger.mean_difference.png":
           type: file
           description: edgeR mean difference (MD) plot
@@ -115,9 +120,7 @@ output:
     - - meta:
           type: map
           description: |
-            Groovy Map containing contrast information. This can be used at the
-            workflow level to pass optional parameters to the module, e.g.
-            [ id:'contrast1', blocking:'patient' ].
+            Groovy Map containing contrast information, e.g. [ id:'contrast1' ]
       - "*.edger.bcv.png":
           type: file
           description: edgeR biological coefficient of variation (BCV) plot
@@ -128,9 +131,7 @@ output:
     - - meta:
           type: map
           description: |
-            Groovy Map containing contrast information. This can be used at the
-            workflow level to pass optional parameters to the module, e.g.
-            [ id:'contrast1', blocking:'patient' ].
+            Groovy Map containing contrast information, e.g. [ id:'contrast1' ]
       - "*.DGEGLM.edger.rds":
           type: file
           description: Serialised DGEGLM object (RDS)
@@ -140,9 +141,7 @@ output:
     - - meta:
           type: map
           description: |
-            Groovy Map containing contrast information. This can be used at the
-            workflow level to pass optional parameters to the module, e.g.
-            [ id:'contrast1', blocking:'patient' ].
+            Groovy Map containing contrast information, e.g. [ id:'contrast1' ]
       - "*.edger.model.txt":
           type: file
           description: Text file containing the model formula, the contrast string and the test used (QLF or LRT)
@@ -153,9 +152,7 @@ output:
     - - meta:
           type: map
           description: |
-            Groovy Map containing contrast information. This can be used at the
-            workflow level to pass optional parameters to the module, e.g.
-            [ id:'contrast1', blocking:'patient' ].
+            Groovy Map containing contrast information, e.g. [ id:'contrast1' ]
       - "*.edger.norm_factors.tsv":
           type: file
           description: TSV-format table of library sizes and normalisation factors per sample
@@ -166,12 +163,14 @@ output:
     - - meta:
           type: map
           description: |
-            Groovy Map containing contrast information. This can be used at the
-            workflow level to pass optional parameters to the module, e.g.
-            [ id:'contrast1', blocking:'patient' ].
+            Groovy Map containing contrast information, e.g. [ id:'contrast1' ]
       - "*.normalised_counts.tsv":
           type: file
-          description: Normalised (log-CPM) TSV-format expression matrix with genes by row and samples by column
+          description: |
+            Normalised log2-CPM TSV-format expression matrix with genes by row
+            and samples by column. Includes all features, including any removed
+            by filter_by_expr, computed with the effective library sizes of the
+            fitted data.
           pattern: "*.normalised_counts.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -179,9 +178,7 @@ output:
     - - meta:
           type: map
           description: |
-            Groovy Map containing contrast information. This can be used at the
-            workflow level to pass optional parameters to the module, e.g.
-            [ id:'contrast1', blocking:'patient' ].
+            Groovy Map containing contrast information, e.g. [ id:'contrast1' ]
       - "*.R_sessionInfo.log":
           type: file
           description: Dump of R sessionInfo

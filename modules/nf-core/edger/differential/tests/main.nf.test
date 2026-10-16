@@ -25,7 +25,7 @@ nextflow_process {
                     reference: 'hND6',
                     target: 'mCherry'
                 ])
-                .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
+                .map { m -> tuple(m, m.variable, m.reference, m.target, m.formula, m.comparison) }
 
                 input[1] = Channel.of([
                     [ id:'test' ],
@@ -37,10 +37,10 @@ nextflow_process {
         }
 
         then {
-            assert process.success
             assertAll(
+                { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"]),
+                    sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"]).findAll { key, val -> key != "versions" },
                     path(process.out.versions[0]).yaml
                 ).match() }
             )
@@ -63,7 +63,7 @@ nextflow_process {
                     reference: 'hND6',
                     target: 'mCherry'
                 ])
-                .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
+                .map { m -> tuple(m, m.variable, m.reference, m.target, m.formula, m.comparison) }
 
                 input[1] = Channel.of([
                     [ id:'test' ],
@@ -75,10 +75,10 @@ nextflow_process {
         }
 
         then {
-            assert process.success
             assertAll(
+                { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"]),
+                    sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"]).findAll { key, val -> key != "versions" },
                     path(process.out.versions[0]).yaml
                 ).match() }
             )
@@ -100,7 +100,7 @@ nextflow_process {
                     formula: '~ treatment',
                     comparison: 'treatmentmCherry'
                 ])
-                .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
+                .map { m -> tuple(m, m.variable, m.reference, m.target, m.formula, m.comparison) }
 
                 input[1] = Channel.of([
                     [ id:'test' ],
@@ -112,10 +112,10 @@ nextflow_process {
         }
 
         then {
-            assert process.success
             assertAll(
+                { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"]),
+                    sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"]).findAll { key, val -> key != "versions" },
                     path(process.out.versions[0]).yaml
                 ).match() }
             )
@@ -138,7 +138,7 @@ nextflow_process {
                     reference: 'hND6',
                     target: 'mCherry'
                 ])
-                .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
+                .map { m -> tuple(m, m.variable, m.reference, m.target, m.formula, m.comparison) }
 
                 input[1] = Channel.of([
                     [ id:'test' ],
@@ -150,10 +150,48 @@ nextflow_process {
         }
 
         then {
-            assert process.success
             assertAll(
+                { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"]),
+                    sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"]).findAll { key, val -> key != "versions" },
+                    path(process.out.versions[0]).yaml
+                ).match() }
+            )
+        }
+    }
+
+    test("mus_musculus - SRP254919 salmon gene counts - contrast variable - exclude samples + TMMwsp + non-robust") {
+
+        config "./nextflow.config"
+
+        when {
+            params {
+                module_args = '--exclude_samples_col sample_title --exclude_samples_values mCherry_3;hND6_3 --norm_method TMMwsp --robust FALSE --round_digits 6'
+            }
+            process {
+                """
+                input[0] = Channel.of([
+                    id: 'treatment_mCherry_hND6',
+                    variable: 'treatment',
+                    reference: 'hND6',
+                    target: 'mCherry'
+                ])
+                .map { m -> tuple(m, m.variable, m.reference, m.target, m.formula, m.comparison) }
+
+                input[1] = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"]).findAll { key, val -> key != "versions" },
                     path(process.out.versions[0]).yaml
                 ).match() }
             )
@@ -175,7 +213,7 @@ nextflow_process {
                     formula: '~ genotype * treatment',
                     comparison: 'genotypeWT.treatmentTreated'
                 ])
-                .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
+                .map { m -> tuple(m, m.variable, m.reference, m.target, m.formula, m.comparison) }
 
                 input[1] = Channel.of([
                     [ id:'test' ],
@@ -187,10 +225,10 @@ nextflow_process {
         }
 
         then {
-            assert process.success
             assertAll(
+                { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"]),
+                    sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"]).findAll { key, val -> key != "versions" },
                     path(process.out.versions[0]).yaml
                 ).match() }
             )
@@ -212,7 +250,7 @@ nextflow_process {
                     reference: 'hND6',
                     target: 'mCherry'
                 ])
-                .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
+                .map { m -> tuple(m, m.variable, m.reference, m.target, m.formula, m.comparison) }
 
                 input[1] = Channel.of([
                     [ id:'test' ],
@@ -224,10 +262,10 @@ nextflow_process {
         }
 
         then {
-            assert process.success
             assertAll(
+                { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out),
+                    sanitizeOutput(process.out).findAll { key, val -> key != "versions" },
                     path(process.out.versions[0]).yaml
                 ).match() }
             )

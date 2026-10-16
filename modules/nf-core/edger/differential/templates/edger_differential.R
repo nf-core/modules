@@ -62,12 +62,39 @@ nullify <- function(x) {
   if (is.character(x) && (tolower(x) == "null" || x == "")) NULL else x
 }
 
+#' Stop if an option is not one of the allowed values
+#'
+#' @param name Option name in opt
+#' @param choices Allowed values
+
+check_choice <- function(name, choices) {
+    if (! opt[[name]] %in% choices) {
+        stop(paste0("Invalid ", name, " '", opt[[name]], "': must be one of ", paste(choices, collapse = ', ')))
+    }
+}
+
 ################################################
 ################################################
 ## PARSE PARAMETERS FROM NEXTFLOW             ##
 ################################################
 ################################################
 
+# Options settable through ext.args (--option value):
+#   probe_id_col                Feature ID column in the count matrix (gene_id)
+#   sample_id_col               Sample ID column in the sample sheet (experiment_accession)
+#   blocking_variables          ';'-separated sample sheet columns added to the
+#                               contrast-variable design; ignored with a formula
+#   subset_to_contrast_samples  Keep only reference and target samples (FALSE)
+#   exclude_samples_col         Sample sheet column used to exclude samples
+#   exclude_samples_values      ';'-separated values of exclude_samples_col to drop
+#   filter_by_expr              Filter features with filterByExpr() (FALSE)
+#   norm_method                 normLibSizes() method: TMM, TMMwsp, RLE,
+#                               upperquartile or none (TMM)
+#   robust                      Robust estimateDisp() and glmQLFit() (TRUE)
+#   test                        QLF (glmQLFit/glmQLFTest) or LRT (glmFit/glmLRT)
+#   adjust.method               p.adjust() method used by topTags() (BH)
+#   prior_count                 Prior count for log2-CPM normalised counts (2)
+#   round_digits                Decimal places for output tables (no rounding)
 opt <- list(
     output_prefix = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix'),
     count_file = '$counts',
@@ -84,11 +111,11 @@ opt <- list(
     exclude_samples_col = NULL,
     exclude_samples_values = NULL,
     filter_by_expr = FALSE,
-    norm_method = "TMM",         # normLibSizes
-    robust = TRUE,               # estimateDisp / glmQLFit
-    test = "QLF",                # QLF or LRT
-    adjust.method = "BH",        # topTags
-    prior.count = 2,             # cpm, for normalised counts
+    norm_method = "TMM",
+    robust = TRUE,
+    test = "QLF",
+    adjust.method = "BH",
+    prior_count = 2,
     round_digits = NULL
 )
 opt_types <- lapply(opt, class)
@@ -116,9 +143,9 @@ if ( ! is.null(opt\$round_digits)){
 keys <- c("formula", "contrast_string", "contrast_variable", "reference_level", "target_level")
 opt[keys] <- lapply(opt[keys], nullify)
 
-if (! opt\$test %in% c('QLF', 'LRT')){
-    stop(paste0("Invalid test '", opt\$test, "': must be one of QLF or LRT"))
-}
+check_choice('test', c('QLF', 'LRT'))
+check_choice('norm_method', c('TMM', 'TMMwsp', 'RLE', 'upperquartile', 'none'))
+check_choice('adjust.method', p.adjust.methods)
 
 # Check file inputs are valid
 
@@ -290,11 +317,9 @@ if (!is.null(opt\$formula)) {
 
     design <- model.matrix(as.formula(model), data = sample.sheet)
 
-    colnames(design) <- sub(
-        paste0('^', contrast_variable),
-        paste0(contrast_variable, '.'),
-        colnames(design)
-    )
+    # The contrast variable comes first, so its levels are the leading columns
+    contrast_levels <- levels(sample.sheet[[contrast_variable]])
+    colnames(design)[seq_along(contrast_levels)] <- paste0(contrast_variable, '.', contrast_levels)
     colnames(design) <- make.names(colnames(design))
     cat("Final column names after make.names():\n")
     print(colnames(design))
@@ -332,7 +357,11 @@ contrast.matrix <- makeContrasts(contrasts = contrast_string, levels = colnames(
 ################################################
 ################################################
 
-y <- DGEList(counts = as.matrix(count.table), samples = sample.sheet)
+count.matrix <- as.matrix(count.table)
+
+# A 'group' column in the sample sheet becomes the DGEList group; it is unused
+# because every edgeR call below is given the design
+y <- DGEList(counts = count.matrix, samples = sample.sheet)
 
 if (as.logical(opt\$filter_by_expr)) {
     keep <- filterByExpr(y, design)
@@ -370,11 +399,7 @@ cat("Saving results for ", contrast_string, " ...\n", sep = "")
 # Differential expression table
 
 if (! is.null(opt\$round_digits)){
-    comp.results <- data.frame(
-        apply(comp.results, 2, function(x) round(x, opt\$round_digits)),
-        check.names = FALSE,
-        row.names = rownames(comp.results)
-    )
+    comp.results <- round(comp.results, opt\$round_digits)
 }
 out_df <- cbind(
     setNames(data.frame(rownames(comp.results)), opt\$probe_id_col),
@@ -389,11 +414,17 @@ write.table(
     quote = FALSE
 )
 
-# Normalised counts (log2 CPM)
+# Normalised counts (log2 CPM) for all features, including any removed by
+# filterByExpr(), using the effective library sizes of the fitted data
 
-norm_counts <- cpm(y, log = TRUE, prior.count = as.numeric(opt\$prior.count))
+norm_counts <- cpm(
+    count.matrix,
+    lib.size = getNormLibSizes(y),
+    log = TRUE,
+    prior.count = as.numeric(opt\$prior_count)
+)
 if (! is.null(opt\$round_digits)){
-    norm_counts <- apply(norm_counts, 2, function(x) round(x, opt\$round_digits))
+    norm_counts <- round(norm_counts, opt\$round_digits)
 }
 norm_counts_df <- data.frame(
     setNames(data.frame(rownames(norm_counts)), opt\$probe_id_col),
