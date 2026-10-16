@@ -129,14 +129,14 @@ maintainers:
   - "@palakpsheth"
 containers:
   docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/htslib_vardictrust:0c960eaccc36f17b
+      build_id: bd-0c960eaccc36f17b_1
+      scan_id: sc-deb128885f61dc65_1
     linux/amd64:
       name: community.wave.seqera.io/library/htslib_vardictrust:913eef801f19dc83
       build_id: bd-913eef801f19dc83_1
       scan_id: sc-b8c13a31e0ccdee7_1
-    linux/arm64:
-      name: community.wave.seqera.io/library/htslib_vardictrust:0c960eaccc36f17b
-      build_id: ""
-      scan_id: sc-deb128885f61dc65_1
   singularity:
     linux/amd64:
       name: oras://community.wave.seqera.io/library/htslib_vardictrust:d7caf6420beb2d12
@@ -144,8 +144,10 @@ containers:
       https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/12/12806f94133378ff8728b41f16ce19a669f61750f18db4ba3563af807ad45cc6/data
     linux/arm64:
       name: oras://community.wave.seqera.io/library/htslib_vardictrust:8fea51266022d03d
-      build_id: ""
+      build_id: bd-8fea51266022d03d_1
       https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/12/1236f39bffb2586bc6388b4578f0324e72af14f1cb708208b2b418845656c348/data
   conda:
     linux/amd64:
       lock_file: modules/nf-core/vardictrust/.conda-lock/linux_amd64-bd-913eef801f19dc83_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/vardictrust/.conda-lock/linux_arm64-bd-0c960eaccc36f17b_1.txt
