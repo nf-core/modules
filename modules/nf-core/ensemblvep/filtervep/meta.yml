@@ -93,25 +93,25 @@ maintainers:
   - "@ramprasadn"
 containers:
   docker:
-    linux/amd64:
-      name: community.wave.seqera.io/library/ensembl-vep_perl-math-cdf_htslib_gzip_tar:2a10ef64424e5424
-      build_id: bd-2a10ef64424e5424_1
-      scan_id: sc-d7618596d682cfe7_1
     linux/arm64:
-      name: community.wave.seqera.io/library/ensembl-vep_perl-math-cdf_htslib_gzip_tar:c1c0c273bd53fb8b
-      build_id: bd-c1c0c273bd53fb8b_1
-      scan_id: sc-6fd4378e455b8f58_1
+      name: community.wave.seqera.io/library/ensembl-vep_perl-math-cdf_htslib_gzip_tar:e6eb32f698e90ff9
+      build_id: bd-e6eb32f698e90ff9_1
+      scan_id: sc-2e6cc46c3b6850e4_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/ensembl-vep_perl-math-cdf_htslib_gzip_tar:43f77a48cc79bf38
+      build_id: bd-43f77a48cc79bf38_1
+      scan_id: sc-3a8bc9e8b7a23fbd_1
   singularity:
-    linux/arm64:
-      name: oras://community.wave.seqera.io/library/ensembl-vep_perl-math-cdf_htslib_gzip_tar:33fa84c7426c5730
-      build_id: bd-33fa84c7426c5730_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4f/4fdc029fd2520c88d38c5f710fa92f808bb5bc35273656c03c08bc10d207c0a1/data
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/ensembl-vep_perl-math-cdf_htslib_gzip_tar:2d5900f7914d39e9
-      build_id: bd-2d5900f7914d39e9_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f1/f1bd8c288f1a936a39db0ce35154ed782f5b948da2d80d0149fe036e0c690d5c/data
+      name: oras://community.wave.seqera.io/library/ensembl-vep_perl-math-cdf_htslib_gzip_tar:6e6c3d4e072709c6
+      build_id: bd-6e6c3d4e072709c6_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6f/6febf703e6df28e6259f8b382a75e16cd7039be1da722a8ee716004479b82458/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/ensembl-vep_perl-math-cdf_htslib_gzip_tar:15d73ac87d7001f6
+      build_id: bd-15d73ac87d7001f6_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9e/9ea41e8eb295f3fc4aa793b9ac9a8124b019bbb74b5a80622791b1eab5a983d2/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/ensemblvep/filtervep/.conda-lock/linux_amd64-bd-2a10ef64424e5424_1.txt
+      lock_file: modules/nf-core/ensemblvep/filtervep/.conda-lock/linux_amd64-bd-43f77a48cc79bf38_1.txt
     linux/arm64:
-      lock_file: modules/nf-core/ensemblvep/filtervep/.conda-lock/linux_arm64-bd-c1c0c273bd53fb8b_1.txt
+      lock_file: modules/nf-core/ensemblvep/filtervep/.conda-lock/linux_arm64-bd-e6eb32f698e90ff9_1.txt

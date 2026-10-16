@@ -233,24 +233,24 @@ maintainers:
 containers:
   docker:
     linux/arm64:
-      name: community.wave.seqera.io/library/ensembl-vep_htslib_perl-math-cdf_gzip_tar:9fcc7b58e4dee2be
-      build_id: bd-9fcc7b58e4dee2be_1
-      scan_id: sc-c0a4e2aae77e4b23_1
+      name: community.wave.seqera.io/library/ensembl-vep_perl-math-cdf_htslib_gzip_tar:e6eb32f698e90ff9
+      build_id: bd-e6eb32f698e90ff9_1
+      scan_id: sc-2e6cc46c3b6850e4_1
     linux/amd64:
-      name: community.wave.seqera.io/library/ensembl-vep_htslib_perl-math-cdf_gzip_tar:b03c7ec128dda169
-      build_id: bd-b03c7ec128dda169_1
-      scan_id: sc-ed2f79bf6e9a8ff7_1
+      name: community.wave.seqera.io/library/ensembl-vep_perl-math-cdf_htslib_gzip_tar:43f77a48cc79bf38
+      build_id: bd-43f77a48cc79bf38_1
+      scan_id: sc-3a8bc9e8b7a23fbd_1
   singularity:
-    linux/arm64:
-      name: oras://community.wave.seqera.io/library/ensembl-vep_htslib_perl-math-cdf_gzip_tar:19251da42e4a5cea
-      build_id: bd-19251da42e4a5cea_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/98/98923d9be82bd3522f744ee8b49e1e2fe7a0bca248f277ee6c23d54fbc2b3341/data
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/ensembl-vep_htslib_perl-math-cdf_gzip_tar:776bcd3aa00735a6
-      build_id: bd-776bcd3aa00735a6_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cb/cbbfaef4dbe3746f9688fa390be2422ed5bbbc312a37833d0444a9196fc7520e/data
+      name: oras://community.wave.seqera.io/library/ensembl-vep_perl-math-cdf_htslib_gzip_tar:6e6c3d4e072709c6
+      build_id: bd-6e6c3d4e072709c6_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6f/6febf703e6df28e6259f8b382a75e16cd7039be1da722a8ee716004479b82458/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/ensembl-vep_perl-math-cdf_htslib_gzip_tar:15d73ac87d7001f6
+      build_id: bd-15d73ac87d7001f6_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9e/9ea41e8eb295f3fc4aa793b9ac9a8124b019bbb74b5a80622791b1eab5a983d2/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/ensemblvep/vep/.conda-lock/linux_amd64-bd-b03c7ec128dda169_1.txt
+      lock_file: modules/nf-core/ensemblvep/vep/.conda-lock/linux_amd64-bd-43f77a48cc79bf38_1.txt
     linux/arm64:
-      lock_file: modules/nf-core/ensemblvep/vep/.conda-lock/linux_arm64-bd-9fcc7b58e4dee2be_1.txt
+      lock_file: modules/nf-core/ensemblvep/vep/.conda-lock/linux_arm64-bd-e6eb32f698e90ff9_1.txt
