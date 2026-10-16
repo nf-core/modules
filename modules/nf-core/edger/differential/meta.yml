@@ -1,0 +1,198 @@
+name: edger_differential
+description: Runs a differential expression analysis on count data with edgeR
+keywords:
+  - differential
+  - expression
+  - rna-seq
+  - counts
+  - edger
+tools:
+  - edger:
+      description: Empirical Analysis of Digital Gene Expression Data in R
+      homepage: https://bioconductor.org/packages/release/bioc/html/edgeR.html
+      documentation: https://bioconductor.org/packages/release/bioc/vignettes/edgeR/inst/doc/edgeRUsersGuide.pdf
+      tool_dev_url: https://code.bioconductor.org/browse/edgeR/
+      doi: 10.1093/bioinformatics/btp616
+      licence:
+        - GPL >=2
+      identifier: biotools:edger
+input:
+  - - meta:
+        type: map
+        description: "Groovy Map containing contrast information, e.g. [ id:'contrast1', blocking:'patient' ].
+
+          This can be used at the workflow level to pass optional parameters to the module via ext.args,
+
+          e.g. '--blocking_variables $meta.blocking'."
+    - contrast_variable:
+        type: string
+        description: (Optional, required if reference and target are used) The column in the sample sheet that should be used to define groups for comparison
+    - reference:
+        type: string
+        description: (Optional, required if contrast_variable and target are used) The value within the contrast_variable column of the sample sheet that should be used to derive the reference samples
+    - target:
+        type: string
+        description: (Optional, required if contrast_variable and reference are used) The value within the contrast_variable column of the sample sheet that should be used to derive the target samples
+    - formula:
+        type: string
+        description: (Optional, requires comparison if used) R formula string used to build the design matrix, e.g. '~ genotype * treatment'
+    - comparison:
+        type: string
+        description: (Optional, mandatory if formula is used) Literal contrast string passed to `limma::makeContrasts`, using design matrix column names after `make.names()`, e.g. 'genotypeWT.treatmentTreated'
+  - - meta2:
+        type: map
+        description: Groovy map containing study-wide metadata related to the sample sheet and count matrix
+    - samplesheet:
+        type: file
+        description: CSV or TSV sample sheet with one row per sample
+        pattern: "*.{csv,tsv,txt}"
+        ontologies:
+          - edam: http://edamontology.org/format_3752
+          - edam: http://edamontology.org/format_3475
+    - counts:
+        type: file
+        description: CSV or TSV raw count matrix with features by row and samples by column. Columns not matching a sample in the sample sheet (e.g. gene names) are ignored
+        pattern: "*.{csv,tsv,txt}"
+        ontologies:
+          - edam: http://edamontology.org/format_3752
+          - edam: http://edamontology.org/format_3475
+output:
+  results:
+    - - meta:
+          type: map
+          description: "Groovy Map containing contrast information, e.g. [ id:'contrast1', blocking:'patient' ].
+
+            This can be used at the workflow level to pass optional parameters to the module via ext.args,
+
+            e.g. '--blocking_variables $meta.blocking'."
+      - "*.edger.results.tsv":
+          type: file
+          description: TSV table of differential expression statistics (logFC, logCPM, F or LR, PValue, FDR) as output by edgeR topTags
+          pattern: "*.edger.results.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  md_plot:
+    - - meta:
+          type: map
+          description: "Groovy Map containing contrast information, e.g. [ id:'contrast1', blocking:'patient' ].
+
+            This can be used at the workflow level to pass optional parameters to the module via ext.args,
+
+            e.g. '--blocking_variables $meta.blocking'."
+      - "*.edger.mean_difference.png":
+          type: file
+          description: Mean-difference (MD) plot of the tested contrast
+          pattern: "*.edger.mean_difference.png"
+          ontologies:
+            - edam: http://edamontology.org/format_3603
+  bcv_plot:
+    - - meta:
+          type: map
+          description: "Groovy Map containing contrast information, e.g. [ id:'contrast1', blocking:'patient' ].
+
+            This can be used at the workflow level to pass optional parameters to the module via ext.args,
+
+            e.g. '--blocking_variables $meta.blocking'."
+      - "*.edger.bcv.png":
+          type: file
+          description: Biological coefficient of variation (BCV) plot of the estimated dispersions
+          pattern: "*.edger.bcv.png"
+          ontologies:
+            - edam: http://edamontology.org/format_3603
+  rdata:
+    - - meta:
+          type: map
+          description: "Groovy Map containing contrast information, e.g. [ id:'contrast1', blocking:'patient' ].
+
+            This can be used at the workflow level to pass optional parameters to the module via ext.args,
+
+            e.g. '--blocking_variables $meta.blocking'."
+      - "*.DGEGLM.edger.rds":
+          type: file
+          description: Serialised DGEGLM object of the fitted edgeR model
+          pattern: "*.DGEGLM.edger.rds"
+          ontologies: []
+  model:
+    - - meta:
+          type: map
+          description: "Groovy Map containing contrast information, e.g. [ id:'contrast1', blocking:'patient' ].
+
+            This can be used at the workflow level to pass optional parameters to the module via ext.args,
+
+            e.g. '--blocking_variables $meta.blocking'."
+      - "*.edger.model.txt":
+          type: file
+          description: Text file containing the model formula
+          pattern: "*.edger.model.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_2330
+  normalised_counts:
+    - - meta:
+          type: map
+          description: "Groovy Map containing contrast information, e.g. [ id:'contrast1', blocking:'patient' ].
+
+            This can be used at the workflow level to pass optional parameters to the module via ext.args,
+
+            e.g. '--blocking_variables $meta.blocking'."
+      - "*.normalised_counts.tsv":
+          type: file
+          description: TSV table of normalised log2 counts per million
+          pattern: "*.normalised_counts.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  session_info:
+    - - meta:
+          type: map
+          description: "Groovy Map containing contrast information, e.g. [ id:'contrast1', blocking:'patient' ].
+
+            This can be used at the workflow level to pass optional parameters to the module via ext.args,
+
+            e.g. '--blocking_variables $meta.blocking'."
+      - "*.R_sessionInfo.log":
+          type: file
+          description: R session information
+          pattern: "*.R_sessionInfo.log"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: versions.yml
+        ontologies:
+          - edam: http://edamontology.org/format_3750
+topics:
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: versions.yml
+        ontologies:
+          - edam: http://edamontology.org/format_3750
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bioconductor-edger:4.10.5--b2cb5dd1fa5dfb06
+      build_id: bd-b2cb5dd1fa5dfb06_1
+      scan_id: sc-0456a0dbd00e581d_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/bioconductor-edger:4.10.5--cdc8d03c919a65f3
+      build_id: bd-cdc8d03c919a65f3_1
+      scan_id: sc-7b92bf96c4aed80f_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bioconductor-edger:4.10.5--0f1bfca0705d99a2
+      build_id: bd-0f1bfca0705d99a2_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ea/ea33475947a64c207e67c556db55ac41b7b85546ccabd14c0c67c44e599312c5/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bioconductor-edger:4.10.5--ea0dadd48984049a
+      build_id: bd-ea0dadd48984049a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6a/6a2f2fe71499172b13396822802714ac6111e212dbfa19f189f755f52604602d/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/edger/differential/.conda-lock/linux_amd64-bd-b2cb5dd1fa5dfb06_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/edger/differential/.conda-lock/linux_arm64-bd-cdc8d03c919a65f3_1.txt
