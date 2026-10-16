@@ -5,7 +5,7 @@ process MANTA_SOMATIC {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f6/f696c93e6209e33ac0d15f1ecfa799bc67329eec07b0569e065ea8b220b53953/data' :
+        'https://depot.galaxyproject.org/singularity/manta:1.6.0--h9ee0642_1' :
         'community.wave.seqera.io/library/manta_python:0eb71149179b3920' }"
 
     input:
