@@ -43,7 +43,7 @@ process INFERNAL_CMSCAN {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo | gzip > ${prefix}.txt.gz
-    echo | gzip > ${prefix}.tbl.gz
+    echo "" | gzip > ${prefix}.txt.gz
+    echo "" | gzip > ${prefix}.tbl.gz
     """
 }
