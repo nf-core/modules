@@ -11,32 +11,32 @@ nextflow_process {
     tag "infernal"
     tag "infernal/cmscan"
 
-    test("rfam - bacteroides fragilis") {
-
-        setup {
-            run("GUNZIP") {
-                script "../../../gunzip/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test' ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
-                    ]
-                    """
-                }
-            }
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test' ], // meta map
-                        file(params.modules_testdata_base_path + 'delete_me/infernal/cmscan/bacsmallSRP_tRNA_RNasePbacta.cmdb.tar.gz', checkIfExists: true)
-                    ]
-                    """
-                }
+    setup {
+        run("GUNZIP") {
+            script "../../../gunzip/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.fna.gz', checkIfExists: true)
+                ]
+                """
             }
         }
+        run("UNTAR") {
+            script "../../../untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'delete_me/infernal/cmscan/bacsmallSRP_tRNA_RNasePbacta.cmdb.tar.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("rfam - bacteroides fragilis") {
 
         when {
             process {
@@ -69,20 +69,6 @@ nextflow_process {
     }
 
     test("ecoli - with clanin - gz") {
-
-        setup {
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test' ], // meta map
-                        file(params.modules_testdata_base_path + 'delete_me/infernal/cmscan/bacsmallSRP_tRNA_RNasePbacta.cmdb.tar.gz', checkIfExists: true)
-                    ]
-                    """
-                }
-            }
-        }
 
         when {
             process {
@@ -120,21 +106,6 @@ nextflow_process {
     test("ecoli - stub") {
 
         options "-stub"
-
-        setup {
-            run("UNTAR") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test' ], // meta map
-                        file(params.modules_testdata_base_path + 'delete_me/infernal/cmscan/bacsmallSRP_tRNA_RNasePbacta.cmdb.tar.gz', checkIfExists: true)
-                    ]
-                    """
-
-                }
-            }
-        }
 
         when {
             process {
