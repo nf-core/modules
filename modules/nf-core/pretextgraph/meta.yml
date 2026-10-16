@@ -1,0 +1,90 @@
+name: "pretextgraph"
+description: Converts bedgraph formatted data and embeds it as a graph track inside a Pretext contact map
+keywords:
+  - pretext
+  - bedgraph
+  - hic
+  - contact maps
+  - graph
+tools:
+  - "pretextgraph":
+      description: "Embeds bedgraph data into Pretext contact maps."
+      homepage: "https://github.com/sanger-tol/PretextGraph"
+      documentation: "https://github.com/sanger-tol/PretextGraph/blob/master/README.md"
+      tool_dev_url: "https://github.com/sanger-tol/PretextGraph"
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - pretext:
+        type: file
+        description: Pretext contact map to embed the graph into
+        pattern: "*.pretext"
+        ontologies: []
+    - bedgraph:
+        type: file
+        description: |
+          Bedgraph formatted data (tab separated, may be gzipped). Sequence names
+          must match those in the Pretext map.
+        pattern: "*.{bedgraph,bedgraph.gz,bg,bg.gz,bed,bed.gz}"
+        ontologies: []
+    - graph_name:
+        type: string
+        description: |
+          Name of the graph track. Known names (gap, telomere, repeat_density,
+          coverage, coverage_avg, not_weighted) select how values are accumulated.
+output:
+  pretext:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.pretext":
+          type: file
+          description: Pretext contact map with the embedded graph track
+          pattern: "*.pretext"
+          ontologies: []
+  versions_pretextgraph:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - PretextGraph:
+          type: string
+          description: Name of the tool
+      - PretextGraph 2>&1 | sed "/Version/!d; s/.*Version //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - PretextGraph:
+          type: string
+          description: Name of the tool
+      - PretextGraph 2>&1 | sed "/Version/!d; s/.*Version //":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@villekytola-spb"
+maintainers:
+  - "@villekytola-spb"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/pretextgraph:0.0.9--c1c46eb0f0de5e85
+      build_id: bd-c1c46eb0f0de5e85_1
+      scan_id: sc-51aa5c3f600d8f15_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/pretextgraph:0.0.9--4ba5ff096024c156
+      build_id: bd-4ba5ff096024c156_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/28/28a9e6732fa1e04dd010a1596648055ec4b5bd300a16fd2f7b2c10e6594ad787/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/pretextgraph/.conda-lock/linux_amd64-bd-c1c46eb0f0de5e85_1.txt
