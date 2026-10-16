@@ -27,7 +27,8 @@ input:
         The tumor and normal BAM files, in that order, also able to take CRAM as an input
         Can contain an optional list of sample headers contained in the normal sample input file.
 
-        Structure: [ val(meta), path(input), path(input_index), val(which_norm) ]
+
+        Structure: [ val(meta), path(input), path(input_index) ]
   - ch_fasta:
       description: |
         The reference fasta file
