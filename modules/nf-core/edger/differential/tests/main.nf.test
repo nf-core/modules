@@ -19,7 +19,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     id: 'treatment_mCherry_hND6',
                     variable: 'treatment',
                     reference: 'hND6',
@@ -27,7 +27,7 @@ nextflow_process {
                 ])
                 .map { m -> tuple(m, m.variable, m.reference, m.target, m.formula, m.comparison) }
 
-                input[1] = Channel.of([
+                input[1] = channel.of([
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
@@ -39,10 +39,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"]),
-                    path(process.out.versions[0]).yaml
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"])).match() }
             )
         }
     }
@@ -57,7 +54,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     id: 'treatment_mCherry_hND6',
                     variable: 'treatment',
                     reference: 'hND6',
@@ -65,7 +62,7 @@ nextflow_process {
                 ])
                 .map { m -> tuple(m, m.variable, m.reference, m.target, m.formula, m.comparison) }
 
-                input[1] = Channel.of([
+                input[1] = channel.of([
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
@@ -77,10 +74,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"]),
-                    path(process.out.versions[0]).yaml
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"])).match() }
             )
         }
     }
@@ -95,14 +89,14 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     id: 'treatment_mCherry_hND6',
                     formula: '~ treatment',
                     comparison: 'treatmentmCherry'
                 ])
                 .map { m -> tuple(m, m.variable, m.reference, m.target, m.formula, m.comparison) }
 
-                input[1] = Channel.of([
+                input[1] = channel.of([
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
@@ -114,10 +108,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"]),
-                    path(process.out.versions[0]).yaml
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"])).match() }
             )
         }
     }
@@ -132,7 +123,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     id: 'treatment_mCherry_hND6',
                     variable: 'treatment',
                     reference: 'hND6',
@@ -140,7 +131,7 @@ nextflow_process {
                 ])
                 .map { m -> tuple(m, m.variable, m.reference, m.target, m.formula, m.comparison) }
 
-                input[1] = Channel.of([
+                input[1] = channel.of([
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
@@ -152,10 +143,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"]),
-                    path(process.out.versions[0]).yaml
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"])).match() }
             )
         }
     }
@@ -170,7 +158,7 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     id: 'treatment_mCherry_hND6',
                     variable: 'treatment',
                     reference: 'hND6',
@@ -178,7 +166,7 @@ nextflow_process {
                 ])
                 .map { m -> tuple(m, m.variable, m.reference, m.target, m.formula, m.comparison) }
 
-                input[1] = Channel.of([
+                input[1] = channel.of([
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
@@ -190,10 +178,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"]),
-                    path(process.out.versions[0]).yaml
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"])).match() }
             )
         }
     }
@@ -208,14 +193,14 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     id: 'genotype_WT_treatment_Treated',
                     formula: '~ genotype * treatment',
                     comparison: 'genotypeWT.treatmentTreated'
                 ])
                 .map { m -> tuple(m, m.variable, m.reference, m.target, m.formula, m.comparison) }
 
-                input[1] = Channel.of([
+                input[1] = channel.of([
                     [ id:'test' ],
                     file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/metadata.tsv", checkIfExists: true),
                     file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/counts.tsv", checkIfExists: true)
@@ -227,10 +212,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"]),
-                    path(process.out.versions[0]).yaml
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"])).match() }
             )
         }
     }
@@ -244,7 +226,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     id: 'treatment_mCherry_hND6',
                     variable: 'treatment',
                     reference: 'hND6',
@@ -252,7 +234,7 @@ nextflow_process {
                 ])
                 .map { m -> tuple(m, m.variable, m.reference, m.target, m.formula, m.comparison) }
 
-                input[1] = Channel.of([
+                input[1] = channel.of([
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
@@ -264,10 +246,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    sanitizeOutput(process.out),
-                    path(process.out.versions[0]).yaml
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
