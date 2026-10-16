@@ -124,34 +124,27 @@ nextflow_process {
 
     }
 
-    test("protein with trailing asterisk") {
+    test("sarscov2 - proteome_fasta with stop codons") {
         config "./nextflow.config"
-
-        setup {
-            // Prodigal, TransDecoder, etc. leave a '*' stop-codon marker on every protein;
-            // InterProScan hard-rejects it unless this is stripped first.
-            def fasta_with_asterisk = new File("${launchDir}/fasta_with_asterisk.faa")
-            fasta_with_asterisk.text = ">protein_with_stop_codon\nMAEGEITTFTALTEKFNLPPGNYKKPKLLYCSNGGHFLRILPDGTVDGTRDRSDQHIQLQLSAESVGEVYIKSTETGQYLAMDTSGLLYGSQTPSEECLFLERLEENHYNTYTSKKHAEKNWFVGLKKNGSCKRGPRTHYGQKAILFLPLPVSSD*\n"
-        }
-
         when {
             process {
                 """
-                input[0] = [
-                    [ id:'test' ],
-                    file("${launchDir}/fasta_with_asterisk.faa")
-                ]
+                input[0] = channel.fromPath(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
+                    .splitFasta(record: [header: true, seqString: true])
+                    .collectFile(name: 'proteome_with_stops.fasta', newLine: true, sort: 'index') { r -> ">\${r.header}\\n\${r.seqString}*" }
+                    .map { f -> [ [ id:'test' ], f ] }
                 input[1] = []
                 """
             }
         }
 
         then {
-            // Before the fix, this exact input made InterProScan exit with
-            // "You have submitted a protein sequence which contains an asterix (*)".
-            // No analysis is expected to match this short synthetic sequence, so the
-            // regression coverage is that the task completes at all, not its content.
-            assert process.success
+            assertAll(
+                { assert process.success },
+                // Same md5 and length as the plain proteome test: exactly the '*' was removed
+                { assert path(process.out.tsv[0][1]).readLines()[0]
+                    .contains("ENSSASP00005000004.1	4c35f09aac2f7be4f3cffd30c6aecac8	1273	Coils	Coil	Coil	1176	1203	-	T") }
+            )
         }
     }
 
