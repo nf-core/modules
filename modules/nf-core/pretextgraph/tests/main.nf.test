@@ -70,9 +70,15 @@ nextflow_process {
         }
 
         then {
+            // PretextGraph accumulates graph values in 4 hard-coded threads, so the
+            // output md5 is not stable; check the graph extension ('psgh') was appended
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert new String(path(process.out.pretext[0][1]).bytes, 'ISO-8859-1').contains('psgh') },
+                { assert snapshot(
+                    process.out.pretext.collect { meta, pretext -> [ meta, file(pretext).name ] },
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
 
@@ -91,9 +97,15 @@ nextflow_process {
         }
 
         then {
+            // PretextGraph accumulates graph values in 4 hard-coded threads, so the
+            // output md5 is not stable; check the graph extension ('psgh') was appended
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert new String(path(process.out.pretext[0][1]).bytes, 'ISO-8859-1').contains('psgh') },
+                { assert snapshot(
+                    process.out.pretext.collect { meta, pretext -> [ meta, file(pretext).name ] },
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
 
