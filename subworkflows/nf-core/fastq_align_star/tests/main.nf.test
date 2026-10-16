@@ -11,8 +11,6 @@ nextflow_workflow {
     tag "star/genomegenerate"
     tag "rsem/preparereference"
     tag "subworkflows/bam_sort_stats_samtools"
-    // temporary: nf-core/tools@dev (27b288c4) requires this un-normalised tag for
-    // sibling-subworkflow includes ('../' not stripped); remove once fixed upstream
     tag "subworkflows/../bam_sort_stats_samtools"
 
     setup {
