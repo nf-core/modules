@@ -154,7 +154,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--round_digits 5 --sample_id_col sample --blocking_variables genotype;time --robust FALSE'
+                module_args = '--round_digits 4 --sample_id_col sample --blocking_variables genotype;time --robust FALSE'
             }
             process {
                 """
