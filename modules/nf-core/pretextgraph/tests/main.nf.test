@@ -10,6 +10,7 @@ nextflow_process {
     tag "pretextgraph"
     tag "pretextmap"
     tag "bedtools/genomecov"
+    tag "htslib/bgziptabix"
 
     setup {
         run("PRETEXTMAP") {
@@ -43,6 +44,17 @@ nextflow_process {
                 """
             }
         }
+        run("HTSLIB_BGZIPTABIX") {
+            script "../../htslib/bgziptabix/main.nf"
+            process {
+                """
+                input[0] = BEDTOOLS_GENOMECOV.out.genomecov.map { meta, bedgraph -> [ meta, bedgraph, [], [] ] }
+                input[1] = 'compress'
+                input[2] = false
+                input[3] = 'bedgraph'
+                """
+            }
+        }
     }
 
     test("homo_sapiens - pretext - bedgraph - coverage") {
@@ -60,7 +72,28 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - pretext - bedgraph.gz - coverage") {
+
+        when {
+            process {
+                """
+                input[0] = PRETEXTMAP.out.pretext
+                    .join(HTSLIB_BGZIPTABIX.out.output)
+                    .map { meta, pretext, bedgraph -> [ meta, pretext, bedgraph, 'coverage' ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
@@ -83,7 +116,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

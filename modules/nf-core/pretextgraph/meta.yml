@@ -28,15 +28,18 @@ input:
     - bedgraph:
         type: file
         description: |
-          Bedgraph formatted data (tab separated, may be gzipped). Sequence names
-          must match those in the Pretext map.
-        pattern: "*.{bedgraph,bedgraph.gz,bg,bg.gz,bed,bed.gz}"
-        ontologies: []
+          Bedgraph formatted data (tab separated, may be gzip/bgzip compressed).
+          Sequence names must match those in the Pretext map.
+        pattern: "*.{bedgraph,bedgraph.gz,bedgraph.bgz,bg,bg.gz,bg.bgz,bed,bed.gz,bed.bgz}"
+        ontologies:
+          - edam: http://edamontology.org/format_3583 # bedGraph
     - graph_name:
         type: string
         description: |
-          Name of the graph track. Known names (gap, telomere, repeat_density,
-          coverage, coverage_avg, not_weighted) select how values are accumulated.
+          Name of the graph track. The name selects how values are accumulated:
+          PretextGraph matches it case-insensitively by substring against the known
+          types (not_weighted, gap, repeat_density, coverage, coverage_avg, telomere).
+          Any other name (e.g. "GC") falls back to telomere-style accumulation.
 output:
   pretext:
     - - meta:

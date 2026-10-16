@@ -18,22 +18,21 @@ process PRETEXTGRAPH {
     task.ext.when == null || task.ext.when
 
     script:
-    def args          = task.ext.args   ?: ''
-    def prefix        = task.ext.prefix ?: "${meta.id}_${graph_name}"
-    def input_command = bedgraph.name.endsWith('.gz') ? "zcat ${bedgraph}" : "cat ${bedgraph}"
+    def args   = task.ext.args   ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}_${graph_name}"
     if ("${prefix}.pretext" == "${pretext}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
-    ${input_command} | PretextGraph \\
+    zcat -f "${bedgraph}" | PretextGraph \\
         ${args} \\
-        -i ${pretext} \\
+        -i "${pretext}" \\
         -n "${graph_name}" \\
-        -o ${prefix}.pretext
+        -o "${prefix}.pretext"
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}_${graph_name}"
     if ("${prefix}.pretext" == "${pretext}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
-    touch ${prefix}.pretext
+    touch "${prefix}.pretext"
     """
 }
