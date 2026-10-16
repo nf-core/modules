@@ -48,6 +48,7 @@ process STAR_ALIGN {
     attrRG          = args.contains("--outSAMattrRGline") ? "" : "--outSAMattrRGline 'ID:$prefix' 'SM:$prefix'"
     def out_sam_type    = (args.contains('--outSAMtype')) ? '' : '--outSAMtype BAM Unsorted'
     mv_unsorted_bam = (args.contains('--outSAMtype BAM Unsorted SortedByCoordinate')) ? "mv ${prefix}.Aligned.out.bam ${prefix}.Aligned.unsort.out.bam" : ''
+    def zcat            = args.contains('--readFilesCommand') ? '' : reads1[0].getExtension() == 'gz' ? '--readFilesCommand zcat' : ''
     """
     STAR \\
         --genomeDir $index \\
@@ -56,6 +57,7 @@ process STAR_ALIGN {
         --outFileNamePrefix $prefix. \\
         $out_sam_type \\
         $ignore_gtf \\
+        $zcat \\
         $attrRG \\
         $args
 
