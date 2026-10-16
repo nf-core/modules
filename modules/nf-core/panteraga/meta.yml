@@ -63,11 +63,11 @@ output:
       - "*-pantera-final.stats.tsv":
           type: file
           description: |
-              Per element length, class, pass, cluster size, TSD,
-              terminal repeats, tails, copies per genome...
+            Per element length, class, pass, cluster size, TSD,
+            terminal repeats, tails, copies per genome...
           pattern: "*-pantera-final.stats.tsv"
           ontologies:
-          - edam: "http://edamontology.org/format_3475" # TSV
+            - edam: "http://edamontology.org/format_3475" # TSV
   alignments:
     - - meta:
           type: map
@@ -77,8 +77,8 @@ output:
       - "alignments/*.maf":
           type: file
           description: |
-              The alignment (.maf) behind each consensus, named as the element.
-              Each copy shows its flanks in lowercase and the insertion in uppercase
+            The alignment (.maf) behind each consensus, named as the element.
+            Each copy shows its flanks in lowercase and the insertion in uppercase
           pattern: "alignments/*.maf"
           ontologies: []
   annotations:
@@ -92,7 +92,7 @@ output:
           description: A BED file per genome with the copies of each element
           pattern: "annotations/*.bed"
           ontologies:
-          - edam: "http://edamontology.org/format_3003" # BED
+            - edam: "http://edamontology.org/format_3003" # BED
   onealn:
     - - meta:
           type: map
