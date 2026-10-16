@@ -32,6 +32,6 @@ process BFTOOLS_SHOWINF {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    echo '<?xml version="1.0" encoding="UTF-8">' | gzip > ${prefix}.xml.gz
+    echo "" | gzip > ${prefix}.xml.gz
     """
 }
