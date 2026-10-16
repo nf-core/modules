@@ -1,0 +1,71 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+# # TODO nf-core: Add a description of the module and list keywords
+name: "vardictrust"
+description: write your description here
+keywords:
+  - sort
+  - example
+  - genomics
+tools:
+  ## TODO nf-core: Add a description and other details for the software below
+  - "vardictrust":
+      description: "Fast, memory-safe, idiomatic Rust rewrite of VarDictJava v1.8.3"
+      homepage: "https://github.com/palakpsheth/VarDictRust"
+      documentation: "https://github.com/palakpsheth/VarDictRust"
+      tool_dev_url: "https://github.com/palakpsheth/VarDictRust"
+      doi: ""
+      licence: ["MIT AND GPL v2-or-later"]
+      identifier: biotools:vardictrust
+
+input:
+  # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[
+          id:'sample1' ]`
+    - sequence_alignment:
+        type: file
+        description: sequence_alignment file
+        pattern: "*.{bam}"
+        ontologies:
+          - edam: http://edamontology.org/data_0863 # Sequence alignment
+          - edam: http://edamontology.org/format_2572 # BAM
+output:
+  # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
+  sequence_variations:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[
+            id:'sample1' ]`
+      - "*.{vcf}":
+          type: file
+          description: sequence_variations file
+          pattern: "*.{vcf}"
+          ontologies:
+            - edam: http://edamontology.org/data_3498 # Sequence variations
+            - edam: http://edamontology.org/format_3016 # VCF
+  versions_vardictrust:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vardictrust:
+          type: string
+          description: The name of the tool
+      - vardictrust --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vardictrust:
+          type: string
+          description: The name of the tool
+      - vardictrust --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@palakpsheth"
+maintainers:
+  - "@palakpsheth"
