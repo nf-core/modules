@@ -55,7 +55,7 @@ nextflow_process {
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getReadsMD5(),
                     bam(process.out.bam_sorted_aligned[0][1]).getReadsMD5(),
-                    sanitizeOutput(process.out, unstableKeys: [ 'log_final', 'log_out', 'log_progress', 'bam', 'bam_sorted', 'bam_sorted_aligned', 'bam_transcript', 'bam_unsorted' ])
+                    sanitizeOutput(process.out, unstableKeys: [ 'log_final', 'log_out', 'log_progress', 'bam', 'bam_sorted', 'bam_sorted_aligned', 'bam_transcript', 'bam_unsorted', 'junction' ])
                 ).match() }
             )
         }
@@ -109,7 +109,7 @@ nextflow_process {
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getReadsMD5(),
                     bam(process.out.bam_sorted_aligned[0][1]).getReadsMD5(),
-                    sanitizeOutput(process.out, unstableKeys: [ 'log_final', 'log_out', 'log_progress', 'bam', 'bam_sorted', 'bam_sorted_aligned', 'bam_transcript', 'bam_unsorted' ])
+                    sanitizeOutput(process.out, unstableKeys: [ 'log_final', 'log_out', 'log_progress', 'bam', 'bam_sorted', 'bam_sorted_aligned', 'bam_transcript', 'bam_unsorted', 'junction' ])
                 ).match() }
             )
         }
@@ -162,7 +162,7 @@ nextflow_process {
                 { assert (file(process.out.log_out[0][1]).text =~ /##### Command Line:\n(.+)/)[0][1].count('--readFilesCommand') == 1 },
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getReadsMD5(),
-                    sanitizeOutput(process.out, unstableKeys: [ 'log_final', 'log_out', 'log_progress', 'bam', 'bam_sorted', 'bam_sorted_aligned', 'bam_transcript', 'bam_unsorted' ])
+                    sanitizeOutput(process.out, unstableKeys: [ 'log_final', 'log_out', 'log_progress', 'bam', 'bam_sorted', 'bam_sorted_aligned', 'bam_transcript', 'bam_unsorted', 'junction' ])
                 ).match() }
             )
         }
@@ -215,7 +215,7 @@ nextflow_process {
                 { assert (file(process.out.log_out[0][1]).text =~ /##### Command Line:\n(.+)/)[0][1].count('--readFilesCommand') == 1 },
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getReadsMD5(),
-                    sanitizeOutput(process.out, unstableKeys: [ 'log_final', 'log_out', 'log_progress', 'bam', 'bam_sorted', 'bam_sorted_aligned', 'bam_transcript', 'bam_unsorted' ])
+                    sanitizeOutput(process.out, unstableKeys: [ 'log_final', 'log_out', 'log_progress', 'bam', 'bam_sorted', 'bam_sorted_aligned', 'bam_transcript', 'bam_unsorted', 'junction' ])
                 ).match() }
             )
         }
@@ -271,7 +271,7 @@ nextflow_process {
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getReadsMD5(),
                     bam(process.out.bam_sorted_aligned[0][1]).getReadsMD5(),
-                    sanitizeOutput(process.out, unstableKeys: [ 'log_final', 'log_out', 'log_progress', 'bam', 'bam_sorted', 'bam_sorted_aligned', 'bam_transcript', 'bam_unsorted' ])
+                    sanitizeOutput(process.out, unstableKeys: [ 'log_final', 'log_out', 'log_progress', 'bam', 'bam_sorted', 'bam_sorted_aligned', 'bam_transcript', 'bam_unsorted', 'junction' ])
                 ).match() }
             )
         }
@@ -329,7 +329,7 @@ nextflow_process {
                 { assert !((file(process.out.log_out[0][1]).text =~ /##### Command Line:\n(.+)/)[0][1].contains('--readFilesCommand')) },
                 { assert snapshot(
                     bam(process.out.bam[0][1]).getReadsMD5(),
-                    sanitizeOutput(process.out, unstableKeys: [ 'log_final', 'log_out', 'log_progress', 'bam', 'bam_sorted', 'bam_sorted_aligned', 'bam_transcript', 'bam_unsorted' ])
+                    sanitizeOutput(process.out, unstableKeys: [ 'log_final', 'log_out', 'log_progress', 'bam', 'bam_sorted', 'bam_sorted_aligned', 'bam_transcript', 'bam_unsorted', 'junction' ])
                 ).match() }
             )
         }
@@ -377,7 +377,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: [ 'log_final', 'log_out', 'log_progress', 'bam', 'bam_sorted', 'bam_sorted_aligned', 'bam_transcript', 'bam_unsorted' ])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: [ 'log_final', 'log_out', 'log_progress', 'bam', 'bam_sorted', 'bam_sorted_aligned', 'bam_transcript', 'bam_unsorted', 'junction' ])).match() }
             )
         }
     }
@@ -427,7 +427,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: [ 'log_final', 'log_out', 'log_progress', 'bam', 'bam_sorted', 'bam_sorted_aligned', 'bam_transcript', 'bam_unsorted' ])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: [ 'log_final', 'log_out', 'log_progress', 'bam', 'bam_sorted', 'bam_sorted_aligned', 'bam_transcript', 'bam_unsorted', 'junction' ])).match() }
             )
         }
     }
@@ -477,7 +477,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: [ 'log_final', 'log_out', 'log_progress', 'bam', 'bam_sorted', 'bam_sorted_aligned', 'bam_transcript', 'bam_unsorted' ])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: [ 'log_final', 'log_out', 'log_progress', 'bam', 'bam_sorted', 'bam_sorted_aligned', 'bam_transcript', 'bam_unsorted', 'junction' ])).match() }
             )
         }
     }
@@ -527,7 +527,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: [ 'log_final', 'log_out', 'log_progress', 'bam', 'bam_sorted', 'bam_sorted_aligned', 'bam_transcript', 'bam_unsorted' ])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: [ 'log_final', 'log_out', 'log_progress', 'bam', 'bam_sorted', 'bam_sorted_aligned', 'bam_transcript', 'bam_unsorted', 'junction' ])).match() }
             )
         }
     }
@@ -579,7 +579,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: [ 'log_final', 'log_out', 'log_progress', 'bam', 'bam_sorted', 'bam_sorted_aligned', 'bam_transcript', 'bam_unsorted' ])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: [ 'log_final', 'log_out', 'log_progress', 'bam', 'bam_sorted', 'bam_sorted_aligned', 'bam_transcript', 'bam_unsorted', 'junction' ])).match() }
             )
         }
     }
