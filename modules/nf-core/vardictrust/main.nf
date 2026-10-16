@@ -3,9 +3,9 @@ process VARDICTRUST {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/YOUR-TOOL-HERE':
-        'quay.io/biocontainers/YOUR-TOOL-HERE' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/12/12806f94133378ff8728b41f16ce19a669f61750f18db4ba3563af807ad45cc6/data'
+:         'community.wave.seqera.io/library/htslib_vardictrust:913eef801f19dc83' }"
 
     input:
     tuple val(meta), path(bams), path(bais), path(bed)

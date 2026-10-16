@@ -1,49 +1,88 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-# # TODO nf-core: Add a description of the module and list keywords
 name: "vardictrust"
-description: write your description here
+description: Memory-safe Rust rewrite of VarDictJava for single and paired sample variant calling
 keywords:
-  - sort
-  - example
-  - genomics
+  - variant calling
+  - vcf
+  - bam
+  - snv
+  - indel
 tools:
-  ## TODO nf-core: Add a description and other details for the software below
   - "vardictrust":
-      description: "Fast, memory-safe, idiomatic Rust rewrite of VarDictJava v1.8.3"
+      description: "Fast, memory-safe Rust rewrite of VarDictJava v1.8.3 for single and paired sample variant calling (upstream VarDictJava: https://github.com/AstraZeneca-NGS/VarDictJava)"
       homepage: "https://github.com/palakpsheth/VarDictRust"
       documentation: "https://github.com/palakpsheth/VarDictRust"
       tool_dev_url: "https://github.com/palakpsheth/VarDictRust"
-      doi: ""
-      licence: ["MIT AND GPL v2-or-later"]
+      doi: "10.1093/nar/gkw227"
+      licence:
+        - "GPL-2.0-or-later"
+      args_id: "$args $args2"
       identifier: biotools:vardictrust
-
+  - "htslib":
+      description: "Set of tools for manipulating high-throughput sequencing data; bgzip compresses the VCF output"
+      homepage: "http://www.htslib.org/"
+      documentation: "http://www.htslib.org/doc/bgzip.html"
+      doi: "10.1093/bioinformatics/btp352"
+      licence:
+        - "MIT"
+      args_id: "$args3"
+      identifier: biotools:samtools
 input:
-  # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
   - - meta:
         type: map
-        description: Groovy Map containing sample information. e.g. `[
-          id:'sample1' ]`
-    - sequence_alignment:
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bams:
         type: file
-        description: sequence_alignment file
-        pattern: "*.{bam}"
+        description: One or two BAM files. Supply two BAM files to run in paired (tumour/normal) mode.
+        pattern: "*.bam"
         ontologies:
           - edam: http://edamontology.org/data_0863 # Sequence alignment
           - edam: http://edamontology.org/format_2572 # BAM
+    - bais:
+        type: file
+        description: Index/indices of the BAM file(s)
+        pattern: "*.bai"
+        ontologies: []
+    - bed:
+        type: file
+        description: BED with the regions of interest
+        pattern: "*.bed"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing fasta information
+          e.g. [ id:'test', single_end:false ]
+    - fasta:
+        type: file
+        description: FASTA of the reference genome
+        pattern: "*.{fa,fasta}"
+        ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing fasta information
+          e.g. [ id:'test', single_end:false ]
+    - fasta_fai:
+        type: file
+        description: The index of the FASTA of the reference genome
+        pattern: "*.fai"
+        ontologies: []
 output:
-  # TODO nf-core: Update the information obtained from bio.tools and make sure that it is correct
-  sequence_variations:
+  vcf:
     - - meta:
           type: map
-          description: Groovy Map containing sample information. e.g. `[
-            id:'sample1' ]`
-      - "*.{vcf}":
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.vcf.gz":
           type: file
-          description: sequence_variations file
-          pattern: "*.{vcf}"
+          description: VCF file output
+          pattern: "*.vcf.gz"
           ontologies:
             - edam: http://edamontology.org/data_3498 # Sequence variations
-            - edam: http://edamontology.org/format_3016 # VCF
+            - edam: http://edamontology.org/format_3989 # VCF (bgzip compressed)
   versions_vardictrust:
     - - ${task.process}:
           type: string
@@ -51,7 +90,17 @@ output:
       - vardictrust:
           type: string
           description: The name of the tool
-      - vardictrust --version:
+      - vardictrust --version | head -n 1 | sed 's/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_htslib:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - htslib:
+          type: string
+          description: The name of the tool
+      - "tabix -h 2>&1 | sed -n '2s/Version: *//p'":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -62,10 +111,41 @@ topics:
       - vardictrust:
           type: string
           description: The name of the tool
-      - vardictrust --version:
+      - vardictrust --version | head -n 1 | sed 's/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - htslib:
+          type: string
+          description: The name of the tool
+      - "tabix -h 2>&1 | sed -n '2s/Version: *//p'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
   - "@palakpsheth"
 maintainers:
   - "@palakpsheth"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/htslib_vardictrust:913eef801f19dc83
+      build_id: bd-913eef801f19dc83_1
+      scan_id: sc-b8c13a31e0ccdee7_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/htslib_vardictrust:0c960eaccc36f17b
+      build_id: ""
+      scan_id: sc-deb128885f61dc65_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/htslib_vardictrust:d7caf6420beb2d12
+      build_id: bd-d7caf6420beb2d12_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/12/12806f94133378ff8728b41f16ce19a669f61750f18db4ba3563af807ad45cc6/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/htslib_vardictrust:8fea51266022d03d
+      build_id: ""
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/12/1236f39bffb2586bc6388b4578f0324e72af14f1cb708208b2b418845656c348/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/vardictrust/.conda-lock/linux_amd64-bd-913eef801f19dc83_1.txt
