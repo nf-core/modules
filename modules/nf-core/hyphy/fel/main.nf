@@ -3,9 +3,9 @@ process HYPHY_FEL {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hyphy:2.5.101--h526e2cb_0':
-        'quay.io/biocontainers/hyphy:2.5.101--h526e2cb_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ed/ed3d742a4b3281f09189e5010b1b26855e2bdc5259dc8bdf1121a7b1939e8ca6/data'
+:         'community.wave.seqera.io/library/hyphy:2.5.101--da14606d9f2ca413' }"
 
     input:
     tuple val(meta), path(alignment), path(tree)
