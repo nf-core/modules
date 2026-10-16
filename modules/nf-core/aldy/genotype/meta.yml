@@ -27,15 +27,28 @@ input:
         description: Alignment (SAM/BAM/CRAM) or variant (VCF) file mapped to hg19 or hg38
         pattern: "*.{sam,bam,cram,vcf,vcf.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_2573
-          - edam: http://edamontology.org/format_2572
-          - edam: http://edamontology.org/format_3462
-          - edam: http://edamontology.org/format_3016
+          - edam: http://edamontology.org/format_2573 # SAM
+          - edam: http://edamontology.org/format_2572 # BAM
+          - edam: http://edamontology.org/format_3462 # CRAM
+          - edam: http://edamontology.org/format_3016 # VCF
     - index:
         type: file
         description: Index of the input file
         pattern: "*.{bai,crai,csi,tbi}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3327 # BAI
+          - edam: http://edamontology.org/format_3616 # TBI
+    - gene:
+        type: string
+        description: |
+          Gene (or comma-separated list of genes) to genotype, e.g. `CYP2D6`.
+          Use `all` to genotype every supported gene.
+    - profile:
+        type: string
+        description: |
+          Name of the built-in sequencing profile matching the technology used
+          to generate the input
+        pattern: "illumina|wgs|pgx1|pgx2|pgx3|pgrnseq-v1|pgrnseq-v2|pgrnseq-v3|10x|exome|wxs|wes|pacbio-hifi-targeted|pacbio-hifi-targeted-twist"
   - - meta2:
         type: map
         description: |
@@ -44,29 +57,9 @@ input:
     - fasta:
         type: file
         description: Reference genome FASTA file, required for CRAM input
-        pattern: "*.{fa,fasta,fna}"
+        pattern: "*.{fa,fasta,fna}{,.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_1929
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing profile information
-          e.g. `[ id:'profile' ]`
-    - profile_file:
-        type: file
-        description: Optional custom sequencing profile (e.g. generated with `aldy profile`). When provided, it takes precedence over `profile`.
-        pattern: "*"
-        ontologies: []
-  - gene:
-      type: string
-      description: |
-        Gene (or comma-separated list of genes) to genotype, e.g. `CYP2D6`.
-        Use `all` to genotype every supported gene.
-  - profile:
-      type: string
-      description: |
-        Name of a built-in sequencing profile. Ignored when `profile_file` is provided.
-      pattern: "illumina|wgs|pgx1|pgx2|pgx3|pgrnseq-v1|pgrnseq-v2|pgrnseq-v3|10x|exome|wxs|wes|pacbio-hifi-targeted|pacbio-hifi-targeted-twist"
+          - edam: http://edamontology.org/format_1929 # FASTA
 output:
   aldy:
     - - meta:
@@ -79,7 +72,7 @@ output:
           description: Tab-separated file with the star-allele decomposition of each solution
           pattern: "*.aldy"
           ontologies:
-            - edam: http://edamontology.org/format_3475
+            - edam: http://edamontology.org/format_3475 # TSV
   log:
     - - meta:
           type: map
@@ -90,7 +83,8 @@ output:
           type: file
           description: Aldy log file
           pattern: "*.log"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Textual format
   versions_aldy:
     - - ${task.process}:
           type: string

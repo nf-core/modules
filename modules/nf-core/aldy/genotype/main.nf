@@ -8,11 +8,8 @@ process ALDY_GENOTYPE {
         : 'community.wave.seqera.io/library/mappy_pysam_gcc_pip_pruned:76bc0744bd24414b'}"
 
     input:
-    tuple val(meta), path(input), path(index)
+    tuple val(meta), path(input), path(index), val(gene), val(profile)
     tuple val(meta2), path(fasta)
-    tuple val(meta3), path(profile_file)
-    val gene
-    val profile
 
     output:
     tuple val(meta), path("*.aldy"), emit: aldy
@@ -25,14 +22,13 @@ process ALDY_GENOTYPE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def profile_arg = profile_file ?: profile
     def reference = fasta ? "--reference ${fasta}" : ''
     """
     aldy \\
         genotype \\
         ${args} \\
         --gene ${gene} \\
-        --profile ${profile_arg} \\
+        --profile ${profile} \\
         ${reference} \\
         --output ${prefix}.aldy \\
         --log ${prefix}.log \\
