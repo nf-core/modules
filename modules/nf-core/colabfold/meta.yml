@@ -1,0 +1,131 @@
+name: colabfold
+description: Predicts protein structure with AlphaFold2, taking the multiple
+  sequence alignment from an MMseqs2 server rather than local databases
+keywords:
+  - protein structure
+  - structure prediction
+  - AlphaFold2
+  - MSA
+  - folding
+tools:
+  - colabfold:
+      description: |
+        ColabFold runs AlphaFold2 (and other folding models) while sourcing its
+        multiple sequence alignment from a remote MMseqs2 server, which removes
+        the ~2.6 TB of reference databases a local AlphaFold2 install needs.
+        The public server (api.colabfold.com) is used by default; pass
+        `--host-url` through `ext.args` to use your own instance. A GPU speeds
+        inference up but is not required; Amber relaxation is enabled with
+        `--amber` (and `--use-gpu-relax` on a GPU).
+      homepage: https://github.com/sokrypton/ColabFold
+      documentation: https://github.com/sokrypton/ColabFold
+      doi: 10.1038/s41592-022-01488-1
+      licence: ["MIT"]
+      identifier: biotools:colabfold
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sample1' ]
+    - fasta:
+        type: file
+        description: |
+          Protein sequences to fold, one prediction per record. An empty file
+          is accepted and produces no output.
+        pattern: "*.{fa,faa,fasta}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing weights information
+          e.g. [ id:'alphafold2_params' ]
+    - weights:
+        type: directory
+        description: |
+          ColabFold data directory containing the AlphaFold2 parameters
+          (`params/`). Pass `[]` to let colabfold_batch download them into its
+          own cache on first use.
+
+output:
+  pdb:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}/*_rank_*.pdb:
+          type: file
+          description: |
+            Predicted structures, named
+            <query>_{unrelaxed,relaxed}_rank_<rank>_<model>_seed_<seed>.pdb;
+            rank_001 is the best model. Per-residue pLDDT is stored in the
+            B-factor column.
+          pattern: "*_rank_*.pdb"
+  json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}/*_scores_rank_*.json:
+          type: file
+          description: Per-model scores (per-residue pLDDT, PAE, pTM)
+          pattern: "*_scores_rank_*.json"
+  a3m:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}/*.a3m:
+          type: file
+          description: Multiple sequence alignment used for each query
+          pattern: "*.a3m"
+  png:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}/*.png:
+          type: file
+          description: pLDDT, PAE and MSA coverage plots
+          pattern: "*.png"
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}/log.txt:
+          type: file
+          description: colabfold_batch log
+          pattern: "log.txt"
+  versions_colabfold:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - colabfold:
+          type: string
+          description: The name of the tool
+      - python -c 'import importlib.metadata as m; print(m.version("colabfold"))':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - colabfold:
+          type: string
+          description: The name of the tool
+      - python -c 'import importlib.metadata as m; print(m.version("colabfold"))':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@Bboy010"
+maintainers:
+  - "@Bboy010"
