@@ -50,6 +50,10 @@ input:
         Optional, file of sample names to be included or excluded.
         e.g. 'file.tsv'
       ontologies: []
+  - extension:
+      type: string
+      description: |
+        File extension of the output file (e.g. 'txt', 'tsv')
 output:
   output:
     - - meta:
@@ -57,7 +61,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.${suffix}":
+      - "*.${extension}":
           type: file
           description: BCFTools query output file
           ontologies: []
