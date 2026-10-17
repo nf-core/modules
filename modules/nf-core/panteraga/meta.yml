@@ -1,0 +1,157 @@
+name: "panteraga"
+description: Identification of transposable element families from whole genome alignments using FastGA
+keywords:
+  - genome alignment
+  - transposable elements
+  - repeat
+  - annotation
+tools:
+  - "panteraga":
+      description: "Generate a Transposable Elements library from a FastGA whole genome alignment."
+      homepage: "https://github.com/piosierra/panteraGA/"
+      documentation: "https://github.com/piosierra/panteraGA/"
+      tool_dev_url: "https://github.com/piosierra/panteraGA"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - genomes:
+        type: file
+        description: List of genomes to identify transposable elements in.
+        pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - seed:
+      type: string
+      description: Random seed to ensure reproducibility of results.
+output:
+  te_consensus_passed_fasta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*-pantera-final-pass.fa":
+          type: file
+          description: All TE consensus sequences that pass the structural checks
+          pattern: "*-pantera-final-pass.fa"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+  te_consensus_fasta:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*-pantera-final.fa":
+          type: file
+          description: All TE consensus sequences
+          pattern: "*-pantera-final.fa"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+  te_stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*-pantera-final.stats.tsv":
+          type: file
+          description: |
+            Per element length, class, pass, cluster size, TSD,
+            terminal repeats, tails, copies per genome...
+          pattern: "*-pantera-final.stats.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  alignments:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "alignments/*.maf":
+          type: file
+          description: |
+            The alignment (.maf) behind each consensus, named as the element.
+            Each copy shows its flanks in lowercase and the insertion in uppercase
+          pattern: "alignments/*.maf"
+          ontologies: []
+  annotations:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "annotations/*.bed":
+          type: file
+          description: A BED file per genome with the copies of each element
+          pattern: "annotations/*.bed"
+          ontologies:
+            - edam: "http://edamontology.org/format_3003" # BED
+  onealn:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.1aln":
+          type: file
+          description: Pairwise genome alignments in 1aln format.
+          pattern: "*.1aln"
+          ontologies: []
+  panteraga_log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.log":
+          type: file
+          description: PanteraGA log file.
+          pattern: "*.log"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Textual format
+  versions_panteraga:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - panteraga:
+          type: string
+          description: The name of the tool
+      - panteraGA --version | sed 's/panteraGA //' | xargs:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - panteraga:
+          type: string
+          description: The name of the tool
+      - panteraGA --version | sed 's/panteraGA //' | xargs:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@prototaxites"
+maintainers:
+  - "@prototaxites"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/panteraga:1.4.0--0ec78c92c1b49c00
+      build_id: bd-0ec78c92c1b49c00_1
+      scan_id: sc-1d4f9b5a9ae29ce2_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/panteraga:1.4.0--8394e2370863e193
+      build_id: bd-8394e2370863e193_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6e/6e35ae32df658707535eea50f66f206e576ec8e949325cd2bd5a774a63876d33/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/panteraga/.conda-lock/linux_amd64-bd-0ec78c92c1b49c00_1.txt
