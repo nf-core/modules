@@ -79,6 +79,21 @@ output:
           pattern: "*.{tbi,csi}"
           ontologies:
             - edam: http://edamontology.org/format_3616 # tabix
+  gzi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${outfile}.gzi:
+          type: file
+          description: BGZF block index for the compressed output file. Only
+            created if `action` is `compress` and `ext.args` contains `-i` or
+            `--index` as a separate argument. Bundled short flags (e.g. `-ci`)
+            and `-I`/`--index-name` are not detected. No .gzi is created when
+            `action` is `decompress`.
+          pattern: "*.gzi"
+          ontologies: []
   versions_htslib:
     - - ${task.process}:
           type: string
