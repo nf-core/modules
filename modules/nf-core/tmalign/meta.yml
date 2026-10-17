@@ -1,0 +1,84 @@
+name: tmalign
+description: Align one or more protein structures against a reference structure
+  with TM-align and report TM-score, RMSD, sequence identity and aligned length
+keywords:
+  - structural alignment
+  - TM-score
+  - protein structure
+  - fold comparison
+tools:
+  - tmalign:
+      description: |
+        TM-align performs sequence-order-independent structural alignment of
+        two protein structures and reports a TM-score, a length-independent
+        measure of fold similarity. A TM-score above 0.5 generally indicates
+        the same fold, while a TM-score below 0.3 is close to random
+        structural similarity.
+      homepage: https://zhanggroup.org/TM-align/
+      doi: 10.1093/nar/gki524
+      licence: ["free for academic use"]
+      identifier: biotools:tm-align
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'sample1' ]
+    - structures:
+        type: file
+        description: One or more query protein structures, each aligned against
+          the reference
+        pattern: "*.{pdb,cif}"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'reference' ]
+    - reference:
+        type: file
+        description: Reference protein structure
+        pattern: "*.{pdb,cif}"
+
+output:
+  tsv:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.tsv":
+          type: file
+          description: |
+            TM-align tabular output (-outfmt 2), one row per query structure.
+            Columns: PDBchain1 (query), PDBchain2 (reference), TM1 (TM-score
+            normalised by query length), TM2 (TM-score normalised by reference
+            length), RMSD, ID1, ID2, IDali (sequence identity normalised by
+            query, reference and aligned length), L1, L2, Lali (query,
+            reference and aligned length).
+          pattern: "*.tsv"
+  versions_tmalign:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tmalign:
+          type: string
+          description: The name of the tool
+      - TMalign -v | sed -n '/Version/{s/.*Version //;s/).*//;p}':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tmalign:
+          type: string
+          description: The name of the tool
+      - TMalign -v | sed -n '/Version/{s/.*Version //;s/).*//;p}':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@Bboy010"
+maintainers:
+  - "@Bboy010"
