@@ -3,9 +3,7 @@ process GATK4_CNNSCOREVARIANTS {
     label 'process_low'
 
     //Conda is not supported at the moment: https://github.com/broadinstitute/gatk/issues/7811
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e1/e198c92a5c3c988407eb02e155ed772530e1d6d4ce222c35ef16e98bd2410c34/data'
-        : 'community.wave.seqera.io/library/gatk4:4.5.0.0--3e0ba712f5b1ab81'}"
+    container "quay.io/nf-core/gatk:4.5.0.0"
 
     input:
     tuple val(meta), path(vcf), path(tbi), path(aligned_input), path(intervals)
