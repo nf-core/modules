@@ -1,0 +1,73 @@
+nextflow_process {
+
+    name "Test Process ONKOPUS_RUN"
+    script "../main.nf"
+    process "ONKOPUS_RUN"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "onkopus"
+    tag "onkopus/run"
+
+    test("homo_sapiens - vcf - hg38 - clinvar") {
+
+        when {
+            params {
+                module_args = "-m clinvar"
+            }
+            process {
+                """
+                input[0] = channel.of(
+                    "##fileformat=VCFv4.2",
+                    "#CHROM\\tPOS\\tID\\tREF\\tALT\\tQUAL\\tFILTER\\tINFO",
+                    "chr7\\t140753336\\t.\\tA\\tT\\t.\\t.\\t."
+                ).collectFile(name: 'braf_v600e.vcf', newLine: true).map { f -> tuple([ id:'test' ], f) }
+                input[1] = 'hg38'
+                """
+            }
+        }
+
+        then {
+            def lines = path(process.out.vcf[0][1]).linesGzip
+            def variants = lines.findAll { l -> !l.startsWith('#') }
+            assertAll(
+                { assert process.success },
+                // Annotations come from a live remote service, so content is not snapshotted
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["vcf"]),
+                    variants.size(),
+                    variants[0].contains('CLINVAR')
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - vcf - hg38 - clinvar - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = "-m clinvar"
+            }
+            process {
+                """
+                input[0] = channel.of(
+                    "##fileformat=VCFv4.2",
+                    "#CHROM\\tPOS\\tID\\tREF\\tALT\\tQUAL\\tFILTER\\tINFO",
+                    "chr7\\t140753336\\t.\\tA\\tT\\t.\\t.\\t."
+                ).collectFile(name: 'braf_v600e.vcf', newLine: true).map { f -> tuple([ id:'test' ], f) }
+                input[1] = 'hg38'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

@@ -1,0 +1,106 @@
+name: "onkopus_run"
+description: |
+  Annotates, interprets and prioritises cancer variants in a VCF file with Onkopus.
+  Variant data are sent to the public Onkopus web services (https://mtb.bioinf.med.uni-goettingen.de),
+  so tasks need internet access and data leave the compute environment: consider data-privacy rules for patient data.
+  Pass `-m <modules>` (default `all`) and `-t <target genome>` via `ext.args`; running one `-m` module per process is safest,
+  as with several modules only the last one's annotations may be kept.
+keywords:
+  - cancer
+  - variant annotation
+  - variant interpretation
+  - variant prioritisation
+  - precision oncology
+  - vcf
+  - genomics
+tools:
+  - "onkopus":
+      description: "Modular framework to annotate, interpret and prioritise genetic alterations in cancer, including
+        pathogenicity and functional-effect prediction, ClinVar and potential therapies"
+      homepage: "https://gitlab.gwdg.de/MedBioinf/mtb/onkopus/onkopus"
+      documentation: "https://pypi.org/project/onkopus/"
+      tool_dev_url: "https://gitlab.gwdg.de/MedBioinf/mtb/onkopus/onkopus"
+      doi: "10.1093/nar/gkaf376"
+      licence:
+        - "GPL-3.0-only"
+      identifier: ""
+      args_id: "$args"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - vcf:
+        type: file
+        description: Variant calls in VCF format, optionally gzip-compressed
+        pattern: "*.{vcf,vcf.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_3016 # VCF
+          - edam: http://edamontology.org/format_3989 # GZIP format
+  - genome:
+      type: string
+      description: Genome assembly of the input variants (`hg19`, `hg38` or `t2t`)
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.ann.vcf.gz:
+          type: file
+          description: Annotated variants in gzip-compressed VCF format
+          pattern: "*.ann.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3016 # VCF
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_onkopus:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - onkopus:
+          type: string
+          description: The name of the tool
+      - python -c "import importlib.metadata as m; print(m.version('onkopus'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - onkopus:
+          type: string
+          description: The name of the tool
+      - python -c "import importlib.metadata as m; print(m.version('onkopus'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/python_pip_onkopus:17e1c4e077b48e2f
+      build_id: bd-17e1c4e077b48e2f_1
+      scan_id: sc-062e61c032656208_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/python_pip_onkopus:cbfd43c4529368f9
+      build_id: bd-cbfd43c4529368f9_1
+      scan_id: sc-79e218f45010724d_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/python_pip_onkopus:a15584df73b92fd1
+      build_id: bd-a15584df73b92fd1_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/84/840360bb837d9266cade03c0598ada1531b52251254b3f0b5e95972b4b244248/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/python_pip_onkopus:a2d309d6ec141bc2
+      build_id: bd-a2d309d6ec141bc2_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/95/95c89b8a34657574980328bff5752240c8e93332891bd41fecf99220da6da40c/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/onkopus/run/.conda-lock/linux_amd64-bd-cbfd43c4529368f9_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/onkopus/run/.conda-lock/linux_arm64-bd-17e1c4e077b48e2f_1.txt
