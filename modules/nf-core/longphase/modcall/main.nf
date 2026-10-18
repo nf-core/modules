@@ -3,9 +3,11 @@ process LONGPHASE_MODCALL {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8d/8df742ea6593a33f7452d3e859896a7008db93d4f8d90e168b7154c0f8029980/data'
-:         'community.wave.seqera.io/library/longphase:2.1.1--6d58bf051d402041' }"
+
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+            'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/83/83fce1d397cf71705cc096fc0e0e52f7013bdd471ef68ee53ae765688e5c439c/data':
+            'community.wave.seqera.io/library/longphase_samtools:8c61296cae7a5fc0' }"
+
 
     input:
     tuple val(meta), path(bam), path(bai), path(snvs)
