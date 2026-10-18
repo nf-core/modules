@@ -1,0 +1,158 @@
+name: "presto_assemblepairs"
+description: |
+  Assembles paired-end reads into single reads using pRESTO AssemblePairs.py.
+  The `mode` input selects the subcommand: `align`, `join`, `reference` or `sequential`.
+  Output FASTQ files are gzip-compressed when the input files are.
+keywords:
+  - immcantation
+  - airrseq
+  - paired-end
+  - assembly
+  - immunoinformatics
+  - fastq
+tools:
+  - "presto":
+      description: "A bioinformatics toolkit for processing high-throughput lymphocyte
+        receptor sequencing data."
+      homepage: "https://immcantation.readthedocs.io"
+      documentation: "https://presto.readthedocs.io/en/stable/tools/AssemblePairs.html"
+      tool_dev_url: "https://github.com/immcantation/presto"
+      doi: "10.1093/bioinformatics/btu138"
+      licence:
+        - "AGPL v3"
+      identifier: biotools:presto
+      args_id: "$args"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - reads_1:
+        type: file
+        description: FASTQ file of the first read of each pair (R1)
+        pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+    - reads_2:
+        type: file
+        description: FASTQ file of the second read of each pair (R2)
+        pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'reference' ]`
+    - reference:
+        type: file
+        description: |
+          Optional. Reference sequences in FASTA format.
+          Required by the `reference` and `sequential` modes, ignored otherwise.
+        pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - mode:
+      type: string
+      description: AssemblePairs subcommand. One of `align`, `join`, `reference` or `sequential`.
+output:
+  reads:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_assemble-pass.fastq.gz:
+          type: file
+          description: Successfully assembled reads
+          pattern: "*_assemble-pass.fastq.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+  reads_fail:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}-{1,2}_assemble-fail.fastq.gz:
+          type: file
+          description: |
+            Optional. Reads of pairs that failed assembly, one file per read (R1 and R2).
+            Only emitted when at least one pair fails.
+          pattern: "*-{1,2}_assemble-fail.fastq.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_assemble.log:
+          type: file
+          description: Per-pair assembly log written by AssemblePairs.py
+          pattern: "*_assemble.log"
+          ontologies:
+            - edam: http://edamontology.org/format_3671 # Plain text
+  command_log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_command_log.txt:
+          type: file
+          description: Standard output of AssemblePairs.py
+          pattern: "*_command_log.txt"
+          ontologies:
+            - edam: http://edamontology.org/format_3671 # Plain text
+  versions_presto:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - presto:
+          type: string
+          description: The name of the tool
+      - AssemblePairs.py --version | grep -o "[0-9][0-9.]*" | head -n 1:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - presto:
+          type: string
+          description: The name of the tool
+      - AssemblePairs.py --version | grep -o "[0-9][0-9.]*" | head -n 1:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/presto:0.7.9--8b5f4848272f2d56
+      build_id: bd-8b5f4848272f2d56_1
+      scan_id: sc-5f26705459a85f62_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/presto:0.7.9--afd25a2b633aea70
+      build_id: bd-afd25a2b633aea70_1
+      scan_id: sc-2fbf77e828ee9a62_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/presto:0.7.9--160227e0c6590634
+      build_id: bd-160227e0c6590634_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3b/3b9062f695043fa77de5e7e5e43c1b55693cae6d9610d9c3e28bef58aef08dad/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/presto:0.7.9--d7c398955d194fdd
+      build_id: bd-d7c398955d194fdd_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/54/5433e24f91fd5b7fd6a0fce319662a468e75ae5c7ad3b860eaae900c60b2aa36/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/presto/assemblepairs/.conda-lock/linux_amd64-bd-8b5f4848272f2d56_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/presto/assemblepairs/.conda-lock/linux_arm64-bd-afd25a2b633aea70_1.txt

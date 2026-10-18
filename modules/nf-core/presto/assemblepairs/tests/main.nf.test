@@ -1,0 +1,91 @@
+nextflow_process {
+
+    name "Test Process PRESTO_ASSEMBLEPAIRS"
+    script "../main.nf"
+    process "PRESTO_ASSEMBLEPAIRS"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "presto"
+    tag "presto/assemblepairs"
+
+    test("homo_sapiens - fastq - align") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_airrseq_umi_R1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_airrseq_R2.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = [ [:], [] ]
+                input[2] = 'align'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["command_log"]),
+                    path(process.out.command_log[0][1]).text.contains("END> AssemblePairs")
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - fastq - join") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_airrseq_umi_R1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_airrseq_R2.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = [ [:], [] ]
+                input[2] = 'join'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["command_log"]),
+                    path(process.out.command_log[0][1]).text.contains("END> AssemblePairs")
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - fastq - align - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_airrseq_umi_R1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_airrseq_R2.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = [ [:], [] ]
+                input[2] = 'align'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}
