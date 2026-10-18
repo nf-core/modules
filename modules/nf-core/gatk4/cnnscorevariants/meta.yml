@@ -115,3 +115,27 @@ authors:
   - "@FriederikeHanssen"
 maintainers:
   - "@FriederikeHanssen"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/gatk4:4.5.0.0--3e0ba712f5b1ab81
+      build_id: bd-3e0ba712f5b1ab81_1
+      scan_id: sc-9e02a67ba3d0f30b_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/gatk4:4.5.0.0--13ffa7f13daf2838
+      build_id: bd-13ffa7f13daf2838_1
+      scan_id: sc-f1d0afbccb1007e8_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/gatk4:4.5.0.0--f67e5fad7880441f
+      build_id: bd-f67e5fad7880441f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e1/e198c92a5c3c988407eb02e155ed772530e1d6d4ce222c35ef16e98bd2410c34/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/gatk4:4.5.0.0--cc02626e51139bc9
+      build_id: bd-cc02626e51139bc9_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c8/c8e3f94a91e668a27fed4210bf5125f17b7c4d3208474574a6bc97df571f9906/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/gatk4/cnnscorevariants/.conda-lock/linux_amd64-bd-3e0ba712f5b1ab81_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/gatk4/cnnscorevariants/.conda-lock/linux_arm64-bd-13ffa7f13daf2838_1.txt
