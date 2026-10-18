@@ -59,13 +59,13 @@ process TRUVARI_BENCH {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo | gzip > ${prefix}.fn.vcf.gz
+    echo "" | gzip > ${prefix}.fn.vcf.gz
     touch ${prefix}.fn.vcf.gz.tbi
-    echo | gzip > ${prefix}.fp.vcf.gz
+    echo "" | gzip > ${prefix}.fp.vcf.gz
     touch ${prefix}.fp.vcf.gz.tbi
-    echo | gzip > ${prefix}.tp-base.vcf.gz
+    echo "" | gzip > ${prefix}.tp-base.vcf.gz
     touch ${prefix}.tp-base.vcf.gz.tbi
-    echo | gzip > ${prefix}.tp-comp.vcf.gz
+    echo "" | gzip > ${prefix}.tp-comp.vcf.gz
     touch ${prefix}.tp-comp.vcf.gz.tbi
     touch ${prefix}.summary.json
     touch ${prefix}.log.txt
