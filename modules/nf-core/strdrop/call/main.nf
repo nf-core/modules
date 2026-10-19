@@ -46,6 +46,6 @@ process STRDROP_CALL {
     """
     echo $args
 
-    echo | gzip > ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.vcf.gz
     """
 }
