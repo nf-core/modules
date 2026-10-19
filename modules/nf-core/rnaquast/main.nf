@@ -25,6 +25,9 @@ process RNAQUAST {
     reference = reference ? "--reference ${reference}" : ''
     gtf = gtf ? "--gtf ${gtf}" : ''
     """
+    # The gmap launcher exits 255 if any PATH entry is unreadable, e.g. /root/.pixi/bin when running as non-root
+    export PATH=\$(echo "\$PATH" | tr ':' '\\n' | grep -v '^/root/' | paste -sd: -)
+
     rnaQUAST.py \\
         $args \\
         --threads $task.cpus \\
