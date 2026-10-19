@@ -3,9 +3,9 @@ process BCFTOOLS_ROHVIZ {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/23/2397e92afdb695a248544593b5dcd19d8a0321dd3fd7f85cacd80de6cd56290d/data'
-        : 'community.wave.seqera.io/library/bcftools_htslib_less:6e82455ad302b6f7' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/23/23929960155bf38dd96bdc4a133761cae491644c7c85932e846fa6b80c5e99fd/data'
+        : 'community.wave.seqera.io/library/bcftools_htslib_less:44d372581fd03e09'}"
 
     input:
     tuple val(meta), path(roh)
