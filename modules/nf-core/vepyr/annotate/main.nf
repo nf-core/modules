@@ -4,8 +4,8 @@ process VEPYR_ANNOTATE {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d4/d4eac4a987b908cc4cc7a0a078e25966e35c4347607d8fdfb0203ad738caea04/data'
-        : 'community.wave.seqera.io/library/htslib_vepyr:219c82c59dd69e35'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/68/688a1f826e440e9bd3d0a16f4bde77fb2a82aee1c829ee27e5c0948e59bc94a4/data'
+        : 'community.wave.seqera.io/library/htslib_vepyr:576c42addf1fb1dc'}"
 
     input:
     tuple val(meta), path(vcf), path(tbi)

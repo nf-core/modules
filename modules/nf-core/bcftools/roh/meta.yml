@@ -1,6 +1,5 @@
 name: "bcftools_roh"
-description: A program for detecting runs of homo/autozygosity. Only bi-allelic
-  sites are considered.
+description: A program for detecting runs of homo/autozygosity. Only bi-allelic sites are considered.
 keywords:
   - roh
   - biallelic
@@ -8,8 +7,7 @@ keywords:
   - autozygosity
 tools:
   - "roh":
-      description: "A program for detecting runs of homo/autozygosity. Only bi-allelic
-        sites are considered."
+      description: "A program for detecting runs of homo/autozygosity. Only bi-allelic sites are considered."
       homepage: https://www.htslib.org/
       documentation: http://www.htslib.org/doc/bcftools.html
       doi: 10.1093/bioinformatics/btp352
@@ -34,8 +32,7 @@ input:
         ontologies: []
   - - af_file:
         type: file
-        description: "Read allele frequencies from a tab-delimited file containing the
-          columns: CHROM\tPOS\tREF,ALT\tAF."
+        description: "Read allele frequencies from a tab-delimited file containing the columns: CHROM\tPOS\tREF,ALT\tAF."
         ontologies: []
     - af_file_tbi:
         type: file
@@ -47,8 +44,7 @@ input:
       ontologies: []
   - regions_file:
       type: file
-      description: "Regions can be specified either on command line or in a VCF, BED,
-        or tab-delimited file (the default)."
+      description: "Regions can be specified either on command line or in a VCF, BED, or tab-delimited file (the default)."
       ontologies: []
   - samples_file:
       type: file
@@ -56,8 +52,7 @@ input:
       ontologies: []
   - targets_file:
       type: file
-      description: "Targets can be specified either on command line or in a VCF, BED,
-        or tab-delimited file (the default)."
+      description: "Targets can be specified either on command line or in a VCF, BED, or tab-delimited file (the default)."
       ontologies: []
 output:
   roh:
@@ -68,8 +63,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.roh":
           type: file
-          description: Contains site-specific and/or per-region runs of
-            homo/autozygosity calls.
+          description: Contains site-specific and/or per-region runs of homo/autozygosity calls.
           pattern: "*.{roh}"
           ontologies: []
   versions_bcftools:
@@ -97,3 +91,27 @@ authors:
   - "@ramprasadn"
 maintainers:
   - "@ramprasadn"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bcftools_htslib:1.23.1--4e7d12da6416a855
+      build_id: bd-4e7d12da6416a855_1
+      scan_id: sc-ec867ada3e6f3e30_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/bcftools_htslib:1.23.1--ee50eeca823501dd
+      build_id: bd-ee50eeca823501dd_1
+      scan_id: sc-817d151a9322dc7e_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bcftools_htslib:1.23.1--81850d175cb7048b
+      build_id: bd-81850d175cb7048b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/16/164b5421d87e69f8e9f5add5a937e148e8165f11bfb18159da607f56ecdb1495/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bcftools_htslib:1.23.1--0e9b1d4a4e3f7742
+      build_id: bd-0e9b1d4a4e3f7742_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cb/cb013e43f0138401d7c76269b53afb00eaae3f824be484631f811a6a7a05c895/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bcftools/roh/.conda-lock/linux_amd64-bd-4e7d12da6416a855_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/bcftools/roh/.conda-lock/linux_arm64-bd-ee50eeca823501dd_1.txt
