@@ -3,9 +3,9 @@ process RIBOWALTZ {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ribowaltz:2.0--r43hdfd78af_0':
-        'quay.io/biocontainers/ribowaltz:2.0--r43hdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/00/00a88faa3f85ef5ed7317ea8052367b269fbb51340cfbf6ea3b87e74bd9e60ab/data'
+        : 'community.wave.seqera.io/library/bioconductor-genomicfeatures_ribowaltz_r-base_r-dplyr:1bdacb0c107cee6a'}"
 
     input:
     tuple val(meta) , path(bam)
