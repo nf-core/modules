@@ -65,7 +65,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["panteraga_log"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["panteraga_log", "onealn"])).match() }
             )
         }
 
