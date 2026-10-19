@@ -74,3 +74,17 @@ authors:
   - "@rpetit3"
 maintainers:
   - "@rpetit3"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/roary_perl-algorithm-diff_perl-apache-test_perl-app-cpanminus_pruned:09a4b57815a21cac
+      build_id: bd-09a4b57815a21cac_1
+      scan_id: sc-e6fe270d3646e2fa_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/roary_perl-algorithm-diff_perl-apache-test_perl-app-cpanminus_pruned:e548148b12959815
+      build_id: bd-e548148b12959815_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6e/6eb36cf3874c118d360e8881a61f427cf71cbe7fd3fee5595bf7c2c52996b0d1/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/roary/.conda-lock/linux_amd64-bd-09a4b57815a21cac_1.txt
