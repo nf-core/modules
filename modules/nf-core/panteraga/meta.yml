@@ -23,13 +23,13 @@ input:
     - genomes:
         type: file
         description: |
-            List of genomes to identify transposable elements in.
+          List of genomes to identify transposable elements in.
 
-            Note that PanteraGA performs pairwise genome alignments in a ring, i.e.
-            the first genome against the second, then the second against the third, etc..
+          Note that PanteraGA performs pairwise genome alignments in a ring, i.e.
+          the first genome against the second, then the second against the third, etc..
 
-            This module respects the order that genomes are supplied in, so it may be important
-            to enforce a deterministic order as needed on this input genomes list.
+          This module respects the order that genomes are supplied in, so it may be important
+          to enforce a deterministic order as needed on this input genomes list.
         pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
