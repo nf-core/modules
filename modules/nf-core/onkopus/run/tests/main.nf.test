@@ -18,27 +18,19 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = channel.of(
-                    "##fileformat=VCFv4.2",
-                    "#CHROM\\tPOS\\tID\\tREF\\tALT\\tQUAL\\tFILTER\\tINFO",
-                    "chr7\\t140753336\\t.\\tA\\tT\\t.\\t.\\t."
-                ).collectFile(name: 'braf_v600e.vcf', newLine: true).map { f -> tuple([ id:'test' ], f) }
+                input[0] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pharmcat/test.chr22.single.sample.vcf.gz', checkIfExists: true)
+                ])
                 input[1] = 'hg38'
                 """
             }
         }
 
         then {
-            def lines = path(process.out.vcf[0][1]).linesGzip
-            def variants = lines.findAll { l -> !l.startsWith('#') }
             assertAll(
                 { assert process.success },
-                // Annotations come from a live remote service, so content is not snapshotted
-                { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ["vcf"]),
-                    variants.size(),
-                    variants[0].contains('CLINVAR')
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -53,11 +45,10 @@ nextflow_process {
             }
             process {
                 """
-                input[0] = channel.of(
-                    "##fileformat=VCFv4.2",
-                    "#CHROM\\tPOS\\tID\\tREF\\tALT\\tQUAL\\tFILTER\\tINFO",
-                    "chr7\\t140753336\\t.\\tA\\tT\\t.\\t.\\t."
-                ).collectFile(name: 'braf_v600e.vcf', newLine: true).map { f -> tuple([ id:'test' ], f) }
+                input[0] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pharmcat/test.chr22.single.sample.vcf.gz', checkIfExists: true)
+                ])
                 input[1] = 'hg38'
                 """
             }

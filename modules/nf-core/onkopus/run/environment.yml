@@ -1,9 +1,10 @@
----
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
   - conda-forge
+  - bioconda
 dependencies:
+  - bioconda::htslib=1.24
   - conda-forge::pip=26.0.1
   - conda-forge::python=3.12.15
   - pip:
-    - onkopus==0.7.0
+      - onkopus==0.7.0

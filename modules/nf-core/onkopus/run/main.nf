@@ -1,12 +1,11 @@
-
 process ONKOPUS_RUN {
     tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/95/95c89b8a34657574980328bff5752240c8e93332891bd41fecf99220da6da40c/data'
-        : 'community.wave.seqera.io/library/python_pip_onkopus:cbfd43c4529368f9'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fb/fb11815b9aa5409dd2020116323ba0ede9ca465bbec663497fcb8ca0648c2655/data'
+        : 'community.wave.seqera.io/library/htslib_pip_python_onkopus:55b51654a75178bc'}"
 
     input:
     tuple val(meta), path(vcf)
@@ -35,7 +34,7 @@ process ONKOPUS_RUN {
         -g "${genome}" \\
         ${args}
 
-    gzip -c "${prefix}.tmp.vcf" > "${prefix}.ann.vcf.gz"
+    bgzip -c "${prefix}.tmp.vcf" > "${prefix}.ann.vcf.gz"
     rm -rf pylib "${prefix}.tmp.vcf"
     """
 
@@ -45,6 +44,6 @@ process ONKOPUS_RUN {
     """
     echo "${args}"
 
-    echo "" | gzip > "${prefix}.ann.vcf.gz"
+    echo "" | bgzip > "${prefix}.ann.vcf.gz"
     """
 }
