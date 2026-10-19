@@ -4,8 +4,8 @@ process RIBOWALTZ {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/00/00a88faa3f85ef5ed7317ea8052367b269fbb51340cfbf6ea3b87e74bd9e60ab/data'
-        : 'community.wave.seqera.io/library/bioconductor-genomicfeatures_ribowaltz_r-base_r-dplyr:1bdacb0c107cee6a'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/56/56049a13d022d8e63efc68add0d5ea5292dfafd389b7c37c9b1b97e89be71c71/data'
+        : 'community.wave.seqera.io/library/bioconductor-genomicfeatures_ribowaltz_r-base_r-dplyr:51ff674deeb6ddb9'}"
 
     input:
     tuple val(meta) , path(bam)
