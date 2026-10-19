@@ -4,8 +4,8 @@ process RMATS_PREP {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/rmats:4.3.0--py311hf2f0b74_5'
-        : 'quay.io/biocontainers/rmats:4.3.0--py311hf2f0b74_5'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bd/bdb37d05bf5e599a98854bc9393b4e98d3430f8285c3897183de2f0fab6f5d57/data'
+        : 'community.wave.seqera.io/library/rmats:4.3.0--85c9d01519f77bc5'}"
 
     input:
     tuple val(meta), path(genome_bam)
