@@ -8,7 +8,7 @@ process PANTERAGA {
         : 'community.wave.seqera.io/library/panteraga:1.4.0--0ec78c92c1b49c00'}"
 
     input:
-    tuple val(meta), path(genomes, stageAs: "genomes/*")
+    tuple val(meta), path(genomes)
     val seed
 
     output:
@@ -30,7 +30,7 @@ process PANTERAGA {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def seed_arg = args.contains("--seed") || args.contains("-r") ? "" : seed ? "--seed ${seed}" : ""
     """
-    for file in genomes/*; do
+    for file in ${genomes}; do
         echo \${file} >> genomes.txt
     done
 
@@ -58,8 +58,7 @@ process PANTERAGA {
     touch ${prefix}-pantera-final.stats.tsv
     touch ${prefix}.pantera.log
 
-    for f in Copia_1.test.LTR.Copia.maf DNA_4.test.DNA.maf I.Jockey_1.test.LINE.I.Jockey.maf; do
-        f=\${f/test/${prefix}}
+    for f in "Copia_1.${prefix}.LTR.Copia.maf" "DNA_4.${prefix}.DNA.maf" "I.Jockey_1.${prefix}.LINE.I.Jockey.maf"; do
         touch alignments/\${f}
     done
 
