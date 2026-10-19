@@ -9,7 +9,7 @@ process BCFTOOLS_ROHVIZ {
 
     input:
     tuple val(meta), path(roh)
-    tuple val(meta1), path(vcf)
+    tuple val(meta2), path(vcf)
     path regions_list
     path samples_file
 

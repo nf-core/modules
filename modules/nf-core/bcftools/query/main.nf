@@ -14,7 +14,7 @@ process BCFTOOLS_QUERY {
     path samples
 
     output:
-    tuple val(meta), path("*.${suffix}"), emit: output
+    tuple val(meta), path("*.txt"), emit: output
     tuple val("${task.process}"), val('bcftools'), eval("bcftools --version | sed '1!d; s/^.*bcftools //'"), topic: versions, emit: versions_bcftools
 
     when:
@@ -23,7 +23,6 @@ process BCFTOOLS_QUERY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    suffix = task.ext.suffix ?: "txt"
     def regions_file = regions ? "--regions-file ${regions}" : ""
     def targets_file = targets ? "--targets-file ${targets}" : ""
     def samples_file = samples ? "--samples-file ${samples}" : ""
@@ -34,13 +33,12 @@ process BCFTOOLS_QUERY {
         ${samples_file} \\
         ${args} \\
         ${vcf} \\
-        > ${prefix}.${suffix}
+        > ${prefix}.txt
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    suffix = task.ext.suffix ?: "txt"
     """
-    touch ${prefix}.${suffix} \\
+    touch ${prefix}.txt
     """
 }
