@@ -13,7 +13,7 @@ linux-64:
 - conda: https://conda.anaconda.org/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-64/blis-2.1-pthreads_h64f13e8_0.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-64/bzip2-1.0.8-hda65f42_10.conda
-- conda: https://conda.anaconda.org/conda-forge/noarch/ca-certificates-2026.7.22-hbd8a1cb_0.conda
+- conda: https://conda.anaconda.org/conda-forge/noarch/ca-certificates-2026.10.18-hbd8a1cb_0.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-64/gsl-2.7-he838d99_0.tar.bz2
 - conda: https://conda.anaconda.org/conda-forge/linux-64/libblas-3.11.0-11_h4a7cf45_openblas.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-64/libcblas-3.11.0-11_h0358290_openblas.conda
@@ -29,7 +29,7 @@ linux-64:
 - conda: https://conda.anaconda.org/conda-forge/linux-64/ncurses-6.6-hdb14827_1.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-64/openssl-3.6.5-h781a0a9_0.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-64/procps-ng-4.0.6-h18c060e_0.conda
-- conda: https://conda.anaconda.org/bioconda/linux-64/varlociraptor-8.9.5-h24073b4_0.conda
+- conda: https://conda.anaconda.org/bioconda/linux-64/varlociraptor-8.12.0-h7a8e230_0.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-64/which-2.25-h171cf75_0.conda
 packages:
 - conda: https://conda.anaconda.org/conda-forge/linux-64/_openmp_mutex-4.5-20_gnu.conda
@@ -65,14 +65,14 @@ license: bzip2-1.0.6
 license_family: BSD
 size: 257808
 timestamp: 1785906269155
-- conda: https://conda.anaconda.org/conda-forge/noarch/ca-certificates-2026.7.22-hbd8a1cb_0.conda
-sha256: 0a0544cf95f64394fe4959286f5c71f5444ad58feb0602e53becb27448d24da6
-md5: 0f51e2391ade309db462a55611263e9c
+- conda: https://conda.anaconda.org/conda-forge/noarch/ca-certificates-2026.10.18-hbd8a1cb_0.conda
+sha256: d65aa0c8990f34e1e86e6b505c8a149fea6cfbfcccef087a77c0bcb0b4fbe159
+md5: f9f6a9cf041f31438b034dac016e6429
 depends:
 - __unix
 license: ISC
-size: 131780
-timestamp: 1784754889428
+size: 129191
+timestamp: 1792347285941
 - conda: https://conda.anaconda.org/conda-forge/linux-64/gsl-2.7-he838d99_0.tar.bz2
 sha256: 132a918b676dd1f533d7c6f95e567abf7081a6ea3251c3280de35ef600e0da87
 md5: fec079ba39c9cca093bf4c00001825de
@@ -248,25 +248,26 @@ license: GPL-2.0-or-later AND LGPL-2.0-or-later
 license_family: GPL
 size: 593603
 timestamp: 1769710381284
-- conda: https://conda.anaconda.org/bioconda/linux-64/varlociraptor-8.9.5-h24073b4_0.conda
-sha256: d2869c303b666197aa77ebcc9aa01e6a48cd8ef629a36cafdd1875d93c1a8f69
-md5: 2c79c74bd6d0b74cfd58f68a95879336
+- conda: https://conda.anaconda.org/bioconda/linux-64/varlociraptor-8.12.0-h7a8e230_0.conda
+sha256: 5d53ce3452842c070678f664a0465ca7f977b46a9c86003bf0c104ba39a968c4
+md5: 103b28a0b0632f1e70dba561b6584d2b
 depends:
+- __glibc >=2.17,<3.0.a0
 - blis
 - bzip2 >=1.0.8,<2.0a0
 - gsl >=2.7,<2.8.0a0
 - libcblas >=3.9.0,<4.0a0
 - libgcc >=14
-- liblzma >=5.8.2,<6.0a0
+- liblzma >=5.8.3,<6.0a0
 - libstdcxx >=14
-- libzlib >=1.3.1,<2.0a0
-- openssl >=3.5.5,<4.0a0
+- libzlib >=1.3.2,<2.0a0
+- openssl >=3.5.9,<4.0a0
 constrains:
 - __glibc >=2.17
 license: GPL-3.0-or-later
 license_family: GPL3
-size: 4786130
-timestamp: 1770759461429
+size: 4803364
+timestamp: 1792248771234
 - conda: https://conda.anaconda.org/conda-forge/linux-64/which-2.25-h171cf75_0.conda
 sha256: 2bf9a40d86d29fd5c30d0febec99d06398143ddeece9ebb175cc5a6d20279943
 md5: f16d4aec5e8135e8e7bba02ef600149e
