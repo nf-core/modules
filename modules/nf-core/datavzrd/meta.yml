@@ -1,15 +1,12 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "datavzrd"
-description: Datavzrd is a tool to create visual HTML reports from collections of
-  CSV/TSV tables.
+description: Datavzrd is a tool to create visual HTML reports from collections of CSV/TSV tables.
 keywords:
   - visualisation
   - tsv
   - csv
 tools:
   - datavzrd:
-      description: Datavzrd is a tool to create visual HTML reports from collections
-        of CSV/TSV tables.
+      description: Datavzrd is a tool to create visual HTML reports from collections of CSV/TSV tables.
       homepage: https://datavzrd.github.io/
       documentation: https://datavzrd.github.io/docs/index.html
       tool_dev_url: https://github.com/datavzrd/datavzrd
@@ -72,3 +69,27 @@ authors:
   - "@famosab"
 maintainers:
   - "@famosab"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/datavzrd:2.75.3--58fb85a496607c2e
+      build_id: bd-58fb85a496607c2e_2
+      scan_id: sc-c45611f5e9c5e9d5_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/datavzrd:2.75.3--ea056c1eb19e673d
+      build_id: bd-ea056c1eb19e673d_2
+      scan_id: sc-94442d6d12353905_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/datavzrd:2.75.3--85f7f2f17cff24cf
+      build_id: bd-85f7f2f17cff24cf_2
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/60/600b32995bbb9788982b9321aa24aec837819b9fccca915591a927c54724f4f6/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/datavzrd:2.75.3--0847a89d181f96be
+      build_id: bd-0847a89d181f96be_2
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a1/a11d2125889dc943de75067c08ebd6848e37b11b35eea630351019b9bea8644f/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/datavzrd/.conda-lock/linux_amd64-bd-58fb85a496607c2e_2.txt
+    linux/arm64:
+      lock_file: modules/nf-core/datavzrd/.conda-lock/linux_arm64-bd-ea056c1eb19e673d_2.txt
