@@ -47,6 +47,7 @@ process PICARD_POSITIONBASEDDOWNSAMPLESAM {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    ACTUAL_NUM_READS=10
     touch ${prefix}.ds10.bam
     touch ${prefix}.ds10.bam.bai
     """
