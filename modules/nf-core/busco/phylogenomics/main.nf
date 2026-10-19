@@ -3,9 +3,9 @@ process BUSCO_PHYLOGENOMICS {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/busco_phylogenomics:20240919--pyhdfd78af_0':
-        'quay.io/biocontainers/busco_phylogenomics:20240919--pyhdfd78af_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d2/d2d5ed55fe7ba6e2d8b01cf4cb5b9495dfdfddf7d461de7238e300005025456c/data'
+        : 'community.wave.seqera.io/library/busco_phylogenomics:20240919--1ac5c165c01ef4d1' }"
 
     input:
     tuple val(meta), path(busco)

@@ -3,9 +3,9 @@ process HMMER_ESLSFETCHINDEX {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f2/f2c9b2c2ded44fc2076629da06a841d3bd8a9f847f6d6e4b6a3aac38897870bc/data' :
-        'community.wave.seqera.io/library/coreutils_hmmer:4d607118d1d3ddb5' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/41/41f71771ca71c8a250d63b4557eb1ce70efc3fc28e565297a9f1890e687561cc/data'
+:         'community.wave.seqera.io/library/hmmer_coreutils:e129de528776aa4c' }"
 
     input:
     tuple val(meta), path(seqfile)

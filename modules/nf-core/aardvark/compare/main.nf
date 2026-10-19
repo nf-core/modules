@@ -3,9 +3,9 @@ process AARDVARK_COMPARE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/aardvark:0.10.5--h4349ce8_0':
-        'quay.io/biocontainers/aardvark:0.10.5--h4349ce8_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b1/b1594cf6a0ecac04adf5a88a88f1da08e5a8eb0f21cd6d42024b1b343cce0870/data'
+:         'community.wave.seqera.io/library/aardvark:0.10.5--50402c072fe171c0' }"
 
     input:
     tuple val(meta), path(query_vcf), path(query_vcf_tbi), path(truth_vcf), path(truth_vcf_tbi), path(regions_bed)

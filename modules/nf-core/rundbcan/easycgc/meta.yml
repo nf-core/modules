@@ -125,7 +125,47 @@ output:
           type: file
           description: |
             TSV file containing the diamond output for transporter annotation.
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  diamond_out_tf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${prefix}_diamond.out.tf:
+          type: file
+          description: |
+            TSV file containing the diamond output for prokaryotic transcription factor annotation. Not written with `--no-prokaryotic`.
+          pattern: "*_diamond.out.tf"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  diamond_out_peptidase:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${prefix}_diamond.out.peptidase:
+          type: file
+          description: |
+            TSV file containing the diamond output for peptidase annotation.
+          pattern: "*_diamond.out.peptidase"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  diamond_out_sulfatase:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${prefix}_diamond.out.sulfatase:
+          type: file
+          description: |
+            TSV file containing the diamond output for sulfatase annotation.
+          pattern: "*_diamond.out.sulfatase"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   tf_hmm_results:
     - - meta:
           type: map
@@ -147,6 +187,18 @@ output:
           type: file
           description: |
             TSV file containing the results of signaling transduction proteins (STP) annotation.
+          ontologies: []
+  total_cgc_info:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${prefix}_total_cgc_info.tsv:
+          type: file
+          description: |
+            TSV file summarising the total additional genes in the genome.
+          pattern: "*_total_cgc_info.tsv"
           ontologies: []
   versions_rundbcan:
     - - ${task.process}:

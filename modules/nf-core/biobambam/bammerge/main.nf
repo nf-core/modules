@@ -3,9 +3,9 @@ process BIOBAMBAM_BAMMERGE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/biobambam:2.0.185--h85de650_1'
-        : 'quay.io/biocontainers/biobambam:2.0.185--h85de650_1'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4d/4d04c55ec247a77fa53dba65675e35e714ef614cc549f2193058e14312d2448c/data'
+        : 'community.wave.seqera.io/library/biobambam:2.0.185--f2942b2c30c9eb0a' }"
 
     input:
     tuple val(meta), path(bam)

@@ -3,9 +3,9 @@ process WGSIM {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/wgsim:1.0--h5bf99c6_4':
-        'quay.io/biocontainers/wgsim:1.0--h5bf99c6_4' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e4/e41ff04a2e8632e62ecbce8ac2e3e06f6738c815b1a4f38acd937b133c587b92/data'
+:         'community.wave.seqera.io/library/wgsim:1.0--2fb08e23ce8d62af' }"
 
     input:
     tuple val(meta), path(fasta)

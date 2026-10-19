@@ -1,7 +1,5 @@
 name: "snakemake"
-description: The Snakemake workflow management system is a tool to create
-  reproducible and scalable data analyses. This module runs a simple Snakemake
-  pipeline based on input snakefile. Expect many limitations."
+description: The Snakemake workflow management system is a tool to create reproducible and scalable data analyses. This module runs a simple Snakemake pipeline based on input snakefile. Expect many limitations."
 keywords:
   - snakemake
   - workflow
@@ -57,8 +55,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - .snakemake:
           type: directory
-          description: Hidden directory containing Snakemake execution logs and
-            metadata
+          description: Hidden directory containing Snakemake execution logs and metadata
           pattern: ".snakemake"
           ontologies: []
   versions_snakemake:
@@ -86,3 +83,27 @@ authors:
   - "@adamrtalbot"
 maintainers:
   - "@adamrtalbot"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/snakemake:9.14.0--385578e146cd2b86
+      build_id: bd-385578e146cd2b86_3
+      scan_id: sc-070e8314a6349f8f_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/snakemake:9.14.0--34c26e13f2b040c1
+      build_id: bd-34c26e13f2b040c1_3
+      scan_id: sc-8b8bd6871c7dabb5_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/snakemake:9.14.0--b1246084bba1d73f
+      build_id: bd-b1246084bba1d73f_3
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ed/edd1e4b9ca9a54e765344c71a2dc9d324cc2e07f1bd537810541ca8677b966bc/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/snakemake:9.14.0--51163935997aebd0
+      build_id: bd-51163935997aebd0_3
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/29/29e4f5dc2065767eae60911ed2a3f09aa63628da3231acb67781aeed2aa0e8d8/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/snakemake/.conda-lock/linux_amd64-bd-34c26e13f2b040c1_3.txt
+    linux/arm64:
+      lock_file: modules/nf-core/snakemake/.conda-lock/linux_arm64-bd-385578e146cd2b86_3.txt

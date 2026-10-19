@@ -3,9 +3,9 @@ process VG_DECONSTRUCT {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vg:1.73.0--h9ee0642_0' :
-        'quay.io/biocontainers/vg:1.73.0--h9ee0642_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cc/cc480ae940534804b86db6edfcbd5ed096d06443ba8062b7808d297cd37dfe6f/data'
+:         'community.wave.seqera.io/library/vg:1.73.0--d74ddeb77d3e6db3' }"
 
     input:
     tuple val(meta), path(gfa)

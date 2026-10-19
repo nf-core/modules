@@ -149,3 +149,27 @@ authors:
   - "@leapicard"
 maintainers:
   - "@leapicard"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bppsuite:3.0.0--14dc7ef049395552
+      build_id: bd-14dc7ef049395552_1
+      scan_id: sc-e32d2f9801756f55_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/bppsuite:3.0.0--99321d96161bfb55
+      build_id: bd-99321d96161bfb55_1
+      scan_id: sc-788e793711a427f7_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bppsuite:3.0.0--865e2065a323996f
+      build_id: bd-865e2065a323996f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/da/da7b6d746001ce425b8d87d27ddb4d2a97895b19af0aeb62b4457a8079bd3d75/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bppsuite:3.0.0--de6f03b8a858df5d
+      build_id: bd-de6f03b8a858df5d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/17/17ac9c8f71ea0058788490646e7e7945fc02e9f7edcb55eedfb9f52e9d0fd7a7/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bppsuite/bppml/.conda-lock/linux_amd64-bd-14dc7ef049395552_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/bppsuite/bppml/.conda-lock/linux_arm64-bd-99321d96161bfb55_1.txt
