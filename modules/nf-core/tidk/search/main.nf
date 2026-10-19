@@ -3,9 +3,9 @@ process TIDK_SEARCH {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/tidk:0.2.7--h6872113_0':
-        'quay.io/biocontainers/tidk:0.2.7--h6872113_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9f/9fc2352a02fcae6bc8ae7ba109692168150451bf188a98c1032545f85a0b21e2/data'
+        : 'community.wave.seqera.io/library/tidk:0.2.7--e781b1e8244cc913'}"
 
     input:
     tuple val(meta), path(fasta)
