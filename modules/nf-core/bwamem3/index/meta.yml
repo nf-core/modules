@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "bwamem3_index"
 description: Create bwa-mem3 index for reference genome
 keywords:
@@ -8,8 +7,7 @@ keywords:
   - reference
 tools:
   - "bwamem3":
-      description: "Short-read aligner derived from bwa-mem2 with correctness fixes,
-        performance improvements, and methylation-aware alignment."
+      description: "Short-read aligner derived from bwa-mem2 with correctness fixes, performance improvements, and methylation-aware alignment."
       homepage: "https://github.com/fg-labs/bwa-mem3"
       documentation: "https://github.com/fg-labs/bwa-mem3"
       tool_dev_url: "https://github.com/fg-labs/bwa-mem3"
@@ -65,3 +63,27 @@ authors:
   - "@nh13"
 maintainers:
   - "@nh13"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/bwa-mem3:0.15.0--1a39c68ff5e14151
+      build_id: bd-1a39c68ff5e14151_1
+      scan_id: sc-2c8eb447dbbcb39c_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/bwa-mem3:0.15.0--832697eee00ba922
+      build_id: bd-832697eee00ba922_1
+      scan_id: sc-65832e7592e1563f_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bwa-mem3:0.15.0--5e31b9e3c2651f42
+      build_id: bd-5e31b9e3c2651f42_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/70/70c94630fc1da5d691d57ef22c9c02288838393dadffb1dbf008147441fd77ef/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bwa-mem3:0.15.0--c448bd3e31d2b53a
+      build_id: bd-c448bd3e31d2b53a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e1/e1ebc6dbe78b7ce6669620ed660b6081c31eaee8da41dfd7bc91bdbc3509b263/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bwamem3/index/.conda-lock/linux_amd64-bd-832697eee00ba922_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/bwamem3/index/.conda-lock/linux_arm64-bd-1a39c68ff5e14151_1.txt

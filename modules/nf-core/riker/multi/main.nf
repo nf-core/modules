@@ -3,9 +3,9 @@ process RIKER_MULTI {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/54/54c7820b49cfb5fada32c1825ac8a46c05d0085105c50055cbce4c37701ab95e/data' :
-        'community.wave.seqera.io/library/riker:0.4.0--4e7eeb0beed906c0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/68/6889ae6fe776c1288a5d446e00cf57324e3e0a02b6f13fb8351bfb719dd4fc42/data'
+:         'community.wave.seqera.io/library/riker:0.5.0--fc5310a356298f75' }"
 
     input:
     tuple val(meta),  path(bam), path(bai), path(error_vcf), path(error_vcf_idx), path(error_intervals), path(gcbias_exclude_intervals), path(hybcap_baits, stageAs: 'baits/*'), path(hybcap_targets, stageAs: 'targets/*'), path(rna_gene_model), path(rna_ribosomal_intervals), path(wgs_intervals)

@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "samtools_quickcheck"
 description: Quickly check that input files appear to be intact. Checks that beginning of the file contains a valid header (all formats) containing at least one target sequence and then seeks to the end of the file and checks that an end-of-file (EOF) is present and intact (BAM and CRAM only). Alignment records are not checked. The quickcheck module returns a non-zero EXIT_CODE if any input files don't have a valid header or are missing an EOF block. Otherwise EXIT_CODE is zero.
 keywords:
@@ -74,3 +73,27 @@ authors:
 maintainers:
   - "@Krannich479"
   - "@matthdsm"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/samtools_htslib:1.24--1cf42f16660c71d7
+      build_id: bd-1cf42f16660c71d7_1
+      scan_id: sc-93ebf9710e561449_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/samtools_htslib:1.24--e186722e17fa9b47
+      build_id: bd-e186722e17fa9b47_1
+      scan_id: sc-ccf0e6dad00be863_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/samtools_htslib:1.24--3f679c294c21f28a
+      build_id: bd-3f679c294c21f28a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/46/462b5db8b8a4a1a76a627a056a56a3c9ab344d51db27dee8fc89109d23bfea71/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/samtools_htslib:1.24--14d592495d129dba
+      build_id: bd-14d592495d129dba_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e2/e24a5fac63cbb01e4f46d69e5e95de91157cc8caeb9fd9e50d5bad911b378bc3/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/samtools/quickcheck/.conda-lock/linux_amd64-bd-e186722e17fa9b47_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/samtools/quickcheck/.conda-lock/linux_arm64-bd-1cf42f16660c71d7_1.txt

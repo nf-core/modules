@@ -3,9 +3,9 @@ process BWAMEM3_MEM {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/86/86147f304683f83e8c20d9cf8aebae945f7751402d84553efd735a4f5edfd9e6/data'
-        : 'community.wave.seqera.io/library/bwa-mem3_findutils_htslib_samtools:06f7d72b721717bd'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/04/040dc4151df127b1cd36d1b3455ab712fe1a57fbfbee26385e8f7293f7e47ead/data'
+:         'community.wave.seqera.io/library/bwa-mem3_htslib_samtools_findutils:b08ae21c54a338c8' }"
 
     input:
     tuple val(meta), path(reads)
