@@ -3,7 +3,7 @@ description: DeepSomatic is an extension of deep learning-based variant caller
   DeepVariant that takes aligned reads (in BAM or CRAM format) from tumour and
   normal data, produces pileup image tensors from them, classifies each tensor
   using a convolutional neural network, and finally reports somatic variants in
-  a standard VCF file, optionally accompanied by a tumour somatic gVCF.
+  a standard VCF file and a tumour somatic gVCF.
 keywords:
   - variant calling
   - machine learning
@@ -38,9 +38,7 @@ input:
         type: file
         description: |
           Tumour BAM/CRAM file. DeepSomatic infers the sample name from read groups
-          unless --sample_name_tumor is supplied in ext.args. For VCF-only calls,
-          also supply the effective tumour name as sample_name in
-          --postprocess_variants_extra_args to name empty outputs correctly.
+          unless --sample_name_tumor is supplied in ext.args.
         pattern: "*.bam/cram"
         ontologies: []
     - index_tumor:
@@ -114,7 +112,7 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - ${prefix}.g.vcf.gz:
           type: file
-          description: Tumour somatic gVCF with reference-confidence records, emitted when --output_gvcf=${prefix}.g.vcf.gz is supplied in ext.args
+          description: Tumour somatic gVCF with reference-confidence records
           pattern: "${prefix}.g.vcf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989
@@ -126,7 +124,7 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - ${prefix}.g.vcf.gz.tbi:
           type: file
-          description: Index of the tumour somatic gVCF, emitted when --output_gvcf=${prefix}.g.vcf.gz is supplied in ext.args
+          description: Index of the tumour somatic gVCF
           pattern: "${prefix}.g.vcf.gz.tbi"
           ontologies: []
   versions_deepsomatic:
