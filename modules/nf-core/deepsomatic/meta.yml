@@ -1,9 +1,9 @@
 name: "deepsomatic"
 description: DeepSomatic is an extension of deep learning-based variant caller
-  DeepVariant that takes aligned reads (in BAM or CRAM format) from tumor and
+  DeepVariant that takes aligned reads (in BAM or CRAM format) from tumour and
   normal data, produces pileup image tensors from them, classifies each tensor
   using a convolutional neural network, and finally reports somatic variants in
-  a standard VCF or gVCF file.
+  a standard VCF file, optionally accompanied by a tumour somatic gVCF.
 keywords:
   - variant calling
   - machine learning
@@ -26,7 +26,7 @@ input:
           e.g. [ id:'test', single_end:false ]
     - input_normal:
         type: file
-        description: BAM/CRAM file
+        description: Normal BAM/CRAM file
         pattern: "*.bam/cram"
         ontologies: []
     - index_normal:
@@ -36,7 +36,11 @@ input:
         ontologies: []
     - input_tumor:
         type: file
-        description: BAM/CRAM file
+        description: |
+          Tumour BAM/CRAM file. DeepSomatic infers the sample name from read groups
+          unless --sample_name_tumor is supplied in ext.args. For VCF-only calls,
+          also supply the effective tumour name as sample_name in
+          --postprocess_variants_extra_args to name empty outputs correctly.
         pattern: "*.bam/cram"
         ontologies: []
     - index_tumor:
@@ -44,16 +48,11 @@ input:
         description: Index of BAM/CRAM file
         pattern: "*.bai/crai"
         ontologies: []
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
     - intervals:
         type: file
-        description: file containing intervals
+        description: Optional interval file; use [] for unrestricted calling
         ontologies: []
-  - - meta3:
+  - - meta2:
         type: map
         description: |
           Groovy Map containing sample information
@@ -63,7 +62,7 @@ input:
         description: The reference fasta file
         pattern: "*.fasta"
         ontologies: []
-  - - meta4:
+  - - meta3:
         type: map
         description: |
           Groovy Map containing sample information
@@ -73,7 +72,7 @@ input:
         description: Index of reference fasta file
         pattern: "*.fai"
         ontologies: []
-  - - meta5:
+  - - meta4:
         type: map
         description: |
           Groovy Map containing sample information
@@ -93,7 +92,7 @@ output:
       - ${prefix}.vcf.gz:
           type: file
           description: Compressed VCF file
-          pattern: "*.vcf.gz"
+          pattern: "${prefix}.vcf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
   vcf_tbi:
@@ -105,7 +104,7 @@ output:
       - ${prefix}.vcf.gz.tbi:
           type: file
           description: Index of compressed VCF file
-          pattern: "*.vcf.gz.tbi"
+          pattern: "${prefix}.vcf.gz.tbi"
           ontologies: []
   gvcf:
     - - meta:
@@ -115,8 +114,8 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - ${prefix}.g.vcf.gz:
           type: file
-          description: Compressed GVCF file
-          pattern: "*.g.vcf.gz"
+          description: Tumour somatic gVCF with reference-confidence records, emitted when --output_gvcf=${prefix}.g.vcf.gz is supplied in ext.args
+          pattern: "${prefix}.g.vcf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989
   gvcf_tbi:
@@ -127,8 +126,8 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - ${prefix}.g.vcf.gz.tbi:
           type: file
-          description: Index of compressed Genotyped VCF file
-          pattern: "*.g.vcf.gz.tbi"
+          description: Index of the tumour somatic gVCF, emitted when --output_gvcf=${prefix}.g.vcf.gz is supplied in ext.args
+          pattern: "${prefix}.g.vcf.gz.tbi"
           ontologies: []
   versions_deepsomatic:
     - - ${task.process}:
@@ -137,7 +136,7 @@ output:
       - deepsomatic:
           type: string
           description: The name of the tool
-      - 1.7.0:
+      - 1.10.0:
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -148,7 +147,7 @@ topics:
       - deepsomatic:
           type: string
           description: The name of the tool
-      - 1.7.0:
+      - 1.10.0:
           type: eval
           description: The expression to obtain the version of the tool
 authors:
