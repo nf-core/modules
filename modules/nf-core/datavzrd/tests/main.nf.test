@@ -24,10 +24,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                             process.out.findAll { key, val -> key.startsWith('versions') },
-                            path(process.out.report[0][1])
-                                .list()
-                                .collect { getRecursiveFileNames(it, process.out.report[0][1]) }
-                                .flatten()
+                            getAllFilesFromDir(process.out.report[0][1], relative: true, includeDir: false)
                         ).match("csv")
                     }
             )
@@ -52,10 +49,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                             process.out.findAll { key, val -> key.startsWith('versions') },
-                            path(process.out.report[0][1])
-                                .list()
-                                .collect { getRecursiveFileNames(it, process.out.report[0][1]) }
-                                .flatten()
+                            getAllFilesFromDir(process.out.report[0][1], relative: true, includeDir: false)
                         ).match("tsv")
                     }
             )
@@ -102,11 +96,4 @@ nextflow_process {
             )
         }
     }
-}
-
-def getRecursiveFileNames(fileOrDir, outputDir) {
-    if(file(fileOrDir.toString()).isDirectory()) {
-        return fileOrDir.list().collect { getRecursiveFileNames(it, outputDir) }
-    }
-    return fileOrDir.toString().replace("${outputDir}/", "")
 }

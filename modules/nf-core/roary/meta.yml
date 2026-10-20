@@ -74,3 +74,27 @@ authors:
   - "@rpetit3"
 maintainers:
   - "@rpetit3"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/roary:3.13.0--238d9eb955a999cb
+      build_id: bd-238d9eb955a999cb_3
+      scan_id: sc-0c2e3a1afb658bf3_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/roary:3.13.0--9c2c5e26c77577d4
+      build_id: bd-9c2c5e26c77577d4_3
+      scan_id: sc-50032311f1ddcaa1_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/roary:3.13.0--a8d95ce0f2f1f9c4
+      build_id: bd-a8d95ce0f2f1f9c4_3
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/50/50bfcc1b77f232d82233d35d4f1fc0d5ffd7c01aab3c82aa12ae044950941a24/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/roary:3.13.0--ac030d16868abf9c
+      build_id: bd-ac030d16868abf9c_3
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fb/fbc5af41408da134fa3fa6709a68fd3124741b3034c77fabdacb853c663befc8/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/roary/.conda-lock/linux_amd64-bd-9c2c5e26c77577d4_3.txt
+    linux/arm64:
+      lock_file: modules/nf-core/roary/.conda-lock/linux_arm64-bd-238d9eb955a999cb_3.txt
