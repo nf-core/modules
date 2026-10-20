@@ -19,8 +19,8 @@ input:
   - - meta:
         type: map
         description: |
-          Groovy Map containing sample information. Caller can be one of the tools: delly, manta, melt, wham
-          e.g. [ id:'test', caller:"delly" ]
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
     - input:
         type: file
         description: A gzipped VCF file to be standardized
@@ -38,13 +38,17 @@ input:
           in the VCF header (defaults to all contigs of GRCh37)
         pattern: "*.fai"
         ontologies: []
+  - caller:
+      type: string
+      description: Tool that produced the input VCF
+      enum: ["delly", "lumpy", "manta", "melt", "smoove", "wham"]
 output:
   vcf:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', caller:"delly" ]
+            e.g. [ id:'test' ]
       - "*.vcf.gz":
           type: file
           description: A gzipped version of the standardized VCF file
