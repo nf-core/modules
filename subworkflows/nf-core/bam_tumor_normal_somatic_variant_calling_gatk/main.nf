@@ -62,7 +62,7 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
 
     // Generate pileup summary tables using getepileupsummaries
     ch_getpileupsummaries_tumor_in = ch_input_tumor
-            .combine(ch_interval_file) //originally only used for GATK4_GETPILEUPSUMMARIES but GATK4_MUTECT2 also calls for intervals 
+            .combine(ch_interval_file)
 
     GATK4_GETPILEUPSUMMARIES_TUMOR(
         ch_getpileupsummaries_tumor_in,
@@ -76,7 +76,7 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
     if (val_tumor_normal_analysis) {
 
         ch_getpileupsummaries_normal_in = ch_input_normal
-            .combine(ch_interval_file) //originally only used for GATK4_GETPILEUPSUMMARIES but GATK4_MUTECT2 also calls for intervals 
+            .combine(ch_interval_file)
 
         GATK4_GETPILEUPSUMMARIES_NORMAL(
             ch_getpileupsummaries_normal_in,
@@ -88,10 +88,16 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
         )
 
         ch_calccon_in = GATK4_GETPILEUPSUMMARIES_TUMOR.out.table
-            .join(GATK4_GETPILEUPSUMMARIES_NORMAL.out.table)
+            .combine(GATK4_GETPILEUPSUMMARIES_NORMAL.out.table)
+            .map { meta_tumor, table_tumor, _meta_normal, table_normal -> 
+                [[id: meta_tumor.case_id], table_tumor, table_normal]
+            }
     }
     else {
         ch_calccon_in = GATK4_GETPILEUPSUMMARIES_TUMOR.out.table
+            .map { meta_tumor, table_tumor -> 
+                [[id: meta_tumor.case_id], table_tumor, []]
+            }
     }
 
     // Contamination and segmentation tables created using calculatecontamination on the pileup summary table.
@@ -102,10 +108,11 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
         .join(GATK4_MUTECT2.out.tbi, failOnDuplicate: true, failOnMismatch: true)
         .join(GATK4_MUTECT2.out.stats, failOnDuplicate: true, failOnMismatch: true)
         .join(GATK4_LEARNREADORIENTATIONMODEL.out.artifactprior, failOnDuplicate: true, failOnMismatch: true)
-        // files below have sample specific meta
-        .combine(GATK4_CALCULATECONTAMINATION.out.segmentation.map { _meta, segmentation -> segmentation})
-        .combine(GATK4_CALCULATECONTAMINATION.out.contamination.map { _meta, table -> [table, []] }) // [] is used as a placeholder for optional input to specify the contamination estimate as a value, since the contamination table is used, this is not needed.
-
+        .join(GATK4_CALCULATECONTAMINATION.out.segmentation, failOnDuplicate: true, failOnMismatch: true)
+        .join(GATK4_CALCULATECONTAMINATION.out.contamination
+            .map { meta, table -> [meta, table, []] }// [] is used as a placeholder for optional input to specify the contamination estimate as a value, since the contamination table is used, this is not needed.
+            , failOnDuplicate: true, failOnMismatch: true) 
+            
     GATK4_FILTERMUTECTCALLS(
         ch_filtermutect_in,
         ch_fasta,
