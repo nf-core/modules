@@ -22,6 +22,7 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
     ch_panel_of_normals // channel: /path/to/panel/of/normals
     ch_panel_of_normals_tbi // channel: /path/to/panel/of/normals/index
     ch_interval_file // channel: /path/to/interval/file
+    val_case_id // string
     val_tumor_normal_analysis // bool 
 
     main:
@@ -30,8 +31,8 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
 
         ch_mutect2_in = ch_input_tumor
             .combine(ch_input_normal)
-            .map { meta_tumor, bam_tumor, bai_tumor, _meta_normal, bam_normal, bai_normal -> 
-            [[id: meta_tumor.case_id], [bam_tumor, bam_normal], [bai_tumor, bai_normal]]
+            .map { _meta_tumor, bam_tumor, bai_tumor, _meta_normal, bam_normal, bai_normal -> 
+            [[id: val_case_id], [bam_tumor, bam_normal], [bai_tumor, bai_normal]]
             }
             .combine(ch_interval_file) //originally only used for GATK4_GETPILEUPSUMMARIES but GATK4_MUTECT2 also calls for intervals
 
@@ -89,14 +90,14 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
 
         ch_calccon_in = GATK4_GETPILEUPSUMMARIES_TUMOR.out.table
             .combine(GATK4_GETPILEUPSUMMARIES_NORMAL.out.table)
-            .map { meta_tumor, table_tumor, _meta_normal, table_normal -> 
-                [[id: meta_tumor.case_id], table_tumor, table_normal]
+            .map { _meta_tumor, table_tumor, _meta_normal, table_normal -> 
+                [[id: val_case_id], table_tumor, table_normal]
             }
     }
     else {
         ch_calccon_in = GATK4_GETPILEUPSUMMARIES_TUMOR.out.table
-            .map { meta_tumor, table_tumor -> 
-                [[id: meta_tumor.case_id], table_tumor, []]
+            .map { _meta_tumor, table_tumor -> 
+                [[id: val_case_id], table_tumor, []]
             }
     }
 
@@ -109,10 +110,20 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
         .join(GATK4_MUTECT2.out.stats, failOnDuplicate: true, failOnMismatch: true)
         .join(GATK4_LEARNREADORIENTATIONMODEL.out.artifactprior, failOnDuplicate: true, failOnMismatch: true)
         .join(GATK4_CALCULATECONTAMINATION.out.segmentation, failOnDuplicate: true, failOnMismatch: true)
-        .join(GATK4_CALCULATECONTAMINATION.out.contamination
-            .map { meta, table -> [meta, table, []] }// [] is used as a placeholder for optional input to specify the contamination estimate as a value, since the contamination table is used, this is not needed.
-            , failOnDuplicate: true, failOnMismatch: true) 
-            
+        .join(GATK4_CALCULATECONTAMINATION.out.contamination, failOnDuplicate: true, failOnMismatch: true) 
+        .map{ meta, vcf, tbi, stats, artifactprior, segmentation, contamination ->
+            [   
+                meta,
+                vcf,
+                tbi,
+                stats,
+                artifactprior,
+                segmentation,
+                contamination,
+                [], // Since the contamination table is provided, the value estimate is not relevant.
+            ]
+        }
+
     GATK4_FILTERMUTECTCALLS(
         ch_filtermutect_in,
         ch_fasta,
