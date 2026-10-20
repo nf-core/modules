@@ -4,8 +4,8 @@ process VARLOCIRAPTOR_CALLVARIANTS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f1/f1d2b5a7830e21d0407be9958b69810f16fac8008fb899c345f635ff5636de04/data'
-:         'community.wave.seqera.io/library/varlociraptor:8.9.5--9445270256470baf' }"
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/47/4788613cdc4faf20c5ebb24da24575ec3d80a8a52a0daf1c986b742444fe6c99/data'
+:         'community.wave.seqera.io/library/varlociraptor:8.12.0--294eead5eab5a1dc' }"
 
     input:
     tuple val(meta), path(vcfs), path(scenario), val(scenario_aliases)

@@ -2,9 +2,9 @@ process RUNDBCAN_DATABASE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/dbcan:5.2.9--pyhdfd78af_0' :
-        'quay.io/biocontainers/dbcan:5.2.9--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e8/e843a691d1c9be41394116f30ee3cf3f7bd042e0d59cb2f6a0a34b2b0a308e30/data'
+        : 'community.wave.seqera.io/library/dbcan:5.2.9--fb040f67fa175a9b'}"
 
     output:
     path "dbcan_db", emit: dbcan_db
