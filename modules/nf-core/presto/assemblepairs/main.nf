@@ -30,11 +30,11 @@ process PRESTO_ASSEMBLEPAIRS {
     def ref = reference ? "-r ${reference}" : ''
     """
     AssemblePairs.py ${mode} \\
-        -1 ${reads_1} \\
-        -2 ${reads_2} \\
+        -1 "${reads_1}" \\
+        -2 "${reads_2}" \\
         ${ref} \\
-        --outname ${prefix} \\
-        --log ${prefix}_assemble.log \\
+        --outname "${prefix}" \\
+        --log "${prefix}_assemble.log" \\
         --failed \\
         --nproc ${task.cpus} \\
         ${args} \\
