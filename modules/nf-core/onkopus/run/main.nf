@@ -14,6 +14,8 @@ process ONKOPUS_RUN {
     output:
     tuple val(meta), path("${prefix}.ann.vcf.gz"), emit: vcf
     tuple val("${task.process}"), val('onkopus'), eval("python -c \"import importlib.metadata as m; print(m.version('onkopus'))\""), topic: versions, emit: versions_onkopus
+    tuple val("${task.process}"), val('htslib'), eval("bgzip --version | sed '1!d; s/.* //'"), topic: versions, emit: versions_htslib
+    tuple val("${task.process}"), val('python'), eval("python --version | sed 's/Python //'"), topic: versions, emit: versions_python
 
     when:
     task.ext.when == null || task.ext.when
