@@ -18,8 +18,6 @@ nextflow_workflow {
     config "./nextflow.config"
 
     test("Tumor normal - human - bam - paired_end") {
-
-        options "-stub"
         
         when {
             workflow {
@@ -56,7 +54,8 @@ nextflow_workflow {
                 input[9]  = []
                 input[10] = []
                 input[11] = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.interval_list', checkIfExists: true))
-                input[12] = true
+                input[12] = 'test_case'
+                input[13] = true
                 """
             }
         }
