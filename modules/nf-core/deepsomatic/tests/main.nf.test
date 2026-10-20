@@ -31,15 +31,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                {
-                    assert snapshot(
-                        process.out.vcf.collect { [file(it[1]).getName(), path(it[1]).vcf.variantsMD5] },
-                        process.out.vcf_tbi.collect { file(it[1]).getName() },
-                        process.out.gvcf.collect { [file(it[1]).getName(), path(it[1]).vcf.variantsMD5] },
-                        process.out.gvcf_tbi.collect { file(it[1]).getName() },
-                        process.out.findAll { key, val -> key.startsWith('versions') },
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf", "gvcf"], unstableKeys: ["vcf_tbi", "gvcf_tbi"])).match() }
             )
         }
     }
@@ -68,15 +60,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                {
-                    assert snapshot(
-                        process.out.vcf.collect { [file(it[1]).getName(), path(it[1]).vcf.variantsMD5] },
-                        process.out.vcf_tbi.collect { file(it[1]).getName() },
-                        process.out.gvcf.collect { [file(it[1]).getName(), path(it[1]).vcf.variantsMD5] },
-                        process.out.gvcf_tbi.collect { file(it[1]).getName() },
-                        process.out.findAll { key, val -> key.startsWith('versions') },
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf", "gvcf"], unstableKeys: ["vcf_tbi", "gvcf_tbi"])).match() }
             )
         }
     }
@@ -106,15 +90,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                {
-                    assert snapshot(
-                        process.out.vcf.collect { [file(it[1]).getName(), path(it[1]).vcf.variantsMD5] },
-                        process.out.vcf_tbi.collect { file(it[1]).getName() },
-                        process.out.gvcf.collect { [file(it[1]).getName(), path(it[1]).vcf.variantsMD5] },
-                        process.out.gvcf_tbi.collect { file(it[1]).getName() },
-                        process.out.findAll { key, val -> key.startsWith('versions') },
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf", "gvcf"], unstableKeys: ["vcf_tbi", "gvcf_tbi"])).match() }
             )
         }
     }
@@ -143,15 +119,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                {
-                    assert snapshot(
-                        process.out.vcf.collect { file(it[1]).getName() },
-                        process.out.vcf_tbi.collect { file(it[1]).getName() },
-                        process.out.gvcf.collect { file(it[1]).getName() },
-                        process.out.gvcf_tbi.collect { file(it[1]).getName() },
-                        process.out.findAll { key, val -> key.startsWith('versions') },
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
