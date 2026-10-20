@@ -56,7 +56,7 @@ process MODKIT_PILEUP {
     """
     echo $args
 
-    echo | gzip > ${prefix}.bed.gz
+    echo "" | gzip > ${prefix}.bed.gz
     touch ${prefix}.log
     """
 }
