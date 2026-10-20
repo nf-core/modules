@@ -108,11 +108,7 @@ def remove_runtime_metadata(value):
         "output_flush_nanos",
     }
     if isinstance(value, dict):
-        return {
-            key: remove_runtime_metadata(item)
-            for key, item in value.items()
-            if key not in timing_fields
-        }
+        return {key: remove_runtime_metadata(item) for key, item in value.items() if key not in timing_fields}
     if isinstance(value, list):
         return [remove_runtime_metadata(item) for item in value]
     return value
@@ -120,7 +116,6 @@ def remove_runtime_metadata(value):
 
 def read_simpleaf(input_data: str):
     # Register the HDF5 filters required by simpleaf output.
-    import hdf5plugin
 
     # open main data
     simpleaf_h5ad_path = f"{input_data}/alevin/quants.h5ad"
@@ -193,25 +188,29 @@ def read_kallisto(input_data: str, t2g: str, workflow: str):
             features=glob.glob(f"{input_data}/*.genes.txt")[0],
         )
     elif workflow == "lamanno":
-        adata = combine_kallisto_layers({
-            state: read_kallisto_matrix(
-                matrix=glob.glob(f"{input_data}/{state}*.mtx")[0],
-                barcodes=glob.glob(f"{input_data}/{state}*.barcodes.txt")[0],
-                features=glob.glob(f"{input_data}/{state}*.genes.txt")[0],
-            )
-            for state in ("spliced", "unspliced")
-        })
+        adata = combine_kallisto_layers(
+            {
+                state: read_kallisto_matrix(
+                    matrix=glob.glob(f"{input_data}/{state}*.mtx")[0],
+                    barcodes=glob.glob(f"{input_data}/{state}*.barcodes.txt")[0],
+                    features=glob.glob(f"{input_data}/{state}*.genes.txt")[0],
+                )
+                for state in ("spliced", "unspliced")
+            }
+        )
     elif workflow == "nac":
         barcodes = glob.glob(f"{input_data}/*.barcodes.txt")[0]
         features = glob.glob(f"{input_data}/*.genes.txt")[0]
-        adata = combine_kallisto_layers({
-            state: read_kallisto_matrix(
-                matrix=glob.glob(f"{input_data}/*{state}.mtx")[0],
-                barcodes=barcodes,
-                features=features,
-            )
-            for state in ("nascent", "ambiguous", "mature")
-        })
+        adata = combine_kallisto_layers(
+            {
+                state: read_kallisto_matrix(
+                    matrix=glob.glob(f"{input_data}/*{state}.mtx")[0],
+                    barcodes=barcodes,
+                    features=features,
+                )
+                for state in ("nascent", "ambiguous", "mature")
+            }
+        )
     else:
         raise ValueError(f"Unsupported kallisto workflow: {workflow}")
 
