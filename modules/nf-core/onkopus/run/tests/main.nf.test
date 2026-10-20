@@ -30,7 +30,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(
+                    file(process.out.vcf[0][1]).name + ",variantsMD5:" + path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    sanitizeOutput(process.out).findAll { key, val -> key != 'vcf' }
+                ).match() }
             )
         }
     }
