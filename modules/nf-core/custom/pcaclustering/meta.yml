@@ -1,6 +1,5 @@
 name: "CUSTOM_PCACLUSTERING"
-description: "Performs KMeans or DBSCAN clustering on a sample-by-feature numeric
-  matrix (e.g. principal components, embeddings)"
+description: "Performs KMeans or DBSCAN clustering on a sample-by-feature numeric matrix (e.g. principal components, embeddings)"
 keywords:
   - clustering
   - kmeans
@@ -83,3 +82,27 @@ authors:
   - "@dbaku42"
 maintainers:
   - "@dbaku42"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/numpy_pandas_python_pyyaml_scikit-learn:c47b8734a8131e31
+      build_id: bd-c47b8734a8131e31_1
+      scan_id: sc-b651ba62f64dc3ee_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/numpy_pandas_python_pyyaml_scikit-learn:b745a964522e2e96
+      build_id: bd-b745a964522e2e96_1
+      scan_id: sc-cb898b1a03d8a2f2_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/numpy_pandas_python_pyyaml_scikit-learn:b2124c9c68039521
+      build_id: bd-b2124c9c68039521_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/79/7954a01492f2eda956d7646dfdc88f3146e2a65cfd2c4cb22f935938408811cd/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/numpy_pandas_python_pyyaml_scikit-learn:68a9ef80b99c489b
+      build_id: bd-68a9ef80b99c489b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/81/8132cc89f4c7b3a051f1e181a1733137e10054a07187ae01d869010249a1effc/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/custom/pcaclustering/.conda-lock/linux_amd64-bd-b745a964522e2e96_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/custom/pcaclustering/.conda-lock/linux_arm64-bd-c47b8734a8131e31_1.txt

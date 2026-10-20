@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "custom_bed12codonpositions"
 description: |
   Expand a BED12 into a BED6 of in-frame mRNA positions, projected back
@@ -70,3 +69,27 @@ authors:
   - "@pinin4fjords"
 maintainers:
   - "@pinin4fjords"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/pandas_python_pyyaml:ad5611754f1bd430
+      build_id: bd-ad5611754f1bd430_1
+      scan_id: sc-c496f7884b90eea4_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/pandas_python_pyyaml:26e261815660ec9d
+      build_id: bd-26e261815660ec9d_1
+      scan_id: sc-88d0b063979852ba_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/pandas_python_pyyaml:ad7dce8582e7f6fc
+      build_id: bd-ad7dce8582e7f6fc_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/72/7259cf5c00cd90b521cdda013955b69043542ad2b93f786c6ed53ecfc04a8422/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/pandas_python_pyyaml:b99f553f961782e0
+      build_id: bd-b99f553f961782e0_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/35/35df663206512451376a855ae133444e82c1c45fd9843759b41a830004b63aa1/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/custom/bed12codonpositions/.conda-lock/linux_amd64-bd-26e261815660ec9d_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/custom/bed12codonpositions/.conda-lock/linux_arm64-bd-ad5611754f1bd430_1.txt
