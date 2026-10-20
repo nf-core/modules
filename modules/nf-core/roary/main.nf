@@ -4,8 +4,8 @@ process ROARY {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6e/6eb36cf3874c118d360e8881a61f427cf71cbe7fd3fee5595bf7c2c52996b0d1/data'
-        : 'community.wave.seqera.io/library/roary_perl-algorithm-diff_perl-apache-test_perl-app-cpanminus_pruned:09a4b57815a21cac'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fb/fbc5af41408da134fa3fa6709a68fd3124741b3034c77fabdacb853c663befc8/data'
+        : 'community.wave.seqera.io/library/roary:3.13.0--9c2c5e26c77577d4'}"
 
     input:
     tuple val(meta), path(gff)
