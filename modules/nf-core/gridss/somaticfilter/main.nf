@@ -3,6 +3,7 @@ process GRIDSS_SOMATICFILTER {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
+    // Seqera Containers image lacks GenomeInfoDbData (bioconda post-link script not run), keep the biocontainer for now
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/gridss:2.13.2--h270b39a_0'
         : 'quay.io/biocontainers/gridss:2.13.2--h270b39a_0'}"
