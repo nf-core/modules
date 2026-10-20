@@ -31,14 +31,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.vcf[0][1]).vcf.header.genotypeSamples == ['testT'] },
-                { assert path(process.out.gvcf[0][1]).vcf.header.genotypeSamples == ['testT'] },
-                { assert path(process.out.vcf[0][1]).vcf.variantCount > 0 },
                 {
                     assert snapshot(
-                        process.out.vcf.collect { file(it[1]).getName() },
+                        process.out.vcf.collect { [file(it[1]).getName(), path(it[1]).vcf.variantsMD5] },
                         process.out.vcf_tbi.collect { file(it[1]).getName() },
-                        process.out.gvcf.collect { file(it[1]).getName() },
+                        process.out.gvcf.collect { [file(it[1]).getName(), path(it[1]).vcf.variantsMD5] },
                         process.out.gvcf_tbi.collect { file(it[1]).getName() },
                         process.out.findAll { key, val -> key.startsWith('versions') },
                     ).match()
@@ -71,14 +68,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.vcf[0][1]).vcf.header.genotypeSamples == ['testT'] },
-                { assert path(process.out.gvcf[0][1]).vcf.header.genotypeSamples == ['testT'] },
-                { assert path(process.out.vcf[0][1]).vcf.variantCount > 0 },
                 {
                     assert snapshot(
-                        process.out.vcf.collect { file(it[1]).getName() },
+                        process.out.vcf.collect { [file(it[1]).getName(), path(it[1]).vcf.variantsMD5] },
                         process.out.vcf_tbi.collect { file(it[1]).getName() },
-                        process.out.gvcf.collect { file(it[1]).getName() },
+                        process.out.gvcf.collect { [file(it[1]).getName(), path(it[1]).vcf.variantsMD5] },
                         process.out.gvcf_tbi.collect { file(it[1]).getName() },
                         process.out.findAll { key, val -> key.startsWith('versions') },
                     ).match()
@@ -112,14 +106,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.vcf[0][1]).vcf.header.genotypeSamples == ['testT'] },
-                { assert path(process.out.gvcf[0][1]).vcf.header.genotypeSamples == ['testT'] },
-                { assert path(process.out.vcf[0][1]).vcf.variantCount > 0 },
                 {
                     assert snapshot(
-                        process.out.vcf.collect { file(it[1]).getName() },
+                        process.out.vcf.collect { [file(it[1]).getName(), path(it[1]).vcf.variantsMD5] },
                         process.out.vcf_tbi.collect { file(it[1]).getName() },
-                        process.out.gvcf.collect { file(it[1]).getName() },
+                        process.out.gvcf.collect { [file(it[1]).getName(), path(it[1]).vcf.variantsMD5] },
                         process.out.gvcf_tbi.collect { file(it[1]).getName() },
                         process.out.findAll { key, val -> key.startsWith('versions') },
                     ).match()
