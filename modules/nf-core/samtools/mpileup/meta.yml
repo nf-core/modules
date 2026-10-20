@@ -1,6 +1,5 @@
 name: samtools_mpileup
-description: Generate text pileup output for one or multiple BAM files. Each
-  input file produces a separate group of pileup columns in the output.
+description: Generate text pileup output for one or multiple BAM files. Each input file produces a separate group of pileup columns in the output.
 keywords:
   - mpileup
   - bam
@@ -30,8 +29,7 @@ input:
         ontologies: []
     - index:
         type: file
-        description: CSI/BAI/CRAI file. Optional. Only required when using the
-          '-r' parameter.
+        description: CSI/BAI/CRAI file. Optional. Only required when using the '-r' parameter.
         pattern: "*.{bai,crai,csi}"
         ontologies: []
     - intervals:
@@ -51,8 +49,7 @@ input:
         ontologies: []
     - fai:
         type: file
-        description: FAI file. Optional. Only required (recommended) when using the
-          '-f' parameter.
+        description: FAI file. Optional. Only required (recommended) when using the '-f' parameter.
         pattern: "*.{fai}"
         ontologies: []
 output:
@@ -95,3 +92,27 @@ maintainers:
   - "@joseespinosa"
   - "@krannich479"
   - "@matthdsm"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/htslib_samtools_xz:63148285647cb8e3
+      build_id: bd-63148285647cb8e3_1
+      scan_id: sc-a69a101ed715ded3_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/htslib_samtools_xz:c19e08fccce0b773
+      build_id: bd-c19e08fccce0b773_1
+      scan_id: sc-df980c754573bbc4_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/htslib_samtools_xz:76020b13c810bb59
+      build_id: bd-76020b13c810bb59_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/30/3046611514c8623f9e93fc5ae9811e6dd50a37c12b294c8b173f2be7d3468efd/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/htslib_samtools_xz:151918a69591dd1c
+      build_id: bd-151918a69591dd1c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/39/39db574ae6434e35bfb06db773f8bb7496a8109e7cc49bedc9e9947b3c87c797/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/samtools/mpileup/.conda-lock/linux_amd64-bd-63148285647cb8e3_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/samtools/mpileup/.conda-lock/linux_arm64-bd-c19e08fccce0b773_1.txt
