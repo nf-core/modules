@@ -1,0 +1,115 @@
+name: "custom_mtx2h5ad"
+description: Convert single-cell gene expression outputs from Cell Ranger, STARsolo,
+  simpleaf or kallisto to AnnData H5AD format, retaining available RNA velocity layers.
+keywords:
+  - single-cell
+  - gene expression
+  - matrix
+  - h5ad
+  - conversion
+  - rna velocity
+tools:
+  - python:
+      description: Python interpreter used to run the custom conversion script.
+      homepage: "https://www.python.org/"
+      documentation: "https://docs.python.org/3/"
+  - scanpy:
+      description: Single-cell analysis library used to read expression matrices.
+      homepage: "https://scanpy.readthedocs.io/"
+      documentation: "https://scanpy.readthedocs.io/en/stable/api/reading.html"
+      tool_dev_url: "https://github.com/scverse/scanpy"
+      licence: ["BSD-3-Clause"]
+  - anndata:
+      description: Annotated data structures used to combine matrices and write H5AD files.
+      homepage: "https://anndata.readthedocs.io/"
+      documentation: "https://anndata.readthedocs.io/en/stable/"
+      tool_dev_url: "https://github.com/scverse/anndata"
+      licence: ["BSD-3-Clause"]
+  - pandas:
+      description: Tabular data library used to read barcodes and gene annotations.
+      homepage: "https://pandas.pydata.org/"
+      documentation: "https://pandas.pydata.org/docs/"
+      tool_dev_url: "https://github.com/pandas-dev/pandas"
+      licence: ["BSD-3-Clause"]
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information.
+          e.g. `[ id:'sample1' ]`
+    - inputs:
+        type: file
+        description: |
+          Mandatory expression files or directories to stage for conversion.
+          Cell Ranger, Cell Ranger ARC and Cell Ranger multi require a matching
+          *{input_type}_feature_bc_matrix.h5 file. STARsolo requires a directory
+          named by input_type containing matrix.mtx.gz, barcodes.tsv.gz and
+          features.tsv.gz; an optional velocyto_{input_type} directory supplies
+          ambiguous, spliced and unspliced matrices. Simpleaf requires an output
+          directory containing alevin/quants.h5ad. Kallisto requires a directory
+          containing Matrix Market matrices, *.barcodes.txt and *.genes.txt files
+          appropriate to kb_workflow.
+    - input_type:
+        type: string
+        description: |
+          Matrix selection for Cell Ranger and STARsolo, typically raw or filtered.
+          Selects the Cell Ranger HDF5 filename or the staged STARsolo directory.
+          Ignored for simpleaf and kallisto; pass an empty string when unused.
+  - txp2gene:
+      type: file
+      description: |
+        Transcript-to-gene mapping required for kallisto. A headerless tab-separated
+        file with transcript ID, gene ID and gene symbol in the first three columns.
+        Gene IDs and symbols are used to annotate the expression matrix.
+        Pass an empty list when unused by other aligners.
+      ontologies:
+        - edam: http://edamontology.org/format_2330 # TXT
+  - aligner:
+      type: string
+      description: Mandatory source aligner or quantification tool selecting the converter.
+      enum:
+        - cellranger
+        - cellrangerarc
+        - cellrangermulti
+        - star
+        - simpleaf
+        - kallisto
+  - kb_workflow:
+      type: string
+      description: |
+        kallisto workflow defining the matrix layout: standard reads a single
+        count matrix; lamanno combines spliced and unspliced matrices; nac combines
+        nascent, ambiguous and mature matrices. The latter two retain the component
+        matrices as layers and sum them into the main count matrix.
+        Ignored for other aligners; pass an empty string when unused.
+output:
+  h5ad:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.h5ad":
+          type: file
+          description: |
+            AnnData object containing cell-by-gene expression counts, sample labels,
+            gene annotations and available RNA velocity layers. Original gene IDs
+            are retained in var['gene_versions']; the variable index uses unique,
+            version-free gene IDs.
+          pattern: "*.h5ad"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing Python, Scanpy, pandas and AnnData versions.
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing Python, Scanpy, pandas and AnnData versions.
+authors:
+  - "@delfiterradas"
+maintainers:
+  - "@delfiterradas"
