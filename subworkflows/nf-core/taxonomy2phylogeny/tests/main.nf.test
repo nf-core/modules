@@ -1,0 +1,74 @@
+nextflow_workflow {
+
+    name "Test Subworkflow TAXONOMY2PHYLOGENY"
+    script "../main.nf"
+    workflow "TAXONOMY2PHYLOGENY"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/taxonomy2phylogeny"
+    tag "custom"
+    tag "raxmlng/taxonomytree"
+    tag "raxmlng"
+    tag "raxmlng/search"
+
+    test("taxonomytree_test - moose model selection") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'generic/tax/taxonomytree_test.tax', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/fasta/taxonomytree_test.fasta', checkIfExists: true),
+                    'DNA',
+                ])
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+
+            def tree       = path(workflow.out.tree[0][1]).text
+            def guide_tree = path(workflow.out.guide_tree[0][1]).text
+            def model      = path(workflow.out.model[0][1]).text
+
+            assertAll(
+                { assert tree.trim().endsWith(';') },
+                { assert guide_tree.trim().endsWith(';') },
+                { assert tree.contains('sample1') },
+                { assert guide_tree.contains('sample1') },
+                { assert model.trim() },
+            )
+        }
+
+    }
+
+    test("taxonomytree_test - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'generic/tax/taxonomytree_test.tax', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/fasta/taxonomytree_test.fasta', checkIfExists: true),
+                    'DNA',
+                ])
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            assertAll(
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+
+    }
+
+}

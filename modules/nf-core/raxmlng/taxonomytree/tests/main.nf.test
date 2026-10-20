@@ -1,0 +1,71 @@
+nextflow_process {
+
+    name "Test Process RAXMLNG_TAXONOMYTREE"
+    script "../main.nf"
+    process "RAXMLNG_TAXONOMYTREE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "raxmlng"
+    tag "raxmlng/taxonomytree"
+
+    test("taxonomy tsv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'generic/tax/taxonomytree_test.tax', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            def newick = path(process.out.guide_tree[0][1]).text
+
+            assertAll(
+                { assert newick.trim().endsWith(';') },
+                { assert newick.contains('sample1') },
+                { assert newick.contains('sample2') },
+                { assert newick.contains('sample3') },
+                { assert newick.contains('sample4') },
+                { assert newick.contains('sample5') },
+                { assert newick.contains('sample6') },
+                // sample1/sample2 share every rank down to genus -- must nest together.
+                { assert newick =~ /\([^)]*sample1[^)]*sample2[^)]*\)/ ||
+                                   newick =~ /\([^)]*sample2[^)]*sample1[^)]*\)/ },
+                { assert process.out.versions_python },
+            )
+        }
+
+    }
+
+    test("taxonomy tsv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'generic/tax/taxonomytree_test.tax', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}
