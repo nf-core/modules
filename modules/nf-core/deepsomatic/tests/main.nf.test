@@ -47,13 +47,12 @@ nextflow_process {
         }
     }
 
-    test("bam - vcf and gvcf - empty interval") {
+    test("bam - vcf and gvcf - bed intervals") {
         config "./nextflow.config"
         when {
             process {
                 """
-                def bed = file('region.bed')
-                bed.text = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.multi_intervals.bed').readLines()[1] + '\\n'
+                def bed = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.multi_intervals.bed', checkIfExists: true)
                 input[0] = [
                     [ id:'pair' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
@@ -74,7 +73,7 @@ nextflow_process {
                 { assert process.success },
                 { assert path(process.out.vcf[0][1]).vcf.header.genotypeSamples == ['testT'] },
                 { assert path(process.out.gvcf[0][1]).vcf.header.genotypeSamples == ['testT'] },
-                { assert path(process.out.vcf[0][1]).vcf.variantCount == 0 },
+                { assert path(process.out.vcf[0][1]).vcf.variantCount > 0 },
                 {
                     assert snapshot(
                         process.out.vcf.collect { file(it[1]).getName() },
