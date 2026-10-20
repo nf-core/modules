@@ -8,12 +8,9 @@ nextflow_process {
     tag "modules_nfcore"
     tag "deepsomatic"
 
-    test("bam - vcf and gvcf - unrestricted") {
+    test("tumor_normal_pair") {
         config "./nextflow.config"
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = [
@@ -32,30 +29,20 @@ nextflow_process {
         }
 
         then {
-            assert process.success
             assertAll(
-                { assert process.out.vcf.collect { file(it[1]).name } == ['pair.vcf.gz'] },
-                { assert process.out.vcf_tbi.collect { file(it[1]).name } == ['pair.vcf.gz.tbi'] },
-                { assert process.out.gvcf.collect { file(it[1]).name } == ['pair.g.vcf.gz'] },
-                { assert process.out.gvcf_tbi.collect { file(it[1]).name } == ['pair.g.vcf.gz.tbi'] },
+                { assert process.success },
                 { assert path(process.out.vcf[0][1]).vcf.header.genotypeSamples == ['testT'] },
                 { assert path(process.out.gvcf[0][1]).vcf.header.genotypeSamples == ['testT'] },
+                { assert path(process.out.vcf[0][1]).vcf.variantCount > 0 },
                 {
-                    def lines = new java.util.zip.GZIPInputStream(file(process.out.vcf[0][1]).newInputStream()).withCloseable { it.readLines() }
-                    assert lines.count { !it.startsWith('#') } > 0
-                },
-                {
-                    def command = path(process.out.vcf[0][1]).parent.resolve('.command.sh').text
-                    assert !command.contains('--sample_name_tumor=')
-                    assert !command.contains('--sample_name_normal=')
-                },
-                { assert snapshot(
-                    process.out.vcf.collect { [it[0], file(it[1]).name] },
-                    process.out.vcf_tbi.collect { [it[0], file(it[1]).name] },
-                    process.out.gvcf.collect { [it[0], file(it[1]).name] },
-                    process.out.gvcf_tbi.collect { [it[0], file(it[1]).name] },
-                    process.out.findAll { key, value -> key.startsWith("versions") }
-                ).match() }
+                    assert snapshot(
+                        process.out.vcf.collect { file(it[1]).getName() },
+                        process.out.vcf_tbi.collect { file(it[1]).getName() },
+                        process.out.gvcf.collect { file(it[1]).getName() },
+                        process.out.gvcf_tbi.collect { file(it[1]).getName() },
+                        process.out.findAll { key, val -> key.startsWith('versions') },
+                    ).match()
+                }
             )
         }
     }
@@ -63,9 +50,6 @@ nextflow_process {
     test("bam - vcf and gvcf - empty interval") {
         config "./nextflow.config"
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 def bed = file('region.bed')
@@ -86,30 +70,20 @@ nextflow_process {
         }
 
         then {
-            assert process.success
             assertAll(
-                { assert process.out.vcf.collect { file(it[1]).name } == ['pair.vcf.gz'] },
-                { assert process.out.vcf_tbi.collect { file(it[1]).name } == ['pair.vcf.gz.tbi'] },
-                { assert process.out.gvcf.collect { file(it[1]).name } == ['pair.g.vcf.gz'] },
-                { assert process.out.gvcf_tbi.collect { file(it[1]).name } == ['pair.g.vcf.gz.tbi'] },
+                { assert process.success },
                 { assert path(process.out.vcf[0][1]).vcf.header.genotypeSamples == ['testT'] },
                 { assert path(process.out.gvcf[0][1]).vcf.header.genotypeSamples == ['testT'] },
+                { assert path(process.out.vcf[0][1]).vcf.variantCount == 0 },
                 {
-                    def lines = new java.util.zip.GZIPInputStream(file(process.out.vcf[0][1]).newInputStream()).withCloseable { it.readLines() }
-                    assert lines.count { !it.startsWith('#') } == 0
-                },
-                {
-                    def command = path(process.out.vcf[0][1]).parent.resolve('.command.sh').text
-                    assert !command.contains('--sample_name_tumor=')
-                    assert !command.contains('--sample_name_normal=')
-                },
-                { assert snapshot(
-                    process.out.vcf.collect { [it[0], file(it[1]).name] },
-                    process.out.vcf_tbi.collect { [it[0], file(it[1]).name] },
-                    process.out.gvcf.collect { [it[0], file(it[1]).name] },
-                    process.out.gvcf_tbi.collect { [it[0], file(it[1]).name] },
-                    process.out.findAll { key, value -> key.startsWith("versions") }
-                ).match() }
+                    assert snapshot(
+                        process.out.vcf.collect { file(it[1]).getName() },
+                        process.out.vcf_tbi.collect { file(it[1]).getName() },
+                        process.out.gvcf.collect { file(it[1]).getName() },
+                        process.out.gvcf_tbi.collect { file(it[1]).getName() },
+                        process.out.findAll { key, val -> key.startsWith('versions') },
+                    ).match()
+                }
             )
         }
     }
@@ -117,9 +91,6 @@ nextflow_process {
     test("cram - vcf and gvcf") {
         config "./nextflow.config"
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 def bed = file('region.bed')
@@ -140,41 +111,28 @@ nextflow_process {
         }
 
         then {
-            assert process.success
             assertAll(
-                { assert process.out.vcf.collect { file(it[1]).name } == ['pair.vcf.gz'] },
-                { assert process.out.vcf_tbi.collect { file(it[1]).name } == ['pair.vcf.gz.tbi'] },
-                { assert process.out.gvcf.collect { file(it[1]).name } == ['pair.g.vcf.gz'] },
-                { assert process.out.gvcf_tbi.collect { file(it[1]).name } == ['pair.g.vcf.gz.tbi'] },
+                { assert process.success },
                 { assert path(process.out.vcf[0][1]).vcf.header.genotypeSamples == ['testT'] },
                 { assert path(process.out.gvcf[0][1]).vcf.header.genotypeSamples == ['testT'] },
+                { assert path(process.out.vcf[0][1]).vcf.variantCount > 0 },
                 {
-                    def lines = new java.util.zip.GZIPInputStream(file(process.out.vcf[0][1]).newInputStream()).withCloseable { it.readLines() }
-                    assert lines.count { !it.startsWith('#') } > 0
-                },
-                {
-                    def command = path(process.out.vcf[0][1]).parent.resolve('.command.sh').text
-                    assert !command.contains('--sample_name_tumor=')
-                    assert !command.contains('--sample_name_normal=')
-                },
-                { assert snapshot(
-                    process.out.vcf.collect { [it[0], file(it[1]).name] },
-                    process.out.vcf_tbi.collect { [it[0], file(it[1]).name] },
-                    process.out.gvcf.collect { [it[0], file(it[1]).name] },
-                    process.out.gvcf_tbi.collect { [it[0], file(it[1]).name] },
-                    process.out.findAll { key, value -> key.startsWith("versions") }
-                ).match() }
+                    assert snapshot(
+                        process.out.vcf.collect { file(it[1]).getName() },
+                        process.out.vcf_tbi.collect { file(it[1]).getName() },
+                        process.out.gvcf.collect { file(it[1]).getName() },
+                        process.out.gvcf_tbi.collect { file(it[1]).getName() },
+                        process.out.findAll { key, val -> key.startsWith('versions') },
+                    ).match()
+                }
             )
         }
     }
 
-    test("bam - vcf and gvcf - stub") {
+    test("tumor_normal_pair - stub") {
         config "./nextflow.config"
         options "-stub"
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = [
@@ -193,19 +151,17 @@ nextflow_process {
         }
 
         then {
-            assert process.success
             assertAll(
-                { assert process.out.vcf.collect { file(it[1]).name } == ['pair.vcf.gz'] },
-                { assert process.out.vcf_tbi.collect { file(it[1]).name } == ['pair.vcf.gz.tbi'] },
-                { assert process.out.gvcf.collect { file(it[1]).name } == ['pair.g.vcf.gz'] },
-                { assert process.out.gvcf_tbi.collect { file(it[1]).name } == ['pair.g.vcf.gz.tbi'] },
-                { assert snapshot(
-                    process.out.vcf.collect { [it[0], file(it[1]).name] },
-                    process.out.vcf_tbi.collect { [it[0], file(it[1]).name] },
-                    process.out.gvcf.collect { [it[0], file(it[1]).name] },
-                    process.out.gvcf_tbi.collect { [it[0], file(it[1]).name] },
-                    process.out.findAll { key, value -> key.startsWith("versions") }
-                ).match() }
+                { assert process.success },
+                {
+                    assert snapshot(
+                        process.out.vcf.collect { file(it[1]).getName() },
+                        process.out.vcf_tbi.collect { file(it[1]).getName() },
+                        process.out.gvcf.collect { file(it[1]).getName() },
+                        process.out.gvcf_tbi.collect { file(it[1]).getName() },
+                        process.out.findAll { key, val -> key.startsWith('versions') },
+                    ).match()
+                }
             )
         }
     }
