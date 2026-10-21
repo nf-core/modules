@@ -2,9 +2,9 @@ process BAMSTATS_GENERALSTATS {
     tag "${meta.id}"
     label 'process_single'
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/bamstats:0.3.5--he881be0_0'
-        : 'quay.io/biocontainers/bamstats:0.3.5--he881be0_0'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/74/74dd96801e132db6cada326a68fc9c6e1e3fe08cf2e3846787d1d4ff29433982/data'
+        : 'community.wave.seqera.io/library/bamstats:0.3.5--0a6b61f4dd590324' }"
 
     input:
     tuple val(meta), path(bam)

@@ -3,9 +3,9 @@ process REPEATMODELER_BUILDDATABASE {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/repeatmodeler:2.0.5--pl5321hdfd78af_0':
-        'quay.io/biocontainers/repeatmodeler:2.0.5--pl5321hdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f9/f91e94ff35696ead619551468cb593dd786709d9690cdb7e834daa6d0769571b/data'
+        : 'community.wave.seqera.io/library/repeatmasker_repeatmodeler:b718c9eee4ccffcb'}"
 
     input:
     tuple val(meta), path(fasta)

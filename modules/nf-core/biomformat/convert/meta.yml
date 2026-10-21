@@ -85,3 +85,27 @@ authors:
   - "@jcbioinformatics"
 maintainers:
   - "@jcbioinformatics"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/biom-format:2.1.15--35c37adeb0978a38
+      build_id: bd-35c37adeb0978a38_1
+      scan_id: sc-d8c509cd1bcca2bc_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/biom-format:2.1.15--066b149a595a35c5
+      build_id: bd-066b149a595a35c5_1
+      scan_id: sc-e2f5ad23154976be_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/biom-format:2.1.15--6b642a3192a25f3d
+      build_id: bd-6b642a3192a25f3d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/75/75869b198b44682d2c02a6e1734a6c969412207ac059999264c48d5a8deb88ad/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/biom-format:2.1.15--6a4222fd4369effd
+      build_id: bd-6a4222fd4369effd_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9a/9a30a8fd9d8151f317a49cdc00303671f4190c18e8ddf2ecc1bd0e516293cac3/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/biomformat/convert/.conda-lock/linux_amd64-bd-066b149a595a35c5_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/biomformat/convert/.conda-lock/linux_arm64-bd-35c37adeb0978a38_1.txt
