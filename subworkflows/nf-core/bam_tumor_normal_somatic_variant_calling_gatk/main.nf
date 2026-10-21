@@ -21,7 +21,7 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
     ch_panel_of_normals // channel: /path/to/panel/of/normals
     ch_panel_of_normals_tbi // channel: /path/to/panel/of/normals/index
     ch_interval_file // channel: /path/to/interval/file
-    val_tumor_normal_analysis // boolean: if true, perform tumor-normal analysis
+    val_tumor_normal_analysis // boolean: if true, perform tumor-normal comparison, otherwise run tumor-only comparison with pon
 
     main:
 
