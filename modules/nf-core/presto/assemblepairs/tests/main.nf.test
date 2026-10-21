@@ -31,7 +31,8 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     sanitizeOutput(process.out, unstableKeys: ["command_log"]),
-                    path(process.out.command_log[0][1]).text.contains("END> AssemblePairs")
+                    path(process.out.command_log[0][1]).text.contains("END> AssemblePairs"),
+                    path(process.out.reads[0][1]).linesGzip.size()
                 ).match() }
             )
         }
@@ -58,7 +59,76 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     sanitizeOutput(process.out, unstableKeys: ["command_log"]),
-                    path(process.out.command_log[0][1]).text.contains("END> AssemblePairs")
+                    path(process.out.command_log[0][1]).text.contains("END> AssemblePairs"),
+                    path(process.out.reads[0][1]).linesGzip.size()
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - fastq - reference") {
+
+        when {
+            params {
+                module_args = '--aligner blastn'
+            }
+            process {
+                """
+                input[0] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_airrseq_umi_R1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_airrseq_R2.fastq.gz', checkIfExists: true)
+                ]).splitFastq(pe: true, by: 100, limit: 100, file: true)
+                input[1] = [
+                    [ id:'regions' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/references/vdj/refdata-cellranger-vdj-GRCh38-alts-ensembl-5.0.0/fasta/regions.fa', checkIfExists: true)
+                ]
+                input[2] = 'reference'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.reads.isEmpty() },
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["command_log"]),
+                    path(process.out.command_log[0][1]).text.contains("PASS> 0")
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - fastq - sequential") {
+
+        when {
+            params {
+                module_args = '--aligner blastn'
+            }
+            process {
+                """
+                input[0] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_airrseq_umi_R1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_airrseq_R2.fastq.gz', checkIfExists: true)
+                ]).splitFastq(pe: true, by: 100, limit: 100, file: true)
+                input[1] = [
+                    [ id:'regions' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/references/vdj/refdata-cellranger-vdj-GRCh38-alts-ensembl-5.0.0/fasta/regions.fa', checkIfExists: true)
+                ]
+                input[2] = 'sequential'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["command_log"]),
+                    path(process.out.command_log[0][1]).text.contains("END> AssemblePairs"),
+                    path(process.out.reads[0][1]).readLines().size()
                 ).match() }
             )
         }

@@ -2,7 +2,14 @@ name: "presto_assemblepairs"
 description: |
   Assembles paired-end reads into single reads using pRESTO AssemblePairs.py.
   The `mode` input selects the subcommand: `align`, `join`, `reference` or `sequential`.
-  Output FASTQ files are gzip-compressed when the input files are.
+  The subcommands share the same inputs, outputs and options, so they are exposed
+  through one module rather than four; only `reference` and `sequential` use the
+  reference input.
+  The `reference` and `sequential` modes default to `--aligner usearch`, which is not
+  in the container; pass `--aligner blastn` through `ext.args`.
+  The module sets `--nproc ${task.cpus}`; with more than one process the order of
+  the output records is not deterministic.
+  Output FASTQ file names follow the input extension (e.g. `.fastq` or `.fq.gz`).
 keywords:
   - immcantation
   - airrseq
@@ -63,10 +70,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - ${prefix}_assemble-pass.fastq.gz:
+      - ${prefix}_assemble-pass.{fastq,fastq.gz,fq,fq.gz}:
           type: file
-          description: Successfully assembled reads
-          pattern: "*_assemble-pass.fastq.gz"
+          description: |
+            Optional. Successfully assembled reads.
+            Only emitted when at least one pair assembles.
+          pattern: "*_assemble-pass.{fastq,fastq.gz,fq,fq.gz}"
           ontologies:
             - edam: http://edamontology.org/format_1930 # FASTQ
   reads_fail:
@@ -75,12 +84,12 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - ${prefix}-{1,2}_assemble-fail.fastq.gz:
+      - ${prefix}-{1,2}_assemble-fail.{fastq,fastq.gz,fq,fq.gz}:
           type: file
           description: |
             Optional. Reads of pairs that failed assembly, one file per read (R1 and R2).
             Only emitted when at least one pair fails.
-          pattern: "*-{1,2}_assemble-fail.fastq.gz"
+          pattern: "*-{1,2}_assemble-fail.{fastq,fastq.gz,fq,fq.gz}"
           ontologies:
             - edam: http://edamontology.org/format_1930 # FASTQ
   log:

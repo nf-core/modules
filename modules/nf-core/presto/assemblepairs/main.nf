@@ -15,8 +15,8 @@ process PRESTO_ASSEMBLEPAIRS {
     val mode
 
     output:
-    tuple val(meta), path("${prefix}_assemble-pass.fastq.gz"), emit: reads
-    tuple val(meta), path("${prefix}-{1,2}_assemble-fail.fastq.gz"), emit: reads_fail, optional: true
+    tuple val(meta), path("${prefix}_assemble-pass.{fastq,fastq.gz,fq,fq.gz}"), emit: reads, optional: true
+    tuple val(meta), path("${prefix}-{1,2}_assemble-fail.{fastq,fastq.gz,fq,fq.gz}"), emit: reads_fail, optional: true
     tuple val(meta), path("${prefix}_assemble.log"), emit: log
     tuple val(meta), path("${prefix}_command_log.txt"), emit: command_log
     tuple val("${task.process}"), val('presto'), eval('AssemblePairs.py --version | grep -o "[0-9][0-9.]*" | head -n 1'), emit: versions_presto, topic: versions
@@ -27,7 +27,7 @@ process PRESTO_ASSEMBLEPAIRS {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def ref = reference ? "-r ${reference}" : ''
+    def ref = reference ? "-r \"${reference}\"" : ''
     """
     AssemblePairs.py ${mode} \\
         -1 "${reads_1}" \\
@@ -38,7 +38,7 @@ process PRESTO_ASSEMBLEPAIRS {
         --failed \\
         --nproc ${task.cpus} \\
         ${args} \\
-        | tee ${prefix}_command_log.txt
+        > ${prefix}_command_log.txt
     """
 
     stub:

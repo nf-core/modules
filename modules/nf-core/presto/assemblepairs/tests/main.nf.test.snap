@@ -37,12 +37,68 @@
                     ]
                 ]
             },
-            true
+            true,
+            10000
         ],
-        "timestamp": "2026-10-18T15:40:00.170203174",
+        "timestamp": "2026-10-21T14:15:28.431196341",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.10.2"
+            "nextflow": "26.10.3"
+        }
+    },
+    "homo_sapiens - fastq - sequential": {
+        "content": [
+            {
+                "command_log": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_command_log.txt"
+                    ]
+                ],
+                "log": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_assemble.log:md5,133b46514a939197053b55bdf559584d"
+                    ]
+                ],
+                "reads": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_assemble-pass.fastq:md5,fe8012f357609915647c1ed98b8d633e"
+                    ]
+                ],
+                "reads_fail": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "test-1_assemble-fail.fastq:md5,e7ecaaf6f0a598b6c4efced2a836f49f",
+                            "test-2_assemble-fail.fastq:md5,06ce2d6020076cea7cec333b6523a989"
+                        ]
+                    ]
+                ],
+                "versions_presto": [
+                    [
+                        "PRESTO_ASSEMBLEPAIRS",
+                        "presto",
+                        "0.7.9"
+                    ]
+                ]
+            },
+            true,
+            328
+        ],
+        "timestamp": "2026-10-21T14:16:21.06150653",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.3"
         }
     },
     "homo_sapiens - fastq - align - stub": {
@@ -98,6 +154,55 @@
             "nextflow": "26.10.2"
         }
     },
+    "homo_sapiens - fastq - reference": {
+        "content": [
+            {
+                "command_log": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_command_log.txt"
+                    ]
+                ],
+                "log": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_assemble.log:md5,ba1e0616ada2ebcb2d299ad4e1d1ad0d"
+                    ]
+                ],
+                "reads": [
+                    
+                ],
+                "reads_fail": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "test-1_assemble-fail.fastq:md5,89052d99832960d81caae57643343099",
+                            "test-2_assemble-fail.fastq:md5,975040317cb987caf2dcd576b1eb947b"
+                        ]
+                    ]
+                ],
+                "versions_presto": [
+                    [
+                        "PRESTO_ASSEMBLEPAIRS",
+                        "presto",
+                        "0.7.9"
+                    ]
+                ]
+            },
+            true
+        ],
+        "timestamp": "2026-10-21T14:16:02.053976966",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.3"
+        }
+    },
     "homo_sapiens - fastq - align": {
         "content": [
             {
@@ -144,12 +249,13 @@
                     ]
                 ]
             },
-            true
+            true,
+            7796
         ],
-        "timestamp": "2026-10-18T15:39:45.014890799",
+        "timestamp": "2026-10-21T14:15:11.683651911",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.10.2"
+            "nextflow": "26.10.3"
         }
     }
 }
