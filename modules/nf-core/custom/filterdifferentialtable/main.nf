@@ -3,9 +3,9 @@ process CUSTOM_FILTERDIFFERENTIALTABLE {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b0/b06950ac325030db5976f3d9c536e358eb686503af35c7e6222f86d016b3466f/data' :
-        'community.wave.seqera.io/library/pandas_python:67bda66f0cb8a241' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/41/41f62bcbc25aec2fd7a1f861be52b57ef78f6f13d77111766a20a1fb4c7524df/data'
+        : 'community.wave.seqera.io/library/pandas_python:3116f093aa26dc56'}"
 
     input:
     tuple val(meta), path(input_file)

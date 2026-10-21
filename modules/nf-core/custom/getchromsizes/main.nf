@@ -3,9 +3,9 @@ process CUSTOM_GETCHROMSIZES {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.22.1--h96c455f_0' :
-        'quay.io/biocontainers/samtools:1.22.1--h96c455f_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fc/fca45dc02d0b0906faa49dcbb706dc4dc07b2327b1884e8b344893d10fc87ae1/data'
+        : 'community.wave.seqera.io/library/htslib_samtools:1.22.1--ef1e734834ad9fa5'}"
 
     input:
     tuple val(meta), path(fasta)
