@@ -21,7 +21,7 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
     ch_panel_of_normals // channel: /path/to/panel/of/normals
     ch_panel_of_normals_tbi // channel: /path/to/panel/of/normals/index
     ch_interval_file // channel: /path/to/interval/file
-    val_tumor_normal_analysis // bool !
+    val_tumor_normal_analysis // boolean: if true, perform tumor-normal analysis
 
     main:
 
@@ -32,15 +32,15 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
             .map { meta_tumor, bam_tumor, bai_tumor, meta_normal, bam_normal, bai_normal -> 
             [[id: "${meta_tumor.id}_${meta_normal.id}" ], [bam_tumor, bam_normal], [bai_tumor, bai_normal]]
             }
-            .combine(ch_interval_file) //!originally only used for GATK4_GETPILEUPSUMMARIES but GATK4_MUTECT2 also calls for intervals
+            .combine(ch_interval_file)
 
-        // The panel of normals should not be used for tumor-normal analysis, even if provided
+        // Ensure that the panel of normals is not used for tumor-normal analysis, even if provided
         ch_panel_of_normals = []
         ch_panel_of_normals_tbi = []
     }
     else {
         ch_mutect2_in = ch_input_tumor
-            .combine(ch_interval_file) //!originally only used for GATK4_GETPILEUPSUMMARIES but GATK4_MUTECT2 also calls for intervals 
+            .combine(ch_interval_file)
     }
 
     GATK4_MUTECT2(
@@ -86,6 +86,7 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
             ch_germline_resource_tbi,
         )
 
+        // Ensure the correct order of the files in the input channel for GATK4_CALCULATECONTAMINATION
         ch_calccon_in = GATK4_GETPILEUPSUMMARIES_TUMOR.out.table
             .combine(GATK4_GETPILEUPSUMMARIES_NORMAL.out.table)
             .map { meta_tumor, table_tumor, meta_normal, table_normal -> 
@@ -99,10 +100,10 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
             }
     }
 
-    // Contamination and segmentation tables created using calculatecontamination on the pileup summary table.
+    // Contamination and segmentation tables created using calculatecontamination on the pileup summary table
     GATK4_CALCULATECONTAMINATION(ch_calccon_in)
 
-    // GATK4_MUTECT2 calls filtered by filtermutectcalls using the artifactpriors, contamination and segmentation tables.
+    // GATK4_MUTECT2 calls filtered by filtermutectcalls using the artifactpriors, contamination and segmentation tables
     ch_filtermutect_in = GATK4_MUTECT2.out.vcf
         .join(GATK4_MUTECT2.out.tbi, failOnDuplicate: true, failOnMismatch: true)
         .join(GATK4_MUTECT2.out.stats, failOnDuplicate: true, failOnMismatch: true)
@@ -118,7 +119,7 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
                 artifactprior,
                 segmentation,
                 contamination,
-                [], // Since the contamination table is provided, the value estimate is not relevant.
+                [], // Since the contamination table is provided, the value estimate is not relevant
             ]
         }
 
