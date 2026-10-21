@@ -145,6 +145,82 @@ nextflow_process {
         }
     }
 
+    test("cellranger - filtered") {
+        setup {
+            config "./nextflow.config"
+
+            run("CELLRANGER_MKGTF") {
+                script "../../../cellranger/mkgtf/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id: 'homo_sapiens'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+            run("CELLRANGER_MKREF") {
+                script "../../../cellranger/mkref/main.nf"
+                process {
+                    """
+                    input[0] = channel.of([
+                        [id: 'homo_sapiens'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    ])
+                    input[1] = CELLRANGER_MKGTF.out.gtf
+                    input[2] = 'homo_sapiens_reference'
+                    """
+                }
+            }
+
+            run("CELLRANGER_COUNT") {
+                script "../../../cellranger/count/main.nf"
+                process {
+                    """
+                    input[0] =  [
+                        [ id:'test_10x', single_end:false, strandedness:'auto'  ], // meta map
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R2_001.fastq.gz', checkIfExists: true)
+                        ]
+                    ]
+                    input[1] = CELLRANGER_MKREF.out.reference
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                filtered_matrix = CELLRANGER_COUNT.out.outs.map { meta, mtx_files ->
+                    def desired_files = []
+                    mtx_files.each{ path ->
+                        if ( path.toString().contains("filtered_feature_bc_matrix") ) { desired_files.add( path ) }
+                    }
+                    [ meta, desired_files, "filtered" ]
+                }
+                input[0] = filtered_matrix
+                input[1] = []
+                input[2] = "cellranger"
+                input[3] = []
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out,
+                    process.out.versions
+                ).match() }
+            )
+        }
+    }
+
+
     test("kallisto - stub") {
 
         options "-stub"
