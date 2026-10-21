@@ -39,12 +39,16 @@ nextflow_process {
     test("sarscov2 - illumina - test_paired_end_sorted - bam") {
 
         when {
+            params {
+                module_args = '--depthcutoff 1'
+            }
+
             process {
                 """
                 input[0] = FREYJA_VARIANTS.out.variants
                 input[1] = FREYJA_UPDATE.out.barcodes
                 input[2] = FREYJA_UPDATE.out.lineages_meta
-                input[3] = FREYJA_UPDAT E.out.lineages_topology
+                input[3] = FREYJA_UPDATE.out.lineages_topology
                 """
             }
         }
@@ -61,6 +65,10 @@ nextflow_process {
     test("sarscov2 - illumina - test_paired_end_sorted - bam - no meta/topology") {
 
         when {
+            params {
+                module_args = '--depthcutoff 1'
+            }
+
             process {
                 """
                 input[0] = FREYJA_VARIANTS.out.variants
