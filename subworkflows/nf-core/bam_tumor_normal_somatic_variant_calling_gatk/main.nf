@@ -11,7 +11,6 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
     take:
     ch_input_tumor // channel: [ val(meta), path(input), path(input_index)]
     ch_input_normal // channel: [ val(meta), path(input), path(input_index)]
-    // ch_input // channel: [ val(meta), [path(input)], [path(input_index)]]
     ch_fasta // channel: [ val(meta), path(fasta) ]
     ch_fai // channel: [ val(meta), path(fai), path(gzi) ]
     ch_dict // channel: [ val(meta), path(dict) ]
@@ -22,8 +21,8 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
     ch_panel_of_normals // channel: /path/to/panel/of/normals
     ch_panel_of_normals_tbi // channel: /path/to/panel/of/normals/index
     ch_interval_file // channel: /path/to/interval/file
-    val_case_id // string
-    val_tumor_normal_analysis // bool 
+    val_case_id // string !
+    val_tumor_normal_analysis // bool !
 
     main:
 
@@ -34,7 +33,7 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
             .map { _meta_tumor, bam_tumor, bai_tumor, _meta_normal, bam_normal, bai_normal -> 
             [[id: val_case_id], [bam_tumor, bam_normal], [bai_tumor, bai_normal]]
             }
-            .combine(ch_interval_file) //originally only used for GATK4_GETPILEUPSUMMARIES but GATK4_MUTECT2 also calls for intervals
+            .combine(ch_interval_file) //!originally only used for GATK4_GETPILEUPSUMMARIES but GATK4_MUTECT2 also calls for intervals
 
         // The panel of normals should not be used for tumor-normal analysis, even if provided
         ch_panel_of_normals = []
@@ -42,7 +41,7 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
     }
     else {
         ch_mutect2_in = ch_input_tumor
-            .combine(ch_interval_file) //originally only used for GATK4_GETPILEUPSUMMARIES but GATK4_MUTECT2 also calls for intervals 
+            .combine(ch_interval_file) //!originally only used for GATK4_GETPILEUPSUMMARIES but GATK4_MUTECT2 also calls for intervals 
     }
 
     GATK4_MUTECT2(
@@ -58,7 +57,7 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
         ch_panel_of_normals_tbi,
     )
 
-    // Generate artifactpriors using learnreadorientationmodel on the f1r2 output of GATK4_MUTECT2.
+    // Generate artifactpriors using learnreadorientationmodel on the f1r2 output of GATK4_MUTECT2
     GATK4_LEARNREADORIENTATIONMODEL(GATK4_MUTECT2.out.f1r2)
 
     // Generate pileup summary tables using getepileupsummaries
