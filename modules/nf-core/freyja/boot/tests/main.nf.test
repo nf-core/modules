@@ -38,6 +38,10 @@ nextflow_process {
     test("sarscov2 - illumina - test_paired_end_sorted - bam") {
 
         when {
+            params {
+                module_args = '--depthcutoff 1'
+            }
+
             process {
                 """
                 input[0] = FREYJA_VARIANTS.out.variants
