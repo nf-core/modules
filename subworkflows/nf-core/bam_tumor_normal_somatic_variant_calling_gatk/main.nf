@@ -56,8 +56,16 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
         ch_panel_of_normals_tbi,
     )
 
+    ch_mutect2_vcf = GATK4_MUTECT2.out.vcf
+    ch_mutect2_stats = GATK4_MUTECT2.out.stats
+    ch_mutect2_tbi = GATK4_MUTECT2.out.tbi
+    ch_mutect2_f1r2 = GATK4_MUTECT2.out.f1r2
+
     // Generate artifactpriors using learnreadorientationmodel on the f1r2 output of GATK4_MUTECT2
-    GATK4_LEARNREADORIENTATIONMODEL(GATK4_MUTECT2.out.f1r2)
+    GATK4_LEARNREADORIENTATIONMODEL(ch_mutect2_f1r2)
+
+    
+    ch_artifact_priors = GATK4_LEARNREADORIENTATIONMODEL.out.artifactprior
 
     // Generate pileup summary tables using getepileupsummaries
     ch_getpileupsummaries_tumor_in = ch_input_tumor
@@ -109,13 +117,16 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
     // Contamination and segmentation tables created using calculatecontamination on the pileup summary table
     GATK4_CALCULATECONTAMINATION(ch_calccon_in)
 
+    ch_contamination_table = GATK4_CALCULATECONTAMINATION.out.contamination
+    ch_segmentation_table = GATK4_CALCULATECONTAMINATION.out.segmentation
+
     // GATK4_MUTECT2 calls filtered by filtermutectcalls using the artifactpriors, contamination and segmentation tables
-    ch_filtermutect_in = GATK4_MUTECT2.out.vcf
-        .join(GATK4_MUTECT2.out.tbi, failOnDuplicate: true, failOnMismatch: true)
-        .join(GATK4_MUTECT2.out.stats, failOnDuplicate: true, failOnMismatch: true)
-        .join(GATK4_LEARNREADORIENTATIONMODEL.out.artifactprior, failOnDuplicate: true, failOnMismatch: true)
-        .join(GATK4_CALCULATECONTAMINATION.out.segmentation, failOnDuplicate: true, failOnMismatch: true)
-        .join(GATK4_CALCULATECONTAMINATION.out.contamination, failOnDuplicate: true, failOnMismatch: true) 
+    ch_filtermutect_in = ch_mutect2_vcf
+        .join(ch_mutect2_tbi, failOnDuplicate: true, failOnMismatch: true)
+        .join(ch_mutect2_stats, failOnDuplicate: true, failOnMismatch: true)
+        .join(ch_artifact_priors, failOnDuplicate: true, failOnMismatch: true)
+        .join(ch_segmentation_table, failOnDuplicate: true, failOnMismatch: true) 
+        .join(ch_contamination_table, failOnDuplicate: true, failOnMismatch: true) 
         .map{ meta, vcf, tbi, stats, artifactprior, segmentation, contamination ->
             [   
                 meta,
@@ -137,16 +148,16 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
     )
 
     emit:
-    artifact_priors     = GATK4_LEARNREADORIENTATIONMODEL.out.artifactprior // channel: [ val(meta), path(artifactprior) ]
-    contamination_table = GATK4_CALCULATECONTAMINATION.out.contamination // channel: [ val(meta), path(table) ]
+    artifact_priors     = ch_artifact_priors // channel: [ val(meta), path(artifactprior) ]
+    contamination_table = ch_contamination_table // channel: [ val(meta), path(table) ]
     filtered_stats      = GATK4_FILTERMUTECTCALLS.out.stats // channel: [ val(meta), path(stats) ]
     filtered_tbi        = GATK4_FILTERMUTECTCALLS.out.tbi // channel: [ val(meta), path(tbi) ]
     filtered_vcf        = GATK4_FILTERMUTECTCALLS.out.vcf // channel: [ val(meta), path(vcf) ]
-    mutect2_f1r2        = GATK4_MUTECT2.out.f1r2 // channel: [ val(meta), path(f1r2) ]
-    mutect2_stats       = GATK4_MUTECT2.out.stats // channel: [ val(meta), path(stats) ]
-    mutect2_tbi         = GATK4_MUTECT2.out.tbi // channel: [ val(meta), path(tbi) ]
-    mutect2_vcf         = GATK4_MUTECT2.out.vcf // channel: [ val(meta), path(vcf) ]
+    mutect2_f1r2        = ch_mutect2_f1r2 // channel: [ val(meta), path(f1r2) ]
+    mutect2_stats       = ch_mutect2_stats // channel: [ val(meta), path(stats) ]
+    mutect2_tbi         = ch_mutect2_tbi // channel: [ val(meta), path(tbi) ]
+    mutect2_vcf         = ch_mutect2_vcf // channel: [ val(meta), path(vcf) ]
     pileup_table_normal = ch_pileup_table_normal // channel: [ val(meta), path(table) ]
     pileup_table_tumor  = ch_pileup_table_tumor // channel: [ val(meta), path(table) ]
-    segmentation_table  = GATK4_CALCULATECONTAMINATION.out.segmentation // channel: [ val(meta), path(table) ]
+    segmentation_table  = ch_segmentation_table // channel: [ val(meta), path(table) ]
 }
