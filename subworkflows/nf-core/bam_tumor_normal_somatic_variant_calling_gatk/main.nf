@@ -95,8 +95,8 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
     }
     else {
         ch_calccon_in = GATK4_GETPILEUPSUMMARIES_TUMOR.out.table
-            .map { _meta_tumor, table_tumor -> 
-                [[id: val_case_id], table_tumor, []]
+            .map { meta_tumor, table_tumor -> 
+                [meta_tumor, table_tumor, []]
             }
     }
 
@@ -140,7 +140,7 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
     mutect2_stats       = GATK4_MUTECT2.out.stats // channel: [ val(meta), path(stats) ]
     mutect2_tbi         = GATK4_MUTECT2.out.tbi // channel: [ val(meta), path(tbi) ]
     mutect2_vcf         = GATK4_MUTECT2.out.vcf // channel: [ val(meta), path(vcf) ]
-    pileup_table_normal = GATK4_GETPILEUPSUMMARIES_NORMAL.out.table // channel: [ val(meta), path(table) ]
+    pileup_table_normal = val_tumor_normal_analysis ? GATK4_GETPILEUPSUMMARIES_NORMAL.out.table : channel.empty() // channel: [ val(meta), path(table) ]
     pileup_table_tumor  = GATK4_GETPILEUPSUMMARIES_TUMOR.out.table // channel: [ val(meta), path(table) ]
     segmentation_table  = GATK4_CALCULATECONTAMINATION.out.segmentation // channel: [ val(meta), path(table) ]
 }
