@@ -21,7 +21,6 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
     ch_panel_of_normals // channel: /path/to/panel/of/normals
     ch_panel_of_normals_tbi // channel: /path/to/panel/of/normals/index
     ch_interval_file // channel: /path/to/interval/file
-    val_case_id // string !
     val_tumor_normal_analysis // bool !
 
     main:
@@ -30,8 +29,8 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
 
         ch_mutect2_in = ch_input_tumor
             .combine(ch_input_normal)
-            .map { _meta_tumor, bam_tumor, bai_tumor, _meta_normal, bam_normal, bai_normal -> 
-            [[id: val_case_id], [bam_tumor, bam_normal], [bai_tumor, bai_normal]]
+            .map { meta_tumor, bam_tumor, bai_tumor, meta_normal, bam_normal, bai_normal -> 
+            [[id: "${meta_tumor.id}_${meta_normal.id}" ], [bam_tumor, bam_normal], [bai_tumor, bai_normal]]
             }
             .combine(ch_interval_file) //!originally only used for GATK4_GETPILEUPSUMMARIES but GATK4_MUTECT2 also calls for intervals
 
@@ -89,8 +88,8 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
 
         ch_calccon_in = GATK4_GETPILEUPSUMMARIES_TUMOR.out.table
             .combine(GATK4_GETPILEUPSUMMARIES_NORMAL.out.table)
-            .map { _meta_tumor, table_tumor, _meta_normal, table_normal -> 
-                [[id: val_case_id], table_tumor, table_normal]
+            .map { meta_tumor, table_tumor, meta_normal, table_normal -> 
+                [[id: "${meta_tumor.id}_${meta_normal.id}"], table_tumor, table_normal]
             }
     }
     else {
