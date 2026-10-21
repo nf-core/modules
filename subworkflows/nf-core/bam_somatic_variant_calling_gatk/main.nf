@@ -29,7 +29,7 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
 
         ch_mutect2_in = ch_input_tumor
             .combine(ch_input_normal)
-            .map { meta_tumor, bam_tumor, bai_tumor, meta_normal, bam_normal, bai_normal -> 
+            .map { meta_tumor, bam_tumor, bai_tumor, meta_normal, bam_normal, bai_normal ->
             [[id: "${meta_tumor.id}_${meta_normal.id}" ], [bam_tumor, bam_normal], [bai_tumor, bai_normal]]
             }
             .combine(ch_interval_file)
@@ -64,7 +64,7 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
     // Generate artifactpriors using learnreadorientationmodel on the f1r2 output of GATK4_MUTECT2
     GATK4_LEARNREADORIENTATIONMODEL(ch_mutect2_f1r2)
 
-    
+
     ch_artifact_priors = GATK4_LEARNREADORIENTATIONMODEL.out.artifactprior
 
     // Generate pileup summary tables using getepileupsummaries
@@ -101,7 +101,7 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
         // Ensure the correct order of the files in the input channel for GATK4_CALCULATECONTAMINATION
         ch_calccon_in = ch_pileup_table_tumor
             .combine(ch_pileup_table_normal)
-            .map { meta_tumor, table_tumor, meta_normal, table_normal -> 
+            .map { meta_tumor, table_tumor, meta_normal, table_normal ->
                 [[id: "${meta_tumor.id}_${meta_normal.id}"], table_tumor, table_normal]
             }
     }
@@ -109,7 +109,7 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
         ch_pileup_table_normal = channel.empty()
 
         ch_calccon_in = ch_pileup_table_tumor
-            .map { meta_tumor, table_tumor -> 
+            .map { meta_tumor, table_tumor ->
                 [meta_tumor, table_tumor, []]
             }
     }
@@ -125,10 +125,10 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
         .join(ch_mutect2_tbi, failOnDuplicate: true, failOnMismatch: true)
         .join(ch_mutect2_stats, failOnDuplicate: true, failOnMismatch: true)
         .join(ch_artifact_priors, failOnDuplicate: true, failOnMismatch: true)
-        .join(ch_segmentation_table, failOnDuplicate: true, failOnMismatch: true) 
-        .join(ch_contamination_table, failOnDuplicate: true, failOnMismatch: true) 
+        .join(ch_segmentation_table, failOnDuplicate: true, failOnMismatch: true)
+        .join(ch_contamination_table, failOnDuplicate: true, failOnMismatch: true)
         .map{ meta, vcf, tbi, stats, artifactprior, segmentation, contamination ->
-            [   
+            [
                 meta,
                 vcf,
                 tbi,
