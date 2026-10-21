@@ -22,11 +22,14 @@ components:
   - gatk4/calculatecontamination
   - gatk4/filtermutectcalls
 input:
-  - ch_input:
+  - ch_input_tumor:
       description: |
-        The tumor and normal BAM files, in that order, also able to take CRAM as an input
-        Can contain an optional list of sample headers contained in the normal sample input file.
+        The tumor BAM or CRAM file and corresponding index file.
 
+        Structure: [ val(meta), path(input), path(input_index) ]
+  - ch_input_normal:
+      description: |
+        The normal BAM or CRAM file and corresponding index file.
 
         Structure: [ val(meta), path(input), path(input_index) ]
   - ch_fasta:
@@ -66,12 +69,12 @@ input:
         Structure: [ path(germline_resources_tbi) ]
   - ch_panel_of_normals:
       description: |
-        Vcf file to be used as a panel of normals.
+        Vcf file to be used as a panel of normals. Only used for tumor-only analysis.
 
         Structure: [ path(panel_of_normals) ]
   - ch_panel_of_normals_tbi:
       description: |
-        Index for the panel of normals.
+        Index for the panel of normals. Only used for tumor-only analysis.
 
         Structure: [ path(panel_of_normals_tbi) ]
   - ch_interval_file:
@@ -79,6 +82,12 @@ input:
         File containing intervals.
 
         Structure: [ path(interval_files) ]
+  - val_tumor_normal_analysis:
+      description: |
+        Boolean flag indicating if tumor-normal comparison should be performed.
+        If true, the workflow will perform a tumor-normal comparison. If false, it will run a tumor-only analysis using the panel of normals.
+
+        Structure: [ val(meta), val(tumor_normal_analysis) ]
 output:
   - artifact_priors:
       description: |
@@ -127,7 +136,7 @@ output:
         Structure: [ val(meta), path(vcf) ]
   - pileup_table_normal:
       description: |
-        File containing the normal pileup summary table, kept separate as calculatecontamination needs them individually specified.
+        File containing the normal pileup summary table, kept separate as calculatecontamination needs them individually specified. Only output in tumor-normal analysis.
 
         Structure: [ val(meta), path(table) ]
   - pileup_table_tumor:
