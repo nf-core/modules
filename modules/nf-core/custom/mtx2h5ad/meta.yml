@@ -1,6 +1,5 @@
 name: "custom_mtx2h5ad"
-description: Convert single-cell gene expression outputs from Cell Ranger, STARsolo,
-  simpleaf or kallisto to AnnData H5AD format, retaining available RNA velocity layers.
+description: Convert single-cell gene expression outputs from Cell Ranger, STARsolo, simpleaf or kallisto to AnnData H5AD format, retaining available RNA velocity layers.
 keywords:
   - single-cell
   - gene expression
@@ -113,3 +112,25 @@ authors:
   - "@delfiterradas"
 maintainers:
   - "@delfiterradas"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/hdf5plugin_leidenalg_python-igraph_scanpy:01b44a10de35c59b
+      build_id: bd-01b44a10de35c59b_1
+      scan_id: sc-31baf308ee9ca714_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/hdf5plugin_leidenalg_python-igraph_scanpy:94867f404e0e00d1
+      build_id: ""
+      scan_id: sc-6e3ff985ee4091af_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/hdf5plugin_leidenalg_python-igraph_scanpy:7de3e25a9827b91d
+      build_id: bd-7de3e25a9827b91d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b2/b231cdd25ee7a100f744d0c9c374089ccec05401b98ef707460b8d6c759b9278/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/hdf5plugin_leidenalg_python-igraph_scanpy:b271b88c5bab371c
+      build_id: bd-b271b88c5bab371c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b2/b28436e42732ee1dd6a65f4f83b0ae2518e8e7f98d759261a192c784b85eed2b/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/custom/mtx2h5ad/.conda-lock/linux_amd64-bd-01b44a10de35c59b_1.txt
