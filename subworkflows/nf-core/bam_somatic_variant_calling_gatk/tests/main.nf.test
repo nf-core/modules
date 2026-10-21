@@ -21,7 +21,7 @@ nextflow_workflow {
 
         when {
             params {
-                ext_args_gatk4_mutect2 = "--f1r2-tar-gz test.f1r2.tar.gz --normal-sample normal"
+                ext_args_gatk4_mutect2 = "--f1r2-tar-gz test1_tumor_test2_normal.f1r2.tar.gz --normal-sample normal"
             }
             workflow {
                 """
@@ -89,7 +89,7 @@ nextflow_workflow {
 
         when {
             params {
-                ext_args_gatk4_mutect2 = "--f1r2-tar-gz test.f1r2.tar.gz --normal-sample normal"
+                ext_args_gatk4_mutect2 = "--f1r2-tar-gz test1_tumor_test2_normal.f1r2.tar.gz --normal-sample normal"
             }
             workflow {
                 """
@@ -141,6 +141,9 @@ nextflow_workflow {
     test("Tumor only - human - bam - paired_end") {
 
         when {
+            params {
+                ext_args_gatk4_mutect2 = "--f1r2-tar-gz test1_tumor.f1r2.tar.gz"
+            }
             workflow {
                 """
                 input[0]  = channel.of(
@@ -197,6 +200,9 @@ nextflow_workflow {
         options "-stub"
 
         when {
+            params {
+                ext_args_gatk4_mutect2 = "--f1r2-tar-gz test1_tumor.f1r2.tar.gz"
+            }
             workflow {
                 """
                 input[0]  = channel.of(
