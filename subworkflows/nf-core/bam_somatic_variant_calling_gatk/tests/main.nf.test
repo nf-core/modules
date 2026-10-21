@@ -24,14 +24,14 @@ nextflow_workflow {
                 """
                 input[0]  = channel.of(
                     [
-                        [id:'test1_tumor', case_id:'test_case'],
+                        [id:'test1_tumor'],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)
                     ]
                     )
                 input[1]  = channel.of(
                     [
-                        [id:'test2_normal', case_id:'test_case'],
+                        [id:'test2_normal'],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)
                     ]
@@ -89,14 +89,14 @@ nextflow_workflow {
                 """
                 input[0]  = channel.of(
                     [
-                        [id:'test1_tumor', case_id:'test_case'],
+                        [id:'test1_tumor'],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)
                     ]
                     )
                 input[1]  = channel.of(
                     [
-                        [id:'test2_normal', case_id:'test_case'],
+                        [id:'test2_normal'],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)
                     ]
@@ -139,7 +139,7 @@ nextflow_workflow {
                 """
                 input[0]  = channel.of(
                     [
-                        [id:'test1_tumor', case_id:'test_case'],
+                        [id:'test1_tumor'],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)
                     ]
@@ -195,7 +195,7 @@ nextflow_workflow {
                 """
                 input[0]  = channel.of(
                     [
-                        [id:'test1_tumor', case_id:'test_case'],
+                        [id:'test1_tumor'],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)
                     ]
