@@ -3,9 +3,9 @@ process EAUTILS_GTF2BED {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/perl:5.26.2' :
-        'quay.io/biocontainers/perl:5.26.2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a9/a90490336208590dfdaaf102bb64f3c341aa0ced1f95d9247020ce88ae017db7/data'
+        : 'community.wave.seqera.io/library/perl:5.26.2--2f879f377ee6109b'}"
 
     input:
     tuple val(meta), path(gtf)
