@@ -72,6 +72,8 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
         ch_germline_resource_tbi,
     )
 
+    ch_pileup_table_tumor = GATK4_GETPILEUPSUMMARIES_TUMOR.out.table
+
     if (val_tumor_normal_analysis) {
 
         ch_getpileupsummaries_normal_in = ch_input_normal
@@ -86,15 +88,19 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
             ch_germline_resource_tbi,
         )
 
+        ch_pileup_table_normal = GATK4_GETPILEUPSUMMARIES_NORMAL.out.table
+
         // Ensure the correct order of the files in the input channel for GATK4_CALCULATECONTAMINATION
-        ch_calccon_in = GATK4_GETPILEUPSUMMARIES_TUMOR.out.table
-            .combine(GATK4_GETPILEUPSUMMARIES_NORMAL.out.table)
+        ch_calccon_in = ch_pileup_table_tumor
+            .combine(ch_pileup_table_normal)
             .map { meta_tumor, table_tumor, meta_normal, table_normal -> 
                 [[id: "${meta_tumor.id}_${meta_normal.id}"], table_tumor, table_normal]
             }
     }
     else {
-        ch_calccon_in = GATK4_GETPILEUPSUMMARIES_TUMOR.out.table
+        ch_pileup_table_normal = channel.empty()
+
+        ch_calccon_in = ch_pileup_table_tumor
             .map { meta_tumor, table_tumor -> 
                 [meta_tumor, table_tumor, []]
             }
@@ -140,7 +146,7 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
     mutect2_stats       = GATK4_MUTECT2.out.stats // channel: [ val(meta), path(stats) ]
     mutect2_tbi         = GATK4_MUTECT2.out.tbi // channel: [ val(meta), path(tbi) ]
     mutect2_vcf         = GATK4_MUTECT2.out.vcf // channel: [ val(meta), path(vcf) ]
-    pileup_table_normal = val_tumor_normal_analysis ? GATK4_GETPILEUPSUMMARIES_NORMAL.out.table : channel.empty() // channel: [ val(meta), path(table) ]
-    pileup_table_tumor  = GATK4_GETPILEUPSUMMARIES_TUMOR.out.table // channel: [ val(meta), path(table) ]
+    pileup_table_normal = ch_pileup_table_normal // channel: [ val(meta), path(table) ]
+    pileup_table_tumor  = ch_pileup_table_tumor // channel: [ val(meta), path(table) ]
     segmentation_table  = GATK4_CALCULATECONTAMINATION.out.segmentation // channel: [ val(meta), path(table) ]
 }
