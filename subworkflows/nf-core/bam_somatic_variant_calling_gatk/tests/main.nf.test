@@ -20,6 +20,9 @@ nextflow_workflow {
     test("Tumor normal - human - bam - paired_end") {
 
         when {
+            params {
+                ext_args_gatk4_mutect2 = "--f1r2-tar-gz test.f1r2.tar.gz --normal-sample normal"
+            }
             workflow {
                 """
                 input[0]  = channel.of(
@@ -85,6 +88,9 @@ nextflow_workflow {
         options "-stub"
 
         when {
+            params {
+                ext_args_gatk4_mutect2 = "--f1r2-tar-gz test.f1r2.tar.gz --normal-sample normal"
+            }
             workflow {
                 """
                 input[0]  = channel.of(
