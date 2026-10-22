@@ -3,9 +3,9 @@ process CUSTOM_ORFCOLLAPSE {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0f/0f1019bd22c111267bcb670fdb128829776f0ca6adfa7b0e2d126f91577d08e3/data' :
-        'community.wave.seqera.io/library/python_pandas_pyyaml:75514f9f977be607' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/72/7259cf5c00cd90b521cdda013955b69043542ad2b93f786c6ed53ecfc04a8422/data'
+        : 'community.wave.seqera.io/library/pandas_python_pyyaml:26e261815660ec9d'}"
 
     input:
     tuple val(meta), path(bed12, stageAs: 'input/*'), path(catalogue_tsv, stageAs: 'input/*'), path(orf_to_gene_tsv, stageAs: 'input/*'), path(aa_fasta, stageAs: 'input/*'), path(cluster_tsv, stageAs: 'input/*')
