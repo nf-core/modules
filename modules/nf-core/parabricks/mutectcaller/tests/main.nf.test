@@ -6,6 +6,7 @@ nextflow_process {
 
     tag "modules"
     tag "parabricks/mutectcaller"
+    tag "bcftools/reheader"
     tag "modules_nfcore"
     tag "parabricks"
     tag "gpu"
@@ -185,50 +186,66 @@ nextflow_process {
 
     // }
 
-    // test("human - bam - pon") {
-    // // PON test not passing because the tool expects all chromosomes in the PON file to
-    // // be present in the reference genome.
+    test("human - bam - pon") {
 
-    //     config "./nextflow.config"
+        setup {
+            run("BCFTOOLS_REHEADER") {
+                script "../../../bcftools/reheader/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'pon' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz', checkIfExists: true),
+                        [],
+                        []
+                    ]
+                    input[1] = [
+                        [ id:'reference' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
 
-    //     when {
-    //         params {
-    //             module_args = "--pon $panel_of_normals --mutect-low-memory"
-    //         }
-    //         process {
-    //             """
-    //             input[0] = [
-    //                 [ id:'test' ],
-    //                 'tumour',
-    //                 null,
-    //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
-    //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true),
-    //                 [],
-    //                 [],
-    //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true)
-    //             ]
-    //             input[1] = [ // fasta
-    //                 [ id: 'reference' ],
-    //                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
-    //                 ]
-    //             input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz', checkIfExists: true)
-    //             input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz.tbi', checkIfExists: true)
-    //             """
-    //         }
-    //     }
+        when {
+            params {
+                module_args = "--tumor-name tumour --mutect-low-memory"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
+                    [],
+                    [],
+                    [],
+                    []
+                ]
+                input[1] = [ // fasta + fasta_fai
+                    [ id: 'reference' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                    ]
+                input[2] = BCFTOOLS_REHEADER.out.vcf.map { meta, vcf -> vcf }
+                input[3] = BCFTOOLS_REHEADER.out.index.map { meta, tbi -> tbi }
+                """
+            }
+        }
 
-    //     then {
-    //         assertAll(
-    //             { assert process.success },
-    //             { assert snapshot(
-    //                 path(process.out.vcf[0][1]).vcf.variantsMD5,
-    //                 process.out.stats,
-    //                 process.out.versions
-    //                 ).match() }
-    //         )
-    //     }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.vcf[0][1]).linesGzip.any { line -> line.startsWith('##GATKCommandLine=<ID=mutectcaller') && line.contains('--pon ') } },
+                { assert snapshot(
+                    path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    process.out.stats,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match() }
+            )
+        }
 
-    // }
+    }
 
     test("human - bam - stub") {
 
@@ -277,7 +294,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = "--pon ${panel_of_normals} --mutect-low-memory"
+                module_args = "--tumor-name tumour --mutect-low-memory"
             }
             process {
                 """
