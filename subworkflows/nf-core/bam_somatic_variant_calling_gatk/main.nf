@@ -1,4 +1,6 @@
-// Run GATK4_MUTECT2 in tumor normal mode, getepileupsummaries, calculatecontamination, learnreadorientationmodel and filtermutectcalls
+//
+// Run GATK4_MUTECT2, getepileupsummaries, calculatecontamination, learnreadorientationmodel and filtermutectcalls for tumor normal or tumor-only analyses
+//
 
 include { GATK4_CALCULATECONTAMINATION                                } from '../../../modules/nf-core/gatk4/calculatecontamination'
 include { GATK4_FILTERMUTECTCALLS                                     } from '../../../modules/nf-core/gatk4/filtermutectcalls'
