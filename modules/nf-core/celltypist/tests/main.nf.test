@@ -1,0 +1,39 @@
+nextflow_process {
+
+    name "Test Process CELLTYPIST"
+    script "../main.nf"
+    process "CELLTYPIST"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "celltypist"
+
+    test("homo sapiens - h5ad - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679759_filtered_matrix.h5ad', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'model' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679756_filtered_matrix.h5ad', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
