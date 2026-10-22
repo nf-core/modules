@@ -20,44 +20,35 @@ nextflow_workflow {
     test("Tumor normal - human - bam - paired_end") {
 
         when {
-            params {
-                ext_args_gatk4_mutect2 = "--f1r2-tar-gz test1_tumor_test2_normal.f1r2.tar.gz --normal-sample normal"
-            }
             workflow {
                 """
                 input[0]  = channel.of(
                     [
-                        [id:'test1_tumor'],
+                        [id:'test'],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)
-                    ]
-                    )
-                input[1]  = channel.of(
-                    [
-                        [id:'test2_normal'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)
                     ]
                 )
-                input[2]  = channel.of([[id:'reference' ],
+                input[1]  = channel.of([[id:'reference' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                 ])
-                input[3]  = channel.of([[id:'reference' ],
+                input[2]  = channel.of([[id:'reference' ],
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
                     ], []
                 ])
-                input[4]  = channel.of([[ id:'reference' ],
+                input[3]  = channel.of([[ id:'reference' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.dict', checkIfExists: true)
                 ])
+                input[4]  = []
                 input[5]  = []
-                input[6]  = []
-                input[7]  = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz', checkIfExists: true))
-                input[8]  = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz.tbi', checkIfExists: true))
+                input[6]  = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz', checkIfExists: true))
+                input[7]  = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz.tbi', checkIfExists: true))
+                input[8]  = []
                 input[9]  = []
-                input[10] = []
-                input[11] = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.interval_list', checkIfExists: true))
-                input[12] = true
+                input[10] = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.interval_list', checkIfExists: true))
                 """
             }
         }
@@ -88,44 +79,35 @@ nextflow_workflow {
         options "-stub"
 
         when {
-            params {
-                ext_args_gatk4_mutect2 = "--f1r2-tar-gz test1_tumor_test2_normal.f1r2.tar.gz --normal-sample normal"
-            }
             workflow {
                 """
                 input[0]  = channel.of(
                     [
-                        [id:'test1_tumor'],
+                        [id:'test'],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)
-                    ]
-                    )
-                input[1]  = channel.of(
-                    [
-                        [id:'test2_normal'],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)
                     ]
                 )
-                input[2]  = channel.of([[id:'reference' ],
+                input[1]  = channel.of([[id:'reference' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                 ])
-                input[3]  = channel.of([[id:'reference' ],
+                input[2]  = channel.of([[id:'reference' ],
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
                     ], []
                 ])
-                input[4]  = channel.of([[ id:'reference' ],
+                input[3]  = channel.of([[ id:'reference' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.dict', checkIfExists: true)
                 ])
+                input[4]  = []
                 input[5]  = []
-                input[6]  = []
-                input[7]  = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz', checkIfExists: true))
-                input[8]  = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz.tbi', checkIfExists: true))
+                input[6]  = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz', checkIfExists: true))
+                input[7]  = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz.tbi', checkIfExists: true))
+                input[8]  = []
                 input[9]  = []
-                input[10] = []
-                input[11] = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.interval_list', checkIfExists: true))
-                input[12] = true
+                input[10] = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.interval_list', checkIfExists: true))
                 """
             }
         }
@@ -141,38 +123,35 @@ nextflow_workflow {
     test("Tumor only - human - bam - paired_end") {
 
         when {
-            params {
-                ext_args_gatk4_mutect2 = "--f1r2-tar-gz test1_tumor.f1r2.tar.gz"
-            }
             workflow {
                 """
                 input[0]  = channel.of(
                     [
-                        [id:'test1_tumor'],
+                        [id:'test'],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)
                     ]
-                    )
-                input[1]  = channel.empty()
-                input[2]  = channel.of([[id:'reference' ],
+                )
+                input[1]  = channel.of([[id:'reference' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                 ])
-                input[3]  = channel.of([[id:'reference' ],
+                input[2]  = channel.of([[id:'reference' ],
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
                     ], []
                 ])
-                input[4]  = channel.of([[ id:'reference' ],
+                input[3]  = channel.of([[ id:'reference' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.dict', checkIfExists: true)
                 ])
+                input[4]  = []
                 input[5]  = []
-                input[6]  = []
-                input[7]  = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz', checkIfExists: true))
-                input[8]  = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz.tbi', checkIfExists: true))
-                input[9]  = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz', checkIfExists: true))
-                input[10] = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz.tbi', checkIfExists: true))
-                input[11] = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.interval_list', checkIfExists: true))
-                input[12] = false
+                input[6]  = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz', checkIfExists: true))
+                input[7]  = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz.tbi', checkIfExists: true))
+                input[8]  = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz', checkIfExists: true))
+                input[9]  = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz.tbi', checkIfExists: true))
+                input[10] = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.interval_list', checkIfExists: true))
                 """
             }
         }
@@ -200,38 +179,35 @@ nextflow_workflow {
         options "-stub"
 
         when {
-            params {
-                ext_args_gatk4_mutect2 = "--f1r2-tar-gz test1_tumor.f1r2.tar.gz"
-            }
             workflow {
                 """
                 input[0]  = channel.of(
                     [
-                        [id:'test1_tumor'],
+                        [id:'test'],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)
                     ]
-                    )
-                input[1]  = channel.empty()
-                input[2]  = channel.of([[id:'reference' ],
+                )
+                input[1]  = channel.of([[id:'reference' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
                 ])
-                input[3]  = channel.of([[id:'reference' ],
+                input[2]  = channel.of([[id:'reference' ],
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
                     ], []
                 ])
-                input[4]  = channel.of([[ id:'reference' ],
+                input[3]  = channel.of([[ id:'reference' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.dict', checkIfExists: true)
                 ])
+                input[4]  = []
                 input[5]  = []
-                input[6]  = []
-                input[7]  = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz', checkIfExists: true))
-                input[8]  = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz.tbi', checkIfExists: true))
-                input[9]  = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz', checkIfExists: true))
-                input[10] = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz.tbi', checkIfExists: true))
-                input[11] = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.interval_list', checkIfExists: true))
-                input[12] = false
+                input[6]  = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz', checkIfExists: true))
+                input[7]  = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz.tbi', checkIfExists: true))
+                input[8]  = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz', checkIfExists: true))
+                input[9]  = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz.tbi', checkIfExists: true))
+                input[10] = channel.of(file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.interval_list', checkIfExists: true))
                 """
             }
         }
@@ -243,6 +219,5 @@ nextflow_workflow {
             )
         }
     }
-
 
 }

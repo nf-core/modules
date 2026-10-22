@@ -2,17 +2,15 @@
 // Run GATK4_MUTECT2, getepileupsummaries, calculatecontamination, learnreadorientationmodel and filtermutectcalls for tumor normal or tumor-only analyses
 //
 
-include { GATK4_CALCULATECONTAMINATION                                } from '../../../modules/nf-core/gatk4/calculatecontamination'
-include { GATK4_FILTERMUTECTCALLS                                     } from '../../../modules/nf-core/gatk4/filtermutectcalls'
-include { GATK4_GETPILEUPSUMMARIES as GATK4_GETPILEUPSUMMARIES_NORMAL } from '../../../modules/nf-core/gatk4/getpileupsummaries'
-include { GATK4_GETPILEUPSUMMARIES as GATK4_GETPILEUPSUMMARIES_TUMOR  } from '../../../modules/nf-core/gatk4/getpileupsummaries'
-include { GATK4_LEARNREADORIENTATIONMODEL                             } from '../../../modules/nf-core/gatk4/learnreadorientationmodel'
-include { GATK4_MUTECT2                                               } from '../../../modules/nf-core/gatk4/mutect2'
+include { GATK4_CALCULATECONTAMINATION    } from '../../../modules/nf-core/gatk4/calculatecontamination'
+include { GATK4_FILTERMUTECTCALLS         } from '../../../modules/nf-core/gatk4/filtermutectcalls'
+include { GATK4_GETPILEUPSUMMARIES        } from '../../../modules/nf-core/gatk4/getpileupsummaries'
+include { GATK4_LEARNREADORIENTATIONMODEL } from '../../../modules/nf-core/gatk4/learnreadorientationmodel'
+include { GATK4_MUTECT2                   } from '../../../modules/nf-core/gatk4/mutect2'
 
 workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
     take:
-    ch_input_tumor // channel: [ val(meta), path(input), path(input_index)]
-    ch_input_normal // channel: [ val(meta), path(input), path(input_index)]
+    ch_input // channel: [ val(meta), path(tumor_input), path(tumor_input_index), path(normal_input), path(normal_input_index)]
     ch_fasta // channel: [ val(meta), path(fasta) ]
     ch_fai // channel: [ val(meta), path(fai), path(gzi) ]
     ch_dict // channel: [ val(meta), path(dict) ]
@@ -23,27 +21,18 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
     ch_panel_of_normals // channel: /path/to/panel/of/normals
     ch_panel_of_normals_tbi // channel: /path/to/panel/of/normals/index
     ch_interval_file // channel: /path/to/interval/file
-    val_tumor_normal_analysis // boolean: if true, perform tumor-normal comparison, otherwise run tumor-only comparison with pon
 
     main:
 
-    if (val_tumor_normal_analysis) {
-
-        ch_mutect2_in = ch_input_tumor
-            .combine(ch_input_normal)
-            .map { meta_tumor, bam_tumor, bai_tumor, meta_normal, bam_normal, bai_normal ->
-            [[id: "${meta_tumor.id}_${meta_normal.id}" ], [bam_tumor, bam_normal], [bai_tumor, bai_normal]]
-            }
-            .combine(ch_interval_file)
-
-        // Ensure that the panel of normals is not used for tumor-normal analysis, even if provided
-        ch_panel_of_normals = []
-        ch_panel_of_normals_tbi = []
-    }
-    else {
-        ch_mutect2_in = ch_input_tumor
-            .combine(ch_interval_file)
-    }
+    ch_mutect2_in = ch_input.map{ meta, tumor_input, tumor_input_index, normal_input, normal_input_index ->
+        if (!(normal_input && normal_input_index)) {
+            [meta, tumor_input, tumor_input_index]
+        }
+        else {
+            [meta, [tumor_input, normal_input], [tumor_input_index, normal_input_index]]
+        }
+        }
+        .combine(ch_interval_file)
 
     GATK4_MUTECT2(
         ch_mutect2_in,
@@ -66,58 +55,50 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
     // Generate artifactpriors using learnreadorientationmodel on the f1r2 output of GATK4_MUTECT2
     GATK4_LEARNREADORIENTATIONMODEL(ch_mutect2_f1r2)
 
-
     ch_artifact_priors = GATK4_LEARNREADORIENTATIONMODEL.out.artifactprior
 
     // Generate pileup summary tables using getepileupsummaries
-    ch_getpileupsummaries_tumor_in = ch_input_tumor
-            .combine(ch_interval_file)
+    ch_getpileupsummaries_in = ch_input
+        .flatMap { meta, tumor_input, tumor_input_index, normal_input, normal_input_index ->
+            def result = [
+                [[id: "${meta.id}_tumor", original_meta: meta], // Add unique key so output files receive differing names
+                tumor_input,
+                tumor_input_index]
+                ]
 
-    GATK4_GETPILEUPSUMMARIES_TUMOR(
-        ch_getpileupsummaries_tumor_in,
-        ch_fasta,
-        ch_fai.map { meta, fai, _gzi -> [meta, fai] },
-        ch_dict,
-        ch_germline_resource,
-        ch_germline_resource_tbi,
+            if (normal_input && normal_input_index) {
+                result << [
+                    [id: "${meta.id}_normal", original_meta: meta], // Add unique key so output files receive differing names
+                    normal_input,
+                    normal_input_index
+                    ]
+            }
+
+            result
+        }
+        .combine(ch_interval_file)
+
+
+    GATK4_GETPILEUPSUMMARIES(
+        ch_getpileupsummaries_in,
+        ch_fasta.collect(),
+        ch_fai.map { meta, fai, _gzi -> [meta, fai] }.collect(),
+        ch_dict.collect(),
+        ch_germline_resource.collect(),
+        ch_germline_resource_tbi.collect(),
     )
 
-    ch_pileup_table_tumor = GATK4_GETPILEUPSUMMARIES_TUMOR.out.table
-
-    if (val_tumor_normal_analysis) {
-
-        ch_getpileupsummaries_normal_in = ch_input_normal
-            .combine(ch_interval_file)
-
-        GATK4_GETPILEUPSUMMARIES_NORMAL(
-            ch_getpileupsummaries_normal_in,
-            ch_fasta,
-            ch_fai.map { meta, fai, _gzi -> [meta, fai] },
-            ch_dict,
-            ch_germline_resource,
-            ch_germline_resource_tbi,
-        )
-
-        ch_pileup_table_normal = GATK4_GETPILEUPSUMMARIES_NORMAL.out.table
-
-        // Ensure the correct order of the files in the input channel for GATK4_CALCULATECONTAMINATION
-        ch_calccon_in = ch_pileup_table_tumor
-            .combine(ch_pileup_table_normal)
-            .map { meta_tumor, table_tumor, meta_normal, table_normal ->
-                [[id: "${meta_tumor.id}_${meta_normal.id}"], table_tumor, table_normal]
-            }
-    }
-    else {
-        ch_pileup_table_normal = channel.empty()
-
-        ch_calccon_in = ch_pileup_table_tumor
-            .map { meta_tumor, table_tumor ->
-                [meta_tumor, table_tumor, []]
-            }
-    }
+    ch_pileup_table = GATK4_GETPILEUPSUMMARIES.out.table
+        .map { meta, table -> [meta.original_meta, table] } // Remove unique key and restore original meta
 
     // Contamination and segmentation tables created using calculatecontamination on the pileup summary table
-    GATK4_CALCULATECONTAMINATION(ch_calccon_in)
+    ch_calculatecontamination_in = ch_pileup_table
+        .groupTuple()
+        .map { meta, table_files ->
+            [meta] + (table_files.size() > 1 ? table_files : [table_files[0], []])
+            }
+
+    GATK4_CALCULATECONTAMINATION(ch_calculatecontamination_in)
 
     ch_contamination_table = GATK4_CALCULATECONTAMINATION.out.contamination
     ch_segmentation_table = GATK4_CALCULATECONTAMINATION.out.segmentation
@@ -159,7 +140,6 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
     mutect2_stats       = ch_mutect2_stats // channel: [ val(meta), path(stats) ]
     mutect2_tbi         = ch_mutect2_tbi // channel: [ val(meta), path(tbi) ]
     mutect2_vcf         = ch_mutect2_vcf // channel: [ val(meta), path(vcf) ]
-    pileup_table_normal = ch_pileup_table_normal // channel: [ val(meta), path(table) ]
-    pileup_table_tumor  = ch_pileup_table_tumor // channel: [ val(meta), path(table) ]
+    pileup_table        = ch_pileup_table // channel: [ val(meta), path(table) ]
     segmentation_table  = ch_segmentation_table // channel: [ val(meta), path(table) ]
 }
