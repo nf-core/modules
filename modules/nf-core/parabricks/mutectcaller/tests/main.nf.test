@@ -41,13 +41,13 @@ nextflow_process {
         }
 
         then {
+            def records = path(process.out.vcf[0][1]).linesGzip.findAll { line -> !line.startsWith('#') }.collect { line -> line.split('\t') }
+            // Calls overlapping PON deletions in the PON test; they must disappear when --pon is used
+            def pon_overlapping = ['44145050', '44145051', '46156071', '46156077']
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    process.out.stats,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match() }
+                { assert records.count { record -> record[1] in pon_overlapping } == 4 },
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf"])).match() }
             )
         }
 
@@ -234,14 +234,16 @@ nextflow_process {
         }
 
         then {
+            def lines = path(process.out.vcf[0][1]).linesGzip
+            def records = lines.findAll { line -> !line.startsWith('#') }.collect { line -> line.split('\t') }
+            def pon_overlapping = ['44145050', '44145051', '46156071', '46156077']
             assertAll(
                 { assert process.success },
-                { assert path(process.out.vcf[0][1]).linesGzip.any { line -> line.startsWith('##GATKCommandLine=<ID=mutectcaller') && line.contains('--pon ') } },
-                { assert snapshot(
-                    path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    process.out.stats,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match() }
+                { assert lines.any { line -> line.startsWith('##GATKCommandLine=<ID=mutectcaller') && line.contains('--pon ') } },
+                { assert records.count { record -> record[1] in pon_overlapping } == 0 },
+                // postpon flags calls at PON positions
+                { assert records.find { record -> record[1] == '45495715' }[7].split(';').contains('PON') },
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf"])).match() }
             )
         }
 
@@ -280,7 +282,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
+                    sanitizeOutput(process.out),
                     path(process.out.compatible_versions.get(0)).yaml
                     ).match() }
             )
@@ -320,7 +322,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot( process.out ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
