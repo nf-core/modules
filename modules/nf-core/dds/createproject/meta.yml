@@ -23,6 +23,7 @@ input:
     - pi:
         type: string
         description: Email of the Principal Investigator.
+        pattern: "^\S+@\S+\.\S+$"
   - token_file:
       type: file
       description: Path to a DDS CLI token file (created via `dds auth`). Must be readable by the pipeline user.
