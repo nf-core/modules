@@ -9,6 +9,8 @@ process TANTAN {
 
     input:
     tuple val(meta), path(fastx)
+    val(output_format)
+
 
     output:
     tuple val(meta), path("*.fasta.gz"), emit: masked_fasta,  optional: true
@@ -23,30 +25,30 @@ process TANTAN {
 
     script:
     def args       = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: ''
     def prefix     = task.ext.prefix ?: meta.id
+    def format = output_format?.toString()
 
-    /*
-     * Extract the tantan output format from ext.args.
-     *
-     * Supported forms:
-     *   -f 0
-     *   -f0
-     *
-     * If -f is omitted, tantan's default format, 0, is assumed.
-     */
-    def format_matches = args.findAll(/(?<!\S)-f\s*([0-4])(?!\S)/)
-
-    if (format_matches.size() > 1) {
+    if (!(format in ['0', '1', '2', '3', '4'])) {
         error(
-            "Multiple tantan output format options were found in ext.args: " +
-            "'${format_matches.join(', ')}'. Specify only one -f option."
+            "Invalid tantan output format '${output_format}'. " +
+            "Expected one of: 0, 1, 2, 3, or 4."
         )
     }
 
-    def output_format = format_matches
-        ? (format_matches[0] =~ /([0-4])/)[0][1]
-        : '0'
+    /*
+     * output_format is provided as a process input.
+     * Do not also specify -f in task.ext.args.
+     */
+
+    def format_matches = args.findAll(/(?<!\S)-f\s*([0-4])(?!\S)/)
+
+    if (format_matches) {
+        error(
+            "Do not specify '-f' in task.ext.args when output_format " +
+            "is provided as a process input."
+        )
+    }
+
 
     def output_files = [
         '0': "${prefix}.fasta",
@@ -56,16 +58,18 @@ process TANTAN {
         '4': "${prefix}.repeats.txt"
     ]
 
-    def output_file = output_files[output_format]
+    def output_file = output_files[format]
 
-    def gzip_command = (output_format == '0') ? """
+    def gzip_command = format == '0' ? """
         gzip -c ${output_file} > ${output_file}.gz
         rm ${output_file}
     """ : ''
 
+
     """
     zcat ${fastx} |
     tantan \\
+        -f ${format} \\
         $args \\
         > ${output_file}
 
@@ -76,10 +80,23 @@ process TANTAN {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    def format = output_format?.toString()
 
-    // Determine output format from args
-    def format_matches = args.findAll(/(?<!\S)-f\s*([0-4])(?!\S)/)
-    def output_format = format_matches ? (format_matches[0] =~ /([0-4])/)[0][1] : '0'
+    if (!(format in ['0', '1', '2', '3', '4'])) {
+        error(
+            "Invalid tantan output format '${output_format}'. " +
+            "Expected one of: 0, 1, 2, 3, or 4."
+        )
+    }
+
+    def format_matches = args.findAll(/(?<!\S)-f\s*[0-4](?!\S)/)
+
+    if (format_matches) {
+        error(
+            "Do not specify '-f' in task.ext.args when output_format " +
+            "is provided as a process input."
+        )
+    }
 
     def output_files = [
         '0': "${prefix}.fasta.gz",
@@ -89,18 +106,23 @@ process TANTAN {
         '4': "${prefix}.repeats.txt"
     ]
 
-    def output_file = output_files[output_format]
-    def final_output = (output_format == '0') ? "${output_file}.gz" : output_file
+    def final_output = output_files[format]
 
-    if ("${final_output}" == "${fastx}") {
-        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    if (final_output == fastx.toString()) {
+        error(
+            'Input and output names are the same; ' +
+            'use "task.ext.prefix" to disambiguate.'
+        )
     }
 
-    def create_cmd = final_output.endsWith('gz') ? "echo '' | gzip >" : "touch"
+    def create_command = final_output.endsWith('.gz')
+        ? "echo '' | gzip > ${final_output}"
+        : "touch ${final_output}"
+
     """
     echo ${args}
     echo ${args2}
 
-    ${create_cmd} ${final_output}
+    ${create_command}
     """
 }
