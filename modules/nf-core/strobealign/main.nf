@@ -21,7 +21,7 @@ process STROBEALIGN {
     tuple val(meta), path("*.paf.gz"), emit: paf, optional: true
     tuple val(meta), path("*.tsv.gz"), emit: tsv, optional: true
     tuple val(meta), path("*.sti"), emit: sti, optional: true
-    tuple val("${task.process}"), val('strobealign'), eval("strobealign --version"), topic: versions, emit: versions_strobealign
+    tuple val("${task.process}"), val('strobealign'), eval("strobealign --version | sed '1!d;s/.* //'"), topic: versions, emit: versions_strobealign
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), emit: versions_samtools, topic: versions
     tuple val("${task.process}"), val('pigz'), eval("pigz --version 2>&1 | sed 's/pigz //'"), emit: versions_pigz, topic: versions
 
