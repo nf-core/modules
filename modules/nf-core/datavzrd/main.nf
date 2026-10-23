@@ -8,7 +8,7 @@ process DATAVZRD {
 :         'community.wave.seqera.io/library/datavzrd:2.75.3--58fb85a496607c2e' }"
 
     input:
-    tuple val(meta), path(config_file), path(table)
+    tuple val(meta), path(config_file), path(files)
 
     output:
     tuple val(meta), path("${prefix}"), emit: report
@@ -21,11 +21,11 @@ process DATAVZRD {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir ${prefix}
+    mkdir "${prefix}"
     datavzrd \\
         ${args} \\
-        ${config_file} \\
-        --output ${prefix} \\
+        "${config_file}" \\
+        --output "${prefix}" \\
     """
 
     stub:
