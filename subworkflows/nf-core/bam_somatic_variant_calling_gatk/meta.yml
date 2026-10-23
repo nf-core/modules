@@ -70,12 +70,12 @@ input:
         Structure: [ path(germline_resources_tbi) ]
   - ch_panel_of_normals:
       description: |
-        Vcf file to be used as a panel of normals. Only used for tumor-only analysis.
+        Vcf file to be used as a panel of normals. Optional and should only be provided for tumor-only analysis.
 
         Structure: [ path(panel_of_normals) ]
   - ch_panel_of_normals_tbi:
       description: |
-        Index for the panel of normals. Only used for tumor-only analysis.
+        Index for the panel of normals. Optional and should only be provided for tumor-only analysis.
 
         Structure: [ path(panel_of_normals_tbi) ]
   - ch_interval_file:
@@ -129,16 +129,12 @@ output:
         Compressed vcf file to be used for variant_calling.
 
         Structure: [ val(meta), path(vcf) ]
-  - pileup_table_normal:
+  - pileup_table:
       description: |
-        File containing the normal pileup summary table, kept separate as calculatecontamination needs them individually specified. Only output in tumor-normal analysis.
+        Pileup summary table, kept separate as calculatecontamination needs them individually specified. In case of tumor-normal analysis, two entries are output - one for the normal sample and one for the tumor sample.
 
         Structure: [ val(meta), path(table) ]
-  - pileup_table_tumor:
-      description: |
-        File containing the tumor pileup summary table, kept separate as calculatecontamination needs them individually specified.
 
-        Structure: [ val(meta), path(table) ]
   - segmentation_table:
       description: |
         Output table containing segmentation of tumor minor allele fractions.
