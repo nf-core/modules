@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BWAMEM2_INDEX {
     tag "$fasta"
     // NOTE Requires 28N GB memory where N is the size of the reference sequence, floor of 280M

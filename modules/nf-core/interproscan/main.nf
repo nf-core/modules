@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process INTERPROSCAN {
     tag "$meta.id"
     // will throw NullPointer exceptions and crush with more than 1 cpu

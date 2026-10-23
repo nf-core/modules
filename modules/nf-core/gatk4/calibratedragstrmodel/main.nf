@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GATK4_CALIBRATEDRAGSTRMODEL {
     tag "${meta.id}"
     label 'process_high'

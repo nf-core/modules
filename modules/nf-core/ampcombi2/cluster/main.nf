@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process AMPCOMBI2_CLUSTER {
     tag 'ampcombi2'
     label 'process_medium'
