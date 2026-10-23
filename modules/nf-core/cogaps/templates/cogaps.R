@@ -5,6 +5,12 @@
 ## factorisation) on a features x samples matrix
 ################################################
 
+## Input: csv, tsv or txt (optionally gzipped) with feature names in the first
+## column, or an rds file containing a dense matrix or data.frame. A
+## SummarizedExperiment or SingleCellExperiment is also accepted if it has a
+## dense assay named "counts". Sparse matrices are not supported and must be
+## converted before the call.
+
 ## Options are passed via task.ext.args as '--name value' pairs, where name is
 ## a scalar CogapsParams parameter, e.g. '--nPatterns 7 --nIterations 50000 --seed 42'.
 ## Non-scalar parameters (e.g. fixedPatterns, explicitSets, subsetIndices,

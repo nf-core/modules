@@ -27,8 +27,10 @@ input:
         description: |
           Features x samples expression matrix with feature names in the first column
           and sample names in the header (csv, tsv or txt, optionally gzipped), or an
-          rds file containing a matrix, data.frame, SummarizedExperiment or
-          SingleCellExperiment. CoGAPS options, including the required nPatterns, are
+          rds file containing a dense matrix or data.frame. A SummarizedExperiment or
+          SingleCellExperiment is also accepted if it has a dense assay named "counts".
+          Sparse matrices are not supported and must be converted before the call.
+          CoGAPS options, including the required nPatterns, are
           passed via ext.args, e.g. '--nPatterns 7 --nIterations 50000 --seed 42'.
           Only scalar CogapsParams values can be set this way; non-scalar parameters
           such as fixedPatterns, explicitSets, subsetIndices and geneNames are not supported.
