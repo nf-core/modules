@@ -1,0 +1,64 @@
+nextflow_process {
+
+    name "Test Process COGAPS"
+    script "../main.nf"
+    process "COGAPS"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cogaps"
+
+    test("mus_musculus - expression matrix - tsv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                // MCMC output can differ between thread counts, so check structure rather than md5sums
+                { assert path(process.out.feature_loadings[0][1]).readLines().size() == 1001 },
+                { assert path(process.out.feature_loadings[0][1]).readLines()[0].contains('Pattern_3') },
+                { assert path(process.out.sample_factors[0][1]).readLines().size() == 7 },
+                { assert snapshot(
+                    file(process.out.rds[0][1]).name,
+                    file(process.out.feature_loadings[0][1]).name,
+                    file(process.out.sample_factors[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+
+    test("mus_musculus - expression matrix - tsv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

@@ -1,0 +1,85 @@
+name: "cogaps"
+description: Bayesian non-negative matrix factorisation of an expression matrix with CoGAPS,
+  identifying patterns (e.g. gene programs) and their activity across samples
+keywords:
+  - nmf
+  - matrix factorisation
+  - gene programs
+  - patterns
+  - transcriptomics
+tools:
+  - "cogaps":
+      description: "Coordinated Gene Activity in Pattern Sets (CoGAPS) implements a Bayesian
+        MCMC matrix factorization algorithm, GAPS, and links it to gene set statistic methods
+        to infer biological process activity."
+      homepage: "https://bioconductor.org/packages/CoGAPS"
+      documentation: "https://bioconductor.org/packages/release/bioc/vignettes/CoGAPS/inst/doc/CoGAPS.html"
+      tool_dev_url: "https://github.com/FertigLab/CoGAPS"
+      doi: "10.1093/bioinformatics/btq503"
+      licence: ["BSD-3-Clause"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - matrix:
+        type: file
+        description: |
+          Features x samples expression matrix with feature names in the first column
+          and sample names in the header (csv, tsv or txt, optionally gzipped), or an
+          rds file containing a matrix, data.frame, SummarizedExperiment or
+          SingleCellExperiment. CoGAPS options, including the required nPatterns, are
+          passed via ext.args, e.g. '--nPatterns 7 --nIterations 50000 --seed 42'.
+        pattern: "*.{csv,tsv,txt,csv.gz,tsv.gz,txt.gz,rds}"
+
+output:
+  rds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.cogaps.rds":
+          type: file
+          description: CogapsResult object
+          pattern: "*.cogaps.rds"
+  feature_loadings:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.feature_loadings.csv":
+          type: file
+          description: Feature loadings (amplitude matrix, A), features x patterns
+          pattern: "*.feature_loadings.csv"
+  sample_factors:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.sample_factors.csv":
+          type: file
+          description: Sample factors (pattern matrix, P), samples x patterns
+          pattern: "*.sample_factors.csv"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+topics:
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+authors:
+  - "@Jessica-ovabor"
+maintainers:
+  - "@Jessica-ovabor"
