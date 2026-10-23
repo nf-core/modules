@@ -76,7 +76,7 @@ jobs:
               - added|modified: 'modules/nf-core/**'
             subworkflows:
               - added|modified: 'subworkflows/nf-core/**'
-          token: ${{ github.token }}
+          token: ""
           list-files: "json"
 
       - name: Get module name
