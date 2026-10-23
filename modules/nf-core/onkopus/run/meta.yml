@@ -1,0 +1,143 @@
+name: "onkopus_run"
+description: |
+  Annotates, interprets and prioritises cancer variants in a VCF file with Onkopus.
+  Variant data are sent to the public Onkopus web services (https://mtb.bioinf.med.uni-goettingen.de),
+  so tasks need internet access and data leave the compute environment: consider data-privacy rules for patient data.
+  Pass `-m <modules>` (default `all`) and `-t <target genome>` via `ext.args`; running one `-m` module per process is safest,
+  as with several modules only the last one's annotations may be kept.
+keywords:
+  - cancer
+  - variant annotation
+  - variant interpretation
+  - variant prioritisation
+  - precision oncology
+  - vcf
+  - genomics
+tools:
+  - "onkopus":
+      description: "Modular framework to annotate, interpret and prioritise genetic alterations in cancer, including pathogenicity and functional-effect prediction, ClinVar and potential therapies"
+      homepage: "https://gitlab.gwdg.de/MedBioinf/mtb/onkopus/onkopus"
+      documentation: "https://pypi.org/project/onkopus/"
+      tool_dev_url: "https://gitlab.gwdg.de/MedBioinf/mtb/onkopus/onkopus"
+      doi: "10.1093/nar/gkaf376"
+      licence:
+        - "GPL-3.0-only"
+      identifier: ""
+      args_id: "$args"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - vcf:
+        type: file
+        description: Variant calls in VCF format, plain or BGZF (bgzip)-compressed
+        pattern: "*.{vcf,vcf.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_3016 # VCF
+          - edam: http://edamontology.org/format_3615 # BGZF
+  - genome:
+      type: string
+      description: Genome assembly of the input variants (`hg19`, `hg38` or `t2t`)
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.ann.vcf.gz:
+          type: file
+          description: Annotated variants in BGZF (bgzip)-compressed VCF format
+          pattern: "*.ann.vcf.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3016 # VCF
+            - edam: http://edamontology.org/format_3615 # BGZF
+  versions_onkopus:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - onkopus:
+          type: string
+          description: The name of the tool
+      - python -c "import importlib.metadata as m; print(m.version('onkopus'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_htslib:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - htslib:
+          type: string
+          description: The name of the tool
+      - bgzip --version | sed '1!d; s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_python:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python --version | sed 's/Python //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - onkopus:
+          type: string
+          description: The name of the tool
+      - python -c "import importlib.metadata as m; print(m.version('onkopus'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - htslib:
+          type: string
+          description: The name of the tool
+      - bgzip --version | sed '1!d; s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python --version | sed 's/Python //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/htslib_pip_python_onkopus:55b51654a75178bc
+      build_id: bd-55b51654a75178bc_1
+      scan_id: sc-d326597e4903581b_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/htslib_pip_python_onkopus:86d4804e63a055eb
+      build_id: bd-86d4804e63a055eb_1
+      scan_id: sc-eb063ad2fafdb6f9_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/htslib_pip_python_onkopus:6c5db24fd382e2c5
+      build_id: bd-6c5db24fd382e2c5_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/34/345e4697d36234c6be75bd5fd422d0d84d6d85271fb066f84336b4fb815f90aa/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/htslib_pip_python_onkopus:b6a0b4383c03c747
+      build_id: bd-b6a0b4383c03c747_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fb/fb11815b9aa5409dd2020116323ba0ede9ca465bbec663497fcb8ca0648c2655/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/onkopus/run/.conda-lock/linux_amd64-bd-55b51654a75178bc_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/onkopus/run/.conda-lock/linux_arm64-bd-86d4804e63a055eb_1.txt
