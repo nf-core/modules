@@ -134,9 +134,44 @@
             "nextflow": "25.10.2"
         }
     },
-    "[ csv, tsv ] - multiple files": {
+    "generic - [ yaml, [ csv, tsv ] ] - report": {
         "content": [
             {
+                "report": [
+                    [
+                        {
+                            "id": "multiple_config"
+                        },
+                        [
+                            "index.html",
+                            [
+                                "config.js",
+                                [
+                                    "data_1.js"
+                                ],
+                                "functions.js",
+                                "index_1.html",
+                                [
+                                    "plots.js"
+                                ]
+                            ],
+                            [
+                                "bundle.js"
+                            ],
+                            [
+                                "config.js",
+                                [
+                                    "data_1.js"
+                                ],
+                                "functions.js",
+                                "index_1.html",
+                                [
+                                    "plots.js"
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
                 "versions_datavzrd": [
                     [
                         "DATAVZRD",
@@ -160,10 +195,10 @@
                 "test/plots/plots.js"
             ]
         ],
-        "timestamp": "2026-10-20T13:52:08.707086",
+        "timestamp": "2026-10-23T23:20:40.734358",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.10.2"
+            "nextflow": "26.04.0"
         }
     },
     "csv": {

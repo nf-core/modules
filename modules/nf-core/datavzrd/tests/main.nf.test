@@ -56,7 +56,7 @@ nextflow_process {
         }
     }
 
-    test("[ csv, tsv ] - multiple files") {
+    test("generic - [ yaml, [ csv, tsv ] ] - report") {
 
         when {
             process {
@@ -90,12 +90,12 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
-                            process.out.findAll { key, val -> key.startsWith('versions') },
+                            sanitizeOutput(process.out, unstableKeys: ['report']),
                             getAllFilesFromDir(process.out.report[0][1], relative: true, includeDir: false)
-                        ).match("[ csv, tsv ] - multiple files")
+                        ).match()
                     }
             )
         }
