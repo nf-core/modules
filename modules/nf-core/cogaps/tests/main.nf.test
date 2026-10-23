@@ -58,10 +58,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.feature_loadings,
-                    process.out.sample_factors,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["rds"])).match() }
             )
         }
     }
