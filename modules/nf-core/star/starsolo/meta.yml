@@ -19,8 +19,6 @@ input:
         type: map
         description: |
           Groovy Map containing sample information.
-          Here, you should add all the specific barcode/umi
-          information for each sample.
           e.g. `[ id:'test_starsolo', umi_len:'12', cb_start:1 ]`
     - solotype:
         type: string
@@ -34,6 +32,12 @@ input:
           List of input FastQ files of size 1 and 2 for single-end and paired-end data,
           respectively.
         ontologies: []
+    - manifest:
+        type: file
+        description: |
+          Optional manifest file for Smart-Seq data.
+          It should contain 3 tab-separated columns: read1, read2, cell_id. The cell_id column will be added as ReadGroup tag.
+        ontologies: []
   - opt_whitelist:
       type: file
       description: Optional whitelist file
@@ -45,15 +49,24 @@ input:
         type: directory
         description: STAR genome index
         pattern: "star"
+  - - meta3:
+        type: map
+        description: Groovy Map containing the GTF information.
+    - gtf:
+        type: file
+        description: GTF annotation file
+        pattern: "*.gtf"
+        ontologies: []
+  - star_ignore_sjdbgtf:
+      type: boolean
+      description: |
+        If true, STAR will ignore the GTF file and only use the genome index.
 output:
   counts:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
-            Here, you should add all the specific barcode/umi
-            information for each sample.
-            e.g. `[ id:'test_starsolo', umi_len:'12', cb_start:1 ]`
       - "*.Solo.out":
           type: file
           description: STARSolo counts matrix
@@ -64,9 +77,6 @@ output:
           type: map
           description: |
             Groovy Map containing sample information.
-            Here, you should add all the specific barcode/umi
-            information for each sample.
-            e.g. `[ id:'test_starsolo', umi_len:'12', cb_start:1 ]`
       - "*Log.final.out":
           type: file
           description: STAR final log file
@@ -77,9 +87,6 @@ output:
           type: map
           description: |
             Groovy Map containing sample information.
-            Here, you should add all the specific barcode/umi
-            information for each sample.
-            e.g. `[ id:'test_starsolo', umi_len:'12', cb_start:1 ]`
       - "*Log.out":
           type: file
           description: STAR lot out file
@@ -90,9 +97,6 @@ output:
           type: map
           description: |
             Groovy Map containing sample information.
-            Here, you should add all the specific barcode/umi
-            information for each sample.
-            e.g. `[ id:'test_starsolo', umi_len:'12', cb_start:1 ]`
       - "*Log.progress.out":
           type: file
           description: STAR log progress file
@@ -103,9 +107,6 @@ output:
           type: map
           description: |
             Groovy Map containing sample information.
-            Here, you should add all the specific barcode/umi
-            information for each sample.
-            e.g. `[ id:'test_starsolo', umi_len:'12', cb_start:1 ]`
       - "*/Gene/Summary.csv":
           type: file
           description: STARSolo metrics summary CSV file.
@@ -123,6 +124,108 @@ output:
           type: eval
           description: The expression to obtain the version of the tool
 
+  raw_counts:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - "*.Solo.out/Gene*/raw":
+          type: file
+          description: STARSolo raw counts matrix
+          pattern: "*.Solo.out/Gene*/raw"
+          ontologies: []
+  filtered_counts:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - "*.Solo.out/Gene*/filtered":
+          type: file
+          description: STARSolo filtered counts matrix (optional)
+          pattern: "*.Solo.out/Gene*/filtered"
+          ontologies: []
+  raw_velocyto:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - "*.Solo.out/Velocyto/raw":
+          type: file
+          description: STARSolo raw velocyto matrix (optional)
+          pattern: "*.Solo.out/Velocyto/raw"
+          ontologies: []
+  filtered_velocyto:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - "*.Solo.out/Velocyto/filtered":
+          type: file
+          description: STARSolo filtered velocyto matrix (optional)
+          pattern: "*.Solo.out/Velocyto/filtered"
+          ontologies: []
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - "*d.out.bam":
+          type: file
+          description: Output BAM file containing read alignments (optional)
+          pattern: "*.{bam}"
+          ontologies: []
+  bam_sorted:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - "*sortedByCoord.out.bam":
+          type: file
+          description: Sorted BAM file containing read alignments (optional)
+          pattern: "*sortedByCoord.out.bam"
+          ontologies: []
+  bam_transcript:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - "*toTranscriptome.out.bam":
+          type: file
+          description: Output BAM file of transcriptome alignment (optional)
+          pattern: "*toTranscriptome.out.bam"
+          ontologies: []
+  bam_unsorted:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - "*Aligned.unsort.out.bam":
+          type: file
+          description: Unsorted BAM file of read alignments (optional)
+          pattern: "*Aligned.unsort.out.bam"
+          ontologies: []
+  fastq:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - "*fastq.gz":
+          type: file
+          description: Input FASTQ file (optional)
+          pattern: "*fastq.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  tab:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - "*.tab":
+          type: file
+          description: Input TAB file (optional)
+          pattern: "*.tab"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
 topics:
   versions:
     - - ${task.process}:
