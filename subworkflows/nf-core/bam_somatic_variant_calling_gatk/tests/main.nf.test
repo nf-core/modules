@@ -66,8 +66,7 @@ nextflow_workflow {
                     workflow.out.mutect2_stats,
                     file(workflow.out.mutect2_tbi[0][1]).name,
                     workflow.out.mutect2_vcf.collect { meta, vcf -> [meta, "${file(vcf).name},variantsMD5:${path(vcf).vcf.variantsMD5}"] },
-                    workflow.out.pileup_table_normal,
-                    workflow.out.pileup_table_tumor,
+                    workflow.out.pileup_table,
                     workflow.out.segmentation_table
                 ).match() }
             )
