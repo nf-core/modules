@@ -28,12 +28,7 @@ nextflow_process {
                 { assert path(process.out.feature_loadings[0][1]).readLines().size() == 1001 },
                 { assert path(process.out.feature_loadings[0][1]).readLines()[0].contains('Pattern_3') },
                 { assert path(process.out.sample_factors[0][1]).readLines().size() == 7 },
-                { assert snapshot(
-                    file(process.out.rds[0][1]).name,
-                    process.out.feature_loadings,
-                    process.out.sample_factors,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["rds"])).match() }
             )
         }
     }
