@@ -1,10 +1,10 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
-name: bam_tumor_normal_somatic_variant_calling_gatk
+name: bam_somatic_variant_calling_gatk
 description: |
-  Perform variant calling on a paired tumor normal set of samples using mutect2 tumor normal mode.
-  f1r2 output of mutect2 is run through learnreadorientationmodel to get the artifact priors.
-  Run the input bam files through getpileupsummarries and then calculatecontamination to get the contamination and segmentation tables.
-  Filter the mutect2 output vcf using filtermutectcalls, artifact priors and the contamination & segmentation tables for additional filtering.
+  Perform variant calling for tumor-normal or tumor-only analyses.
+  The f1r2 output of mutect2 is run through learnreadorientationmodel to get the artifact priors.
+  The input bam files are run through getpileupsummarries and then calculatecontamination to get the contamination and segmentation tables.
+  Filtering of the mutect2 output vcf is done using filtermutectcalls, artifact priors and the contamination & segmentation tables for additional filtering.
 keywords:
   - gatk4
   - mutect2
@@ -24,10 +24,15 @@ components:
 input:
   - ch_input:
       description: |
-        The tumor and normal BAM files, in that order, also able to take CRAM as an input
-        Can contain an optional list of sample headers contained in the normal sample input file.
+        The BAM or CRAM input file(s) and corresponding index file(s).
+        Input files for the normal sample are optional.
 
-        Structure: [ val(meta), path(input), path(input_index), val(which_norm) ]
+        Structure: [ val(meta), path(tumor_input), path(tumor_input_index), path(normal_input), path(normal_input_index)]
+  - ch_input_normal:
+      description: |
+        The normal BAM or CRAM file and corresponding index file.
+
+        Structure: [ val(meta), path(input), path(input_index) ]
   - ch_fasta:
       description: |
         The reference fasta file
@@ -65,12 +70,12 @@ input:
         Structure: [ path(germline_resources_tbi) ]
   - ch_panel_of_normals:
       description: |
-        Vcf file to be used as a panel of normals.
+        Vcf file to be used as a panel of normals. Optional and should only be provided for tumor-only analysis.
 
         Structure: [ path(panel_of_normals) ]
   - ch_panel_of_normals_tbi:
       description: |
-        Index for the panel of normals.
+        Index for the panel of normals. Optional and should only be provided for tumor-only analysis.
 
         Structure: [ path(panel_of_normals_tbi) ]
   - ch_interval_file:
@@ -124,16 +129,12 @@ output:
         Compressed vcf file to be used for variant_calling.
 
         Structure: [ val(meta), path(vcf) ]
-  - pileup_table_normal:
+  - pileup_table:
       description: |
-        File containing the normal pileup summary table, kept separate as calculatecontamination needs them individually specified.
+        Pileup summary table, kept separate as calculatecontamination needs them individually specified. In case of tumor-normal analysis, two entries are output - one for the normal sample and one for the tumor sample.
 
         Structure: [ val(meta), path(table) ]
-  - pileup_table_tumor:
-      description: |
-        File containing the tumor pileup summary table, kept separate as calculatecontamination needs them individually specified.
 
-        Structure: [ val(meta), path(table) ]
   - segmentation_table:
       description: |
         Output table containing segmentation of tumor minor allele fractions.
