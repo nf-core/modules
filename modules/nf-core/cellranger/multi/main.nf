@@ -84,7 +84,7 @@ process CELLRANGER_MULTI {
 
                 r1_base="\$(basename "\${r1}")"
                 r2_base="\$(basename "\${r2}")"
-                if [ "\${r1_base/_R1_/_R2_}" != "\${r2_base}" ]; then
+                if [ "\${r1_base%_R1_*}_R2_\${r1_base##*_R1_}" != "\${r2_base}" ]; then
                     echo "ERROR: R1 and R2 basenames do not match except for R1/R2 replacement." >&2
                     echo "       R1: \${r1_base}" >&2
                     echo "       R2: \${r2_base}" >&2
