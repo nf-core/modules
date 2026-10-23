@@ -4,9 +4,9 @@ process CUSTOM_MTX2H5AD {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9c/9cf4d1a3cf87ad02a86718d3bcde8e8a57ae1258287bac009a4d4c4d9a66cabf/data':
-        'community.wave.seqera.io/library/hdf5plugin_leidenalg_python-igraph_python_scanpy:b8efbf7d1ff96cc6' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/02/029644f69918a0d2abdc7a5438decb054e2a4b292e87536afc5589cceff581d8/data'
+        : 'community.wave.seqera.io/library/hdf5plugin_leidenalg_python-igraph_python_scanpy:20f9779bbe32a4c8'}"
 
     input:
     tuple val(meta), path(inputs), val(input_type)

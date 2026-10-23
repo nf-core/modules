@@ -115,22 +115,24 @@ maintainers:
 containers:
   docker:
     linux/amd64:
-      name: community.wave.seqera.io/library/hdf5plugin_leidenalg_python-igraph_scanpy:01b44a10de35c59b
-      build_id: bd-01b44a10de35c59b_1
-      scan_id: sc-31baf308ee9ca714_1
+      name: community.wave.seqera.io/library/hdf5plugin_leidenalg_python-igraph_python_scanpy:20f9779bbe32a4c8
+      build_id: bd-20f9779bbe32a4c8_1
+      scan_id: sc-9015dd284645a5ef_1
     linux/arm64:
-      name: community.wave.seqera.io/library/hdf5plugin_leidenalg_python-igraph_scanpy:94867f404e0e00d1
-      build_id: ""
-      scan_id: sc-6e3ff985ee4091af_1
+      name: community.wave.seqera.io/library/hdf5plugin_leidenalg_python-igraph_python_scanpy:c312b45c265e9dfe
+      build_id: bd-c312b45c265e9dfe_1
+      scan_id: sc-d5bc360dd0e7fe75_1
   singularity:
-    linux/amd64:
-      name: oras://community.wave.seqera.io/library/hdf5plugin_leidenalg_python-igraph_scanpy:7de3e25a9827b91d
-      build_id: bd-7de3e25a9827b91d_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b2/b231cdd25ee7a100f744d0c9c374089ccec05401b98ef707460b8d6c759b9278/data
     linux/arm64:
-      name: oras://community.wave.seqera.io/library/hdf5plugin_leidenalg_python-igraph_scanpy:b271b88c5bab371c
-      build_id: bd-b271b88c5bab371c_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b2/b28436e42732ee1dd6a65f4f83b0ae2518e8e7f98d759261a192c784b85eed2b/data
+      name: oras://community.wave.seqera.io/library/hdf5plugin_leidenalg_python-igraph_python_scanpy:af1a7945ad3f5e9f
+      build_id: bd-af1a7945ad3f5e9f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/46/4680a8e27e91fbd4b02dcd4b43ab1dfe9e4baedfaaa3d81fc3d723d486c5633a/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/hdf5plugin_leidenalg_python-igraph_python_scanpy:933cae5ae55b6379
+      build_id: bd-933cae5ae55b6379_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/02/029644f69918a0d2abdc7a5438decb054e2a4b292e87536afc5589cceff581d8/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/custom/mtx2h5ad/.conda-lock/linux_amd64-bd-01b44a10de35c59b_1.txt
+      lock_file: modules/nf-core/custom/mtx2h5ad/.conda-lock/linux_amd64-bd-20f9779bbe32a4c8_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/custom/mtx2h5ad/.conda-lock/linux_arm64-bd-c312b45c265e9dfe_1.txt
