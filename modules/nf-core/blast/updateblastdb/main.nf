@@ -3,9 +3,9 @@ process BLAST_UPDATEBLASTDB {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/blast:2.17.0--h66d330f_0':
-        'quay.io/biocontainers/blast:2.17.0--h66d330f_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/48/4845ad74dd459a24f390f9929801119fcf93df10161cc65292e8f416ffc05682/data'
+        : 'community.wave.seqera.io/library/blast:2.17.0--9196f264d54655d4' }"
 
     input:
     tuple val(meta), val(name)
