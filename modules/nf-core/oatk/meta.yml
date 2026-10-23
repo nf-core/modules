@@ -24,7 +24,7 @@ input:
           e.g. [ id:'Cladonia_norvegica' ]
     - reads:
         type: file
-        description: HiFi reads in FASTA format
+        description: HiFi reads in FASTA format for organellar assembly
         pattern: "*.{fasta,fasta.gz,fa,fa.gz}"
         ontologies: []
   - - meta2:
@@ -36,7 +36,8 @@ input:
         type: file
         description: |
           HMM profile for mitochondrial gene annotation, with corresponding
-          .h3i, h3f, .h3p, .h3m files from hmmpress
+          .h3i, h3f, .h3p, .h3m files from hmmpress. Can be generated using
+          OatkDB (https://github.com/c-zhou/OatkDB/).
         pattern: "*.{fam,h3i,h3f,h3p,h3m}"
         ontologies: []
   - - meta3:
@@ -48,7 +49,8 @@ input:
         type: file
         description: |
           HMM profile for plastid gene annotation, with corresponding
-          .h3i, h3f, .h3p, .h3m files from hmmpress
+          .h3i, h3f, .h3p, .h3m files from hmmpress. Can be generated using
+          OatkDB (https://github.com/c-zhou/OatkDB/).
         pattern: "*.{fam,h3i,h3f,h3p,h3m}"
         ontologies: []
 output:
@@ -106,7 +108,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*mito.ctg.bed":
+      - "*mito.bed":
           type: file
           description: Gene annotations for the mito unitigs
           pattern: "*mito.bed"
@@ -118,7 +120,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*pltd.ctg.bed":
+      - "*pltd.bed":
           description: Gene annotations for the plastid unitigs
           type: file
           pattern: "*pltd.bed"
@@ -132,7 +134,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*mito.gfa":
           type: file
-          description: The mitochondrial genome assembly graph in GFA format
+          description: The mitochondrial genome assembly subgraph in GFA format
           pattern: "*mito.gfa"
           ontologies:
             - edam: http://edamontology.org/format_3975 # GFA 1
@@ -144,7 +146,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*pltd.gfa":
           type: file
-          description: The plastid genome assembly graph in GFA format
+          description: The plastid genome assembly subgraph in GFA format
           pattern: "*pltd.gfa"
           ontologies:
             - edam: http://edamontology.org/format_3975 # GFA 1
