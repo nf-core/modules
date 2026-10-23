@@ -12,7 +12,7 @@ workflow VCF_ANNOTATE_SNPEFF {
     ch_snpeff_cache // channel: [ path(cache) ] (optional)
 
     main:
-    SNPEFF_SNPEFF(ch_vcf, val_snpeff_db, ch_snpeff_cache)
+    SNPEFF_SNPEFF(ch_vcf, val_snpeff_db, ch_snpeff_cache, [[:], []])
     HTSLIB_BGZIPTABIX(
         SNPEFF_SNPEFF.out.vcf.map { meta, vcf -> [ meta, vcf, [], [] ] },
         "compress",

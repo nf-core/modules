@@ -112,6 +112,7 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
             ch_vep_output,
             val_snpeff_db,
             ch_snpeff_cache,
+            [[:], []],
         )
         ch_snpeff_reports = SNPEFF_SNPEFF.out.report
         ch_snpeff_html = SNPEFF_SNPEFF.out.summary_html
