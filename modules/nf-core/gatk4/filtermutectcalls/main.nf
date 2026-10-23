@@ -29,6 +29,7 @@ process GATK4_FILTERMUTECTCALLS {
     def orientationbias_command = orientationbias ? orientationbias.collect { orientationbias_ -> "--orientation-bias-artifact-priors ${orientationbias_}" }.join(' ') : ''
     def segmentation_command = segmentation ? segmentation.collect { segmentation_ -> "--tumor-segmentation ${segmentation_}" }.join(' ') : ''
     def estimate_command = estimate ? " --contamination-estimate ${estimate} " : ''
+    def stats_command = stats ? " --stats ${stats} " : ''
     def table_command = table ? table.collect { table_ -> "--contamination-table ${table_}" }.join(' ') : ''
 
     def avail_mem = 3072
@@ -44,6 +45,7 @@ process GATK4_FILTERMUTECTCALLS {
         --variant ${vcf} \\
         --output ${prefix}.vcf.gz \\
         --reference ${fasta} \\
+        ${stats_command} \\
         ${orientationbias_command} \\
         ${segmentation_command} \\
         ${estimate_command} \\
