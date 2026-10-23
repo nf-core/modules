@@ -1,6 +1,5 @@
 name: "cogaps"
-description: Bayesian non-negative matrix factorisation of an expression matrix with CoGAPS,
-  identifying patterns (e.g. gene programs) and their activity across samples
+description: Bayesian non-negative matrix factorisation of an expression matrix with CoGAPS, identifying patterns (e.g. gene programs) and their activity across samples
 keywords:
   - nmf
   - matrix factorisation
@@ -9,9 +8,7 @@ keywords:
   - transcriptomics
 tools:
   - "cogaps":
-      description: "Coordinated Gene Activity in Pattern Sets (CoGAPS) implements a Bayesian
-        MCMC matrix factorization algorithm, GAPS, and links it to gene set statistic methods
-        to infer biological process activity."
+      description: "Coordinated Gene Activity in Pattern Sets (CoGAPS) implements a Bayesian MCMC matrix factorization algorithm, GAPS, and links it to gene set statistic methods to infer biological process activity."
       homepage: "https://bioconductor.org/packages/CoGAPS"
       documentation: "https://bioconductor.org/packages/release/bioc/vignettes/CoGAPS/inst/doc/CoGAPS.html"
       tool_dev_url: "https://github.com/FertigLab/CoGAPS"
@@ -33,7 +30,12 @@ input:
           rds file containing a matrix, data.frame, SummarizedExperiment or
           SingleCellExperiment. CoGAPS options, including the required nPatterns, are
           passed via ext.args, e.g. '--nPatterns 7 --nIterations 50000 --seed 42'.
+          Only scalar CogapsParams values can be set this way; non-scalar parameters
+          such as fixedPatterns, explicitSets, subsetIndices and geneNames are not supported.
         pattern: "*.{csv,tsv,txt,csv.gz,tsv.gz,txt.gz,rds}"
+        ontologies:
+          - edam: http://edamontology.org/format_3752 # CSV
+          - edam: http://edamontology.org/format_3475 # TSV
 
 output:
   rds:
@@ -56,6 +58,8 @@ output:
           type: file
           description: Feature loadings (amplitude matrix, A), features x patterns
           pattern: "*.feature_loadings.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
   sample_factors:
     - - meta:
           type: map
@@ -66,6 +70,8 @@ output:
           type: file
           description: Sample factors (pattern matrix, P), samples x patterns
           pattern: "*.sample_factors.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
   versions:
     - versions.yml:
         type: file
@@ -83,3 +89,27 @@ authors:
   - "@Jessica-ovabor"
 maintainers:
   - "@Jessica-ovabor"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bioconductor-cogaps:3.33.0--9d268f422491d706
+      build_id: bd-9d268f422491d706_1
+      scan_id: sc-5d3fceee156aa902_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/bioconductor-cogaps:3.33.0--ca6e3cfff2ac4c5a
+      build_id: bd-ca6e3cfff2ac4c5a_1
+      scan_id: sc-cd150a8e179006a8_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bioconductor-cogaps:3.33.0--eca56ead3c1b8a6d
+      build_id: bd-eca56ead3c1b8a6d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2d/2dadbfb057a1ce1b3e77c54c6afd278d60c6a70bfe5033567c333d71b190f111/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bioconductor-cogaps:3.33.0--35546e865592f283
+      build_id: bd-35546e865592f283_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b7/b766b163b9a8410332bc4691ea5d738ad2a718dda806e10cc332d5e10fee0a96/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/cogaps/.conda-lock/linux_amd64-bd-9d268f422491d706_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/cogaps/.conda-lock/linux_arm64-bd-ca6e3cfff2ac4c5a_1.txt

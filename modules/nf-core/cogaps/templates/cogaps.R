@@ -6,8 +6,9 @@
 ################################################
 
 ## Options are passed via task.ext.args as '--name value' pairs, where name is
-## any CogapsParams parameter, e.g. '--nPatterns 7 --nIterations 50000 --seed 42'.
-## See ?CogapsParams for the full list.
+## a scalar CogapsParams parameter, e.g. '--nPatterns 7 --nIterations 50000 --seed 42'.
+## Non-scalar parameters (e.g. fixedPatterns, explicitSets, subsetIndices,
+## geneNames) cannot be set this way. See ?CogapsParams for the full list.
 
 suppressPackageStartupMessages(library(CoGAPS))
 
@@ -56,12 +57,16 @@ for (name in setdiff(names(opt), "nPatterns")) {
         stop("Unknown CoGAPS parameter '", name, "'. Valid: ", paste(slotNames(params), collapse = ", "))
     }
     value <- opt[[name]]
-    value <- switch(class(slot(params, name))[1],
+    type <- class(slot(params, name))[1]
+    coerced <- suppressWarnings(switch(type,
         numeric   = as.numeric(value),
         integer   = as.integer(value),
         logical   = as.logical(value),
-        value)
-    params <- setParam(params, name, value)
+        value))
+    if (length(coerced) != 1 || is.na(coerced)) {
+        stop("Invalid value '", value, "' for CoGAPS parameter '", name, "' (expected ", type, ")")
+    }
+    params <- setParam(params, name, coerced)
 }
 
 data <- read_matrix('${matrix}')
