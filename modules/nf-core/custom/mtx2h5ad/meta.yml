@@ -1,0 +1,138 @@
+name: "custom_mtx2h5ad"
+description: Convert single-cell gene expression outputs from Cell Ranger, STARsolo, simpleaf or kallisto to AnnData H5AD format, retaining available RNA velocity layers.
+keywords:
+  - single-cell
+  - gene expression
+  - matrix
+  - h5ad
+  - conversion
+  - rna velocity
+tools:
+  - python:
+      description: Python interpreter used to run the custom conversion script.
+      homepage: "https://www.python.org/"
+      documentation: "https://docs.python.org/3/"
+  - scanpy:
+      description: Single-cell analysis library used to read expression matrices.
+      homepage: "https://scanpy.readthedocs.io/"
+      documentation: "https://scanpy.readthedocs.io/en/stable/api/reading.html"
+      tool_dev_url: "https://github.com/scverse/scanpy"
+      licence: ["BSD-3-Clause"]
+  - anndata:
+      description: Annotated data structures used to combine matrices and write H5AD files.
+      homepage: "https://anndata.readthedocs.io/"
+      documentation: "https://anndata.readthedocs.io/en/stable/"
+      tool_dev_url: "https://github.com/scverse/anndata"
+      licence: ["BSD-3-Clause"]
+  - pandas:
+      description: Tabular data library used to read barcodes and gene annotations.
+      homepage: "https://pandas.pydata.org/"
+      documentation: "https://pandas.pydata.org/docs/"
+      tool_dev_url: "https://github.com/pandas-dev/pandas"
+      licence: ["BSD-3-Clause"]
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information.
+          e.g. `[ id:'sample1' ]`
+    - inputs:
+        type: file
+        description: |
+          Mandatory expression files or directories to stage for conversion.
+          Cell Ranger, Cell Ranger ARC and Cell Ranger multi require a matching
+          *{input_type}_feature_bc_matrix.h5 file. STARsolo requires a directory
+          named by input_type containing matrix.mtx.gz, barcodes.tsv.gz and
+          features.tsv.gz; an optional velocyto_{input_type} directory supplies
+          ambiguous, spliced and unspliced matrices. Simpleaf requires an output
+          directory containing alevin/quants.h5ad. Kallisto requires a directory
+          containing Matrix Market matrices, *.barcodes.txt and *.genes.txt files
+          appropriate to kb_workflow.
+    - input_type:
+        type: string
+        description: |
+          Matrix selection for Cell Ranger and STARsolo, typically raw or filtered.
+          Selects the Cell Ranger HDF5 filename or the staged STARsolo directory.
+          Ignored for simpleaf and kallisto; pass an empty string when unused.
+  - txp2gene:
+      type: file
+      description: |
+        Transcript-to-gene mapping required for kallisto. A headerless tab-separated
+        file with transcript ID, gene ID and gene symbol in the first three columns.
+        Gene IDs and symbols are used to annotate the expression matrix.
+        Pass an empty list when unused by other aligners.
+      ontologies:
+        - edam: http://edamontology.org/format_2330 # TXT
+  - aligner:
+      type: string
+      description: Mandatory source aligner or quantification tool selecting the converter.
+      enum:
+        - cellranger
+        - cellrangerarc
+        - cellrangermulti
+        - star
+        - simpleaf
+        - kallisto
+  - kb_workflow:
+      type: string
+      description: |
+        kallisto workflow defining the matrix layout: standard reads a single
+        count matrix; lamanno combines spliced and unspliced matrices; nac combines
+        nascent, ambiguous and mature matrices. The latter two retain the component
+        matrices as layers and sum them into the main count matrix.
+        Ignored for other aligners; pass an empty string when unused.
+output:
+  h5ad:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.h5ad":
+          type: file
+          description: |
+            AnnData object containing cell-by-gene expression counts, sample labels,
+            gene annotations and available RNA velocity layers. Original gene IDs
+            are retained in var['gene_versions']; the variable index uses unique,
+            version-free gene IDs.
+          pattern: "*.h5ad"
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing Python, Scanpy, pandas and AnnData versions.
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing Python, Scanpy, pandas and AnnData versions.
+authors:
+  - "@delfiterradas"
+maintainers:
+  - "@delfiterradas"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/hdf5plugin_leidenalg_python-igraph_python_scanpy:20f9779bbe32a4c8
+      build_id: bd-20f9779bbe32a4c8_1
+      scan_id: sc-9015dd284645a5ef_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/hdf5plugin_leidenalg_python-igraph_python_scanpy:c312b45c265e9dfe
+      build_id: bd-c312b45c265e9dfe_1
+      scan_id: sc-d5bc360dd0e7fe75_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/hdf5plugin_leidenalg_python-igraph_python_scanpy:af1a7945ad3f5e9f
+      build_id: bd-af1a7945ad3f5e9f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/46/4680a8e27e91fbd4b02dcd4b43ab1dfe9e4baedfaaa3d81fc3d723d486c5633a/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/hdf5plugin_leidenalg_python-igraph_python_scanpy:933cae5ae55b6379
+      build_id: bd-933cae5ae55b6379_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/02/029644f69918a0d2abdc7a5438decb054e2a4b292e87536afc5589cceff581d8/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/custom/mtx2h5ad/.conda-lock/linux_amd64-bd-20f9779bbe32a4c8_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/custom/mtx2h5ad/.conda-lock/linux_arm64-bd-c312b45c265e9dfe_1.txt
