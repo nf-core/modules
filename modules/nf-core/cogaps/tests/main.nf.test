@@ -132,7 +132,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.failed },
-                { assert process.stderr.any { it.contains("Invalid value") } }
+                { assert process.errorReport.contains("Invalid value") }
             )
         }
     }
