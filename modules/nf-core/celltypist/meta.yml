@@ -1,0 +1,105 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "celltypist"
+description: Automated cell type annotation of single-cell RNA-seq data using a pre-trained CellTypist model
+keywords:
+  - single-cell
+  - scrna-seq
+  - cell type annotation
+  - classification
+tools:
+  - "celltypist":
+      description: "A tool for semi-automatic cell type annotation."
+      homepage: "https://www.celltypist.org"
+      documentation: "https://celltypist.readthedocs.io"
+      tool_dev_url: "https://github.com/Teichlab/celltypist"
+      doi: "10.1126/science.abl5197"
+      licence: ["MIT"]
+      identifier: biotools:celltypist
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - h5ad:
+        type: file
+        description: |
+          AnnData object with log1p-normalised expression (10,000 counts per cell)
+          and gene symbols as variable names
+        pattern: "*.h5ad"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing model information
+          e.g. `[ id:'Immune_All_Low' ]`
+    - model:
+        type: file
+        description: Pre-trained CellTypist model
+        pattern: "*.pkl"
+        ontologies: []
+
+output:
+  predicted_labels:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*predicted_labels.csv":
+          type: file
+          description: Predicted cell type label for each cell
+          pattern: "*predicted_labels.csv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3752" # CSV
+  decision_matrix:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*decision_matrix.csv":
+          type: file
+          description: Decision scores of each cell for each cell type in the model
+          pattern: "*decision_matrix.csv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3752" # CSV
+  probability_matrix:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*probability_matrix.csv":
+          type: file
+          description: Probability of each cell belonging to each cell type in the model
+          pattern: "*probability_matrix.csv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3752" # CSV
+  versions_celltypist:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "celltypist":
+          type: string
+          description: The name of the tool
+      - "python3 -c 'import importlib.metadata; print(importlib.metadata.version(\"celltypist\"))'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - celltypist:
+          type: string
+          description: The name of the tool
+      - python3 -c 'import importlib.metadata; print(importlib.metadata.version("celltypist"))':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@iraajgangavaram"
+maintainers:
+  - "@iraajgangavaram"
