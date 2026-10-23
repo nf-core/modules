@@ -45,7 +45,6 @@ nextflow_process {
                     sanitizeOutput(
                         process.out,
                         unstableKeys: ["final_gfa", "initial_gfa", "annot_mito_txt", "oatk_log"],
-                        ignorePatterns: ["*pltd*"]
                     )).match()
                 }
             )
@@ -88,7 +87,6 @@ nextflow_process {
                     sanitizeOutput(
                         process.out,
                         unstableKeys: ["final_gfa", "initial_gfa", "annot_pltd_txt", "oatk_log"],
-                        ignorePatterns: ["*mito*"]
                     )).match()
                 }
             )

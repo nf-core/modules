@@ -15,10 +15,10 @@ process OATK {
     output:
     tuple val(meta), path("*mito.ctg.fasta"), emit: mito_fasta, optional: true
     tuple val(meta), path("*pltd.ctg.fasta"), emit: pltd_fasta, optional: true
-    tuple val(meta), path("*mito.ctg.bed"), emit: mito_ctg_bed, optional: true
-    tuple val(meta), path("*pltd.ctg.bed"), emit: pltd_ctg_bed, optional: true
-    tuple val(meta), path("*mito.bed"), emit: mito_bed, optional: true
-    tuple val(meta), path("*pltd.bed"), emit: pltd_bed, optional: true
+    tuple val(meta), path("*mito.ctg.bed"), emit: mito_bed, optional: true
+    tuple val(meta), path("*pltd.ctg.bed"), emit: pltd_bed, optional: true
+    tuple val(meta), path("*mito.bed"), emit: mito_utg_bed, optional: true
+    tuple val(meta), path("*pltd.bed"), emit: pltd_utg_bed, optional: true
     tuple val(meta), path("*mito.gfa"), emit: mito_gfa, optional: true
     tuple val(meta), path("*pltd.gfa"), emit: pltd_gfa, optional: true
     tuple val(meta), path("*annot_mito.txt"), emit: annot_mito_txt, optional: true

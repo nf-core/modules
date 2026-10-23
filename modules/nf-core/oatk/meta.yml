@@ -78,7 +78,7 @@ output:
           pattern: "*pltd.ctg.fasta"
           ontologies:
             - edam: http://edamontology.org/format_1929 # FASTA
-  mito_ctg_bed:
+  mito_bed:
     - - meta:
           type: map
           description: |
@@ -90,7 +90,7 @@ output:
           pattern: "*mito.ctg.bed"
           ontologies:
             - edam: http://edamontology.org/format_3003 # BED
-  pltd_ctg_bed:
+  pltd_bed:
     - - meta:
           type: map
           description: |
@@ -98,11 +98,11 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*pltd.ctg.bed":
           type: file
-          description: tGene annotations for the plastid contigs
+          description: Gene annotations for the plastid contigs
           pattern: "*pltd.ctg.bed"
           ontologies:
             - edam: http://edamontology.org/format_3003 # BED
-  mito_bed:
+  mito_utg_bed:
     - - meta:
           type: map
           description: |
@@ -114,7 +114,7 @@ output:
           pattern: "*mito.bed"
           ontologies:
             - edam: http://edamontology.org/format_3003 # BED
-  pltd_bed:
+  pltd_utg_bed:
     - - meta:
           type: map
           description: |
