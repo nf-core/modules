@@ -52,7 +52,6 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
                 { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["rds"])).match() }
             )
         }
