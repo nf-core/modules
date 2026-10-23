@@ -3,9 +3,9 @@ process OPENMS_IDFILTER {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/openms:3.5.0--h78fb946_0' :
-        'quay.io/biocontainers/openms:3.5.0--h78fb946_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/84/84ad5437e080c0b3ec0ce315a54c0bb62950277a4496f4d1be911f82078dd2a1/data'
+:         'community.wave.seqera.io/library/openms:3.6.0--88df48c0a426b7f7' }"
 
     input:
     tuple val(meta), path(id_file), path(filter_file)
@@ -20,7 +20,7 @@ process OPENMS_IDFILTER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "${id_file.getExtension()}"
+    def suffix = id_file.getExtension()
     if ("$id_file" == "${prefix}.${suffix}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     // Optional filtering via filter_file
     def filter_citerion = task.ext.args2 ?: "-whitelist:peptides"
@@ -36,7 +36,7 @@ process OPENMS_IDFILTER {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "${id_file.getExtension()}"
+    def suffix = id_file.getExtension()
     if ("$id_file" == "${prefix}.${suffix}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     touch ${prefix}.${suffix}

@@ -4,8 +4,8 @@ process RBT_VCFSPLIT {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/rust-bio-tools:0.42.2--h4458251_1'
-        : 'quay.io/biocontainers/rust-bio-tools:0.42.2--h4458251_1'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e2/e203258c4e52fcbe7f12392baf1bd184496aaeba52ceef17670924fa009245b1/data'
+        : 'community.wave.seqera.io/library/rust-bio-tools:0.42.2--996dcdf3f4b075e4'}"
 
     input:
     tuple val(meta), path(vcf)

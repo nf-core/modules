@@ -3,9 +3,9 @@ process PAIRTOOLS_SELECT {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/pairtools:1.1.3--py39h7a39fba_0' :
-        'quay.io/biocontainers/pairtools:1.1.3--py39h7a39fba_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cc/cc26df7ecf3557f443f89f4dc83380c68b413809cb6ca2213f14ea405c726080/data'
+:         'community.wave.seqera.io/library/pairtools:1.1.3--f7f48429aa47aeaf' }"
 
     input:
     tuple val(meta), path(input)

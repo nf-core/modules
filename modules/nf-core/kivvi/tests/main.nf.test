@@ -1,0 +1,129 @@
+nextflow_process {
+
+    name "Test Process KIVVI"
+    script "../main.nf"
+    process "KIVVI"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "kivvi"
+
+    config "./nextflow.config"
+
+    test("bam - d4z4") {
+
+        when {
+            params {
+                module_prefix = 'd4z4'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/kivvi/homo_sapiens_kivvi_d4z4_test.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/kivvi/homo_sapiens_kivvi_d4z4_test.bam.bai', checkIfExists: true),
+                ]
+                input[1] = "d4z4"
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["json", "svg"])).match() },
+                { assert path(process.out.json[0][1]).json.allele_cn == '28' },
+                { assert path(process.out.svg[0][1]).text.contains('<svg') }
+            )
+        }
+
+    }
+
+    test("bam - kiv2") {
+
+        when {
+            params {
+                module_prefix = 'kiv2'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/kivvi/homo_sapiens_kivvi_kiv2_test.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/kivvi/homo_sapiens_kivvi_kiv2_test.bam.bai', checkIfExists: true),
+                ]
+                input[1] = "kiv2"
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["json", "svg"])).match() },
+                { assert path(process.out.json[0][1]).json.allele_cn == "11" },
+                { assert path(process.out.svg[0][1]).text.contains('<svg') }
+            )
+        }
+
+    }
+
+    test("bam - kiv2 - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_prefix = 'kiv2_stub'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/kivvi/homo_sapiens_kivvi_kiv2_test.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/kivvi/homo_sapiens_kivvi_kiv2_test.bam.bai', checkIfExists: true),
+                ]
+                input[1] = "kiv2"
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("bam - d4z4 - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_prefix = 'd4z4_stub'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/kivvi/homo_sapiens_kivvi_d4z4_test.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/kivvi/homo_sapiens_kivvi_d4z4_test.bam.bai', checkIfExists: true),
+                ]
+                input[1] = "d4z4"
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

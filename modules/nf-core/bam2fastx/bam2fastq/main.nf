@@ -3,9 +3,9 @@ process BAM2FASTX_BAM2FASTQ {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bam2fastx:1.3.1--hf05d43a_1':
-        'quay.io/biocontainers/bam2fastx:1.3.1--hf05d43a_1' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/87/8792febff8eb10b2c43ffdea0bf5a45222b82fb8b7088eb411303d2b5ef5b8fc/data'
+        : 'community.wave.seqera.io/library/bam2fastx:1.3.1--1181601d78cb6c32' }"
 
     input:
     tuple val(meta), path(bam), path(index)

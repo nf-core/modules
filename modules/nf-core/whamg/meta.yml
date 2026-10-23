@@ -1,8 +1,5 @@
 name: "whamg"
-description: The wham suite consists of two programs, wham and whamg. wham, the
-  original tool, is a very sensitive method with a high false discovery rate.
-  The second program, whamg, is more accurate and better suited for general
-  structural variant (SV) discovery.
+description: The wham suite consists of two programs, wham and whamg. wham, the original tool, is a very sensitive method with a high false discovery rate. The second program, whamg, is more accurate and better suited for general structural variant (SV) discovery.
 keywords:
   - whamg
   - wham
@@ -105,3 +102,17 @@ authors:
   - "@nvnieuwk"
 maintainers:
   - "@nvnieuwk"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/tabix_wham:0eb67c2c9cb26529
+      build_id: bd-0eb67c2c9cb26529_1
+      scan_id: sc-13bad342a433ffbc_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/tabix_wham:82d54adcfc98d8fd
+      build_id: bd-82d54adcfc98d8fd_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b5/b5cba56edb5c342cde8d5747311d90b4678391ee383bbfbf74dd2d524e2cbcc6/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/whamg/.conda-lock/linux_amd64-bd-0eb67c2c9cb26529_1.txt

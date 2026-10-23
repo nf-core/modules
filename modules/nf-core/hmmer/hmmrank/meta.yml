@@ -113,22 +113,24 @@ maintainers:
 containers:
   docker:
     linux/arm64:
-      name: community.wave.seqera.io/library/duckdb-cli:1.5.5--9759cff58ac94478
-      build_id: bd-9759cff58ac94478_1
-      scan_id: sc-d2d6d8ef62d545e0_1
+      name: community.wave.seqera.io/library/duckdb-cli:1.5.5--34b6e4c4b15283e9
+      build_id: bd-34b6e4c4b15283e9_1
+      scan_id: sc-b937235478eb337e_1
     linux/amd64:
-      name: community.wave.seqera.io/library/duckdb-cli:1.5.5--9c6d18d9f687a45d
-      build_id: bd-9c6d18d9f687a45d_1
-      scan_id: sc-0edb2b0562f99468_1
+      name: community.wave.seqera.io/library/duckdb-cli:1.5.5--dca0d52c5239b678
+      build_id: bd-dca0d52c5239b678_1
+      scan_id: sc-c24f83f305cd8419_1
   singularity:
-    linux/amd64:
-      name: oras://community.wave.seqera.io/library/duckdb-cli:1.5.5--f8bdd09321b4d7ab
-      build_id: bd-f8bdd09321b4d7ab_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/68/68261e24307fdf80b9988d6fd13cf3551735e6dc0e7e38003259f7d8efa84cdb/data
     linux/arm64:
       name: oras://community.wave.seqera.io/library/duckdb-cli:1.5.5--9ff691978ccb6109
       build_id: bd-9ff691978ccb6109_1
       https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/92/92b4ee040ad1e494ed7c57b6d54b41105f49d79b50f966a2945e87c27d3fbf5e/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/duckdb-cli:1.5.5--f8bdd09321b4d7ab
+      build_id: bd-f8bdd09321b4d7ab_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/68/68261e24307fdf80b9988d6fd13cf3551735e6dc0e7e38003259f7d8efa84cdb/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/hmmer/hmmrank/.conda-lock/linux_amd64-bd-9c6d18d9f687a45d_1.txt
+      lock_file: modules/nf-core/hmmer/hmmrank/.conda-lock/linux_amd64-bd-dca0d52c5239b678_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/hmmer/hmmrank/.conda-lock/linux_arm64-bd-34b6e4c4b15283e9_1.txt

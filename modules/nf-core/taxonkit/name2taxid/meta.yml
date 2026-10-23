@@ -24,17 +24,14 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - name:
         type: string
-        description: Taxon name to look up (provide either this or names.txt, not
-          both)
+        description: Taxon name to look up (provide either this or names.txt, not both)
     - names_txt:
         type: file
-        description: File with taxon names to look up, each on their own line
-          (provide either this or name, not both)
+        description: File with taxon names to look up, each on their own line (provide either this or name, not both)
         ontologies: []
   - taxdb:
       type: file
-      description: Taxonomy database unpacked from
-        ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz
+      description: Taxonomy database unpacked from ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz
       ontologies: []
 output:
   tsv:
@@ -76,3 +73,17 @@ authors:
   - "@mahesh-panchal"
 maintainers:
   - "@mahesh-panchal"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/taxonkit:0.15.1--96f7341bd5c149a7
+      build_id: bd-96f7341bd5c149a7_1
+      scan_id: sc-c8bb467f18ed463b_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/taxonkit:0.15.1--02c1c8d5d79d9d5c
+      build_id: bd-02c1c8d5d79d9d5c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/91/91013897d309411f36f0bf958988adf50d8abeeecd910b7debd446bfc1e3f2d8/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/taxonkit/name2taxid/.conda-lock/linux_amd64-bd-96f7341bd5c149a7_1.txt

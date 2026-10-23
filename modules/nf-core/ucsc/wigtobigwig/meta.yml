@@ -67,3 +67,27 @@ authors:
 maintainers:
   - "@jianhong"
   - "@projectoriented"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/ucsc-wigtobigwig:482--4eb74e15915ee878
+      build_id: bd-4eb74e15915ee878_1
+      scan_id: sc-d1cfc36ab0a20be2_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/ucsc-wigtobigwig:482--941e7055f3ccae9d
+      build_id: bd-941e7055f3ccae9d_1
+      scan_id: sc-36f6b4cde4db3a90_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/ucsc-wigtobigwig:482--537765bdcfae06ba
+      build_id: bd-537765bdcfae06ba_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9b/9bd2ac9664903df3496bfb08aedfa8db9314fbd16f3498de896c0de8f4975d95/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/ucsc-wigtobigwig:482--cea8ba2d8fee6264
+      build_id: bd-cea8ba2d8fee6264_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e4/e433b7f9f03a578a8ea3b5554a94c2c942d7915a62c5a1f228b2e80642bbfb3b/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/ucsc/wigtobigwig/.conda-lock/linux_amd64-bd-4eb74e15915ee878_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/ucsc/wigtobigwig/.conda-lock/linux_arm64-bd-941e7055f3ccae9d_1.txt

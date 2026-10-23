@@ -3,9 +3,9 @@ process BWAMETH_INDEX {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/bwameth:0.2.9--pyh7e72e81_0'
-        : 'quay.io/biocontainers/bwameth:0.2.9--pyh7e72e81_0'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b8/b806996da500b3cc610c48536ce3a5151a0ff512228e313439534ba08a6acda2/data'
+:         'community.wave.seqera.io/library/bwameth:0.2.9--63cb7f0b9f8eae9d' }"
 
     input:
     tuple val(meta), path(fasta, name: "BwamethIndex/")

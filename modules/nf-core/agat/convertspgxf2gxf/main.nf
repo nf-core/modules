@@ -3,9 +3,9 @@ process AGAT_CONVERTSPGXF2GXF {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/agat:1.6.1--pl5321hdfd78af_1' :
-        'quay.io/biocontainers/agat:1.6.1--pl5321hdfd78af_1' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bd/bdf86a4db56d388b2cad1599b640e1e33ab964dcdb74a8147981d48a429bc7d5/data'
+:         'community.wave.seqera.io/library/agat:1.6.1--1f8d94d325805bb4' }"
 
     input:
     tuple val(meta), path(gxf)

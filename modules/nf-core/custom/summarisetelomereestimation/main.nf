@@ -4,8 +4,8 @@ process CUSTOM_SUMMARISETELOMEREESTIMATION {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1f/1fa34006114914735768188b781d7f2c8ae7132acd024ce4c45704170715b54f/data'
-        : 'community.wave.seqera.io/library/pandas_python:8e99df08b7f7c3e1' }"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/93/93f76f0461c25ad04c5f645d7eadbc8ec12c7b2100b0ffef05dc6509e03dac3e/data'
+        : 'community.wave.seqera.io/library/pandas_python:a1229de030b588d2'}"
 
     input:
     tuple val(meta), path(length_tsv), path(content_tsv), val(length_tool)

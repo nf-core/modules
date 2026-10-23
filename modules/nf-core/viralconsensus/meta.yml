@@ -1,7 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "viralconsensus"
-description: Fast and memory-efficient viral consensus genome sequence
-  generation from read alignments
+description: Fast and memory-efficient viral consensus genome sequence generation from read alignments
 keywords:
   - virus
   - genomics
@@ -10,8 +9,7 @@ keywords:
   - fasta
 tools:
   - "viralconsensus":
-      description: "ViralConsensus is a fast and memory-efficient tool for calling viral
-        consensus genome sequences directly from read alignment data."
+      description: "ViralConsensus is a fast and memory-efficient tool for calling viral consensus genome sequences directly from read alignment data."
       homepage: "https://github.com/niemasd/ViralConsensus"
       documentation: "https://github.com/niemasd/ViralConsensus#usage"
       tool_dev_url: "https://github.com/niemasd/ViralConsensus"
@@ -78,8 +76,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.pos_counts.tsv":
           type: file
-          description: Per-position base counts (optional, enabled via
-            save_pos_counts input)
+          description: Per-position base counts (optional, enabled via save_pos_counts input)
           pattern: "*.pos_counts.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475
@@ -91,8 +88,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.ins_counts.json":
           type: file
-          description: Insertion counts (optional, enabled via save_ins_counts
-            input)
+          description: Insertion counts (optional, enabled via save_ins_counts input)
           pattern: "*.ins_counts.json"
           ontologies:
             - edam: http://edamontology.org/format_3464
@@ -122,3 +118,27 @@ authors:
 maintainers:
   - "@niemasd"
   - "@lucaspatel"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/viral_consensus:1.0.0--f4fadb9869808f2f
+      build_id: bd-f4fadb9869808f2f_1
+      scan_id: sc-de993e31de4af950_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/viral_consensus:1.0.0--350716b73a1e900e
+      build_id: bd-350716b73a1e900e_1
+      scan_id: sc-49d027a7e0f94c59_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/viral_consensus:1.0.0--b708f56bbf567ad1
+      build_id: bd-b708f56bbf567ad1_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/29/29ba9fe818b2dd797d4fff6a302d496a80966033bf85bc08bd1c8c4a1144c242/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/viral_consensus:1.0.0--c24d1bf265022e09
+      build_id: bd-c24d1bf265022e09_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/31/3118c77d2f8b05387921156880d31c7be0eaeaa00cc3b26d1cbc1cb8f1f2a6d5/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/viralconsensus/.conda-lock/linux_amd64-bd-350716b73a1e900e_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/viralconsensus/.conda-lock/linux_arm64-bd-f4fadb9869808f2f_1.txt
