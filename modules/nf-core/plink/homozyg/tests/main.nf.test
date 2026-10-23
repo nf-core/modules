@@ -1,0 +1,35 @@
+nextflow_process {
+
+    name "Test Process PLINK_HOMOZYG"
+    script "../main.nf"
+    process "PLINK_HOMOZYG"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "plink"
+    tag "plink/homozyg"
+
+    test("stub run produces every declared output") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id:'test', single_end:false],
+                    file('test.bed'),
+                    file('test.bim'),
+                    file('test.fam')
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}
