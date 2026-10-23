@@ -21,11 +21,11 @@ process DATAVZRD {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir ${prefix}
+    mkdir "${prefix}"
     datavzrd \\
         ${args} \\
-        ${config_file} \\
-        --output ${prefix} \\
+        "${config_file}" \\
+        --output "${prefix}" \\
     """
 
     stub:

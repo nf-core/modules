@@ -56,7 +56,7 @@ nextflow_process {
         }
     }
 
-    test("multiple files") {
+    test("[ csv, tsv ] - multiple files") {
 
         when {
             process {
@@ -95,7 +95,7 @@ nextflow_process {
                 { assert snapshot(
                             process.out.findAll { key, val -> key.startsWith('versions') },
                             getAllFilesFromDir(process.out.report[0][1], relative: true, includeDir: false)
-                        ).match("multiple files")
+                        ).match("[ csv, tsv ] - multiple files")
                     }
             )
         }
