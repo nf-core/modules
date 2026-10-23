@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { METHYLDACKEL_EXTRACT } from '../../../modules/nf-core/methyldackel/extract/main'
 include { METHYLDACKEL_MBIAS   } from '../../../modules/nf-core/methyldackel/mbias/main'
 

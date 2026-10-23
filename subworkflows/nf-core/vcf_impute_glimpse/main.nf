@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { GLIMPSE_CHUNK                           } from '../../../modules/nf-core/glimpse/chunk/main'
 include { GLIMPSE_PHASE                           } from '../../../modules/nf-core/glimpse/phase/main'
 include { GLIMPSE_LIGATE                          } from '../../../modules/nf-core/glimpse/ligate/main'

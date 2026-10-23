@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { BCFTOOLS_MPILEUP } from '../../../modules/nf-core/bcftools/mpileup/main'
 include { NGSCHECKMATE_NCM } from '../../../modules/nf-core/ngscheckmate/ncm/main'
 // please note this subworkflow requires the options for bcltools_mpileup that are included in the nextflow.config

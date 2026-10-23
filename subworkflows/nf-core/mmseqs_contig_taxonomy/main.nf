@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { MMSEQS_CREATEDB  } from '../../../modules/nf-core/mmseqs/createdb/main'
 include { MMSEQS_DATABASES } from '../../../modules/nf-core/mmseqs/databases/main'
 include { MMSEQS_TAXONOMY  } from '../../../modules/nf-core/mmseqs/taxonomy/main'

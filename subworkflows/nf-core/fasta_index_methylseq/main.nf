@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { UNTAR as UNTAR_BISMARK    } from '../../../modules/nf-core/untar/main'
 include { UNTAR as UNTAR_BWAMETH    } from '../../../modules/nf-core/untar/main'
 include { GUNZIP                    } from '../../../modules/nf-core/gunzip/main'

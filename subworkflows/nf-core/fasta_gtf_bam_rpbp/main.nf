@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { RPBP_PREPAREGENOME                } from '../../../modules/nf-core/rpbp/preparegenome/main'
 include { RPBP_EXTRACTMETAGENEPROFILES      } from '../../../modules/nf-core/rpbp/extractmetageneprofiles/main'
 include { RPBP_ESTIMATEMETAGENEBAYESFACTORS } from '../../../modules/nf-core/rpbp/estimatemetagenebayesfactors/main'

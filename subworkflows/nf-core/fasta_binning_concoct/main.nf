@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { CONCOCT_CUTUPFASTA           } from '../../../modules/nf-core/concoct/cutupfasta/main.nf'
 include { CONCOCT_CONCOCTCOVERAGETABLE } from '../../../modules/nf-core/concoct/concoctcoveragetable/main.nf'
 include { CONCOCT_CONCOCT              } from '../../../modules/nf-core/concoct/concoct/main.nf'
