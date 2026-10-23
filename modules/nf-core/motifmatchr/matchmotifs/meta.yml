@@ -1,0 +1,88 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "motifmatchr_matchmotifs"
+description: Match position weight matrices to genomic regions
+keywords:
+  - motif
+  - transcription factor
+  - footprinting
+  - genomics
+tools:
+  - "motifmatchr":
+      description: A package for fast motif matching in R
+      homepage: "https://greenleaflab.github.io/motifmatchr/"
+      documentation: "https://greenleaflab.github.io/motifmatchr/"
+      tool_dev_url: "https://github.com/GreenleafLab/motifmatchr"
+      doi: "10.18129/B9.bioc.motifmatchr"
+      licence: ["GPL-3"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - peaks:
+        type: file
+        description: BED file containing genomic regions to scan
+        pattern: "*.{bed,bed.gz}"
+    - fasta:
+        type: file
+        description: Reference genome FASTA file
+        pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+    - motifs:
+        type: file
+        description: JASPAR-format position frequency matrix file
+        pattern: "*.{txt,pfm,jaspar}"
+
+output:
+  matches:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.motif_matches.mtx":
+          type: file
+          description: Sparse Matrix Market matrix of motif matches, with regions as rows and motifs as columns
+          pattern: "*.motif_matches.mtx"
+  peaks:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.motifmatchr_peaks.tsv":
+          type: file
+          description: Region mapping table for rows in the motif-match matrix
+          pattern: "*.motifmatchr_peaks.tsv"
+  motifs:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.motifmatchr_motifs.tsv":
+          type: file
+          description: Motif mapping table for columns in the motif-match matrix
+          pattern: "*.motifmatchr_motifs.tsv"
+  versions_motifmatchr:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "motifmatchr":
+          type: string
+          description: The name of the tool
+      - 'Rscript -e ''cat(as.character(utils::packageVersion("motifmatchr")))''':
+          type: eval
+          description: The expression used to obtain the tool version
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - motifmatchr:
+          type: string
+          description: The name of the tool
+      - 'Rscript -e ''cat(as.character(utils::packageVersion("motifmatchr")))''':
+          type: eval
+          description: The expression used to obtain the tool version
+authors:
+  - "@PFRoux"
+maintainers:
+  - "@PFRoux"
