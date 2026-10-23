@@ -32,7 +32,10 @@ process PARABRICKS_MUTECTCALLER {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def intervals_command  = intervals     ? (intervals instanceof List ? intervals.collect { interval -> "--interval-file ${interval}" }.join(' ') : "--interval-file ${intervals}") : ""
-    def prepon_command = panel_of_normals ? "cp -L ${panel_of_normals_index} `readlink -f ${panel_of_normals}`.tbi && pbrun prepon --in-pon-file ${panel_of_normals}" : ""
+    // prepon and postpon expect the index at <pon>.tbi
+    def pon_index_command = panel_of_normals && panel_of_normals_index.name != "${panel_of_normals.name}.tbi" ? "cp -L ${panel_of_normals_index} ${panel_of_normals}.tbi" : ""
+    def prepon_command = panel_of_normals ? "pbrun prepon --in-pon-file ${panel_of_normals}" : ""
+    def pon_command    = panel_of_normals ? "--pon ${panel_of_normals}" : ""
     // pbrun postpon requires uncompressed .vcf input; output uncompressed when PON is provided
     def mutect_out     = panel_of_normals ? "${prefix}.vcf"    : "${prefix}.vcf.gz"
     def stats_rename   = panel_of_normals ? "mv ${prefix}.vcf.stats ${prefix}.vcf.gz.stats" : ""
@@ -42,6 +45,7 @@ process PARABRICKS_MUTECTCALLER {
     def normal_bam_flag = normal_bam ? "--in-normal-bam ${normal_bam}" : ""
     """
     # if panel of normals specified, run prepon
+    ${pon_index_command}
     ${prepon_command}
 
     pbrun \\
@@ -49,6 +53,7 @@ process PARABRICKS_MUTECTCALLER {
         --ref ${fasta} \\
         --in-tumor-bam ${tumor_bam} \\
         ${normal_bam_flag} \\
+        ${pon_command} \\
         --out-vcf ${mutect_out} \\
         ${intervals_command} \\
         ${num_gpus} \\

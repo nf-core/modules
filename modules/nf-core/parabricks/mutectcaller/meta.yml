@@ -68,7 +68,11 @@ input:
         ontologies: []
   - panel_of_normals:
       type: file
-      description: (Optional) panel of normals file.
+      description: |
+        (Optional) bgzipped panel of normals file. When provided, the module runs
+        prepon, passes it to mutectcaller via --pon and annotates the output with
+        postpon. Its header must contain only contigs present in the reference
+        (see `bcftools reheader --fai`). Do not add --pon via ext.args.
       pattern: "*.vcf.gz"
       ontologies:
         - edam: http://edamontology.org/format_3989 # GZIP format
