@@ -84,7 +84,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.failed },
-                { assert process.stderr.any { it.contains("nPatterns is required") } }
+                { assert process.errorReport.contains("nPatterns is required") }
             )
         }
     }
