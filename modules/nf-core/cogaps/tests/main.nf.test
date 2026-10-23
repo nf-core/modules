@@ -108,7 +108,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.failed },
-                { assert process.stderr.any { it.contains("Unknown CoGAPS parameter") } }
+                { assert process.errorReport.contains("Unknown CoGAPS parameter") }
             )
         }
     }
