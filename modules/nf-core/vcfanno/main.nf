@@ -3,9 +3,9 @@ process VCFANNO {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b2/b23fffa38d9740616e3b414df24e44c22fbc0510264f79b5062b3eecd619393f/data':
-        'community.wave.seqera.io/library/htslib_vcfanno:c88d6077509197fe' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b8/b87398769a3d9ed0bb3f2604d5ee9d024a636e5312cfbfd9ec105a5de2b59282/data'
+        : 'community.wave.seqera.io/library/htslib_vcfanno:45841ba023524097'}"
 
     input:
     tuple val(meta), path(vcf), path(tbi), path(specific_resources)
