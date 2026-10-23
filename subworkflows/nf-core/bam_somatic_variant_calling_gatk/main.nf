@@ -25,11 +25,11 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
     main:
 
     ch_mutect2_in = ch_input.map{ meta, tumor_input, tumor_input_index, normal_input, normal_input_index ->
-        if (!(normal_input && normal_input_index)) {
-            [meta, tumor_input, tumor_input_index]
+        if (normal_input && normal_input_index) {
+            [meta, [tumor_input, normal_input], [tumor_input_index, normal_input_index]]
         }
         else {
-            [meta, [tumor_input, normal_input], [tumor_input_index, normal_input_index]]
+            [meta, tumor_input, tumor_input_index]
         }
         }
         .combine(ch_interval_file)
