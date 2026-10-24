@@ -29,8 +29,7 @@ input:
         ontologies: []
     - paf:
         type: file
-        description: Optional inpute file in PAF format to derive the precise
-          alignments for.
+        description: Optional inpute file in PAF format to derive the precise alignments for.
         pattern: "*.{paf}"
         ontologies: []
     - gzi:
@@ -45,12 +44,10 @@ input:
         ontologies: []
   - query_self:
       type: boolean
-      description: If set to true, the input FASTA will also be used as the query
-        FASTA.
+      description: If set to true, the input FASTA will also be used as the query FASTA.
   - fasta_query_list:
       type: file
-      description: Optional inpute file in FASTA format specifying the query
-        sequences as a list.
+      description: Optional inpute file in FASTA format specifying the query sequences as a list.
       pattern: "*.{fa,fna,fasta}"
       ontologies: []
 output:
@@ -90,3 +87,17 @@ authors:
   - "@subwaystation"
 maintainers:
   - "@subwaystation"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/wfmash:0.13.0--aad0fd683181ae57
+      build_id: bd-aad0fd683181ae57_1
+      scan_id: sc-877c5fd5434fa970_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/wfmash:0.13.0--5efb689151f84b3f
+      build_id: bd-5efb689151f84b3f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ec/ece6fef80c03926bc9d5462bba5bc1174bd52f183590b095e3b2c6251901f422/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/wfmash/.conda-lock/linux_amd64-bd-aad0fd683181ae57_1.txt

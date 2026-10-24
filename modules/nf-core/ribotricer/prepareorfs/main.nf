@@ -3,9 +3,9 @@ process RIBOTRICER_PREPAREORFS {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ribotricer:1.3.3--pyhdfd78af_0':
-        'quay.io/biocontainers/ribotricer:1.3.3--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f6/f634421ff566b498d7c9d065bdcce907e7cb62022f519417cabea6c3a921b41d/data'
+        : 'community.wave.seqera.io/library/ribotricer_python_scipy:5721a090d55db3f6'}"
 
     input:
     tuple val(meta), path(fasta), path(gtf)

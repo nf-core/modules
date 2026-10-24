@@ -4,9 +4,9 @@ process BAMCLIPPER {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bamclipper:1.0.0--hdfd78af_2':
-        'quay.io/biocontainers/bamclipper:1.0.0--hdfd78af_2' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c5/c55c19c5134421e0c5c5dd846f30ca06074faef6c011806be7d35b94e19916bb/data'
+        : 'community.wave.seqera.io/library/bamclipper_samtools:34439705a8946c0f' }"
 
     input:
     tuple val(meta), path(bam), path(bai), path(bedpe)

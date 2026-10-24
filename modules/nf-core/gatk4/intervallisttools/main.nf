@@ -4,8 +4,8 @@ process GATK4_INTERVALLISTTOOLS {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b9/b9822b92da68a3e7916072218082e3fa79bebc2f377947c363613adeecd56ec5/data'
-        : 'community.wave.seqera.io/library/gatk4-main_gcnvkernel:961440660027ec01'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/89/89c3b6ef11af604ea7e5932f5fdd3472bae1cf73ff6499fdc71b2129f577c7d3/data'
+        : 'community.wave.seqera.io/library/gatk4-lite_python:fb04467550379e2f'}"
 
     input:
     tuple val(meta), path(intervals)

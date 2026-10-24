@@ -3,9 +3,9 @@ process UCSC_LIFTOVER {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ucsc-liftover:482--h0b57e2e_0' :
-        'quay.io/biocontainers/ucsc-liftover:482--h0b57e2e_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/15/15744931def04387cf095376c9d8c322bf21ca542d64946a7258c15b40b12b82/data'
+:         'community.wave.seqera.io/library/ucsc-liftover:482--f8639164c0f3b5bf' }"
 
     input:
     tuple val(meta), path(bed)

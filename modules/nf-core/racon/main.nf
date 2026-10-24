@@ -3,9 +3,9 @@ process RACON {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/racon:1.4.20--h9a82719_1' :
-        'quay.io/biocontainers/racon:1.4.20--h9a82719_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6d/6da4caadf7fa541480c2498a763e7689350a97ee27ed8a661072ebcfd01f4bf9/data'
+        : 'community.wave.seqera.io/library/racon:1.4.20--5a7230c7590a8e2e'}"
 
     input:
     tuple val(meta), path(reads), path(assembly), path(paf)

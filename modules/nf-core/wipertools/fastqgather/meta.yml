@@ -1,14 +1,12 @@
 name: "wipertools_fastqgather"
-description: A tool of the wipertools suite that merges FASTQ chunks produced by
-  wipertools_fastqscatter
+description: A tool of the wipertools suite that merges FASTQ chunks produced by wipertools_fastqscatter
 keywords:
   - fastq
   - merge
   - union
 tools:
   - "fastqgather":
-      description: "A tool of the wipertools suite that merges FASTQ chunks produced
-        by wipertools_fastqscatter."
+      description: "A tool of the wipertools suite that merges FASTQ chunks produced by wipertools_fastqscatter."
       homepage: "https://github.com/mazzalab/fastqwiper"
       documentation: "https://github.com/mazzalab/fastqwiper"
       tool_dev_url: "https://github.com/mazzalab/fastqwiper"
@@ -70,3 +68,27 @@ authors:
 maintainers:
   - "@mazzalab"
   - "@tm4zza"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/wipertools:1.1.4--042a9b3f81640596
+      build_id: bd-042a9b3f81640596_1
+      scan_id: sc-5652b2f306dfbfa0_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/wipertools:1.1.4--d208bc94207abfca
+      build_id: bd-d208bc94207abfca_1
+      scan_id: sc-032f53406a2d0b88_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/wipertools:1.1.4--b1104279a6ebaa5b
+      build_id: bd-b1104279a6ebaa5b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ab/ab3323bc9676ece1f939eb59b2e890b0e2432cf7d5dedbb971511b6c4ac3ed2e/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/wipertools:1.1.4--91ac05f204219d46
+      build_id: bd-91ac05f204219d46_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/66/6632f491b20426d26315353e009db1c27a8a163bf68b1e921f8338e11616c5e2/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/wipertools/fastqgather/.conda-lock/linux_amd64-bd-042a9b3f81640596_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/wipertools/fastqgather/.conda-lock/linux_arm64-bd-d208bc94207abfca_1.txt

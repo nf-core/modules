@@ -25,8 +25,7 @@ input:
           e.g. [ id:'test', single_end:false ]
     - fasta:
         type: file
-        description: FASTA file containing phage contigs/scaffolds/chromosomes (if
-          it is a multi-FASTA file be sure to add the `--multi_fasta` argument)
+        description: FASTA file containing phage contigs/scaffolds/chromosomes (if it is a multi-FASTA file be sure to add the `--multi_fasta` argument)
         pattern: "*.{fasta,fna,fa}"
         ontologies: []
 output:
@@ -38,8 +37,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.bacphlip":
           type: file
-          description: TSV file containing Temperate and Virulent scores for each
-            phage sequence
+          description: TSV file containing Temperate and Virulent scores for each phage sequence
           pattern: "*.bacphlip"
           ontologies: []
   hmmsearch_results:
@@ -50,8 +48,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.hmmsearch.tsv":
           type: file
-          description: TSV file containing binary output indicating gene
-            presence/absence based on hmmsearch results
+          description: TSV file containing binary output indicating gene presence/absence based on hmmsearch results
           pattern: "*.hmmsearch.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -80,3 +77,17 @@ authors:
   - "@CarsonJM"
 maintainers:
   - "@CarsonJM"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bacphlip_hmmer_numpy:23d5784a0d17b398
+      build_id: bd-23d5784a0d17b398_2
+      scan_id: sc-869b5396d12106cd_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bacphlip_hmmer_numpy:733c33b455ebb0bc
+      build_id: bd-733c33b455ebb0bc_2
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f4/f45b980d08c53e74f3b8687b03aa8569401c6079a444c0efe5e4096e1367a751/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bacphlip/.conda-lock/linux_amd64-bd-23d5784a0d17b398_2.txt

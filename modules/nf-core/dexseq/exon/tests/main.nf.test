@@ -1,0 +1,135 @@
+nextflow_process {
+
+    name "Test Process DEXSEQ_EXON"
+    script "../main.nf"
+    process "DEXSEQ_EXON"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "dexseq"
+    tag "dexseq/exon"
+
+    test("homo_sapiens - chrX - GBR vs YRI") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'GBR_vs_YRI' ], 'condition', 'YRI', 'GBR' ]
+                input[1] = [
+                    [ id:'study' ],
+                    file(params.modules_testdata_base_path + 'delete_me/dexseq/exon/chrX.samplesheet.csv', checkIfExists: true),
+                    ['ERR188383', 'ERR188428', 'ERR188454', 'ERR204916'].collect { id ->
+                        file(params.modules_testdata_base_path + "delete_me/dexseq/exon/\${id}.txt", checkIfExists: true)
+                    }
+                ]
+                input[2] = [
+                    [ id:'chrX' ],
+                    file(params.modules_testdata_base_path + 'delete_me/dexseq/exon/chrX.DEXSeq.gff.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            // The fitted values depend on the OpenBLAS kernel selected for the CPU, so only IDs, counts and significant calls are snapshotted
+            def results = path(process.out.results[0][1]).readLines()*.split('\t', -1)
+            def qvalues = path(process.out.gene_qvalues[0][1]).readLines()*.split('\t', -1)
+            def stable = (0..<results[0].size()).findAll { results[0][it] ==~ /groupID|featureID|countData\..+/ }
+            def padj = results[0].findIndexOf { it == 'padj' }
+            assertAll(
+                { assert process.success },
+                { assert 'log2fold_GBR_YRI' in results[0] },
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["results", "gene_qvalues", "dataset_rds", "results_rds", "gene_qvalues_rds", "plots", "session_info"]),
+                    results[0],
+                    results.collect { it[stable].join('\t') }.join('\n').md5(),
+                    results.tail().findAll { it[padj] != 'NA' && (it[padj] as double) < 0.05 }.collect { "${it[0]}:${it[1]}" },
+                    qvalues*.getAt(0).join('\n').md5(),
+                    qvalues.tail().findAll { it[1] != 'NA' && (it[1] as double) < 0.05 }*.getAt(0)
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - chrX - GBR vs YRI - no plots") {
+
+        when {
+            params {
+                module_args = '--n_plot 0'
+            }
+            process {
+                """
+                input[0] = [ [ id:'GBR_vs_YRI' ], 'condition', 'YRI', 'GBR' ]
+                input[1] = [
+                    [ id:'study' ],
+                    file(params.modules_testdata_base_path + 'delete_me/dexseq/exon/chrX.samplesheet.csv', checkIfExists: true),
+                    ['ERR188383', 'ERR188428', 'ERR188454', 'ERR204916'].collect { id ->
+                        file(params.modules_testdata_base_path + "delete_me/dexseq/exon/\${id}.txt", checkIfExists: true)
+                    }
+                ]
+                input[2] = [
+                    [ id:'chrX' ],
+                    file(params.modules_testdata_base_path + 'delete_me/dexseq/exon/chrX.DEXSeq.gff.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            // The fitted values depend on the OpenBLAS kernel selected for the CPU, so only IDs, counts and significant calls are snapshotted
+            def results = path(process.out.results[0][1]).readLines()*.split('\t', -1)
+            def qvalues = path(process.out.gene_qvalues[0][1]).readLines()*.split('\t', -1)
+            def stable = (0..<results[0].size()).findAll { results[0][it] ==~ /groupID|featureID|countData\..+/ }
+            def padj = results[0].findIndexOf { it == 'padj' }
+            assertAll(
+                { assert process.success },
+                { assert 'log2fold_GBR_YRI' in results[0] },
+                { assert process.out.plots.size() == 0 },
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["results", "gene_qvalues", "dataset_rds", "results_rds", "gene_qvalues_rds", "session_info"]),
+                    results[0],
+                    results.collect { it[stable].join('\t') }.join('\n').md5(),
+                    results.tail().findAll { it[padj] != 'NA' && (it[padj] as double) < 0.05 }.collect { "${it[0]}:${it[1]}" },
+                    qvalues*.getAt(0).join('\n').md5(),
+                    qvalues.tail().findAll { it[1] != 'NA' && (it[1] as double) < 0.05 }*.getAt(0)
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - chrX - GBR vs YRI - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'GBR_vs_YRI' ], 'condition', 'YRI', 'GBR' ]
+                input[1] = [
+                    [ id:'study' ],
+                    file(params.modules_testdata_base_path + 'delete_me/dexseq/exon/chrX.samplesheet.csv', checkIfExists: true),
+                    ['ERR188383', 'ERR188428', 'ERR188454', 'ERR204916'].collect { id ->
+                        file(params.modules_testdata_base_path + "delete_me/dexseq/exon/\${id}.txt", checkIfExists: true)
+                    }
+                ]
+                input[2] = [
+                    [ id:'chrX' ],
+                    file(params.modules_testdata_base_path + 'delete_me/dexseq/exon/chrX.DEXSeq.gff.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

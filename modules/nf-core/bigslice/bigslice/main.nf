@@ -3,9 +3,9 @@ process BIGSLICE_BIGSLICE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/bigslice:2.0.2--pyh8ed023e_0'
-        : 'quay.io/biocontainers/bigslice:2.0.2--pyh8ed023e_0'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/af/afb84f1e49002b463c7fd3c1f325ee618118a3b844b43198aafb7a77a386f3e4/data'
+        : 'community.wave.seqera.io/library/bigslice:2.0.2--d480b98bccd5c146' }"
 
     input:
     tuple val(meta), path(bgc, stageAs: 'bgc_files/s*/*')

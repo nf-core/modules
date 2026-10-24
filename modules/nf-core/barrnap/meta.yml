@@ -1,14 +1,12 @@
 name: "barrnap"
-description: barrnap uses a hmmer profile to find rrnas in reads or contig fasta
-  files
+description: barrnap uses a hmmer profile to find rrnas in reads or contig fasta files
 keywords:
   - rrna
   - sequences
   - removal
 tools:
   - "barrnap":
-      description: "Barrnap predicts the location of ribosomal RNA genes in genomes
-        (bacteria, archaea, metazoan mitochondria and eukaryotes)."
+      description: "Barrnap predicts the location of ribosomal RNA genes in genomes (bacteria, archaea, metazoan mitochondria and eukaryotes)."
       homepage: "https://github.com/tseemann/barrnap"
       documentation: "https://github.com/tseemann/barrnap"
       tool_dev_url: "https://github.com/tseemann/barrnap"
@@ -28,8 +26,7 @@ input:
         ontologies: []
     - dbname:
         type: string
-        description: database to use(bacteria, archaea, eukaryota, metazoan
-          mitochondria)
+        description: database to use(bacteria, archaea, eukaryota, metazoan mitochondria)
 output:
   gff:
     - - meta:
@@ -68,3 +65,27 @@ authors:
   - "@srisarya"
 maintainers:
   - "@danilodileo"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/barrnap:0.9--847dcfa21d3169b7
+      build_id: bd-847dcfa21d3169b7_1
+      scan_id: sc-f49b75556bc6158d_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/barrnap:0.9--0a529b1659370d24
+      build_id: bd-0a529b1659370d24_1
+      scan_id: sc-85a7e2a85e8f5192_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/barrnap:0.9--d568abf116109f93
+      build_id: bd-d568abf116109f93_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/46/46925ba4c44fde31056890ad1af51140c91616055f8b7ac073f51db21d321e32/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/barrnap:0.9--a0c885dd73368fd4
+      build_id: bd-a0c885dd73368fd4_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/da/da80cdaeae9d56b469f16068ec5fb005373fdd22c0218fee165b09a89b9fcec7/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/barrnap/.conda-lock/linux_amd64-bd-847dcfa21d3169b7_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/barrnap/.conda-lock/linux_arm64-bd-0a529b1659370d24_1.txt
