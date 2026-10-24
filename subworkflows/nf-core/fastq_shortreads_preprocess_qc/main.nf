@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 // statistics
 include { FASTQ_QC_STATS as PRE_STATS        } from '../fastq_qc_stats'
 include { FASTQ_QC_STATS as POST_STATS       } from '../fastq_qc_stats'

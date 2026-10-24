@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BLOBTK_PLOT {
     // Linked to issue https://github.com/sanger-tol/genomenote/issues/184
     // Depending on the blob dataset in use, the grid option may not

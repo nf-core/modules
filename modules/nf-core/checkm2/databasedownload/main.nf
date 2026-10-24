@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 def downloadZenodoApiEntry(zenodo_id) {
     // Download metadata from Zenodo API, setting "Accept: application/json" header
     def api_url  = "https://zenodo.org/api/records/${zenodo_id}"

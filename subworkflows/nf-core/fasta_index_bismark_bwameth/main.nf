@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { UNTAR                     } from '../../../modules/nf-core/untar/main'
 include { GUNZIP                    } from '../../../modules/nf-core/gunzip/main'
 include { BISMARK_GENOMEPREPARATION } from '../../../modules/nf-core/bismark/genomepreparation/main'

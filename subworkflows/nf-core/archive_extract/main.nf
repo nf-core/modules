@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { GUNZIP } from '../../../modules/nf-core/gunzip'
 include { UNTAR  } from '../../../modules/nf-core/untar'
 include { UNZIP  } from '../../../modules/nf-core/unzip'

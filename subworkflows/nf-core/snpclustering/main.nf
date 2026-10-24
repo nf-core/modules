@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { BEAGLE5_BEAGLE              } from '../../../modules/nf-core/beagle5/beagle'
 include { PLINK2_VCF                  } from '../../../modules/nf-core/plink2/vcf'
 include { PLINK2_PCA                  } from '../../../modules/nf-core/plink2/pca'

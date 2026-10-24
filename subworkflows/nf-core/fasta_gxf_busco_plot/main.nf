@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { BUSCO_BUSCO as BUSCO_ASSEMBLY         } from '../../../modules/nf-core/busco/busco/main'
 include { BUSCO_PLOT as PLOT_ASSEMBLY           } from '../../../modules/nf-core/busco/plot/main'
 include { GFFREAD as EXTRACT_PROTEINS           } from '../../../modules/nf-core/gffread/main'

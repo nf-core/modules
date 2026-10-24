@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { WISECONDORX_CONVERT } from '../../../modules/nf-core/wisecondorx/convert/main'
 include { WISECONDORX_PREDICT } from '../../../modules/nf-core/wisecondorx/predict/main'
 

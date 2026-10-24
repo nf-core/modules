@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { FASTQ_SANITISE_SEQKIT } from '../fastq_sanitise_seqkit'
 include { SEQKIT_SEQ            } from '../../../modules/nf-core/seqkit/seq'
 include { SEQKIT_REPLACE        } from '../../../modules/nf-core/seqkit/replace'

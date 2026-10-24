@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { OPT_FLIP  } from '../../../modules/nf-core/opt/flip/main'
 include { OPT_TRACK } from '../../../modules/nf-core/opt/track/main'
 include { OPT_STAT  } from '../../../modules/nf-core/opt/stat/main'

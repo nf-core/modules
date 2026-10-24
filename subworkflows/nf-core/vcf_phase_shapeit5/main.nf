@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { GLIMPSE2_CHUNK                          } from '../../../modules/nf-core/glimpse2/chunk'
 include { SHAPEIT5_PHASECOMMON                    } from '../../../modules/nf-core/shapeit5/phasecommon'
 include { SHAPEIT5_LIGATE                         } from '../../../modules/nf-core/shapeit5/ligate'

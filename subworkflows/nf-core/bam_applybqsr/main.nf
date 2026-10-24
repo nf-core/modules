@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { GATK4_APPLYBQSR } from '../../../modules/nf-core/gatk4/applybqsr'
 include { SAMTOOLS_MERGE  } from '../../../modules/nf-core/samtools/merge'
 

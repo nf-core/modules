@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TRIDENT_FETCH {
     tag "${fetch_fn ?: ''} ${fetch_s ?: ''}"
     label 'process_single'

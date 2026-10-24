@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { GFFCOMPARE                      } from '../../../modules/nf-core/gffcompare'
 include { GAWK as GAWK_FILTER             } from '../../../modules/nf-core/gawk'
 include { BEDTOOLS_INTERSECT              } from '../../../modules/nf-core/bedtools/intersect'

@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { VCLUST_PREFILTER } from '../../../modules/nf-core/vclust/prefilter/main'
 include { VCLUST_ALIGN     } from '../../../modules/nf-core/vclust/align/main'
 include { VCLUST_CLUSTER   } from '../../../modules/nf-core/vclust/cluster/main'

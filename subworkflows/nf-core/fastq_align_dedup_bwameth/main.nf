@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license. 
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { BWAMETH_ALIGN                                 } from '../../../modules/nf-core/bwameth/align/main'
 include { PARABRICKS_FQ2BAMMETH                         } from '../../../modules/nf-core/parabricks/fq2bammeth/main'
 include { SAMTOOLS_SORT                                 } from '../../../modules/nf-core/samtools/sort/main'
