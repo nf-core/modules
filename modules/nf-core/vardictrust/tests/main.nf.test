@@ -13,7 +13,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.value([
+                input[0] = channel.value([
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
@@ -47,7 +47,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.value([
+                input[0] = channel.value([
                     [ id:'test' ], // meta map
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
@@ -88,7 +88,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.value([
+                input[0] = channel.value([
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
@@ -124,7 +124,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.value([
+                input[0] = channel.value([
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),

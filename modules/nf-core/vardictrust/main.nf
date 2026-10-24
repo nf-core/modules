@@ -23,7 +23,6 @@ process VARDICTRUST {
     script:
     def args = task.ext.args ?: '-c 1 -S 2 -E 3 -z'
     def args2 = task.ext.args2 ?: ''
-    def args3 = task.ext.args3 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     // A lone BAM may arrive as a 1-element List; unwrap it so it never mis-dispatches as somatic
@@ -36,13 +35,12 @@ process VARDICTRUST {
 
     vardictrust \\
         ${args} \\
-        ${args2} \\
         ${input} \\
         -N "${meta.id}" \\
         --threads ${task.cpus} \\
         -G ${fasta} \\
         ${bed} \\
-        | bgzip ${args3} --threads ${task.cpus} > ${prefix}.vcf.gz
+        | bgzip ${args2} --threads ${task.cpus} > ${prefix}.vcf.gz
     """
 
     stub:
