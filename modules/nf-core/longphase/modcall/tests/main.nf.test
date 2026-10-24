@@ -10,7 +10,7 @@ nextflow_process {
     tag "longphase"
     tag "longphase/modcall"
 
-    test("[bam, bai, snps], [fasta, fai]") {
+    test("homo_sapiens - [ bam, bai, vcf ], [ fasta, fai ] - vcf") {
 
         when {
             process {
