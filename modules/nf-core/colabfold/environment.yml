@@ -4,4 +4,7 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - bioconda::colabfold=1.5.5
+  - "bioconda::colabfold=1.5.5"
+  # colabfold 1.5.5 needs jax <0.4.26; newer dm-haiku releases need a newer jax
+  - "conda-forge::dm-haiku=0.0.12"
+  - "conda-forge::flax=0.8.2"

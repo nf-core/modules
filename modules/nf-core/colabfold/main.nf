@@ -3,10 +3,10 @@ process COLABFOLD {
     label 'process_high'
     label 'process_gpu'
 
-    conda "${moduleDir}/environment.yml"
+    conda "${task.accelerator ? "${moduleDir}/environment.gpu.yml" : "${moduleDir}/environment.yml"}"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/colabfold:1.5.5--pyh7cba7a3_2'
-        : 'quay.io/biocontainers/colabfold:1.5.5--pyh7cba7a3_2'}"
+        ? (task.accelerator ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ee/eefb564f01b59ec8f7d85de34df208ba245d830ed9fecf1eb5bf8625cfbd68ef/data' : 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d2/d2de6276b0c23cc1aaab4af2aa1336fa943b0c45d43ce4ed483911fb99a3db33/data')
+        : (task.accelerator ? 'community.wave.seqera.io/library/colabfold_cuda-version_dm-haiku_flax_pruned:ccfbc77af1b9acd9' : 'community.wave.seqera.io/library/colabfold_dm-haiku_flax:50a22b7e73876edb')}"
 
     input:
     tuple val(meta), path(fasta)
@@ -19,6 +19,7 @@ process COLABFOLD {
     tuple val(meta), path("${prefix}/*.png")               , emit: png , optional: true
     tuple val(meta), path("${prefix}/log.txt")             , emit: log , optional: true
     tuple val("${task.process}"), val('colabfold'), eval("python -c 'import importlib.metadata as m; print(m.version(\"colabfold\"))'"), topic: versions, emit: versions_colabfold
+    tuple val("${task.process}"), val('cuda'), eval('python -c "import glob, json, sys; f = glob.glob(sys.prefix + \'/conda-meta/cuda-version-*.json\'); print(json.load(open(f[0]))[\'version\'] if f else \'no CUDA available\')"'), topic: versions, emit: versions_cuda
 
     when:
     task.ext.when == null || task.ext.when
