@@ -1,0 +1,120 @@
+name: "longphase_modcall"
+description: write your description here
+keywords:
+  - modcall
+  - long-read
+  - genomics
+tools:
+  - "longphase":
+      description: "LongPhase is an ultra-fast program for simultaneously co-phasing SNPs, small indels, large SVs, and (5mC) modifications for Nanopore and PacBio platforms."
+      homepage: "https://github.com/twolinin/longphase/blob/v2.1.1/README.md"
+      documentation: "https://github.com/twolinin/longphase/blob/v2.1.1/README.md"
+      tool_dev_url: "https://github.com/twolinin/longphase"
+      doi: "10.1093/bioinformatics/btac058"
+      licence:
+        - "GPL v3"
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Sorted BAM file with modifications stored using MM, and ML tags.
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+    - bai:
+        type: file
+        description: Indexed BAM file
+        pattern: "*.bai"
+        ontologies: []
+    - snvs:
+        type: file
+        description: |
+          Optional VCF file containing SNVs, passed to modcall with --snp-file
+        pattern: "*.{vcf,vcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'hg38' ]`
+    - fasta:
+        type: file
+        description: Reference fasta file
+        pattern: "*.fasta"
+        ontologies: []
+    - fai:
+        type: file
+        description: Indexed reference file
+        pattern: "*.fai"
+        ontologies: []
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}.vcf.gz":
+          type: file
+          description: Compressed VCF file with allele-specific modifications.
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3989" # GZIP format
+  versions_longphase:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "longphase":
+          type: string
+          description: The name of the tool
+      - "longphase --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "longphase":
+          type: string
+          description: The name of the tool
+      - "longphase --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@DylanMHouse"
+maintainers:
+  - "@DylanMHouse"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/longphase:2.1.1--810c5e520ba00a6c
+      build_id: bd-810c5e520ba00a6c_1
+      scan_id: sc-c3e8060dd8c03f9e_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/longphase:2.1.1--6d58bf051d402041
+      build_id: bd-6d58bf051d402041_1
+      scan_id: sc-9ed5c4c0a073d4a3_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/longphase:2.1.1--0430abb4a30e4704
+      build_id: bd-0430abb4a30e4704_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8d/8df742ea6593a33f7452d3e859896a7008db93d4f8d90e168b7154c0f8029980/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/longphase:2.1.1--4fdf6b4cffbdd8f8
+      build_id: bd-4fdf6b4cffbdd8f8_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6a/6afa575c67010ba62318abb06b119bc8c88743bc08d6b7772374b45750b37595/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/longphase/modcall/.conda-lock/linux_amd64-bd-6d58bf051d402041_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/longphase/modcall/.conda-lock/linux_arm64-bd-810c5e520ba00a6c_1.txt
