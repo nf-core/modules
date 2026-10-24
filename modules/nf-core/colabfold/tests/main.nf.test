@@ -1,0 +1,57 @@
+nextflow_process {
+
+    name "Test Process COLABFOLD"
+    script "../main.nf"
+    process "COLABFOLD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "colabfold"
+
+    // The real prediction test is in main.gpu.nf.test: on CPU, folding even a
+    // small protein takes over 10 minutes after a ~3.5 GB weights download.
+    test("proteomics - empty faa - no structures") {
+
+        when {
+            process {
+                """
+                def empty = File.createTempFile('empty', '.faa')
+                empty.deleteOnExit()
+                input[0] = [ [ id:'test' ], file(empty.absolutePath) ]
+                input[1] = [ [:], [] ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("proteomics - faa - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/interproscan/l_arginase.faa', checkIfExists: true)
+                ]
+                input[1] = [ [:], [] ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

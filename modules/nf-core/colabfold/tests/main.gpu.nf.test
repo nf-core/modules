@@ -1,0 +1,65 @@
+nextflow_process {
+
+    name "Test Process COLABFOLD (GPU)"
+    script "../main.nf"
+    process "COLABFOLD"
+
+    tag "gpu"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "colabfold"
+
+    // Weights are passed as [] so colabfold_batch downloads them (~3.5 GB);
+    // they cannot be shipped in nf-core/test-datasets. nextflow.gpu.config
+    // runs a single-sequence prediction, so no MSA server is queried.
+    test("proteomics - faa - single sequence - gpu") {
+
+        config "./nextflow.gpu.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/interproscan/l_arginase.faa', checkIfExists: true)
+                ]
+                input[1] = [ [:], [] ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ['pdb', 'json', 'png', 'log'])).match() },
+                { assert path(process.out.pdb[0][1]).readLines().any { it.startsWith('ATOM') } },
+                { assert path(process.out.log[0][1]).text.contains('Done') }
+            )
+        }
+    }
+
+    test("proteomics - faa - stub - gpu") {
+
+        config "./nextflow.gpu.config"
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/interproscan/l_arginase.faa', checkIfExists: true)
+                ]
+                input[1] = [ [:], [] ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}
