@@ -129,25 +129,25 @@ maintainers:
   - "@palakpsheth"
 containers:
   docker:
-    linux/arm64:
-      name: community.wave.seqera.io/library/htslib_vardictrust:0c960eaccc36f17b
-      build_id: bd-0c960eaccc36f17b_1
-      scan_id: sc-deb128885f61dc65_1
     linux/amd64:
-      name: community.wave.seqera.io/library/htslib_vardictrust:913eef801f19dc83
-      build_id: bd-913eef801f19dc83_1
-      scan_id: sc-b8c13a31e0ccdee7_1
+      name: community.wave.seqera.io/library/htslib_vardictrust:1920a853de03683c
+      build_id: bd-1920a853de03683c_1
+      scan_id: sc-fcf97fa34f70ac86_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/htslib_vardictrust:88ae818a180b4691
+      build_id: bd-88ae818a180b4691_1
+      scan_id: sc-c8de39c1d27ecfb6_1
   singularity:
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/htslib_vardictrust:d7caf6420beb2d12
-      build_id: bd-d7caf6420beb2d12_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/12/12806f94133378ff8728b41f16ce19a669f61750f18db4ba3563af807ad45cc6/data
+      name: oras://community.wave.seqera.io/library/htslib_vardictrust:8601ae9fc8d7b8d5
+      build_id: bd-8601ae9fc8d7b8d5_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/da/da588dd1fbadf23f023c90173503829e7d7e9615f40d2956a36aa490d8557ab9/data
     linux/arm64:
-      name: oras://community.wave.seqera.io/library/htslib_vardictrust:8fea51266022d03d
-      build_id: bd-8fea51266022d03d_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/12/1236f39bffb2586bc6388b4578f0324e72af14f1cb708208b2b418845656c348/data
+      name: oras://community.wave.seqera.io/library/htslib_vardictrust:01fadb4d36749bdf
+      build_id: bd-01fadb4d36749bdf_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ff/ff9aa0ea6002405e54f573b1c414a475437c41a5a949a94e498b5d3fbdbc5f37/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/vardictrust/.conda-lock/linux_amd64-bd-913eef801f19dc83_1.txt
+      lock_file: modules/nf-core/vardictrust/.conda-lock/linux_amd64-bd-1920a853de03683c_1.txt
     linux/arm64:
-      lock_file: modules/nf-core/vardictrust/.conda-lock/linux_arm64-bd-0c960eaccc36f17b_1.txt
+      lock_file: modules/nf-core/vardictrust/.conda-lock/linux_arm64-bd-88ae818a180b4691_1.txt
