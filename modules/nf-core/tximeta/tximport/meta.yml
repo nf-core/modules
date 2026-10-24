@@ -2,7 +2,9 @@
 name: "tximeta_tximport"
 description: |
   Import transcript-level abundances and estimated counts for gene-level
-  analysis packages
+  analysis packages. Samples are imported in blocks to limit memory use;
+  set the number of samples per block with `ext.args = '--block_size N'`
+  (default 100). Outputs do not depend on the block size.
 keywords:
   - gene
   - kallisto
