@@ -42,7 +42,7 @@
                         {
                             "id": "test"
                         },
-                        "test.bam:md5,62b17148e4d01ed5e6037944410f55cf"
+                        "test.bam:md5,cd13cb0898b24d1ebd6c1ebdf31f3c55"
                     ]
                 ],
                 "cram": [
@@ -68,10 +68,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-07-10T15:47:51.337152318",
+        "timestamp": "2026-10-18T02:26:00.454046",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.4"
+            "nextflow": "26.10.2"
         }
     },
     "homo-sapiens - cram": {
@@ -114,14 +114,14 @@
                     "@RG\tID:1\tPU:1\tSM:testN\tLB:testN\tPL:illumina\tDS:replaced_read_group_test",
                     "@PG\tID:bwa\tPN:bwa\tVN:0.7.17-r1188\tCL:bwa mem -K 100000000 -R @RG\\tID:1\\tPU:1\\tSM:testN\\tLB:testN\\tPL:illumina -t 19 -M genome.fasta test_1.retry.fq.gz test_2.retry.fq.gz",
                     "@PG\tID:samtools\tPN:samtools\tPP:bwa\tVN:1.13\tCL:samtools view -C -T ../../genome/genome.fasta -o test.paired_end.sorted.cram test.paired_end.sorted.bam",
-                    "@PG\tID:samtools.1\tPN:samtools\tPP:samtools\tVN:1.24\tCL:samtools addreplacerg --threads 1 --write-index -O cram,version=3.0 -w -r @RG\\tID:1\\tPU:1\\tSM:testN\\tLB:testN\\tPL:illumina\\tDS:replaced_read_group_test --reference genome.fasta -o test.cram test.paired_end.sorted.cram"
+                    "@PG\tID:samtools.1\tPN:samtools\tPP:samtools\tVN:1.24\tCL:samtools addreplacerg --threads 3 --write-index -O cram,version=3.0 -w -r @RG\\tID:1\\tPU:1\\tSM:testN\\tLB:testN\\tPL:illumina\\tDS:replaced_read_group_test --reference genome.fasta -o test.cram test.paired_end.sorted.cram"
                 ]
             ]
         ],
-        "timestamp": "2026-07-09T22:03:13.90612",
+        "timestamp": "2026-10-18T02:25:55.184268",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.4"
+            "nextflow": "26.10.2"
         }
     },
     "sarscov2 - bam": {
@@ -132,7 +132,7 @@
                         {
                             "id": "test"
                         },
-                        "test.bam:md5,3971cd96ae6ae8e011cdff3dd1c5b9b5"
+                        "test.bam:md5,1f96957805bfa07690261e9de149b402"
                     ]
                 ],
                 "cram": [
@@ -153,10 +153,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-07-10T15:47:41.720356463",
+        "timestamp": "2026-10-18T02:25:49.946037",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.4"
+            "nextflow": "26.10.2"
         }
     }
 }

@@ -1,5 +1,8 @@
 name: "duckdb_table2parquet"
-description: Convert a delimited text table (CSV or TSV, gzipped or not) to Parquet
+description: |
+  Convert a delimited text table (CSV or TSV, gzipped or not) to Parquet.
+  DuckDB types each column from the first 20480 rows and reads only the empty string as missing.
+  Pass `read_csv` options through `ext.args`, for example `nullstr=['NA','']` for tables written by R.
 keywords:
   - parquet
   - csv

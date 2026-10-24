@@ -82,3 +82,27 @@ maintainers:
   - "@tamara-hodgetts"
   - "@chris-cheshire"
   - "@muffato"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/htslib_samtools:1.22.1--ef1e734834ad9fa5
+      build_id: bd-ef1e734834ad9fa5_1
+      scan_id: sc-747e642a16acbd39_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/htslib_samtools:1.22.1--fe9f11c26e616a8e
+      build_id: bd-fe9f11c26e616a8e_1
+      scan_id: sc-135f830894db0944_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/htslib_samtools:1.22.1--f6043716ad3fa1c3
+      build_id: bd-f6043716ad3fa1c3_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fc/fca45dc02d0b0906faa49dcbb706dc4dc07b2327b1884e8b344893d10fc87ae1/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/htslib_samtools:1.22.1--8be3664ccd0813e0
+      build_id: bd-8be3664ccd0813e0_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7e/7e883bfe72a05e03eea79cb3e2bd5782e9dbabd4aa82e24fa53b977b1a9e8826/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/custom/getchromsizes/.conda-lock/linux_amd64-bd-ef1e734834ad9fa5_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/custom/getchromsizes/.conda-lock/linux_arm64-bd-fe9f11c26e616a8e_1.txt

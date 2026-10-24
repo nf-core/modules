@@ -6,9 +6,9 @@ process RMARKDOWNNOTEBOOK {
     //dependencies for your analysis. The container at least needs to contain the
     //yaml and rmarkdown R packages.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-31ad840d814d356e5f98030a4ee308a16db64ec5:0e852a1e4063fdcbe3f254ac2c7469747a60e361-0' :
-        'quay.io/biocontainers/mulled-v2-31ad840d814d356e5f98030a4ee308a16db64ec5:0e852a1e4063fdcbe3f254ac2c7469747a60e361-0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/79/79f6bfda39dda534375ec707d95363a197a9557dcc9e5de1b027a398d9a3f43c/data'
+        : 'community.wave.seqera.io/library/r-base_r-rmarkdown_r-yaml:9df9fcb7a6d22e3e'}"
 
     input:
     tuple val(meta), path(notebook)

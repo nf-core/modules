@@ -1,7 +1,5 @@
 name: "rundbcan_easycgc"
-description: CGC annotation module for the dbcan pipeline. This module is used
-  to annotate carbohydrate-active enzymes (CAZymes) from genomic data using the
-  dbCAN annotation tool.
+description: CGC annotation module for the dbcan pipeline. This module is used to annotate carbohydrate-active enzymes (CAZymes) from genomic data using the dbCAN annotation tool.
 keywords:
   - dbCAN
   - download
@@ -10,8 +8,7 @@ keywords:
   - genomes
 tools:
   - "dbcan":
-      description: "Standalone version of dbCAN annotation tool for automated CAZyme
-        annotation."
+      description: "Standalone version of dbCAN annotation tool for automated CAZyme annotation."
       homepage: "https://bcb.unl.edu/dbCAN2/"
       documentation: "https://run-dbcan.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/bcb-unl/run_dbcan"
@@ -225,3 +222,27 @@ authors:
   - "@Xinpeng021001"
 maintainers:
   - "@Xinpeng021001"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/dbcan:5.2.9--5f47bf92f005c6f6
+      build_id: bd-5f47bf92f005c6f6_1
+      scan_id: sc-4c5672485828c233_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/dbcan:5.2.9--fb040f67fa175a9b
+      build_id: bd-fb040f67fa175a9b_1
+      scan_id: sc-5ebe2ef678e20741_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/dbcan:5.2.9--ecce1257239bf13c
+      build_id: bd-ecce1257239bf13c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/10/10df02c860e2db9e642939d4ef6c77f10935d313db636d11ec02e0b70cc66e70/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/dbcan:5.2.9--86dadb241c5b4ee6
+      build_id: bd-86dadb241c5b4ee6_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e8/e843a691d1c9be41394116f30ee3cf3f7bd042e0d59cb2f6a0a34b2b0a308e30/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/rundbcan/easycgc/.conda-lock/linux_amd64-bd-fb040f67fa175a9b_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/rundbcan/easycgc/.conda-lock/linux_arm64-bd-5f47bf92f005c6f6_1.txt

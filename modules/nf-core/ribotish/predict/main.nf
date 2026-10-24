@@ -3,9 +3,9 @@ process RIBOTISH_PREDICT {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ribotish:0.2.8--pyhdfd78af_0':
-        'quay.io/biocontainers/ribotish:0.2.8--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d5/d51f6e311917b3afefc2883464c9d8cc14f1c8774a2c100c132ec9b7c927c262/data'
+        : 'community.wave.seqera.io/library/ribotish_python:1c79bdef455d9487'}"
 
     input:
     tuple val(meta), path(bam_ribo), path(bai_ribo)

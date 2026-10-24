@@ -7,11 +7,7 @@ keywords:
   - gatk4
 tools:
   - gatk4:
-      description: Genome Analysis Toolkit (GATK4) Developed in the Data Sciences Platform
-        at the Broad Institute, the toolkit offers a wide variety of tools with a primary
-        focus on variant discovery and genotyping. Its powerful processing engine and
-        high-performance computing features make it capable of taking on projects of
-        any size.
+      description: Genome Analysis Toolkit (GATK4) Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools with a primary focus on variant discovery and genotyping. Its powerful processing engine and high-performance computing features make it capable of taking on projects of any size.
       homepage: https://gatk.broadinstitute.org/hc/en-us
       documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
       tool_dev_url: https://github.com/broadinstitute/gatk
@@ -26,8 +22,7 @@ input:
           e.g. [ id:'test', single_end:false ]
     - reads:
         type: file
-        description: List of input FastQ files of size 1 and 2 for single-end and paired-end
-          data, respectively.
+        description: List of input FastQ files of size 1 and 2 for single-end and paired-end data, respectively.
         pattern: "*.fastq.gz"
         ontologies:
           - edam: http://edamontology.org/format_3989 # GZIP format
@@ -68,3 +63,17 @@ authors:
   - "@ntoda03"
 maintainers:
   - "@ntoda03"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/gatk4-lite:4.7.0.0--79918b8b2632f4b1
+      build_id: bd-79918b8b2632f4b1_1
+      scan_id: sc-3494a4d719069a23_2
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/gatk4-lite:4.7.0.0--f28eb03ad3b2bcd5
+      build_id: bd-f28eb03ad3b2bcd5_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ce/ce8f4142326abbb74e28b97633a200b09439c54480803343b1cf13dc19e51ae5/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/gatk4/fastqtosam/.conda-lock/linux_amd64-bd-79918b8b2632f4b1_1.txt

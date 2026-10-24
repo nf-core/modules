@@ -1,6 +1,5 @@
 name: vcfanno
-description: quickly annotate your VCF with any number of INFO fields from any
-  number of VCFs or BED files
+description: quickly annotate your VCF with any number of INFO fields from any number of VCFs or BED files
 keywords:
   - vcf
   - bed
@@ -34,8 +33,7 @@ input:
         ontologies: []
     - specific_resources:
         type: map
-        description: A list of sample specific reference files defined in toml
-          config, must also include indices if bgzipped.
+        description: A list of sample specific reference files defined in toml config, must also include indices if bgzipped.
   - toml:
       type: file
       description: configuration file with reference file basenames
@@ -48,8 +46,7 @@ input:
       ontologies: []
   - resources:
       type: map
-      description: List of reference files defined in toml config, must also
-        include indices if bgzipped.
+      description: List of reference files defined in toml config, must also include indices if bgzipped.
 output:
   vcf:
     - - meta:
@@ -106,3 +103,27 @@ maintainers:
   - "@projectoriented"
   - "@matthdsm"
   - "@nvnieuwk"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/htslib_vcfanno:680ad92b8154e54c
+      build_id: bd-680ad92b8154e54c_1
+      scan_id: sc-2833a3113ef6bce8_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/htslib_vcfanno:45841ba023524097
+      build_id: bd-45841ba023524097_1
+      scan_id: sc-71707e42e8d9bb3b_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/htslib_vcfanno:5ba60ddc80813a17
+      build_id: bd-5ba60ddc80813a17_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b8/b87398769a3d9ed0bb3f2604d5ee9d024a636e5312cfbfd9ec105a5de2b59282/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/htslib_vcfanno:2d3608b08c8c205c
+      build_id: bd-2d3608b08c8c205c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4d/4dfbd18cafada90478cf28fcdd1df0933e2fc87a24b8a95b537f7302b0b8e5b4/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/vcfanno/.conda-lock/linux_amd64-bd-45841ba023524097_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/vcfanno/.conda-lock/linux_arm64-bd-680ad92b8154e54c_1.txt
