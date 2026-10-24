@@ -35,7 +35,8 @@ nextflow_process {
             assertAll(
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
-      }
+          }
+        }
 
 
     test("homo_sapiens - [ bam, bai, [] ], [ fasta, fai ] - vcf") {
@@ -59,8 +60,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
@@ -92,8 +93,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
@@ -122,12 +123,11 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
-
     }
 
 }

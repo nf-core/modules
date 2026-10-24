@@ -13,11 +13,13 @@ linux-aarch64:
 - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/_openmp_mutex-4.5-20_gnu.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/bzip2-1.0.8-h4777abc_10.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/c-ares-1.34.8-h29ee22c_2.conda
-- conda: https://conda.anaconda.org/conda-forge/noarch/ca-certificates-2026.7.22-hbd8a1cb_0.conda
+- conda: https://conda.anaconda.org/conda-forge/noarch/ca-certificates-2026.10.18-hbd8a1cb_0.conda
+- conda: https://conda.anaconda.org/bioconda/linux-aarch64/htslib-1.24-h190289e_0.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/icu-78.3-py311h3512406_2.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/keyutils-1.6.3-h5bc82ec_1.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/krb5-1.22.2-h095d8e5_2.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libcurl-8.23.0-h86273da_0.conda
+- conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libdeflate-1.25-hfa851ae_1.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libedit-3.1.20260512-pl5321hc48eb74_0.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libev-4.33-h80f16a2_3.conda
 - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libgcc-16.2.0-h205dda4_7.conda
@@ -65,14 +67,29 @@ license: MIT
 license_family: MIT
 size: 241210
 timestamp: 1787169968125
-- conda: https://conda.anaconda.org/conda-forge/noarch/ca-certificates-2026.7.22-hbd8a1cb_0.conda
-sha256: 0a0544cf95f64394fe4959286f5c71f5444ad58feb0602e53becb27448d24da6
-md5: 0f51e2391ade309db462a55611263e9c
+- conda: https://conda.anaconda.org/conda-forge/noarch/ca-certificates-2026.10.18-hbd8a1cb_0.conda
+sha256: d65aa0c8990f34e1e86e6b505c8a149fea6cfbfcccef087a77c0bcb0b4fbe159
+md5: f9f6a9cf041f31438b034dac016e6429
 depends:
 - __unix
 license: ISC
-size: 131780
-timestamp: 1784754889428
+size: 129191
+timestamp: 1792347285941
+- conda: https://conda.anaconda.org/bioconda/linux-aarch64/htslib-1.24-h190289e_0.conda
+sha256: 47c8da1a9ce9b869317cc10e21a398ec06ff7c70c4d3225adada9b80cf545763
+md5: ea768dafa6258f2945f67dc1861543e5
+depends:
+- bzip2 >=1.0.8,<2.0a0
+- libcurl >=8.21.0,<9.0a0
+- libdeflate >=1.25,<1.26.0a0
+- libgcc >=14
+- liblzma >=5.8.3,<6.0a0
+- libzlib >=1.3.2,<2.0a0
+- openssl >=3.5.7,<4.0a0
+license: MIT
+license_family: MIT
+size: 1365711
+timestamp: 1783611529314
 - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/icu-78.3-py311h3512406_2.conda
 sha256: 54d921defd947adb58a90e10203d3bfe6c1f209f5f1a1ad2c6a9f7617f2fb59e
 md5: b35bbb1b957440ed742f35fb96eb7f1c
@@ -121,6 +138,15 @@ license: curl
 license_family: MIT
 size: 529565
 timestamp: 1791990806492
+- conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libdeflate-1.25-hfa851ae_1.conda
+sha256: 4cb3da1d4ce7540604219d2a016253777da66c1a710c41557bc708aae7f54a75
+md5: 8cdf7f7e4908c9b2cf50c58966f2ff64
+depends:
+- libgcc >=14
+license: MIT
+license_family: MIT
+size: 71628
+timestamp: 1785908730449
 - conda: https://conda.anaconda.org/conda-forge/linux-aarch64/libedit-3.1.20260512-pl5321hc48eb74_0.conda
 sha256: 58fd637d0219016bb69edf2973b089975de283e8a38149d69ef586b8fc4ad90b
 md5: 3ffb447961508502fc81e063ca2071cb
