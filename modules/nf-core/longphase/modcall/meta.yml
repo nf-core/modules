@@ -70,6 +70,7 @@ output:
           description: Compressed VCF file with allele-specific modifications.
           pattern: "*.vcf.gz"
           ontologies:
+            - edam: "http://edamontology.org/format_3016" # VCF
             - edam: "http://edamontology.org/format_3989" # GZIP format
   versions_longphase:
     - - "${task.process}":
