@@ -3,9 +3,9 @@ process BLAT {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ucsc-blat:472--h9b8f530_0':
-        'quay.io/biocontainers/ucsc-blat:472--h664eb37_1' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8f/8f1c01ef5544da297e213b49ad010a6de4bb152c1bd34881a8b65cb825192ed5/data'
+        : 'community.wave.seqera.io/library/ucsc-blat:472--3b87dacc9a173a42' }"
 
     input:
     tuple val(meta) , path(query)

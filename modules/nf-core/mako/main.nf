@@ -3,9 +3,9 @@ process MAKO {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/fg-mako:0.1.3--h7296c89_0'
-        : 'quay.io/biocontainers/fg-mako:0.1.3--h7296c89_0'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f8/f8581689e70d48ca3b393654c08f87e95a7bed8fb825913dc5d89822c0a4bf4c/data'
+:         'community.wave.seqera.io/library/fg-mako:0.1.8--55317497dabc45f3' }"
 
     input:
     tuple val(meta), path(bam)

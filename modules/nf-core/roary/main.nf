@@ -3,9 +3,9 @@ process ROARY {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/roary:3.13.0--pl526h516909a_0' :
-        'quay.io/biocontainers/roary:3.13.0--pl526h516909a_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fb/fbc5af41408da134fa3fa6709a68fd3124741b3034c77fabdacb853c663befc8/data'
+        : 'community.wave.seqera.io/library/roary:3.13.0--9c2c5e26c77577d4'}"
 
     input:
     tuple val(meta), path(gff)

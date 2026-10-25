@@ -3,9 +3,9 @@ process BIGSLICE_DOWNLOADDB {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/bigslice:2.0.2--pyh8ed023e_0'
-        : 'quay.io/biocontainers/bigslice:2.0.2--pyh8ed023e_0'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/92/9274a27c59de5a2ba5163dfa3fb0c97e54f29d27f1a1ef290f7d84cbe740e6ea/data'
+        : 'community.wave.seqera.io/library/bigslice_python:50407f76cee834ef' }"
 
     input:
     val meta

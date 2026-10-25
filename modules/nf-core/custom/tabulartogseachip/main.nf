@@ -3,9 +3,9 @@ process CUSTOM_TABULARTOGSEACHIP {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ca/cae75dbf13aabe63298c0acce8ccfa9bd65fe4b73dc5578da5a2e30867f7169f/data' :
-        'community.wave.seqera.io/library/gawk:5.1.0--fa97c4ccf4cfbc4b' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c1/c1819ccdfcaef475099e8c9c789698ba515311326887600c7465e375a00463fd/data'
+        : 'community.wave.seqera.io/library/gawk:5.1.0--e2a485f195d5814e'}"
 
     input:
     tuple val(meta), path(tabular)

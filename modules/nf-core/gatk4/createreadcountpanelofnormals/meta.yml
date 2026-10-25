@@ -1,6 +1,5 @@
 name: "gatk4_createreadcountpanelofnormals"
-description: Creates a panel of normals (PoN) for read-count denoising given the read
-  counts for samples in the panel.
+description: Creates a panel of normals (PoN) for read-count denoising given the read counts for samples in the panel.
 keywords:
   - createreadcountpanelofnormals
   - gatk4
@@ -66,3 +65,17 @@ authors:
   - "@ramprasadn"
 maintainers:
   - "@ramprasadn"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/gatk4-main:4.7.0.0--6f748daadc3eeb06
+      build_id: bd-6f748daadc3eeb06_1
+      scan_id: sc-9da1e58217991e53_2
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/gatk4-main:4.7.0.0--3d2b9e31ca46488a
+      build_id: bd-3d2b9e31ca46488a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fd/fd65ba227372b7f3f62231d105427edcf5def4c4700689f77ce9536c954a22f6/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/gatk4/createreadcountpanelofnormals/.conda-lock/linux_amd64-bd-6f748daadc3eeb06_1.txt

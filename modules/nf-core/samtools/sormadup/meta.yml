@@ -178,3 +178,27 @@ authors:
   - "@matthdsm"
 maintainers:
   - "@matthdsm"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/htslib_samtools:1.24--4003425f22200067
+      build_id: bd-4003425f22200067_1
+      scan_id: sc-e4e98f3040c05cc1_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/htslib_samtools:1.24--8a3ddf262165ba23
+      build_id: bd-8a3ddf262165ba23_1
+      scan_id: sc-d80d6dd51882efb8_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/htslib_samtools:1.24--780d5da12d0c564c
+      build_id: bd-780d5da12d0c564c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c2/c2f02ceb8cbe5aa37930dcbc0de6f1d07dfb292178c7e780c44ab2f556bf829f/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/htslib_samtools:1.24--b75d2385b98b4033
+      build_id: bd-b75d2385b98b4033_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/24/24bce03b37817d335921ac9bf9d9ca0d485d3b18926413f643b10e45ec1f5c6b/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/samtools/sormadup/.conda-lock/linux_amd64-bd-8a3ddf262165ba23_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/samtools/sormadup/.conda-lock/linux_arm64-bd-4003425f22200067_1.txt
