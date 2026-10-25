@@ -8,7 +8,33 @@ nextflow_process {
     tag "modules_nfcore"
     tag "celltypist"
 
-    test("homo sapiens - h5ad - stub") {
+    test("homo sapiens - pbmc3k - h5ad") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/pbmc3k_celltypist_query.h5ad', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'pbmc3k_model' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/celltypist/pbmc3k_celltypist_model.pkl', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("homo sapiens - pbmc3k - h5ad - stub") {
 
         options "-stub"
 
@@ -17,11 +43,11 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679759_filtered_matrix.h5ad', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/pbmc3k_celltypist_query.h5ad', checkIfExists: true)
                 ]
                 input[1] = [
-                    [ id:'model' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/SRR28679756_filtered_matrix.h5ad', checkIfExists: true)
+                    [ id:'pbmc3k_model' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/celltypist/pbmc3k_celltypist_model.pkl', checkIfExists: true)
                 ]
                 """
             }
