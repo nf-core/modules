@@ -4,8 +4,8 @@ process TMALIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/tmalign:20240303--hd63eeec_0'
-        : 'quay.io/biocontainers/tmalign:20240303--hd63eeec_0'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ae/aec03e3d506eec5c0143081308c17360dacad0632b756252fe27d535250fbd38/data'
+        : 'community.wave.seqera.io/library/tmalign:20240303--f2a25d77ead3fcd9'}"
 
     input:
     tuple val(meta), path(structures, stageAs: 'structures/*')
@@ -27,12 +27,12 @@ process TMALIGN {
     # -dir1 aligns every listed structure against the reference in one run;
     # -outfmt 2 is TM-align's own tabular output. The trailing CPU-time
     # comment is dropped so the table is reproducible.
-    TMalign \
-        -dir1 structures/ structures.list \
-        ${reference} \
-        -outfmt 2 \
-        ${args} \
-        | sed '/^#Total CPU time/d' \
+    TMalign \\
+        -dir1 structures/ structures.list \\
+        ${reference} \\
+        -outfmt 2 \\
+        ${args} \\
+        | sed '/^#Total CPU time/d' \\
         > ${prefix}.tsv
     """
 

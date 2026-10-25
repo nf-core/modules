@@ -1,6 +1,5 @@
 name: tmalign
-description: Align one or more protein structures against a reference structure
-  with TM-align and report TM-score, RMSD, sequence identity and aligned length
+description: Align one or more protein structures against a reference structure with TM-align and report TM-score, RMSD, sequence identity and aligned length
 keywords:
   - structural alignment
   - TM-score
@@ -18,6 +17,7 @@ tools:
       doi: 10.1093/nar/gki524
       licence: ["free for academic use"]
       identifier: biotools:tm-align
+      args_id: "$args"
 
 input:
   - - meta:
@@ -27,9 +27,11 @@ input:
           e.g. [ id:'sample1' ]
     - structures:
         type: file
-        description: One or more query protein structures, each aligned against
-          the reference
+        description: One or more query protein structures, each aligned against the reference
         pattern: "*.{pdb,cif}"
+        ontologies:
+          - edam: http://edamontology.org/format_1476 # PDB
+          - edam: http://edamontology.org/format_1477 # mmCIF
   - - meta2:
         type: map
         description: |
@@ -39,6 +41,9 @@ input:
         type: file
         description: Reference protein structure
         pattern: "*.{pdb,cif}"
+        ontologies:
+          - edam: http://edamontology.org/format_1476 # PDB
+          - edam: http://edamontology.org/format_1477 # mmCIF
 
 output:
   tsv:
@@ -47,14 +52,10 @@ output:
           description: Groovy Map containing sample information
       - "*.tsv":
           type: file
-          description: |
-            TM-align tabular output (-outfmt 2), one row per query structure.
-            Columns: PDBchain1 (query), PDBchain2 (reference), TM1 (TM-score
-            normalised by query length), TM2 (TM-score normalised by reference
-            length), RMSD, ID1, ID2, IDali (sequence identity normalised by
-            query, reference and aligned length), L1, L2, Lali (query,
-            reference and aligned length).
+          description: TM-align tabular output (`-outfmt 2`), one row per query; TM1/TM2 are the TM-scores normalised by query/reference length
           pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   versions_tmalign:
     - - ${task.process}:
           type: string
@@ -82,3 +83,27 @@ authors:
   - "@Bboy010"
 maintainers:
   - "@Bboy010"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/tmalign:20240303--d2b41375549d67b9
+      build_id: bd-d2b41375549d67b9_1
+      scan_id: sc-1a25e4d7b7ec1a9c_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/tmalign:20240303--f2a25d77ead3fcd9
+      build_id: bd-f2a25d77ead3fcd9_1
+      scan_id: sc-6fd4436f3db1de8e_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/tmalign:20240303--fe16668144df93a3
+      build_id: bd-fe16668144df93a3_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/db/dbfa610a0b4fa2273f36992b7084f9ea1c88763c3684eaee5e144aac062746fa/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/tmalign:20240303--9714df8130d9b7aa
+      build_id: bd-9714df8130d9b7aa_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ae/aec03e3d506eec5c0143081308c17360dacad0632b756252fe27d535250fbd38/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/tmalign/.conda-lock/linux_amd64-bd-f2a25d77ead3fcd9_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/tmalign/.conda-lock/linux_arm64-bd-d2b41375549d67b9_1.txt
