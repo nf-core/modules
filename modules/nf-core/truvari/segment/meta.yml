@@ -64,3 +64,27 @@ authors:
   - "@kubranarci"
 maintainers:
   - "@kubranarci"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/truvari:5.4.0--a783dff809870f2f
+      build_id: bd-a783dff809870f2f_1
+      scan_id: sc-27c33c4b01d2c7c1_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/truvari:5.4.0--cbc97b037887e8ec
+      build_id: bd-cbc97b037887e8ec_1
+      scan_id: sc-1750cf0f1e6a7659_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/truvari:5.4.0--2d48ca7fc61cbecb
+      build_id: bd-2d48ca7fc61cbecb_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/24/24d8407c3b7d1ff8fc73dd43063f220636b2a5b973a353cd8ebbc196f2e955c6/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/truvari:5.4.0--20dbdbec2dce7ea4
+      build_id: bd-20dbdbec2dce7ea4_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bc/bcb554578972eea4ca66731f80a41017d591edf30d34f7b3c4a6ef78b0ef4ff3/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/truvari/segment/.conda-lock/linux_amd64-bd-a783dff809870f2f_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/truvari/segment/.conda-lock/linux_arm64-bd-cbc97b037887e8ec_1.txt

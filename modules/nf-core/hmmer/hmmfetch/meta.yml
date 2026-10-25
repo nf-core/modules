@@ -28,12 +28,10 @@ input:
         ontologies: []
   - key:
       type: string
-      description: Name of HMM to extract. Specify either this or keyfile. If none
-        is specified, an index will be built.
+      description: Name of HMM to extract. Specify either this or keyfile. If none is specified, an index will be built.
   - keyfile:
       type: file
-      description: File containing list of HMM models to extract. Specify either
-        this or key. If none is specified, an index will be built.
+      description: File containing list of HMM models to extract. Specify either this or key. If none is specified, an index will be built.
       pattern: "*.txt"
       ontologies:
         - edam: http://edamontology.org/format_2330 # Textual format
@@ -61,8 +59,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.ssi":
           type: file
-          description: Index for HMM database. Created if neither key nor keyfile
-            is specified.
+          description: Index for HMM database. Created if neither key nor keyfile is specified.
           pattern: "*.ssi"
           ontologies: []
   versions_hmmer:
@@ -90,3 +87,27 @@ authors:
   - "@erikrikarddaniel"
 maintainers:
   - "@erikrikarddaniel"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/hmmer:3.4--ab3efa7c16f46920
+      build_id: bd-ab3efa7c16f46920_1
+      scan_id: sc-c0ab7502d268f963_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/hmmer:3.4--dba1a582dd6d0e9e
+      build_id: bd-dba1a582dd6d0e9e_1
+      scan_id: sc-27b384b8bdd7c7dc_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/hmmer:3.4--27e4a7be1be3f573
+      build_id: bd-27e4a7be1be3f573_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b1/b171806a7b780537073c1e9ffe50885ba7917d8072b5941a125698df1253c4f7/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/hmmer:3.4--714e6d8616316848
+      build_id: bd-714e6d8616316848_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7d/7d5df7ac892df8ccf6662c944de51bf9c76032402bfb9ac0801670c1bae7c0d1/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/hmmer/hmmfetch/.conda-lock/linux_amd64-bd-ab3efa7c16f46920_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/hmmer/hmmfetch/.conda-lock/linux_arm64-bd-dba1a582dd6d0e9e_1.txt

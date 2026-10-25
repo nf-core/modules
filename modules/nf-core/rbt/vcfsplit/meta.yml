@@ -73,3 +73,27 @@ authors:
   - "@famosab"
 maintainers:
   - "@famosab"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/rust-bio-tools:0.42.2--799b7c6e93d0757c
+      build_id: bd-799b7c6e93d0757c_1
+      scan_id: sc-af71f65b4975e5a0_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/rust-bio-tools:0.42.2--996dcdf3f4b075e4
+      build_id: bd-996dcdf3f4b075e4_1
+      scan_id: sc-d06b8c744104fba3_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/rust-bio-tools:0.42.2--0512bb2a42ff298d
+      build_id: bd-0512bb2a42ff298d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a0/a0457e23366a34be178adaadd26d99353959cc87b3ab1b0ab4523d17e92b1ed4/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/rust-bio-tools:0.42.2--f1ed8122508f9f4f
+      build_id: bd-f1ed8122508f9f4f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e2/e203258c4e52fcbe7f12392baf1bd184496aaeba52ceef17670924fa009245b1/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/rbt/vcfsplit/.conda-lock/linux_amd64-bd-996dcdf3f4b075e4_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/rbt/vcfsplit/.conda-lock/linux_arm64-bd-799b7c6e93d0757c_1.txt

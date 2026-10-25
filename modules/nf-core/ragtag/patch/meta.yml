@@ -1,6 +1,5 @@
 name: "ragtag_patch"
-description: "Homology-based assembly patching: Make continuous joins and fill gaps
-  in 'target.fa' using sequences from 'query.fa'"
+description: "Homology-based assembly patching: Make continuous joins and fill gaps in 'target.fa' using sequences from 'query.fa'"
 keywords:
   - assembly
   - consensus
@@ -88,9 +87,7 @@ output:
             e.g. [ id:'test' ]
       - "*.comps.fasta":
           type: file
-          description: The split target assembly and the renamed query assembly
-            combined into one FASTA file. This file contains all components in
-            ragtag.patch.agp
+          description: The split target assembly and the renamed query assembly combined into one FASTA file. This file contains all components in ragtag.patch.agp
           pattern: "*.comps.fasta"
           ontologies: []
   assembly_alignments:
@@ -112,8 +109,7 @@ output:
             e.g. [ id:'test' ]
       - "*.ctg.agp":
           type: file
-          description: An AGP file defining how the target assembly was split at
-            gaps
+          description: An AGP file defining how the target assembly was split at gaps
           pattern: "*.ctg.agp"
           ontologies: []
   target_splits_fasta:
@@ -146,8 +142,7 @@ output:
             e.g. [ id:'test' ]
       - "*.rename.fasta":
           type: file
-          description: A FASTA file with the original query sequence, but with new
-            names
+          description: A FASTA file with the original query sequence, but with new names
           pattern: "*.rename.fasta"
           ontologies: []
   stderr:
@@ -186,3 +181,27 @@ authors:
   - "@nschan"
 maintainers:
   - "@nschan"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/ragtag:2.1.0--6125126fe9d553ab
+      build_id: bd-6125126fe9d553ab_1
+      scan_id: sc-a8f9e9dfce728767_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/ragtag:2.1.0--4a6c872b4348b7e6
+      build_id: bd-4a6c872b4348b7e6_1
+      scan_id: sc-3b07735314a0d832_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/ragtag:2.1.0--7ac53d05abb1a6e8
+      build_id: bd-7ac53d05abb1a6e8_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e7/e783bbc5474a09f51a0f93142fb94a864715e77b40d9b33e11b53b9c6c4d08cf/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/ragtag:2.1.0--f154a206c9750925
+      build_id: bd-f154a206c9750925_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a7/a7844d5fc0e237b3d59d56c93dc48a6a847d923f17f2d8fcefb43385559c98f9/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/ragtag/patch/.conda-lock/linux_amd64-bd-6125126fe9d553ab_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/ragtag/patch/.conda-lock/linux_arm64-bd-4a6c872b4348b7e6_1.txt

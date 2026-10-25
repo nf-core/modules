@@ -1,6 +1,5 @@
 name: plink_indep
-description: Produce a pruned subset of markers that are in approximate linkage equilibrium
-  with each other.
+description: Produce a pruned subset of markers that are in approximate linkage equilibrium with each other.
 keywords:
   - plink
   - indep
@@ -9,8 +8,7 @@ keywords:
   - fam
 tools:
   - "plink":
-      description: "Whole genome association analysis toolset, designed to perform a
-        range of basic, large-scale analyses in a computationally efficient manner."
+      description: "Whole genome association analysis toolset, designed to perform a range of basic, large-scale analyses in a computationally efficient manner."
       homepage: "https://www.cog-genomics.org/plink"
       documentation: "https://www.cog-genomics.org/plink/1.9/data#"
       tool_dev_url: "https://www.cog-genomics.org/plink/1.9/dev"
@@ -39,16 +37,13 @@ input:
         ontologies: []
   - window_size:
       type: string
-      description: Window size in variant count or kilobase (if the 'kb' modifier is
-        present) units, a variant count to shift the window at the end of each step,
-        and a variance inflation factor (VIF) threshold.
+      description: Window size in variant count or kilobase (if the 'kb' modifier is present) units, a variant count to shift the window at the end of each step, and a variance inflation factor (VIF) threshold.
   - variant_count:
       type: string
       description: Variant count to shift the window at the end of each step.
   - variance_inflation_factor:
       type: string
-      description: Variance inflation factor (VIF) threshold. At each step, all variants
-        in the current window with VIF exceeding the threshold are removed.
+      description: Variance inflation factor (VIF) threshold. At each step, all variants in the current window with VIF exceeding the threshold are removed.
 output:
   prunein:
     - - meta:
@@ -58,8 +53,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.prune.in":
           type: file
-          description: File with IDs of pruned subset of markers that are in approximate
-            linkage equilibrium with each other
+          description: File with IDs of pruned subset of markers that are in approximate linkage equilibrium with each other
           pattern: "*.{prune.in}"
           ontologies: []
   pruneout:
@@ -83,10 +77,6 @@ output:
       - "plink --version 2>&1 | sed 's/^PLINK v//;s/ .*//'":
           type: eval
           description: The expression to obtain the version of the tool
-authors:
-  - "@atrigila"
-maintainers:
-  - "@atrigila"
 topics:
   versions:
     - - "${task.process}":
@@ -98,3 +88,21 @@ topics:
       - "plink --version 2>&1 | sed 's/^PLINK v//;s/ .*//'":
           type: eval
           description: The expression to obtain the version of the tool
+authors:
+  - "@atrigila"
+maintainers:
+  - "@atrigila"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/plink:1.90b6.21--0baa44af6db8f28d
+      build_id: bd-0baa44af6db8f28d_1
+      scan_id: sc-588ceddb77be18ec_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/plink:1.90b6.21--95e2ee960c26adef
+      build_id: bd-95e2ee960c26adef_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/59/5901c2e9a6b11094536c8b0ab0932bd61bb55dbfe9ad270d3babc8f7246a4759/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/plink/indep/.conda-lock/linux_amd64-bd-0baa44af6db8f28d_1.txt

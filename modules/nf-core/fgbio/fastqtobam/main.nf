@@ -9,6 +9,7 @@ process FGBIO_FASTQTOBAM {
 
     input:
     tuple val(meta), path(reads)
+    val extension
 
     output:
     tuple val(meta), path("*.{bam,cram}"), emit: bam
@@ -20,7 +21,7 @@ process FGBIO_FASTQTOBAM {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "bam"
+    def suffix = extension ?: "bam"
     def sample_name = args.contains("--sample") ? "" : "--sample ${prefix}"
     def library_name = args.contains("--library") ? "" : "--library ${prefix}"
 
@@ -52,7 +53,7 @@ process FGBIO_FASTQTOBAM {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "bam"
+    def suffix = extension ?: "bam"
     """
     touch ${prefix}.${suffix}
     """
