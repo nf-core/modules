@@ -1,6 +1,5 @@
 name: "gatk4_annotateintervals"
-description: Annotates intervals with GC content, mappability, and segmental-duplication
-  content
+description: Annotates intervals with GC content, mappability, and segmental-duplication content
 keywords:
   - annotateintervals
   - annotation
@@ -78,8 +77,7 @@ input:
           e.g. [ id:'test' ]
     - mappable_regions_tbi:
         type: file
-        description: Optional - The index of the gzipped umap single-read mappability
-          track
+        description: Optional - The index of the gzipped umap single-read mappability track
         pattern: "*.bed.gz.tbi"
         ontologies: []
   - - meta7:
@@ -111,8 +109,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.tsv":
           type: file
-          description: The output TSV file with a SAM-style header containing the annotated
-            intervals
+          description: The output TSV file with a SAM-style header containing the annotated intervals
           pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -141,3 +138,17 @@ authors:
   - "@nvnieuwk"
 maintainers:
   - "@nvnieuwk"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/gatk4-lite:4.7.0.0--79918b8b2632f4b1
+      build_id: bd-79918b8b2632f4b1_1
+      scan_id: sc-3494a4d719069a23_2
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/gatk4-lite:4.7.0.0--f28eb03ad3b2bcd5
+      build_id: bd-f28eb03ad3b2bcd5_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ce/ce8f4142326abbb74e28b97633a200b09439c54480803343b1cf13dc19e51ae5/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/gatk4/annotateintervals/.conda-lock/linux_amd64-bd-79918b8b2632f4b1_1.txt

@@ -3,9 +3,9 @@ process BFTOOLS_SHOWINF {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bftools:8.0.0--hdfd78af_0':
-        'quay.io/biocontainers/bftools:8.0.0--hdfd78af_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b3/b3f18a7262bb2d6c2f64b1e09c65bb1b0b315baabb9bded73678a33c5fcb55ac/data'
+        : 'community.wave.seqera.io/library/bftools:8.0.0--3d36406c00785003' }"
 
     input:
     tuple val(meta), path(image)
@@ -32,6 +32,6 @@ process BFTOOLS_SHOWINF {
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    echo '<?xml version="1.0" encoding="UTF-8">' | gzip > ${prefix}.xml.gz
+    echo "" | gzip > ${prefix}.xml.gz
     """
 }

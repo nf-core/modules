@@ -89,3 +89,27 @@ authors:
   - "@leapicard"
 maintainers:
   - "@leapicard"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/hyphy:2.5.101--da14606d9f2ca413
+      build_id: bd-da14606d9f2ca413_1
+      scan_id: sc-a813132dd5d55d82_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/hyphy:2.5.101--d7eddcb8b38dd49a
+      build_id: bd-d7eddcb8b38dd49a_1
+      scan_id: sc-a9a710504f769adc_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/hyphy:2.5.101--f6c041232df72cdf
+      build_id: bd-f6c041232df72cdf_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ed/ed3d742a4b3281f09189e5010b1b26855e2bdc5259dc8bdf1121a7b1939e8ca6/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/hyphy:2.5.101--d62d556c5731c351
+      build_id: bd-d62d556c5731c351_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2e/2ebfe35a6568ab3dd8a1b88c9e02e4303e85679da7063eec6c20e4ce41d878b9/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/hyphy/busted/.conda-lock/linux_amd64-bd-da14606d9f2ca413_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/hyphy/busted/.conda-lock/linux_arm64-bd-d7eddcb8b38dd49a_1.txt

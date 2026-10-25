@@ -3,9 +3,9 @@ process ANNOTSV_INSTALLANNOTATIONS {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2a/2aa8892f5160501bd74eb44461ca6743dcf7132dd3b8bc769d09806585754b38/data' :
-        'community.wave.seqera.io/library/annotsv:3.5.10--67b698fbe288f0ac' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/66/664c800960f1b08bcae320959b20db6b606f3c5de2488d63376eed58f32b1a10/data'
+        : 'community.wave.seqera.io/library/annotsv:3.5.10--28ac84a07bcbf122'}"
 
     input:
     tuple val(meta), val(annotsv_version), val(exomiser_version)

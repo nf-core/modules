@@ -3,9 +3,9 @@ process BPPSUITE_BPPML {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bppsuite:3.0.0--hd63eeec_0':
-        'quay.io/biocontainers/bppsuite:3.0.0--hd63eeec_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/17/17ac9c8f71ea0058788490646e7e7945fc02e9f7edcb55eedfb9f52e9d0fd7a7/data'
+        : 'community.wave.seqera.io/library/bppsuite:3.0.0--14dc7ef049395552' }"
 
     input:
     tuple val(meta), path(alignment), path(tree), path(parameters)

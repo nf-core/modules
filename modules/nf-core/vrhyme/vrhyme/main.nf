@@ -3,9 +3,9 @@ process VRHYME_VRHYME {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vrhyme:1.1.0--pyhdfd78af_1':
-        'quay.io/biocontainers/vrhyme:1.1.0--pyhdfd78af_1' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9d/9d994695f60fba485a0e2679c84965fa6fc2787e5b24df2c2d3e2969c7702ad5/data'
+:         'community.wave.seqera.io/library/vrhyme_numpy_python_scikit-learn_setuptools:02d8cf67999994aa' }"
 
     input:
     tuple val(meta), path(reads)

@@ -3,9 +3,9 @@ process OPENMS_PSMFEATUREEXTRACTOR {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/openms:3.5.0--h78fb946_0'
-        : 'quay.io/biocontainers/openms:3.5.0--h78fb946_0'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/84/84ad5437e080c0b3ec0ce315a54c0bb62950277a4496f4d1be911f82078dd2a1/data'
+:         'community.wave.seqera.io/library/openms:3.6.0--88df48c0a426b7f7' }"
 
     input:
     tuple val(meta), path(id_file)

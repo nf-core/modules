@@ -8,9 +8,7 @@ keywords:
   - linkbins
 tools:
   - "vrhyme":
-      description: "vRhyme functions by utilizing coverage variance comparisons and
-        supervised machine learning classification of sequence features to construct
-        viral metagenome-assembled genomes (vMAGs)."
+      description: "vRhyme functions by utilizing coverage variance comparisons and supervised machine learning classification of sequence features to construct viral metagenome-assembled genomes (vMAGs)."
       homepage: https://github.com/AnantharamanLab/vRhyme
       documentation: https://github.com/AnantharamanLab/vRhyme
       tool_dev_url: https://github.com/AnantharamanLab/vRhyme
@@ -27,8 +25,7 @@ input:
           e.g. [ id:'test' ]
     - bins:
         type: directory
-        description: Directory file containing bin FASTA files output by vRhyme
-          (each bin having multiple sequences)
+        description: Directory file containing bin FASTA files output by vRhyme (each bin having multiple sequences)
 output:
   linked_bins:
     - - meta:
@@ -67,3 +64,27 @@ authors:
   - "@CarsonJM"
 maintainers:
   - "@CarsonJM"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/vrhyme_python_setuptools:2e133279ed381753
+      build_id: bd-2e133279ed381753_1
+      scan_id: sc-cd9f63c5b9b5c6d3_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/vrhyme_python_setuptools:632433e0da52eb43
+      build_id: bd-632433e0da52eb43_1
+      scan_id: sc-ac100f1565a83954_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/vrhyme_python_setuptools:2a98f81b304abc6c
+      build_id: bd-2a98f81b304abc6c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cb/cbb836555c5f0f19f1e5d69ffe97cb2acf44586c0ed1485b7e17e0ff05820e2c/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/vrhyme_python_setuptools:4865355a4358f8c2
+      build_id: bd-4865355a4358f8c2_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e2/e2b5a580b1eb2e3b5d4c50ba78df05d4e49e0bb1dfc988e719306fa9efb21d65/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/vrhyme/linkbins/.conda-lock/linux_amd64-bd-2e133279ed381753_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/vrhyme/linkbins/.conda-lock/linux_arm64-bd-632433e0da52eb43_1.txt

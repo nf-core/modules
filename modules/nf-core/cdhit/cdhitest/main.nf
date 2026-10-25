@@ -21,7 +21,7 @@ process CDHIT_CDHITEST {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "${sequences}" ==~ /(.*f[astn]*a(.gz)?$)/ ? "fa" : "fq"
+    def suffix = "${sequences}" ==~ /(.*f[astn]*a(.gz)?$)/ ? "fa" : "fq"
 
     def avail_mem = 3072
     if (!task.memory) {
@@ -41,7 +41,7 @@ process CDHIT_CDHITEST {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "${sequences}" ==~ /(.*f[astn]*a(.gz)?$)/ ? "fa" : "fq"
+    def suffix = "${sequences}" ==~ /(.*f[astn]*a(.gz)?$)/ ? "fa" : "fq"
     """
     echo "${args}"
     touch ${prefix}.${suffix}

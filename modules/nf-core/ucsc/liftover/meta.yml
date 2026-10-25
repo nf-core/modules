@@ -75,3 +75,27 @@ authors:
   - "@nebfield"
 maintainers:
   - "@nebfield"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/ucsc-liftover:482--f8639164c0f3b5bf
+      build_id: bd-f8639164c0f3b5bf_1
+      scan_id: sc-a179a65ddb62b13f_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/ucsc-liftover:482--c6d821f59cc751f0
+      build_id: bd-c6d821f59cc751f0_1
+      scan_id: sc-3d87bbfcf6cc5bd8_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/ucsc-liftover:482--1ebbe4452d102371
+      build_id: bd-1ebbe4452d102371_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/15/15744931def04387cf095376c9d8c322bf21ca542d64946a7258c15b40b12b82/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/ucsc-liftover:482--8912d215b5a5ebb6
+      build_id: bd-8912d215b5a5ebb6_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/43/431f93389ec340ea8cd22d67ecaad5294c369216dbb973b7c005bb171613417a/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/ucsc/liftover/.conda-lock/linux_amd64-bd-f8639164c0f3b5bf_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/ucsc/liftover/.conda-lock/linux_arm64-bd-c6d821f59cc751f0_1.txt

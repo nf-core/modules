@@ -3,9 +3,9 @@ process WFMASH {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/wfmash:0.13.0--h11f254b_0':
-        'quay.io/biocontainers/wfmash:0.13.0--h11f254b_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ec/ece6fef80c03926bc9d5462bba5bc1174bd52f183590b095e3b2c6251901f422/data'
+:         'community.wave.seqera.io/library/wfmash:0.13.0--aad0fd683181ae57' }"
 
     input:
     tuple val(meta), path(fasta_gz), path(paf), path(gzi), path(fai)

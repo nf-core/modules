@@ -1,7 +1,5 @@
 name: "vsearch_dereplicate"
-description: Merge strictly identical sequences contained in filename. Identical
-  sequences are defined as having the same length and the same string of
-  nucleotides (case insensitive, T and U are considered the same).
+description: Merge strictly identical sequences contained in filename. Identical sequences are defined as having the same length and the same string of nucleotides (case insensitive, T and U are considered the same).
 keywords:
   - vsearch/dereplicate
   - vsearch
@@ -83,3 +81,27 @@ authors:
   - "@chriswyatt1"
 maintainers:
   - "@chriswyatt1"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/vsearch:2.31.0--262a839a6c0fc826
+      build_id: bd-262a839a6c0fc826_1
+      scan_id: sc-af12710a255f9e4a_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/vsearch:2.31.0--80e3b2da3ae2f3d8
+      build_id: bd-80e3b2da3ae2f3d8_1
+      scan_id: sc-8abcad553b1fb270_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/vsearch:2.31.0--bbc3781427248899
+      build_id: bd-bbc3781427248899_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ee/eec4fdf832cbd591111a702a1942476674a71e76fafbd5ae3fc18018b9ebe2e2/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/vsearch:2.31.0--a8e86e5af66587d7
+      build_id: bd-a8e86e5af66587d7_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/73/735d988fe3d63e52a3700ce5bc7d7b93c775beedf0ce970a17cef6def00f682b/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/vsearch/dereplicate/.conda-lock/linux_amd64-bd-80e3b2da3ae2f3d8_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/vsearch/dereplicate/.conda-lock/linux_arm64-bd-262a839a6c0fc826_1.txt

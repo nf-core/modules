@@ -1,0 +1,107 @@
+nextflow_process {
+
+    name "Test Process PANTERAGA"
+    script "../main.nf"
+    process "PANTERAGA"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "panteraga"
+    config "./nextflow.config"
+
+    test("panteraga - test files") {
+
+        when {
+
+            params {
+                panteraga_args = ""
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'delete_me/panteraga/Amel.fa.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'delete_me/panteraga/Amau.fa.gz', checkIfExists: true),
+                    ]
+                ]
+                input[1] = 42
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["panteraga_log"])).match() }
+            )
+        }
+
+    }
+
+    test("panteraga - test files - keep") {
+
+        when {
+
+            params {
+                panteraga_args = "-k"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'delete_me/panteraga/Amel.fa.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'delete_me/panteraga/Amau.fa.gz', checkIfExists: true),
+                    ]
+                ]
+                input[1] = 42
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["panteraga_log", "onealn"])).match() }
+            )
+        }
+
+    }
+
+    test("panteraga - test files - stub") {
+
+        options "-stub"
+
+        when {
+
+            params {
+                panteraga_args = "-k"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'delete_me/panteraga/Amel.fa.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'delete_me/panteraga/Amau.fa.gz', checkIfExists: true),
+                    ]
+                ]
+                input[1] = 42
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["panteraga_log"])).match() }
+            )
+        }
+
+    }
+
+}

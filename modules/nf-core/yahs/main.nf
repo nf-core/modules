@@ -3,9 +3,9 @@ process YAHS {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/yahs:1.2.2--h577a1d6_1':
-        'quay.io/biocontainers/yahs:1.2.2--h577a1d6_1' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/47/47e6425421c6823260bf4bd8d2d431f1f509e9bc9110bb3aa6b4652b85e63eac/data'
+:         'community.wave.seqera.io/library/yahs:1.2.2--5a61538ab6dbd63d' }"
 
     input:
     tuple val(meta), path(fasta), path(fai), path(hic_map), path(agp)

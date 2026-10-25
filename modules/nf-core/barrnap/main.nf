@@ -3,9 +3,9 @@ process BARRNAP {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/barrnap:0.9--hdfd78af_4':
-        'quay.io/biocontainers/barrnap:0.9--hdfd78af_4' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/46/46925ba4c44fde31056890ad1af51140c91616055f8b7ac073f51db21d321e32/data'
+        : 'community.wave.seqera.io/library/barrnap:0.9--847dcfa21d3169b7' }"
 
     input:
     tuple val(meta), path(fasta), val(dbname)

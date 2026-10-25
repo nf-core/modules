@@ -3,9 +3,9 @@ process PLINK_BCF {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/plink:1.90b6.21--h779adbc_1' :
-        'quay.io/biocontainers/plink:1.90b6.21--h779adbc_1' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/59/5901c2e9a6b11094536c8b0ab0932bd61bb55dbfe9ad270d3babc8f7246a4759/data'
+:         'community.wave.seqera.io/library/plink:1.90b6.21--0baa44af6db8f28d' }"
 
     input:
     tuple val(meta), path(bcf)
