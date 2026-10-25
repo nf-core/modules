@@ -3,9 +3,9 @@ process AUTHENTICT_DEAM2CONT {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/authentict:1.0.1--py311h9f5acd7_0':
-        'quay.io/biocontainers/authentict:1.0.1--py311h9f5acd7_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1e/1ee0e786f920e00278deca2cd60fef436b905fcd62f90e21edc7190ab16bc9e7/data'
+        : 'community.wave.seqera.io/library/authentict_samtools_numdifftools:0a39db47b015fde7'}"
 
     input:
     tuple val(meta), path(bam)

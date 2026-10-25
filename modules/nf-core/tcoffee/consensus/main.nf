@@ -3,9 +3,9 @@ process TCOFFEE_CONSENSUS {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5e/5e5c1c07cc0099dacea172348bc78f9a9baab592ce3ece89873703b9e963d269/data':
-        'community.wave.seqera.io/library/t-coffee_pigz:c98a6c87c62d9df6' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e8/e85c972da17c3e7d5e8b283cf61b106111180e3fc02d4b04f0933106b4ca50b3/data'
+        : 'community.wave.seqera.io/library/t-coffee_pigz:aa6b4f1ff4adb194'}"
 
 
     input:

@@ -3,8 +3,8 @@ process CUSTOM_MATRIXFILTER {
     label 'process_single'
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/48/483e9d9b3b07e5658792d579e230ad40ed18daf7b9ebfb4323c08570f92fd1d5/data'
-        : 'community.wave.seqera.io/library/r-base:4.2.1--b0b5476e2e7a0872'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/04/04df12e2b58fe5f85f25230d1575236a872670d4ac5dd343f188ca7c86cb2d10/data'
+        : 'community.wave.seqera.io/library/r-base:4.2.1--d903e969fe33d78c'}"
 
     input:
     tuple val(meta), path(abundance)

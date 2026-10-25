@@ -1,14 +1,12 @@
 name: "custom_tabulartogseagct"
-description: Convert a TSV or CSV with features by row and observations by
-  column to a GCT format file as consumed by GSEA
+description: Convert a TSV or CSV with features by row and observations by column to a GCT format file as consumed by GSEA
 keywords:
   - gsea
   - gct
   - tabular
 tools:
   - tabulartogseagct:
-      description: "Convert a TSV or CSV with features by row and observations by column
-        to a GCT format file as consumed by GSEA"
+      description: "Convert a TSV or CSV with features by row and observations by column to a GCT format file as consumed by GSEA"
       tool_dev_url: "https://github.com/nf-core/modules/blob/master/modules/nf-core/custom/tabulartogseagct/main.nf"
       identifier: ""
 input:
@@ -19,8 +17,7 @@ input:
           e.g. [ id:'test' ]
     - tabular:
         type: file
-        description: Tabular (e.g. TSV or CSV file) containing a numeric matrix
-          with features (e.g. genes) by row and samples by column.
+        description: Tabular (e.g. TSV or CSV file) containing a numeric matrix with features (e.g. genes) by row and samples by column.
         pattern: "*.{tsv,csv}"
         ontologies:
           - edam: http://edamontology.org/format_3475 # TSV
@@ -62,3 +59,27 @@ authors:
   - "@pinin4fjords"
 maintainers:
   - "@pinin4fjords"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/coreutils:9.5--cb4e4891073009e4
+      build_id: bd-cb4e4891073009e4_1
+      scan_id: sc-c6fd0d6f41e20d96_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/coreutils:9.5--e94c8172b8bba3cf
+      build_id: bd-e94c8172b8bba3cf_1
+      scan_id: sc-37fa7ed8609e0dfa_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/coreutils:9.5--c96c9be0e4d31909
+      build_id: bd-c96c9be0e4d31909_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ca/ca48925e5294bda1f52731d4bb7f03d56582b4dcbbc3b5d306460fd2ac3e7c9f/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/coreutils:9.5--c3ed46091b9859e2
+      build_id: bd-c3ed46091b9859e2_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d8/d809369ef0dfb6f580ebb812d33e442db2866d73757acc6a490ad9aa1a55ef10/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/custom/tabulartogseagct/.conda-lock/linux_amd64-bd-e94c8172b8bba3cf_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/custom/tabulartogseagct/.conda-lock/linux_arm64-bd-cb4e4891073009e4_1.txt

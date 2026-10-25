@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "bwamem3_mem"
 description: Align fastq reads to a fasta reference using bwa-mem3
 keywords:
@@ -11,8 +10,7 @@ keywords:
   - sam
 tools:
   - "bwamem3":
-      description: "Short-read aligner derived from bwa-mem2 with correctness fixes,
-        performance improvements, and methylation-aware alignment."
+      description: "Short-read aligner derived from bwa-mem2 with correctness fixes, performance improvements, and methylation-aware alignment."
       homepage: "https://github.com/fg-labs/bwa-mem3"
       documentation: "https://github.com/fg-labs/bwa-mem3"
       tool_dev_url: "https://github.com/fg-labs/bwa-mem3"
@@ -135,3 +133,27 @@ authors:
   - "@nh13"
 maintainers:
   - "@nh13"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/bwa-mem3_htslib_samtools_findutils:74a941381d73ca36
+      build_id: bd-74a941381d73ca36_1
+      scan_id: sc-c076e2fb7bf41c80_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/bwa-mem3_htslib_samtools_findutils:b08ae21c54a338c8
+      build_id: bd-b08ae21c54a338c8_1
+      scan_id: sc-97ad8a07dfa520df_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bwa-mem3_htslib_samtools_findutils:fb293a77182e2fe6
+      build_id: bd-fb293a77182e2fe6_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/04/040dc4151df127b1cd36d1b3455ab712fe1a57fbfbee26385e8f7293f7e47ead/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bwa-mem3_htslib_samtools_findutils:cc773b6ad4db0ed6
+      build_id: bd-cc773b6ad4db0ed6_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/47/47c08a3167d5c6e2c6fb9ba1be8f98471bfb9cd6e1b8896edbc4a9a84830b55e/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bwamem3/mem/.conda-lock/linux_amd64-bd-b08ae21c54a338c8_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/bwamem3/mem/.conda-lock/linux_arm64-bd-74a941381d73ca36_1.txt

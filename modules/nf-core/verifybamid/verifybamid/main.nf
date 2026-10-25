@@ -4,9 +4,9 @@ process VERIFYBAMID_VERIFYBAMID {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/verifybamid%3A1.1.3--h5b5514e_6':
-        'quay.io/biocontainers/verifybamid:1.1.3--h5b5514e_6' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2d/2d3e4d4d910f64d2f9f54b600babf9664c10005a2dbc05d6108586a055889571/data'
+:         'community.wave.seqera.io/library/verifybamid:1.1.3--9f0eaf38a0cd990c' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
