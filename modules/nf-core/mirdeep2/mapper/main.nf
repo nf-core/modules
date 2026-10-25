@@ -1,6 +1,6 @@
 process MIRDEEP2_MAPPER {
     tag "$meta.id"
-    label 'process_single'
+    label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
@@ -28,6 +28,7 @@ process MIRDEEP2_MAPPER {
         ${reads} \\
         $args \\
         -p ${index}/${meta2.id}  \\
+        -o ${task.cpus} \\
         -s ${prefix}_collapsed.fa \\
         -t ${prefix}_reads_collapsed_vs_${meta2.id}_genome.arf
     """
