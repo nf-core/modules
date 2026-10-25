@@ -11,23 +11,39 @@ process COLABFOLD {
     input:
     tuple val(meta), path(fasta)
     tuple val(meta2), path(weights)
+    tuple val(meta3), path(templates)
+    tuple val(meta4), path(pdb_hits), path(local_pdb)
 
     output:
-    tuple val(meta), path("${prefix}/*_rank_*.pdb")        , emit: pdb , optional: true
-    tuple val(meta), path("${prefix}/*_scores_rank_*.json"), emit: json, optional: true
-    tuple val(meta), path("${prefix}/*.a3m")               , emit: a3m , optional: true
-    tuple val(meta), path("${prefix}/*.png")               , emit: png , optional: true
-    tuple val(meta), path("${prefix}/log.txt")             , emit: log , optional: true
+    tuple val(meta), path("${prefix}/*_rank_*.pdb")                    , emit: pdb      , optional: true
+    tuple val(meta), path("${prefix}/*_scores_rank_*.json")            , emit: json     , optional: true
+    tuple val(meta), path("${prefix}/*_predicted_aligned_error_v1.json"), emit: pae      , optional: true
+    tuple val(meta), path("${prefix}/*.a3m")                           , emit: a3m      , optional: true
+    tuple val(meta), path("${prefix}/*.png")                           , emit: png      , optional: true
+    tuple val(meta), path("${prefix}/*.pickle")                        , emit: pickle   , optional: true
+    tuple val(meta), path("${prefix}/*_repr_*.npy")                    , emit: npy      , optional: true
+    tuple val(meta), path("${prefix}/*.result.zip")                    , emit: zip      , optional: true
+    tuple val(meta), path("${prefix}/*_template_domain_names.json")    , emit: templates, optional: true
+    tuple val(meta), path("${prefix}/config.json")                     , emit: config   , optional: true
+    tuple val(meta), path("${prefix}/cite.bibtex")                     , emit: bibtex   , optional: true
+    tuple val(meta), path("${prefix}/log.txt")                         , emit: log      , optional: true
     tuple val("${task.process}"), val('colabfold'), eval("python -c 'import importlib.metadata as m; print(m.version(\"colabfold\"))'"), topic: versions, emit: versions_colabfold
     tuple val("${task.process}"), val('cuda'), eval('python -c "import glob, json, sys; f = glob.glob(sys.prefix + \'/conda-meta/cuda-version-*.json\'); print(json.load(open(f[0]))[\'version\'] if f else \'no CUDA available\')"'), topic: versions, emit: versions_cuda
+    tuple val("${task.process}"), val('dm-haiku'), eval("python -c 'import importlib.metadata as m; print(m.version(\"dm-haiku\"))'"), topic: versions, emit: versions_dm_haiku
+    tuple val("${task.process}"), val('flax'), eval("python -c 'import importlib.metadata as m; print(m.version(\"flax\"))'"), topic: versions, emit: versions_flax
+    tuple val("${task.process}"), val('jax'), eval("python -c 'import importlib.metadata as m; print(m.version(\"jax\"))'"), topic: versions, emit: versions_jax
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}"
-    def data = weights ? "--data ${weights}" : ''
+    def args      = task.ext.args ?: ''
+    prefix        = task.ext.prefix ?: "${meta.id}"
+    def data      = weights ? "--data ${weights}" : ''
+    // Templates are only used when ext.args also contains --templates
+    def template  = templates ? "--custom-template-path ${templates}" : ''
+    def hit_file  = pdb_hits ? "--pdb-hit-file ${pdb_hits}" : ''
+    def pdb_local = local_pdb ? "--local-pdb-path ${local_pdb}" : ''
     """
     # Under Docker the container runs as the host UID, which has no home
     # directory; colabfold_batch needs a writable HOME for its cache.
@@ -40,6 +56,9 @@ process COLABFOLD {
             ${fasta} \\
             ${prefix} \\
             ${data} \\
+            ${template} \\
+            ${hit_file} \\
+            ${pdb_local} \\
             ${args}
     fi
     """
@@ -48,10 +67,17 @@ process COLABFOLD {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir ${prefix}
-    touch ${prefix}/${prefix}_unrelaxed_rank_001_alphafold2_ptm_model_1_seed_000.pdb
-    touch ${prefix}/${prefix}_scores_rank_001_alphafold2_ptm_model_1_seed_000.json
-    touch ${prefix}/${prefix}.a3m
-    touch ${prefix}/${prefix}_plddt.png
-    touch ${prefix}/log.txt
+    if [ -s ${fasta} ]; then
+        touch ${prefix}/${prefix}_unrelaxed_rank_001_alphafold2_ptm_model_1_seed_000.pdb
+        touch ${prefix}/${prefix}_scores_rank_001_alphafold2_ptm_model_1_seed_000.json
+        touch ${prefix}/${prefix}_predicted_aligned_error_v1.json
+        touch ${prefix}/${prefix}.a3m
+        touch ${prefix}/${prefix}_coverage.png
+        touch ${prefix}/${prefix}_pae.png
+        touch ${prefix}/${prefix}_plddt.png
+        touch ${prefix}/config.json
+        touch ${prefix}/cite.bibtex
+        touch ${prefix}/log.txt
+    fi
     """
 }

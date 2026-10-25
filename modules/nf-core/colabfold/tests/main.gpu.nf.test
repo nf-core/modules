@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process COLABFOLD (GPU)"
     script "../main.nf"
     process "COLABFOLD"
+    config "./nextflow.gpu.config"
 
     tag "gpu"
     tag "modules"
@@ -10,13 +11,14 @@ nextflow_process {
     tag "colabfold"
 
     // Weights are passed as [] so colabfold_batch downloads them (~3.5 GB);
-    // they cannot be shipped in nf-core/test-datasets. nextflow.gpu.config
-    // runs a single-sequence prediction, so no MSA server is queried.
+    // they cannot be shipped in nf-core/test-datasets. A single-sequence
+    // prediction queries no MSA server.
     test("proteomics - faa - single sequence - gpu") {
 
-        config "./nextflow.gpu.config"
-
         when {
+            params {
+                module_args = '--msa-mode single_sequence --num-models 1 --num-recycle 1'
+            }
             process {
                 """
                 input[0] = [
@@ -24,6 +26,8 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'proteomics/interproscan/l_arginase.faa', checkIfExists: true)
                 ]
                 input[1] = [ [:], [] ]
+                input[2] = [ [:], [] ]
+                input[3] = [ [:], [], [] ]
                 """
             }
         }
@@ -31,19 +35,24 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ['pdb', 'json', 'png', 'log'])).match() },
-                { assert path(process.out.pdb[0][1]).readLines().any { it.startsWith('ATOM') } },
-                { assert path(process.out.log[0][1]).text.contains('Done') }
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ['pdb', 'json', 'pae', 'png', 'config', 'bibtex', 'log']),
+                    path(process.out.pdb[0][1]).readLines().count { line -> line.startsWith('ATOM') },
+                    path(process.out.json[0][1]).text.contains('plddt'),
+                    path(process.out.log[0][1]).text.contains('Done')
+                ).match() }
             )
         }
     }
 
-    test("proteomics - faa - stub - gpu") {
+    test("proteomics - faa - gpu - stub") {
 
-        config "./nextflow.gpu.config"
         options "-stub"
 
         when {
+            params {
+                module_args = '--msa-mode single_sequence --num-models 1 --num-recycle 1'
+            }
             process {
                 """
                 input[0] = [
@@ -51,6 +60,8 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'proteomics/interproscan/l_arginase.faa', checkIfExists: true)
                 ]
                 input[1] = [ [:], [] ]
+                input[2] = [ [:], [] ]
+                input[3] = [ [:], [], [] ]
                 """
             }
         }

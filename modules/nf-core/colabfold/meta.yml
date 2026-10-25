@@ -44,6 +44,32 @@ input:
         type: directory
         description: Optional ColabFold data directory with the AlphaFold2 parameters in `params/`; pass `[]` to download them
         ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing templates information
+          e.g. [ id:'templates' ]
+    - templates:
+        type: directory
+        description: Optional directory of PDB/mmCIF files used as custom templates (`--custom-template-path`; needs `--templates` in `ext.args`)
+        ontologies:
+          - edam: http://edamontology.org/format_1476 # PDB
+          - edam: http://edamontology.org/format_1477 # mmCIF
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing template hits information
+          e.g. [ id:'pdb_hits' ]
+    - pdb_hits:
+        type: file
+        description: Optional BLAST-m8 PDB hit file for the input MSA, e.g. from colabfold_search (`--pdb-hit-file`; needs `--templates` in `ext.args`)
+        pattern: "*.m8"
+        ontologies: []
+    - local_pdb:
+        type: directory
+        description: Optional local mirror of the PDB mmCIF database, used for the templates in `pdb_hits` (`--local-pdb-path`)
+        ontologies:
+          - edam: http://edamontology.org/format_1477 # mmCIF
 output:
   pdb:
     - - meta:
@@ -69,6 +95,18 @@ output:
           pattern: "*_scores_rank_*.json"
           ontologies:
             - edam: http://edamontology.org/format_3464 # JSON
+  pae:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}/*_predicted_aligned_error_v1.json:
+          type: file
+          description: Predicted aligned error of the best model, in the AlphaFold database format
+          pattern: "*_predicted_aligned_error_v1.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
   a3m:
     - - meta:
           type: map
@@ -92,6 +130,77 @@ output:
           pattern: "*.png"
           ontologies:
             - edam: http://edamontology.org/format_3603 # PNG
+  pickle:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}/*.pickle:
+          type: file
+          description: Raw model outputs (`--save-all`) or the MSA and template features (`--msa-only`)
+          pattern: "*.pickle"
+          ontologies:
+            - edam: http://edamontology.org/format_4002 # pickle
+  npy:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}/*_repr_*.npy:
+          type: file
+          description: Single and pair representation embeddings (`--save-single-representations`, `--save-pair-representations`)
+          pattern: "*_repr_*.npy"
+          ontologies:
+            - edam: http://edamontology.org/format_4003 # NumPy format
+  zip:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}/*.result.zip:
+          type: file
+          description: All results of a query zipped into one archive (`--zip`; the other outputs are then removed)
+          pattern: "*.result.zip"
+          ontologies:
+            - edam: http://edamontology.org/format_3987 # ZIP format
+  templates:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}/*_template_domain_names.json:
+          type: file
+          description: Templates found for each query (`--templates`)
+          pattern: "*_template_domain_names.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  config:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}/config.json:
+          type: file
+          description: Parameters of the colabfold_batch run
+          pattern: "config.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  bibtex:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'sample1' ]
+      - ${prefix}/cite.bibtex:
+          type: file
+          description: Citations for the tools and databases used in the run
+          pattern: "cite.bibtex"
+          ontologies: []
   log:
     - - meta:
           type: map
@@ -124,6 +233,36 @@ output:
       - python -c "import glob, json, sys; f = glob.glob(sys.prefix + '/conda-meta/cuda-version-*.json'); print(json.load(open(f[0]))['version'] if f else 'no CUDA available')":
           type: eval
           description: CUDA version of the task's environment, or `no CUDA available` on the CPU path
+  versions_dm_haiku:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dm-haiku:
+          type: string
+          description: The name of the tool
+      - python -c 'import importlib.metadata as m; print(m.version("dm-haiku"))':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_flax:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - flax:
+          type: string
+          description: The name of the tool
+      - python -c 'import importlib.metadata as m; print(m.version("flax"))':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_jax:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - jax:
+          type: string
+          description: The name of the tool
+      - python -c 'import importlib.metadata as m; print(m.version("jax"))':
+          type: eval
+          description: The expression to obtain the version of the tool
 
 topics:
   versions:
@@ -145,6 +284,33 @@ topics:
       - python -c "import glob, json, sys; f = glob.glob(sys.prefix + '/conda-meta/cuda-version-*.json'); print(json.load(open(f[0]))['version'] if f else 'no CUDA available')":
           type: eval
           description: CUDA version of the task's environment, or `no CUDA available` on the CPU path
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dm-haiku:
+          type: string
+          description: The name of the tool
+      - python -c 'import importlib.metadata as m; print(m.version("dm-haiku"))':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - flax:
+          type: string
+          description: The name of the tool
+      - python -c 'import importlib.metadata as m; print(m.version("flax"))':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - jax:
+          type: string
+          description: The name of the tool
+      - python -c 'import importlib.metadata as m; print(m.version("jax"))':
+          type: eval
+          description: The expression to obtain the version of the tool
 
 authors:
   - "@Bboy010"
