@@ -7,7 +7,11 @@
                         {
                             "id": "test"
                         },
-                        "test.sortedByCoord.out.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        [
+                            "test.Aligned.sortedByCoord.out.bam:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.Aligned.toTranscriptome.out.bam:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.Aligned.unsort.out.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
                     ]
                 ],
                 "bam_sorted": [
@@ -15,14 +19,24 @@
                         {
                             "id": "test"
                         },
-                        "test.sortedByCoord.out.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.Aligned.sortedByCoord.out.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "bam_transcript": [
-                    
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.Aligned.toTranscriptome.out.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ],
                 "bam_unsorted": [
-                    
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.Aligned.unsort.out.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ],
                 "counts": [
                     [
@@ -33,10 +47,26 @@
                             [
                                 "Summary.csv:md5,d41d8cd98f00b204e9800998ecf8427e",
                                 [
-                                    "filtered.mtx:md5,d41d8cd98f00b204e9800998ecf8427e"
+                                    "barcodes.tsv.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                                    "features.tsv.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                                    "matrix.mtx.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                                 ],
                                 [
-                                    "raw.mtx:md5,d41d8cd98f00b204e9800998ecf8427e"
+                                    "barcodes.tsv.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                                    "features.tsv.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                                    "matrix.mtx.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                                ]
+                            ],
+                            [
+                                [
+                                    "barcodes.tsv.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                                    "features.tsv.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                                    "matrix.mtx.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                                ],
+                                [
+                                    "barcodes.tsv.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                                    "features.tsv.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                                    "matrix.mtx.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                                 ]
                             ]
                         ]
@@ -51,12 +81,23 @@
                             "id": "test"
                         },
                         [
-                            "filtered.mtx:md5,d41d8cd98f00b204e9800998ecf8427e"
+                            "barcodes.tsv.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "features.tsv.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "matrix.mtx.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                         ]
                     ]
                 ],
                 "filtered_velocyto": [
-                    
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "barcodes.tsv.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "features.tsv.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "matrix.mtx.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        ]
+                    ]
                 ],
                 "log_final": [
                     [
@@ -88,12 +129,23 @@
                             "id": "test"
                         },
                         [
-                            "raw.mtx:md5,d41d8cd98f00b204e9800998ecf8427e"
+                            "barcodes.tsv.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "features.tsv.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "matrix.mtx.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                         ]
                     ]
                 ],
                 "raw_velocyto": [
-                    
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "barcodes.tsv.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "features.tsv.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "matrix.mtx.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        ]
+                    ]
                 ],
                 "summary": [
                     [
@@ -115,7 +167,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-10-02T21:37:24.880652191",
+        "timestamp": "2026-10-26T21:04:48.753135788",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"
@@ -129,7 +181,7 @@
                         {
                             "id": "test"
                         },
-                        "test.Aligned.sortedByCoord.out.bam"
+                        "test.Aligned.sortedByCoord.out.bam:md5,42db3e5ef3add64c9bc1e901a11f1652"
                     ]
                 ],
                 "bam_sorted": [
@@ -251,15 +303,19 @@
                         "2.7.11b"
                     ]
                 ]
-            }
+            },
+            "test.Log.final.out",
+            "test.Log.out",
+            "test.Log.progress.out",
+            "dec271e667462dc2c17cdd719f9e65cc"
         ],
-        "timestamp": "2026-10-05T18:15:14.612111688",
+        "timestamp": "2026-10-26T21:04:20.191164143",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"
         }
     },
-    "homo_sapiens - CB_UMI_Simple - gtf": {
+    "homo_sapiens - CB_UMI_Simple - gtf - whitelist": {
         "content": [
             {
                 "bam": [
@@ -267,7 +323,7 @@
                         {
                             "id": "test"
                         },
-                        "test.Aligned.sortedByCoord.out.bam"
+                        "test.Aligned.sortedByCoord.out.bam:md5,d9cb1591795b57daccda1afea022bfa0"
                     ]
                 ],
                 "bam_sorted": [
@@ -290,20 +346,15 @@
                             "id": "test"
                         },
                         [
-                            "Barcodes.stats:md5,4c9c5e67e4f55e6eebd040eba4c9224b",
+                            "Barcodes.stats:md5,3a894f07111ab59b5238914e7ceae1f4",
                             [
-                                "Features.stats:md5,7accf6498d4d910523ae66056a1c7e06",
-                                "Summary.csv:md5,84d031c3083ae44cfa1984733b4875b7",
-                                "UMIperCellSorted.txt:md5,65eab5a93b8411094193a643f5d2ab37",
+                                "Features.stats:md5,258da99ab3f47cb2d7a63d20e1c89146",
+                                "Summary.csv:md5,03c31b9b2cd21c1cb5c84630395bc92f",
+                                "UMIperCellSorted.txt:md5,d41d8cd98f00b204e9800998ecf8427e",
                                 [
-                                    "barcodes.tsv.gz:md5,285d09e1edce3b03c3304d72ec40d71b",
+                                    "barcodes.tsv.gz:md5,99af6308bced17d98db55450b4a92ff2",
                                     "features.tsv.gz:md5,7f05863a60b0ef33073ca1833f27c497",
-                                    "matrix.mtx.gz:md5,83aab899e08867dda0dac194a37dd6bf"
-                                ],
-                                [
-                                    "barcodes.tsv.gz:md5,285d09e1edce3b03c3304d72ec40d71b",
-                                    "features.tsv.gz:md5,7f05863a60b0ef33073ca1833f27c497",
-                                    "matrix.mtx.gz:md5,83aab899e08867dda0dac194a37dd6bf"
+                                    "matrix.mtx.gz:md5,0f1b026163ba642ae67e566b51aad8b8"
                                 ]
                             ]
                         ]
@@ -313,16 +364,7 @@
                     
                 ],
                 "filtered_counts": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "barcodes.tsv.gz:md5,285d09e1edce3b03c3304d72ec40d71b",
-                            "features.tsv.gz:md5,7f05863a60b0ef33073ca1833f27c497",
-                            "matrix.mtx.gz:md5,83aab899e08867dda0dac194a37dd6bf"
-                        ]
-                    ]
+                    
                 ],
                 "filtered_velocyto": [
                     
@@ -357,9 +399,9 @@
                             "id": "test"
                         },
                         [
-                            "barcodes.tsv.gz:md5,285d09e1edce3b03c3304d72ec40d71b",
+                            "barcodes.tsv.gz:md5,99af6308bced17d98db55450b4a92ff2",
                             "features.tsv.gz:md5,7f05863a60b0ef33073ca1833f27c497",
-                            "matrix.mtx.gz:md5,83aab899e08867dda0dac194a37dd6bf"
+                            "matrix.mtx.gz:md5,0f1b026163ba642ae67e566b51aad8b8"
                         ]
                     ]
                 ],
@@ -371,7 +413,7 @@
                         {
                             "id": "test"
                         },
-                        "Summary.csv:md5,84d031c3083ae44cfa1984733b4875b7"
+                        "Summary.csv:md5,03c31b9b2cd21c1cb5c84630395bc92f"
                     ]
                 ],
                 "tab": [
@@ -389,9 +431,13 @@
                         "2.7.11b"
                     ]
                 ]
-            }
+            },
+            "test.Log.final.out",
+            "test.Log.out",
+            "test.Log.progress.out",
+            "dec271e667462dc2c17cdd719f9e65cc"
         ],
-        "timestamp": "2026-10-05T18:15:48.626105626",
+        "timestamp": "2026-10-26T21:04:42.20455345",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"
