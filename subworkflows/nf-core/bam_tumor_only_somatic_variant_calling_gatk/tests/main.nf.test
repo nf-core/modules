@@ -51,7 +51,6 @@ nextflow_workflow {
         }
 
         then {
-            assert workflow.success
             assertAll(
                 { assert process.failed },
                 { assert process.errorReport.contains("WARNING: This module has been deprecated.")}
@@ -96,7 +95,6 @@ nextflow_workflow {
         }
 
         then {
-            assert workflow.success
             assertAll(
                 { assert process.failed },
                 { assert process.errorReport.contains("WARNING: This module has been deprecated.")}
