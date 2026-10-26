@@ -4,8 +4,8 @@ process SCDBLFINDER {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'PLACEHOLDER_SINGULARITY'
-        : 'PLACEHOLDER_DOCKER'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0b/0b7da7136d1cb87691c20da1e7b64b2b9bbd102baee2fbc803aedb7c5f634e7f/data'
+        : 'community.wave.seqera.io/library/bioconductor-anndatar_bioconductor-biocparallel_bioconductor-rhdf5_bioconductor-scdblfinder_bioconductor-singlecellexperiment:b97c9b42c2a89cba'}"
 
     input:
     tuple val(meta), path(h5ad), val(dbr), val(batch_col)

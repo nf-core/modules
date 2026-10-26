@@ -1,5 +1,3 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "scdblfinder"
 description: Detect doublets in single-cell RNA-seq data with scDblFinder
 keywords:
@@ -66,7 +64,7 @@ output:
           pattern: "*.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
-  versions:
+  versions_scdblfinder:
     - versions.yml:
         type: file
         description: File containing software versions
@@ -83,3 +81,27 @@ authors:
   - "@iraajgangavaram"
 maintainers:
   - "@iraajgangavaram"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/bioconductor-anndatar_bioconductor-biocparallel_bioconductor-rhdf5_bioconductor-scdblfinder_bioconductor-singlecellexperiment:0e6bd131698855ce
+      build_id: bd-0e6bd131698855ce_1
+      scan_id: sc-9c1f3d5cfe40ecb0_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/bioconductor-anndatar_bioconductor-biocparallel_bioconductor-rhdf5_bioconductor-scdblfinder_bioconductor-singlecellexperiment:b97c9b42c2a89cba
+      build_id: bd-b97c9b42c2a89cba_1
+      scan_id: sc-6a352442ef2b8297_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bioconductor-anndatar_bioconductor-biocparallel_bioconductor-rhdf5_bioconductor-scdblfinder_bioconductor-singlecellexperiment:d467a3b6af9e4d7c
+      build_id: bd-d467a3b6af9e4d7c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0b/0b7da7136d1cb87691c20da1e7b64b2b9bbd102baee2fbc803aedb7c5f634e7f/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bioconductor-anndatar_bioconductor-biocparallel_bioconductor-rhdf5_bioconductor-scdblfinder_bioconductor-singlecellexperiment:d88863dbcee9a94d
+      build_id: bd-d88863dbcee9a94d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e6/e6e9f553f74e33b3bfa50f72ecbbee1e79e2633a5b8b59d3554f54bc8d3fde8f/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/scdblfinder/.conda-lock/linux_amd64-bd-b97c9b42c2a89cba_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/scdblfinder/.conda-lock/linux_arm64-bd-0e6bd131698855ce_1.txt

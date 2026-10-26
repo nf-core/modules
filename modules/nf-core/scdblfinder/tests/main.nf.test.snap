@@ -1,0 +1,139 @@
+{
+    "homo sapiens - pbmc1k - h5ad": {
+        "content": [
+            {
+                "SCDBLFINDER": {
+                    "r-base": "4.5.3",
+                    "scdblfinder": "1.24.0"
+                }
+            },
+            {
+                "n_obs": 1000,
+                "n_vars": 1000,
+                "obs": {
+                    "index": "_index",
+                    "columns": [
+                        "batch",
+                        "scDblFinder.class",
+                        "scDblFinder.cxds_score",
+                        "scDblFinder.score",
+                        "scDblFinder.weighted"
+                    ]
+                },
+                "var": {
+                    "index": "_index",
+                    "columns": [
+                        "gene_ids"
+                    ]
+                },
+                "layers": [
+                    "X"
+                ],
+                "obsm": [
+                    
+                ],
+                "varm": [
+                    
+                ],
+                "obsp": [
+                    
+                ],
+                "varp": [
+                    
+                ],
+                "uns": [
+                    
+                ]
+            }
+        ],
+        "timestamp": "2026-10-26T19:41:54.560187",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.3"
+        }
+    },
+    "homo sapiens - pbmc1k - h5ad - doublet rate and batch column": {
+        "content": [
+            {
+                "SCDBLFINDER": {
+                    "r-base": "4.5.3",
+                    "scdblfinder": "1.24.0"
+                }
+            },
+            {
+                "n_obs": 1000,
+                "n_vars": 1000,
+                "obs": {
+                    "index": "_index",
+                    "columns": [
+                        "batch",
+                        "scDblFinder.class",
+                        "scDblFinder.cxds_score",
+                        "scDblFinder.sample",
+                        "scDblFinder.score",
+                        "scDblFinder.weighted"
+                    ]
+                },
+                "var": {
+                    "index": "_index",
+                    "columns": [
+                        "gene_ids"
+                    ]
+                },
+                "layers": [
+                    "X"
+                ],
+                "obsm": [
+                    
+                ],
+                "varm": [
+                    
+                ],
+                "obsp": [
+                    
+                ],
+                "varp": [
+                    
+                ],
+                "uns": [
+                    
+                ]
+            }
+        ],
+        "timestamp": "2026-10-26T20:10:27.824759",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.3"
+        }
+    },
+    "homo sapiens - pbmc1k - h5ad - stub": {
+        "content": [
+            {
+                "h5ad": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_scdblfinder.h5ad:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "predictions": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test_scdblfinder.csv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_scdblfinder": [
+                    "versions.yml:md5,3b512f453287090fefffa1d1f5097124"
+                ]
+            }
+        ],
+        "timestamp": "2026-10-26T20:11:05.290856",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.3"
+        }
+    }
+}
