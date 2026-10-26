@@ -46,7 +46,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out.tbi,
-                    process.out.rdata,
+                    process.out.rdata.collect { meta, dir -> [ meta, new File(dir.toString()).list().sort() ] }, // RData md5 differs between environments
                     process.out.vcf.collect{ meta, vcf -> [
                         meta,
                         path(vcf).vcf.header.getGenotypeSamples().sort(),
@@ -118,7 +118,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out.tbi,
-                    process.out.rdata,
+                    process.out.rdata.collect { meta, dir -> [ meta, new File(dir.toString()).list().sort() ] }, // RData md5 differs between environments
                     process.out.vcf.collect{ meta, vcf -> [
                         meta,
                         path(vcf).vcf.header.getGenotypeSamples().sort(),
@@ -201,7 +201,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.tbi,
                     plots.sort(),
-                    process.out.rdata,
+                    process.out.rdata.collect { meta, dir -> [ meta, new File(dir.toString()).list().sort() ] }, // RData md5 differs between environments
                     process.out.vcf.collect{ meta, vcf -> [
                         meta,
                         path(vcf).vcf.header.getGenotypeSamples().sort(),
