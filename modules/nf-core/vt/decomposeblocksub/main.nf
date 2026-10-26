@@ -5,8 +5,8 @@ process VT_DECOMPOSEBLOCKSUB {
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5d/5d2ef4f2d3563e300c139cd56c0b6196c00c9cceca2d120384b5a0615267f630/data'
-        : 'community.wave.seqera.io/library/vt:0.57721--d3fc8e5bf1a4b0de'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/15/15c33ba0e0d0e953d83fa810e10ebb0e1617a539ff82660ba7b641154fd3d25b/data'
+        : 'community.wave.seqera.io/library/vt:0.57721--83c629c7e3923326'}"
 
     input:
     tuple val(meta), path(vcf), path(index), path(intervals)
