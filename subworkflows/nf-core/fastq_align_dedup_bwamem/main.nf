@@ -1,4 +1,4 @@
-// Copyright (c) the nf-core community under an open-source MIT license. 
+// Copyright (c) the nf-core community under an open-source MIT license.
 // See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
 
 include { BAM_SORT_STATS_SAMTOOLS       } from '../../nf-core/bam_sort_stats_samtools/main'

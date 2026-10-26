@@ -1,4 +1,4 @@
-// Copyright (c) the nf-core community under an open-source MIT license. 
+// Copyright (c) the nf-core community under an open-source MIT license.
 // See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
 
 // Safely quote a Groovy value as a single-quoted R string literal. Used everywhere

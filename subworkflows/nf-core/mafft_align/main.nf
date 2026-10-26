@@ -1,4 +1,4 @@
-// Copyright (c) the nf-core community under an open-source MIT license. 
+// Copyright (c) the nf-core community under an open-source MIT license.
 // See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
 
 include { MAFFT_ALIGN as MAFFT_ALIGN_MODULE } from '../../../modules/nf-core/mafft/align/main'
