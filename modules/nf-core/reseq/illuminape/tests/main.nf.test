@@ -10,14 +10,9 @@ nextflow_process {
     tag "reseq"
     tag "reseq/illuminape"
 
-    config "./nextflow.config"
-
     test("homo_sapiens - bam") {
 
         when {
-            params {
-                config_args = '--invalid-option'
-            }
             process {
                 """
                 def adaptersFile = file("adapters.fa")
@@ -32,7 +27,7 @@ nextflow_process {
                     fasta: file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
                     adapter_fasta: adaptersFile,
                     adapter_matrix: matrixFile,
-                    reseq_illuminape_args: params.module_args
+                    reseq_illuminape_args: '--numReads 100 --seed 42 --minMapQ 0'
                 ))
                 """
             }
@@ -65,9 +60,6 @@ nextflow_process {
         options "-stub"
 
         when {
-            params {
-                config_prefix = 'configured'
-            }
             process {
                 """
                 input[0] = channel.of(record(
