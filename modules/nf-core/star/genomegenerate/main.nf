@@ -22,6 +22,8 @@ process STAR_GENOMEGENERATE {
 
     script:
     def args        = task.ext.args ?: ''
+    def args2       = task.ext.args2 ?: ''
+    def args3       = task.ext.args3 ?: ''
     def args_list   = args.tokenize()
     def memory      = task.memory ? "--limitGenomeGenerateRAM ${(task.memory.toBytes() * 0.9).longValue()}" : ''
     def include_gtf = gtf ? "--sjdbGTFfile $gtf" : ''
@@ -39,8 +41,8 @@ process STAR_GENOMEGENERATE {
         """
     } else {
         """
-        samtools faidx $fasta
-        NUM_BASES=`gawk '{sum = sum + \$2}END{if ((log(sum)/log(2))/2 - 1 > 14) {printf "%.0f", 14} else {printf "%.0f", (log(sum)/log(2))/2 - 1}}' ${fasta}.fai`
+        samtools faidx $args2 $fasta
+        NUM_BASES=`gawk $args3 '{sum = sum + \$2}END{if ((log(sum)/log(2))/2 - 1 > 14) {printf "%.0f", 14} else {printf "%.0f", (log(sum)/log(2))/2 - 1}}' ${fasta}.fai`
 
         mkdir star
         STAR \\

@@ -5,6 +5,10 @@ keywords:
   - fasta
   - genome
   - reference
+  - multi-tool
+  - star
+  - samtools
+  - gawk
 tools:
   - star:
       description: |
@@ -13,8 +17,31 @@ tools:
       homepage: https://github.com/alexdobin/STAR
       manual: https://github.com/alexdobin/STAR/blob/master/doc/STARmanual.pdf
       doi: 10.1093/bioinformatics/bts635
-      licence: ["MIT"]
+      licence:
+        - "MIT"
+      args_id: "$args"
       identifier: biotools:star
+  - samtools:
+      description: |
+        SAMtools is a set of utilities for interacting with and post-processing
+        short DNA sequence read alignments in the SAM, BAM and CRAM formats, written by Heng Li.
+        These files are generated as output by short read aligners like BWA.
+      homepage: http://www.htslib.org/
+      documentation: http://www.htslib.org/doc/samtools.html
+      doi: 10.1093/bioinformatics/btp352
+      licence:
+        - "MIT"
+      args_id: "$args2"
+      identifier: biotools:samtools
+  - gawk:
+      description: "GNU awk"
+      homepage: "https://www.gnu.org/software/gawk/"
+      documentation: "https://www.gnu.org/software/gawk/manual/"
+      tool_dev_url: "https://www.gnu.org/prep/ftp.html"
+      licence:
+        - "GPL v3"
+      args_id: "$args3"
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -24,7 +51,8 @@ input:
     - fasta:
         type: file
         description: Fasta file of the reference genome
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
   - - meta2:
         type: map
         description: |
@@ -32,8 +60,9 @@ input:
           e.g. [ id:'test' ]
     - gtf:
         type: file
-        description: GTF file of the reference genome
-        ontologies: []
+        description: Optional GTF file of the reference genome, used to build the splice junction database
+        ontologies:
+          - edam: "http://edamontology.org/format_2306" # GTF
 output:
   index:
     - - meta:
