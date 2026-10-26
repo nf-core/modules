@@ -19,6 +19,7 @@ process GATK4_HAPLOTYPECALLER {
     tuple val(meta), path("*.vcf.gz"), emit: vcf
     tuple val(meta), path("*.tbi"), emit: tbi, optional: true
     tuple val(meta), path("*.realigned.bam"), emit: bam, optional: true
+    tuple val(meta), path("*.realigned.bai"), emit: bai, optional: true
     tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
@@ -59,7 +60,7 @@ process GATK4_HAPLOTYPECALLER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def bamout_command = args.contains("--bam-writer-type") ? "--bam-output ${prefix.replaceAll('.g\\s*$', '')}.realigned.bam" : ""
 
-    def stub_realigned_bam = bamout_command ? "touch ${prefix.replaceAll('.g\\s*$', '')}.realigned.bam" : ""
+    def stub_realigned_bam = bamout_command ? "touch ${prefix.replaceAll('.g\\s*$', '')}.realigned.bam ${prefix.replaceAll('.g\\s*$', '')}.realigned.bai" : ""
     """
     echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi

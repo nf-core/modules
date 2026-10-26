@@ -123,6 +123,17 @@ output:
           description: Assembled haplotypes and locally realigned reads
           pattern: "*.realigned.bam"
           ontologies: []
+  bai:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.realigned.bai":
+          type: file
+          description: Index of the realigned BAM file (written by GATK when `--bam-writer-type` is set and BAM index creation is enabled, which is the default)
+          pattern: "*.realigned.bai"
+          ontologies: []
   versions_gatk4:
     - - ${task.process}:
           type: string
