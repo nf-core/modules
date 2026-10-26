@@ -56,20 +56,8 @@ nextflow_workflow {
         then {
             assert workflow.success
             assertAll(
-                { assert snapshot(
-                    file(workflow.out.artifact_priors[0][1]).name,
-                    workflow.out.contamination_table,
-                    workflow.out.filtered_stats,
-                    file(workflow.out.filtered_tbi[0][1]).name,
-                    workflow.out.filtered_vcf.collect { meta, vcf -> [meta, "${file(vcf).name},variantsMD5:${path(vcf).vcf.variantsMD5}"] },
-                    file(workflow.out.mutect2_f1r2[0][1]).name,
-                    workflow.out.mutect2_stats,
-                    file(workflow.out.mutect2_tbi[0][1]).name,
-                    workflow.out.mutect2_vcf.collect { meta, vcf -> [meta, "${file(vcf).name},variantsMD5:${path(vcf).vcf.variantsMD5}"] },
-                    workflow.out.pileup_table_normal,
-                    workflow.out.pileup_table_tumor,
-                    workflow.out.segmentation_table
-                ).match() }
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.")}
             )
         }
     }
@@ -115,7 +103,8 @@ nextflow_workflow {
         then {
             assert workflow.success
             assertAll(
-                { assert snapshot(workflow.out).match() }
+                { assert process.failed },
+                { assert process.errorReport.contains("WARNING: This module has been deprecated.")}
             )
         }
     }
