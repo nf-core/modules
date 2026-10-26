@@ -4,8 +4,8 @@ process PICARD_COLLECTWGSMETRICS {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b4/b474c6f12c0502377b95062b75ef4b7778864b1353c7fc1d5a3b1f3b3017fd2e/data'
-        : 'community.wave.seqera.io/library/picard:3.5.0--842d4c70c98af9b4'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/eb/eb0017f30def00fe4a6b81c0667759b4b9092c1772443c719cab854346a68daa/data'
+        : 'community.wave.seqera.io/library/picard_r-base:5659104ba2ac5868'}"
 
     input:
     tuple val(meta), path(bam), path(bai)

@@ -22,11 +22,10 @@ input:
           e.g. [ id:'sample1' ]
     - roh:
         type: file
-        description: Output of BCFtools_roh. Contains site-specific and/or
-          per-region runs of homo/autozygosity calls.
+        description: Output of BCFtools_roh. Contains site-specific and/or per-region runs of homo/autozygosity calls.
         pattern: "*.roh"
         ontologies: []
-  - - meta1:
+  - - meta2:
         type: map
         description: |
           Groovy Map containing sample information
@@ -39,8 +38,7 @@ input:
           - edam: http://edamontology.org/format_3016
   - regions_list:
       type: file
-      description: "Regions can be specified either on command line or in a VCF, BED,
-        or tab-delimited file (the default)."
+      description: "Regions can be specified either on command line or in a VCF, BED, or tab-delimited file (the default)."
       ontologies: []
   - samples_file:
       type: file
@@ -101,3 +99,27 @@ topics:
           description: The expression to obtain the version of the tool
 authors:
   - "@yz533cb"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bcftools_htslib_less:44d372581fd03e09
+      build_id: bd-44d372581fd03e09_1
+      scan_id: sc-2b41a662036d12dc_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/bcftools_htslib_less:1b4450ab09fa365d
+      build_id: bd-1b4450ab09fa365d_1
+      scan_id: sc-2298c904d476044a_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bcftools_htslib_less:c7feb462daddc48b
+      build_id: bd-c7feb462daddc48b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/81/814ec577475a942923f56b557323b0e897de7ddd62575ebf4a9405b8ccbbd9f0/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bcftools_htslib_less:ad49f110bc3e0c9d
+      build_id: bd-ad49f110bc3e0c9d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/23/23929960155bf38dd96bdc4a133761cae491644c7c85932e846fa6b80c5e99fd/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bcftools/rohviz/.conda-lock/linux_amd64-bd-44d372581fd03e09_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/bcftools/rohviz/.conda-lock/linux_arm64-bd-1b4450ab09fa365d_1.txt

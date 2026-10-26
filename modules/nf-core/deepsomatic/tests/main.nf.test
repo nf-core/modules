@@ -9,34 +9,21 @@ nextflow_process {
     tag "deepsomatic"
 
     test("tumor_normal_pair") {
-        config './nextflow.config'
-
+        config "./nextflow.config"
         when {
             process {
                 """
                 input[0] = [
-                    [ id:'tumor_vs_normal' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true)
-                ]
-                input[1] = [
-                    [ id:'intervals' ],
+                    [ id:'pair' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam.bai', checkIfExists: true),
                     []
                 ]
-                input[2] = [
-                    [ id:'genome' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
-                ]
-                input[3] = [
-                    [ id:'genome' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
-                ]
-                input[4] = [
-                    [ id: 'gzi' ],
-                    []
-                ]
+                input[1] = [[ id:'genome' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
+                input[2] = [[ id:'genome' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)]
+                input[3] = [[ id:'genome' ], []]
                 """
             }
         }
@@ -44,16 +31,97 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                {
-                    assert snapshot(
-                        process.out.vcf.collect { file(it[1]).getName() },
-                        process.out.tbi.collect { file(it[1]).getName() },
-                        process.out.findAll { key, val -> key.startsWith('versions') },
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf", "gvcf"], unstableKeys: ["vcf_tbi", "gvcf_tbi"])).match() }
             )
         }
+    }
 
+    test("bam - vcf and gvcf - bed intervals") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                def bed = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.multi_intervals.bed', checkIfExists: true)
+                input[0] = [
+                    [ id:'pair' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam.bai', checkIfExists: true),
+                    bed
+                ]
+                input[1] = [[ id:'genome' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
+                input[2] = [[ id:'genome' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)]
+                input[3] = [[ id:'genome' ], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf", "gvcf"], unstableKeys: ["vcf_tbi", "gvcf_tbi"])).match() }
+            )
+        }
+    }
+
+    test("cram - vcf and gvcf") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                def bed = file('region.bed')
+                bed.text = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.multi_intervals.bed').readLines()[0] + '\\n'
+                input[0] = [
+                    [ id:'pair' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test2.paired_end.sorted.cram', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test2.paired_end.sorted.cram.crai', checkIfExists: true),
+                    bed
+                ]
+                input[1] = [[ id:'genome' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
+                input[2] = [[ id:'genome' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)]
+                input[3] = [[ id:'genome' ], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf", "gvcf"], unstableKeys: ["vcf_tbi", "gvcf_tbi"])).match() }
+            )
+        }
+    }
+
+    test("tumor_normal_pair - stub") {
+        config "./nextflow.config"
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'pair' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.sorted.bam.bai', checkIfExists: true),
+                    []
+                ]
+                input[1] = [[ id:'genome' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
+                input[2] = [[ id:'genome' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)]
+                input[3] = [[ id:'genome' ], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
     }
 
 }

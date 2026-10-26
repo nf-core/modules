@@ -3,9 +3,9 @@ process CUSTOM_PCACLUSTERING {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a3/a37807bdaf3edad30a2b212962b6af381bc10381a80c40efb2bb07f6ee43032f/data' :
-        'community.wave.seqera.io/library/numpy_pandas_python_pyyaml_scikit-learn:c500ceb82d3d7606' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/79/7954a01492f2eda956d7646dfdc88f3146e2a65cfd2c4cb22f935938408811cd/data'
+        : 'community.wave.seqera.io/library/numpy_pandas_python_pyyaml_scikit-learn:b745a964522e2e96'}"
 
     input:
     tuple val(meta), path(features)

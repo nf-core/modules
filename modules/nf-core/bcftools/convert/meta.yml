@@ -7,12 +7,7 @@ keywords:
   - gvcf
 tools:
   - "bcftools":
-      description: "BCFtools is a set of utilities that manipulate variant calls in
-        the Variant Call Format (VCF) and its binary counterpart BCF. All commands work
-        transparently with both VCFs and BCFs, both uncompressed and BGZF-compressed.\
-        \  Most commands accept VCF, bgzipped VCF and BCF with filetype detected automatically
-        even when streaming from a pipe. Indexed VCF and BCF will work in all situations.
-        Un-indexed VCF and BCF and streams will work in most, but not all situations."
+      description: "BCFtools is a set of utilities that manipulate variant calls in the Variant Call Format (VCF) and its binary counterpart BCF. All commands work transparently with both VCFs and BCFs, both uncompressed and BGZF-compressed.  Most commands accept VCF, bgzipped VCF and BCF with filetype detected automatically even when streaming from a pipe. Indexed VCF and BCF will work in all situations. Un-indexed VCF and BCF and streams will work in most, but not all situations."
       homepage: "https://samtools.github.io/bcftools/bcftools.html"
       documentation: "https://samtools.github.io/bcftools/bcftools.html#convert"
       tool_dev_url: "https://github.com/samtools/bcftools"
@@ -49,8 +44,7 @@ input:
           e.g. [ id:'genome' ]
     - fasta:
         type: file
-        description: (Optional) The reference fasta, only needed for gVCF
-          conversion
+        description: (Optional) The reference fasta, only needed for gVCF conversion
         pattern: "*.{fa,fasta}"
         ontologies: []
   - bed:
@@ -67,8 +61,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.vcf.gz":
           type: file
-          description: VCF merged output file (bgzipped) => when `--output-type z`
-            is used
+          description: VCF merged output file (bgzipped) => when `--output-type z` is used
           pattern: "*.vcf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989
@@ -92,8 +85,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.bcf.gz":
           type: file
-          description: BCF merged output file (bgzipped) => when `--output-type b`
-            is used
+          description: BCF merged output file (bgzipped) => when `--output-type b` is used
           pattern: "*.bcf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989
@@ -182,3 +174,27 @@ maintainers:
   - "@nvnieuwk"
   - "@ramprasadn"
   - "@atrigila"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bcftools_htslib:1.23.1--4e7d12da6416a855
+      build_id: bd-4e7d12da6416a855_1
+      scan_id: sc-ec867ada3e6f3e30_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/bcftools_htslib:1.23.1--ee50eeca823501dd
+      build_id: bd-ee50eeca823501dd_1
+      scan_id: sc-817d151a9322dc7e_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bcftools_htslib:1.23.1--0e9b1d4a4e3f7742
+      build_id: bd-0e9b1d4a4e3f7742_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cb/cb013e43f0138401d7c76269b53afb00eaae3f824be484631f811a6a7a05c895/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bcftools_htslib:1.23.1--81850d175cb7048b
+      build_id: bd-81850d175cb7048b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/16/164b5421d87e69f8e9f5add5a937e148e8165f11bfb18159da607f56ecdb1495/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bcftools/convert/.conda-lock/linux_amd64-bd-4e7d12da6416a855_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/bcftools/convert/.conda-lock/linux_arm64-bd-ee50eeca823501dd_1.txt
