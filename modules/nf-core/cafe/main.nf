@@ -2,9 +2,9 @@ process CAFE {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cafe:5.1.0--h43eeafb_0':
-        'quay.io/biocontainers/cafe:5.1.0--h43eeafb_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1a/1abaff43e5320ef242c17d05367cb50bf1e256c0e4f9211e522e0c187b7ab4ba/data'
+        : 'community.wave.seqera.io/library/cafe:5.1.0--4ba563d3b90c6a6e'}"
 
     input:
     tuple val(meta), path(infile)

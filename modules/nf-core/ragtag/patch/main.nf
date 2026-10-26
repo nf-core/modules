@@ -4,8 +4,8 @@ process RAGTAG_PATCH {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/ragtag:2.1.0--pyhb7b1952_0'
-        : 'quay.io/biocontainers/ragtag:2.1.0--pyhb7b1952_0'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e7/e783bbc5474a09f51a0f93142fb94a864715e77b40d9b33e11b53b9c6c4d08cf/data'
+        : 'community.wave.seqera.io/library/ragtag:2.1.0--6125126fe9d553ab'}"
 
     input:
     tuple val(meta), path(target, name: 'target/*')

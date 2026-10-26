@@ -3,9 +3,9 @@ process CUSTOM_ORFMERGE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/15/15f690593e9d2bd7ebeb72fff4068eeae9cdfc909103de457b81a25d29cfbef3/data' :
-        'community.wave.seqera.io/library/python_pyyaml:25b0f22c7e7bf847' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ca/caf07471ede03189e710de9163ae02e17bf33643bdcd6f1084ef57484174bf7c/data'
+        : 'community.wave.seqera.io/library/python_pyyaml:14e95bf7fff3fa6c'}"
 
     input:
     tuple val(meta), path(bed12s, arity: '1..*', stageAs: 'beds/*'), path(tsvs, arity: '1..*', stageAs: 'tsvs/*')

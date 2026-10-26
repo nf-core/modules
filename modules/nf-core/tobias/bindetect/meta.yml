@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "tobias_bindetect"
 description: Estimate transcription factor binding and differential binding from ATAC-seq footprint BigWig tracks with TOBIAS BINDetect
 keywords:
@@ -126,3 +125,27 @@ authors:
   - "@PFRoux"
 maintainers:
   - "@PFRoux"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/tobias_python:222bdc3e7487305e
+      build_id: bd-222bdc3e7487305e_1
+      scan_id: sc-63daf61793691df7_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/tobias_python:33fc15661f1e50e6
+      build_id: bd-33fc15661f1e50e6_1
+      scan_id: sc-c79ec84d84a10916_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/tobias_python:16130e67ab05beeb
+      build_id: bd-16130e67ab05beeb_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/eb/eb99dc2a6b4da1bed5ad4d66f889e3830d7682d9e727df26337434d784868353/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/tobias_python:c522dec3f80544bf
+      build_id: bd-c522dec3f80544bf_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4c/4cf1343ef20414960e07246530fe593917981d10cc6adf113dd438033ae9d808/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/tobias/bindetect/.conda-lock/linux_amd64-bd-33fc15661f1e50e6_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/tobias/bindetect/.conda-lock/linux_arm64-bd-222bdc3e7487305e_1.txt

@@ -3,9 +3,9 @@ process BEDGOVCF {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bedgovcf:0.1.1--h9ee0642_1':
-        'quay.io/biocontainers/bedgovcf:0.1.1--h9ee0642_1' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ab/ab4acf46a862a46d7ab0532fd0f8ced56a5b9c6c504efb11aea6c8885a13a61d/data'
+        : 'community.wave.seqera.io/library/bedgovcf_htslib:2bbad2d9385390fd' }"
 
     input:
     tuple val(meta), path(bed), path(config)

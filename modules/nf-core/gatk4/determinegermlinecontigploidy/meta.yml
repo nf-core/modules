@@ -1,6 +1,5 @@
 name: "gatk4_determinegermlinecontigploidy"
-description: Determines the baseline contig ploidy for germline samples given counts
-  data
+description: Determines the baseline contig ploidy for germline samples given counts data
 keywords:
   - copy number
   - counts
@@ -31,14 +30,12 @@ input:
           - edam: http://edamontology.org/format_3475 # TSV
     - bed:
         type: file
-        description: Optional - A bed file containing the intervals to include in the
-          process
+        description: Optional - A bed file containing the intervals to include in the process
         pattern: "*.bed"
         ontologies: []
     - exclude_beds:
         type: file
-        description: Optional - One or more bed files containing intervals to exclude
-          from the process
+        description: Optional - One or more bed files containing intervals to exclude from the process
         pattern: "*.bed"
         ontologies: []
   - - meta2:
@@ -106,3 +103,17 @@ authors:
   - "@nvnieuwk"
 maintainers:
   - "@nvnieuwk"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/gatk4-main_gcnvkernel:600cef9dfbee0739
+      build_id: bd-600cef9dfbee0739_1
+      scan_id: sc-40c20bbc31bf67e6_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/gatk4-main_gcnvkernel:a98a8de6b0fd3804
+      build_id: bd-a98a8de6b0fd3804_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b9/b9822b92da68a3e7916072218082e3fa79bebc2f377947c363613adeecd56ec5/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/gatk4/determinegermlinecontigploidy/.conda-lock/linux_amd64-bd-600cef9dfbee0739_1.txt

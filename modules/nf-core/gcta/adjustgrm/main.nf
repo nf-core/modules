@@ -3,8 +3,8 @@ process GCTA_ADJUSTGRM {
     label 'process_medium'
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/46/46b0d05f0daa47561d87d2a9cac5e51edc2c78e26f1bbab439c688386241a274/data'
-        : 'community.wave.seqera.io/library/gcta:1.94.1--9bc35dc424fcf6e9'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/56/56e7d9dd85fa648387dcb28e6f9c2eb293c5b2f444f5419266be7732cac23f3d/data'
+        : 'community.wave.seqera.io/library/gcta:1.94.1--e22d27187f066d3c'}"
 
     input:
     tuple val(meta), path(grm_files), val(grm_adj)

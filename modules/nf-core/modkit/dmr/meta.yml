@@ -1,6 +1,5 @@
 name: modkit_dmr
-description: Compare regions between a pair of bedMethyl samples (e.g. two haplotypes,
-  or tumor and normal) and report differentially methylated regions
+description: Compare regions between a pair of bedMethyl samples (e.g. two haplotypes, or tumor and normal) and report differentially methylated regions
 keywords:
   - methylation
   - ont
@@ -8,8 +7,7 @@ keywords:
   - differential methylation
 tools:
   - "modkit":
-      description: A bioinformatics tool for working with modified bases in Oxford
-        Nanopore sequencing data
+      description: A bioinformatics tool for working with modified bases in Oxford Nanopore sequencing data
       homepage: https://github.com/nanoporetech/modkit
       documentation: https://github.com/nanoporetech/modkit
       tool_dev_url: https://github.com/nanoporetech/modkit
@@ -23,16 +21,14 @@ input:
           e.g. `[ id:'test' ]`
     - bedmethyl_a:
         type: file
-        description: Bgzipped bedMethyl file for the first (control) sample, as
-          produced by modkit pileup with --bgzf
+        description: Bgzipped bedMethyl file for the first (control) sample, as produced by modkit pileup with --bgzf
         pattern: "*.bed.gz"
         ontologies:
           - edam: "http://edamontology.org/format_3003" # BED
           - edam: "http://edamontology.org/format_3989" # GZIP format
     - bedmethyl_a_tbi:
         type: file
-        description: Tabix index for bedmethyl_a. Must have the same basename with
-          a .tbi extension next to bedmethyl_a
+        description: Tabix index for bedmethyl_a. Must have the same basename with a .tbi extension next to bedmethyl_a
         pattern: "*.bed.gz.tbi"
         ontologies:
           - edam: "http://edamontology.org/format_3700" # Tabix index format
@@ -43,16 +39,14 @@ input:
           input e.g. `[ id:'test' ]`
     - bedmethyl_b:
         type: file
-        description: Bgzipped bedMethyl file for the second (experimental) sample,
-          as produced by modkit pileup with --bgzf
+        description: Bgzipped bedMethyl file for the second (experimental) sample, as produced by modkit pileup with --bgzf
         pattern: "*.bed.gz"
         ontologies:
           - edam: "http://edamontology.org/format_3003" # BED
           - edam: "http://edamontology.org/format_3989" # GZIP format
     - bedmethyl_b_tbi:
         type: file
-        description: Tabix index for bedmethyl_b. Must have the same basename with
-          a .tbi extension next to bedmethyl_b
+        description: Tabix index for bedmethyl_b. Must have the same basename with a .tbi extension next to bedmethyl_b
         pattern: "*.bed.gz.tbi"
         ontologies:
           - edam: "http://edamontology.org/format_3700" # Tabix index format
@@ -63,8 +57,7 @@ input:
           e.g. `[ id:'regions' ]`
     - regions_bed:
         type: file
-        description: Optional BED file of regions over which to compare methylation
-          levels. When omitted, methylation levels are compared at each site instead
+        description: Optional BED file of regions over which to compare methylation levels. When omitted, methylation levels are compared at each site instead
         pattern: "*.bed"
         ontologies:
           - edam: "http://edamontology.org/format_3003" # BED
@@ -97,8 +90,7 @@ output:
             e.g. `[ id:'test' ]`
       - "*.bed":
           type: file
-          description: BED file with the score column indicating the magnitude of
-            the difference in methylation between the two samples
+          description: BED file with the score column indicating the magnitude of the difference in methylation between the two samples
           pattern: "*.bed"
           ontologies:
             - edam: "http://edamontology.org/format_3003" # BED
@@ -138,3 +130,27 @@ authors:
   - "@YannVRB"
 maintainers:
   - "@YannVRB"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/ont-modkit:0.6.4--0c623277f8775a30
+      build_id: bd-0c623277f8775a30_1
+      scan_id: sc-e1e7c8b0343af77b_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/ont-modkit:0.6.4--b0cf3a2b01aa496e
+      build_id: bd-b0cf3a2b01aa496e_1
+      scan_id: sc-bd1a1a2850f5e5a1_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/ont-modkit:0.6.4--b279ba2d2cbcbf95
+      build_id: bd-b279ba2d2cbcbf95_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/65/65e515e445d31be38188af5fe636e71af18abc601afacf80e9021a4752da6332/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/ont-modkit:0.6.4--3622b11f63dc1e51
+      build_id: bd-3622b11f63dc1e51_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7d/7d6b7620af280be798b98266ea5e8542a84991bec149446f2f29567bf89259da/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/modkit/dmr/.conda-lock/linux_amd64-bd-0c623277f8775a30_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/modkit/dmr/.conda-lock/linux_arm64-bd-b0cf3a2b01aa496e_1.txt

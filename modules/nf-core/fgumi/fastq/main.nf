@@ -3,9 +3,9 @@ process FGUMI_FASTQ {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1b/1bc8b529ca211068200eb632191845e5f3fc427505845bcb695d9a8f86bff406/data'
-        : 'community.wave.seqera.io/library/fgumi_gzip:c9ed369c64a58706'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d5/d5b5bf4a43a41e78ad17196aa70c530231c86643fc05f1cf4da530652ed7ba2f/data'
+:         'community.wave.seqera.io/library/fgumi_gzip:8bc5a2c8e02c2900' }"
 
     input:
     tuple val(meta), path(bam)
