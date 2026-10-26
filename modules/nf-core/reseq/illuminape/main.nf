@@ -9,11 +9,6 @@ process RESEQ_ILLUMINAPE {
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/49/494dd5224f3e7314d36af63a0740e51ecfd5373fe993ab3acf914754870e963a/data' :
         'community.wave.seqera.io/library/reseq:1.1--8536b4889ef6d3b8' }"
 
-    ext [
-        prefix: { output_prefix ?: "${id}" },
-        args: { reseq_illuminape_args ?: '' }
-    ]
-
     input:
     record(
         id: String,
@@ -30,13 +25,17 @@ process RESEQ_ILLUMINAPE {
     record(
         id: id,
         meta: meta,
-        fastq: files("*.fq.gz").toSorted()
+        fastq1: file("*_R1.fastq.gz"),
+        fastq2: file("*_R2.fastq.gz")
     )
 
     topic:
     record(process: "${task.process}", tool: 'reseq', version: eval('reseq --version 2>&1 | sed \'s/^.*ReSeq version //\'')) >> 'versions'
 
     script:
+    def ext = task.ext
+    def args = reseq_illuminape_args ?: ext.args ?: ''
+    def prefix = output_prefix ?: ext.prefix ?: id
     def adapter_arg = adapter_fasta ? "--adapterFile ${adapter_fasta}" : ''
     def matrix_arg = adapter_matrix ? "--adapterMatrix ${adapter_matrix}" : ''
     """
@@ -47,17 +46,19 @@ process RESEQ_ILLUMINAPE {
         -b $bam \\
         $adapter_arg \\
         $matrix_arg \\
-        ${task.ext.args} \\
-        -1 ${task.ext.prefix}_R1.fq \\
-        -2 ${task.ext.prefix}_R2.fq
+        $args \\
+        -1 ${prefix}_R1.fastq \\
+        -2 ${prefix}_R2.fastq
 
-    gzip -n ${task.ext.prefix}_R1.fq
-    gzip -n ${task.ext.prefix}_R2.fq
+    gzip -n ${prefix}_R1.fastq
+    gzip -n ${prefix}_R2.fastq
     """
 
     stub:
+    def ext = task.ext
+    def prefix = output_prefix ?: ext.prefix ?: id
     """
-    echo "" | gzip > ${task.ext.prefix}_R1.fq.gz
-    echo "" | gzip > ${task.ext.prefix}_R2.fq.gz
+    echo "" | gzip > ${prefix}_R1.fastq.gz
+    echo "" | gzip > ${prefix}_R2.fastq.gz
     """
 }

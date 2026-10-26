@@ -56,10 +56,10 @@ input:
         ontologies: []
     - reseq_illuminape_args:
         type: string
-        description: Optional additional arguments for reseq illuminaPE; defaults to an empty string
+        description: Optional arguments for reseq illuminaPE; take precedence over ext.args, then default to an empty string
     - output_prefix:
         type: string
-        description: Optional output filename prefix; defaults to id
+        description: Optional output filename prefix; takes precedence over ext.prefix, then defaults to id
 output:
   record:
     - - id:
@@ -68,10 +68,16 @@ output:
       - meta:
           type: map
           description: Input metadata Record, or null when omitted
-      - fastq:
-          type: list
-          description: Ordered list of gzipped simulated FASTQ paths, with R1 before R2
-          pattern: "*_{R1,R2}.fq.gz"
+      - fastq1:
+          type: file
+          description: Gzipped simulated FASTQ file for read 1
+          pattern: "*_R1.fastq.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_1930"
+      - fastq2:
+          type: file
+          description: Gzipped simulated FASTQ file for read 2
+          pattern: "*_R2.fastq.gz"
           ontologies:
             - edam: "http://edamontology.org/format_1930"
 topics:

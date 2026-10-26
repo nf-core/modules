@@ -15,6 +15,9 @@ nextflow_process {
     test("homo_sapiens - bam") {
 
         when {
+            params {
+                config_args = '--invalid-option'
+            }
             process {
                 """
                 def adaptersFile = file("adapters.fa")
@@ -39,7 +42,7 @@ nextflow_process {
             // ReSeq output is not reproducible between runs (multithreaded simulation),
             // so check FASTQ structure rather than md5 sums
             def result = process.out[0][0]
-            def fastqs = result.fastq
+            def fastqs = [result.fastq1, result.fastq2]
             assertAll(
                 { assert process.success },
                 { assert result.id == 'test' },
@@ -50,8 +53,8 @@ nextflow_process {
                 { assert fastqs.every { fq -> path(fq).linesGzip[0].startsWith('@ReseqRead') } },
                 { assert path(fastqs[0]).linesGzip.size() == path(fastqs[1]).linesGzip.size() },
                 { assert snapshot(
-                    process.out[0].collect { output -> [output.meta, output.fastq.collect { fq -> file(fq).name }] },
-                    [versions_reseq: topics.versions.collect { version -> [version.process, version.tool, version.version] }]
+                    process.out[0].collect { output -> [id: output.id, meta: output.meta, fastq1: file(output.fastq1).name, fastq2: file(output.fastq2).name] },
+                    topics.versions
                 ).match() }
             )
         }
@@ -62,6 +65,9 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                config_prefix = 'configured'
+            }
             process {
                 """
                 input[0] = channel.of(record(
@@ -80,10 +86,9 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out[0][0].id == 'different_id' },
                 { assert process.out[0][0].meta == [id: 'test'] },
-                { assert snapshot([
-                    fastq: process.out[0].collect { output -> [output.meta, output.fastq] },
-                    versions_reseq: topics.versions.collect { version -> [version.process, version.tool, version.version] }
-                ]).match() }
+                { assert file(process.out[0][0].fastq1).name == 'test_R1.fastq.gz' },
+                { assert file(process.out[0][0].fastq2).name == 'test_R2.fastq.gz' },
+                { assert snapshot(process.out[0], topics.versions).match() }
             )
         }
     }
@@ -110,9 +115,11 @@ nextflow_process {
                 { assert process.out[0][0].id == 'minimal' },
                 { assert process.out[0][0].containsKey('meta') },
                 { assert process.out[0][0].meta == null },
-                { assert process.out[0][0].fastq.collect { fq -> file(fq).name } == ['minimal_R1.fq.gz', 'minimal_R2.fq.gz'] },
-                { assert process.out[0][0].fastq.every { fq -> path(fq).linesGzip == [''] } },
-                { assert topics.versions == [[process: 'RESEQ_ILLUMINAPE', tool: 'reseq', version: '1.1']] }
+                { assert file(process.out[0][0].fastq1).name == 'minimal_R1.fastq.gz' },
+                { assert file(process.out[0][0].fastq2).name == 'minimal_R2.fastq.gz' },
+                { assert path(process.out[0][0].fastq1).linesGzip == [''] },
+                { assert path(process.out[0][0].fastq2).linesGzip == [''] },
+                { assert snapshot(process.out[0], topics.versions).match() }
             )
         }
     }
