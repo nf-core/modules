@@ -1,0 +1,85 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "scdblfinder"
+description: Detect doublets in single-cell RNA-seq data with scDblFinder
+keywords:
+  - doublet detection
+  - single-cell
+  - scrnaseq
+  - quality control
+tools:
+  - "scdblfinder":
+      description: "Identifies doublets in single-cell RNA-seq data by comparing each cell with artificial doublets made from the data"
+      homepage: "https://bioconductor.org/packages/scDblFinder"
+      documentation: "https://bioconductor.org/packages/release/bioc/vignettes/scDblFinder/inst/doc/scDblFinder.html"
+      tool_dev_url: "https://github.com/plger/scDblFinder"
+      doi: "10.12688/f1000research.73600.2"
+      licence: ["GPL-3.0-only"]
+      identifier: biotools:scdblfinder
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - h5ad:
+        type: file
+        description: AnnData object in h5ad format with raw counts in `X`
+        pattern: "*.h5ad"
+        ontologies:
+          - edam: http://edamontology.org/format_3590 # HDF5
+    - dbr:
+        type: float
+        description: |
+          Expected doublet rate between 0 and 1. Use `null` to let scDblFinder
+          estimate it.
+    - batch_col:
+        type: string
+        description: |
+          Name of a column in the cell metadata (`obs`) that splits the cells by
+          sample or capture, passed to the `samples` argument of scDblFinder.
+          Use an empty string to treat all cells as one sample.
+
+output:
+  h5ad:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.h5ad":
+          type: file
+          description: Input AnnData object with the scDblFinder columns added to `obs`
+          pattern: "*.h5ad"
+          ontologies:
+            - edam: http://edamontology.org/format_3590 # HDF5
+  predictions:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.csv":
+          type: file
+          description: Per-cell scDblFinder results (class, score and related columns)
+          pattern: "*.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+topics:
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+
+authors:
+  - "@iraajgangavaram"
+maintainers:
+  - "@iraajgangavaram"

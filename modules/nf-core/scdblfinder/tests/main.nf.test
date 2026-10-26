@@ -1,0 +1,95 @@
+nextflow_process {
+
+    name "Test Process SCDBLFINDER"
+    script "../main.nf"
+    process "SCDBLFINDER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "scdblfinder"
+
+    test("homo sapiens - pbmc1k - h5ad") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/pbmc1k.h5ad', checkIfExists: true),
+                    null,
+                    ''
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            def adata = anndata(process.out.h5ad[0][1])
+            with(adata) {
+                assert "scDblFinder.class" in obs.colnames
+                assert "scDblFinder.score" in obs.colnames
+            }
+            assert snapshot(
+                path(process.out.versions_scdblfinder[0]).yaml,
+                adata.yaml
+            ).match()
+        }
+
+    }
+
+    test("homo sapiens - pbmc1k - h5ad - doublet rate and batch column") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/pbmc1k.h5ad', checkIfExists: true),
+                    0.08,
+                    'batch'
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            def adata = anndata(process.out.h5ad[0][1])
+            with(adata) {
+                assert "scDblFinder.class" in obs.colnames
+                assert "scDblFinder.score" in obs.colnames
+            }
+            assert snapshot(
+                path(process.out.versions_scdblfinder[0]).yaml,
+                adata.yaml
+            ).match()
+        }
+
+    }
+
+    test("homo sapiens - pbmc1k - h5ad - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/pbmc1k.h5ad', checkIfExists: true),
+                    null,
+                    ''
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
+        }
+
+    }
+
+}
