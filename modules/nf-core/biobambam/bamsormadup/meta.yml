@@ -117,3 +117,17 @@ authors:
   - "@matthdsm"
 maintainers:
   - "@matthdsm"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/biobambam:2.0.185--f2942b2c30c9eb0a
+      build_id: bd-f2942b2c30c9eb0a_1
+      scan_id: sc-4aa1432d211836d9_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/biobambam:2.0.185--97142ab63c6fabee
+      build_id: bd-97142ab63c6fabee_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4d/4d04c55ec247a77fa53dba65675e35e714ef614cc549f2193058e14312d2448c/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/biobambam/bamsormadup/.conda-lock/linux_amd64-bd-f2942b2c30c9eb0a_1.txt

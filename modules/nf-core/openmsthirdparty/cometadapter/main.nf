@@ -3,9 +3,9 @@ process OPENMSTHIRDPARTY_COMETADAPTER {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/openms-thirdparty:3.5.0--h9ee0642_0' :
-        'quay.io/biocontainers/openms-thirdparty:3.5.0--h9ee0642_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/64/6475e53b3776cd3b71b8ff525f01da9c45dbe9401a00e5630d91ab976f20e8aa/data'
+:         'community.wave.seqera.io/library/openms-thirdparty:3.6.0--566f6f290d39203b' }"
 
     input:
     tuple val(meta), path(mzml), path(fasta)

@@ -38,16 +38,13 @@ input:
           - edam: http://edamontology.org/format_3989 # GZIP format
     - write_align:
         type: boolean
-        description: Flag to save optional alignment output. Specify with 'true'
-          to save.
+        description: Flag to save optional alignment output. Specify with 'true' to save.
     - write_target:
         type: boolean
-        description: Flag to save optional per target summary. Specify with 'true'
-          to save.
+        description: Flag to save optional per target summary. Specify with 'true' to save.
     - write_domain:
         type: boolean
-        description: Flag to save optional per domain summary. Specify with 'true'
-          to save.
+        description: Flag to save optional per domain summary. Specify with 'true' to save.
 output:
   output:
     - - meta:
@@ -70,8 +67,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.sto.gz":
           type: file
-          description: Optional multiple sequence alignment (MSA) in Stockholm
-            format
+          description: Optional multiple sequence alignment (MSA) in Stockholm format
           pattern: "*.{sto.gz}"
           ontologies:
             - edam: http://edamontology.org/format_1961 # Stockholm format
@@ -84,8 +80,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.tbl.gz":
           type: file
-          description: Optional tabular (space-delimited) summary of per-target
-            output
+          description: Optional tabular (space-delimited) summary of per-target output
           pattern: "*.{tbl.gz}"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -97,8 +92,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.domtbl.gz":
           type: file
-          description: Optional tabular (space-delimited) summary of per-domain
-            output
+          description: Optional tabular (space-delimited) summary of per-domain output
           pattern: "*.{domtbl.gz}"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -127,3 +121,27 @@ authors:
   - "@Midnighter"
 maintainers:
   - "@Midnighter"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/hmmer:3.4--ab3efa7c16f46920
+      build_id: bd-ab3efa7c16f46920_1
+      scan_id: sc-c0ab7502d268f963_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/hmmer:3.4--dba1a582dd6d0e9e
+      build_id: bd-dba1a582dd6d0e9e_1
+      scan_id: sc-27b384b8bdd7c7dc_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/hmmer:3.4--27e4a7be1be3f573
+      build_id: bd-27e4a7be1be3f573_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b1/b171806a7b780537073c1e9ffe50885ba7917d8072b5941a125698df1253c4f7/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/hmmer:3.4--714e6d8616316848
+      build_id: bd-714e6d8616316848_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7d/7d5df7ac892df8ccf6662c944de51bf9c76032402bfb9ac0801670c1bae7c0d1/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/hmmer/hmmsearch/.conda-lock/linux_amd64-bd-ab3efa7c16f46920_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/hmmer/hmmsearch/.conda-lock/linux_arm64-bd-dba1a582dd6d0e9e_1.txt

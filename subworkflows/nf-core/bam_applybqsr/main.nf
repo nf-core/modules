@@ -6,7 +6,7 @@ workflow BAM_APPLYBQSR {
     input // channel: [mandatory] [ meta, reads, index, recal ]
     references // channel: [mandatory] [ meta, fasta, fai, dict ]
     intervals // channel: [mandatory] [ intervals, num_intervals ] or [ [], 0 ] if no intervals
-    output_suffix // string: [mandatory] 'bam' or 'cram'
+    output_format // tuple: [mandatory] [ file_type, index_format ] — ['bam','bai'], ['bam','csi'], or ['cram','crai']
 
     main:
     reads_interval = input
@@ -16,17 +16,16 @@ workflow BAM_APPLYBQSR {
         }
 
     // RUN APPLYBQSR
-    GATK4_APPLYBQSR(reads_interval, references, output_suffix)
+    GATK4_APPLYBQSR(reads_interval, references, output_format)
 
-    reads_applybqsr = GATK4_APPLYBQSR.out.bam
-        .mix(GATK4_APPLYBQSR.out.cram)
-        .join(GATK4_APPLYBQSR.out.bai, remainder: true)
+    reads_applybqsr = GATK4_APPLYBQSR.out.reads
+        .join(GATK4_APPLYBQSR.out.index, failOnMismatch: true)
         .branch { meta, _reads, _index ->
             single: meta.num_intervals <= 1
             multiple: meta.num_intervals > 1
         }
 
-    // For multiple intervals, gather and merge the recalibrated cram files
+    // For multiple intervals, gather and merge the recalibrated files
     reads_to_merge = reads_applybqsr.multiple
         .map { meta, reads, index ->
             def merge_meta = meta - meta.subMap('interval')
@@ -34,7 +33,7 @@ workflow BAM_APPLYBQSR {
         }
         .groupTuple()
 
-    SAMTOOLS_MERGE(reads_to_merge, references.map { meta, fasta, fai, _dict -> [meta, fasta, fai, []] }, output_suffix == 'cram' ? 'crai' : 'csi')
+    SAMTOOLS_MERGE(reads_to_merge, references.map { meta, fasta, fai, _dict -> [meta, fasta, fai, []] }, output_format[1])
 
     // Unified output — bam or cram depending on what was produced
     recal_out = SAMTOOLS_MERGE.out.bam
@@ -44,5 +43,5 @@ workflow BAM_APPLYBQSR {
         .map { meta, reads, index -> [meta - meta.subMap('num_intervals', 'interval'), reads, index] }
 
     emit:
-    recal_out = recal_out // channel: [ meta, file, index ]
+    recal_out = recal_out // channel: [ meta, reads, index ]
 }

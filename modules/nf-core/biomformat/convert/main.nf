@@ -3,9 +3,9 @@ process BIOMFORMAT_CONVERT {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/biom-format:2.1.15':
-        'quay.io/biocontainers/biom-format:2.1.15' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/75/75869b198b44682d2c02a6e1734a6c969412207ac059999264c48d5a8deb88ad/data'
+        : 'community.wave.seqera.io/library/biom-format:2.1.15--066b149a595a35c5' }"
 
     input:
     tuple val(meta), path(biom)

@@ -3,9 +3,9 @@ process HMMER_HMMRANK {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/68/68261e24307fdf80b9988d6fd13cf3551735e6dc0e7e38003259f7d8efa84cdb/data' :
-        'community.wave.seqera.io/library/duckdb-cli:1.5.5--9c6d18d9f687a45d' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/68/68261e24307fdf80b9988d6fd13cf3551735e6dc0e7e38003259f7d8efa84cdb/data'
+:         'community.wave.seqera.io/library/duckdb-cli:1.5.5--dca0d52c5239b678' }"
 
     input:
     tuple val(meta), path(tblout), path(domtblout)    // Parquet tables from hmmer/formattsv + duckdb/table2parquet; domtblout is optional ([] when absent)

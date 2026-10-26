@@ -3,9 +3,9 @@ process REPEATMASKER_RMOUTTOGFF3 {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/repeatmasker:4.1.5--pl5321hdfd78af_0':
-        'quay.io/biocontainers/repeatmasker:4.1.5--pl5321hdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/92/92d028817d6ba2afc60f0d7550b7b510395b3b5426420b7e1c6666ee38ebd5a1/data'
+        : 'community.wave.seqera.io/library/repeatmasker:4.1.5--3cc5e72bc3d6ed07'}"
 
     input:
     tuple val(meta), path(out)

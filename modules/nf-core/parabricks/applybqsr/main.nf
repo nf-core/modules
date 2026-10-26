@@ -5,12 +5,10 @@ process PARABRICKS_APPLYBQSR {
     // needed by the module to work properly can be removed when fixed upstream - see: https://github.com/nf-core/modules/issues/7226
     stageInMode 'copy'
 
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.7.1-1"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.8.0-1"
 
     input:
-    tuple val(meta),  path(bam), path(bai)
-    tuple val(meta3), path(bqsr_table)
-    tuple val(meta4), path(intervals)
+    tuple val(meta), path(input), path(input_index), path(bqsr_table), path(intervals)
     tuple val(meta5), path(fasta)
     val output_fmt
 
@@ -38,7 +36,7 @@ process PARABRICKS_APPLYBQSR {
     pbrun \\
         applybqsr \\
         --ref ${fasta} \\
-        --in-bam ${bam} \\
+        --in-bam ${input} \\
         --in-recal-file ${bqsr_table} \\
         ${interval_command} \\
         --out-bam ${prefix}.${extension} \\

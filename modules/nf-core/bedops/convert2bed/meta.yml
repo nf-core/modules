@@ -61,3 +61,27 @@ authors:
   - "@rannick"
 maintainers:
   - "@rannick"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bedops:2.4.42--1f31d470625cb9a3
+      build_id: bd-1f31d470625cb9a3_1
+      scan_id: sc-4a454c843718f872_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/bedops:2.4.42--ea225be56e6ef0cc
+      build_id: bd-ea225be56e6ef0cc_1
+      scan_id: sc-daefecfad5b11bbc_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bedops:2.4.42--cc2465f496316e49
+      build_id: bd-cc2465f496316e49_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/46/46dc39b50ab3b00b757de451db624d1fdec87ee14a0cd5234598b71f200d92e0/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bedops:2.4.42--5ad624d2d1d33a67
+      build_id: bd-5ad624d2d1d33a67_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d5/d56c872a8692bd1fdcfa0892052efe41bb47affdb44651170a5aae66d97acd77/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bedops/convert2bed/.conda-lock/linux_amd64-bd-1f31d470625cb9a3_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/bedops/convert2bed/.conda-lock/linux_arm64-bd-ea225be56e6ef0cc_1.txt

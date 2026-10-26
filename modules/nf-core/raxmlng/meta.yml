@@ -78,3 +78,27 @@ authors:
 maintainers:
   - "@avantonder"
   - "@aunderwo"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/raxml-ng:1.2.2--ce82f06e00c2497b
+      build_id: bd-ce82f06e00c2497b_1
+      scan_id: sc-fcebc7465079040f_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/raxml-ng:1.2.2--c57eff04b1be0787
+      build_id: bd-c57eff04b1be0787_1
+      scan_id: sc-f863b7ed0706017b_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/raxml-ng:1.2.2--8e5e7703ca6acda6
+      build_id: bd-8e5e7703ca6acda6_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/19/1925510f6c4e62c1ab631215ca252507d69beed7d350355226ab098f6d26f74b/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/raxml-ng:1.2.2--5c0885fbea747c16
+      build_id: bd-5c0885fbea747c16_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/74/745510904f055c37cc33718fcac845a43568351132395b5ab21dc028ce1d14c1/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/raxmlng/.conda-lock/linux_amd64-bd-ce82f06e00c2497b_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/raxmlng/.conda-lock/linux_arm64-bd-c57eff04b1be0787_1.txt
