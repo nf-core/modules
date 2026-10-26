@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process RESEQ_ILLUMINAPE"
     script "../main.nf"
     process "RESEQ_ILLUMINAPE"
+    topics "versions"
 
     tag "modules"
     tag "modules_nfcore"
@@ -21,13 +22,15 @@ nextflow_process {
                 def matrixFile = file("adapter_matrix.txt")
                 matrixFile.text = "01\\n10\\n"
 
-                input[0] = channel.of([
-                    [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
-                    adaptersFile,
-                    matrixFile
-                ])
+                input[0] = channel.of(record(
+                    id: 'test',
+                    meta: record(id: 'test'),
+                    bam: file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    fasta: file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    adapter_fasta: adaptersFile,
+                    adapter_matrix: matrixFile,
+                    reseq_illuminape_args: params.module_args
+                ))
                 """
             }
         }
@@ -35,17 +38,20 @@ nextflow_process {
         then {
             // ReSeq output is not reproducible between runs (multithreaded simulation),
             // so check FASTQ structure rather than md5 sums
-            def fastqs = process.out.fastq.get(0).get(1)
+            def result = process.out[0][0]
+            def fastqs = result.fastq
             assertAll(
                 { assert process.success },
+                { assert result.id == 'test' },
+                { assert result.meta == [id: 'test'] },
                 { assert fastqs.size() == 2 },
                 { assert fastqs.every { fq -> path(fq).linesGzip.size() > 0 } },
                 { assert fastqs.every { fq -> path(fq).linesGzip.size() % 4 == 0 } },
                 { assert fastqs.every { fq -> path(fq).linesGzip[0].startsWith('@ReseqRead') } },
                 { assert path(fastqs[0]).linesGzip.size() == path(fastqs[1]).linesGzip.size() },
                 { assert snapshot(
-                    process.out.fastq.collect { meta, files -> [ meta, files.collect { fq -> file(fq).name } ] },
-                    process.out.findAll { key, val -> key.startsWith('versions') }
+                    process.out[0].collect { output -> [output.meta, output.fastq.collect { fq -> file(fq).name }] },
+                    [versions_reseq: topics.versions.collect { version -> [version.process, version.tool, version.version] }]
                 ).match() }
             )
         }
@@ -58,13 +64,13 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = channel.of([
-                    [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
-                    [],
-                    []
-                ])
+                input[0] = channel.of(record(
+                    id: 'different_id',
+                    meta: record(id: 'test'),
+                    bam: file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    fasta: file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    output_prefix: 'test'
+                ))
                 """
             }
         }
@@ -72,7 +78,41 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert process.out[0][0].id == 'different_id' },
+                { assert process.out[0][0].meta == [id: 'test'] },
+                { assert snapshot([
+                    fastq: process.out[0].collect { output -> [output.meta, output.fastq] },
+                    versions_reseq: topics.versions.collect { version -> [version.process, version.tool, version.version] }
+                ]).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - bam - minimal record - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = channel.of(record(
+                    id: 'minimal',
+                    bam: file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    fasta: file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ))
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out[0][0].id == 'minimal' },
+                { assert process.out[0][0].containsKey('meta') },
+                { assert process.out[0][0].meta == null },
+                { assert process.out[0][0].fastq.collect { fq -> file(fq).name } == ['minimal_R1.fq.gz', 'minimal_R2.fq.gz'] },
+                { assert process.out[0][0].fastq.every { fq -> path(fq).linesGzip == [''] } },
+                { assert topics.versions == [[process: 'RESEQ_ILLUMINAPE', tool: 'reseq', version: '1.1']] }
             )
         }
     }

@@ -1,5 +1,7 @@
+nextflow.enable.types = true
+
 process RESEQ_ILLUMINAPE {
-    tag "$meta.id"
+    tag "${id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
@@ -7,19 +9,34 @@ process RESEQ_ILLUMINAPE {
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/49/494dd5224f3e7314d36af63a0740e51ecfd5373fe993ab3acf914754870e963a/data' :
         'community.wave.seqera.io/library/reseq:1.1--8536b4889ef6d3b8' }"
 
+    ext [
+        prefix: { output_prefix ?: "${id}" },
+        args: { reseq_illuminape_args ?: '' }
+    ]
+
     input:
-    tuple val(meta), path(bam), path(fasta), path(adapter_fasta), path(adapter_matrix)
+    record(
+        id: String,
+        meta: Record?,
+        bam: Path,
+        fasta: Path,
+        adapter_fasta: Path?,
+        adapter_matrix: Path?,
+        reseq_illuminape_args: String?,
+        output_prefix: String?
+    )
 
     output:
-    tuple val(meta), path("*.fq.gz"), emit: fastq
-    tuple val("${task.process}"), val('reseq'), eval('reseq --version 2>&1 | sed \'s/^.*ReSeq version //\''), emit: versions_reseq, topic: versions
+    record(
+        id: id,
+        meta: meta,
+        fastq: files("*.fq.gz").toSorted()
+    )
 
-    when:
-    task.ext.when == null || task.ext.when
+    topic:
+    record(process: "${task.process}", tool: 'reseq', version: eval('reseq --version 2>&1 | sed \'s/^.*ReSeq version //\'')) >> 'versions'
 
     script:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     def adapter_arg = adapter_fasta ? "--adapterFile ${adapter_fasta}" : ''
     def matrix_arg = adapter_matrix ? "--adapterMatrix ${adapter_matrix}" : ''
     """
@@ -30,18 +47,17 @@ process RESEQ_ILLUMINAPE {
         -b $bam \\
         $adapter_arg \\
         $matrix_arg \\
-        $args \\
-        -1 ${prefix}_R1.fq \\
-        -2 ${prefix}_R2.fq
+        ${task.ext.args} \\
+        -1 ${task.ext.prefix}_R1.fq \\
+        -2 ${task.ext.prefix}_R2.fq
 
-    gzip -n ${prefix}_R1.fq
-    gzip -n ${prefix}_R2.fq
+    gzip -n ${task.ext.prefix}_R1.fq
+    gzip -n ${task.ext.prefix}_R2.fq
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo "" | gzip > ${prefix}_R1.fq.gz
-    echo "" | gzip > ${prefix}_R2.fq.gz
+    echo "" | gzip > ${task.ext.prefix}_R1.fq.gz
+    echo "" | gzip > ${task.ext.prefix}_R2.fq.gz
     """
 }

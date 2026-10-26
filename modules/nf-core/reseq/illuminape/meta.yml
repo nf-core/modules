@@ -20,11 +20,12 @@ tools:
         - "MIT"
       identifier: ""
 input:
-  - - meta:
+  - - id:
+        type: string
+        description: Required sample identifier in the input record; used as the default output prefix
+    - meta:
         type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. `[ id:'test' ]`
+        description: Optional metadata Record, passed unchanged to the output without controlling module behaviour
     - bam:
         type: file
         description: Position-sorted BAM file from which to extract sequencing profiles
@@ -40,7 +41,7 @@ input:
     - adapter_fasta:
         type: file
         description: |
-          FASTA file with adapter sequences. If provided, skips automatic adapter
+          Optional FASTA file with adapter sequences. If provided, skips automatic adapter
           detection. Recommended when using small BAM files for profiling.
         pattern: "*.{fasta,fa}"
         ontologies:
@@ -48,45 +49,42 @@ input:
     - adapter_matrix:
         type: file
         description: |
-          0/1 matrix file specifying valid adapter pairings (first read adapters
+          Optional 0/1 matrix file specifying valid adapter pairings (first read adapters
           in rows, second read adapters in columns). Required when adapterFile
           is provided.
         pattern: "*.txt"
         ontologies: []
+    - reseq_illuminape_args:
+        type: string
+        description: Optional additional arguments for reseq illuminaPE; defaults to an empty string
+    - output_prefix:
+        type: string
+        description: Optional output filename prefix; defaults to id
 output:
-  fastq:
-    - - meta:
+  record:
+    - - id:
+          type: string
+          description: Sample identifier from the input record
+      - meta:
           type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'test' ]`
-      - "*.fq.gz":
-          type: file
-          description: Simulated paired-end FASTQ files (gzipped)
+          description: Input metadata Record, or null when omitted
+      - fastq:
+          type: list
+          description: Ordered list of gzipped simulated FASTQ paths, with R1 before R2
           pattern: "*_{R1,R2}.fq.gz"
           ontologies:
             - edam: "http://edamontology.org/format_1930"
-  versions_reseq:
-    - - "${task.process}":
-          type: string
-          description: The name of the process
-      - "reseq":
-          type: string
-          description: The name of the tool
-      - "reseq --version 2>&1 | sed 's/^.*ReSeq version //'":
-          type: eval
-          description: The version of the tool
 topics:
   versions:
-    - - "${task.process}":
+    - - process:
           type: string
-          description: The name of the process
-      - "reseq":
+          description: Process name in the version record
+      - tool:
           type: string
-          description: The name of the tool
-      - "reseq --version 2>&1 | sed 's/^.*ReSeq version //'":
-          type: eval
-          description: The version of the tool
+          description: Tool name (reseq) in the version record
+      - version:
+          type: string
+          description: ReSeq version reported by reseq --version
 authors:
   - "@adamrtalbot"
 maintainers:
