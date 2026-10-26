@@ -3,9 +3,9 @@ process RAXMLNG_SEARCH {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/raxml-ng:2.0.3--h870a6a7_0' :
-        'quay.io/biocontainers/raxml-ng:2.0.3--h870a6a7_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d0/d092af5536b6d3c787024fe2936c1fc86d3e8da02f74d78bea389381d7a21f3f/data'
+        : 'community.wave.seqera.io/library/raxml-ng:2.0.3--118aed1d80be33ec'}"
 
     input:
     tuple val(meta), path(alignment), val(model)

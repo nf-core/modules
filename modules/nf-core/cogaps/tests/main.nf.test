@@ -1,0 +1,154 @@
+nextflow_process {
+
+    name "Test Process COGAPS"
+    script "../main.nf"
+    process "COGAPS"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cogaps"
+
+    test("mus_musculus - expression matrix - tsv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.feature_loadings[0][1]).readLines().size() == 1001 },
+                { assert path(process.out.feature_loadings[0][1]).readLines()[0].contains('Pattern_3') },
+                { assert path(process.out.sample_factors[0][1]).readLines().size() == 7 },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["rds"])).match() }
+            )
+        }
+    }
+
+    test("mus_musculus - expression matrix - csv.gz") {
+
+        when {
+            process {
+                """
+                // Convert the test tsv to a gzipped csv to exercise the csv and gzip input branches
+                def tsv = file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv', checkIfExists: true)
+                def gz  = file("\${workDir}/test.csv.gz")
+                new java.util.zip.GZIPOutputStream(gz.newOutputStream()).withWriter { w ->
+                    tsv.eachLine { line -> w.write(line.replace('\\t', ',') + '\\n') }
+                }
+                input[0] = [ [ id:'test' ], gz ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["rds"])).match() }
+            )
+        }
+    }
+
+    test("error - missing nPatterns") {
+
+        when {
+            params {
+                module_args = '--nIterations 1000'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("nPatterns is required") }
+            )
+        }
+    }
+
+    test("error - unknown parameter") {
+
+        when {
+            params {
+                module_args = '--nPatterns 3 --notAParameter 1'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("Unknown CoGAPS parameter") }
+            )
+        }
+    }
+
+    test("error - invalid logical value") {
+
+        when {
+            params {
+                module_args = '--nPatterns 3 --nIterations 1000 --sparseOptimization yes'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("Invalid value") }
+            )
+        }
+    }
+
+    test("mus_musculus - expression matrix - tsv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.assay.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

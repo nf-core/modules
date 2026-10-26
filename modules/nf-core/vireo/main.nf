@@ -3,9 +3,9 @@ process VIREO {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vireosnp:0.5.8--pyh7cba7a3_0' :
-        'quay.io/biocontainers/vireosnp:0.5.8--pyh7cba7a3_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2e/2eac294d6de9fdecf7b2bede5798788af111ac10ad6f3abc72a45fb7f317af92/data'
+:         'community.wave.seqera.io/library/vireosnp:0.5.8--376a9219dbddd077' }"
 
     input:
     tuple val(meta), path(cell_data), val(n_donor), path(donor_file), path(vartrix_data)

@@ -3,9 +3,9 @@ process STROBEALIGN {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/58/58b8968bb248307d133950891a33c9e569f5f1aa729ad997d8bb1311ec7f2589/data'
-        : 'community.wave.seqera.io/library/htslib_samtools_strobealign_pigz:90eb6a088ad3d321'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/42/4240bef64ff1f1d212a1b7cfc57f20ae03bdc140ea043fd7757c150f3a83a360/data'
+:         'community.wave.seqera.io/library/htslib_samtools_strobealign_pigz:b2f7ae6e1f5935e1' }"
 
     input:
     tuple val(meta), path(reads)
@@ -21,7 +21,7 @@ process STROBEALIGN {
     tuple val(meta), path("*.paf.gz"), emit: paf, optional: true
     tuple val(meta), path("*.tsv.gz"), emit: tsv, optional: true
     tuple val(meta), path("*.sti"), emit: sti, optional: true
-    tuple val("${task.process}"), val('strobealign'), eval("strobealign --version"), topic: versions, emit: versions_strobealign
+    tuple val("${task.process}"), val('strobealign'), eval("strobealign --version | sed '1!d;s/.* //'"), topic: versions, emit: versions_strobealign
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), emit: versions_samtools, topic: versions
     tuple val("${task.process}"), val('pigz'), eval("pigz --version 2>&1 | sed 's/pigz //'"), emit: versions_pigz, topic: versions
 

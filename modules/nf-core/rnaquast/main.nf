@@ -3,9 +3,9 @@ process RNAQUAST {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/rnaquast:2.3.0--h9ee0642_0':
-        'quay.io/biocontainers/rnaquast:2.3.0--h9ee0642_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b8/b808671479318b6f8bb8d5b0c105ecccdea485b1f380e667366fa9363e15e61a/data'
+        : 'community.wave.seqera.io/library/rnaquast:2.3.0--9fcd20e07559eb30'}"
 
     input:
     tuple val(meta) , path(fasta)
@@ -25,6 +25,9 @@ process RNAQUAST {
     reference = reference ? "--reference ${reference}" : ''
     gtf = gtf ? "--gtf ${gtf}" : ''
     """
+    # The gmap launcher exits 255 if any PATH entry is unreadable, e.g. /root/.pixi/bin when running as non-root
+    export PATH=\$(echo "\$PATH" | tr ':' '\\n' | grep -v '^/root/' | paste -sd: -)
+
     rnaQUAST.py \\
         $args \\
         --threads $task.cpus \\
