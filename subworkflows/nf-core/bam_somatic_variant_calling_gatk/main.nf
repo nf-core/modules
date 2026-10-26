@@ -74,7 +74,7 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
                     ]
             }
 
-            result
+            return result
         }
         .combine(ch_interval_file)
 
