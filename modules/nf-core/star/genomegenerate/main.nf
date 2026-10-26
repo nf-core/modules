@@ -3,9 +3,9 @@ process STAR_GENOMEGENERATE {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/26/268b4c9c6cbf8fa6606c9b7fd4fafce18bf2c931d1a809a0ce51b105ec06c89d/data' :
-        'community.wave.seqera.io/library/htslib_samtools_star_gawk:ae438e9a604351a4' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d8/d807965783d3d20f9a33f37da72e62223d217a042a0a8615744fae0a34457b48/data'
+        : 'community.wave.seqera.io/library/htslib_samtools_star_gawk:3ffb3e46ac3bf2ea'}"
 
     input:
     tuple val(meta), path(fasta)
