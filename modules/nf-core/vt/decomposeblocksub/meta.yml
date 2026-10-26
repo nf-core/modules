@@ -84,20 +84,20 @@ containers:
     linux/arm64:
       name: community.wave.seqera.io/library/vt:0.57721--0f5fc2d70add7b00
       build_id: bd-0f5fc2d70add7b00_2
-      scan_id: sc-2fa26815bac71b63_1
+      scan_id: sc-2fa26815bac71b63_2
     linux/amd64:
       name: community.wave.seqera.io/library/vt:0.57721--d3fc8e5bf1a4b0de
       build_id: bd-d3fc8e5bf1a4b0de_1
-      scan_id: sc-e5c79a3739e5f452_1
+      scan_id: sc-e5c79a3739e5f452_2
   singularity:
-    linux/amd64:
-      name: oras://community.wave.seqera.io/library/vt:0.57721--a7eeba80fc0b2042
-      build_id: bd-a7eeba80fc0b2042_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5d/5d2ef4f2d3563e300c139cd56c0b6196c00c9cceca2d120384b5a0615267f630/data
     linux/arm64:
       name: oras://community.wave.seqera.io/library/vt:0.57721--9b636378ec269f1a
       build_id: bd-9b636378ec269f1a_1
       https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fa/fa870f8b864f62205d1cb5b3713ada89b2f376301a2a4086addc1b16f2624519/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/vt:0.57721--a7eeba80fc0b2042
+      build_id: bd-a7eeba80fc0b2042_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5d/5d2ef4f2d3563e300c139cd56c0b6196c00c9cceca2d120384b5a0615267f630/data
   conda:
     linux/amd64:
       lock_file: modules/nf-core/vt/decomposeblocksub/.conda-lock/linux_amd64-bd-d3fc8e5bf1a4b0de_1.txt
