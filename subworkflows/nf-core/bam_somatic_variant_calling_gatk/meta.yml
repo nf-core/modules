@@ -28,11 +28,6 @@ input:
         Input files for the normal sample are optional.
 
         Structure: [ val(meta), path(tumor_input), path(tumor_input_index), path(normal_input), path(normal_input_index)]
-  - ch_input_normal:
-      description: |
-        The normal BAM or CRAM file and corresponding index file.
-
-        Structure: [ val(meta), path(input), path(input_index) ]
   - ch_fasta:
       description: |
         The reference fasta file
