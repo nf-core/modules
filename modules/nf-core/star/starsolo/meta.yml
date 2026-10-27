@@ -69,7 +69,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information.
-      - "*.Solo.out":
+      - ${prefix}.Solo.out:
           type: file
           description: STARSolo counts matrix
           pattern: "*.Solo.out"
@@ -80,18 +80,17 @@ output:
           type: map
           description: |
             Groovy Map containing sample information.
-      - "*Log.final.out":
+      - ${prefix}.Log.final.out:
           type: file
           description: STAR final log file
           pattern: "*Log.final.out"
           ontologies:
-            - edam: http://edamontology.org/format_2330 # TXT
-  log_out:
+            - edam: http://edamontology.org/format_2330 # TXT  log_out:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
-      - "*Log.out":
+      - ${prefix}.Log.out:
           type: file
           description: STAR log out file
           pattern: "*Log.out"
@@ -102,7 +101,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information.
-      - "*Log.progress.out":
+      - ${prefix}.Log.progress.out:
           type: file
           description: STAR log progress file
           pattern: "*Log.progress.out"
@@ -113,7 +112,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information.
-      - "*/Gene/Summary.csv":
+      - ${prefix}.Solo.out/Gene/Summary.csv:
           type: file
           description: STARSolo metrics summary CSV file.
           pattern: "*/Gene/Summary.csv"
@@ -135,7 +134,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information.
-      - "*.Solo.out/Gene*/raw":
+      - ${prefix}.Solo.out/Gene*/raw:
           type: file
           description: STARSolo raw counts matrix
           pattern: "*.Solo.out/Gene*/raw"
@@ -145,7 +144,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information.
-      - "*.Solo.out/Gene*/filtered":
+      - ${prefix}.Solo.out/Gene*/filtered:
           type: file
           description: STARSolo filtered counts matrix (optional)
           pattern: "*.Solo.out/Gene*/filtered"
@@ -155,7 +154,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information.
-      - "*.Solo.out/Velocyto/raw":
+      - ${prefix}.Solo.out/Velocyto/raw:
           type: file
           description: STARSolo raw velocyto matrix (optional)
           pattern: "*.Solo.out/Velocyto/raw"
@@ -165,7 +164,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information.
-      - "*.Solo.out/Velocyto/filtered":
+      - ${prefix}.Solo.out/Velocyto/filtered:
           type: file
           description: STARSolo filtered velocyto matrix (optional)
           pattern: "*.Solo.out/Velocyto/filtered"
@@ -175,7 +174,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information.
-      - "*d.out.bam":
+      - ${prefix}.Aligned.*.out.bam:
           type: file
           description: Output BAM file containing read alignments (optional)
           pattern: "*.{bam}"
@@ -186,7 +185,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information.
-      - "*sortedByCoord.out.bam":
+      - ${prefix}.Aligned.sortedByCoord.out.bam:
           type: file
           description: Sorted BAM file containing read alignments (optional)
           pattern: "*sortedByCoord.out.bam"
@@ -197,7 +196,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information.
-      - "*toTranscriptome.out.bam":
+      - ${prefix}.Aligned.toTranscriptome.out.bam:
           type: file
           description: Output BAM file of transcriptome alignment (optional)
           pattern: "*toTranscriptome.out.bam"
@@ -208,7 +207,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information.
-      - "*Aligned.unsort.out.bam":
+      - ${prefix}.Aligned.unsort.out.bam:
           type: file
           description: Unsorted BAM file of read alignments (optional)
           pattern: "*Aligned.unsort.out.bam"
@@ -230,7 +229,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information.
-      - "*.tab":
+      - ${prefix}*.tab:
           type: file
           description: Input TAB file (optional)
           pattern: "*.tab"
