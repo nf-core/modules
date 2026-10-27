@@ -86,16 +86,6 @@ output:
           pattern: "*Log.final.out"
           ontologies:
             - edam: http://edamontology.org/format_2330 # TXT  log_out:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information.
-      - ${prefix}.Log.out:
-          type: file
-          description: STAR log out file
-          pattern: "*Log.out"
-          ontologies:
-            - edam: http://edamontology.org/format_2330 # TXT
   log_progress:
     - - meta:
           type: map
@@ -134,20 +124,20 @@ output:
           type: map
           description: |
             Groovy Map containing sample information.
-      - ${prefix}.Solo.out/Gene*/raw:
+      - ${prefix}.Solo.out/Gene/raw:
           type: file
           description: STARSolo raw counts matrix
-          pattern: "*.Solo.out/Gene*/raw"
+          pattern: "*.Solo.out/Gene/raw"
           ontologies: []
   filtered_counts:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
-      - ${prefix}.Solo.out/Gene*/filtered:
+      - ${prefix}.Solo.out/Gene/filtered:
           type: file
           description: STARSolo filtered counts matrix (optional)
-          pattern: "*.Solo.out/Gene*/filtered"
+          pattern: "*.Solo.out/Gene/filtered"
           ontologies: []
   raw_velocyto:
     - - meta:
@@ -235,6 +225,48 @@ output:
           pattern: "*.tab"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
+  log_out:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - ${prefix}.Log.out:
+          type: file
+          description: STAR log out file
+          pattern: "*Log.out"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # TXT
+  raw_genefull:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - ${prefix}.Solo.out/GeneFull/raw:
+          type: file
+          description: STARSolo raw GeneFull matrix (optional)
+          pattern: "*.Solo.out/GeneFull/filtered"
+          ontologies: []
+  filtered_genefull:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - ${prefix}.Solo.out/GeneFull/filtered:
+          type: file
+          description: STARSolo filtered GeneFull matrix (optional)
+          pattern: "*.Solo.out/GeneFull/filtered"
+          ontologies: []
+  sam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - ${prefix}*.out.sam:
+          type: file
+          description: SAM file (optional)
+          pattern: "*.out.sam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2573" # SAM
 topics:
   versions:
     - - ${task.process}:

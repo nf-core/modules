@@ -2,18 +2,6 @@
     "homo_sapiens - CB_UMI_Simple - stub": {
         "content": [
             {
-                "bam": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        [
-                            "test.Aligned.sortedByCoord.out.bam:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.Aligned.toTranscriptome.out.bam:md5,d41d8cd98f00b204e9800998ecf8427e",
-                            "test.Aligned.unsort.out.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
-                        ]
-                    ]
-                ],
                 "bam_sorted": [
                     [
                         {
@@ -68,6 +56,18 @@
                                     "features.tsv.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
                                     "matrix.mtx.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                                 ]
+                            ],
+                            [
+                                [
+                                    "barcodes.tsv.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                                    "features.tsv.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                                    "matrix.mtx.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                                ],
+                                [
+                                    "barcodes.tsv.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                                    "features.tsv.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                                    "matrix.mtx.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                                ]
                             ]
                         ]
                     ]
@@ -76,6 +76,18 @@
                     
                 ],
                 "filtered_counts": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "barcodes.tsv.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "features.tsv.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "matrix.mtx.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        ]
+                    ]
+                ],
+                "filtered_genefull": [
                     [
                         {
                             "id": "test"
@@ -135,6 +147,18 @@
                         ]
                     ]
                 ],
+                "raw_genefull": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "barcodes.tsv.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "features.tsv.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
+                            "matrix.mtx.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        ]
+                    ]
+                ],
                 "raw_velocyto": [
                     [
                         {
@@ -146,6 +170,9 @@
                             "matrix.mtx.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                         ]
                     ]
+                ],
+                "sam": [
+                    
                 ],
                 "summary": [
                     [
@@ -167,7 +194,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-10-26T21:04:48.753135788",
+        "timestamp": "2026-10-27T21:22:23.251627135",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"
@@ -176,14 +203,6 @@
     "homo_sapiens - CB_UMI_Simple": {
         "content": [
             {
-                "bam": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.Aligned.sortedByCoord.out.bam:md5,42db3e5ef3add64c9bc1e901a11f1652"
-                    ]
-                ],
                 "bam_sorted": [
                     [
                         {
@@ -238,6 +257,9 @@
                         ]
                     ]
                 ],
+                "filtered_genefull": [
+                    
+                ],
                 "filtered_velocyto": [
                     
                 ],
@@ -277,7 +299,13 @@
                         ]
                     ]
                 ],
+                "raw_genefull": [
+                    
+                ],
                 "raw_velocyto": [
+                    
+                ],
+                "sam": [
                     
                 ],
                 "summary": [
@@ -320,7 +348,152 @@
                 "sorted": true
             }
         ],
-        "timestamp": "2026-10-27T16:35:40.524515348",
+        "timestamp": "2026-10-27T21:21:59.64478374",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    },
+    "homo_sapiens - CB_UMI_Complex": {
+        "content": [
+            {
+                "bam_sorted": [
+                    
+                ],
+                "bam_transcript": [
+                    
+                ],
+                "bam_unsorted": [
+                    
+                ],
+                "counts": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "Barcodes.stats:md5,489b1dd915566ef135c7ec6af123d44e",
+                            [
+                                "Features.stats:md5,258da99ab3f47cb2d7a63d20e1c89146",
+                                "Summary.csv:md5,09ad5c26b2cb38b0a052b8d60604ffce",
+                                [
+                                    "barcodes.tsv.gz:md5,fbf8bd1daf9d9828ba47adbe27a6acf2",
+                                    "features.tsv.gz:md5,98e52a9e164268e18c96143237d4b2b7",
+                                    "matrix.mtx.gz:md5,dce91a0c9c93f0718080446be8b9a398"
+                                ]
+                            ],
+                            [
+                                "Features.stats:md5,258da99ab3f47cb2d7a63d20e1c89146",
+                                "Summary.csv:md5,5b79d42bbcad56f23a4507b0a9ee660f",
+                                [
+                                    "barcodes.tsv.gz:md5,fbf8bd1daf9d9828ba47adbe27a6acf2",
+                                    "features.tsv.gz:md5,98e52a9e164268e18c96143237d4b2b7",
+                                    "matrix.mtx.gz:md5,dce91a0c9c93f0718080446be8b9a398"
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                "fastq": [
+                    
+                ],
+                "filtered_counts": [
+                    
+                ],
+                "filtered_genefull": [
+                    
+                ],
+                "filtered_velocyto": [
+                    
+                ],
+                "log_final": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.Log.final.out"
+                    ]
+                ],
+                "log_out": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.Log.out"
+                    ]
+                ],
+                "log_progress": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.Log.progress.out"
+                    ]
+                ],
+                "raw_counts": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "barcodes.tsv.gz:md5,fbf8bd1daf9d9828ba47adbe27a6acf2",
+                            "features.tsv.gz:md5,98e52a9e164268e18c96143237d4b2b7",
+                            "matrix.mtx.gz:md5,dce91a0c9c93f0718080446be8b9a398"
+                        ]
+                    ]
+                ],
+                "raw_genefull": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "barcodes.tsv.gz:md5,fbf8bd1daf9d9828ba47adbe27a6acf2",
+                            "features.tsv.gz:md5,98e52a9e164268e18c96143237d4b2b7",
+                            "matrix.mtx.gz:md5,dce91a0c9c93f0718080446be8b9a398"
+                        ]
+                    ]
+                ],
+                "raw_velocyto": [
+                    
+                ],
+                "sam": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.Aligned.out.sam:md5,34e82f4cecfc33959e09adb700667dbb"
+                    ]
+                ],
+                "summary": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "Summary.csv:md5,09ad5c26b2cb38b0a052b8d60604ffce"
+                    ]
+                ],
+                "tab": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.SJ.out.tab:md5,c0aef62d6fd58c6ce271bb30af6a405d"
+                    ]
+                ],
+                "versions_star": [
+                    [
+                        "STAR_STARSOLO",
+                        "star",
+                        "2.7.11b"
+                    ]
+                ]
+            },
+            "test.Log.final.out",
+            "test.Log.out",
+            "test.Log.progress.out"
+        ],
+        "timestamp": "2026-10-27T20:43:41.891183338",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"
@@ -329,14 +502,6 @@
     "homo_sapiens - CB_UMI_Simple - gtf - whitelist": {
         "content": [
             {
-                "bam": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.Aligned.sortedByCoord.out.bam:md5,d9cb1591795b57daccda1afea022bfa0"
-                    ]
-                ],
                 "bam_sorted": [
                     [
                         {
@@ -374,6 +539,9 @@
                     
                 ],
                 "filtered_counts": [
+                    
+                ],
+                "filtered_genefull": [
                     
                 ],
                 "filtered_velocyto": [
@@ -415,7 +583,13 @@
                         ]
                     ]
                 ],
+                "raw_genefull": [
+                    
+                ],
                 "raw_velocyto": [
+                    
+                ],
+                "sam": [
                     
                 ],
                 "summary": [
@@ -458,7 +632,152 @@
                 "sorted": true
             }
         ],
-        "timestamp": "2026-10-27T19:08:25.130334546",
+        "timestamp": "2026-10-27T21:22:16.712654617",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    },
+    "homo_sapiens - SmartSeq": {
+        "content": [
+            {
+                "bam_sorted": [
+                    
+                ],
+                "bam_transcript": [
+                    
+                ],
+                "bam_unsorted": [
+                    
+                ],
+                "counts": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "Barcodes.stats:md5,d49967cc95684af03489cbb9a1a90b30",
+                            [
+                                "Features.stats:md5,8260d7fb76fc248c5cee21620c0a8ce1",
+                                "Summary.csv:md5,68396984c547332baaaaf036caa6aec0",
+                                [
+                                    "barcodes.tsv.gz:md5,fdd023cc89f10c0a2437cabc3e808c2a",
+                                    "features.tsv.gz:md5,98e52a9e164268e18c96143237d4b2b7",
+                                    "matrix.mtx.gz:md5,58eb71383402de815bc2114d237ba290"
+                                ]
+                            ],
+                            [
+                                "Features.stats:md5,485699904e3cfae0aeba44b6d06aaccd",
+                                "Summary.csv:md5,7242d5bb937d354b2ec91a850101bab3",
+                                [
+                                    "barcodes.tsv.gz:md5,fdd023cc89f10c0a2437cabc3e808c2a",
+                                    "features.tsv.gz:md5,98e52a9e164268e18c96143237d4b2b7",
+                                    "matrix.mtx.gz:md5,76d3d98d4f6c0ffd3bf61be6f8d47dc5"
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                "fastq": [
+                    
+                ],
+                "filtered_counts": [
+                    
+                ],
+                "filtered_genefull": [
+                    
+                ],
+                "filtered_velocyto": [
+                    
+                ],
+                "log_final": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.Log.final.out"
+                    ]
+                ],
+                "log_out": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.Log.out"
+                    ]
+                ],
+                "log_progress": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.Log.progress.out"
+                    ]
+                ],
+                "raw_counts": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "barcodes.tsv.gz:md5,fdd023cc89f10c0a2437cabc3e808c2a",
+                            "features.tsv.gz:md5,98e52a9e164268e18c96143237d4b2b7",
+                            "matrix.mtx.gz:md5,58eb71383402de815bc2114d237ba290"
+                        ]
+                    ]
+                ],
+                "raw_genefull": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "barcodes.tsv.gz:md5,fdd023cc89f10c0a2437cabc3e808c2a",
+                            "features.tsv.gz:md5,98e52a9e164268e18c96143237d4b2b7",
+                            "matrix.mtx.gz:md5,76d3d98d4f6c0ffd3bf61be6f8d47dc5"
+                        ]
+                    ]
+                ],
+                "raw_velocyto": [
+                    
+                ],
+                "sam": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.Aligned.out.sam:md5,e852396102d78c6cb22b01e124633af4"
+                    ]
+                ],
+                "summary": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "Summary.csv:md5,68396984c547332baaaaf036caa6aec0"
+                    ]
+                ],
+                "tab": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.SJ.out.tab:md5,05e008854c286995fb263285db8b42c9"
+                    ]
+                ],
+                "versions_star": [
+                    [
+                        "STAR_STARSOLO",
+                        "star",
+                        "2.7.11b"
+                    ]
+                ]
+            },
+            "test.Log.final.out",
+            "test.Log.out",
+            "test.Log.progress.out"
+        ],
+        "timestamp": "2026-10-27T21:00:47.518875216",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"

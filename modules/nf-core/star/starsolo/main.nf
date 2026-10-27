@@ -15,19 +15,21 @@ process STAR_STARSOLO {
 
     output:
     tuple val(meta), path("${prefix}.Solo.out")                         , emit: counts
-    tuple val(meta), path("${prefix}.Solo.out/Gene*/raw")               , emit: raw_counts
-    tuple val(meta), path("${prefix}.Solo.out/Gene*/filtered")          , emit: filtered_counts  , optional: true
+    tuple val(meta), path("${prefix}.Solo.out/Gene/raw")                , emit: raw_counts
+    tuple val(meta), path("${prefix}.Solo.out/Gene/filtered")           , emit: filtered_counts  , optional: true
+    tuple val(meta), path("${prefix}.Solo.out/GeneFull/raw")            , emit: raw_genefull     , optional: true
+    tuple val(meta), path("${prefix}.Solo.out/GeneFull/filtered")       , emit: filtered_genefull, optional: true
     tuple val(meta), path("${prefix}.Solo.out/Velocyto/raw")            , emit: raw_velocyto     , optional: true
     tuple val(meta), path("${prefix}.Solo.out/Velocyto/filtered")       , emit: filtered_velocyto, optional: true
     tuple val(meta), path("${prefix}.Log.final.out")                    , emit: log_final
     tuple val(meta), path("${prefix}.Log.out")                          , emit: log_out
     tuple val(meta), path("${prefix}.Log.progress.out")                 , emit: log_progress
     tuple val(meta), path("${prefix}.Solo.out/Gene/Summary.csv")        , emit: summary          , optional: true
-    tuple val(meta), path("${prefix}.Aligned.*.out.bam")                , emit: bam              , optional: true
     tuple val(meta), path("${prefix}.Aligned.sortedByCoord.out.bam")    , emit: bam_sorted       , optional: true
     tuple val(meta), path("${prefix}.Aligned.toTranscriptome.out.bam")  , emit: bam_transcript   , optional: true
     tuple val(meta), path("${prefix}.Aligned.unsort.out.bam")           , emit: bam_unsorted     , optional: true
     tuple val(meta), path("${prefix}*.tab")                             , emit: tab              , optional: true
+    tuple val(meta), path("${prefix}*.out.sam")                         , emit: sam              , optional: true
     tuple val(meta), path('*fastq.gz')                                  , emit: fastq            , optional: true
     tuple val("${task.process}"), val('star'), eval('STAR --version | sed -e "s/STAR_//g"'), topic: versions, emit: versions_star
 
@@ -87,6 +89,8 @@ process STAR_STARSOLO {
     mkdir -p ${prefix}.Solo.out/Gene
     mkdir -p ${prefix}.Solo.out/Gene/filtered
     mkdir -p ${prefix}.Solo.out/Gene/raw
+    mkdir -p ${prefix}.Solo.out/GeneFull/filtered
+    mkdir -p ${prefix}.Solo.out/GeneFull/raw
     mkdir -p ${prefix}.Solo.out/Velocyto/filtered
     mkdir -p ${prefix}.Solo.out/Velocyto/raw
     touch ${prefix}.Log.final.out
@@ -99,6 +103,12 @@ process STAR_STARSOLO {
     echo "" | gzip > ${prefix}.Solo.out/Gene/filtered/barcodes.tsv.gz
     echo "" | gzip > ${prefix}.Solo.out/Gene/filtered/features.tsv.gz
     echo "" | gzip > ${prefix}.Solo.out/Gene/filtered/matrix.mtx.gz
+    echo "" | gzip > ${prefix}.Solo.out/GeneFull/raw/matrix.mtx.gz
+    echo "" | gzip > ${prefix}.Solo.out/GeneFull/raw/barcodes.tsv.gz
+    echo "" | gzip > ${prefix}.Solo.out/GeneFull/raw/features.tsv.gz
+    echo "" | gzip > ${prefix}.Solo.out/GeneFull/filtered/barcodes.tsv.gz
+    echo "" | gzip > ${prefix}.Solo.out/GeneFull/filtered/features.tsv.gz
+    echo "" | gzip > ${prefix}.Solo.out/GeneFull/filtered/matrix.mtx.gz
     touch ${prefix}.Aligned.sortedByCoord.out.bam
     touch ${prefix}.Aligned.toTranscriptome.out.bam
     touch ${prefix}.Aligned.unsort.out.bam

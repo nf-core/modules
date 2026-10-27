@@ -75,7 +75,131 @@ nextflow_process {
 
     }
 
+    test("homo_sapiens - CB_UMI_Complex") {
+        config "./nextflow.config"
+
+        setup {
+            run("STAR_GENOMEGENERATE") {
+                script "../../../star/genomegenerate/main.nf"
+                process {
+                    """
+                    input[0] = channel.of([
+                        [ id:'test_fasta' ],
+                        [ file('test.fa', checkIfExists: true) ]
+                    ])
+                    input[1] = channel.of([
+                        [ id:'test_gtf' ],
+                        [ file('test.gtf', checkIfExists: true) ]
+                    ])
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = "--soloAdapterSequence GAGTGATTGCTTGTGACGCCTT --soloAdapterMismatchesNmax 3 --soloCBmatchWLtype 1MM --soloCBposition 0_0_2_-1 3_1_3_8 --soloUMIposition 3_9_3_14 --soloFeatures Gene GeneFull"
+            }
+
+            process {
+                """
+                input[0] = channel.of([
+                    [ id:'test'],
+                    'CB_UMI_Complex',
+                    [
+                        file('IND1_1.fastq.gz', checkIfExists: true),
+                        file('IND1_2.fastq.gz', checkIfExists: true)
+                    ],
+                    [ ]
+                ])
+                input[1] = [
+                        file('inDrops_Ambrose_bc1.txt', checkIfExists: true),
+                        file('inDrops_Ambrose_bc2.txt', checkIfExists: true)
+                    ]
+                input[2] = STAR_GENOMEGENERATE.out.index
+                input[3] = channel.of([
+                    [ id:'test_gtf' ],
+                    [ ]
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["log_final", "log_out", "log_progress"], ignorePatterns: ["**/UMIperCellSorted.txt"]),
+                    file(process.out.log_final[0][1]).name,
+                    file(process.out.log_out[0][1]).name,
+                    file(process.out.log_progress[0][1]).name,
+                    ).match() }
+            )
+        }
+
+    }
+
     test("homo_sapiens - SmartSeq") {
+        config "./nextflow.config"
+
+        setup {
+            run("STAR_GENOMEGENERATE") {
+                script "../../../star/genomegenerate/main.nf"
+                process {
+                    """
+                    input[0] = channel.of([
+                        [ id:'test_fasta' ],
+                        [ file('test.fa', checkIfExists: true) ]
+                    ])
+                    input[1] = channel.of([
+                        [ id:'test_gtf' ],
+                        [ file('test.gtf', checkIfExists: true) ]
+                    ])
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = "--readFilesCommand zcat --soloUMIdedup Exact --soloStrand Unstranded --limitOutSJcollapsed 10000000 --soloCellFilter None --soloFeatures Gene GeneFull"
+            }
+
+            process {
+                """
+                file('NO_FILE').text = ''
+
+                input[0] = channel.of([
+                    [ id:'test'],
+                    'SmartSeq',
+                    [ ],
+                    [ file('smartseq_example.manifest.tsv', checkIfExists: true) ]
+                ])
+                input[1] = file('NO_FILE', checkIfExists: true)
+                input[2] = STAR_GENOMEGENERATE.out.index
+                input[3] = channel.of([
+                    [ id:'test_gtf' ],
+                    [ ]
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["log_final", "log_out", "log_progress"]),
+                    file(process.out.log_final[0][1]).name,
+                    file(process.out.log_out[0][1]).name,
+                    file(process.out.log_progress[0][1]).name,
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - SmartSeq - failure") {
         setup {
             run("STAR_GENOMEGENERATE") {
                 script "../../../star/genomegenerate/main.nf"
@@ -120,7 +244,7 @@ nextflow_process {
 
         then {
             assertAll(
-                { assert process.failed },
+                { assert !process.success },
                 { assert process.stdout.toString().contains("EXITING: FATAL INPUT ERROR: empty value for parameter \"readFilesManifest\" in input \"Command-Line\"")}
             )
         }
