@@ -24,7 +24,7 @@ process LONGPHASE_MODCALL {
     def args     = task.ext.args   ?: ''
     def args2    = task.ext.args2  ?: ''
     def snv_file = snvs ? "--snp-file ${snvs}" : ''
-    prefix       = task.ext.prefix ?: "${meta.id}"
+    prefix       = task.ext.prefix ?: "${meta.id}_modcall"
     """
     longphase \\
         modcall \\
