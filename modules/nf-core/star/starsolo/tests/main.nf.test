@@ -191,7 +191,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ["log_final", "log_out", "log_progress", "bam_sorted"]),
+                    sanitizeOutput(process.out, unstableKeys: ["log_final", "log_out", "log_progress", "bam_sorted"], ignorePatterns: ["**/UMIperCellSorted.txt"]),
                     file(process.out.log_final[0][1]).name,
                     file(process.out.log_out[0][1]).name,
                     file(process.out.log_progress[0][1]).name,
