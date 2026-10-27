@@ -1,0 +1,134 @@
+nextflow_process {
+
+    name "Test Process PRETEXTGRAPH"
+    script "../main.nf"
+    process "PRETEXTGRAPH"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pretextgraph"
+    tag "pretextmap"
+    tag "bedtools/genomecov"
+    tag "htslib/bgziptabix"
+
+    setup {
+        run("PRETEXTMAP") {
+            script "../../pretextmap/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                """
+            }
+        }
+        run("BEDTOOLS_GENOMECOV") {
+            script "../../bedtools/genomecov/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    1
+                ]
+                input[1] = []
+                input[2] = 'bedgraph'
+                input[3] = true
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens - pretext - bedgraph - coverage") {
+
+        when {
+            process {
+                """
+                input[0] = PRETEXTMAP.out.pretext
+                    .join(BEDTOOLS_GENOMECOV.out.genomecov)
+                    .map { meta, pretext, bedgraph -> [ meta, pretext, bedgraph, 'coverage' ] }
+                """
+            }
+        }
+
+        then {
+            // PretextGraph accumulates graph values in 4 hard-coded threads, so the
+            // output md5 is not stable; check the graph extension ('psgh') was appended
+            assertAll(
+                { assert process.success },
+                { assert new String(path(process.out.pretext[0][1]).bytes, 'ISO-8859-1').contains('psgh') },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["pretext"])).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - pretext - bedgraph.gz - coverage") {
+
+        setup {
+            run("HTSLIB_BGZIPTABIX") {
+                script "../../htslib/bgziptabix/main.nf"
+                process {
+                    """
+                    input[0] = BEDTOOLS_GENOMECOV.out.genomecov.map { meta, bedgraph -> [ meta, bedgraph, [], [] ] }
+                    input[1] = 'compress'
+                    input[2] = false
+                    input[3] = 'bedgraph'
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = PRETEXTMAP.out.pretext
+                    .join(HTSLIB_BGZIPTABIX.out.output)
+                    .map { meta, pretext, bedgraph -> [ meta, pretext, bedgraph, 'coverage' ] }
+                """
+            }
+        }
+
+        then {
+            // PretextGraph accumulates graph values in 4 hard-coded threads, so the
+            // output md5 is not stable; check the graph extension ('psgh') was appended
+            assertAll(
+                { assert process.success },
+                { assert new String(path(process.out.pretext[0][1]).bytes, 'ISO-8859-1').contains('psgh') },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["pretext"])).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - pretext - bedgraph - coverage - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = PRETEXTMAP.out.pretext
+                    .join(BEDTOOLS_GENOMECOV.out.genomecov)
+                    .map { meta, pretext, bedgraph -> [ meta, pretext, bedgraph, 'coverage' ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

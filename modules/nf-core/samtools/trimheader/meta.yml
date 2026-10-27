@@ -1,0 +1,99 @@
+name: "samtools_trimheader"
+description: Remove @SQ header lines for references without any reads, keeping every read. Some tools, such as featureCounts, cannot read a BAM header over 2 GiB, which a very fragmented assembly produces.
+keywords:
+  - bam
+  - header
+  - reference
+  - samtools
+tools:
+  - "samtools":
+      description: "Tools for dealing with SAM, BAM and CRAM files"
+      homepage: "http://www.htslib.org/"
+      documentation: "http://www.htslib.org/doc/samtools.html"
+      tool_dev_url: "https://github.com/samtools/samtools"
+      doi: "10.1093/bioinformatics/btp352"
+      licence: ["MIT"]
+      identifier: biotools:samtools
+  - "gawk":
+      description: "GNU awk"
+      homepage: "https://www.gnu.org/software/gawk/"
+      documentation: "https://www.gnu.org/software/gawk/manual/"
+      tool_dev_url: "https://www.gnu.org/prep/ftp.html"
+      licence: ["GPL v3"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Coordinate-sorted BAM file
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+    - bai:
+        type: file
+        description: Index of the BAM file
+        pattern: "*.bai"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327"
+output:
+  bam:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - "*.bam":
+          type: file
+          description: BAM file with the same reads, whose header lists only references with at least one read
+          pattern: "*.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572"
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - "samtools version | sed '1!d;s/.* //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - "samtools version | sed '1!d;s/.* //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@erikrikarddaniel"
+maintainers:
+  - "@erikrikarddaniel"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/htslib_samtools_gawk:17eecc26054feffd
+      build_id: bd-17eecc26054feffd_1
+      scan_id: sc-e59f8b428c33730c_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/htslib_samtools_gawk:6f88a5f6186c9e3d
+      build_id: bd-6f88a5f6186c9e3d_1
+      scan_id: sc-f4b73dda40033e46_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/htslib_samtools_gawk:ab3d82dbcd65fb9f
+      build_id: bd-ab3d82dbcd65fb9f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a9/a95118435ca30f8b667ca92f1ba45a26abb58c1f09e96a9e7e8431c73ff9a299/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/htslib_samtools_gawk:843117b3b0fef205
+      build_id: bd-843117b3b0fef205_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b2/b203a5afcbd0ac1715e827dd847aefa3a6f8549e98542f199a161bb057eec055/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/samtools/trimheader/.conda-lock/linux_amd64-bd-6f88a5f6186c9e3d_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/samtools/trimheader/.conda-lock/linux_arm64-bd-17eecc26054feffd_1.txt

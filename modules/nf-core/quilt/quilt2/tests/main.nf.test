@@ -46,7 +46,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out.tbi,
-                    process.out.rdata,
+                    process.out.rdata.collect { meta, dir -> [ meta, new File(dir.toString()).list().sort() ] }, // RData md5 differs between environments
                     process.out.vcf.collect{ meta, vcf -> [
                         meta,
                         path(vcf).vcf.header.getGenotypeSamples().sort(),
@@ -118,7 +118,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out.tbi,
-                    process.out.rdata,
+                    process.out.rdata.collect { meta, dir -> [ meta, new File(dir.toString()).list().sort() ] }, // RData md5 differs between environments
                     process.out.vcf.collect{ meta, vcf -> [
                         meta,
                         path(vcf).vcf.header.getGenotypeSamples().sort(),
@@ -153,7 +153,7 @@ nextflow_process {
                 process {
                     """
                     program  = Channel.of('BEGIN{print "NA12878"} {print}').collectFile(name: 'program.txt', newLine: true)
-                    input[0] = BCFTOOLS_QUERY.out.output
+                    input[0] = BCFTOOLS_QUERY.out.output.map { meta, file -> tuple(meta, file, "phasefile.name.txt") }
                     input[1] = program
                     input[2] = false
                     """
@@ -165,7 +165,6 @@ nextflow_process {
             params{
                 bcftools_query_args = "-f '[%GT]\\n' -r chr22"
                 bcftools_query_suffix = "phasefile.txt"
-                gawk_suffix = "phasefile.name.txt"
                 quilt_args = "--save_prepared_reference=TRUE --make_plots=TRUE --impute_rare_common=FALSE --seed=1"
             }
             process {
@@ -202,7 +201,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.tbi,
                     plots.sort(),
-                    process.out.rdata,
+                    process.out.rdata.collect { meta, dir -> [ meta, new File(dir.toString()).list().sort() ] }, // RData md5 differs between environments
                     process.out.vcf.collect{ meta, vcf -> [
                         meta,
                         path(vcf).vcf.header.getGenotypeSamples().sort(),

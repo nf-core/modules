@@ -88,7 +88,7 @@ workflow FASTA_CLEAN_FAIDX {
     // MODULE: GENERATE A SAMTOOLS DICT FILE BASED ON THE CORRECTED FASTA FILE
     //
     SAMTOOLS_DICT (
-        renamed_fasta.filter { meta, file -> val_get_dict }
+        renamed_fasta.filter { _meta, _file -> val_get_dict }
     )
 
 

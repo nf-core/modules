@@ -20,7 +20,6 @@ process GRIDSS_PREPROCESS {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     # GRIDSS requires all BWA index files to have the exact
@@ -43,21 +42,21 @@ process GRIDSS_PREPROCESS {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def bam_name = bam.getBaseName()
 
     """
-    mkdir -p ${prefix}.gridss.working/
+    mkdir -p ${bam_name}.gridss.working/
+    cd ${bam_name}.gridss.working/
 
-    touch ${prefix}.gridss.working/${prefix}.gridss.targeted.bam.cigar_metrics
-    touch ${prefix}.gridss.working/${prefix}.gridss.targeted.bam.computesamtags.changes.tsv
-    touch ${prefix}.gridss.working/${prefix}.gridss.targeted.bam.coverage.blacklist.bed
-    touch ${prefix}.gridss.working/${prefix}.gridss.targeted.bam.idsv_metrics
-    touch ${prefix}.gridss.working/${prefix}.gridss.targeted.bam.insert_size_histogram.pdf
-    touch ${prefix}.gridss.working/${prefix}.gridss.targeted.bam.insert_size_metrics
-    touch ${prefix}.gridss.working/${prefix}.gridss.targeted.bam.mapq_metrics
-    touch ${prefix}.gridss.working/${prefix}.gridss.targeted.bam.sv.bam
-    touch ${prefix}.gridss.working/${prefix}.gridss.targeted.bam.sv.bam.csi
-    touch ${prefix}.gridss.working/${prefix}.gridss.targeted.bam.tag_metrics
+    touch ${bam_name}.gridss.targeted.bam.cigar_metrics
+    touch ${bam_name}.gridss.targeted.bam.computesamtags.changes.tsv
+    touch ${bam_name}.gridss.targeted.bam.coverage.blacklist.bed
+    touch ${bam_name}.gridss.targeted.bam.idsv_metrics
+    touch ${bam_name}.gridss.targeted.bam.insert_size_histogram.pdf
+    touch ${bam_name}.gridss.targeted.bam.insert_size_metrics
+    touch ${bam_name}.gridss.targeted.bam.mapq_metrics
+    touch ${bam_name}.gridss.targeted.bam.sv.bam
+    touch ${bam_name}.gridss.targeted.bam.sv.bam.csi
+    touch ${bam_name}.gridss.targeted.bam.tag_metrics
     """
 }

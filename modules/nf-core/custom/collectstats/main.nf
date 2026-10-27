@@ -12,8 +12,8 @@ process CUSTOM_COLLECTSTATS {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9d/9d1a8065dcebe35c513db5eb4a5237795aa4bae4756086f3c4319a820a8a647c/data'
-:         'community.wave.seqera.io/library/custom_collectstats:c1f477e6251c36bb' }"
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/40/4047b396af338ea9fa9f58d345f84b77234dfe825a1c71ae178f502d0569b62c/data'
+:         'community.wave.seqera.io/library/r-base_r-dplyr_r-purrr_r-readr_pruned:24026ac6303954f2' }"
 
     input:
     tuple val(meta), val(samples_meta), path(trimlogs), path(bblogs), path(idxstats), path(fcs), path(mergetab)
@@ -117,16 +117,21 @@ process CUSTOM_COLLECTSTATS {
     # Column types given by name rather than position: this only depends on the
     # feature-counts input's columns existing and being correctly typed, not also on
     # their order, so a future column reorder upstream won't silently misparse here.
-    counts <- read_tsv(
+    # Only sample and count are read, one file at a time, so memory does not grow with
+    # the number of files, and the files need not have the same other columns.
+    counts <- map(
         c('${fcs.join("', '")}'),
-        id = 'fname',
-        col_types = cols(
-            .default = col_guess(),
-            sample   = col_character(),
-            count    = col_integer()
-        )
+        function(f) {
+            read_tsv(
+                f,
+                col_types = cols_only(sample = col_character(), count = col_integer())
+            ) %>%
+                group_by(sample) %>%
+                summarise(count = sum(count)) %>%
+                mutate(feature = str_replace(f, '^[^.]+\\\\.([^.]+)\\\\..*', '\\\\1'))
+        }
     ) %>%
-        mutate(feature = str_replace(fname, '^[^.]+\\\\.([^.]+)\\\\..*', '\\\\1')) %>%
+        list_rbind() %>%
         group_by(sample, feature) %>%
         summarise(count = sum(count), .groups = 'drop') %>%
         pivot_wider(names_from = feature, values_from = count, values_fill = 0)

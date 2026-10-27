@@ -30,7 +30,6 @@ process FFQ {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def id_list = ids.sort()
     def name = id_list.size() == 1 ? ids[0] : 'metadata'
     def prefix = task.ext.prefix ?: "${name}"

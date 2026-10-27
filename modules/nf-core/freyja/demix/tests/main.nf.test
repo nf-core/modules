@@ -4,6 +4,7 @@ nextflow_process {
     name "Test Process FREYJA_DEMIX"
     script "../main.nf"
     process "FREYJA_DEMIX"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -38,6 +39,10 @@ nextflow_process {
     test("sarscov2 - illumina - test_paired_end_sorted - bam") {
 
         when {
+            params {
+                module_args = '--depthcutoff 1'
+            }
+
             process {
                 """
                 input[0] = FREYJA_VARIANTS.out.variants
@@ -60,6 +65,10 @@ nextflow_process {
     test("sarscov2 - illumina - test_paired_end_sorted - bam - no meta/topology") {
 
         when {
+            params {
+                module_args = '--depthcutoff 1'
+            }
+
             process {
                 """
                 input[0] = FREYJA_VARIANTS.out.variants

@@ -20,7 +20,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'QuantitativeTrait' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true),
+                    "",
                 ]
                 input[1] = Channel.of('FNR == 1 { next } { print \$1, \$2, \$3 }').collectFile(name:'quantitative_phenotype.awk')
                 input[2] = false
@@ -34,7 +35,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'QuantitativeTraits' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_quantitative_phenoname.phe', checkIfExists: true),
+                    "",
                 ]
                 input[1] = Channel.of('FNR == 1 { next } { print \$1, \$2, \$3, (\$3 * 1.7) + ((NR % 5) / 10.0) }').collectFile(name:'multi_phenotype.awk')
                 input[2] = false
@@ -48,7 +50,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'covariates_quant' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true),
+                    "",
                 ]
                 input[1] = Channel.of('FNR == 1 { next } { print \$1, \$2, \$4, \$5, \$6 }').collectFile(name:'quantitative_covariates.awk')
                 input[2] = false
@@ -62,7 +65,8 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'covariates_cat' ],
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/plink_simulated_covariates.txt', checkIfExists: true),
+                    "",
                 ]
                 input[1] = Channel.of('FNR == 1 { next } { print \$1, \$2, \$3 }').collectFile(name:'categorical_covariates.awk')
                 input[2] = false
@@ -127,7 +131,7 @@ nextflow_process {
                     [[ id:"plink_simulated" ], covariates_file]
                 }
                 input[4] = GCTA_MAKEBKSPARSE_DENSE.out.sparse_grm_files.map { meta, sparse_grm_files ->
-                    sparse_grm_id = sparse_grm_files.find { sparse_grm_file -> sparse_grm_file.name.endsWith('.grm.id') }
+                    def sparse_grm_id = sparse_grm_files.find { sparse_grm_file -> sparse_grm_file.name.endsWith('.grm.id') }
                     [[ id:sparse_grm_id.name - '.grm.id' ], sparse_grm_files]
                 }
                 """
@@ -176,7 +180,7 @@ nextflow_process {
                     [[ id:"plink_simulated" ], covariates_file]
                 }
                 input[4] = GCTA_MAKEBKSPARSE_DENSE.out.sparse_grm_files.map { meta, sparse_grm_files ->
-                    sparse_grm_id = sparse_grm_files.find { sparse_grm_file -> sparse_grm_file.name.endsWith('.grm.id') }
+                    def sparse_grm_id = sparse_grm_files.find { sparse_grm_file -> sparse_grm_file.name.endsWith('.grm.id') }
                     [[ id:sparse_grm_id.name - '.grm.id' ], sparse_grm_files]
                 }
                 """
@@ -220,7 +224,7 @@ nextflow_process {
                     [[ id:"plink_simulated" ], covariates_file]
                 }
                 input[4] = GCTA_MAKEBKSPARSE_DENSE.out.sparse_grm_files.map { meta, sparse_grm_files ->
-                    sparse_grm_id = sparse_grm_files.find { sparse_grm_file -> sparse_grm_file.name.endsWith('.grm.id') }
+                    def sparse_grm_id = sparse_grm_files.find { sparse_grm_file -> sparse_grm_file.name.endsWith('.grm.id') }
                     [[ id:sparse_grm_id.name - '.grm.id' ], sparse_grm_files]
                 }
                 """
@@ -264,7 +268,7 @@ nextflow_process {
                 input[2] = [[ id:"plink_simulated" ], []]
                 input[3] = [[ id:"plink_simulated" ], []]
                 input[4] = GCTA_MAKEBKSPARSE_DENSE.out.sparse_grm_files.map { meta, sparse_grm_files ->
-                    sparse_grm_id = sparse_grm_files.find { sparse_grm_file -> sparse_grm_file.name.endsWith('.grm.id') }
+                    def sparse_grm_id = sparse_grm_files.find { sparse_grm_file -> sparse_grm_file.name.endsWith('.grm.id') }
                     [[ id:sparse_grm_id.name - '.grm.id' ], sparse_grm_files]
                 }
                 """
@@ -343,7 +347,7 @@ nextflow_process {
                 input[2] = [[ id:"plink_simulated" ], []]
                 input[3] = [[ id:"plink_simulated" ], []]
                 input[4] = GCTA_MAKEBKSPARSE_DENSE.out.sparse_grm_files.map { meta, sparse_grm_files ->
-                    sparse_grm_id = sparse_grm_files.find { sparse_grm_file -> sparse_grm_file.name.endsWith('.grm.id') }
+                    def sparse_grm_id = sparse_grm_files.find { sparse_grm_file -> sparse_grm_file.name.endsWith('.grm.id') }
                     [[ id:sparse_grm_id.name - '.grm.id' ], sparse_grm_files]
                 }
                 """

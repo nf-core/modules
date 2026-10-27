@@ -27,6 +27,14 @@ tools:
       licence:
         - "BSD-3-Clause"
       identifier: "biotools:hmmer"
+  - "coreutils":
+      description: "GNU utilities for basic file, shell, and text manipulation, including sort."
+      homepage: "https://www.gnu.org/software/coreutils/"
+      documentation: "https://www.gnu.org/software/coreutils/manual/"
+      tool_dev_url: "https://git.savannah.gnu.org/cgit/coreutils.git"
+      licence:
+        - "GPL v3-or-later"
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -39,6 +47,8 @@ input:
           Sequence file, in any format supported by esl-sfetch (fasta, embl,
           genbank, stockholm, a2m, afa, psiblast, clustal, phylip). Must NOT
           be gzip-compressed: esl-sfetch --index cannot index a .gz file.
+          Very large indexing jobs may need substantial temporary disk under
+          `$TMPDIR` for GNU sort.
         pattern: "*"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
@@ -86,6 +96,16 @@ output:
       - esl-sfetch -h | sed '2!d;s/^# Easel *//;s/ .*//':
           type: eval
           description: The expression to obtain the version of the tool
+  versions_coreutils:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - coreutils:
+          type: string
+          description: The name of the tool
+      - sort --version |& sed '1!d ; s/sort (GNU coreutils) //':
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -106,7 +126,40 @@ topics:
       - esl-sfetch -h | sed '2!d;s/^# Easel *//;s/ .*//':
           type: eval
           description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - coreutils:
+          type: string
+          description: The name of the tool
+      - sort --version |& sed '1!d ; s/sort (GNU coreutils) //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@vagkaratzas"
 maintainers:
   - "@vagkaratzas"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/hmmer_coreutils:e129de528776aa4c
+      build_id: bd-e129de528776aa4c_1
+      scan_id: sc-8218f75524f39514_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/hmmer_coreutils:536fda8b57d5cbcf
+      build_id: bd-536fda8b57d5cbcf_1
+      scan_id: sc-499af692195b206e_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/hmmer_coreutils:cbcaa2615b9abdf0
+      build_id: bd-cbcaa2615b9abdf0_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/41/41f71771ca71c8a250d63b4557eb1ce70efc3fc28e565297a9f1890e687561cc/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/hmmer_coreutils:bbb32f87b9680f69
+      build_id: bd-bbb32f87b9680f69_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ec/ec7b4a6f17c67271044026828bb8a03703101506c72f81ffc6910b69f65c5547/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/hmmer/eslsfetchindex/.conda-lock/linux_amd64-bd-e129de528776aa4c_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/hmmer/eslsfetchindex/.conda-lock/linux_arm64-bd-536fda8b57d5cbcf_1.txt

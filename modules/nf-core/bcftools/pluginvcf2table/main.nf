@@ -3,9 +3,9 @@ process BCFTOOLS_PLUGINVCF2TABLE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9e/9e674cbc269b944e50ad4f5846ee92a2196b59d9ed76e9146867c76fb32cb8aa/data'
-        : 'community.wave.seqera.io/library/bcftools:1.23.1--4d193a5f61d4aed7'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/97/97495e3fd16a7177cfaa1fa318556ce3bbe372d1234c94ee5b9f78d7fde6777c/data'
+        : 'community.wave.seqera.io/library/bcftools:1.23.1--e6b944fbe2dde7a7'}"
 
     input:
     tuple val(meta), path(vcf), path(tbi)

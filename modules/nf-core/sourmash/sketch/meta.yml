@@ -33,6 +33,13 @@ input:
         pattern: "*.{fna,fa,fasta,fastq,fq,faa}.gz"
         ontologies:
           - edam: http://edamontology.org/format_1930 # FASTQ
+  - merge_sigs:
+      type: boolean
+      description: |
+        Specify whether to merge the signatures of all input files into a single signature file.
+        Used e.g. for paired-end FASTQ inputs, or when there are multiple FASTAs for a single genome (such as chromosomes or contigs).
+        Signature name will be set to the processes' '${prefix}'.
+
 output:
   signatures:
     - - meta:

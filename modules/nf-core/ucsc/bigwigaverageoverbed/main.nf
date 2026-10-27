@@ -4,9 +4,9 @@ process UCSC_BIGWIGAVERAGEOVERBED {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ucsc-bigwigaverageoverbed:482--h0b57e2e_0' :
-        'quay.io/biocontainers/ucsc-bigwigaverageoverbed:482--h0b57e2e_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/96/96d5dedcf4cb3e65e3badb2bd4dabb72beb7fafe919febfbe29a7807a6e60413/data'
+:         'community.wave.seqera.io/library/ucsc-bigwigaverageoverbed:482--09b4685dee7c8b33' }"
 
     input:
     tuple val(meta), path(bed)

@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process MODKIT_EXTRACTFULL"
     script "../main.nf"
     process "MODKIT_EXTRACTFULL"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -15,6 +16,41 @@ nextflow_process {
         options "-stub"
 
         when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.phased.bam.bai', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id: 'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo sapiens - nanopore modbam - bgzf - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--bgzf'
+            }
             process {
                 """
                 input[0] = [
@@ -42,6 +78,9 @@ nextflow_process {
     test("homo sapiens - nanopore modbam") {
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [

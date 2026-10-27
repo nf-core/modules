@@ -49,7 +49,6 @@ process RAMI2D_REGISTER {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """

@@ -3,9 +3,9 @@ process UCSC_GTFTOGENEPRED {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ucsc-gtftogenepred:482--h0b57e2e_0':
-        'quay.io/biocontainers/ucsc-gtftogenepred:482--h0b57e2e_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0b/0b1bf78d0b82411a2355c9930140488b5fe91fbba5be774751666ef81b45ff71/data'
+:         'community.wave.seqera.io/library/ucsc-gtftogenepred:482--ace98be9f7cb069f' }"
 
     input:
     tuple val(meta), path(gtf)

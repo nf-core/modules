@@ -3,9 +3,9 @@ process UCSC_BEDGRAPHTOBIGWIG {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ucsc-bedgraphtobigwig:482--hdc0a859_0' :
-        'quay.io/biocontainers/ucsc-bedgraphtobigwig:482--hdc0a859_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/21/210205cab907384cc30cfb91fa1eb2d9458021e98debf6d23b90c33d9fb2eb4d/data'
+:         'community.wave.seqera.io/library/ucsc-bedgraphtobigwig:482--2d280d39bedffa30' }"
 
     input:
     tuple val(meta), path(bedgraph)

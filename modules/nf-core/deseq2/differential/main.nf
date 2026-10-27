@@ -4,8 +4,8 @@ process DESEQ2_DIFFERENTIAL {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a1/a15f5d61792b60b6179afd885db27d3fe60eb4c42e805c8887ed0416d88cb484/data' :
-        'community.wave.seqera.io/library/bioconductor-deseq2_bioconductor-limma:b56a0c9ddc3e87e1' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/67/6713fae254ef549c08f00905da36abadefa357892de60180b7e2021a87d80c5d/data' :
+        'community.wave.seqera.io/library/bioconductor-deseq2_bioconductor-limma_bioconductor-apeglm:7fccb58b6c45d084' }"
 
     input:
     tuple val(meta), val(contrast_variable), val(reference), val(target), val(formula), val(comparison)

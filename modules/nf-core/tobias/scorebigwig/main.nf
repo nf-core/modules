@@ -3,9 +3,9 @@ process TOBIAS_SCOREBIGWIG {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/tobias:0.17.5--py310h3479294_0':
-        'quay.io/biocontainers/tobias:0.17.5--py310h3479294_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/eb/eb99dc2a6b4da1bed5ad4d66f889e3830d7682d9e727df26337434d784868353/data'
+        : 'community.wave.seqera.io/library/tobias_python:33fc15661f1e50e6'}"
 
     input:
     tuple val(meta), path(signal), path(regions)

@@ -12,14 +12,19 @@ process RPBP_GETPERIODICLENGTHSOFFSETS {
 
     output:
     tuple val(meta), path("${prefix}.tsv"), emit: lengths_offsets
-    path "versions.yml"                                            , emit: versions_rpbp, topic: versions
+    path "versions.yml", emit: versions_rpbp, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    task_ext_args = task.ext.args ?: ''
+    args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}.lengths-offsets"
+
+    """
+    echo ${args}
+    """
+
     template 'get_periodic_lengths_and_offsets.py'
 
     stub:

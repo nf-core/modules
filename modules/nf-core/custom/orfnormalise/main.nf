@@ -3,9 +3,9 @@ process CUSTOM_ORFNORMALISE {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/15/15f690593e9d2bd7ebeb72fff4068eeae9cdfc909103de457b81a25d29cfbef3/data' :
-        'community.wave.seqera.io/library/python_pyyaml:25b0f22c7e7bf847' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ca/caf07471ede03189e710de9163ae02e17bf33643bdcd6f1084ef57484174bf7c/data'
+        : 'community.wave.seqera.io/library/python_pyyaml:14e95bf7fff3fa6c'}"
 
     input:
     tuple val(meta) , path(orfs_table), val(caller)
@@ -23,6 +23,12 @@ process CUSTOM_ORFNORMALISE {
     prefix    = task.ext.prefix ?: "${meta.id}.normalised"
     sample_id = meta.id ?: 'unknown'
     args      = task.ext.args ?: ''
+
+    """
+    echo ${args}
+    echo ${sample_id}
+    """
+
     template 'orfnormalise.py'
 
     stub:

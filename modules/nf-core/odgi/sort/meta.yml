@@ -1,6 +1,5 @@
 name: "odgi_sort"
-description: Apply different kind of sorting algorithms to a graph. The most
-  prominent one is the PG-SGD sorting algorithm.
+description: Apply different kind of sorting algorithms to a graph. The most prominent one is the PG-SGD sorting algorithm.
 keywords:
   - variation graph
   - pangenome graph
@@ -65,3 +64,17 @@ authors:
   - "@subwaystation"
 maintainers:
   - "@subwaystation"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/odgi:0.9.0--48ccb29b570a8d65
+      build_id: bd-48ccb29b570a8d65_1
+      scan_id: sc-5cbf9960d28e5d32_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/odgi:0.9.0--3af430c3f5c8b1ee
+      build_id: bd-3af430c3f5c8b1ee_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6c/6c519019f443966467de7ce3245a9bcc384e27b576cade1dafa675df199367c4/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/odgi/sort/.conda-lock/linux_amd64-bd-48ccb29b570a8d65_1.txt

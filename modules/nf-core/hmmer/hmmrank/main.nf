@@ -3,9 +3,9 @@ process HMMER_HMMRANK {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/68/68261e24307fdf80b9988d6fd13cf3551735e6dc0e7e38003259f7d8efa84cdb/data' :
-        'community.wave.seqera.io/library/duckdb-cli:1.5.5--9c6d18d9f687a45d' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/68/68261e24307fdf80b9988d6fd13cf3551735e6dc0e7e38003259f7d8efa84cdb/data'
+:         'community.wave.seqera.io/library/duckdb-cli:1.5.5--dca0d52c5239b678' }"
 
     input:
     tuple val(meta), path(tblout), path(domtblout)    // Parquet tables from hmmer/formattsv + duckdb/table2parquet; domtblout is optional ([] when absent)
@@ -117,12 +117,7 @@ LEFT JOIN domain_coords
 ORDER BY ranked.accno, ranked.rank
 """ : 'SELECT * FROM ranked ORDER BY accno, rank\n'
 
-    // Quoted heredoc: no shell expansion in the body -- sqlLit only defends the SQL layer, this
-    // defends the shell layer. Delimiter is randomized per task so a real newline in a value
-    // can't forge a line that closes it early.
-    def heredocTag = "SQL_${java.util.UUID.randomUUID().toString().replace('-', '')}"
-    """
-    duckdb <<'${heredocTag}'
+    def sql = """\
     SET threads=${task.cpus};
     SET memory_limit='${task.memory.toGiga()}GB';
     SET temp_directory='.';
@@ -138,7 +133,14 @@ ORDER BY ranked.accno, ranked.rank
     FROM read_parquet('${tbloutSql}');
     ${domtbl_sql}
     COPY (${output_select}) TO '${prefixSql}.hmmrank.tsv.gz' (FORMAT CSV, DELIMITER '\\t', HEADER, COMPRESSION 'gzip', NULLSTR 'NA');
-${heredocTag}
+"""
+    // Quoted heredoc: no shell expansion in the body -- sqlLit only defends the SQL layer, this
+    // defends the shell layer. The delimiter is the body's own hash, so no value in the body can
+    // contain it, and it is the same on every run, which keeps -resume working.
+    def heredocTag = "SQL_${sql.md5()}"
+    """
+    duckdb <<'${heredocTag}'
+${sql}${heredocTag}
     """
 
     stub:

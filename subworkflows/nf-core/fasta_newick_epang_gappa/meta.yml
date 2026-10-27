@@ -45,6 +45,11 @@ input:
             taxonomy:     path("*.tsv")
           ]
         ]
+  - compress_alignment:
+      type: boolean
+      description: |
+        Write the clustalo and mafft profile alignments gzipped. Recommended for large
+        alignments, which are mostly gaps; hmmer alignments are not affected.
 output:
   - epang:
       type: directory
@@ -60,6 +65,13 @@ output:
 
         Structure: [ val(meta), path(jplace) ]
       pattern: "*.jplace"
+  - epang_log:
+      type: file
+      description: |
+        EPA-NG log file.
+
+        Structure: [ path(log) ]
+      pattern: "*.epa_info.log"
   - grafted_phylogeny:
       type: file
       description: |
@@ -88,6 +100,13 @@ output:
 
         Structure: [ val(meta), path(svg) ]
       pattern: "*.svg"
+  - hmmbuild_log:
+      type: file
+      description: |
+        hmmbuild output, for entries where the hmm was built from the reference alignment.
+
+        Structure: [ path(txt) ]
+      pattern: "*.hmmbuild.txt"
 authors:
   - "@erikrikarddaniel"
 maintainers:
