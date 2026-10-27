@@ -25,6 +25,10 @@ nextflow_process {
 
         then {
             assert process.success
+            def calls = new File(process.out.predictions[0][1].toString()).readLines()
+            assert calls.size() == 1001
+            assert calls[0] == '"","test_scdblfinder"'
+            assert calls.drop(1).every { it.endsWith(",TRUE") || it.endsWith(",FALSE") }
             def adata = anndata(process.out.h5ad[0][1])
             with(adata) {
                 assert "scDblFinder.class" in obs.colnames
@@ -55,6 +59,10 @@ nextflow_process {
 
         then {
             assert process.success
+            def calls = new File(process.out.predictions[0][1].toString()).readLines()
+            assert calls.size() == 1001
+            assert calls[0] == '"","test_scdblfinder"'
+            assert calls.drop(1).every { it.endsWith(",TRUE") || it.endsWith(",FALSE") }
             def adata = anndata(process.out.h5ad[0][1])
             with(adata) {
                 assert "scDblFinder.class" in obs.colnames

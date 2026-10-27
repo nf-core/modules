@@ -55,8 +55,17 @@ for (nm in cols) {
 message("scDblFinder results:")
 print(table(sce\$scDblFinder.class))
 
-write_h5ad(sce, "${prefix}.h5ad")
-write.csv(as.data.frame(colData(sce))[, cols, drop = FALSE], "${prefix}.csv")
+write_h5ad(sce, "${prefix}.h5ad", compression = "gzip")
+
+# Full scDblFinder results (class, score and related columns)
+write.csv(as.data.frame(colData(sce))[, cols, drop = FALSE], "${prefix}.scores.csv")
+
+# One boolean column (TRUE = doublet), named after the prefix and indexed by cell
+# barcode. This is the same layout the other doublet detection modules return, so
+# the calls from several methods can be combined without any conversion.
+calls <- data.frame(sce\$scDblFinder.class == "doublet", row.names = colnames(sce))
+colnames(calls) <- "${prefix}"
+write.csv(calls, "${prefix}.predictions.csv")
 
 r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
 scdblfinder.version <- as.character(packageVersion('scDblFinder'))

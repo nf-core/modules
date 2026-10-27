@@ -11,9 +11,10 @@ process SCDBLFINDER {
     tuple val(meta), path(h5ad), val(dbr), val(batch_col)
 
     output:
-    tuple val(meta), path("*.h5ad"), emit: h5ad
-    tuple val(meta), path("*.csv") , emit: predictions
-    path "versions.yml"            , emit: versions_scdblfinder, topic: versions
+    tuple val(meta), path("*.h5ad")            , emit: h5ad
+    tuple val(meta), path("*.predictions.csv") , emit: predictions
+    tuple val(meta), path("*.scores.csv")      , emit: scores
+    path "versions.yml"                        , emit: versions_scdblfinder, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,7 +33,8 @@ process SCDBLFINDER {
     }
     """
     touch ${prefix}.h5ad
-    touch ${prefix}.csv
+    touch ${prefix}.predictions.csv
+    touch ${prefix}.scores.csv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

@@ -48,7 +48,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*.h5ad":
           type: file
-          description: Input AnnData object with the scDblFinder columns added to `obs`
+          description: Input AnnData object with the scDblFinder columns added to `obs`, stored with gzip compression
           pattern: "*.h5ad"
           ontologies:
             - edam: http://edamontology.org/format_3590 # HDF5
@@ -58,10 +58,26 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.csv":
+      - "*.predictions.csv":
+          type: file
+          description: |
+            CSV file with one boolean column (true for cells called as doublets),
+            named after the output prefix and indexed by cell barcode. It has the
+            same layout as the doublet calls from the other doublet detection
+            modules, so calls from several methods can be combined directly.
+          pattern: "*.predictions.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  scores:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.scores.csv":
           type: file
           description: Per-cell scDblFinder results (class, score and related columns)
-          pattern: "*.csv"
+          pattern: "*.scores.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
   versions_scdblfinder:
