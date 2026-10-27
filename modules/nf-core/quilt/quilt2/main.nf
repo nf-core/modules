@@ -3,9 +3,9 @@ process QUILT_QUILT2 {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/r-quilt:2.0.4--r44h503566f_0'
-        : 'quay.io/biocontainers/r-quilt:2.0.4--r44h503566f_0'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bf/bf7091eec9e66902101b33306618a726f852f04b8ac6a6d8310bfefec82a5df2/data'
+:         'community.wave.seqera.io/library/r-quilt_r-base:d89885aa9b6ac747' }"
 
     input:
     tuple val(meta), path(bams), path(bais), path(bamlist), path(samplename), path(reference_vcf_file), path(reference_vcf_index), path(posfile), path(phasefile), path(genfile), val(chr), val(regions_start), val(regions_end), val(ngen), val(buffer), path(genetic_map)

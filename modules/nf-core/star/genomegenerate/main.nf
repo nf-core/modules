@@ -42,7 +42,7 @@ process STAR_GENOMEGENERATE {
     } else {
         """
         samtools faidx $args2 $fasta
-        NUM_BASES=`gawk $args3 '{sum = sum + \$2}END{if ((log(sum)/log(2))/2 - 1 > 14) {printf "%.0f", 14} else {printf "%.0f", (log(sum)/log(2))/2 - 1}}' ${fasta}.fai`
+        NUM_BASES=`gawk $args3 '{sum = sum + \$2}END{if ((log(sum)/log(2))/2 - 1 > 14) {printf "%.0f", 14} else {printf "%d", int((log(sum)/log(2))/2 - 1)}}' ${fasta}.fai`
 
         mkdir star
         STAR \\
