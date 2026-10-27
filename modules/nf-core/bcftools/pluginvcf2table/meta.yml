@@ -107,22 +107,24 @@ maintainers:
 containers:
   docker:
     linux/amd64:
-      name: community.wave.seqera.io/library/bcftools:1.23.1--e6b944fbe2dde7a7
-      build_id: bd-e6b944fbe2dde7a7_1
-      scan_id: sc-b2f21120e0a10e1e_1
+      name: community.wave.seqera.io/library/bcftools:1.25--140bbb151b8acfe5
+      build_id: bd-140bbb151b8acfe5_1
+      scan_id: sc-bef6c1bfc18fb5c8_1
     linux/arm64:
-      name: community.wave.seqera.io/library/bcftools:1.23.1--dce34dfe83fe082e
-      build_id: bd-dce34dfe83fe082e_1
-      scan_id: sc-422d358ae2598e37_1
+      name: community.wave.seqera.io/library/bcftools:1.25--405212ba1fbcd699
+      build_id: bd-405212ba1fbcd699_1
+      scan_id: sc-d608232151547c6a_1
   singularity:
-    linux/arm64:
-      name: oras://community.wave.seqera.io/library/bcftools:1.23.1--45571cf08faa98b4
-      build_id: bd-45571cf08faa98b4_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d6/d694a418ef909631f87e21346ee8511d8b1185b2e8238b7b4542a0bbc71c53a4/data
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/bcftools:1.23.1--ccb6850d4a72ec11
-      build_id: bd-ccb6850d4a72ec11_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/97/97495e3fd16a7177cfaa1fa318556ce3bbe372d1234c94ee5b9f78d7fde6777c/data
+      name: oras://community.wave.seqera.io/library/bcftools:1.25--e75d8f335db6e28c
+      build_id: bd-e75d8f335db6e28c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f5/f57eb9360a7f27a3b111d842194286fe02665c1c008ea7635f2a611939523def/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bcftools:1.25--dd8939e103d45026
+      build_id: bd-dd8939e103d45026_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bf/bf2411adca6b43392c5d8e3f98737c20175490604d84b8684a92d92746d7684c/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/bcftools/pluginvcf2table/.conda-lock/linux_amd64-bd-e6b944fbe2dde7a7_1.txt
+      lock_file: modules/nf-core/bcftools/pluginvcf2table/.conda-lock/linux_amd64-bd-140bbb151b8acfe5_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/bcftools/pluginvcf2table/.conda-lock/linux_arm64-bd-405212ba1fbcd699_1.txt
