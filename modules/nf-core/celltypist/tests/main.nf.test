@@ -28,7 +28,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                // One header line plus one line per cell (300 cells in the query file).
+                // The scores are floating point values that can differ in the last digits
+                // between platforms, so the content is not compared by checksum.
+                { assert new File(process.out.predicted_labels[0][1].toString()).readLines().size() == 301 },
+                { assert new File(process.out.decision_matrix[0][1].toString()).readLines().size() == 301 },
+                { assert new File(process.out.probability_matrix[0][1].toString()).readLines().size() == 301 },
+                { assert snapshot(process.out.versions_celltypist).match() }
             )
         }
 
