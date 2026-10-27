@@ -1,0 +1,88 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "insitugame"
+description: "In situ spatial evolutionary game assay for inferring tumor subclonal payoff matrices and adaptive therapy regimens from intact spatial transcriptomics."
+keywords:
+  - spatial transcriptomics
+  - evolutionary game theory
+  - oncology
+  - cancer
+  - visium
+tools:
+  - "insitugame":
+      description: "Computational oncology assay for subclonal payoff matrices and evolutionary game dynamics from spatial transcriptomics."
+      homepage: "https://lukecele.github.io/spatial-game-assay/"
+      documentation: "https://github.com/Lukecele/spatial-game-assay#readme"
+      tool_dev_url: "https://github.com/Lukecele/spatial-game-assay"
+      doi: "10.5281/zenodo.23585216"
+      licence:
+        - "GPL-3.0-or-later"
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - spatial_data:
+        type: file
+        description: Spatial transcriptomics counts and coordinate table
+        pattern: "*.{tsv,csv,tsv.gz,csv.gz,h5ad}"
+
+output:
+  figures:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.png":
+          type: file
+          description: Spatial payoff simplex and subclonal interaction figures
+          pattern: "*.png"
+  results:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.json":
+          type: file
+          description: Inferred payoff matrices and Nash equilibria in JSON format
+          pattern: "*.json"
+  tables:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.csv":
+          type: file
+          description: Inferred game payoff matrix and spot metrics table
+          pattern: "*.csv"
+  versions_insitugame:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "insitugame":
+          type: string
+          description: The name of the tool
+      - "python -c \"import importlib.metadata; print(importlib.metadata.version('insitugame'))\"":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - insitugame:
+          type: string
+          description: The name of the tool
+      - python -c "import importlib.metadata; print(importlib.metadata.version('insitugame'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@Lukecele"
+maintainers:
+  - "@Lukecele"
