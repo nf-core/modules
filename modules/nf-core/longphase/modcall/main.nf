@@ -42,7 +42,7 @@ process LONGPHASE_MODCALL {
     """
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}_modcall"
     """
     echo "" | gzip > ${prefix}.vcf.gz
     """
