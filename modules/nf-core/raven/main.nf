@@ -3,9 +3,9 @@ process RAVEN {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/raven-assembler:1.6.1--h2e03b76_0' :
-        'quay.io/biocontainers/raven-assembler:1.6.1--h2e03b76_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ec/ece0d4ba37373e4fcf84fd856b4e7f3b84ecc4394dabeed7928a0c9a9b3b92bb/data'
+        : 'community.wave.seqera.io/library/raven-assembler:1.6.1--2388e7e21e19cd95'}"
 
     input:
     tuple val(meta), path(reads)

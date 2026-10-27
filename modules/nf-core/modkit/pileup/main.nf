@@ -3,9 +3,9 @@ process MODKIT_PILEUP {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ont-modkit:0.6.1--hcdda2d0_0':
-        'quay.io/biocontainers/ont-modkit:0.6.1--hcdda2d0_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/65/65e515e445d31be38188af5fe636e71af18abc601afacf80e9021a4752da6332/data'
+:         'community.wave.seqera.io/library/ont-modkit:0.6.4--0c623277f8775a30' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -56,7 +56,7 @@ process MODKIT_PILEUP {
     """
     echo $args
 
-    echo | gzip > ${prefix}.bed.gz
+    echo "" | gzip > ${prefix}.bed.gz
     touch ${prefix}.log
     """
 }

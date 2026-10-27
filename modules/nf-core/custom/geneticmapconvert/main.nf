@@ -3,9 +3,9 @@ process CUSTOM_GENETICMAPCONVERT {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b3/b314d622eb495f740bcfa163ceda8f65cb9c77afa069f533d41c810c33eeecdb/data':
-        'community.wave.seqera.io/library/r-data.table_r-janitor_r-nfcore.utils_r-r.utils:27d6c57bc9981f04' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0e/0e625d9794fe4feb2e1126731121ca9750eb6f43d63e896730ad14e170421546/data'
+        : 'community.wave.seqera.io/library/r-data.table_r-janitor_r-nfcore.utils_r-r.utils:d8b49a10459ef83c'}"
 
     input:
     tuple val(meta), path(map_file)

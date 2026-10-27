@@ -1,6 +1,5 @@
 name: gatk4_genomicsdbimport
-description: merge GVCFs from multiple samples. For use in joint genotyping or somatic
-  panel of normal creation.
+description: merge GVCFs from multiple samples. For use in joint genotyping or somatic panel of normal creation.
 keywords:
   - gatk4
   - genomicsdb
@@ -25,8 +24,7 @@ input:
           e.g. [ id:'test']
     - vcf:
         type: list
-        description: either a list of vcf files to be used to create or update a genomicsdb,
-          or a file that contains a map to vcf files to be used.
+        description: either a list of vcf files to be used to create or update a genomicsdb, or a file that contains a map to vcf files to be used.
         pattern: "*.vcf.gz"
     - tbi:
         type: list
@@ -39,31 +37,24 @@ input:
         ontologies: []
     - interval_value:
         type: string
-        description: if an intervals file has not been specified, the value entered
-          here will be used as an interval via the "-L" argument
+        description: if an intervals file has not been specified, the value entered here will be used as an interval via the "-L" argument
         pattern: "example: chr1:1000-10000"
     - wspace:
         type: file
-        description: path to an existing genomicsdb to be used in update db mode or
-          get intervals mode. This WILL NOT specify name of a new genomicsdb in create
-          db mode.
+        description: path to an existing genomicsdb to be used in update db mode or get intervals mode. This WILL NOT specify name of a new genomicsdb in create db mode.
         pattern: "/path/to/existing/gendb"
         ontologies: []
   - run_intlist:
       type: boolean
-      description: Specify whether to run get interval list mode, this option cannot
-        be specified at the same time as run_updatewspace.
+      description: Specify whether to run get interval list mode, this option cannot be specified at the same time as run_updatewspace.
       pattern: "true/false"
   - run_updatewspace:
       type: boolean
-      description: Specify whether to run update genomicsdb mode, this option takes
-        priority over run_intlist.
+      description: Specify whether to run update genomicsdb mode, this option takes priority over run_intlist.
       pattern: "true/false"
   - input_map:
       type: boolean
-      description: Specify whether the vcf input is providing a list of vcf file(s)
-        or a single file containing a map of paths to vcf files to be used to create
-        or update a genomicsdb.
+      description: Specify whether the vcf input is providing a list of vcf file(s) or a single file containing a map of paths to vcf files to be used to create or update a genomicsdb.
       pattern: "*.sample_map"
 output:
   genomicsdb:
@@ -88,8 +79,7 @@ output:
           description: A Groovy map containing sample information
       - "*.interval_list":
           type: file
-          description: File containing the intervals used to generate the genomicsdb,
-            only created by get intervals mode.
+          description: File containing the intervals used to generate the genomicsdb, only created by get intervals mode.
           pattern: "*.interval_list"
           ontologies: []
   versions_gatk4:
@@ -117,3 +107,17 @@ authors:
   - "@GCJMackenzie"
 maintainers:
   - "@GCJMackenzie"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/gatk4-lite:4.7.0.0--79918b8b2632f4b1
+      build_id: bd-79918b8b2632f4b1_1
+      scan_id: sc-3494a4d719069a23_2
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/gatk4-lite:4.7.0.0--f28eb03ad3b2bcd5
+      build_id: bd-f28eb03ad3b2bcd5_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ce/ce8f4142326abbb74e28b97633a200b09439c54480803343b1cf13dc19e51ae5/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/gatk4/genomicsdbimport/.conda-lock/linux_amd64-bd-79918b8b2632f4b1_1.txt

@@ -3,9 +3,9 @@ process CARVEME_CARVE {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/carveme:1.6.6--pyhdfd78af_1'
-        : 'quay.io/biocontainers/carveme:1.6.6--pyhdfd78af_1'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/96/9662f19dc7815dd4aaaf24cd6b19c11a3b507e3b52a066d1557c77517fed9f47/data'
+:         'community.wave.seqera.io/library/carveme_scip:8b66c18ea3a4fb1b' }"
 
     input:
     tuple val(meta), path(fasta), path(universe_file), path(mediadb), path(soft), path(hard), path(reference)

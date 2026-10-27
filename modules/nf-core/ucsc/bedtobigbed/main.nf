@@ -4,9 +4,9 @@ process UCSC_BEDTOBIGBED {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ucsc-bedtobigbed:482--hdc0a859_0' :
-        'quay.io/biocontainers/ucsc-bedtobigbed:482--hdc0a859_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/39/39442202396dc06815b4e27d9e2b6af7cb0f46382540da46ebe2304ee15a1f38/data'
+:         'community.wave.seqera.io/library/ucsc-bedtobigbed:482--f9a75c5237cbfded' }"
 
     input:
     tuple val(meta), path(bed)

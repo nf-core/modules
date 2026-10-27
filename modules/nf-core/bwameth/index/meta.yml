@@ -69,3 +69,27 @@ authors:
 maintainers:
   - "@phue"
   - "@sateeshperi"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bwameth:0.2.9--63cb7f0b9f8eae9d
+      build_id: bd-63cb7f0b9f8eae9d_2
+      scan_id: sc-d67dcd05e6a61118_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/bwameth:0.2.9--5fafa6f72ce9b8b3
+      build_id: bd-5fafa6f72ce9b8b3_2
+      scan_id: sc-c2fb8bf1392e3e14_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bwameth:0.2.9--bdd31fc6f052335c
+      build_id: bd-bdd31fc6f052335c_2
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b8/b806996da500b3cc610c48536ce3a5151a0ff512228e313439534ba08a6acda2/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bwameth:0.2.9--9e3b3d98d9ee3482
+      build_id: bd-9e3b3d98d9ee3482_2
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ed/ed44c395d9fe10fda18669d3be751139d47674a470b2b4087fcf2192cdbef1b3/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bwameth/index/.conda-lock/linux_amd64-bd-63cb7f0b9f8eae9d_2.txt
+    linux/arm64:
+      lock_file: modules/nf-core/bwameth/index/.conda-lock/linux_arm64-bd-5fafa6f72ce9b8b3_2.txt
