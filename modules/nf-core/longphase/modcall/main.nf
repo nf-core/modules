@@ -14,7 +14,7 @@ process LONGPHASE_MODCALL {
 
     output:
     tuple val(meta), path("${prefix}.vcf.gz"), emit: vcf
-    tuple val("${task.process}"), val('longphase'), eval("longphase --version | head -n 1 | sed 's/Version: //'"), topic: versions, emit: versions_longphase
+    tuple val("${task.process}"), val('longphase'), eval("longphase --version | head -n 1 | sed 's/.*Ver //'"), topic: versions, emit: versions_longphase
     tuple val("${task.process}"), val('htslib'), eval("bgzip --version | sed '1!d;s/.* //'"), topic: versions, emit: versions_htslib
 
     when:
