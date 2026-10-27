@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 // This module does the following:
 //creating a modified reference genome, with an elongation_factoration of the an specified amount of bases
 process CIRCULARMAPPER_CIRCULARGENERATOR {

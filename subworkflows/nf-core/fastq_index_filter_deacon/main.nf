@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { DEACON_INDEX  } from '../../../modules/nf-core/deacon/index/main'
 include { DEACON_FILTER } from '../../../modules/nf-core/deacon/filter/main'
 

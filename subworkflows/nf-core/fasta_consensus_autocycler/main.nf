@@ -1,3 +1,5 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
 
 include { AUTOCYCLER_COMPRESS  } from '../../../modules/nf-core/autocycler/compress/main'
 include { AUTOCYCLER_CLUSTER   } from '../../../modules/nf-core/autocycler/cluster/main'

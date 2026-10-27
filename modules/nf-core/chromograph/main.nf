@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CHROMOGRAPH {
     // $meta.id can be [] because autozyg is not required, so use all ids
     tag "${[meta, meta2, meta3, meta4, meta5, meta6, meta7].collect { meta_map -> meta_map.id }.findAll().unique().join('_') ?: 'chromograph'}"
