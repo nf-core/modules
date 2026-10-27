@@ -1,126 +1,126 @@
 name: "longphase_modcall"
 description: Call allele-specific modifications from a long-read BAM with MM/ML tags.
 keywords:
-- modcall
-- methylation
-- epigenomics
-- long-read
-- vcf
+  - modcall
+  - methylation
+  - epigenomics
+  - long-read
+  - vcf
 tools:
-- "longphase":
-    description: "LongPhase is an ultra-fast program for simultaneously co-phasing SNPs, small indels, large SVs, and (5mC) modifications for Nanopore and PacBio platforms."
-    homepage: "https://github.com/twolinin/longphase/blob/v2.1.1/README.md"
-    documentation: "https://github.com/twolinin/longphase/blob/v2.1.1/README.md"
-    tool_dev_url: "https://github.com/twolinin/longphase"
-    doi: "10.1093/bioinformatics/btac058"
-    licence:
-    - "GPL v3"
-    identifier: ""
-    args_id: "$args"
+  - "longphase":
+      description: "LongPhase is an ultra-fast program for simultaneously co-phasing SNPs, small indels, large SVs, and (5mC) modifications for Nanopore and PacBio platforms."
+      homepage: "https://github.com/twolinin/longphase/blob/v2.1.1/README.md"
+      documentation: "https://github.com/twolinin/longphase/blob/v2.1.1/README.md"
+      tool_dev_url: "https://github.com/twolinin/longphase"
+      doi: "10.1093/bioinformatics/btac058"
+      licence:
+        - "GPL v3"
+      identifier: ""
+      args_id: "$args"
 
 input:
-- - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1' ]`
-  - bam:
-      type: file
-      description: Sorted BAM file with modifications stored using MM, and ML tags.
-      pattern: "*.bam"
-      ontologies:
-      - edam: "http://edamontology.org/format_2572"     # BAM
-  - bai:
-      type: file
-      description: Indexed BAM file
-      pattern: "*.bai"
-      ontologies:
-      - edam: "http://edamontology.org/format_3327"     # BAI
-  - snvs:
-      type: file
-      description: |
-        Optional VCF file containing SNVs, passed to modcall with --snp-file
-      pattern: "*.{vcf,vcf.gz}"
-      ontologies:
-      - edam: "http://edamontology.org/format_3016"     # VCF
-- - meta2:
-      type: map
-      description: |
-        Groovy Map containing reference information
-        e.g. `[ id:'hg38' ]`
-  - fasta:
-      type: file
-      description: Reference fasta file
-      pattern: "*.fasta"
-      ontologies:
-      - edam: "http://edamontology.org/format_1929"     # FASTA
-  - fai:
-      type: file
-      description: Indexed reference file
-      pattern: "*.fai"
-      ontologies: []
-output:
-  vcf:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - ${prefix}.vcf.gz:
+    - bam:
         type: file
-        description: Compressed VCF file with allele-specific modifications.
-        pattern: "*.vcf.gz"
+        description: Sorted BAM file with modifications stored using MM, and ML tags.
+        pattern: "*.bam"
         ontologies:
-        - edam: "http://edamontology.org/format_3016"     # VCF
-        - edam: "http://edamontology.org/format_3989"  # GZIP format
+          - edam: "http://edamontology.org/format_2572" # BAM
+    - bai:
+        type: file
+        description: Indexed BAM file
+        pattern: "*.bai"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327" # BAI
+    - snvs:
+        type: file
+        description: |
+          Optional VCF file containing SNVs, passed to modcall with --snp-file
+        pattern: "*.{vcf,vcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016" # VCF
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'hg38' ]`
+    - fasta:
+        type: file
+        description: Reference fasta file
+        pattern: "*.fasta"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+    - fai:
+        type: file
+        description: Indexed reference file
+        pattern: "*.fai"
+        ontologies: []
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.vcf.gz:
+          type: file
+          description: Compressed VCF file with allele-specific modifications.
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # VCF
+            - edam: "http://edamontology.org/format_3989" # GZIP format
   versions_longphase:
-  - - ${task.process}:
-        type: string
-        description: The name of the process
-    - longphase:
-        type: string
-        description: The name of the tool
-    - longphase --version | head -n 1 | sed 's/.*Ver //':
-        type: eval
-        description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - longphase:
+          type: string
+          description: The name of the tool
+      - longphase --version | head -n 1 | sed 's/.*Ver //':
+          type: eval
+          description: The expression to obtain the version of the tool
 
   versions_htslib:
-  - - ${task.process}:
-        type: string
-        description: The name of the process
-    - htslib:
-        type: string
-        description: The name of the tool
-    - bgzip --version | sed '1!d;s/.* //':
-        type: eval
-        description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - htslib:
+          type: string
+          description: The name of the tool
+      - bgzip --version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
 
 topics:
   versions:
-  - - ${task.process}:
-        type: string
-        description: The name of the process
-    - longphase:
-        type: string
-        description: The name of the tool
-    - longphase --version | head -n 1 | sed 's/.*Ver //':
-        type: eval
-        description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - longphase:
+          type: string
+          description: The name of the tool
+      - longphase --version | head -n 1 | sed 's/.*Ver //':
+          type: eval
+          description: The expression to obtain the version of the tool
 
-  - - ${task.process}:
-        type: string
-        description: The name of the process
-    - htslib:
-        type: string
-        description: The name of the tool
-    - bgzip --version | sed '1!d;s/.* //':
-        type: eval
-        description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - htslib:
+          type: string
+          description: The name of the tool
+      - bgzip --version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
 
 authors:
-- "@DylanMHouse"
+  - "@DylanMHouse"
 maintainers:
-- "@DylanMHouse"
+  - "@DylanMHouse"
 containers:
   docker:
     linux/arm64:
