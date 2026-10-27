@@ -53,7 +53,7 @@ output:
           pattern: "*.vcf.gz"
           ontologies:
             - edam: "http://edamontology.org/format_3016"
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   versions_vt:
     - - ${task.process}:
           type: string
@@ -61,10 +61,10 @@ output:
       - vt:
           type: string
           description: The name of the tool
-      - 2015.11.10:
+      - "0.57721":
           type: string
-          description: Version of vt (WARN - Version information not provided by
-            tool on CLI)
+          description: The expression to obtain the version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -73,11 +73,35 @@ topics:
       - vt:
           type: string
           description: The name of the tool
-      - 2015.11.10:
+      - "0.57721":
           type: string
-          description: Version of vt (WARN - Version information not provided by
-            tool on CLI)
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@kubranarci"
 maintainers:
   - "@kubranarci"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/vt:0.57721--83c629c7e3923326
+      build_id: bd-83c629c7e3923326_1
+      scan_id: sc-23aca4c9a7de26fb_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/vt:0.57721--6df861e3dd46f3fe
+      build_id: bd-6df861e3dd46f3fe_1
+      scan_id: sc-9cd69fcc68be8d45_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/vt:0.57721--e289aab87e26643c
+      build_id: bd-e289aab87e26643c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/76/76a36b074726b1a78020fcd54c22d0ba9f89ec48b7e1b282512d5590a81e9d22/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/vt:0.57721--1d33af88a2cb805a
+      build_id: bd-1d33af88a2cb805a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/15/15c33ba0e0d0e953d83fa810e10ebb0e1617a539ff82660ba7b641154fd3d25b/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/vt/decomposeblocksub/.conda-lock/linux_amd64-bd-83c629c7e3923326_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/vt/decomposeblocksub/.conda-lock/linux_arm64-bd-6df861e3dd46f3fe_1.txt
