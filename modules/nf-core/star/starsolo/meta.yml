@@ -271,24 +271,24 @@ maintainers:
 containers:
   docker:
     linux/arm64:
-      name: community.wave.seqera.io/library/htslib_samtools_star_gawk:adccd64be154a89d
-      build_id: bd-adccd64be154a89d_1
-      scan_id: sc-eded997b1e8b73d4_1
+      name: community.wave.seqera.io/library/star:2.7.11b--113eeacc5216db85
+      build_id: bd-113eeacc5216db85_1
+      scan_id: sc-f3caa041406df584_1
     linux/amd64:
-      name: community.wave.seqera.io/library/htslib_samtools_star_gawk:3ffb3e46ac3bf2ea
-      build_id: bd-3ffb3e46ac3bf2ea_1
-      scan_id: sc-358dbd3ae33fcfe8_1
+      name: community.wave.seqera.io/library/star:2.7.11b--f22f015f7eb1383f
+      build_id: bd-f22f015f7eb1383f_1
+      scan_id: sc-8d56a3b94bd9fffd_1
   singularity:
     linux/arm64:
-      name: oras://community.wave.seqera.io/library/htslib_samtools_star_gawk:9e6bab8437bc6b09
-      build_id: bd-9e6bab8437bc6b09_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/dd/dd20b752594d7c3764bf7128d4cb88efb2978429f995d30bc2c286e0ef3bec69/data
+      name: oras://community.wave.seqera.io/library/star:2.7.11b--217afbae6d99f335
+      build_id: bd-217afbae6d99f335_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9a/9a6765552391b5012b9ec93e41a2438d547e1948b028be87f2ab9e834d18c235/data
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/htslib_samtools_star_gawk:6b13f5b00438e1ec
-      build_id: bd-6b13f5b00438e1ec_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d8/d807965783d3d20f9a33f37da72e62223d217a042a0a8615744fae0a34457b48/data
+      name: oras://community.wave.seqera.io/library/star:2.7.11b--e0f112e5852e8139
+      build_id: bd-e0f112e5852e8139_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5b/5b04fee93569be87eedb18990e8d297a7b75f5e6fe1cb768edbc05a1a842e160/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/star/starsolo/.conda-lock/linux_amd64-bd-3ffb3e46ac3bf2ea_1.txt
+      lock_file: modules/nf-core/star/starsolo/.conda-lock/linux_amd64-bd-f22f015f7eb1383f_1.txt
     linux/arm64:
-      lock_file: modules/nf-core/star/starsolo/.conda-lock/linux_arm64-bd-adccd64be154a89d_1.txt
+      lock_file: modules/nf-core/star/starsolo/.conda-lock/linux_arm64-bd-113eeacc5216db85_1.txt

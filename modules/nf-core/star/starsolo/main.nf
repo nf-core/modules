@@ -4,8 +4,8 @@ process STAR_STARSOLO {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d8/d807965783d3d20f9a33f37da72e62223d217a042a0a8615744fae0a34457b48/data'
-:         'community.wave.seqera.io/library/htslib_samtools_star_gawk:3ffb3e46ac3bf2ea' }"
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5b/5b04fee93569be87eedb18990e8d297a7b75f5e6fe1cb768edbc05a1a842e160/data'
+:         'community.wave.seqera.io/library/star:2.7.11b--f22f015f7eb1383f' }"
 
     input:
     tuple val(meta), val(solotype), path(reads), path(manifest)
