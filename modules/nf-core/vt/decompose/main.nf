@@ -13,7 +13,7 @@ process VT_DECOMPOSE {
 
     output:
     tuple val(meta), path("*.vcf.gz")   , emit: vcf
-    tuple val("${task.process}"), val('vt'), val('2015.11.10'), topic: versions, emit: versions_vt // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('vt'), val('0.57721'), topic: versions, emit: versions_vt // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     when:
     task.ext.when == null || task.ext.when

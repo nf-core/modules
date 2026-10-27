@@ -53,7 +53,7 @@ output:
           pattern: "*.vcf.gz"
           ontologies:
             - edam: "http://edamontology.org/format_3016"
-            - edam: http://edamontology.org/format_3989
+            - edam: http://edamontology.org/format_3989 # GZIP format
   versions_vt:
     - - ${task.process}:
           type: string
@@ -61,9 +61,10 @@ output:
       - vt:
           type: string
           description: The name of the tool
-      - 2015.11.10:
+      - "0.57721":
           type: string
-          description: Version of vt (WARN - Version information not provided by tool on CLI)
+          description: The expression to obtain the version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -72,9 +73,10 @@ topics:
       - vt:
           type: string
           description: The name of the tool
-      - 2015.11.10:
+      - "0.57721":
           type: string
-          description: Version of vt (WARN - Version information not provided by tool on CLI)
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@kubranarci"
 maintainers:
