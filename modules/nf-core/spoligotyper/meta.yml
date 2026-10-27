@@ -18,6 +18,7 @@ tools:
       licence:
         - "MIT"
       identifier: ""
+      args_id: "$args"
 
 input:
   - - meta:
@@ -29,7 +30,9 @@ input:
         type: file
         description: Single-end or paired-end reads (fastq), or an assembly (fasta), gzipped or not
         pattern: "*.{fastq,fq,fasta,fa,fna,fas}{,.gz}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_1929 # FASTA
 output:
   tsv:
     - - meta:
@@ -37,7 +40,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_spoligotyping.txt":
+      - "${prefix}_spoligotyping.txt":
           type: file
           description: Tab-separated table with the spoligotype, species, lineage and warnings
           pattern: "*_spoligotyping.txt"
@@ -49,7 +52,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_spoligotyping.json":
+      - "${prefix}_spoligotyping.json":
           type: file
           description: All the results and run information
           pattern: "*_spoligotyping.json"
@@ -61,9 +64,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_spoligotyping.pdf":
+      - "${prefix}_spoligotyping.pdf":
           type: file
-          description: PDF report for quality assurance (not written with --no-pdf)
+          description: Optional. PDF report for quality assurance (not written with --no-pdf)
           pattern: "*_spoligotyping.pdf"
           ontologies:
             - edam: http://edamontology.org/format_3508 # PDF
@@ -73,7 +76,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*_spoligotyping_mqc.json":
+      - "${prefix}_spoligotyping_mqc.json":
           type: file
           description: MultiQC custom content table
           pattern: "*_spoligotyping_mqc.json"
@@ -106,3 +109,27 @@ authors:
   - "@duceppemo"
 maintainers:
   - "@duceppemo"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/spoligotyper:0.9.0--679a58efe8efff70
+      build_id: bd-679a58efe8efff70_1
+      scan_id: sc-0c292160a28f85ac_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/spoligotyper:0.9.0--872d67a3849f499b
+      build_id: bd-872d67a3849f499b_1
+      scan_id: sc-448dd396d71a4062_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/spoligotyper:0.9.0--964817015cdc198a
+      build_id: bd-964817015cdc198a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d7/d75cbca42d0b437d193d5f9e54428ca9302f3c9cfcf8f472b2bf972d08948433/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/spoligotyper:0.9.0--a133deb816fb42d2
+      build_id: bd-a133deb816fb42d2_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/18/18627f630e2f90d14aa45effad5909fb77092cb48534b7d677f91f029c65d2de/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/spoligotyper/.conda-lock/linux_amd64-bd-679a58efe8efff70_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/spoligotyper/.conda-lock/linux_arm64-bd-872d67a3849f499b_1.txt
