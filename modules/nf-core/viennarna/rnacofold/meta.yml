@@ -96,23 +96,25 @@ maintainers:
   - "@kokul-atx"
 containers:
   docker:
-    linux/arm64:
-      name: community.wave.seqera.io/library/viennarna:2.6.4--17e6d34507be15df
-      build_id: bd-17e6d34507be15df_1
-      scan_id: sc-50a718b0d065abf0_1
     linux/amd64:
-      name: community.wave.seqera.io/library/viennarna:2.6.4--bd1078d77d380b29
-      build_id: bd-bd1078d77d380b29_1
-      scan_id: sc-8c651df8bc7e2051_1
+      name: community.wave.seqera.io/library/viennarna:2.7.2--6e8b02540b675a6c
+      build_id: bd-6e8b02540b675a6c_1
+      scan_id: sc-a66ad13df50b0c06_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/viennarna:2.7.2--57c349bf20a41eac
+      build_id: bd-57c349bf20a41eac_1
+      scan_id: sc-7bc811c203663145_1
   singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/viennarna:2.7.2--53f2d9d6676a2a66
+      build_id: bd-53f2d9d6676a2a66_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ab/ab295700229a0167197d24bc8dbfaccd4d38221b6ec1d498436e9d5791fcc107/data
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/viennarna:2.6.4--41d5beb0e1305784
-      build_id: bd-41d5beb0e1305784_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9f/9fa2645e08f7c6ed723b1548b6782740bf59fe79d62046bb8fb0ec6326d2525f/data
-    linux/arm64:
-      name: oras://community.wave.seqera.io/library/viennarna:2.6.4--77c179846d8cc96c
-      build_id: bd-77c179846d8cc96c_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ea/ea1775451ce9a298f3dce2f68ba567bb6ad9f99cae8ececb15881e8831637e08/data
+      name: oras://community.wave.seqera.io/library/viennarna:2.7.2--8731ab37e9c410b1
+      build_id: bd-8731ab37e9c410b1_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/10/1048b2d5571e2deab1e43e6629bbe4e6c7e9d8780b9dfbf0d3e0f44adb131021/data
   conda:
+    linux/amd64:
+      lock_file: modules/nf-core/viennarna/rnacofold/.conda-lock/linux_amd64-bd-6e8b02540b675a6c_1.txt
     linux/arm64:
-      lock_file: modules/nf-core/viennarna/rnacofold/.conda-lock/linux_arm64-bd-17e6d34507be15df_1.txt
+      lock_file: modules/nf-core/viennarna/rnacofold/.conda-lock/linux_arm64-bd-57c349bf20a41eac_1.txt
