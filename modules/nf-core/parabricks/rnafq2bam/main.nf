@@ -50,7 +50,13 @@ process PARABRICKS_RNAFQ2BAM {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
 
-    def in_fq_command = meta.single_end ? "--in-se-fq ${reads}" : "--in-fq ${reads}"
+    def fastqs = [reads].flatten()
+    if (!meta.single_end && fastqs.size() % 2 != 0) {
+        error("Paired-end input for ${meta.id} needs an even number of FASTQ files ordered R1, R2 per pair; got ${fastqs.size()}.")
+    }
+    def in_fq_command = meta.single_end
+        ? fastqs.collect { fq -> "--in-se-fq ${fq}" }.join(' ')
+        : fastqs.collate(2).collect { pair -> "--in-fq ${pair.join(' ')}" }.join(' ')
     def num_gpus = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
 
     def qc_metrics_command = qc_metrics ? "--out-qc-metrics-dir ${prefix}_qc_metrics" : ""
