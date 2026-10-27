@@ -1,6 +1,5 @@
 name: "vsearch_fastqfilter"
-description: Performs quality filtering and / or conversion of a FASTQ file to
-  FASTA format.
+description: Performs quality filtering and / or conversion of a FASTQ file to FASTA format.
 keywords:
   - vsearch/fastqfilter
   - vsearch
@@ -11,12 +10,7 @@ keywords:
   - population genetics
 tools:
   - "vsearch":
-      description: "VSEARCH is a versatile open-source tool for microbiome analysis,
-        including chimera detection, clustering, dereplication and rereplication, extraction,
-        FASTA/FASTQ/SFF file processing, masking, orienting, pair-wise alignment, restriction
-        site cutting, searching, shuffling, sorting, subsampling, and taxonomic classification
-        of amplicon sequences for metagenomics, genomics, and population genetics. (USEARCH
-        alternative)"
+      description: "VSEARCH is a versatile open-source tool for microbiome analysis, including chimera detection, clustering, dereplication and rereplication, extraction, FASTA/FASTQ/SFF file processing, masking, orienting, pair-wise alignment, restriction site cutting, searching, shuffling, sorting, subsampling, and taxonomic classification of amplicon sequences for metagenomics, genomics, and population genetics. (USEARCH alternative)"
       homepage: "https://github.com/torognes/vsearch"
       documentation: https://github.com/torognes/vsearch/releases/download/v2.31.0/vsearch_manual.pdf
       tool_dev_url: "https://github.com/torognes/vsearch"
@@ -37,8 +31,7 @@ output:
   fasta:
     - - meta:
           type: map
-          description: Groovy Map containing sample information e.g. [
-            id:'sample1']
+          description: Groovy Map containing sample information e.g. [ id:'sample1']
       - "*.fasta":
           type: file
           description: Filtered FASTA file
@@ -77,3 +70,27 @@ authors:
   - "@FernandoDuarteF"
 maintainers:
   - "@FernandoDuarteF"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/vsearch:2.31.0--80e3b2da3ae2f3d8
+      build_id: bd-80e3b2da3ae2f3d8_1
+      scan_id: sc-8abcad553b1fb270_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/vsearch:2.31.0--262a839a6c0fc826
+      build_id: bd-262a839a6c0fc826_1
+      scan_id: sc-af12710a255f9e4a_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/vsearch:2.31.0--bbc3781427248899
+      build_id: bd-bbc3781427248899_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ee/eec4fdf832cbd591111a702a1942476674a71e76fafbd5ae3fc18018b9ebe2e2/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/vsearch:2.31.0--a8e86e5af66587d7
+      build_id: bd-a8e86e5af66587d7_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/73/735d988fe3d63e52a3700ce5bc7d7b93c775beedf0ce970a17cef6def00f682b/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/vsearch/fastqfilter/.conda-lock/linux_amd64-bd-80e3b2da3ae2f3d8_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/vsearch/fastqfilter/.conda-lock/linux_arm64-bd-262a839a6c0fc826_1.txt

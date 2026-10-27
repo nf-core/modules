@@ -5,9 +5,9 @@ process SNAKEMAKE {
     // You will have to add all modules to this Conda definition and
     // replace the container definition for one that suits your needs
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b9/b91b2eddb4c4c0a5e17721d29764e59a50035b9fa9996eb9cb392829f2d7a533/data'
-        : 'community.wave.seqera.io/library/snakemake:9.14.0--dfee75b6201d25c6'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ed/edd1e4b9ca9a54e765344c71a2dc9d324cc2e07f1bd537810541ca8677b966bc/data'
+:         'community.wave.seqera.io/library/snakemake:9.14.0--34c26e13f2b040c1' }"
 
     input:
     tuple val(meta), path(inputs)

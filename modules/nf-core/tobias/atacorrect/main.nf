@@ -3,9 +3,9 @@ process TOBIAS_ATACORRECT {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/tobias:0.17.5--py310h3479294_0':
-        'quay.io/biocontainers/tobias:0.17.5--py310h3479294_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d1/d1f8f1f92ff81376a701317861ea1e2f40fdbc735fc2a5aa3546f39c6d58d183/data'
+        : 'community.wave.seqera.io/library/tobias:0.17.5--1e531f4271d7ec91'}"
 
     input:
     tuple val(meta), path(bam), path(bai), path(peaks), path(fasta)

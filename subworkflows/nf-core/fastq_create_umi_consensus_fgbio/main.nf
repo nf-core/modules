@@ -43,7 +43,7 @@ workflow FASTQ_CREATE_UMI_CONSENSUS_FGBIO {
     // if the UMIs are present in read names instead of inline sequences
     // please make sure you adjust your config to include --extract-umis-from-read-names with ext.args
     // of the following step
-    FASTQTOBAM(reads)
+    FASTQTOBAM(reads, 'bam')
 
     // in order to map uBAM using BWA MEM, we need to convert uBAM to FASTQ
     BAM2FASTQ_PRE(FASTQTOBAM.out.bam, false)

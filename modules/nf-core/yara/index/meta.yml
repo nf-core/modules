@@ -8,8 +8,7 @@ keywords:
   - reference
 tools:
   - yara:
-      description: Yara is an exact tool for aligning DNA sequencing reads to
-        reference genomes.
+      description: Yara is an exact tool for aligning DNA sequencing reads to reference genomes.
       homepage: https://github.com/seqan/seqan
       documentation: https://github.com/seqan/seqan
       tool_dev_url: https://github.com/seqan/seqan
@@ -63,3 +62,17 @@ authors:
   - "@apeltzer"
 maintainers:
   - "@apeltzer"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/yara:1.0.2--6d4e380b8f30498b
+      build_id: bd-6d4e380b8f30498b_1
+      scan_id: sc-6e069486f273fae6_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/yara:1.0.2--28756298da4e198c
+      build_id: bd-28756298da4e198c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cc/cc124a4b28a7b8cf45e75edd574368c34ac97d966a9f493120b51fe4338536b8/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/yara/index/.conda-lock/linux_amd64-bd-6d4e380b8f30498b_1.txt

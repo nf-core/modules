@@ -2,9 +2,9 @@ process RAXMLNG {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/raxml-ng:1.2.2--h6747034_1' :
-        'quay.io/biocontainers/raxml-ng:1.2.2--h6747034_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/19/1925510f6c4e62c1ab631215ca252507d69beed7d350355226ab098f6d26f74b/data'
+        : 'community.wave.seqera.io/library/raxml-ng:1.2.2--ce82f06e00c2497b'}"
 
     input:
     tuple val(meta), path(alignment), val(model)

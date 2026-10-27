@@ -3,9 +3,9 @@ process VIENNARNA_RNALFOLD {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/viennarna:2.6.4--py310pl5321h6cc9453_1':
-        'quay.io/biocontainers/viennarna:2.6.4--py310pl5321h6cc9453_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/10/1048b2d5571e2deab1e43e6629bbe4e6c7e9d8780b9dfbf0d3e0f44adb131021/data'
+        : 'community.wave.seqera.io/library/viennarna:2.7.2--6e8b02540b675a6c'}"
 
     input:
     path fasta

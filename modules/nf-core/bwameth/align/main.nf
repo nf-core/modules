@@ -3,9 +3,9 @@ process BWAMETH_ALIGN {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bwameth:0.2.9--pyh7e72e81_0' :
-        'quay.io/biocontainers/bwameth:0.2.9--pyh7e72e81_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/27/27fa347b345bd5ebcd0c6b5a9e9bdf39350f46c1f0a09dabee16708d316bacc5/data'
+:         'community.wave.seqera.io/library/bwameth_samtools:4df060e40f3ac9d2' }"
 
     input:
     tuple val(meta), path(reads)

@@ -93,3 +93,27 @@ authors:
   - "@LeonHornich"
 maintainers:
   - "@LeonHornich"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/xengsort:2.2.1--e1cfb6b5a292adf6
+      build_id: bd-e1cfb6b5a292adf6_1
+      scan_id: sc-ed442b920ae8f083_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/xengsort:2.2.1--b17143c96929c927
+      build_id: bd-b17143c96929c927_1
+      scan_id: sc-e082da23ce94bb1e_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/xengsort:2.2.1--7393e46e7ba482d0
+      build_id: bd-7393e46e7ba482d0_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ff/ff8d22fa13b3c18a7933b279fc4d7133855b20bc9c3072c6bb1682e8e07529b0/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/xengsort:2.2.1--e820411adbe27555
+      build_id: bd-e820411adbe27555_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/69/69087e1b7e669b929b5ff8a8d41a1156508b0feb604417a0d3388fea5a0031f6/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/xengsort/index/.conda-lock/linux_amd64-bd-e1cfb6b5a292adf6_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/xengsort/index/.conda-lock/linux_arm64-bd-b17143c96929c927_1.txt

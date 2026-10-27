@@ -5,7 +5,7 @@ process HMMER_FORMATTSV {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
 ?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/06/0600fdb9287986d3d684b95d6e94f597c41b24a746608532d7c0836bd7b44c15/data'
-:         'community.wave.seqera.io/library/gawk_gzip:34c193f8cae8819b' }"
+:         'community.wave.seqera.io/library/gawk_gzip:fe0c202000bc8ed4' }"
 
     input:
     tuple val(meta), val(labels), path(files, arity: '1..*')

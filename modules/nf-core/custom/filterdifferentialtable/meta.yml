@@ -1,6 +1,5 @@
 name: "custom_filterdifferentialtable"
-description: Filters a differential expression table based on logFC and adjusted
-  p-value thresholds
+description: Filters a differential expression table based on logFC and adjusted p-value thresholds
 keywords:
   - filter
   - differential expression
@@ -78,8 +77,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*_filtered_up.tsv":
           type: file
-          description: Filtered differential expression table for overexpressed
-            genes
+          description: Filtered differential expression table for overexpressed genes
           pattern: "*_filtered_up.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475
@@ -91,8 +89,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*_filtered_down.tsv":
           type: file
-          description: Filtered differential expression table for underexpressed
-            genes
+          description: Filtered differential expression table for underexpressed genes
           pattern: "*_filtered_down.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475
@@ -117,3 +114,27 @@ authors:
 maintainers:
   - "@pinin4fjords"
   - "@WackerO"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/pandas_python:3116f093aa26dc56
+      build_id: bd-3116f093aa26dc56_1
+      scan_id: sc-2ce39145fe317ba2_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/pandas_python:09ac177fe7cf9c94
+      build_id: bd-09ac177fe7cf9c94_1
+      scan_id: sc-6bda3c2ddd830190_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/pandas_python:9980ac4808e8c7f2
+      build_id: bd-9980ac4808e8c7f2_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2b/2b0b8410f8a37bc6884a27890cf8abc8666a3988b3dca11e6252835b9d53927a/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/pandas_python:2b37d95cd180123e
+      build_id: bd-2b37d95cd180123e_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/41/41f62bcbc25aec2fd7a1f861be52b57ef78f6f13d77111766a20a1fb4c7524df/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/custom/filterdifferentialtable/.conda-lock/linux_amd64-bd-3116f093aa26dc56_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/custom/filterdifferentialtable/.conda-lock/linux_arm64-bd-09ac177fe7cf9c94_1.txt

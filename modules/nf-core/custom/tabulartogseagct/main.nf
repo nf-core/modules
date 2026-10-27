@@ -4,8 +4,8 @@ process CUSTOM_TABULARTOGSEAGCT {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/52/52ccce28d2ab928ab862e25aae26314d69c8e38bd41ca9431c67ef05221348aa/data'
-        : 'community.wave.seqera.io/library/coreutils_grep_gzip_lbzip2_pruned:838ba80435a629f8'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d8/d809369ef0dfb6f580ebb812d33e442db2866d73757acc6a490ad9aa1a55ef10/data'
+        : 'community.wave.seqera.io/library/coreutils:9.5--e94c8172b8bba3cf'}"
 
     input:
     tuple val(meta), path(tabular)

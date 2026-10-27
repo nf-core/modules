@@ -1,0 +1,155 @@
+name: "fastga_fastga"
+description: Compare two genomes or a genome against itself and output a .1aln, .paf, or .psl file of all alignments found.
+keywords:
+  - genome alignment
+  - paf
+  - onecode
+  - psl
+  - comparative genomics
+tools:
+  - "fastga":
+      description: "FastGA - A Fast Genome Aligner."
+      homepage: "https://github.com/thegenemyers/FASTGA"
+      documentation: "https://github.com/thegenemyers/FASTGA"
+      tool_dev_url: "https://github.com/thegenemyers/FASTGA"
+      licence: ["BSD-like"]
+      identifier: biotools:fastga
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta1:
+        type: file
+        description: |
+          FASTA file of the first genome to align. If this is the only input, this
+          genome is aligned against itself.
+        pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" #FASTA
+          - edam: http://edamontology.org/format_3989 # GZIP format
+    - fasta2:
+        type: file
+        description: |
+          FASTA file of the second genome to align.
+        pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" #FASTA
+          - edam: http://edamontology.org/format_3989 # GZIP format
+  - output_format:
+      type: string
+      description: |
+        Output format for the alignment results. Options are:
+
+        - paf (or subtypes pafx, pafm, pafxS, pafmS, pafxs, pafms - see documentation for details)
+        - psl
+        - 1aln
+output:
+  paf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.paf":
+          type: file
+          description: PAF file
+          pattern: "*.{paf}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  psl:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.psl":
+          type: file
+          description: BLAT style PSL file
+          pattern: "*.{psl}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3007" # PSL
+  onealn:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.1aln":
+          type: file
+          description: 1aln file
+          pattern: "*.{1aln}"
+          ontologies: []
+  onegdb:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.1gdb":
+          type: file
+          description: 1gdb file
+          pattern: "*.{1gdb}"
+          ontologies: []
+  gix:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.gix":
+          type: file
+          description: gix file
+          pattern: "*.{gix}"
+          ontologies: []
+  versions_fastga:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "fastga":
+          type: string
+          description: The name of the tool
+      - "1.5.20260729":
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fastga:
+          type: string
+          description: The name of the tool
+      - "1.5.20260729":
+          type: string
+          description: The expression to obtain the version of the tool
+authors:
+  - "@prototaxites"
+maintainers:
+  - "@prototaxites"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/fastga:1.5.20260729--8cb4c20b64de3563
+      build_id: bd-8cb4c20b64de3563_1
+      scan_id: sc-4b173310af5bba5c_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/fastga:1.5.20260729--a5521dd9ee4ee959
+      build_id: bd-a5521dd9ee4ee959_1
+      scan_id: sc-1aadfb8996c2ab9c_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/fastga:1.5.20260729--79398f854ba98d7b
+      build_id: bd-79398f854ba98d7b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/68/685e31663606feff0225f6e4b79ce332c8516716a5fad8f2a411f0671f1c9126/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/fastga:1.5.20260729--d13337da2d5c8a59
+      build_id: bd-d13337da2d5c8a59_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ee/ee560ff1950e4657d295829dba0fd3a395b5b45e63e6410f5bfa8c96a4cfd1d3/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/fastga/fastga/.conda-lock/linux_amd64-bd-8cb4c20b64de3563_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/fastga/fastga/.conda-lock/linux_arm64-bd-a5521dd9ee4ee959_1.txt

@@ -7,8 +7,7 @@ keywords:
   - sra
 tools:
   - "fastqdl":
-      description: "A tool to download FASTQs associated with Study, Experiment, or
-        Run accessions."
+      description: "A tool to download FASTQs associated with Study, Experiment, or Run accessions."
       homepage: "https://github.com/rpetit3/fastq-dl"
       documentation: "https://github.com/rpetit3/fastq-dl"
       tool_dev_url: "https://github.com/rpetit3/fastq-dl"
@@ -46,8 +45,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*-run-info.tsv":
           type: file
-          description: Tab-delimited file containing metadata for each Run
-            downloaded
+          description: Tab-delimited file containing metadata for each Run downloaded
           pattern: "*-run-info.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475
@@ -59,8 +57,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*-run-mergers.tsv":
           type: file
-          description: Tab-delimited file merge information from
-            --group-by-experiment or --group-by-sample
+          description: Tab-delimited file merge information from --group-by-experiment or --group-by-sample
           pattern: "*-run-mergers.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475
@@ -89,3 +86,27 @@ authors:
   - "@camlloyd"
 maintainers:
   - "@camlloyd"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/fastq-dl:4.0.1--0758300a069ba945
+      build_id: bd-0758300a069ba945_1
+      scan_id: sc-43f1876fa93b0731_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/fastq-dl:4.0.1--0d8b58f8b87c6a78
+      build_id: bd-0d8b58f8b87c6a78_1
+      scan_id: sc-69edc3fe3041285a_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/fastq-dl:4.0.1--8c735711fadb9e84
+      build_id: bd-8c735711fadb9e84_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ed/ed693e48ea3639b0a0f6a0ad191ad31f4e8fa15674a42c4053df6e06eff30cdc/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/fastq-dl:4.0.1--e9d916a3a6644e5f
+      build_id: bd-e9d916a3a6644e5f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/96/9605b42b03ba785ab6284cbbaa11a4f0f00c3dde3ebcac87e7c6ed647112dca7/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/fastqdl/.conda-lock/linux_amd64-bd-0758300a069ba945_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/fastqdl/.conda-lock/linux_arm64-bd-0d8b58f8b87c6a78_1.txt
