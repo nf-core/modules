@@ -212,7 +212,6 @@ jobs:
         env:
           PATCH_FILE: ${{ runner.temp }}/gpu-snapshot.patch
         run: |
-          git add -N -- '*.nf.test.snap' 2>/dev/null || true
           git diff --binary --full-index --no-ext-diff -- '*.nf.test.snap' > "$PATCH_FILE"
           if [ ! -s "$PATCH_FILE" ]; then
             echo "The GPU test did not update any snapshot."
