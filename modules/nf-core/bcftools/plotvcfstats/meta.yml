@@ -84,6 +84,17 @@ output:
       - bcftools --version | sed '1!d; s/^.*bcftools //':
           type: eval
           description: The expression to obtain the version of the tool
+  versions_tectonic:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tectonic:
+          type: string
+          description: The name of the tool
+      - tectonic --version | sed '1!d; s/^.*Tectonic //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -95,29 +106,39 @@ topics:
       - bcftools --version | sed '1!d; s/^.*bcftools //':
           type: eval
           description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tectonic:
+          type: string
+          description: The name of the tool
+      - tectonic --version | sed '1!d; s/^.*Tectonic //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@yz533cb"
 containers:
   docker:
     linux/amd64:
-      name: community.wave.seqera.io/library/bcftools_htslib_matplotlib_tectonic:36f273bff45b8397
-      build_id: bd-36f273bff45b8397_4
-      scan_id: sc-e22a8ace89a86906_1
+      name: community.wave.seqera.io/library/bcftools_htslib_ca-certificates_matplotlib_pruned:8a4b0c7f740317fb
+      build_id: bd-8a4b0c7f740317fb_1
+      scan_id: sc-ddea27180e53d9c0_1
     linux/arm64:
-      name: community.wave.seqera.io/library/bcftools_htslib_matplotlib_tectonic:bab98dcb7e5329ce
-      build_id: bd-bab98dcb7e5329ce_4
-      scan_id: sc-e60592f0efc18590_1
+      name: community.wave.seqera.io/library/bcftools_htslib_ca-certificates_matplotlib_pruned:ba7863871ac3e927
+      build_id: bd-ba7863871ac3e927_1
+      scan_id: sc-ef659c09219fd9dd_1
   singularity:
-    linux/arm64:
-      name: oras://community.wave.seqera.io/library/bcftools_htslib_matplotlib_tectonic:ee1619f8aafb3952
-      build_id: bd-ee1619f8aafb3952_4
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/26/26a90b894852c48a264f424a171566df451886bc01d4a7676684e774066dc425/data
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/bcftools_htslib_matplotlib_tectonic:17d6e40deb75d817
-      build_id: bd-17d6e40deb75d817_4
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/61/61330a0af2b5ccdaea10602206e27b66e23e0d82c1caaa6dc7d5ed4cbd4233fb/data
+      name: oras://community.wave.seqera.io/library/bcftools_htslib_ca-certificates_matplotlib_pruned:cc7cf458fb98c1ff
+      build_id: bd-cc7cf458fb98c1ff_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2b/2b65a7cbe1415bb1e199b26568bcd4e3f49675060619fd2c354445d5d3017223/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bcftools_htslib_ca-certificates_matplotlib_pruned:537f6a37d94b1f91
+      build_id: bd-537f6a37d94b1f91_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/77/7718cb8ca52c49d2dbe7c04b49b646dc3093ed5cd379bf34909c87641c553f56/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/bcftools/plotvcfstats/.conda-lock/linux_amd64-bd-36f273bff45b8397_4.txt
+      lock_file: modules/nf-core/bcftools/plotvcfstats/.conda-lock/linux_amd64-bd-8a4b0c7f740317fb_1.txt
     linux/arm64:
-      lock_file: modules/nf-core/bcftools/plotvcfstats/.conda-lock/linux_arm64-bd-bab98dcb7e5329ce_4.txt
+      lock_file: modules/nf-core/bcftools/plotvcfstats/.conda-lock/linux_arm64-bd-ba7863871ac3e927_1.txt

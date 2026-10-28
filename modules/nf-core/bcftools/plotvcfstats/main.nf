@@ -7,8 +7,8 @@ process BCFTOOLS_PLOTVCFSTATS {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/61/61330a0af2b5ccdaea10602206e27b66e23e0d82c1caaa6dc7d5ed4cbd4233fb/data'
-        : 'community.wave.seqera.io/library/bcftools_htslib_matplotlib_tectonic:36f273bff45b8397'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2b/2b65a7cbe1415bb1e199b26568bcd4e3f49675060619fd2c354445d5d3017223/data'
+        : 'community.wave.seqera.io/library/bcftools_htslib_ca-certificates_matplotlib_pruned:8a4b0c7f740317fb'}"
 
     input:
     tuple val(meta), path(stats)
@@ -18,7 +18,8 @@ process BCFTOOLS_PLOTVCFSTATS {
     tuple val(meta), path("${prefix}.plot-vcfstats.pdf"), optional:true, emit: plot_pdf
     tuple val(meta), path("${prefix}_plots/*.pdf"),       optional:true, emit: images_pdf
     tuple val(meta), path("${prefix}_plots/*.png"),       optional:true, emit: images_png
-    tuple val("${task.process}"), val('bcftools'), eval("bcftools --version | sed '1!d; s/^.*bcftools //'"), topic: versions, emit: versions_bcftools
+    tuple val("${task.process}"), val('bcftools'), eval("bcftools --version | sed '1!d; s/^.*bcftools //'")                    , topic: versions, emit: versions_bcftools
+    tuple val("${task.process}"), val('tectonic'), eval("tectonic --version | sed '1!d; s/^.*Tectonic //'")                    , topic: versions, emit: versions_tectonic
 
     when:
     task.ext.when == null || task.ext.when
@@ -43,7 +44,7 @@ process BCFTOOLS_PLOTVCFSTATS {
 
     if [ -e ${prefix}_plots/summary.pdf ]
     then
-      mv ${prefix}_plots/summary.pdf ${prefix}.plot-vcfstats.pdf
+        mv ${prefix}_plots/summary.pdf ${prefix}.plot-vcfstats.pdf
     fi
     """
 

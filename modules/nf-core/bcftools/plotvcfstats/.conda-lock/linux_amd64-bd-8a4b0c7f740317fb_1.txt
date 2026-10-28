@@ -131,7 +131,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/qhull-2020.2-h434a139_5.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/qt6-main-6.11.2-pl5321hcf69127_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/six-1.17.0-pyhe01879c_1.conda
-      - conda: https://conda.anaconda.org/conda-forge/linux-64/tectonic-0.17.0-ha3b08ff_1.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/tectonic-0.15.0-ha39f199_5.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/tk-8.6.13-noxft_h1df4ec4_4.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/tornado-6.5.10-py315hb246bd9_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/tzdata-2026e-h5d301ff_0.conda
@@ -1714,9 +1714,9 @@ packages:
   license_family: MIT
   size: 18455
   timestamp: 1753199211006
-- conda: https://conda.anaconda.org/conda-forge/linux-64/tectonic-0.17.0-ha3b08ff_1.conda
-  sha256: ab7c604752ae30b1c69d2045ee4d1875896735b7f27f17b0071ebd1b3eca77f9
-  md5: 5974bfe837e2057999217e479d011734
+- conda: https://conda.anaconda.org/conda-forge/linux-64/tectonic-0.15.0-ha39f199_5.conda
+  sha256: 645b201d901ac627a49cdfb3855890e5635ccc959e48f368b64024eaaf63b981
+  md5: 24f0cbec77074a1d5545c3a8ae3f35c9
   depends:
   - fontconfig
   - freetype
@@ -1726,27 +1726,27 @@ packages:
   - libpng
   - openssl
   - zlib
-  - libgcc >=15
-  - libstdcxx >=15
   - __glibc >=2.17,<3.0.a0
-  - graphite2 >=1.3.15,<2.0a0
-  - icu >=78.3,<79.0a0
-  - libharfbuzz >=14.6.0
-  - libpng >=1.6.59,<1.7.0a0
-  - libzlib >=1.3.2,<2.0a0
-  - openssl >=3.5.9,<4.0a0
-  - libexpat >=2.8.5,<3.0a0
-  - libglib >=2.90.0,<3.0a0
-  - libfreetype >=2.14.3
-  - libfreetype6 >=2.14.3
-  - fontconfig >=2.18.3,<3.0a0
+  - libstdcxx >=14
+  - libgcc >=14
+  - harfbuzz >=12.3.0
+  - libglib >=2.86.3,<3.0a0
+  - icu >=78.1,<79.0a0
+  - fontconfig >=2.15.0,<3.0a0
   - fonts-conda-ecosystem
+  - libfreetype >=2.14.1
+  - libfreetype6 >=2.14.1
+  - libzlib >=1.3.1,<2.0a0
+  - graphite2 >=1.3.14,<2.0a0
+  - libexpat >=2.7.3,<3.0a0
+  - libpng >=1.6.53,<1.7.0a0
+  - openssl >=3.5.4,<4.0a0
   constrains:
   - __glibc >=2.17
   license: MIT
   license_family: MIT
-  size: 6448876
-  timestamp: 1792667318212
+  size: 5229201
+  timestamp: 1767686075475
 - conda: https://conda.anaconda.org/conda-forge/linux-64/tk-8.6.13-noxft_h1df4ec4_4.conda
   build_number: 104
   sha256: a1a241d172c1ccab067ba245206dd048bc3c2d1b84504b53c9468e99adfc16a1

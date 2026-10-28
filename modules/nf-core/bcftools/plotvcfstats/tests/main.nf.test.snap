@@ -30,7 +30,14 @@
                     [
                         "BCFTOOLS_PLOTVCFSTATS",
                         "bcftools",
-                        "1.23.1"
+                        "1.25"
+                    ]
+                ],
+                "5": [
+                    [
+                        "BCFTOOLS_PLOTVCFSTATS",
+                        "tectonic",
+                        "0.15.0"
                     ]
                 ],
                 "images_pdf": [
@@ -63,149 +70,164 @@
                         "bcftools",
                         "1.25"
                     ]
+                ],
+                "versions_tectonic": [
+                    [
+                        "BCFTOOLS_PLOTVCFSTATS",
+                        "tectonic",
+                        "0.15.0"
+                    ]
                 ]
             }
         ],
-        "timestamp": "2026-08-20T16:32:13.417424519",
+        "timestamp": "2026-10-28T14:40:12.749622",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.0"
+            "nextflow": "26.10.4"
         }
     },
     "sarscov2 - bcftools": {
         "content": [
-            [
-                "",
-                "counts_by_af.indels.dat",
-                "counts_by_af.snps.dat",
-                "depth.0.dat",
-                "depth.0.png",
-                "indels.0.dat",
-                "indels.0.png",
-                "plot-vcfstats.log",
-                "plot.py",
-                "substitutions.0.png",
-                "summary.tex",
-                "tstv_by_af.0.dat",
-                "tstv_by_qual.0.dat"
-            ],
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.plot-vcfstats.pdf"
-                ]
-            ],
-            [
-                
-            ],
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    [
-                        "depth.0.png:md5,763a6e9f8cad019ae3fee55afad9a16f",
-                        "indels.0.png:md5,5153a779d76aba6e6848b2c17989ead4",
-                        "substitutions.0.png:md5,8e509db6947f31eacfea03149fe2a3cc"
-                    ]
-                ]
-            ],
-            [
-                "counts_by_af.indels.dat:md5,82fae810b86c20ff99616c58ff3b3596",
-                "counts_by_af.snps.dat:md5,2d67d9037c0201912501da281e345719",
-                "depth.0.dat:md5,376f5fa0e18ad1bed94392f35a279622",
-                "indels.0.dat:md5,e7e57c9a2709bfd3a32e8800d18c8eac",
-                "plot.py:md5,d0a4a29a28aa5801d5b24f7327f156f7",
-                "tstv_by_af.0.dat:md5,a0720408cad0e871e95c121b1b660caf",
-                "tstv_by_qual.0.dat:md5,297e400d8c9e94b1c035719c4a015081"
-            ],
             {
+                "images_pdf": [
+                    
+                ],
+                "images_png": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "depth.0.png",
+                            "indels.0.png",
+                            "substitutions.0.png"
+                        ]
+                    ]
+                ],
+                "plot_dir": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "counts_by_af.indels.dat:md5,82fae810b86c20ff99616c58ff3b3596",
+                            "counts_by_af.snps.dat:md5,2d67d9037c0201912501da281e345719",
+                            "depth.0.dat:md5,376f5fa0e18ad1bed94392f35a279622",
+                            "depth.0.png:md5,99f10cea8a2cb79a9e076255e836516e",
+                            "indels.0.dat:md5,e7e57c9a2709bfd3a32e8800d18c8eac",
+                            "indels.0.png:md5,ec68cb3bcc47591a05bd083c4eafc51e",
+                            "plot-vcfstats.log",
+                            "plot.py:md5,d0a4a29a28aa5801d5b24f7327f156f7",
+                            "substitutions.0.png:md5,76bf03742a34c924089de77d73d712d5",
+                            "summary.tex:md5,f78ad32b72b92abbba8278c4bf4b3570",
+                            "tstv_by_af.0.dat:md5,a0720408cad0e871e95c121b1b660caf",
+                            "tstv_by_qual.0.dat:md5,297e400d8c9e94b1c035719c4a015081"
+                        ]
+                    ]
+                ],
+                "plot_pdf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.plot-vcfstats.pdf"
+                    ]
+                ],
                 "versions_bcftools": [
                     [
                         "BCFTOOLS_PLOTVCFSTATS",
                         "bcftools",
                         "1.25"
                     ]
+                ],
+                "versions_tectonic": [
+                    [
+                        "BCFTOOLS_PLOTVCFSTATS",
+                        "tectonic",
+                        "0.15.0"
+                    ]
                 ]
             }
         ],
-        "timestamp": "2026-08-20T16:33:33.414111099",
+        "timestamp": "2026-10-28T14:39:57.38896",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.0"
+            "nextflow": "26.10.4"
         }
     },
     "sarscov2 - bcftools - only individual pdf": {
         "content": [
-            [
-                "",
-                "counts_by_af.indels.dat",
-                "counts_by_af.snps.dat",
-                "depth.0.dat",
-                "depth.0.pdf",
-                "depth.0.png",
-                "indels.0.dat",
-                "indels.0.pdf",
-                "indels.0.png",
-                "plot-vcfstats.log",
-                "plot.py",
-                "substitutions.0.pdf",
-                "substitutions.0.png",
-                "tstv_by_af.0.dat",
-                "tstv_by_qual.0.dat"
-            ],
-            [
-                
-            ],
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    [
-                        "depth.0.pdf",
-                        "indels.0.pdf",
-                        "substitutions.0.pdf"
-                    ]
-                ]
-            ],
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    [
-                        "depth.0.png:md5,99f10cea8a2cb79a9e076255e836516e",
-                        "indels.0.png:md5,ec68cb3bcc47591a05bd083c4eafc51e",
-                        "substitutions.0.png:md5,76bf03742a34c924089de77d73d712d5"
-                    ]
-                ]
-            ],
-            [
-                "counts_by_af.indels.dat:md5,82fae810b86c20ff99616c58ff3b3596",
-                "counts_by_af.snps.dat:md5,2d67d9037c0201912501da281e345719",
-                "depth.0.dat:md5,376f5fa0e18ad1bed94392f35a279622",
-                "indels.0.dat:md5,e7e57c9a2709bfd3a32e8800d18c8eac",
-                "plot.py:md5,bb53a182ed524897584174dcf1db10c0",
-                "tstv_by_af.0.dat:md5,a0720408cad0e871e95c121b1b660caf",
-                "tstv_by_qual.0.dat:md5,297e400d8c9e94b1c035719c4a015081"
-            ],
             {
+                "images_pdf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "depth.0.pdf",
+                            "indels.0.pdf",
+                            "substitutions.0.pdf"
+                        ]
+                    ]
+                ],
+                "images_png": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "depth.0.png",
+                            "indels.0.png",
+                            "substitutions.0.png"
+                        ]
+                    ]
+                ],
+                "plot_dir": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "counts_by_af.indels.dat:md5,82fae810b86c20ff99616c58ff3b3596",
+                            "counts_by_af.snps.dat:md5,2d67d9037c0201912501da281e345719",
+                            "depth.0.dat:md5,376f5fa0e18ad1bed94392f35a279622",
+                            "depth.0.pdf",
+                            "depth.0.png:md5,99f10cea8a2cb79a9e076255e836516e",
+                            "indels.0.dat:md5,e7e57c9a2709bfd3a32e8800d18c8eac",
+                            "indels.0.pdf",
+                            "indels.0.png:md5,ec68cb3bcc47591a05bd083c4eafc51e",
+                            "plot-vcfstats.log",
+                            "plot.py:md5,bb53a182ed524897584174dcf1db10c0",
+                            "substitutions.0.pdf",
+                            "substitutions.0.png:md5,76bf03742a34c924089de77d73d712d5",
+                            "tstv_by_af.0.dat:md5,a0720408cad0e871e95c121b1b660caf",
+                            "tstv_by_qual.0.dat:md5,297e400d8c9e94b1c035719c4a015081"
+                        ]
+                    ]
+                ],
+                "plot_pdf": [
+                    
+                ],
                 "versions_bcftools": [
                     [
                         "BCFTOOLS_PLOTVCFSTATS",
                         "bcftools",
                         "1.25"
                     ]
+                ],
+                "versions_tectonic": [
+                    [
+                        "BCFTOOLS_PLOTVCFSTATS",
+                        "tectonic",
+                        "0.15.0"
+                    ]
                 ]
             }
         ],
-        "timestamp": "2026-08-20T16:17:41.199836016",
+        "timestamp": "2026-10-28T14:40:06.980445",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.0"
+            "nextflow": "26.10.4"
         }
     }
 }
