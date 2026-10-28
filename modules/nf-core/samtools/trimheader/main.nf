@@ -7,8 +7,8 @@ process SAMTOOLS_TRIMHEADER {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a9/a95118435ca30f8b667ca92f1ba45a26abb58c1f09e96a9e7e8431c73ff9a299/data'
-        : 'community.wave.seqera.io/library/htslib_samtools_gawk:6f88a5f6186c9e3d'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bf/bf776bd8977ad787661a64512dbecfbe70f88b504f939b473aa4ad87b1747edd/data'
+        : 'community.wave.seqera.io/library/htslib_samtools_gawk:5366169842fe8538'}"
 
     input:
     tuple val(meta), path(bam, stageAs: 'input/*'), path(bai, stageAs: 'input/*')

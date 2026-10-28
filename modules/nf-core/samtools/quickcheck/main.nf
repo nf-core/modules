@@ -7,8 +7,8 @@ process SAMTOOLS_QUICKCHECK {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/46/462b5db8b8a4a1a76a627a056a56a3c9ab344d51db27dee8fc89109d23bfea71/data'
-        : 'community.wave.seqera.io/library/samtools_htslib:1.24--e186722e17fa9b47'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/57/5749b5efca036c73d7b427c0ba347c94773330fe228b8eb395cdb619e7a5635c/data'
+        : 'community.wave.seqera.io/library/samtools_htslib:1.25--65a8db39c6e3f5bd'}"
 
     input:
     tuple val(meta), path(bam)
