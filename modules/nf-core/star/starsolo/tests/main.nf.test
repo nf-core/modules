@@ -186,7 +186,7 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'generic/starsolo/smartseq/CELL01_R2.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'generic/starsolo/smartseq/CELL02_R1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'generic/starsolo/smartseq/CELL02_R2.fastq.gz', checkIfExists: true),
-                        ],
+                    ],
                     [ file('manifest.tsv', checkIfExists: true) ]
                 ])
                 input[1] = channel.of([ [ id:'empty'], [] ])
