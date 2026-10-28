@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { MMSEQS_CREATEDB  } from '../../../modules/nf-core/mmseqs/createdb/main'
 include { MMSEQS_CLUSTER   } from '../../../modules/nf-core/mmseqs/cluster/main'
 include { MMSEQS_LINCLUST  } from '../../../modules/nf-core/mmseqs/linclust/main'

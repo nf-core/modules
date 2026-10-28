@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BWAMEM3_INDEX {
     tag "${meta.id}"
     // NOTE bwa-mem3 builds an FM-index with libsais; peak memory scales with the reference size.

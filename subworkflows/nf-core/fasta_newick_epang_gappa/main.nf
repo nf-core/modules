@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { HMMER_HMMBUILD                            } from '../../../modules/nf-core/hmmer/hmmbuild/main'
 include { HMMER_HMMALIGN as HMMER_HMMALIGNREF       } from '../../../modules/nf-core/hmmer/hmmalign/main'
 include { HMMER_HMMALIGN as HMMER_HMMALIGNQUERY     } from '../../../modules/nf-core/hmmer/hmmalign/main'
