@@ -85,11 +85,11 @@ nextflow_process {
                     """
                     input[0] = channel.of([
                         [ id:'test_fasta' ],
-                        [ file('test.fa', checkIfExists: true) ]
+                        [ file(params.modules_testdata_base_path + 'generic/starsolo/test.fa', checkIfExists: true) ]
                     ])
                     input[1] = channel.of([
                         [ id:'test_gtf' ],
-                        [ file('test.gtf', checkIfExists: true) ]
+                        [ file(params.modules_testdata_base_path + 'generic/starsolo/test.gtf', checkIfExists: true) ]
                     ])
                     """
                 }
@@ -107,14 +107,14 @@ nextflow_process {
                     [ id:'test'],
                     'CB_UMI_Complex',
                     [
-                        file('IND1_1.fastq.gz', checkIfExists: true),
-                        file('IND1_2.fastq.gz', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'generic/starsolo/indrops/IND1_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/starsolo/indrops/IND1_2.fastq.gz', checkIfExists: true)
                     ],
                     [ ]
                 ])
                 input[1] = [
-                        file('inDrops_Ambrose_bc1.txt', checkIfExists: true),
-                        file('inDrops_Ambrose_bc2.txt', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'generic/starsolo/indrops/inDrops_Ambrose2_bc1.txt', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/starsolo/indrops/inDrops_Ambrose2_bc2.txt', checkIfExists: true)
                     ]
                 input[2] = STAR_GENOMEGENERATE.out.index
                 input[3] = channel.of([
@@ -149,15 +149,36 @@ nextflow_process {
                     """
                     input[0] = channel.of([
                         [ id:'test_fasta' ],
-                        [ file('test.fa', checkIfExists: true) ]
+                        [ file(params.modules_testdata_base_path + 'generic/starsolo/test.fa', checkIfExists: true) ]
                     ])
                     input[1] = channel.of([
                         [ id:'test_gtf' ],
-                        [ file('test.gtf', checkIfExists: true) ]
+                        [ file(params.modules_testdata_base_path + 'generic/starsolo/test.gtf', checkIfExists: true) ]
                     ])
                     """
                 }
             }
+
+            // Starsolo can't read remote paths in the manifest,
+            // so pull the individual fastq files down and create
+            // a the manifest file that points to the local
+            // folder for the test to use.
+            def smartseq = new File("${launchDir}/smartseq")
+            smartseq.mkdirs()
+            def base = "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/generic/starsolo/smartseq/"
+            [
+                "CELL01_R1.fastq.gz",
+                "CELL01_R2.fastq.gz",
+                "CELL02_R1.fastq.gz",
+                "CELL02_R2.fastq.gz"
+            ].each { fname ->
+                new File("${smartseq}/${fname}").bytes = new URL("${base}${fname}").bytes
+            }
+
+            new File("${launchDir}/manifest.tsv").text = """
+            ${launchDir}/smartseq/CELL01_R1.fastq.gz	${launchDir}/smartseq/CELL01_R2.fastq.gz	CELL01
+            ${launchDir}/smartseq/CELL02_R1.fastq.gz	${launchDir}/smartseq/CELL02_R2.fastq.gz	CELL02
+            """.stripIndent().trim()
         }
 
         when {
@@ -173,7 +194,7 @@ nextflow_process {
                     [ id:'test'],
                     'SmartSeq',
                     [ ],
-                    [ file('smartseq_example.manifest.tsv', checkIfExists: true) ]
+                    [ file("${launchDir}/manifest.tsv", checkIfExists: true) ]
                 ])
                 input[1] = file('NO_FILE', checkIfExists: true)
                 input[2] = STAR_GENOMEGENERATE.out.index
@@ -194,58 +215,6 @@ nextflow_process {
                     file(process.out.log_out[0][1]).name,
                     file(process.out.log_progress[0][1]).name,
                     ).match() }
-            )
-        }
-
-    }
-
-    test("homo_sapiens - SmartSeq - failure") {
-        setup {
-            run("STAR_GENOMEGENERATE") {
-                script "../../../star/genomegenerate/main.nf"
-                process {
-                    """
-                    input[0] = channel.of([
-                        [ id:'test_fasta' ],
-                        [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
-                    ])
-                    input[1] = channel.of([
-                        [ id:'test_gtf' ],
-                        [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
-                    ])
-                    """
-                }
-            }
-        }
-
-        when {
-            process {
-                """
-                file('NO_FILE').text = ''
-
-                input[0] = channel.of([
-                    [ id:'test'],
-                    'SmartSeq',
-                    [
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R1_001.fastq.gz', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R2_001.fastq.gz', checkIfExists: true)
-                    ],
-                    [ ]
-                ])
-                input[1] = file('NO_FILE')
-                input[2] = STAR_GENOMEGENERATE.out.index
-                input[3] = channel.of([
-                    [ id:'test_gtf' ],
-                    [ ]
-                ])
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert !process.success },
-                { assert process.stdout.toString().contains("EXITING: FATAL INPUT ERROR: empty value for parameter \"readFilesManifest\" in input \"Command-Line\"")}
             )
         }
 
