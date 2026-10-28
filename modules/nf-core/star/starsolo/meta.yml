@@ -158,17 +158,6 @@ output:
           description: STARSolo filtered velocyto matrix (optional)
           pattern: "*.Solo.out/Velocyto/filtered"
           ontologies: []
-  bam:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information.
-      - ${prefix}.Aligned.*.out.bam:
-          type: file
-          description: Output BAM file containing read alignments (optional)
-          pattern: "*.{bam}"
-          ontologies:
-            - edam: http://edamontology.org/format_2572 # BAM
   bam_sorted:
     - - meta:
           type: map
@@ -277,7 +266,6 @@ topics:
       - STAR --version | sed -e "s/STAR_//g":
           type: eval
           description: The expression to obtain the version of the tool
-
 authors:
   - "@kevinmenden"
   - "@ggabernet"
