@@ -129,10 +129,11 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ["log_final", "log_out", "log_progress"], ignorePatterns: ["**/UMIperCellSorted.txt"]),
+                    sanitizeOutput(process.out, unstableKeys: ["log_final", "log_out", "log_progress", "sam"], ignorePatterns: ["**/UMIperCellSorted.txt"]),
                     file(process.out.log_final[0][1]).name,
                     file(process.out.log_out[0][1]).name,
-                    file(process.out.log_progress[0][1]).name,
+                    file(process.out.sam[0][1]).name,
+                    sam(process.out.sam[0][1]).getStatistics(),
                     ).match() }
             )
         }
@@ -210,10 +211,12 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ["log_final", "log_out", "log_progress"]),
+                    sanitizeOutput(process.out, unstableKeys: ["log_final", "log_out", "log_progress", "sam"]),
                     file(process.out.log_final[0][1]).name,
                     file(process.out.log_out[0][1]).name,
                     file(process.out.log_progress[0][1]).name,
+                    file(process.out.sam[0][1]).name,
+                    sam(process.out.sam[0][1], stringency: "silent").getStatistics(),
                     ).match() }
             )
         }
