@@ -7,8 +7,8 @@ process SAMTOOLS_GETRG {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c2/c2f02ceb8cbe5aa37930dcbc0de6f1d07dfb292178c7e780c44ab2f556bf829f/data'
-        : 'community.wave.seqera.io/library/htslib_samtools:1.24--8a3ddf262165ba23'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/87/87660348a4d032cc08d6ac8101ff9d4d27164300d39c9472043bb5001f9ba801/data'
+        : 'community.wave.seqera.io/library/htslib_samtools:1.25--704fb80d75745bd4'}"
 
     input:
     tuple val(meta), path(input)
