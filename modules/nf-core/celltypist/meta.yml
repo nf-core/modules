@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "celltypist"
 description: Automated cell type annotation of single-cell RNA-seq data using a pre-trained CellTypist model
 keywords:
@@ -29,6 +28,31 @@ input:
           and gene symbols as variable names
         pattern: "*.h5ad"
         ontologies: []
+    - over_clustering:
+        type: file
+        description: |
+          Optional text file with the over-clustering result, one cluster label per
+          cell. Used with `--majority-voting`. Pass an empty list to let CellTypist
+          cluster the cells itself.
+        pattern: "*.{txt,csv,tsv}"
+        optional: true
+        ontologies: []
+    - gene_file:
+        type: file
+        description: |
+          Optional text file with one gene per line, for matrix market input.
+          Pass an empty list when the input is an h5ad file.
+        pattern: "*.{txt,tsv}"
+        optional: true
+        ontologies: []
+    - cell_file:
+        type: file
+        description: |
+          Optional text file with one cell per line, for matrix market input.
+          Pass an empty list when the input is an h5ad file.
+        pattern: "*.{txt,tsv}"
+        optional: true
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -39,7 +63,6 @@ input:
         description: Pre-trained CellTypist model
         pattern: "*.pkl"
         ontologies: []
-
 output:
   predicted_labels:
     - - meta:
@@ -47,8 +70,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*predicted_labels.csv":
+      - "${prefix}_predicted_labels.csv":
           type: file
+          optional: true
           description: Predicted cell type label for each cell
           pattern: "*predicted_labels.csv"
           ontologies:
@@ -59,8 +83,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*decision_matrix.csv":
+      - "${prefix}_decision_matrix.csv":
           type: file
+          optional: true
           description: Decision scores of each cell for each cell type in the model
           pattern: "*decision_matrix.csv"
           ontologies:
@@ -71,12 +96,41 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*probability_matrix.csv":
+      - "${prefix}_probability_matrix.csv":
           type: file
+          optional: true
           description: Probability of each cell belonging to each cell type in the model
           pattern: "*probability_matrix.csv"
           ontologies:
             - edam: "http://edamontology.org/format_3752" # CSV
+  xlsx:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}_annotation_result.xlsx":
+          type: file
+          description: |
+            Excel workbook with all result tables, written when `--xlsx` is given in
+            `task.ext.args`. In that case the three CSV files are not written.
+          pattern: "*.xlsx"
+          optional: true
+          ontologies:
+            - edam: "http://edamontology.org/format_3620" # XLSX
+  plots:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.pdf":
+          type: file
+          description: Plots of the prediction results, written when `--plot-results` is given in `task.ext.args`
+          pattern: "*.pdf"
+          optional: true
+          ontologies:
+            - edam: "http://edamontology.org/format_3508" # PDF
   versions_celltypist:
     - - "${task.process}":
           type: string
@@ -103,3 +157,27 @@ authors:
   - "@iraajgangavaram"
 maintainers:
   - "@iraajgangavaram"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/celltypist:1.7.1--81458d01ea674d65
+      build_id: bd-81458d01ea674d65_1
+      scan_id: sc-9890ac3aaf3970ca_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/celltypist:1.7.1--0277c22c7059240a
+      build_id: bd-0277c22c7059240a_1
+      scan_id: sc-c4acc7328b3e6b4e_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/celltypist:1.7.1--bc98edec4976308d
+      build_id: bd-bc98edec4976308d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e3/e33ead183a0468747d8a154e9200ab81fc88eb671f6e0473419b451d8608947b/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/celltypist:1.7.1--14bb095bacfc52f4
+      build_id: bd-14bb095bacfc52f4_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/db/db26a106d81b1b9dee9d3ce7223c13019a3b8e0ee6797b6197c402637f704017/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/celltypist/.conda-lock/linux_amd64-bd-81458d01ea674d65_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/celltypist/.conda-lock/linux_arm64-bd-0277c22c7059240a_1.txt
