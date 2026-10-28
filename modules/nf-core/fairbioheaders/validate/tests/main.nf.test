@@ -1,0 +1,287 @@
+nextflow_process {
+
+    name "Test Process FAIRBIOHEADERS_VALIDATE"
+    script "../main.nf"
+    process "FAIRBIOHEADERS_VALIDATE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "fairbioheaders"
+    tag "fairbioheaders/validate"
+
+    // Minimal standalone metadata of each header type. The checksum is a placeholder:
+    // validate checks the metadata against its schema only, never a sequence file.
+    // The author is ORCID's documented example iD.
+    def fhrMetadata = '''\
+schema: https://w3id.org/fair-bioheaders/fhr/v0.4.0
+schemaVersion: '2.0'
+genome: SARS-CoV-2 test genome
+taxon:
+  name: Severe acute respiratory syndrome coronavirus 2
+  uri: https://identifiers.org/taxonomy:2697049
+version: '1'
+metadataAuthor:
+  - name: Josiah Carberry
+    uri: https://orcid.org/0000-0002-1825-0097
+assemblyAuthor:
+  - name: Josiah Carberry
+    uri: https://orcid.org/0000-0002-1825-0097
+dateCreated: '2020-01-01'
+masking: unknown
+checksum: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+'''
+
+    // The same FHR record as JSON.
+    def fhrJson = '''\
+{
+  "schema": "https://w3id.org/fair-bioheaders/fhr/v0.4.0",
+  "schemaVersion": "2.0",
+  "genome": "SARS-CoV-2 test genome",
+  "taxon": {
+    "name": "Severe acute respiratory syndrome coronavirus 2",
+    "uri": "https://identifiers.org/taxonomy:2697049"
+  },
+  "version": "1",
+  "metadataAuthor": [
+    {
+      "name": "Josiah Carberry",
+      "uri": "https://orcid.org/0000-0002-1825-0097"
+    }
+  ],
+  "assemblyAuthor": [
+    {
+      "name": "Josiah Carberry",
+      "uri": "https://orcid.org/0000-0002-1825-0097"
+    }
+  ],
+  "dateCreated": "2020-01-01",
+  "masking": "unknown",
+  "checksum": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+}
+'''
+
+    def fhpMetadata = '''\
+schema: https://w3id.org/fair-bioheaders/fhp/v0.4.0
+schemaVersion: '1.0'
+proteome: SARS-CoV-2 test proteome
+sourceType: database
+taxon:
+  name: Severe acute respiratory syndrome coronavirus 2
+  uri: https://identifiers.org/taxonomy:2697049
+version: '1'
+metadataAuthor:
+  - name: Josiah Carberry
+    uri: https://orcid.org/0000-0002-1825-0097
+dateCreated: '2020-01-01'
+checksum: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+'''
+
+    def fhgff3Metadata = '''\
+schema: https://w3id.org/fair-bioheaders/fhgff3/v0.4.0
+schemaVersion: '1.0'
+annotation: Candidatus Portiera aleyrodidarum test annotation
+taxon:
+  name: Candidatus Portiera aleyrodidarum
+  uri: https://identifiers.org/taxonomy:235282
+version: '1'
+metadataAuthor:
+  - name: Josiah Carberry
+    uri: https://orcid.org/0000-0002-1825-0097
+dateCreated: '2020-01-01'
+derivedFrom:
+  - headerType: FHR
+    checksum: 8kMW7cFzWbKkOLt0tgS3srVGNuzqNuoGaVqAimI8A2c=
+    relationship: annotates
+checksum: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+'''
+
+    // FHR without the required genome field.
+    def missingGenome = '''\
+schema: https://w3id.org/fair-bioheaders/fhr/v0.4.0
+schemaVersion: '2.0'
+taxon:
+  name: Severe acute respiratory syndrome coronavirus 2
+  uri: https://identifiers.org/taxonomy:2697049
+version: '1'
+metadataAuthor:
+  - name: Josiah Carberry
+    uri: https://orcid.org/0000-0002-1825-0097
+assemblyAuthor:
+  - name: Josiah Carberry
+    uri: https://orcid.org/0000-0002-1825-0097
+dateCreated: '2020-01-01'
+masking: unknown
+checksum: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+'''
+
+    // FHP citing a schema release the toolkit does not bundle.
+    def unsupportedSchema = '''\
+schema: https://w3id.org/fair-bioheaders/fhp/v9.9.9
+schemaVersion: '1.0'
+proteome: SARS-CoV-2 test proteome
+sourceType: database
+taxon:
+  name: Severe acute respiratory syndrome coronavirus 2
+  uri: https://identifiers.org/taxonomy:2697049
+version: '1'
+metadataAuthor:
+  - name: Josiah Carberry
+    uri: https://orcid.org/0000-0002-1825-0097
+dateCreated: '2020-01-01'
+checksum: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
+'''
+
+    test("sarscov2 - fhr - yaml") {
+
+        when {
+            process {
+                """
+                input[0] = channel.of('''${fhrMetadata}''')
+                    .collectFile(name: 'test.fhr.yaml')
+                    .map { metadata -> [ [ id:'test' ], metadata ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.report[0][1]).readLines() == ['file: test.fhr.yaml', 'FHR metadata is valid.'] },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fhr - json") {
+
+        when {
+            process {
+                """
+                input[0] = channel.of('''${fhrJson}''')
+                    .collectFile(name: 'test.fhr.json')
+                    .map { metadata -> [ [ id:'test' ], metadata ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.report[0][1]).readLines() == ['file: test.fhr.json', 'FHR metadata is valid.'] },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fhp - yaml") {
+
+        when {
+            process {
+                """
+                input[0] = channel.of('''${fhpMetadata}''')
+                    .collectFile(name: 'test.fhp.yaml')
+                    .map { metadata -> [ [ id:'test' ], metadata ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.report[0][1]).readLines() == ['file: test.fhp.yaml', 'FHP metadata is valid.'] },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("candidatus_portiera_aleyrodidarum - fhgff3 - yaml") {
+
+        when {
+            process {
+                """
+                input[0] = channel.of('''${fhgff3Metadata}''')
+                    .collectFile(name: 'test.fhgff3.yaml')
+                    .map { metadata -> [ [ id:'test' ], metadata ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.report[0][1]).readLines() == ['file: test.fhgff3.yaml', 'FHGFF3 metadata is valid.'] },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fhr - yaml - missing required field - fails") {
+
+        when {
+            process {
+                """
+                input[0] = channel.of('''${missingGenome}''')
+                    .collectFile(name: 'test.fhr.yaml')
+                    .map { metadata -> [ [ id:'test' ], metadata ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert (process.stdout + process.stderr).any { line -> line.contains("'genome' is a required property") } }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fhp - yaml - unsupported schema version - fails") {
+
+        when {
+            process {
+                """
+                input[0] = channel.of('''${unsupportedSchema}''')
+                    .collectFile(name: 'test.fhp.yaml')
+                    .map { metadata -> [ [ id:'test' ], metadata ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert (process.stdout + process.stderr).any { line -> line.contains("unsupported schema version") } }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fhr - yaml - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = channel.of('''${fhrMetadata}''')
+                    .collectFile(name: 'test.fhr.yaml')
+                    .map { metadata -> [ [ id:'test' ], metadata ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
