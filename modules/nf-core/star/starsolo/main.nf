@@ -100,16 +100,16 @@ process STAR_STARSOLO {
     def touch_solo = solo_features.collect { feature ->
         def touch_raw = """
             mkdir -p ${prefix}.Solo.out/${feature}/raw
-            echo '' | gzip > ${prefix}.Solo.out/${feature}/raw/matrix.mtx.gz
-            echo '' | gzip > ${prefix}.Solo.out/${feature}/raw/barcodes.tsv.gz
-            echo '' | gzip > ${prefix}.Solo.out/${feature}/raw/features.tsv.gz
+            echo "" | gzip > ${prefix}.Solo.out/${feature}/raw/matrix.mtx.gz
+            echo "" | gzip > ${prefix}.Solo.out/${feature}/raw/barcodes.tsv.gz
+            echo "" | gzip > ${prefix}.Solo.out/${feature}/raw/features.tsv.gz
         """
 
         def touch_filtered = solo_cell_filter != 'None' ? """
             mkdir -p ${prefix}.Solo.out/${feature}/filtered
-            echo '' | gzip > ${prefix}.Solo.out/${feature}/filtered/matrix.mtx.gz
-            echo '' | gzip > ${prefix}.Solo.out/${feature}/filtered/barcodes.tsv.gz
-            echo '' | gzip > ${prefix}.Solo.out/${feature}/filtered/features.tsv.gz
+            echo "" | gzip > ${prefix}.Solo.out/${feature}/filtered/matrix.mtx.gz
+            echo "" | gzip > ${prefix}.Solo.out/${feature}/filtered/barcodes.tsv.gz
+            echo "" | gzip > ${prefix}.Solo.out/${feature}/filtered/features.tsv.gz
         """ : ''
 
         touch_raw + touch_filtered

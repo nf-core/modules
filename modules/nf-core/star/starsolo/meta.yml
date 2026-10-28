@@ -44,7 +44,7 @@ input:
           - edam: http://edamontology.org/format_3475 # TSV
   - - meta2:
         type: map
-        description: Groovy Map containing the STAR index information.
+        description: Groovy Map containing the barcode whitelist information.
     - opt_whitelist:
         type: file
         description: Optional whitelist file
@@ -52,20 +52,29 @@ input:
           - edam: http://edamontology.org/format_2330 # TXT
   - - meta3:
         type: map
-        description: Groovy Map containing the GTF information.
+        description: Groovy Map containing the STAR index information.
     - index:
         type: directory
         description: STAR genome index
         pattern: "star"
-  - - meta4: {}
+  - - meta4:
+        type: map
+        description: Groovy Map containing the GTF information.
     - gtf:
         type: file
         description: Optional GTF annotation file
         pattern: "*.gtf"
         ontologies:
           - edam: http://edamontology.org/format_2306 # GTF
-  - - meta5: {}
-    - splice_juntion: {}
+  - - meta5:
+        type: map
+        description: Groovy Map containing the splice juntion information.
+    - splice_juntion:
+        type: file
+        description: Optional splice junction file
+        pattern: "*.tab"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
   counts:
     - - meta:
@@ -107,7 +116,7 @@ output:
       - ${prefix}.Solo.out/Gene/Summary.csv:
           type: file
           description: STARSolo metrics summary CSV file.
-          pattern: "*/Gene/Summary.csv"
+          pattern: "*.Solo.out/Gene/Summary.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
   versions_star:
@@ -168,7 +177,7 @@ output:
       - ${prefix}.Aligned.sortedByCoord.out.bam:
           type: file
           description: Sorted BAM file containing read alignments (optional)
-          pattern: "*sortedByCoord.out.bam"
+          pattern: "*.Aligned.sortedByCoord.out.bam"
           ontologies:
             - edam: http://edamontology.org/format_2572 # BAM
   bam_transcript:
@@ -179,7 +188,7 @@ output:
       - ${prefix}.Aligned.toTranscriptome.out.bam:
           type: file
           description: Output BAM file of transcriptome alignment (optional)
-          pattern: "*toTranscriptome.out.bam"
+          pattern: "*.Aligned.toTranscriptome.out.bam"
           ontologies:
             - edam: http://edamontology.org/format_2572 # BAM
   bam_unsorted:
@@ -187,13 +196,23 @@ output:
           type: map
           description: |
             Groovy Map containing sample information.
-      - ${prefix}.Aligned.out.bam: {}
+      - ${prefix}.Aligned.out.bam:
+          type: file
+          description: Unsorted BAM file (optional)
+          pattern: "*.Aligned.out.bam"
+          ontologies:
+            - edam: http://edamontology.org/format_2572 # BAM
   fastq:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
-      - ${prefix}.unmapped_{1,2}.fastq.gz: {}
+      - ${prefix}.unmapped_{1,2}.fastq.gz:
+          type: file
+          description: Unmapped reads in gzipped FASTQ format (optional)
+          pattern: "*.fastq.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
   tab:
     - - meta:
           type: map
@@ -213,7 +232,7 @@ output:
       - ${prefix}.Log.out:
           type: file
           description: STAR log out file
-          pattern: "*Log.out"
+          pattern: "*.Log.out"
           ontologies:
             - edam: http://edamontology.org/format_2330 # TXT
   raw_genefull:
@@ -241,25 +260,42 @@ output:
           type: map
           description: |
             Groovy Map containing sample information.
-      - ${prefix}.Aligned.out.sam: {}
+      - ${prefix}.Aligned.out.sam:
+          type: file
+          description: SAM file (optional)
+          pattern: "*.Aligned.out.sam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2573" # SAM
   chimeric_juntionc:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
-      - ${prefix}.Chimeric.out.junction: {}
+      - ${prefix}.Chimeric.out.junction:
+          type: file
+          description: STAR chimeric junction output file (optional)
+          pattern: "*Chimeric.out.junction"
+          ontologies: []
   wig:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
-      - "*.wig": {}
+      - "*.wig":
+          type: file
+          description: STAR output wiggle format file(s) (optional)
+          pattern: "*.wig"
+          ontologies: []
   bedgraph:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
-      - "*.bg": {}
+      - "*.bg":
+          type: file
+          description: STAR output bedGraph format file(s) (optional)
+          pattern: "*.bg"
+          ontologies: []
 topics:
   versions:
     - - ${task.process}:
