@@ -11,11 +11,11 @@ nextflow_workflow {
     tag "subworkflows/vcf_gather_bcftools"
     tag "vcf_gather_bcftools"
 
+    tag "bcftools"
     tag "bcftools/concat"
     tag "bcftools/sort"
-    tag "bcftools"
-    tag "htslib/bgziptabix"
     tag "htslib"
+    tag "htslib/bgziptabix"
 
     test("homo_sapiens - [vcf, tbi] [vcf, tbi] - meta [] 2 - sample, key - true") {
         when {
