@@ -8,8 +8,11 @@ nextflow_workflow {
     tag "subworkflows"
     tag "subworkflows_nfcore"
     tag "subworkflows/vcf_filter_bcftools_ensemblvep"
+    tag "bcftools"
     tag "bcftools/view"
+    tag "ensemblvep"
     tag "ensemblvep/filtervep"
+    tag "htslib"
     tag "htslib/bgziptabix"
 
     test("vcf, hgnc_ids - filter on expression") {

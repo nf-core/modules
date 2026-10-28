@@ -11,7 +11,7 @@ nextflow_process {
 
     test("sarscov2 - vcf - decompress") {
 
-         when {
+        when {
             process {
                 """
                 input[0] = [
@@ -40,7 +40,7 @@ nextflow_process {
 
     test("sarscov2 - vcf - compress - index") {
 
-         when {
+        when {
             process {
                 """
                 input[0] = [
@@ -97,7 +97,7 @@ nextflow_process {
 
     test("sarscov2 - bgzip - decompress") {
 
-         when {
+        when {
             process {
                 """
                 input[0] = [
@@ -125,7 +125,7 @@ nextflow_process {
 
     test("sarscov2 - bgzip - compress - no index") {
 
-         when {
+        when {
             process {
                 """
                 input[0] = [
@@ -154,7 +154,7 @@ nextflow_process {
 
     test("sarscov2 - gzip - decompress") {
 
-         when {
+        when {
             process {
                 """
                 input[0] = [
@@ -182,7 +182,7 @@ nextflow_process {
 
     test("sarscov2 - gzip - (re)compress - no index") {
 
-         when {
+        when {
             process {
                 """
                 input[0] = [
@@ -210,7 +210,7 @@ nextflow_process {
 
     test("sarscov2 - gzip - name clash") {
 
-         when {
+        when {
             process {
                 """
                 input[0] = [
@@ -236,7 +236,7 @@ nextflow_process {
 
     test("metagenome - bz2 - decompress") {
 
-         when {
+        when {
             process {
                 """
                 input[0] = [
@@ -264,7 +264,7 @@ nextflow_process {
 
     test("metagenome - bz2 - (re)compress - no index") {
 
-         when {
+        when {
             process {
                 """
                 input[0] = [
@@ -292,7 +292,7 @@ nextflow_process {
 
     test("metagenome - xz - decompress") {
 
-         when {
+        when {
             process {
                 """
                 input[0] = [
@@ -323,7 +323,7 @@ nextflow_process {
 
     test("metagenome - xz - (re)compress - no index") {
 
-         when {
+        when {
             process {
                 """
                 input[0] = [
@@ -409,7 +409,7 @@ nextflow_process {
 
     test("illegal action") {
 
-         when {
+        when {
             process {
                 """
                 input[0] = [
