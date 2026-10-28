@@ -4,8 +4,8 @@ process BCFTOOLS_ROHVIZ {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/23/23929960155bf38dd96bdc4a133761cae491644c7c85932e846fa6b80c5e99fd/data'
-        : 'community.wave.seqera.io/library/bcftools_htslib_less:44d372581fd03e09'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a4/a4f4f97b5df3f047f183105e4a8618e616fd14072ad128d742f4ff66621c9fc8/data'
+        : 'community.wave.seqera.io/library/bcftools_htslib_less:240688709276db16'}"
 
     input:
     tuple val(meta), path(roh)

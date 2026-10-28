@@ -115,14 +115,14 @@ containers:
       build_id: bd-405212ba1fbcd699_1
       scan_id: sc-d608232151547c6a_1
   singularity:
-    linux/amd64:
-      name: oras://community.wave.seqera.io/library/bcftools:1.25--e75d8f335db6e28c
-      build_id: bd-e75d8f335db6e28c_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f5/f57eb9360a7f27a3b111d842194286fe02665c1c008ea7635f2a611939523def/data
     linux/arm64:
       name: oras://community.wave.seqera.io/library/bcftools:1.25--dd8939e103d45026
       build_id: bd-dd8939e103d45026_1
       https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bf/bf2411adca6b43392c5d8e3f98737c20175490604d84b8684a92d92746d7684c/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bcftools:1.25--e75d8f335db6e28c
+      build_id: bd-e75d8f335db6e28c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f5/f57eb9360a7f27a3b111d842194286fe02665c1c008ea7635f2a611939523def/data
   conda:
     linux/amd64:
       lock_file: modules/nf-core/bcftools/pluginvcf2table/.conda-lock/linux_amd64-bd-140bbb151b8acfe5_1.txt
