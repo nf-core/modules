@@ -27,6 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       detect_changes: ${{ steps.command.outputs.detect_changes }}
+      filter_tag: ${{ steps.command.outputs.filter_tag }}
       head_repo: ${{ steps.pr.outputs.head_repo }}
       head_sha: ${{ steps.pr.outputs.head_sha }}
       requested_path: ${{ steps.command.outputs.requested_path }}
@@ -79,11 +80,14 @@ jobs:
           if extra_tag and not re.fullmatch(r"[a-zA-Z0-9_-]+", extra_tag):
               sys.exit(f"Invalid tag: {extra_tag}")
 
-          tags = "gpu" if extra_tag in ("", "gpu") else f"gpu,{extra_tag}"
+          # gpu_highmem adds a GPU class; any other tag narrows the GPU tests to those that also have it,
+          # since nf-test and detect.sh treat a tag list as OR and would otherwise run non-GPU tests
+          tags = "gpu,gpu_highmem" if extra_tag == "gpu_highmem" else "gpu"
+          filter_tag = "" if extra_tag in ("", "gpu", "gpu_highmem") else extra_tag
           # Without a path, the tests related to the PR changes are detected
           detect_changes = "false" if requested_path else "true"
           with open(os.environ["GITHUB_OUTPUT"], "a") as f:
-              f.write(f"detect_changes={detect_changes}\nrequested_path={requested_path}\ntags={tags}\n")
+              f.write(f"detect_changes={detect_changes}\nfilter_tag={filter_tag}\nrequested_path={requested_path}\ntags={tags}\n")
 
   # Resolve the tests to run on a cheap runner, so the GPU runner only starts when there is something to test
   detect-gpu-tests:
@@ -117,6 +121,7 @@ jobs:
         id: paths
         env:
           COMPONENTS: ${{ steps.detect.outputs.components }}
+          FILTER_TAG: ${{ needs.prepare-gpu-update.outputs.filter_tag }}
           REQUESTED_PATH: ${{ needs.prepare-gpu-update.outputs.requested_path }}
           TAGS: ${{ needs.prepare-gpu-update.outputs.tags }}
         run: |
@@ -127,7 +132,13 @@ jobs:
             test_paths=( $REQUESTED_PATH )
           else
             mapfile -t test_paths < <(jq -r '.[]' <<< "$COMPONENTS")
-            # Same tag check as detect.sh; the detected gpu_highmem tests only run with that tag
+          fi
+          # Same tag check as detect.sh, keeping only the test files that also have the requested tag
+          if [ -n "$FILTER_TAG" ] && [ ${#test_paths[@]} -gt 0 ]; then
+            mapfile -t test_paths < <(grep -rlE --include='*.nf.test' "^[[:space:]]*tag[[:space:]]+[\"']${FILTER_TAG}[\"']" "${test_paths[@]}" | sort -u)
+          fi
+          if [ -z "$REQUESTED_PATH" ]; then
+            # The detected gpu_highmem tests only run with that tag
             if [ ${#test_paths[@]} -gt 0 ] && [[ ",$TAGS," != *,gpu_highmem,* ]] &&
               grep -qE "^[[:space:]]*tag[[:space:]]+[\"']gpu_highmem[\"']" "${test_paths[@]}"; then
               TAGS="$TAGS,gpu_highmem"
