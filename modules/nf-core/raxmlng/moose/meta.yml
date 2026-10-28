@@ -23,7 +23,9 @@ input:
         type: file
         description: A FASTA/PHYLIP format multiple sequence alignment file. Must not be compressed.
         pattern: "*.{fasta,fas,fa,mfa,phy}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_1997 # PHYLIP format
     - data_type:
         type: string
         description: The data type of the alignment, as RAxML-NG's `--data-type` takes it
@@ -43,7 +45,8 @@ output:
             followed by RAxML-NG's partition name and site range, e.g. `GTR+FO+R10, noname = 1-1478`.
             The text before the first comma is accepted by `raxml-ng --model`.
           pattern: "*.raxml.moose.bestModel"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Textual format
   log:
     - - meta:
           type: map
@@ -52,7 +55,8 @@ output:
           type: file
           description: RAxML-NG's run log, including the models evaluated
           pattern: "*.raxml.log"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Textual format
   versions_raxmlng:
     - - ${task.process}:
           type: string
