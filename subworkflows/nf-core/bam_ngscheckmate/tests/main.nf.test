@@ -47,13 +47,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(
-                    workflow.out.corr_matrix,
-                    file(workflow.out.matched[0][1]).name,
-                    workflow.out.all,
-                    workflow.out.vcf.collect {meta, vcf -> path(vcf).vcf.variantsMD5 },
-                    file(workflow.out.pdf[0][1]).name
-                    ).match()}
+                { assert snapshot(sanitizeOutput(workflow.out, variantsMD5Keys: ['vcf'], unstableKeys: ['pdf'])).match()}
             )
         }
     }
@@ -88,13 +82,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(
-                    workflow.out.corr_matrix,
-                    workflow.out.matched,
-                    workflow.out.all,
-                    workflow.out.vcf.collect {meta, vcf -> path(vcf).vcf.variantsMD5 },
-                    file(workflow.out.pdf[0][1]).name
-                    ).match()}
+                { assert snapshot(sanitizeOutput(workflow.out, variantsMD5Keys: ['vcf'], unstableKeys: ['pdf'])).match()}
             )
         }
     }
