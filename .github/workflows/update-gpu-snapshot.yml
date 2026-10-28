@@ -29,6 +29,7 @@ jobs:
       head_repo: ${{ steps.pr.outputs.head_repo }}
       head_sha: ${{ steps.pr.outputs.head_sha }}
       test_path: ${{ steps.path.outputs.test_path }}
+      tags: ${{ steps.path.outputs.tags }}
       valid_path: ${{ steps.path.outputs.valid_path }}
     steps:
       # indication that the snapshot is being updated
@@ -60,31 +61,107 @@ jobs:
           COMMENT_BODY: ${{ github.event.comment.body }}
         shell: bash
         run: |
-          command_pattern='^[[:space:]]*@nf-core-bot[[:space:]]+update[[:space:]]+gpu[[:space:]]+snapshot[[:space:]]+path:[[:space:]]*([^[:space:]]+)[[:space:]]*$'
-          module_path_pattern='^modules/nf-core/[a-z0-9][a-z0-9-]*(/[a-z0-9][a-z0-9-]*)?/tests$'
-          subworkflow_path_pattern='^subworkflows/nf-core/[a-z0-9][a-z0-9_-]*/tests$'
-          match_count=0
-          test_path=''
+          python3 - << 'EOF'
+          import os
+          import re
+          import sys
 
-          while IFS= read -r line; do
-            if [[ "$line" =~ $command_pattern ]]; then
-              match_count=$((match_count + 1))
-              test_path=${BASH_REMATCH[1]}
-            fi
-          done <<< "$COMMENT_BODY"
+          comment_body = os.environ.get("COMMENT_BODY", "")
+          github_output = os.environ.get("GITHUB_OUTPUT")
 
-          if [ "$match_count" -ne 1 ] || [ -z "$test_path" ] || [[ "$test_path" == /* ]] || [[ "$test_path" == *..* ]]; then
-            echo "valid_path=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
+          def write_output(k, v):
+              if github_output:
+                  with open(github_output, "a") as f:
+                      f.write(f"{k}={v}\n")
 
-          if ! [[ "$test_path" =~ $module_path_pattern || "$test_path" =~ $subworkflow_path_pattern ]]; then
-            echo "valid_path=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
+          command_re = re.compile(r"^\s*@nf-core-bot\s+update\s+gpu\s+snapshot(?:\s+(.*))?$", re.IGNORECASE)
+          matches = []
+          for line in comment_body.splitlines():
+              m = command_re.match(line)
+              if m:
+                  matches.append(m.group(1) or "")
 
-          echo "test_path=$test_path" >> "$GITHUB_OUTPUT"
-          echo "valid_path=true" >> "$GITHUB_OUTPUT"
+          if len(matches) != 1:
+              write_output("valid_path", "false")
+              sys.exit(0)
+
+          arg_str = matches[0].strip()
+          tokens = arg_str.split()
+
+          test_path = None
+          extra_tags = []
+
+          i = 0
+          invalid = False
+          while i < len(tokens):
+              tok = tokens[i]
+              if tok == "path:":
+                  if i + 1 < len(tokens):
+                      if test_path is not None:
+                          invalid = True
+                          break
+                      test_path = tokens[i + 1]
+                      i += 2
+                  else:
+                      invalid = True
+                      break
+              elif tok.startswith("path:"):
+                  if test_path is not None:
+                      invalid = True
+                      break
+                  test_path = tok[5:]
+                  i += 1
+              elif tok in ("tag:", "tags:"):
+                  if i + 1 < len(tokens):
+                      extra_tags.extend(tokens[i + 1].split(","))
+                      i += 2
+                  else:
+                      invalid = True
+                      break
+              elif tok.startswith("tag:"):
+                  extra_tags.extend(tok[4:].split(","))
+                  i += 1
+              elif tok.startswith("tags:"):
+                  extra_tags.extend(tok[5:].split(","))
+                  i += 1
+              else:
+                  invalid = True
+                  break
+
+          if invalid:
+              write_output("valid_path", "false")
+              sys.exit(0)
+
+          if test_path is None:
+              test_path = "."
+
+          if not test_path or test_path.startswith("/") or ".." in test_path:
+              write_output("valid_path", "false")
+              sys.exit(0)
+
+          if not re.match(r"^[a-zA-Z0-9_./*-]+$", test_path):
+              write_output("valid_path", "false")
+              sys.exit(0)
+
+          if test_path != "." and not (test_path.startswith("modules") or test_path.startswith("subworkflows")):
+              write_output("valid_path", "false")
+              sys.exit(0)
+
+          cleaned_tags = ["gpu"]
+          for t in extra_tags:
+              t_str = t.strip()
+              if not t_str:
+                  continue
+              if not re.match(r"^[a-zA-Z0-9_-]+$", t_str):
+                  write_output("valid_path", "false")
+                  sys.exit(0)
+              if t_str not in cleaned_tags:
+                  cleaned_tags.append(t_str)
+
+          write_output("test_path", test_path)
+          write_output("tags", ",".join(cleaned_tags))
+          write_output("valid_path", "true")
+          EOF
 
       - name: React if test path is invalid
         if: steps.path.outputs.valid_path != 'true'
@@ -113,18 +190,25 @@ jobs:
           TEST_PATH: ${{ needs.prepare-gpu-update.outputs.test_path }}
         run: |
           workspace=$(realpath --canonicalize-existing "$GITHUB_WORKSPACE")
-          test_path=$(realpath --canonicalize-existing "$TEST_PATH")
-          if [ "$test_path" != "${workspace}/${TEST_PATH}" ]; then
-            echo "The test path contains a symlink or is outside the workspace."
+          if [[ "$TEST_PATH" == /* ]] || [[ "$TEST_PATH" == *..* ]]; then
+            echo "The test path is invalid."
             exit 1
           fi
-          if [ ! -f "$TEST_PATH/main.nf.test" ] || [ -L "$TEST_PATH/main.nf.test" ]; then
-            echo "The test path does not contain a regular main.nf.test file."
-            exit 1
-          fi
-          if [ ! -f "$TEST_PATH/main.nf.test.snap" ] || [ -L "$TEST_PATH/main.nf.test.snap" ]; then
-            echo "The test path does not contain a regular snapshot file."
-            exit 1
+          if [ "$TEST_PATH" != "." ]; then
+            shopt -s nullglob
+            matches=( $TEST_PATH )
+            shopt -u nullglob
+            if [ ${#matches[@]} -eq 0 ]; then
+              echo "The test path does not match any file or directory: $TEST_PATH"
+              exit 1
+            fi
+            for match in "${matches[@]}"; do
+              real_match=$(realpath --canonicalize-existing "$match" 2>/dev/null || true)
+              if [ -z "$real_match" ] || [[ "$real_match" != "${workspace}"/* && "$real_match" != "${workspace}" ]]; then
+                echo "Path match is outside the workspace or invalid: $match"
+                exit 1
+              fi
+            done
           fi
 
       - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6
@@ -151,6 +235,7 @@ jobs:
       - name: Update GPU snapshot
         env:
           TEST_PATH: ${{ needs.prepare-gpu-update.outputs.test_path }}
+          TAGS: ${{ needs.prepare-gpu-update.outputs.tags }}
         run: |
           nf-test test \
             --profile=docker,gpu \
@@ -158,19 +243,18 @@ jobs:
             --ci \
             --update-snapshot \
             --filter process,workflow \
-            --tag gpu \
+            --tag "$TAGS" \
             "$TEST_PATH"
 
       - name: Create GPU snapshot patch
         id: patch
         env:
           PATCH_FILE: ${{ runner.temp }}/gpu-snapshot.patch
-          TEST_PATH: ${{ needs.prepare-gpu-update.outputs.test_path }}
         run: |
-          snapshot_file="${TEST_PATH}/main.nf.test.snap"
-          git diff --binary --full-index --no-ext-diff -- "$snapshot_file" > "$PATCH_FILE"
+          git add -N -- '*.nf.test.snap' 2>/dev/null || true
+          git diff --binary --full-index --no-ext-diff -- '*.nf.test.snap' > "$PATCH_FILE"
           if [ ! -s "$PATCH_FILE" ]; then
-            echo "The GPU test did not update its snapshot."
+            echo "The GPU test did not update any snapshot."
             exit 1
           fi
           echo "has_patch=true" >> "$GITHUB_OUTPUT"
@@ -229,12 +313,28 @@ jobs:
           git apply --check --index "$PATCH_FILE"
           git apply --index "$PATCH_FILE"
 
-          expected_file="${TEST_PATH}/main.nf.test.snap"
           changed_files=$(git diff --cached --name-only)
-          if [ "$changed_files" != "$expected_file" ]; then
-            echo "The patch changes a file outside the requested snapshot."
+          if [ -z "$changed_files" ]; then
+            echo "The patch contains no changed files."
             exit 1
           fi
+
+          clean_test_path="${TEST_PATH%/}"
+          dir_test_path="$(dirname "$clean_test_path")"
+
+          while IFS= read -r file; do
+            [ -z "$file" ] && continue
+            if [[ "$file" != *.nf.test.snap ]]; then
+              echo "The patch modifies a non-snapshot file: $file"
+              exit 1
+            fi
+            if [ "$TEST_PATH" != "." ]; then
+              if ! [[ "$file" == $clean_test_path/* || "$file" == $clean_test_path || "$file" == "$clean_test_path.snap" || "$file" == $dir_test_path/* ]]; then
+                echo "The patch changes a file outside the requested path ($TEST_PATH): $file"
+                exit 1
+              fi
+            fi
+          done <<< "$changed_files"
 
       - name: Commit and push GPU snapshot
         env:
