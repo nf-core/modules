@@ -11,10 +11,11 @@ process STAR_STARSOLO {
 :         'community.wave.seqera.io/library/star:2.7.11b--f22f015f7eb1383f' }"
 
     input:
-    tuple val(meta), val(solotype), path(reads), path(manifest)
-    path(opt_whitelist)
-    tuple val(meta2), path(index)
-    tuple val(meta3), path(gtf)
+    tuple val(meta) , val(solotype), path(reads), path(manifest)
+    tuple val(meta2), path(opt_whitelist)
+    tuple val(meta3), path(index)
+    tuple val(meta4), path(gtf)
+    tuple val(meta5), path(splice_juntion)
 
     output:
     tuple val(meta), path("${prefix}.Solo.out")                         , emit: counts
@@ -30,10 +31,13 @@ process STAR_STARSOLO {
     tuple val(meta), path("${prefix}.Solo.out/Gene/Summary.csv")        , emit: summary          , optional: true
     tuple val(meta), path("${prefix}.Aligned.sortedByCoord.out.bam")    , emit: bam_sorted       , optional: true
     tuple val(meta), path("${prefix}.Aligned.toTranscriptome.out.bam")  , emit: bam_transcript   , optional: true
-    tuple val(meta), path("${prefix}.Aligned.unsort.out.bam")           , emit: bam_unsorted     , optional: true
+    tuple val(meta), path("${prefix}.Aligned.out.bam")                  , emit: bam_unsorted     , optional: true
     tuple val(meta), path("${prefix}*.tab")                             , emit: tab              , optional: true
-    tuple val(meta), path("${prefix}*.out.sam")                         , emit: sam              , optional: true
-    tuple val(meta), path('*fastq.gz')                                  , emit: fastq            , optional: true
+    tuple val(meta), path("${prefix}.Aligned.out.sam")                  , emit: sam              , optional: true
+    tuple val(meta), path("${prefix}.unmapped_{1,2}.fastq.gz")          , emit: fastq            , optional: true
+    tuple val(meta), path("${prefix}.Chimeric.out.junction")            , emit: chimeric_juntionc, optional: true
+    tuple val(meta), path('*.wig')                                      , emit: wig              , optional: true
+    tuple val(meta), path('*.bg')                                       , emit: bedgraph         , optional: true
     tuple val("${task.process}"), val('star'), eval('STAR --version | sed -e "s/STAR_//g"'), topic: versions, emit: versions_star
 
     when:
@@ -43,32 +47,16 @@ process STAR_STARSOLO {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def gtf_arg = gtf ? "--sjdbGTFfile $gtf" : ""
-
-    // Handle solotype argument logic
+    def (forward, reverse) = reads.collate(2).transpose()
+    zcat = reads[0].getExtension() == "gz" ? "--readFilesCommand zcat" : ""
+    def splice_juntion_arg = splice_juntion ? "--sjdbFileChrStartEnd $splice_juntion" : ""
+    def whitelist_args = opt_whitelist ? "--soloCBwhitelist ${[opt_whitelist].flatten().join(' ')}" : "--soloCBwhitelist None"
     if (solotype == "SmartSeq") {
-        zcat = ''
         read_files_in = "--readFilesManifest $manifest"
-        whitelist_args = opt_whitelist ? "--soloCBwhitelist ${opt_whitelist} " : "--soloCBwhitelist None "
-    } else if (solotype == "CB_UMI_Simple") {
-        def (forward, reverse) = reads.collate(2).transpose()
-        zcat = reads[0].getExtension() == "gz" ? "--readFilesCommand zcat": ""
+    } else if (solotype in ["CB_UMI_Simple", "CB_UMI_Complex"]) {
         read_files_in = "--readFilesIn ${reverse.join( "," )} ${forward.join( "," )}"
-        whitelist_args = opt_whitelist ? "--soloCBwhitelist ${opt_whitelist} " : "--soloCBwhitelist None "
-    } else if (solotype == "CB_UMI_Complex") {
-        def (forward, reverse) = reads.collate(2).transpose()
-        zcat = reads[0].getExtension() == "gz" ? "--readFilesCommand zcat": ""
-        read_files_in = "--readFilesIn ${reverse.join( "," )} ${forward.join( "," )}"
-        def whitelist_arguments = []
-        if (opt_whitelist) {
-            if (opt_whitelist instanceof Path) {
-                whitelist_arguments << opt_whitelist
-            } else if (opt_whitelist instanceof List) {
-                whitelist_arguments.addAll(opt_whitelist)
-            }
-        }
-        whitelist_args = whitelist_arguments ? "--soloCBwhitelist ${whitelist_arguments.join(' ')}" : "--soloCBwhitelist None "
     } else {
-        log.warn("Unknown output solotype (${solotype})")
+        error("Unknown solotype (${solotype})")
     }
 
     """
@@ -78,48 +66,75 @@ process STAR_STARSOLO {
         --runThreadN $task.cpus \\
         --outFileNamePrefix $prefix. \\
         --soloType $solotype \\
-        $whitelist_args $gtf_arg \\
+        $whitelist_args $gtf_arg $splice_juntion_arg \\
         $args
 
     if [ -d ${prefix}.Solo.out ]; then
         find ${prefix}.Solo.out \\( -name "*.tsv" -o -name "*.mtx" \\) -exec gzip {} \\;
     fi
+    if [ -f ${prefix}.Unmapped.out.mate1 ]; then
+        mv ${prefix}.Unmapped.out.mate1 ${prefix}.unmapped_1.fastq
+        gzip ${prefix}.unmapped_1.fastq
+    fi
+    if [ -f ${prefix}.Unmapped.out.mate2 ]; then
+        mv ${prefix}.Unmapped.out.mate2 ${prefix}.unmapped_2.fastq
+        gzip ${prefix}.unmapped_2.fastq
+    fi
     """
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix           = task.ext.prefix ?: "${meta.id}"
+    def args             = task.ext.args ?: ''
+    def args_list = (args =~ /[^\s]+/).collect()
+    def feature_idx = args_list.indexOf('--soloFeatures')
+
+    def solo_features = feature_idx >= 0
+        ? args_list.subList(feature_idx + 1, args_list.findIndexOf(feature_idx + 1) { it.startsWith('--') } < 0
+            ? args_list.size()
+            : args_list.findIndexOf(feature_idx + 1) { it.startsWith('--') })
+        : ['Gene']
+    def solo_cell_filter = args.contains('--soloCellFilter')
+        ? args.split('--soloCellFilter')[1].trim().split(/\s+/)[0]
+        : 'CellRanger2.2'
+
+    def touch_solo = solo_features.collect { feature ->
+        def touch_raw = """
+            mkdir -p ${prefix}.Solo.out/${feature}/raw
+            echo '' | gzip > ${prefix}.Solo.out/${feature}/raw/matrix.mtx.gz
+            echo '' | gzip > ${prefix}.Solo.out/${feature}/raw/barcodes.tsv.gz
+            echo '' | gzip > ${prefix}.Solo.out/${feature}/raw/features.tsv.gz
+        """
+
+        def touch_filtered = solo_cell_filter != 'None' ? """
+            mkdir -p ${prefix}.Solo.out/${feature}/filtered
+            echo '' | gzip > ${prefix}.Solo.out/${feature}/filtered/matrix.mtx.gz
+            echo '' | gzip > ${prefix}.Solo.out/${feature}/filtered/barcodes.tsv.gz
+            echo '' | gzip > ${prefix}.Solo.out/${feature}/filtered/features.tsv.gz
+        """ : ''
+
+        touch_raw + touch_filtered
+    }.join('\n')
+
+    def touch_summary = solo_features.contains('Gene') ? """
+        touch ${prefix}.Solo.out/Gene/Summary.csv
+    """ : ''
+
+    def touch_bam        = args.contains('--outSAMtype') && args.contains('BAM') ? """
+        ${args.contains('SortedByCoordinate') ? "touch ${prefix}.Aligned.sortedByCoord.out.bam" : ""}
+        ${args.contains('Unsorted') ? "touch ${prefix}.Aligned.unsort.out.bam" : ""}
+    """ : ""
+    def touch_transcriptome = args.contains('--quantMode') && args.contains('TranscriptomeSAM') ? "touch ${prefix}.Aligned.toTranscriptome.out.bam" : ""
+
     """
-    mkdir -p ${prefix}.Solo.out/Gene
-    mkdir -p ${prefix}.Solo.out/Gene/filtered
-    mkdir -p ${prefix}.Solo.out/Gene/raw
-    mkdir -p ${prefix}.Solo.out/GeneFull/filtered
-    mkdir -p ${prefix}.Solo.out/GeneFull/raw
-    mkdir -p ${prefix}.Solo.out/Velocyto/filtered
-    mkdir -p ${prefix}.Solo.out/Velocyto/raw
+    mkdir -p ${prefix}.Solo.out
+    $touch_solo
     touch ${prefix}.Log.final.out
     touch ${prefix}.Log.out
     touch ${prefix}.Log.progress.out
-    touch ${prefix}.Solo.out/Gene/Summary.csv
-    echo "" | gzip > ${prefix}.Solo.out/Gene/raw/matrix.mtx.gz
-    echo "" | gzip > ${prefix}.Solo.out/Gene/raw/barcodes.tsv.gz
-    echo "" | gzip > ${prefix}.Solo.out/Gene/raw/features.tsv.gz
-    echo "" | gzip > ${prefix}.Solo.out/Gene/filtered/barcodes.tsv.gz
-    echo "" | gzip > ${prefix}.Solo.out/Gene/filtered/features.tsv.gz
-    echo "" | gzip > ${prefix}.Solo.out/Gene/filtered/matrix.mtx.gz
-    echo "" | gzip > ${prefix}.Solo.out/GeneFull/raw/matrix.mtx.gz
-    echo "" | gzip > ${prefix}.Solo.out/GeneFull/raw/barcodes.tsv.gz
-    echo "" | gzip > ${prefix}.Solo.out/GeneFull/raw/features.tsv.gz
-    echo "" | gzip > ${prefix}.Solo.out/GeneFull/filtered/barcodes.tsv.gz
-    echo "" | gzip > ${prefix}.Solo.out/GeneFull/filtered/features.tsv.gz
-    echo "" | gzip > ${prefix}.Solo.out/GeneFull/filtered/matrix.mtx.gz
-    touch ${prefix}.Aligned.sortedByCoord.out.bam
-    touch ${prefix}.Aligned.toTranscriptome.out.bam
-    touch ${prefix}.Aligned.unsort.out.bam
-    echo "" | gzip > ${prefix}.Solo.out/Velocyto/raw/matrix.mtx.gz
-    echo "" | gzip > ${prefix}.Solo.out/Velocyto/raw/barcodes.tsv.gz
-    echo "" | gzip > ${prefix}.Solo.out/Velocyto/raw/features.tsv.gz
-    echo "" | gzip > ${prefix}.Solo.out/Velocyto/filtered/matrix.mtx.gz
-    echo "" | gzip > ${prefix}.Solo.out/Velocyto/filtered/barcodes.tsv.gz
-    echo "" | gzip > ${prefix}.Solo.out/Velocyto/filtered/features.tsv.gz
+    $touch_bam
+    $touch_transcriptome
+    $touch_summary
+    touch ${prefix}.Aligned.out.sam
+    touch ${prefix}.SJ.out.tab
     """
 }

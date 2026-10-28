@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process STAR_STARSOLO"
     script "../main.nf"
     process "STAR_STARSOLO"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -11,7 +12,6 @@ nextflow_process {
     tag "star/genomegenerate"
 
     test("homo_sapiens - CB_UMI_Simple") {
-        config "./nextflow.config"
 
         setup {
             run("STAR_GENOMEGENERATE") {
@@ -47,12 +47,13 @@ nextflow_process {
                     ],
                     [ ]
                 ])
-                input[1] = [ ]
+                input[1] = channel.of([ [id: 'empty'], [] ])
                 input[2] = STAR_GENOMEGENERATE.out.index
                 input[3] = channel.of([
                     [ id:'test_gtf' ],
                     [ ]
                 ])
+                input[4] = channel.of([ [id: 'test'], [] ])
                 """
             }
         }
@@ -63,8 +64,11 @@ nextflow_process {
                 { assert snapshot(
                     sanitizeOutput(process.out, unstableKeys: ["log_final", "log_out", "log_progress", "bam_sorted"]),
                     file(process.out.log_final[0][1]).name,
+                    file(process.out.log_final[0][1]).readLines().size(),
                     file(process.out.log_out[0][1]).name,
+                    file(process.out.log_out[0][1]).readLines().contains("ALL DONE!"),
                     file(process.out.log_progress[0][1]).name,
+                    file(process.out.log_progress[0][1]).readLines().contains("ALL DONE!"),
                     file(process.out.bam_sorted[0][1]).name,
                     bam(process.out.bam_sorted[0][1]).getStatistics(),
                 ).match() }
@@ -74,7 +78,6 @@ nextflow_process {
     }
 
     test("homo_sapiens - CB_UMI_Complex") {
-        config "./nextflow.config"
 
         setup {
             run("STAR_GENOMEGENERATE") {
@@ -110,15 +113,19 @@ nextflow_process {
                     ],
                     [ ]
                 ])
-                input[1] = [
+                input[1] = channel.of([
+                    [ id: 'multiple_whitelists'],
+                    [
                         file(params.modules_testdata_base_path + 'generic/starsolo/indrops/inDrops_Ambrose2_bc1.txt', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'generic/starsolo/indrops/inDrops_Ambrose2_bc2.txt', checkIfExists: true)
                     ]
+                ])
                 input[2] = STAR_GENOMEGENERATE.out.index
                 input[3] = channel.of([
                     [ id:'test_gtf' ],
                     [ ]
                 ])
+                input[4] = channel.of([ [id: 'test'], [] ])
                 """
             }
         }
@@ -129,7 +136,11 @@ nextflow_process {
                 { assert snapshot(
                     sanitizeOutput(process.out, unstableKeys: ["log_final", "log_out", "log_progress", "sam"], ignorePatterns: ["**/UMIperCellSorted.txt"]),
                     file(process.out.log_final[0][1]).name,
+                    file(process.out.log_final[0][1]).readLines().size(),
                     file(process.out.log_out[0][1]).name,
+                    file(process.out.log_out[0][1]).readLines().contains("ALL DONE!"),
+                    file(process.out.log_progress[0][1]).name,
+                    file(process.out.log_progress[0][1]).readLines().contains("ALL DONE!"),
                     file(process.out.sam[0][1]).name,
                     sam(process.out.sam[0][1]).getStatistics(),
                 ).match() }
@@ -139,7 +150,6 @@ nextflow_process {
     }
 
     test("homo_sapiens - SmartSeq") {
-        config "./nextflow.config"
 
         setup {
             run("STAR_GENOMEGENERATE") {
@@ -157,48 +167,35 @@ nextflow_process {
                     """
                 }
             }
-
-            // Starsolo can't read remote paths in the manifest,
-            // so pull the individual fastq files down and create
-            // a the manifest file that points to the local
-            // folder for the test to use.
-            def smartseq = new File("${launchDir}/smartseq")
-            smartseq.mkdirs()
-            def base = "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/generic/starsolo/smartseq/"
-            [
-                "CELL01_R1.fastq.gz",
-                "CELL01_R2.fastq.gz",
-                "CELL02_R1.fastq.gz",
-                "CELL02_R2.fastq.gz"
-            ].each { fname ->
-                new File("${smartseq}/${fname}").bytes = new URL("${base}${fname}").bytes
-            }
-
-            new File("${launchDir}/manifest.tsv").text = """
-            ${launchDir}/smartseq/CELL01_R1.fastq.gz	${launchDir}/smartseq/CELL01_R2.fastq.gz	CELL01
-            ${launchDir}/smartseq/CELL02_R1.fastq.gz	${launchDir}/smartseq/CELL02_R2.fastq.gz	CELL02
-            """.stripIndent().trim()
         }
 
         when {
             params {
-                module_args = "--readFilesCommand zcat --soloUMIdedup Exact --soloStrand Unstranded --limitOutSJcollapsed 10000000 --soloCellFilter None --soloFeatures Gene GeneFull"
+                module_args = "--soloUMIdedup Exact --soloStrand Unstranded --limitOutSJcollapsed 10000000 --soloCellFilter None --soloFeatures Gene GeneFull"
             }
 
             process {
                 """
+                file('manifest.tsv').text = 'CELL01_R1.fastq.gz\tCELL01_R2.fastq.gz\tCELL01\\nCELL02_R1.fastq.gz\tCELL02_R2.fastq.gz\tCELL02\\n'
+
                 input[0] = channel.of([
                     [ id:'test'],
                     'SmartSeq',
-                    [ ],
-                    [ file("${launchDir}/manifest.tsv", checkIfExists: true) ]
+                    [ 
+                        file(params.modules_testdata_base_path + 'generic/starsolo/smartseq/CELL01_R1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/starsolo/smartseq/CELL01_R2.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/starsolo/smartseq/CELL02_R1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/starsolo/smartseq/CELL02_R2.fastq.gz', checkIfExists: true),
+                        ],
+                    [ file('manifest.tsv', checkIfExists: true) ]
                 ])
-                input[1] = [ ]
+                input[1] = channel.of([ [ id:'empty'], [] ])
                 input[2] = STAR_GENOMEGENERATE.out.index
                 input[3] = channel.of([
                     [ id:'test_gtf' ],
                     [ ]
                 ])
+                input[4] = channel.of([ [id: 'test'], [] ])
                 """
             }
         }
@@ -209,8 +206,11 @@ nextflow_process {
                 { assert snapshot(
                     sanitizeOutput(process.out, unstableKeys: ["log_final", "log_out", "log_progress", "sam"]),
                     file(process.out.log_final[0][1]).name,
+                    file(process.out.log_final[0][1]).readLines().size(),
                     file(process.out.log_out[0][1]).name,
+                    file(process.out.log_out[0][1]).readLines().contains("ALL DONE!"),
                     file(process.out.log_progress[0][1]).name,
+                    file(process.out.log_progress[0][1]).readLines().contains("ALL DONE!"),
                     file(process.out.sam[0][1]).name,
                     sam(process.out.sam[0][1], stringency: "silent").getStatistics(),
                 ).match() }
@@ -220,7 +220,6 @@ nextflow_process {
     }
 
     test("homo_sapiens - CB_UMI_Simple - gtf - whitelist") {
-        config "./nextflow.config"
 
         setup {
             run("STAR_GENOMEGENERATE") {
@@ -269,12 +268,13 @@ nextflow_process {
                     ],
                     [ ]
                 ])
-                input[1] = file("${launchDir}/whitelist.txt")
+                input[1] = channel.of([ [ id:'whitelist'], file("${launchDir}/whitelist.txt") ])
                 input[2] = STAR_GENOMEGENERATE.out.index
                 input[3] = channel.of([
                     [ id:'test_gtf' ],
                     [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
                 ])
+                input[4] = channel.of([ [id: 'test'], [] ])
                 """
             }
         }
@@ -285,8 +285,11 @@ nextflow_process {
                 { assert snapshot(
                     sanitizeOutput(process.out, unstableKeys: ["log_final", "log_out", "log_progress", "bam_sorted"], ignorePatterns: ["**/UMIperCellSorted.txt"]),
                     file(process.out.log_final[0][1]).name,
+                    file(process.out.log_final[0][1]).readLines().size(),
                     file(process.out.log_out[0][1]).name,
+                    file(process.out.log_out[0][1]).readLines().contains("ALL DONE!"),
                     file(process.out.log_progress[0][1]).name,
+                    file(process.out.log_progress[0][1]).readLines().contains("ALL DONE!"),
                     file(process.out.bam_sorted[0][1]).name,
                     bam(process.out.bam_sorted[0][1]).getStatistics(),
                 ).match() }
@@ -318,6 +321,9 @@ nextflow_process {
         }
 
         when {
+            params {
+                module_args = "--soloUMIlen 12 --outSAMtype BAM SortedByCoordinate --soloFeatures Gene GeneFull"
+            }
             process {
                 """
                 input[0] = channel.of([
@@ -329,12 +335,13 @@ nextflow_process {
                     ],
                     [ ]
                 ])
-                input[1] = [ ]
+                input[1] = channel.of([ [ id:'empty'], [] ])
                 input[2] = STAR_GENOMEGENERATE.out.index
                 input[3] = channel.of([
                     [ id:'test_gtf' ],
                     [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
                 ])
+                input[4] = channel.of([ [id: 'test'], [] ])
                 """
             }
         }

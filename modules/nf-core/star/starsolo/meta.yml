@@ -42,27 +42,30 @@ input:
           It should contain 3 tab-separated columns: read1, read2, cell_id. The cell_id column will be added as ReadGroup tag.
         ontologies:
           - edam: http://edamontology.org/format_3475 # TSV
-  - opt_whitelist:
-      type: file
-      description: Optional whitelist file
-      ontologies:
-        - edam: http://edamontology.org/format_2330 # TXT
   - - meta2:
         type: map
         description: Groovy Map containing the STAR index information.
+    - opt_whitelist:
+        type: file
+        description: Optional whitelist file
+        ontologies:
+          - edam: http://edamontology.org/format_2330 # TXT
+  - - meta3:
+        type: map
+        description: Groovy Map containing the GTF information.
     - index:
         type: directory
         description: STAR genome index
         pattern: "star"
-  - - meta3:
-        type: map
-        description: Groovy Map containing the GTF information.
+  - - meta4: {}
     - gtf:
         type: file
         description: Optional GTF annotation file
         pattern: "*.gtf"
         ontologies:
           - edam: http://edamontology.org/format_2306 # GTF
+  - - meta5: {}
+    - splice_juntion: {}
 output:
   counts:
     - - meta:
@@ -70,11 +73,10 @@ output:
           description: |
             Groovy Map containing sample information.
       - ${prefix}.Solo.out:
-          type: file
+          type: directory
           description: STARSolo counts matrix
           pattern: "*.Solo.out"
-          ontologies:
-            - edam: http://edamontology.org/format_2330 # TXT
+          ontologies: []
   log_final:
     - - meta:
           type: map
@@ -85,7 +87,7 @@ output:
           description: STAR final log file
           pattern: "*Log.final.out"
           ontologies:
-            - edam: http://edamontology.org/format_2330 # TXT  log_out:
+            - edam: http://edamontology.org/format_2330 # TXT
   log_progress:
     - - meta:
           type: map
@@ -124,7 +126,7 @@ output:
           description: |
             Groovy Map containing sample information.
       - ${prefix}.Solo.out/Gene/raw:
-          type: file
+          type: directory
           description: STARSolo raw counts matrix
           pattern: "*.Solo.out/Gene/raw"
           ontologies: []
@@ -134,7 +136,7 @@ output:
           description: |
             Groovy Map containing sample information.
       - ${prefix}.Solo.out/Gene/filtered:
-          type: file
+          type: directory
           description: STARSolo filtered counts matrix (optional)
           pattern: "*.Solo.out/Gene/filtered"
           ontologies: []
@@ -144,7 +146,7 @@ output:
           description: |
             Groovy Map containing sample information.
       - ${prefix}.Solo.out/Velocyto/raw:
-          type: file
+          type: directory
           description: STARSolo raw velocyto matrix (optional)
           pattern: "*.Solo.out/Velocyto/raw"
           ontologies: []
@@ -154,7 +156,7 @@ output:
           description: |
             Groovy Map containing sample information.
       - ${prefix}.Solo.out/Velocyto/filtered:
-          type: file
+          type: directory
           description: STARSolo filtered velocyto matrix (optional)
           pattern: "*.Solo.out/Velocyto/filtered"
           ontologies: []
@@ -185,23 +187,13 @@ output:
           type: map
           description: |
             Groovy Map containing sample information.
-      - ${prefix}.Aligned.unsort.out.bam:
-          type: file
-          description: Unsorted BAM file of read alignments (optional)
-          pattern: "*Aligned.unsort.out.bam"
-          ontologies:
-            - edam: http://edamontology.org/format_2572 # BAM
+      - ${prefix}.Aligned.out.bam: {}
   fastq:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
-      - "*fastq.gz":
-          type: file
-          description: Input FASTQ file (optional)
-          pattern: "*fastq.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+      - ${prefix}.unmapped_{1,2}.fastq.gz: {}
   tab:
     - - meta:
           type: map
@@ -209,7 +201,7 @@ output:
             Groovy Map containing sample information.
       - ${prefix}*.tab:
           type: file
-          description: Input TAB file (optional)
+          description: TAB file (optional)
           pattern: "*.tab"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -230,9 +222,9 @@ output:
           description: |
             Groovy Map containing sample information.
       - ${prefix}.Solo.out/GeneFull/raw:
-          type: file
+          type: directory
           description: STARSolo raw GeneFull matrix (optional)
-          pattern: "*.Solo.out/GeneFull/filtered"
+          pattern: "*.Solo.out/GeneFull/raw"
           ontologies: []
   filtered_genefull:
     - - meta:
@@ -240,7 +232,7 @@ output:
           description: |
             Groovy Map containing sample information.
       - ${prefix}.Solo.out/GeneFull/filtered:
-          type: file
+          type: directory
           description: STARSolo filtered GeneFull matrix (optional)
           pattern: "*.Solo.out/GeneFull/filtered"
           ontologies: []
@@ -249,12 +241,25 @@ output:
           type: map
           description: |
             Groovy Map containing sample information.
-      - ${prefix}*.out.sam:
-          type: file
-          description: SAM file (optional)
-          pattern: "*.out.sam"
-          ontologies:
-            - edam: "http://edamontology.org/format_2573" # SAM
+      - ${prefix}.Aligned.out.sam: {}
+  chimeric_juntionc:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - ${prefix}.Chimeric.out.junction: {}
+  wig:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - "*.wig": {}
+  bedgraph:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - "*.bg": {}
 topics:
   versions:
     - - ${task.process}:
