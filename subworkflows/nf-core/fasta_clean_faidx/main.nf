@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { GUNZIP                        } from "../../../modules/nf-core/gunzip/main"
 include { SEQKIT_SEQ                    } from '../../../modules/nf-core/seqkit/seq/main'
 include { SEQKIT_REPLACE as SEQKIT_DOTS } from '../../../modules/nf-core/seqkit/replace/main'
