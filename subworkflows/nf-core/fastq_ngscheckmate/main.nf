@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { NGSCHECKMATE_FASTQ  } from '../../../modules/nf-core/ngscheckmate/fastq/main'
 include { NGSCHECKMATE_VAFNCM } from '../../../modules/nf-core/ngscheckmate/vafncm/main'
 

@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { STITCH                                  } from '../../../modules/nf-core/stitch/main'
 include { GLIMPSE2_LIGATE                         } from '../../../modules/nf-core/glimpse2/ligate/main'
 include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_PHASE  } from '../../../modules/nf-core/bcftools/index/main'
