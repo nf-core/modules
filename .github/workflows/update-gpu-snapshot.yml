@@ -23,7 +23,7 @@ jobs:
         contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)
     permissions:
       issues: write
-      pull-requests: read
+      pull-requests: write
     runs-on: ubuntu-latest
     outputs:
       detect_changes: ${{ steps.command.outputs.detect_changes }}
@@ -317,6 +317,7 @@ jobs:
     if: failure()
     permissions:
       issues: write
+      pull-requests: write
     runs-on: ubuntu-latest
     steps:
       - name: React on comment
