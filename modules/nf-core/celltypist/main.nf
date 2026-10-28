@@ -46,10 +46,11 @@ process CELLTYPIST {
     """
 
     stub:
+    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    def tables = args.contains('--xlsx') ? "${prefix}_annotation_result.xlsx" : "${prefix}_predicted_labels.csv ${prefix}_decision_matrix.csv ${prefix}_probability_matrix.csv"
+    def plots = args.contains('--plot-results') ? "${prefix}_predicted_labels.pdf" : ''
     """
-    touch ${prefix}_predicted_labels.csv
-    touch ${prefix}_decision_matrix.csv
-    touch ${prefix}_probability_matrix.csv
+    touch ${tables} ${plots}
     """
 }

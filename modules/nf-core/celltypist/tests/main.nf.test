@@ -32,11 +32,48 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                // One header line plus one line per cell (300 cells in the query file)
-                { assert new File(process.out.predicted_labels[0][1].toString()).readLines().size() == 301 },
-                { assert new File(process.out.decision_matrix[0][1].toString()).readLines().size() == 301 },
-                { assert new File(process.out.probability_matrix[0][1].toString()).readLines().size() == 301 },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["predicted_labels", "decision_matrix", "probability_matrix"])).match() }
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["predicted_labels", "decision_matrix", "probability_matrix"]),
+                    ["predicted_labels", "decision_matrix", "probability_matrix"].collect { ch -> new File(process.out[ch][0][1].toString()).readLines().size() }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo sapiens - pbmc3k - h5ad - over-clustering and majority voting") {
+
+        when {
+            params {
+                module_args = '--majority-voting'
+            }
+            process {
+                """
+                def clusters = file("\${launchDir}/over_clustering.txt")
+                clusters.text = (0..<300).collect { i -> "cluster" + (i % 5) }.join("\\n") + "\\n"
+
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/pbmc3k_celltypist_query.h5ad', checkIfExists: true),
+                    clusters,
+                    [],
+                    []
+                ]
+                input[1] = [
+                    [ id:'pbmc3k_model' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/celltypist/pbmc3k_celltypist_model.pkl', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["predicted_labels", "decision_matrix", "probability_matrix"]),
+                    ["predicted_labels", "decision_matrix", "probability_matrix"].collect { ch -> new File(process.out[ch][0][1].toString()).readLines().size() }
+                ).match() }
             )
         }
 
