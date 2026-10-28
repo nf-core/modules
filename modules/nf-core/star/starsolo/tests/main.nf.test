@@ -38,8 +38,6 @@ nextflow_process {
 
             process {
                 """
-                file('NO_FILE').text = ''
-
                 input[0] = channel.of([
                     [ id:'test'],
                     'CB_UMI_Simple',
@@ -49,7 +47,7 @@ nextflow_process {
                     ],
                     [ ]
                 ])
-                input[1] = file('NO_FILE')
+                input[1] = [ ]
                 input[2] = STAR_GENOMEGENERATE.out.index
                 input[3] = channel.of([
                     [ id:'test_gtf' ],
@@ -189,15 +187,13 @@ nextflow_process {
 
             process {
                 """
-                file('NO_FILE').text = ''
-
                 input[0] = channel.of([
                     [ id:'test'],
                     'SmartSeq',
                     [ ],
                     [ file("${launchDir}/manifest.tsv", checkIfExists: true) ]
                 ])
-                input[1] = file('NO_FILE', checkIfExists: true)
+                input[1] = [ ]
                 input[2] = STAR_GENOMEGENERATE.out.index
                 input[3] = channel.of([
                     [ id:'test_gtf' ],
@@ -324,8 +320,6 @@ nextflow_process {
         when {
             process {
                 """
-                file('NO_FILE').text = ''
-
                 input[0] = channel.of([
                     [ id:'test'],
                     'CB_UMI_Simple',
@@ -335,7 +329,7 @@ nextflow_process {
                     ],
                     [ ]
                 ])
-                input[1] = file('NO_FILE')
+                input[1] = [ ]
                 input[2] = STAR_GENOMEGENERATE.out.index
                 input[3] = channel.of([
                     [ id:'test_gtf' ],

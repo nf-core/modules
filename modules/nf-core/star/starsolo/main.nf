@@ -48,18 +48,18 @@ process STAR_STARSOLO {
     if (solotype == "SmartSeq") {
         zcat = ''
         read_files_in = "--readFilesManifest $manifest"
-        whitelist_args = opt_whitelist.name != 'NO_FILE' ? "--soloCBwhitelist ${opt_whitelist} " : "--soloCBwhitelist None "
+        whitelist_args = opt_whitelist ? "--soloCBwhitelist ${opt_whitelist} " : "--soloCBwhitelist None "
     } else if (solotype == "CB_UMI_Simple") {
         def (forward, reverse) = reads.collate(2).transpose()
         zcat = reads[0].getExtension() == "gz" ? "--readFilesCommand zcat": ""
         read_files_in = "--readFilesIn ${reverse.join( "," )} ${forward.join( "," )}"
-        whitelist_args = opt_whitelist.name != 'NO_FILE' ? "--soloCBwhitelist ${opt_whitelist} " : "--soloCBwhitelist None "
+        whitelist_args = opt_whitelist ? "--soloCBwhitelist ${opt_whitelist} " : "--soloCBwhitelist None "
     } else if (solotype == "CB_UMI_Complex") {
         def (forward, reverse) = reads.collate(2).transpose()
         zcat = reads[0].getExtension() == "gz" ? "--readFilesCommand zcat": ""
         read_files_in = "--readFilesIn ${reverse.join( "," )} ${forward.join( "," )}"
         def whitelist_arguments = []
-        if (opt_whitelist.name != 'NO_FILE') {
+        if (opt_whitelist) {
             if (opt_whitelist instanceof Path) {
                 whitelist_arguments << opt_whitelist
             } else if (opt_whitelist instanceof List) {
