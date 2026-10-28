@@ -9,41 +9,34 @@ set.seed(123)
 
 sce <- read_h5ad("${h5ad}")\$as_SingleCellExperiment()
 
-# Expected doublet rate. If none is given, scDblFinder estimates it.
-dbr <- suppressWarnings(as.numeric(trimws("${dbr}")))
-if (is.na(dbr)) {
-    dbr <- NULL
-}
+# Extra arguments for scDblFinder from task.ext.args, written as R named
+# arguments, e.g. dbr = 0.08, samples = "batch", clusters = TRUE
+extra <- list(${args})
 
-# Optional column that splits the cells by sample or capture
-batch_col <- trimws("${batch_col ?: ''}")
-samples <- NULL
-if (nzchar(batch_col)) {
+# A single string given as 'samples' is read as the name of a column in the
+# cell metadata (obs), so the cells can be split by sample or capture
+if (is.character(extra\$samples) && length(extra\$samples) == 1) {
+    batch_col <- extra\$samples
     if (!(batch_col %in% colnames(colData(sce)))) {
         stop(
             "Column '", batch_col, "' is not in the cell metadata. Available columns: ",
             paste(colnames(colData(sce)), collapse = ", ")
         )
     }
-    samples <- as.vector(colData(sce)[[batch_col]])
-    if (anyNA(samples)) {
+    extra\$samples <- as.vector(colData(sce)[[batch_col]])
+    if (anyNA(extra\$samples)) {
         stop("Column '", batch_col, "' contains NA values.")
     }
 }
 
 workers <- max(1L, as.integer("${task.cpus}"))
-args <- list(
-    assay(sce, 1),
-    BPPARAM = MulticoreParam(workers = workers, RNGseed = 123)
+res <- do.call(
+    scDblFinder,
+    c(
+        list(assay(sce, 1), BPPARAM = MulticoreParam(workers = workers, RNGseed = 123)),
+        extra
+    )
 )
-if (!is.null(dbr)) {
-    args\$dbr <- dbr
-}
-if (!is.null(samples)) {
-    args\$samples <- samples
-}
-
-res <- do.call(scDblFinder, args)
 
 # Add the scDblFinder results to the original object so the other
 # cell metadata is kept

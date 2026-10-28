@@ -27,17 +27,6 @@ input:
         pattern: "*.h5ad"
         ontologies:
           - edam: http://edamontology.org/format_3590 # HDF5
-    - dbr:
-        type: float
-        description: |
-          Expected doublet rate between 0 and 1. Use `null` to let scDblFinder
-          estimate it.
-    - batch_col:
-        type: string
-        description: |
-          Name of a column in the cell metadata (`obs`) that splits the cells by
-          sample or capture, passed to the `samples` argument of scDblFinder.
-          Use an empty string to treat all cells as one sample.
 
 output:
   h5ad:
@@ -46,7 +35,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.h5ad":
+      - "${prefix}.h5ad":
           type: file
           description: Input AnnData object with the scDblFinder columns added to `obs`, stored with gzip compression
           pattern: "*.h5ad"
@@ -58,7 +47,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.predictions.csv":
+      - "${prefix}.predictions.csv":
           type: file
           description: |
             CSV file with one boolean column (true for cells called as doublets),
@@ -74,7 +63,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.scores.csv":
+      - "${prefix}.scores.csv":
           type: file
           description: Per-cell scDblFinder results (class, score and related columns)
           pattern: "*.scores.csv"
@@ -85,6 +74,8 @@ output:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 
 topics:
   versions:
@@ -92,6 +83,8 @@ topics:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 
 authors:
   - "@iraajgangavaram"

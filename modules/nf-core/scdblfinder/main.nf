@@ -8,18 +8,19 @@ process SCDBLFINDER {
         : 'community.wave.seqera.io/library/bioconductor-anndatar_bioconductor-biocparallel_bioconductor-rhdf5_bioconductor-scdblfinder_bioconductor-singlecellexperiment:b97c9b42c2a89cba'}"
 
     input:
-    tuple val(meta), path(h5ad), val(dbr), val(batch_col)
+    tuple val(meta), path(h5ad)
 
     output:
-    tuple val(meta), path("*.h5ad")            , emit: h5ad
-    tuple val(meta), path("*.predictions.csv") , emit: predictions
-    tuple val(meta), path("*.scores.csv")      , emit: scores
-    path "versions.yml"                        , emit: versions_scdblfinder, topic: versions
+    tuple val(meta), path("${prefix}.h5ad")            , emit: h5ad
+    tuple val(meta), path("${prefix}.predictions.csv") , emit: predictions
+    tuple val(meta), path("${prefix}.scores.csv")      , emit: scores
+    path "versions.yml"                                , emit: versions_scdblfinder, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
+    args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}_scdblfinder"
     if ("${h5ad}" == "${prefix}.h5ad") {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
