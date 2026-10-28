@@ -36,8 +36,8 @@ nextflow_process {
                 assert "scDblFinder.score" in obs.colnames
             }
             assert snapshot(
-                process.out.predictions,
-                path(process.out.versions_scdblfinder[0]).yaml,
+                sanitizeOutput(process.out, unstableKeys: ['h5ad', 'scores']),
+                scores.size(),
                 adata.yaml
             ).match()
         }
@@ -74,8 +74,8 @@ nextflow_process {
                 assert "scDblFinder.score" in obs.colnames
             }
             assert snapshot(
-                process.out.predictions,
-                path(process.out.versions_scdblfinder[0]).yaml,
+                sanitizeOutput(process.out, unstableKeys: ['h5ad', 'scores']),
+                scores.size(),
                 adata.yaml
             ).match()
         }

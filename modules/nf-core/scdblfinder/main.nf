@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SCDBLFINDER {
     tag "${meta.id}"
     label 'process_medium'
@@ -41,6 +44,10 @@ process SCDBLFINDER {
     "${task.process}":
         r-base: \$(Rscript -e "cat(as.character(getRversion()))")
         scdblfinder: \$(Rscript -e "suppressMessages(library(scDblFinder)); cat(as.character(packageVersion('scDblFinder')))")
+        anndatar: \$(Rscript -e "suppressMessages(library(anndataR)); cat(as.character(packageVersion('anndataR')))")
+        singlecellexperiment: \$(Rscript -e "suppressMessages(library(SingleCellExperiment)); cat(as.character(packageVersion('SingleCellExperiment')))")
+        biocparallel: \$(Rscript -e "suppressMessages(library(BiocParallel)); cat(as.character(packageVersion('BiocParallel')))")
+        rhdf5: \$(Rscript -e "cat(as.character(packageVersion('rhdf5')))")
     END_VERSIONS
     """
 }

@@ -50,7 +50,6 @@ print(table(sce\$scDblFinder.class))
 
 write_h5ad(sce, "${prefix}.h5ad", compression = "gzip")
 
-# Full scDblFinder results (class, score and related columns)
 write.csv(as.data.frame(colData(sce))[, cols, drop = FALSE], "${prefix}.scores.csv")
 
 # One boolean column (TRUE = doublet), named after the prefix and indexed by cell
@@ -61,13 +60,15 @@ colnames(calls) <- "${prefix}"
 write.csv(calls, "${prefix}.predictions.csv")
 
 r.version <- strsplit(version[['version.string']], ' ')[[1]][3]
-scdblfinder.version <- as.character(packageVersion('scDblFinder'))
-
 writeLines(
     c(
         '"${task.process}":',
         paste('    r-base:', r.version),
-        paste('    scdblfinder:', scdblfinder.version)
+        paste('    scdblfinder:', as.character(packageVersion('scDblFinder'))),
+        paste('    anndatar:', as.character(packageVersion('anndataR'))),
+        paste('    singlecellexperiment:', as.character(packageVersion('SingleCellExperiment'))),
+        paste('    biocparallel:', as.character(packageVersion('BiocParallel'))),
+        paste('    rhdf5:', as.character(packageVersion('rhdf5')))
     ),
     'versions.yml'
 )
