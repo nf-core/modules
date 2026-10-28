@@ -24,7 +24,9 @@ input:
         type: file
         description: A FASTA/PHYLIP format multiple sequence alignment file. Must not be compressed.
         pattern: "*.{fasta,fas,fa,mfa,phy}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_1997 # PHYLIP format
     - tree:
         type: file
         description: |
@@ -32,7 +34,8 @@ input:
           Its topology is kept, only branch lengths and model parameters are optimised.
           The output tree is unrooted, also if the input is rooted.
         pattern: "*.{nwk,newick,tree,treefile,bestTree}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1910 # Newick
     - model:
         type: string
         description: |
@@ -50,7 +53,8 @@ output:
           type: file
           description: The input tree with optimised branch lengths, in Newick format
           pattern: "*.raxml.bestTree"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_1910 # Newick
   best_model:
     - - meta:
           type: map
@@ -59,7 +63,8 @@ output:
           type: file
           description: RAxML-NG model file with the optimised model parameters
           pattern: "*.raxml.bestModel"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Textual format
   log:
     - - meta:
           type: map
@@ -68,7 +73,8 @@ output:
           type: file
           description: RAxML-NG's run log, including the final log-likelihood
           pattern: "*.raxml.log"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Textual format
   versions_raxmlng:
     - - ${task.process}:
           type: string
