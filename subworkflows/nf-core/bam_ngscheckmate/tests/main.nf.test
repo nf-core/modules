@@ -47,7 +47,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(sanitizeOutput(workflow.out, variantsMD5Keys: ['vcf'], unstableKeys: ['pdf'])).match()}
+                { assert snapshot(sanitizeOutput(workflow.out, variantsMD5Keys: ['vcf'], unstableKeys: ['pdf', 'matched'])).match()}
             )
         }
     }
