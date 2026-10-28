@@ -181,7 +181,7 @@ nextflow_process {
                 input[0] = channel.of([
                     [ id:'test'],
                     'SmartSeq',
-                    [ 
+                    [
                         file(params.modules_testdata_base_path + 'generic/starsolo/smartseq/CELL01_R1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'generic/starsolo/smartseq/CELL01_R2.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'generic/starsolo/smartseq/CELL02_R1.fastq.gz', checkIfExists: true),
