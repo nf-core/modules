@@ -10,8 +10,11 @@ nextflow_workflow {
     tag "subworkflows/fasta_index_bismark_bwameth"
     tag "untar"
     tag "gunzip"
+    tag "bismark"
     tag "bismark/genomepreparation"
+    tag "bwameth"
     tag "bwameth/index"
+    tag "samtools"
     tag "samtools/faidx"
 
     test("Params: bismark | download bismark index (bowtie2)") {

@@ -127,25 +127,25 @@ authors:
   - "@matthdsm"
 containers:
   docker:
-    linux/amd64:
-      name: community.wave.seqera.io/library/htslib_samtools_xz:63148285647cb8e3
-      build_id: bd-63148285647cb8e3_1
-      scan_id: sc-a69a101ed715ded3_1
     linux/arm64:
-      name: community.wave.seqera.io/library/htslib_samtools_xz:c19e08fccce0b773
-      build_id: bd-c19e08fccce0b773_1
-      scan_id: sc-df980c754573bbc4_1
+      name: community.wave.seqera.io/library/htslib_samtools_xz:3c311ea7eb225a00
+      build_id: bd-3c311ea7eb225a00_5
+      scan_id: sc-98e4689c7427b1ef_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/htslib_samtools_xz:ca51bc8a00d53523
+      build_id: bd-ca51bc8a00d53523_4
+      scan_id: sc-35f0bc96d06f5208_1
   singularity:
-    linux/arm64:
-      name: oras://community.wave.seqera.io/library/htslib_samtools_xz:76020b13c810bb59
-      build_id: bd-76020b13c810bb59_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/30/3046611514c8623f9e93fc5ae9811e6dd50a37c12b294c8b173f2be7d3468efd/data
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/htslib_samtools_xz:151918a69591dd1c
-      build_id: bd-151918a69591dd1c_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/39/39db574ae6434e35bfb06db773f8bb7496a8109e7cc49bedc9e9947b3c87c797/data
+      name: oras://community.wave.seqera.io/library/htslib_samtools_xz:7fd001d838de50bf
+      build_id: bd-7fd001d838de50bf_5
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/83/8345056363cc2598d6185cfab19d67eda17a5ea73a4f9b56c25322347b97aef9/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/htslib_samtools_xz:53a29ebacc9ac012
+      build_id: bd-53a29ebacc9ac012_5
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c1/c168ee76fdda1f93a626dbc03d7ac3da6cfc203cf04e7df8fe590ec82e2cc66d/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/samtools/collatefastq/.conda-lock/linux_amd64-bd-63148285647cb8e3_1.txt
+      lock_file: modules/nf-core/samtools/collatefastq/.conda-lock/linux_amd64-bd-ca51bc8a00d53523_4.txt
     linux/arm64:
-      lock_file: modules/nf-core/samtools/collatefastq/.conda-lock/linux_arm64-bd-c19e08fccce0b773_1.txt
+      lock_file: modules/nf-core/samtools/collatefastq/.conda-lock/linux_arm64-bd-3c311ea7eb225a00_5.txt
