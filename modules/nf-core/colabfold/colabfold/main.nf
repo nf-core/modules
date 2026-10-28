@@ -1,4 +1,4 @@
-process COLABFOLD {
+process COLABFOLD_COLABFOLD {
     tag "${meta.id}"
     label 'process_high'
     label 'process_gpu'
@@ -11,7 +11,7 @@ process COLABFOLD {
     input:
     tuple val(meta), path(fasta)
     tuple val(meta2), path(weights)
-    tuple val(meta3), path(templates)
+    tuple val(meta3), path(templates, stageAs: 'templates/*')
     tuple val(meta4), path(pdb_hits), path(local_pdb)
 
     output:
@@ -39,42 +39,41 @@ process COLABFOLD {
     script:
     def args      = task.ext.args ?: ''
     prefix        = task.ext.prefix ?: "${meta.id}"
-    def data      = weights ? "--data ${weights}" : ''
     // Templates are only used when ext.args also contains --templates
-    def template  = templates ? "--custom-template-path ${templates}" : ''
+    def template  = templates ? "--custom-template-path templates" : ''
     def hit_file  = pdb_hits ? "--pdb-hit-file ${pdb_hits}" : ''
     def pdb_local = local_pdb ? "--local-pdb-path ${local_pdb}" : ''
     """
     # Under Docker the container runs as the host UID, which has no home
-    # directory; colabfold_batch needs a writable HOME for its cache.
+    # directory; colabfold_batch needs a writable HOME for its caches.
     export HOME="\$PWD"
 
-    if [ ! -s ${fasta} ]; then
-        echo "WARN: ${fasta} is empty, no structure predicted" >&2
-    else
-        colabfold_batch \\
-            ${fasta} \\
-            ${prefix} \\
-            ${data} \\
-            ${template} \\
-            ${hit_file} \\
-            ${pdb_local} \\
-            ${args}
-    fi
+    colabfold_batch \\
+        ${fasta} \\
+        ${prefix} \\
+        --data ${weights} \\
+        ${template} \\
+        ${hit_file} \\
+        ${pdb_local} \\
+        ${args}
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
+    // colabfold_batch names each query after its FASTA header, or after the file for an A3M
+    def queries = fasta.name.endsWith('.a3m') ? "echo '${fasta.baseName}'" : "grep '^>' ${fasta} | sed 's/^>//'"
     """
     mkdir ${prefix}
+    ${queries} | sed 's/[^A-Za-z0-9_.-]/_/g' | while read -r name; do
+        touch ${prefix}/\${name}_unrelaxed_rank_001_alphafold2_ptm_model_1_seed_000.pdb
+        touch ${prefix}/\${name}_scores_rank_001_alphafold2_ptm_model_1_seed_000.json
+        touch ${prefix}/\${name}_predicted_aligned_error_v1.json
+        touch ${prefix}/\${name}.a3m
+        touch ${prefix}/\${name}_coverage.png
+        touch ${prefix}/\${name}_pae.png
+        touch ${prefix}/\${name}_plddt.png
+    done
     if [ -s ${fasta} ]; then
-        touch ${prefix}/${prefix}_unrelaxed_rank_001_alphafold2_ptm_model_1_seed_000.pdb
-        touch ${prefix}/${prefix}_scores_rank_001_alphafold2_ptm_model_1_seed_000.json
-        touch ${prefix}/${prefix}_predicted_aligned_error_v1.json
-        touch ${prefix}/${prefix}.a3m
-        touch ${prefix}/${prefix}_coverage.png
-        touch ${prefix}/${prefix}_pae.png
-        touch ${prefix}/${prefix}_plddt.png
         touch ${prefix}/config.json
         touch ${prefix}/cite.bibtex
         touch ${prefix}/log.txt

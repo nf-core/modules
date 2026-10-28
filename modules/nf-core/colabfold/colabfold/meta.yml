@@ -1,4 +1,4 @@
-name: colabfold
+name: colabfold_colabfold
 description: Predicts protein structure with AlphaFold2, taking the multiple sequence alignment from an MMseqs2 server rather than local databases
 keywords:
   - protein structure
@@ -31,8 +31,8 @@ input:
           e.g. [ id:'sample1' ]
     - fasta:
         type: file
-        description: Protein sequences to fold, one prediction per record (an empty file produces no output)
-        pattern: "*.{fa,faa,fasta}"
+        description: Protein sequences to fold (FASTA, one prediction per record) or a precomputed MSA (A3M, one prediction per file)
+        pattern: "*.{fa,faa,fasta,a3m}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
   - - meta2:
@@ -42,7 +42,7 @@ input:
           e.g. [ id:'alphafold2_params' ]
     - weights:
         type: directory
-        description: Optional ColabFold data directory with the AlphaFold2 parameters in `params/`; pass `[]` to download them
+        description: ColabFold data directory with the AlphaFold2 parameters in `params/`. It must contain the empty `params/download_finished.txt` that colabfold's downloader creates (e.g. via `colabfold/downloadmodels`); without it colabfold downloads the weights again
         ontologies: []
   - - meta3:
         type: map
@@ -50,8 +50,9 @@ input:
           Groovy Map containing templates information
           e.g. [ id:'templates' ]
     - templates:
-        type: directory
-        description: Optional directory of PDB/mmCIF files used as custom templates (`--custom-template-path`; needs `--templates` in `ext.args`)
+        type: file
+        description: Optional PDB/mmCIF files used as custom templates, staged into `templates/` (`--custom-template-path`; needs `--templates` in `ext.args`)
+        pattern: "*.{pdb,cif}"
         ontologies:
           - edam: http://edamontology.org/format_1476 # PDB
           - edam: http://edamontology.org/format_1477 # mmCIF
@@ -62,9 +63,10 @@ input:
           e.g. [ id:'pdb_hits' ]
     - pdb_hits:
         type: file
-        description: Optional BLAST-m8 PDB hit file for the input MSA, e.g. from colabfold_search (`--pdb-hit-file`; needs `--templates` in `ext.args`)
+        description: Optional BLAST-m8 PDB hit file for the input MSA, e.g. from colabfold_search (`--pdb-hit-file`; needs `--templates` in `ext.args`; not combinable with `templates`)
         pattern: "*.m8"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
     - local_pdb:
         type: directory
         description: Optional local mirror of the PDB mmCIF database, used for the templates in `pdb_hits` (`--local-pdb-path`)
@@ -329,4 +331,4 @@ containers:
       https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d2/d2de6276b0c23cc1aaab4af2aa1336fa943b0c45d43ce4ed483911fb99a3db33/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/colabfold/.conda-lock/linux_amd64-bd-50a22b7e73876edb_1.txt
+      lock_file: modules/nf-core/colabfold/colabfold/.conda-lock/linux_amd64-bd-50a22b7e73876edb_1.txt
