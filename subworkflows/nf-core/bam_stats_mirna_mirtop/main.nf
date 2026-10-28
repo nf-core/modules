@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { MIRTOP_GFF        } from '../../../modules/nf-core/mirtop/gff'
 include { MIRTOP_COUNTS     } from '../../../modules/nf-core/mirtop/counts'
 include { MIRTOP_EXPORT     } from '../../../modules/nf-core/mirtop/export'

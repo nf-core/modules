@@ -11,7 +11,7 @@ env:
   NFT_VER: "0.9.5"
   NXF_ANSI_LOG: false
   # renovate: datasource=github-releases depName=nextflow/nextflow versioning=semver
-  NXF_VER: "25.10.2"
+  NXF_VER: "26.04.0"
 
 jobs:
   prepare-sentieon-update:
@@ -144,7 +144,7 @@ jobs:
           version: "${{ env.NXF_VER }}"
 
       - name: Set up Python
-        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
         with:
           python-version: "3.15"
 

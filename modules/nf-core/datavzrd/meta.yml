@@ -12,6 +12,7 @@ tools:
       tool_dev_url: https://github.com/datavzrd/datavzrd
       licence: ["MIT"]
       identifier: ""
+      args_id: "$args"
 
 input:
   - - meta:
@@ -25,10 +26,11 @@ input:
         pattern: "*.yml"
         ontologies:
           - edam: http://edamontology.org/format_3750 # YAML
-    - table:
+    - files:
         type: file
-        description: Path to a CSV/TSV file
-        pattern: "*.{csv,tsv}"
+        description: One or more files referenced in the config file, e.g. CSV/TSV
+          tables
+        pattern: "*"
         ontologies:
           - edam: http://edamontology.org/format_3752 # CSV
           - edam: http://edamontology.org/format_3475 # TSV

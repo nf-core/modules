@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HTSLIB_BGZIPTABIX {
     tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/86/863ca0dbbba30c8367fa4fbd3fa3a84393532fb7b300a5c5c2e70f0dfc475bbf/data'
-        : 'community.wave.seqera.io/library/htslib_xz:32f2772a564b3cd2'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/46/4633e9661ea3d6cdd07337295443643e484d5c8f6e3412c6fa4910223036cbad/data'
+        : 'community.wave.seqera.io/library/htslib_xz:0923e29158171c28'}"
 
     input:
     tuple val(meta), path(infile), path(infile_tbi), path(regions)
