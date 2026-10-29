@@ -297,7 +297,8 @@ output:
           type: file
           description: STAR output bedGraph format file(s) (optional)
           pattern: "*.bg"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3583 # bedGraph
 topics:
   versions:
     - - ${task.process}:
