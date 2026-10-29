@@ -157,17 +157,15 @@ if ('assay_names' %in% names(args_opt)){
 
 matrices <- lapply(matrix_files, read_delim_flexible, row.names = 1, stringsAsFactors = FALSE)
 
-# An all-NA column (e.g. a sample with no reads, after length scaling) is read
-# as logical. Keep it when the same column is numeric in another matrix, so the
-# assays stay aligned; all-NA annotation columns are still dropped.
-numeric_cols <- unique(unlist(lapply(matrices, function(mat) names(mat)[vapply(mat, is.numeric, logical(1))])))
+# An all-NA column (e.g. a zero-read sample after length scaling) is read as
+# logical. Keep it where another matrix has the same column as numeric, so the
+# assays stay aligned.
+numeric_cols <- unique(unlist(lapply(matrices, function(mat) names(Filter(is.numeric, mat)))))
 
 assay_list <- lapply(matrices, function(mat){
-    keep <- vapply(names(mat), function(col) {
-        is.numeric(mat[[col]]) || (col %in% numeric_cols && all(is.na(mat[[col]])))
-    }, logical(1))
-    mat <- mat[, keep, drop = FALSE]
-    mat[] <- lapply(mat, as.numeric)
+    all_na <- vapply(mat, function(x) all(is.na(x)), logical(1))
+    mat <- mat[, vapply(mat, is.numeric, logical(1)) | (all_na & names(mat) %in% numeric_cols), drop = FALSE]
+    mat[] <- lapply(mat, function(x) if (is.logical(x)) as.numeric(x) else x)
     mat
 })
 
