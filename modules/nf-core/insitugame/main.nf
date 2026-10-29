@@ -6,9 +6,9 @@ process INSITUGAME {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/insitugame:1.0.7--pyhdfd78af_0':
-        'quay.io/biocontainers/insitugame:1.0.7--pyhdfd78af_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/aa/aa25d488809b83440425f792955c529c86887805184f54ec639323723b8bf930/data'
+        : 'community.wave.seqera.io/library/insitugame:1.0.7--8a968e208a8a3d71' }"
 
     input:
     tuple val(meta), path(spatial_data)

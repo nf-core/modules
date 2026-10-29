@@ -86,3 +86,16 @@ authors:
   - "@Lukecele"
 maintainers:
   - "@Lukecele"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/insitugame:1.0.7--8a968e208a8a3d71
+      build_id: bd-8a968e208a8a3d71_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/insitugame:1.0.7--f127ecaee33d79ea
+      build_id: bd-f127ecaee33d79ea_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/aa/aa25d488809b83440425f792955c529c86887805184f54ec639323723b8bf930/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/insitugame/.conda-lock/linux_amd64-bd-8a968e208a8a3d71_1.txt
