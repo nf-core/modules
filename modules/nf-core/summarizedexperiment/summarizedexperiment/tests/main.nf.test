@@ -194,6 +194,30 @@ nextflow_process {
         }
     }
 
+    test("multi_matrix - sample with all-NA column in one matrix") {
+
+        config "./multi_matrix.config"
+
+        when {
+            process {
+                """
+                def counts = Channel.of("gene_id\\tgene_name\\tA\\tB\\ng1\\ta\\t1\\t0\\ng2\\tb\\t2\\t0").collectFile(name: 'counts.tsv', newLine: true)
+                def abundance = Channel.of("gene_id\\tgene_name\\tA\\tB\\ng1\\ta\\t1.5\\tNA\\ng2\\tb\\t2.5\\tNA").collectFile(name: 'abundance.tsv', newLine: true)
+                input[0] = counts.combine(abundance).map { c, a -> [ [ id:'all_na' ], [ c, a ] ] }
+                input[1] = Channel.of([ [], [] ])
+                input[2] = Channel.of([ [], [] ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.rds[0][1]).name == 'all_na.SummarizedExperiment.rds' }
+            )
+        }
+    }
+
     test("saccharomyces_cerevisiae - multi_matrix - rowdata - coldata - stub") {
 
         config "./multi_matrix.config"

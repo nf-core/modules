@@ -155,9 +155,20 @@ if ('assay_names' %in% names(args_opt)){
 
 # Build and verify the main assays list for the summarisedexperiment
 
-assay_list <- lapply(matrix_files, function(m){
-    mat <- read_delim_flexible(m, row.names = 1, stringsAsFactors = FALSE)
-    mat[,sapply(mat, is.numeric), drop = FALSE]
+matrices <- lapply(matrix_files, read_delim_flexible, row.names = 1, stringsAsFactors = FALSE)
+
+# An all-NA column (e.g. a sample with no reads, after length scaling) is read
+# as logical. Keep it when the same column is numeric in another matrix, so the
+# assays stay aligned; all-NA annotation columns are still dropped.
+numeric_cols <- unique(unlist(lapply(matrices, function(mat) names(mat)[vapply(mat, is.numeric, logical(1))])))
+
+assay_list <- lapply(matrices, function(mat){
+    keep <- vapply(names(mat), function(col) {
+        is.numeric(mat[[col]]) || (col %in% numeric_cols && all(is.na(mat[[col]])))
+    }, logical(1))
+    mat <- mat[, keep, drop = FALSE]
+    mat[] <- lapply(mat, as.numeric)
+    mat
 })
 
 checkRowColNames(assay_list)
