@@ -95,6 +95,18 @@ output:
           pattern: "*.vcf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
+  tbi:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.vcf.gz.tbi":
+          type: file
+          description: Tabix index of the compressed variants file.
+          pattern: "*.vcf.gz.tbi"
+          ontologies:
+            - edam: http://edamontology.org/format_3700 # Tabix index file format
   stats:
     - - meta:
           type: map

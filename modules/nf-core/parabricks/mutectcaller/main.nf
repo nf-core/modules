@@ -15,6 +15,7 @@ process PARABRICKS_MUTECTCALLER {
 
     output:
     tuple val(meta), path("*.vcf.gz"),       emit: vcf
+    tuple val(meta), path("*.vcf.gz.tbi"),   emit: tbi
     tuple val(meta), path("*.vcf.gz.stats"), emit: stats
     path "compatible_versions.yml",          emit: compatible_versions, optional: true
     tuple val("${task.process}"), val('parabricks'), eval("pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'"), topic: versions, emit: versions_parabricks
@@ -68,6 +69,7 @@ process PARABRICKS_MUTECTCALLER {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}.vcf.gz
+    touch ${prefix}.vcf.gz.tbi
     touch ${prefix}.vcf.gz.stats
 
     # Capture the full version output once and store it in a variable

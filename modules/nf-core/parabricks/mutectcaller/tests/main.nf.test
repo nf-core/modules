@@ -51,7 +51,7 @@ nextflow_process {
                 { assert process.success },
                 { assert variants.count { variant -> variant.start in pon_overlapping } == 4 },
                 { assert variants.count { variant -> interval_gaps.any { gap -> variant.start in gap } } == 17 },
-                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf"], unstableKeys: ["tbi"])).match() }
             )
         }
 
@@ -90,7 +90,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert variants.count { variant -> interval_gaps.any { gap -> variant.start in gap } } == 0 },
-                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf"], unstableKeys: ["tbi"])).match() }
             )
         }
 
@@ -148,7 +148,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert vcf.header.genotypeSamples.sort() == ['normal', 'tumour'] },
-                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf"], unstableKeys: ["tbi"])).match() }
             )
         }
 
@@ -212,7 +212,7 @@ nextflow_process {
                 { assert variants.count { variant -> variant.start in pon_overlapping } == 0 },
                 // postpon flags calls at PON positions
                 { assert variants.find { variant -> variant.start == 45495715 }.hasAttribute('PON') },
-                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf"], unstableKeys: ["tbi"])).match() }
             )
         }
 
