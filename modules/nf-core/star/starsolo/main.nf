@@ -35,7 +35,7 @@ process STAR_STARSOLO {
     tuple val(meta), path("${prefix}*.tab")                             , emit: tab              , optional: true
     tuple val(meta), path("${prefix}.Aligned.out.sam")                  , emit: sam              , optional: true
     tuple val(meta), path("${prefix}.unmapped_{1,2}.fastq.gz")          , emit: fastq            , optional: true
-    tuple val(meta), path("${prefix}.Chimeric.out.junction")            , emit: chimeric_juntionc, optional: true
+    tuple val(meta), path("${prefix}.Chimeric.out.junction")            , emit: chimeric_junction, optional: true
     tuple val(meta), path('*.wig')                                      , emit: wig              , optional: true
     tuple val(meta), path('*.bg')                                       , emit: bedgraph         , optional: true
     tuple val("${task.process}"), val('star'), eval('STAR --version | sed -e "s/STAR_//g"'), topic: versions, emit: versions_star
