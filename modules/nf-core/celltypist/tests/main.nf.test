@@ -71,9 +71,8 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys: ["predicted_labels", "decision_matrix", "probability_matrix"]),
-                    ["predicted_labels", "decision_matrix", "probability_matrix"].collect { ch -> new File(process.out[ch][0][1].toString()).readLines().size() },
-                    new File(process.out.predicted_labels[0][1].toString()).readLines()[0]
+                    sanitizeOutput(process.out, unstableKeys: ["decision_matrix", "probability_matrix"]),
+                    ["predicted_labels", "decision_matrix", "probability_matrix"].collect { ch -> new File(process.out[ch][0][1].toString()).readLines().size() }
                 ).match() }
             )
         }
