@@ -1,0 +1,72 @@
+name: eider_querytopartitionedparquet
+description: Generic DuckDB query to partitioned Parquet format
+keywords:
+  - duckdb
+  - parquet
+  - sql
+  - query
+tools:
+  - eider:
+      description: |
+        Command line bioinformatics tools for DuckDB.
+      homepage: https://github.com/heuermh/eider
+      documentation: https://github.com/heuermh/eider
+      licence: ["Apache-2.0"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - sql:
+        type: file
+        description: |
+          SQL query template; at least one SQL statement
+          should copy to an output directory in partitioned Parquet format,
+          e.g. COPY table_name TO 'file.parquet' (FORMAT parquet, COMPRESSION zstd, PER_THREAD_OUTPUT);
+        pattern: "*.{sql|sql.bgz|sql.gz|sql.zst}"
+    - files:
+        type: file
+        description: List of additional files to stage
+        pattern: "*"
+        ontologies: []
+output:
+  parquet:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.parquet":
+          type: file
+          description: |
+            Query results in partitioned Parquet format
+            (i.e. a directory of Parquet files, one per partition)
+          pattern: "*.{parquet}"
+          ontologies: []
+  versions_eider:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - eider:
+          type: string
+          description: The tool name
+      - "eider --version 2>&1 | grep -o 'eider .*' | cut -f2 -d ' '":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - eider:
+          type: string
+          description: The tool name
+      - "eider --version 2>&1 | grep -o 'eider .*' | cut -f2 -d ' '":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@heuermh"
+maintainers:
+  - "@heuermh"
