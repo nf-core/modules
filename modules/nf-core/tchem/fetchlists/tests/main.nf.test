@@ -1,0 +1,60 @@
+nextflow_process {
+
+    name "Test Process TCHEM_FETCHLISTS"
+    script "../main.nf"
+    process "TCHEM_FETCHLISTS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "tchem"
+    tag "tchem/fetchlists"
+
+    test("fetch - without cellranger") {
+
+        when {
+            process {
+                """
+                input[0] = []
+                """
+            }
+        }
+
+        then {
+            // The script has already checked each list against its sha256; the snapshot pins
+            // which lists (and packed forms) were written, not the vendors' bytes.
+            def names = file(process.out.whitelists[0]).list().sort()
+            assertAll(
+                { assert process.success },
+                { assert names.contains('10x_v3_permit.txt') },
+                { assert !names.contains('10x_flex_v1_permit.txt') },
+                { assert snapshot(
+                    names,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("fetch - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
