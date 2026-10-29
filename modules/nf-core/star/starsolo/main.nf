@@ -91,7 +91,7 @@ process STAR_STARSOLO {
     def solo_features = feature_idx >= 0
         ? args_list.subList(feature_idx + 1, args_list.findIndexOf(feature_idx + 1) { arg -> arg.startsWith('--') } < 0
             ? args_list.size()
-            : args_list.findIndexOf(feature_idx + 1) { it.startsWith('--') })
+            : args_list.findIndexOf(feature_idx + 1) { arg -> arg.startsWith('--') })
         : ['Gene']
     def solo_cell_filter = args.contains('--soloCellFilter')
         ? args.split('--soloCellFilter')[1].trim().split(/\s+/)[0]
