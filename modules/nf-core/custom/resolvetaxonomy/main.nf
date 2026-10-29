@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 // The resolved sequences keep the input's own extension, with any '.gz' stripped first so a
 // compressed input is not written as "*.resolved.gz". Falls back to 'fasta' when the input has
 // no extension at all (e.g. a download URL with no filename suffix), which would otherwise
