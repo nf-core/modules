@@ -11,25 +11,29 @@ env:
   NFT_VER: "0.9.5"
   NXF_ANSI_LOG: false
   # renovate: datasource=github-releases depName=nextflow/nextflow versioning=semver
-  NXF_VER: "25.10.2"
+  NXF_VER: "26.04.0"
 
 jobs:
   prepare-gpu-update:
     # Only run if comment is on a PR with the main repo, and if it contains the magic keywords.
+    # Kept loose so near-misses (e.g. extra spaces) reach "Parse command" and get a failure reaction.
     if: >
       contains(github.event.comment.html_url, '/pull/') &&
-      contains(github.event.comment.body, '@nf-core-bot update gpu snapshot') &&
+      contains(github.event.comment.body, '@nf-core-bot') &&
+      contains(github.event.comment.body, 'update gpu snapshot') &&
       github.repository == 'nf-core/modules' &&
         contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association)
     permissions:
       issues: write
-      pull-requests: read
+      pull-requests: write
     runs-on: ubuntu-latest
     outputs:
+      detect_changes: ${{ steps.command.outputs.detect_changes }}
+      filter_tag: ${{ steps.command.outputs.filter_tag }}
       head_repo: ${{ steps.pr.outputs.head_repo }}
       head_sha: ${{ steps.pr.outputs.head_sha }}
-      test_path: ${{ steps.path.outputs.test_path }}
-      valid_path: ${{ steps.path.outputs.valid_path }}
+      requested_path: ${{ steps.command.outputs.requested_path }}
+      tags: ${{ steps.command.outputs.tags }}
     steps:
       # indication that the snapshot is being updated
       - name: React on comment
@@ -54,51 +58,123 @@ jobs:
           echo "head_sha=$head_sha" >> "$GITHUB_OUTPUT"
           echo "head_repo=$head_repo" >> "$GITHUB_OUTPUT"
 
-      - name: Parse and validate test path
-        id: path
+      - name: Parse command
+        id: command
         env:
           COMMENT_BODY: ${{ github.event.comment.body }}
-        shell: bash
+        shell: python
         run: |
-          command_pattern='^[[:space:]]*@nf-core-bot[[:space:]]+update[[:space:]]+gpu[[:space:]]+snapshot[[:space:]]+path:[[:space:]]*([^[:space:]]+)[[:space:]]*$'
-          module_path_pattern='^modules/nf-core/[a-z0-9][a-z0-9-]*(/[a-z0-9][a-z0-9-]*)?/tests$'
-          subworkflow_path_pattern='^subworkflows/nf-core/[a-z0-9][a-z0-9_-]*/tests$'
-          match_count=0
-          test_path=''
+          import os
+          import re
+          import sys
 
-          while IFS= read -r line; do
-            if [[ "$line" =~ $command_pattern ]]; then
-              match_count=$((match_count + 1))
-              test_path=${BASH_REMATCH[1]}
-            fi
-          done <<< "$COMMENT_BODY"
+          command_re = re.compile(r"\s*@nf-core-bot\s+update\s+gpu\s+snapshot(?:\s+path:\s+(\S+))?(?:\s+tag:\s+(\S+))?\s*")
+          matches = [m for m in map(command_re.fullmatch, os.environ["COMMENT_BODY"].splitlines()) if m]
+          if len(matches) != 1:
+              sys.exit("Expected exactly one line: @nf-core-bot update gpu snapshot [path: <path>] [tag: <tag>]")
 
-          if [ "$match_count" -ne 1 ] || [ -z "$test_path" ] || [[ "$test_path" == /* ]] || [[ "$test_path" == *..* ]]; then
-            echo "valid_path=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
+          # A path must name a component (no glob in its first segment, so not every test runs),
+          # and its segments cannot start with or repeat dots
+          path_re = r"(modules|subworkflows)/nf-core/[a-zA-Z0-9_-]+(/[a-zA-Z0-9_*-]+(\.[a-zA-Z0-9_*-]+)*)*"
+          requested_path, extra_tag = matches[0].groups(default="")
+          if requested_path and not re.fullmatch(path_re, requested_path):
+              sys.exit(f"Invalid path: {requested_path}")
+          if extra_tag and not re.fullmatch(r"[a-zA-Z0-9_-]+", extra_tag):
+              sys.exit(f"Invalid tag: {extra_tag}")
 
-          if ! [[ "$test_path" =~ $module_path_pattern || "$test_path" =~ $subworkflow_path_pattern ]]; then
-            echo "valid_path=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
+          # gpu_highmem adds a GPU class; any other tag narrows the GPU tests to those that also have it,
+          # since nf-test and detect.sh treat a tag list as OR and would otherwise run non-GPU tests
+          tags = "gpu,gpu_highmem" if extra_tag == "gpu_highmem" else "gpu"
+          filter_tag = "" if extra_tag in ("", "gpu", "gpu_highmem") else extra_tag
+          # Without a path, the tests related to the PR changes are detected
+          detect_changes = "false" if requested_path else "true"
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write(f"detect_changes={detect_changes}\nfilter_tag={filter_tag}\nrequested_path={requested_path}\ntags={tags}\n")
 
-          echo "test_path=$test_path" >> "$GITHUB_OUTPUT"
-          echo "valid_path=true" >> "$GITHUB_OUTPUT"
-
-      - name: React if test path is invalid
-        if: steps.path.outputs.valid_path != 'true'
-        uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5
-        with:
-          comment-id: ${{ github.event.comment.id }}
-          reactions: "-1"
-
-  update-gpu-snapshot:
+  # Resolve the tests to run on a cheap runner, so the GPU runner only starts when there is something to test
+  detect-gpu-tests:
     needs: prepare-gpu-update
-    if: needs.prepare-gpu-update.outputs.valid_path == 'true'
     permissions:
       contents: read
-    runs-on: "runs-on=${{ github.run_id }}/family=g4dn.xlarge/image=ubuntu24-gpu-x64"
+    runs-on: ubuntu-latest
+    outputs:
+      highmem: ${{ steps.paths.outputs.highmem }}
+      tags: ${{ steps.paths.outputs.tags }}
+      test_paths_json: ${{ steps.paths.outputs.test_paths_json }}
+    steps:
+      # The pull request head is reachable from the base repository, which also provides origin/master for detection
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ needs.prepare-gpu-update.outputs.head_sha }}
+          fetch-depth: ${{ needs.prepare-gpu-update.outputs.detect_changes == 'true' && '0' || '1' }}
+          persist-credentials: false
+
+      # gpu_highmem tests are detected too, so they are found without an explicit tag
+      - name: List test files related to the pull request changes
+        id: detect
+        if: needs.prepare-gpu-update.outputs.detect_changes == 'true'
+        # $/ loads the action from the workflow's own ref, not from the checked-out pull request
+        uses: $/.github/actions/detect-nf-test-changes
+        with:
+          base: origin/master
+          tags: ${{ needs.prepare-gpu-update.outputs.tags }},gpu_highmem
+
+      - name: Collect test paths
+        id: paths
+        env:
+          COMPONENTS: ${{ steps.detect.outputs.components }}
+          FILTER_TAG: ${{ needs.prepare-gpu-update.outputs.filter_tag }}
+          REQUESTED_PATH: ${{ needs.prepare-gpu-update.outputs.requested_path }}
+          TAGS: ${{ needs.prepare-gpu-update.outputs.tags }}
+        run: |
+          if [ -n "$REQUESTED_PATH" ]; then
+            # nf-test does not expand globs itself, so later jobs get the matching paths
+            shopt -s nullglob
+            # shellcheck disable=SC2206 # the requested path may be a glob
+            test_paths=( $REQUESTED_PATH )
+          else
+            mapfile -t test_paths < <(jq -r '.[]' <<< "$COMPONENTS")
+          fi
+          # Same tag check as detect.sh, keeping only the test files that also have the requested tag
+          if [ -n "$FILTER_TAG" ] && [ ${#test_paths[@]} -gt 0 ]; then
+            mapfile -t test_paths < <(grep -rlE --include='*.nf.test' "^[[:space:]]*tag[[:space:]]+[\"']${FILTER_TAG}[\"']" "${test_paths[@]}" | sort -u)
+          fi
+          if [ -z "$REQUESTED_PATH" ]; then
+            # The detected gpu_highmem tests only run with that tag
+            if [ ${#test_paths[@]} -gt 0 ] && [[ ",$TAGS," != *,gpu_highmem,* ]] &&
+              grep -qE "^[[:space:]]*tag[[:space:]]+[\"']gpu_highmem[\"']" "${test_paths[@]}"; then
+              TAGS="$TAGS,gpu_highmem"
+            fi
+          fi
+          if [ ${#test_paths[@]} -eq 0 ]; then
+            echo "No GPU tests match the requested path or the changes in this pull request."
+            exit 1
+          fi
+          workspace=$(realpath --canonicalize-existing "$GITHUB_WORKSPACE")
+          for test_path in "${test_paths[@]}"; do
+            real_path=$(realpath --canonicalize-existing "$test_path" 2>/dev/null || true)
+            if [[ "$real_path/" != "$workspace"/* ]]; then
+              echo "Test path is outside the workspace or does not exist: $test_path"
+              exit 1
+            fi
+          done
+
+          highmem=false
+          if [[ ",$TAGS," == *,gpu_highmem,* ]]; then
+            highmem=true
+          fi
+          {
+            echo "highmem=$highmem"
+            echo "tags=$TAGS"
+            echo "test_paths_json=$(jq -cn '$ARGS.positional' --args "${test_paths[@]}")"
+          } >> "$GITHUB_OUTPUT"
+
+  update-gpu-snapshot:
+    needs: [prepare-gpu-update, detect-gpu-tests]
+    permissions:
+      contents: read
+    # gpu_highmem tests need the larger instance, as in nf-test-gpu.yml
+    runs-on: "runs-on=${{ github.run_id }}/family=${{ needs.detect-gpu-tests.outputs.highmem == 'true' && 'g4dn.2xlarge' || 'g4dn.xlarge' }}/image=ubuntu24-gpu-x64"
     outputs:
       has_patch: ${{ steps.patch.outputs.has_patch }}
     steps:
@@ -107,25 +183,6 @@ jobs:
           repository: ${{ needs.prepare-gpu-update.outputs.head_repo }}
           ref: ${{ needs.prepare-gpu-update.outputs.head_sha }}
           persist-credentials: false
-
-      - name: Verify test path
-        env:
-          TEST_PATH: ${{ needs.prepare-gpu-update.outputs.test_path }}
-        run: |
-          workspace=$(realpath --canonicalize-existing "$GITHUB_WORKSPACE")
-          test_path=$(realpath --canonicalize-existing "$TEST_PATH")
-          if [ "$test_path" != "${workspace}/${TEST_PATH}" ]; then
-            echo "The test path contains a symlink or is outside the workspace."
-            exit 1
-          fi
-          if [ ! -f "$TEST_PATH/main.nf.test" ] || [ -L "$TEST_PATH/main.nf.test" ]; then
-            echo "The test path does not contain a regular main.nf.test file."
-            exit 1
-          fi
-          if [ ! -f "$TEST_PATH/main.nf.test.snap" ] || [ -L "$TEST_PATH/main.nf.test.snap" ]; then
-            echo "The test path does not contain a regular snapshot file."
-            exit 1
-          fi
 
       - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad # v6
         with:
@@ -150,27 +207,27 @@ jobs:
 
       - name: Update GPU snapshot
         env:
-          TEST_PATH: ${{ needs.prepare-gpu-update.outputs.test_path }}
+          TAGS: ${{ needs.detect-gpu-tests.outputs.tags }}
+          TEST_PATHS_JSON: ${{ needs.detect-gpu-tests.outputs.test_paths_json }}
         run: |
+          mapfile -t test_paths < <(jq -r '.[]' <<< "$TEST_PATHS_JSON")
           nf-test test \
             --profile=docker,gpu \
             --verbose \
             --ci \
             --update-snapshot \
             --filter process,workflow \
-            --tag gpu \
-            "$TEST_PATH"
+            --tag "$TAGS" \
+            "${test_paths[@]}"
 
       - name: Create GPU snapshot patch
         id: patch
         env:
           PATCH_FILE: ${{ runner.temp }}/gpu-snapshot.patch
-          TEST_PATH: ${{ needs.prepare-gpu-update.outputs.test_path }}
         run: |
-          snapshot_file="${TEST_PATH}/main.nf.test.snap"
-          git diff --binary --full-index --no-ext-diff -- "$snapshot_file" > "$PATCH_FILE"
+          git diff --binary --full-index --no-ext-diff -- '*.nf.test.snap' > "$PATCH_FILE"
           if [ ! -s "$PATCH_FILE" ]; then
-            echo "The GPU test did not update its snapshot."
+            echo "The GPU test did not update any snapshot."
             exit 1
           fi
           echo "has_patch=true" >> "$GITHUB_OUTPUT"
@@ -185,7 +242,7 @@ jobs:
           retention-days: 1
 
   push-gpu-snapshot:
-    needs: [prepare-gpu-update, update-gpu-snapshot]
+    needs: [prepare-gpu-update, detect-gpu-tests, update-gpu-snapshot]
     if: needs.update-gpu-snapshot.outputs.has_patch == 'true'
     permissions:
       actions: read
@@ -220,7 +277,7 @@ jobs:
       - name: Validate and apply GPU snapshot patch
         env:
           PATCH_FILE: ${{ runner.temp }}/gpu-snapshot/gpu-snapshot.patch
-          TEST_PATH: ${{ needs.prepare-gpu-update.outputs.test_path }}
+          TEST_PATHS_JSON: ${{ needs.detect-gpu-tests.outputs.test_paths_json }}
         run: |
           if [ ! -f "$PATCH_FILE" ] || [ -L "$PATCH_FILE" ]; then
             echo "The artifact does not contain a regular GPU snapshot patch."
@@ -229,12 +286,31 @@ jobs:
           git apply --check --index "$PATCH_FILE"
           git apply --index "$PATCH_FILE"
 
-          expected_file="${TEST_PATH}/main.nf.test.snap"
           changed_files=$(git diff --cached --name-only)
-          if [ "$changed_files" != "$expected_file" ]; then
-            echo "The patch changes a file outside the requested snapshot."
+          if [ -z "$changed_files" ]; then
+            echo "The patch contains no changed files."
             exit 1
           fi
+
+          mapfile -t test_paths < <(jq -r '.[]' <<< "$TEST_PATHS_JSON")
+          while IFS= read -r file; do
+            if [[ "$file" != *.nf.test.snap ]]; then
+              echo "The patch modifies a non-snapshot file: $file"
+              exit 1
+            fi
+            allowed=false
+            for test_path in "${test_paths[@]}"; do
+              # A directory covers the snapshots below it, a test file covers its own snapshot
+              if [[ "$file" == "$test_path"/* || "$file" == "$test_path.snap" ]]; then
+                allowed=true
+                break
+              fi
+            done
+            if [ "$allowed" != true ]; then
+              echo "The patch changes a file outside the tested paths ($TEST_PATHS_JSON): $file"
+              exit 1
+            fi
+          done <<< "$changed_files"
 
       - name: Commit and push GPU snapshot
         env:
@@ -247,3 +323,18 @@ jobs:
           git status
           git -c core.hooksPath=/dev/null -c commit.gpgsign=false commit --no-verify -m "[automated] Update gpu snapshot"
           git -c core.hooksPath=/dev/null push --no-verify
+
+  # Any failure, including an invalid command or no detected tests, is reported on the comment
+  react-on-failure:
+    needs: [prepare-gpu-update, detect-gpu-tests, update-gpu-snapshot, push-gpu-snapshot]
+    if: failure()
+    permissions:
+      issues: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: React on comment
+        uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5
+        with:
+          comment-id: ${{ github.event.comment.id }}
+          reactions: "-1"
