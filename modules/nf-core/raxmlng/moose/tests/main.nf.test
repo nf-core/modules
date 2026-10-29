@@ -1,0 +1,92 @@
+nextflow_process {
+
+    name "Test Process RAXMLNG_MOOSE"
+    script "../main.nf"
+    process "RAXMLNG_MOOSE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "raxmlng"
+    tag "raxmlng/moose"
+
+    test("sarscov2 - model selection") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists: true),
+                    'DNA'
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+
+            def model = path(process.out.best_model[0][1]).text.trim()
+
+            assertAll(
+                // "<model>, <partition name> = <sites>": RAxML-NG's partition format, one partition named noname over all 54 sites.
+                { assert model == 'TPM3+FO, noname = 1-54' },
+                { assert path(process.out.log[0][1]).text.contains('Model selection') },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
+            )
+        }
+    }
+
+    test("random alignment - the simplest model is selected") {
+
+        when {
+            process {
+                """
+                // Six tips in each of three groups, 400 sites, built inline. The groups differ only by random
+                // substitutions, with no rate variation or unequal base frequencies, so the simplest model fits best.
+                def rnd = new Random(1)
+                def bases = ['A', 'C', 'G', 'T']
+                def root = (1..400).collect { bases[rnd.nextInt(4)] }
+                def seqs = [:]
+                ['a', 'b', 'c'].each { group ->
+                    def gs = root.collect { c -> rnd.nextDouble() < 0.2 ? bases[rnd.nextInt(4)] : c }
+                    (1..6).each { i -> seqs[group + i] = gs.collect { c -> rnd.nextDouble() < 0.05 ? bases[rnd.nextInt(4)] : c }.join() }
+                }
+                def aln = new File(java.nio.file.Files.createTempDirectory('moose').toFile(), 'aln.fasta')
+                aln.text = seqs.collect { name, s -> '>' + name + '\\n' + s + '\\n' }.join()
+                input[0] = [ [ id:'random' ], file(aln.toString()), 'DNA' ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert path(process.out.best_model[0][1]).text.trim() == 'F81+FE, noname = 1-400'
+        }
+    }
+
+    test("sarscov2 - model selection - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_stub' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists: true),
+                    'DNA'
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { SOMALIER_EXTRACT  } from '../../../modules/nf-core/somalier/extract/main'
 include { SOMALIER_RELATE   } from '../../../modules/nf-core/somalier/relate/main'
 include { HTSLIB_BGZIPTABIX } from '../../../modules/nf-core/htslib/bgziptabix/main'

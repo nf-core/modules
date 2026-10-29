@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 //
 // Build a multi-caller Ribo-seq ORF catalogue from per-sample, per-caller
 // ORF prediction tables. Composes the normaliser (run once per caller-tagged

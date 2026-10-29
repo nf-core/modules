@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { BCFTOOLS_CONCAT } from '../../../modules/nf-core/bcftools/concat/main'
 include { BCFTOOLS_SORT   } from '../../../modules/nf-core/bcftools/sort/main'
 include { HTSLIB_BGZIPTABIX     } from '../../../modules/nf-core/htslib/bgziptabix/main'
