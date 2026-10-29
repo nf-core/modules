@@ -275,7 +275,8 @@ output:
           type: file
           description: STAR chimeric junction output file (optional)
           pattern: "*Chimeric.out.junction"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   wig:
     - - meta:
           type: map
