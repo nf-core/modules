@@ -1,0 +1,105 @@
+name: "t2pmhc_predictbinding"
+description: Predict TCR-pMHC binding from pre-built molecular graphs with t2pmhc graph neural networks
+keywords:
+  - TCR
+  - pMHC
+  - binding prediction
+  - graph neural network
+  - structure-based
+  - immunology
+tools:
+  - "t2pmhc":
+      description: "t2pmhc: A Structure-Informed Graph Neural Network to Predict TCR-pMHC Binding"
+      homepage: "https://github.com/qbic-pipelines/t2pmhc"
+      documentation: "https://github.com/qbic-pipelines/t2pmhc"
+      tool_dev_url: "https://github.com/qbic-pipelines/t2pmhc"
+      doi: "10.64898/2026.02.27.708137"
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - samplesheet:
+        type: file
+        description: |
+          TSV samplesheet with TCR-pMHC data. t2pmhc attaches scores to samplesheet rows by position,
+          so this MUST be the same samplesheet (same rows in the same order) that was used to create the graphs.
+        pattern: "*.tsv"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+    - graphs:
+        type: file
+        description: PyTorch file containing the molecular graphs created from the samplesheet, e.g. by `t2pmhc/creategraphs`
+        pattern: "*.pt"
+  - mode:
+      type: string
+      description: t2pmhc graph neural network architecture, passed to the `--mode` flag
+      pattern: "t2pmhc-gcn|t2pmhc-gat"
+
+output:
+  pred:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_predicted.tsv":
+          type: file
+          description: TSV file with the samplesheet rows and the predicted binding probability in the `binder_prob` column
+          pattern: "*_predicted.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  versions_t2pmhc:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - t2pmhc:
+          type: string
+          description: The name of the tool
+      - "pip show t2pmhc | grep -i '^Version:' | sed 's/^Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - t2pmhc:
+          type: string
+          description: The name of the tool
+      - "pip show t2pmhc | grep -i '^Version:' | sed 's/^Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@mapo9"
+maintainers:
+  - "@mapo9"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/pip_python_t2pmhc:fe8d17868d7b0825
+      build_id: bd-fe8d17868d7b0825_1
+      scan_id: sc-00102e8e507697df_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/pip_python_t2pmhc:3066a62c82b8945d
+      build_id: bd-3066a62c82b8945d_1
+      scan_id: sc-1eec7dfd97c24c64_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/pip_python_t2pmhc:3362ea8132d6c6a7
+      build_id: bd-3362ea8132d6c6a7_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a3/a3cb183a39d57a3e6c2ec6a49ec133933446f42bc7fb02e7a52376323223b239/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/pip_python_t2pmhc:d0f34de6966164bc
+      build_id: bd-d0f34de6966164bc_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b6/b6d701534f0619274343a2eb556136d7a61d34cae4cc89ae9c15aa34337da3b2/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/t2pmhc/predictbinding/.conda-lock/linux_amd64-bd-3066a62c82b8945d_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/t2pmhc/predictbinding/.conda-lock/linux_arm64-bd-fe8d17868d7b0825_1.txt

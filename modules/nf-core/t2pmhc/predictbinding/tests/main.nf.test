@@ -1,0 +1,354 @@
+nextflow_process {
+
+    name "Test Process T2PMHC_PREDICTBINDING"
+    script "../main.nf"
+    process "T2PMHC_PREDICTBINDING"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "t2pmhc"
+    tag "t2pmhc/predictbinding"
+    tag "t2pmhc/creategraphs"
+
+    test("homo_sapiens - [tsv, pt] - t2pmhc-gat") {
+
+        setup {
+            run("T2PMHC_CREATEGRAPHS") {
+                script "../../creategraphs/main.nf"
+                process {
+                    """
+                    def samplesheet = file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/tcrpmhcbinding/testdata-default/tcrpmhc_sample.tsv', checkIfExists: true)
+                    def lines = samplesheet.readLines()
+                    def header = lines[0].split('\\t')
+                    def pdb_column_index = header.findIndexOf { it == 'pdb_file_path' }
+                    def structure_files = lines[1..-1].collectMany { line ->
+                        def columns = line.split('\\t')
+                        def pdb_path = columns[pdb_column_index]
+                        def npy_path = pdb_path.replaceAll(/\\.pdb\$/, '_predicted_aligned_error.npy')
+                        return [file(pdb_path, checkIfExists: true), file(npy_path, checkIfExists: true)]
+                    }.findAll { it && it.toString().trim() }
+
+                    input[0] = Channel.of([
+                        [ id:'test' ],
+                        samplesheet,
+                        structure_files
+                    ])
+                    input[1] = 't2pmhc-gat'
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                def ch_samplesheet = Channel.of([
+                    [ id:'test' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/tcrpmhcbinding/testdata-default/tcrpmhc_sample.tsv', checkIfExists: true)
+                ])
+                input[0] = ch_samplesheet.join(T2PMHC_CREATEGRAPHS.out.graphs)
+                input[1] = 't2pmhc-gat'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                {
+                    // Scores carry CPU- and thread-dependent float noise, so the file is not
+                    // reproducible byte for byte across machines. Snapshot the stable parts:
+                    // the file name, the column layout and the samples scored.
+                    def rows = path(process.out.pred.get(0)[1]).readLines()
+                    def headers = rows[0].split('\t')
+                    def id_column = headers.findIndexOf { it == 'identifier' }
+                    assert id_column >= 0 : "output lost the identifier column"
+                    assert snapshot(
+                        process.out.pred.collect { meta, pred -> [meta, file(pred).name] },
+                        headers.sort(),
+                        rows[1..-1].collect { it.split('\t')[id_column] }.sort(),
+                        process.out.versions_t2pmhc
+                    ).match()
+                },
+                {
+                    // the module must emit the tool's raw column, with no renaming
+                    def rows = path(process.out.pred.get(0)[1]).readLines()
+                    assert rows[0].split('\t').contains('binder_prob')
+                },
+                {
+                    // Pin the scores themselves. They are reproducible well inside this
+                    // tolerance: two different graph builds give bit-identical output and
+                    // thread count has no effect, so the tolerance only absorbs cross-machine
+                    // float noise. It stays far tighter than any shift a real model
+                    // regression would produce, given the scores separate into bands around
+                    // 0.13 and 0.98.
+                    def expected_scores = [
+                        '086bf3a4-d559-4517-96ee-f6909464a40f': 0.99982184d,
+                        '2fc8da64-48c5-4c1d-bfbb-1504504f2165': 0.12715101d,
+                        '5ad6dc66-bcf1-4f7c-bb4e-67d1c4e00aaa': 0.15904716d,
+                        '61ca5cd6-f4bc-43f1-a6dc-e4f156eb3988': 0.99874485d,
+                        '74820e98-9378-4cea-8761-b2812115cc06': 0.93284607d,
+                        '82fd17c4-8dec-4341-8c6f-8205653deb11': 0.98240745d,
+                        '850d2548-046c-4eed-aec2-bbcf865853d5': 0.98193985d,
+                        '8bc4b6eb-97dc-4a44-a474-6e0c0e11d44d': 0.19562170d,
+                        'aaf2c675-c7e4-4df9-865d-55f118e88192': 0.97276820d,
+                        'b26d79e1-f9a7-46e7-bb3e-2d5e0feb646d': 0.14852168d,
+                    ]
+                    def tolerance = 1e-4d
+                    def rows = path(process.out.pred.get(0)[1]).readLines()
+                    def headers = rows[0].split('\t')
+                    def id_column = headers.findIndexOf { it == 'identifier' }
+                    def score_column = headers.findIndexOf { it == 'binder_prob' }
+                    def scores = rows[1..-1].collectEntries { row ->
+                        def values = row.split('\t')
+                        [ values[id_column], values[score_column] as double ]
+                    }
+                    assert scores.keySet() == expected_scores.keySet() : "scored samples differ from expected"
+                    // collectEntries collapses duplicates, so a size mismatch reveals them
+                    assert scores.size() == rows.size() - 1 : "duplicate identifiers in output"
+                    expected_scores.each { identifier, expected ->
+                        def drift = Math.abs(scores[identifier] - expected)
+                        assert drift <= tolerance : "${identifier} scored ${scores[identifier]}, expected ${expected} (drift ${drift})"
+                    }
+                }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - [tsv, pt] - t2pmhc-gcn") {
+
+        setup {
+            // graphs are built once with t2pmhc-gat and reused by both models, matching
+            // how the graphs are shared between the gcn and gat predictions in practice
+            run("T2PMHC_CREATEGRAPHS") {
+                script "../../creategraphs/main.nf"
+                process {
+                    """
+                    def samplesheet = file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/tcrpmhcbinding/testdata-default/tcrpmhc_sample.tsv', checkIfExists: true)
+                    def lines = samplesheet.readLines()
+                    def header = lines[0].split('\\t')
+                    def pdb_column_index = header.findIndexOf { it == 'pdb_file_path' }
+                    def structure_files = lines[1..-1].collectMany { line ->
+                        def columns = line.split('\\t')
+                        def pdb_path = columns[pdb_column_index]
+                        def npy_path = pdb_path.replaceAll(/\\.pdb\$/, '_predicted_aligned_error.npy')
+                        return [file(pdb_path, checkIfExists: true), file(npy_path, checkIfExists: true)]
+                    }.findAll { it && it.toString().trim() }
+
+                    input[0] = Channel.of([
+                        [ id:'test' ],
+                        samplesheet,
+                        structure_files
+                    ])
+                    input[1] = 't2pmhc-gat'
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                def ch_samplesheet = Channel.of([
+                    [ id:'test' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/tcrpmhcbinding/testdata-default/tcrpmhc_sample.tsv', checkIfExists: true)
+                ])
+                input[0] = ch_samplesheet.join(T2PMHC_CREATEGRAPHS.out.graphs)
+                input[1] = 't2pmhc-gcn'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                {
+                    // Scores carry CPU- and thread-dependent float noise, so the file is not
+                    // reproducible byte for byte across machines. Snapshot the stable parts:
+                    // the file name, the column layout and the samples scored.
+                    def rows = path(process.out.pred.get(0)[1]).readLines()
+                    def headers = rows[0].split('\t')
+                    def id_column = headers.findIndexOf { it == 'identifier' }
+                    assert id_column >= 0 : "output lost the identifier column"
+                    assert snapshot(
+                        process.out.pred.collect { meta, pred -> [meta, file(pred).name] },
+                        headers.sort(),
+                        rows[1..-1].collect { it.split('\t')[id_column] }.sort(),
+                        process.out.versions_t2pmhc
+                    ).match()
+                },
+                {
+                    // the module must emit the tool's raw column, with no renaming
+                    def rows = path(process.out.pred.get(0)[1]).readLines()
+                    assert rows[0].split('\t').contains('binder_prob')
+                },
+                {
+                    // Pin the scores themselves; see the gat test for why this tolerance is
+                    // both safe and meaningful. The values differ from gat because the model
+                    // differs, even though both read the same graphs.
+                    def expected_scores = [
+                        '086bf3a4-d559-4517-96ee-f6909464a40f': 0.99960490d,
+                        '2fc8da64-48c5-4c1d-bfbb-1504504f2165': 0.11742927d,
+                        '5ad6dc66-bcf1-4f7c-bb4e-67d1c4e00aaa': 0.11867578d,
+                        '61ca5cd6-f4bc-43f1-a6dc-e4f156eb3988': 0.99711060d,
+                        '74820e98-9378-4cea-8761-b2812115cc06': 0.99015080d,
+                        '82fd17c4-8dec-4341-8c6f-8205653deb11': 0.92837400d,
+                        '850d2548-046c-4eed-aec2-bbcf865853d5': 0.98004030d,
+                        '8bc4b6eb-97dc-4a44-a474-6e0c0e11d44d': 0.03253981d,
+                        'aaf2c675-c7e4-4df9-865d-55f118e88192': 0.99741260d,
+                        'b26d79e1-f9a7-46e7-bb3e-2d5e0feb646d': 0.15682490d,
+                    ]
+                    def tolerance = 1e-4d
+                    def rows = path(process.out.pred.get(0)[1]).readLines()
+                    def headers = rows[0].split('\t')
+                    def id_column = headers.findIndexOf { it == 'identifier' }
+                    def score_column = headers.findIndexOf { it == 'binder_prob' }
+                    def scores = rows[1..-1].collectEntries { row ->
+                        def values = row.split('\t')
+                        [ values[id_column], values[score_column] as double ]
+                    }
+                    assert scores.keySet() == expected_scores.keySet() : "scored samples differ from expected"
+                    // collectEntries collapses duplicates, so a size mismatch reveals them
+                    assert scores.size() == rows.size() - 1 : "duplicate identifiers in output"
+                    expected_scores.each { identifier, expected ->
+                        def drift = Math.abs(scores[identifier] - expected)
+                        assert drift <= tolerance : "${identifier} scored ${scores[identifier]}, expected ${expected} (drift ${drift})"
+                    }
+                }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - [tsv, pt] - sample score pairing independent of input row order") {
+
+        setup {
+            run("T2PMHC_CREATEGRAPHS") {
+                script "../../creategraphs/main.nf"
+                process {
+                    """
+                    def samplesheet = file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/tcrpmhcbinding/testdata-default/tcrpmhc_sample.tsv', checkIfExists: true)
+                    def lines = samplesheet.readLines()
+                    def header = lines[0].split('\\t')
+                    def pdb_column_index = header.findIndexOf { it == 'pdb_file_path' }
+                    def structure_files = lines[1..-1].collectMany { line ->
+                        def columns = line.split('\\t')
+                        def pdb_path = columns[pdb_column_index]
+                        def npy_path = pdb_path.replaceAll(/\\.pdb\$/, '_predicted_aligned_error.npy')
+                        return [file(pdb_path, checkIfExists: true), file(npy_path, checkIfExists: true)]
+                    }.findAll { it && it.toString().trim() }
+
+                    def reversed_sheet = file("\${workDir}/reversed_samplesheet.tsv")
+                    reversed_sheet.text = ([lines[0]] + lines[1..-1].reverse()).join(System.lineSeparator()) + System.lineSeparator()
+
+                    input[0] = Channel.of(
+                        [ [ id:'forward' ], samplesheet, structure_files ],
+                        [ [ id:'reverse' ], reversed_sheet, structure_files ]
+                    )
+                    input[1] = 't2pmhc-gat'
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                // samplesheet and reversed_sheet come from the setup block, which nf-test
+                // folds into this same script scope
+                def ch_samplesheet = Channel.of(
+                    [ [ id:'forward' ], samplesheet ],
+                    [ [ id:'reverse' ], reversed_sheet ]
+                )
+                input[0] = ch_samplesheet.join(T2PMHC_CREATEGRAPHS.out.graphs)
+                input[1] = 't2pmhc-gat'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                {
+                    // scores must follow their sample, not its position in the input table
+                    def scores_by_identifier = { output_file ->
+                        def rows = path(output_file).readLines()
+                        def headers = rows[0].split('\t')
+                        def id_column = headers.findIndexOf { it == 'identifier' }
+                        def score_column = headers.findIndexOf { it == 'binder_prob' }
+                        assert id_column >= 0 && score_column >= 0
+                        return rows[1..-1].collectEntries { row ->
+                            def values = row.split('\t')
+                            [ values[id_column], values[score_column] ]
+                        }
+                    }
+
+                    def forward = process.out.pred.find { it[0].id == 'forward' }[1]
+                    def reverse = process.out.pred.find { it[0].id == 'reverse' }[1]
+
+                    def forward_scores = scores_by_identifier(forward)
+                    def reverse_scores = scores_by_identifier(reverse)
+
+                    assert forward_scores.keySet() == reverse_scores.keySet() : "different samples scored between the two orderings"
+                    // Scores carry order-dependent float noise, so compare numerically rather
+                    // than exactly. The tolerance is only meaningful for samples further apart
+                    // than it: a swap between two samples whose scores differ by less than the
+                    // tolerance cannot be detected. Assert that at least one sample is separable,
+                    // so this never degenerates into a check that cannot fail.
+                    def tolerance = 1e-5
+                    def all_scores = forward_scores.values().collect { it as double }
+                    def indistinguishable = forward_scores.count { sample, score ->
+                        all_scores.count { Math.abs(it - (score as double)) <= tolerance } > 1
+                    }
+                    assert indistinguishable < forward_scores.size() : "every sample sits within ${tolerance} of another, so a swapped pairing could not be detected"
+                    forward_scores.each { identifier, score ->
+                        def drift = Math.abs((reverse_scores[identifier] as double) - (score as double))
+                        assert drift <= tolerance : "sample ${identifier} scored ${score} forward but ${reverse_scores[identifier]} reversed (drift ${drift})"
+                    }
+                }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - [tsv, []] - t2pmhc-gat - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/tcrpmhcbinding/testdata-default/tcrpmhc_sample.tsv', checkIfExists: true),
+                    []
+                ]
+                input[1] = 't2pmhc-gat'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
