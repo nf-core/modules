@@ -121,7 +121,7 @@ process STAR_STARSOLO {
 
     def touch_bam        = args.contains('--outSAMtype') && args.contains('BAM') ? """
         ${args.contains('SortedByCoordinate') ? "touch ${prefix}.Aligned.sortedByCoord.out.bam" : ""}
-        ${args.contains('Unsorted') ? "touch ${prefix}.Aligned.unsort.out.bam" : ""}
+        ${args.contains('Unsorted') ? "touch ${prefix}.Aligned.out.bam" : ""}
     """ : ""
     def touch_transcriptome = args.contains('--quantMode') && args.contains('TranscriptomeSAM') ? "touch ${prefix}.Aligned.toTranscriptome.out.bam" : ""
 
