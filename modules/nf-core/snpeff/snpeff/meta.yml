@@ -40,6 +40,15 @@ input:
         description: |
           path to snpEff cache (optional)
         ontologies: []
+  - canon_list:
+      type: file
+      description: |
+        Optional tab-separated file with `gene_id` and `transcript_id` columns,
+        passed to `snpEff ann -canonList`. Only canonical transcripts are used,
+        replacing the canonical transcript of each listed gene with the one given.
+      pattern: "*.{txt,tsv}"
+      ontologies:
+        - edam: http://edamontology.org/format_3475 # TSV
 output:
   vcf:
     - - meta:
