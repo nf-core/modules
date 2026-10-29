@@ -83,7 +83,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -162,7 +162,7 @@ nextflow_process {
                 { assert process.success },
                 // An empty switches file means that no phased reads were loaded
                 { assert path(process.out.phased_reads_switches[0][1]).readLines().size() > 0 },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -199,7 +199,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match("stub") }
+                { assert snapshot(sanitizeOutput(process.out)).match("stub") }
             )
         }
     }
