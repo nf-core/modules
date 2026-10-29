@@ -7,8 +7,8 @@ process SAWFISH_JOINTCALL {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ca/ca71c93b472a8b9a7701a744a5f123e4474ce9bf1e0d110aae5b84b5134dd74c/data' :
-        'community.wave.seqera.io/library/sawfish:2.2.0--430c21f2b465b4f7' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1d/1d444b0a921ccedf137a51bbe05aaa57a9a81ab1335b84a1669cdbeff8d37dac/data' :
+        'community.wave.seqera.io/library/sawfish:2.3.1--da7e997481ce2665' }"
 
     input:
     tuple val(meta), path(sample_dirs)
