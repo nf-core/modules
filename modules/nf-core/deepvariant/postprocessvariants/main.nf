@@ -69,8 +69,8 @@ process DEEPVARIANT_POSTPROCESSVARIANTS {
         }
         phase_input_name = phase_inputs_matcher[0][1]
         phase_input_shardCount = phase_inputs_matcher[0][2]
-        // Reconstruct the logical name. Example: test_call_variant_outputs.examples.tfrecord@12.gz
-        phase_input_logical_name = "${phase_input_name}@${phase_input_shardCount}.gz"
+        // Reconstruct the logical name. Example: test-read-phasing_debug@12.tsv
+        phase_input_logical_name = "${phase_input_name}@${phase_input_shardCount}.tsv"
         phased_inputs_arg = "--phased_reads_input_path ${phase_input_logical_name}"
     }
 
