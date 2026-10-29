@@ -88,6 +88,85 @@ nextflow_process {
         }
     }
 
+    test("homo_sapiens - ont - phasing") {
+        config "./ont_phasing.config"
+
+        setup {
+            run("DEEPVARIANT_MAKEEXAMPLES") {
+                script "../../makeexamples/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:false ], // meta map
+                        file(params.modules_testdata_base_path + '/genomics/homo_sapiens/nanopore/bam/test.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + '/genomics/homo_sapiens/nanopore/bam/test.sorted.bam.bai', checkIfExists: true),
+                        [],
+                    ]
+                    input[1] = [
+                        [ id:'genome'],
+                        file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                    ]
+                    input[2] = [
+                        [ id:'genome'],
+                        file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                    ]
+                    input[3] = [
+                        [],[]
+                    ]
+                    input[4] = [
+                        [],[]
+                    ]
+                    input[5] = true
+                    """
+                }
+            }
+            run("DEEPVARIANT_CALLVARIANTS") {
+                script "../../callvariants/main.nf"
+                process {
+                    """
+                    input[0] = DEEPVARIANT_MAKEEXAMPLES.out.examples
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = DEEPVARIANT_CALLVARIANTS.out.call_variants_tfrecords.join(
+                    DEEPVARIANT_MAKEEXAMPLES.out.gvcf,
+                    failOnMismatch: true
+                ).join(
+                    DEEPVARIANT_MAKEEXAMPLES.out.small_model_calls,
+                    failOnMismatch: true
+                ).join(
+                    DEEPVARIANT_MAKEEXAMPLES.out.read_phase_inputs,
+                    failOnMismatch: true
+                ).map { meta, tf, gvcf, small_model_calls, read_phase_inputs -> [ meta, tf, gvcf, small_model_calls, read_phase_inputs, [] ] }
+                input[1] = [
+                    [ id:'genome'],
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'genome'],
+                    file(params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[3] = [
+                    [],[]
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                // An empty switches file means that no phased reads were loaded
+                { assert path(process.out.phased_reads_switches[0][1]).readLines().size() > 0 },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
     test("homo_sapiens - wgs - stub") {
         options "-stub"
 
