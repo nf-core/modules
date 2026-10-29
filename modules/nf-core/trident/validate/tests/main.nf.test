@@ -1,0 +1,105 @@
+// TODO nf-core: Once you have added the required tests, please run the following command to build this file:
+// nf-core modules test trident/validate
+nextflow_process {
+
+    name "Test Process TRIDENT_VALIDATE"
+    script "../main.nf"
+    process "TRIDENT_VALIDATE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "trident"
+    tag "trident/fetch"
+    tag "trident/validate"
+
+    test('Validate 2012_MeyerScience-2.1.1 & 2018_Lamnidis_Fennoscandia-2.1.1') {
+
+        setup {
+            run("TRIDENT_FETCH") {
+                script "../../fetch/main.nf"
+                process {
+                    """
+                    input[0] = channel.fromList([
+                        tuple(
+                            [], // archive_dir
+                            '*2012_MeyerScience-2.1.1*,*2018_Lamnidis_Fennoscandia-2.1.1*', // fetchString
+                            [], // fetchFile
+                        )
+                    ])
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = TRIDENT_FETCH.out.downloaded_packages
+                    .flatMap()
+                    .map{
+                        fn ->
+                        def parts = fn.name.split(/-(?=\\d+\\.)/, 2)
+                        def id = parts[0]
+                        def version = parts.size() > 1 ? parts[1] : ''
+                        [[id: id, version: version], fn]
+                    }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() } // Only version is emitted.
+            )
+        }
+
+    }
+
+    test('Validate 2012_MeyerScience-2.1.1 - stub') {
+
+        options "-stub"
+
+        setup {
+            run("TRIDENT_FETCH") {
+                script "../../fetch/main.nf"
+                process {
+                    """
+                    input[0] = channel.fromList([
+                        tuple(
+                            [], // archive_dir
+                            '*2012_MeyerScience-2.1.1*', // fetchString
+                            [], // fetchFile
+                        )
+                    ])
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = TRIDENT_FETCH.out.downloaded_packages
+                    .flatMap()
+                    .map{
+                        fn ->
+                        def parts = fn.name.split(/-(?=\\d+\\.)/, 2)
+                        def id = parts[0]
+                        def version = parts.size() > 1 ? parts[1] : ''
+                        [[id: id, version: version], fn]
+                    }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() } // Only version is emitted.
+            )
+        }
+
+    }
+
+}
