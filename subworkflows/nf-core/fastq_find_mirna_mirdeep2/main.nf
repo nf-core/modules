@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { SEQKIT_FQ2FA      } from '../../../modules/nf-core/seqkit/fq2fa'
 include { SEQKIT_REPLACE    } from '../../../modules/nf-core/seqkit/replace'
 include { MIRDEEP2_MAPPER   } from '../../../modules/nf-core/mirdeep2/mapper'

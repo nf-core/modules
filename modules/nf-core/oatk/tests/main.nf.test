@@ -42,15 +42,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.final_gfa.get(0).get(1)).name,
-                    file(process.out.initial_gfa.get(0).get(1)).name,
-                    file(process.out.annot_mito_txt.get(0).get(1)).name,
-                    file(process.out.log.get(0).get(1)).name,
-                    process.out.mito_bed,
-                    process.out.mito_fasta,
-                    process.out.mito_gfa,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
-                    ).match()
+                    sanitizeOutput(
+                        process.out,
+                        unstableKeys: ["final_gfa", "initial_gfa", "annot_mito_txt", "oatk_log"],
+                    )).match()
                 }
             )
         }
@@ -89,15 +84,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.final_gfa.get(0).get(1)).name,
-                    file(process.out.initial_gfa.get(0).get(1)).name,
-                    file(process.out.annot_pltd_txt.get(0).get(1)).name,
-                    file(process.out.log.get(0).get(1)).name,
-                    process.out.pltd_bed,
-                    process.out.pltd_fasta,
-                    process.out.pltd_gfa,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
-                    ).match()
+                    sanitizeOutput(
+                        process.out,
+                        unstableKeys: ["final_gfa", "initial_gfa", "annot_pltd_txt", "oatk_log"],
+                    )).match()
                 }
             )
         }
@@ -148,19 +138,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.final_gfa.get(0).get(1)).name,
-                    file(process.out.initial_gfa.get(0).get(1)).name,
-                    file(process.out.annot_mito_txt.get(0).get(1)).name,
-                    file(process.out.annot_pltd_txt.get(0).get(1)).name,
-                    file(process.out.log.get(0).get(1)).name,
-                    process.out.mito_bed,
-                    process.out.mito_fasta,
-                    process.out.mito_gfa,
-                    process.out.pltd_bed,
-                    process.out.pltd_fasta,
-                    process.out.pltd_gfa,
-                    process.out.findAll { key, val -> key.startsWith("versions")}
-                    ).match()
+                    sanitizeOutput(
+                        process.out,
+                        unstableKeys: ["final_gfa", "initial_gfa", "oatk_log", "annot_mito_txt", "annot_pltd_txt"],
+                    )).match()
                 }
             )
         }
@@ -200,7 +181,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

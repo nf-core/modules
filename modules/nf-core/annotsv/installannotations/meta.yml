@@ -69,3 +69,27 @@ authors:
   - "@nvnieuwk"
 maintainers:
   - "@nvnieuwk"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/annotsv:3.5.10--28ac84a07bcbf122
+      build_id: bd-28ac84a07bcbf122_1
+      scan_id: sc-71a30c6e17a45dfa_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/annotsv:3.5.10--8ac092906065ea38
+      build_id: bd-8ac092906065ea38_1
+      scan_id: sc-29818db8bf91269f_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/annotsv:3.5.10--6216a0366b416c30
+      build_id: bd-6216a0366b416c30_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b5/b5d84e7cd8d2dcfec68c7d289f8984fdeaf64aae4ce67b8b3d96617f85ab5dfe/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/annotsv:3.5.10--fe8d299c7e2f9e18
+      build_id: bd-fe8d299c7e2f9e18_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/66/664c800960f1b08bcae320959b20db6b606f3c5de2488d63376eed58f32b1a10/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/annotsv/installannotations/.conda-lock/linux_amd64-bd-28ac84a07bcbf122_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/annotsv/installannotations/.conda-lock/linux_arm64-bd-8ac092906065ea38_1.txt

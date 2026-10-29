@@ -16,7 +16,6 @@ tools:
       doi: "10.5281/zenodo.10400173"
       licence: ["MIT"]
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -25,7 +24,7 @@ input:
           e.g. [ id:'Cladonia_norvegica' ]
     - reads:
         type: file
-        description: HiFi reads in FASTA format
+        description: HiFi reads in FASTA format for organellar assembly
         pattern: "*.{fasta,fasta.gz,fa,fa.gz}"
         ontologies: []
   - - meta2:
@@ -37,7 +36,8 @@ input:
         type: file
         description: |
           HMM profile for mitochondrial gene annotation, with corresponding
-          .h3i, h3f, .h3p, .h3m files from hmmpress
+          .h3i, h3f, .h3p, .h3m files from hmmpress. Can be generated using
+          OatkDB (https://github.com/c-zhou/OatkDB/).
         pattern: "*.{fam,h3i,h3f,h3p,h3m}"
         ontologies: []
   - - meta3:
@@ -49,7 +49,8 @@ input:
         type: file
         description: |
           HMM profile for plastid gene annotation, with corresponding
-          .h3i, h3f, .h3p, .h3m files from hmmpress
+          .h3i, h3f, .h3p, .h3m files from hmmpress. Can be generated using
+          OatkDB (https://github.com/c-zhou/OatkDB/).
         pattern: "*.{fam,h3i,h3f,h3p,h3m}"
         ontologies: []
 output:
@@ -61,9 +62,10 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*mito.ctg.fasta":
           type: file
-          description: the structure-solved MT contigs
+          description: Linearised mitochondrial contigs in FASTA format
           pattern: "*mito.ctg.fasta"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
   pltd_fasta:
     - - meta:
           type: map
@@ -72,9 +74,10 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*pltd.ctg.fasta":
           type: file
-          description: the structure-solved PT contigs
+          description: Linearised plastid contigs in FASTA format
           pattern: "*pltd.ctg.fasta"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
   mito_bed:
     - - meta:
           type: map
@@ -83,9 +86,10 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*mito.ctg.bed":
           type: file
-          description: the gene annotation for the MT sequences
+          description: Gene annotations for the mito contigs
           pattern: "*mito.ctg.bed"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3003 # BED
   pltd_bed:
     - - meta:
           type: map
@@ -94,9 +98,34 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*pltd.ctg.bed":
           type: file
-          description: the gene annotation for the PT sequences
+          description: Gene annotations for the plastid contigs
           pattern: "*pltd.ctg.bed"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3003 # BED
+  mito_utg_bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*mito.bed":
+          type: file
+          description: Gene annotations for the mito unitigs
+          pattern: "*mito.bed"
+          ontologies:
+            - edam: http://edamontology.org/format_3003 # BED
+  pltd_utg_bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*pltd.bed":
+          description: Gene annotations for the plastid unitigs
+          type: file
+          pattern: "*pltd.bed"
+          ontologies:
+            - edam: http://edamontology.org/format_3003 # BED
   mito_gfa:
     - - meta:
           type: map
@@ -105,7 +134,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*mito.gfa":
           type: file
-          description: the subgraph for the MT genome
+          description: The mitochondrial genome assembly subgraph in GFA format
           pattern: "*mito.gfa"
           ontologies:
             - edam: http://edamontology.org/format_3975 # GFA 1
@@ -117,7 +146,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*pltd.gfa":
           type: file
-          description: the subgraph for the PT genome
+          description: The plastid genome assembly subgraph in GFA format
           pattern: "*pltd.gfa"
           ontologies:
             - edam: http://edamontology.org/format_3975 # GFA 1
@@ -129,9 +158,10 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*annot_mito.txt":
           type: file
-          description: the MT gene annotation file over all assembled sequences
+          description: The MT gene annotation file from nhmmscan for all unitigs
           pattern: "*annot_mito.txt"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   annot_pltd_txt:
     - - meta:
           type: map
@@ -140,9 +170,10 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*annot_pltd.txt":
           type: file
-          description: the PT gene annotation file over all assembled sequences
+          description: The PT gene annotation file from nhmmscan for all unitigs
           pattern: "*annot_pltd.txt"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
   final_gfa:
     - - meta:
           type: map
@@ -151,7 +182,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*utg.final.gfa":
           type: file
-          description: the GFA file for the final genome assembly
+          description: The GFA file for the final genome assembly
           pattern: "*utg.final.gfa"
           ontologies:
             - edam: http://edamontology.org/format_3975 # GFA 1
@@ -163,11 +194,11 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*utg.gfa":
           type: file
-          description: the GFA file for the initial genome assembly
+          description: The GFA file for the initial genome assembly
           pattern: "*utg.gfa"
           ontologies:
             - edam: http://edamontology.org/format_3975 # GFA 1
-  log:
+  oatk_log:
     - - meta:
           type: map
           description: |
@@ -175,7 +206,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.log":
           type: file
-          description: log file describing oatk run
+          description: The log file describing oatk run
           pattern: "*.log"
           ontologies:
             - edam: http://edamontology.org/data_2526 # Text
@@ -189,7 +220,6 @@ output:
       - oatk --version 2>&1:
           type: eval
           description: The expression to obtain the version of the tool
-
 topics:
   versions:
     - - ${task.process}:
@@ -201,6 +231,19 @@ topics:
       - oatk --version 2>&1:
           type: eval
           description: The expression to obtain the version of the tool
-
 authors:
   - "@ksenia-krasheninnikova"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/oatk:1.0--a8817603c2ec042f
+      build_id: bd-a8817603c2ec042f_1
+      scan_id: sc-f1e069d187d0493f_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/oatk:1.0--cd6a3fe033cd2aa8
+      build_id: bd-cd6a3fe033cd2aa8_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b0/b0c742ba43df9d7be62c96beb1425f558de8744b125fe3f1f4b7781e1064a7e1/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/oatk/.conda-lock/linux_amd64-bd-a8817603c2ec042f_1.txt

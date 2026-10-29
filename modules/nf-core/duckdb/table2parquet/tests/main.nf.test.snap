@@ -25,6 +25,32 @@
             "nextflow": "26.04.6"
         }
     },
+    "tsv - nullstr via ext.args, NA in the first rows": {
+        "content": [
+            {
+                "parquet": [
+                    [
+                        {
+                            "id": "nullstr-early"
+                        },
+                        "nullstr-early.parquet:md5,7ababb9d8a62166773b0bc071cc5ec35"
+                    ]
+                ],
+                "versions_duckdb": [
+                    [
+                        "DUCKDB_TABLE2PARQUET",
+                        "duckdb",
+                        "1.5.5"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-23T10:43:01.419990447",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.2"
+        }
+    },
     "csv - gzipped": {
         "content": [
             {
@@ -49,6 +75,32 @@
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
+        }
+    },
+    "tsv - nullstr via ext.args, NA after the type-detection sample": {
+        "content": [
+            {
+                "parquet": [
+                    [
+                        {
+                            "id": "nullstr-late"
+                        },
+                        "nullstr-late.parquet:md5,817002b8a6daece09529c9f1671de210"
+                    ]
+                ],
+                "versions_duckdb": [
+                    [
+                        "DUCKDB_TABLE2PARQUET",
+                        "duckdb",
+                        "1.5.5"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-23T10:42:41.725846786",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.2"
         }
     },
     "tsv": {
@@ -127,6 +179,32 @@
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
+        }
+    },
+    "tsv - NA is text without nullstr": {
+        "content": [
+            {
+                "parquet": [
+                    [
+                        {
+                            "id": "plain-na"
+                        },
+                        "plain-na.parquet:md5,dc828d68b9b16698c5f5cc8fc191d42c"
+                    ]
+                ],
+                "versions_duckdb": [
+                    [
+                        "DUCKDB_TABLE2PARQUET",
+                        "duckdb",
+                        "1.5.5"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-23T10:43:17.916504403",
+        "meta": {
+            "nf-test": "0.9.4",
+            "nextflow": "25.10.2"
         }
     }
 }
