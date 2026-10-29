@@ -1,0 +1,97 @@
+name: "reseq_illuminape"
+description: Simulate realistic Illumina paired-end reads from a reference genome using profiles extracted from real sequencing data
+keywords:
+  - simulate
+  - fastq
+  - illumina
+  - paired-end
+  - bam
+tools:
+  - "reseq":
+      description: |
+        ReSeq simulates more realistic Illumina genomic DNA sequences by
+        extracting and reproducing key components from real sequencing data,
+        including systematic errors, fragment-based coverage, and quality profiles.
+      homepage: "https://github.com/schmeing/ReSeq"
+      documentation: "https://github.com/schmeing/ReSeq"
+      tool_dev_url: "https://github.com/schmeing/ReSeq"
+      doi: "10.1186/s13059-021-02265-7"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - id:
+        type: string
+        description: Required sample identifier in the input record; used as the default output prefix
+    - meta:
+        type: map
+        description: Optional metadata Record, passed unchanged to the output without controlling module behaviour
+    - bam:
+        type: file
+        description: Position-sorted BAM file from which to extract sequencing profiles
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+    - fasta:
+        type: file
+        description: Reference genome FASTA file
+        pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+    - adapter_fasta:
+        type: file
+        description: |
+          Optional FASTA file with adapter sequences. If provided, skips automatic adapter
+          detection. Recommended when using small BAM files for profiling.
+        pattern: "*.{fasta,fa}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+    - adapter_matrix:
+        type: file
+        description: |
+          Optional 0/1 matrix file specifying valid adapter pairings (first read adapters
+          in rows, second read adapters in columns). Required when adapterFile
+          is provided.
+        pattern: "*.txt"
+        ontologies: []
+    - reseq_illuminape_args:
+        type: string
+        description: Optional arguments for reseq illuminaPE; take precedence over ext.args, then default to an empty string
+    - output_prefix:
+        type: string
+        description: Optional output filename prefix; takes precedence over ext.prefix, then defaults to id
+output:
+  record:
+    - - id:
+          type: string
+          description: Sample identifier from the input record
+      - meta:
+          type: map
+          description: Input metadata Record, or null when omitted
+      - fastq1:
+          type: file
+          description: Gzipped simulated FASTQ file for read 1
+          pattern: "*_R1.fastq.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_1930"
+      - fastq2:
+          type: file
+          description: Gzipped simulated FASTQ file for read 2
+          pattern: "*_R2.fastq.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_1930"
+topics:
+  versions:
+    - - process:
+          type: string
+          description: Process name in the version record
+      - tool:
+          type: string
+          description: Tool name (reseq) in the version record
+      - version:
+          type: string
+          description: ReSeq version reported by reseq --version
+authors:
+  - "@adamrtalbot"
+maintainers:
+  - "@adamrtalbot"
