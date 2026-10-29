@@ -67,7 +67,7 @@ process SAWFISH_JOINTCALL {
     def maf_mpack = sample_dirs[0].resolve("maf.mpack")
     """
     mkdir -p ${prefix}/samples/sample0001_test/
-    echo \"\" | gzip > ${prefix}/${prefix}_genotyped.sv.vcf.gz
+    echo "" | gzip > ${prefix}/${prefix}_genotyped.sv.vcf.gz
     touch ${prefix}/${prefix}_genotyped.sv.vcf.gz.tbi
     touch ${prefix}/contig.alignment.bam
     touch ${prefix}/contig.alignment.bam.csi
