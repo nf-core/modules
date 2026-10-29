@@ -32,10 +32,7 @@ input:
           - edam: "http://edamontology.org/format_3475" # TSV
     - over_clustering:
         type: file
-        description: |
-          Optional text file with the over-clustering result, one cluster label per
-          cell. Used with `--majority-voting`. Pass an empty list to let CellTypist
-          cluster the cells itself.
+        description: Optional text file with one over-clustering label per cell, used with `--majority-voting`
         pattern: "*.{txt,csv,tsv}"
         optional: true
         ontologies:
@@ -44,9 +41,7 @@ input:
           - edam: "http://edamontology.org/format_3475" # TSV
     - gene_file:
         type: file
-        description: |
-          Optional text file with one gene per line, for matrix market input.
-          Pass an empty list when the input is an h5ad file.
+        description: Optional text file with one gene per line, for matrix market input
         pattern: "*.{txt,tsv}"
         optional: true
         ontologies:
@@ -54,9 +49,7 @@ input:
           - edam: "http://edamontology.org/format_3475" # TSV
     - cell_file:
         type: file
-        description: |
-          Optional text file with one cell per line, for matrix market input.
-          Pass an empty list when the input is an h5ad file.
+        description: Optional text file with one cell per line, for matrix market input
         pattern: "*.{txt,tsv}"
         optional: true
         ontologies:
@@ -71,7 +64,8 @@ input:
         type: file
         description: Pre-trained CellTypist model
         pattern: "*.pkl"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_2333" # Binary format
 output:
   predicted_labels:
     - - meta:
@@ -82,7 +76,7 @@ output:
       - "${prefix}_predicted_labels.csv":
           type: file
           optional: true
-          description: Predicted cell type label for each cell
+          description: Optional predicted cell type label for each cell
           pattern: "*predicted_labels.csv"
           ontologies:
             - edam: "http://edamontology.org/format_3752" # CSV
@@ -95,7 +89,7 @@ output:
       - "${prefix}_decision_matrix.csv":
           type: file
           optional: true
-          description: Decision scores of each cell for each cell type in the model
+          description: Optional decision scores of each cell for each cell type in the model
           pattern: "*decision_matrix.csv"
           ontologies:
             - edam: "http://edamontology.org/format_3752" # CSV
@@ -108,7 +102,7 @@ output:
       - "${prefix}_probability_matrix.csv":
           type: file
           optional: true
-          description: Probability of each cell belonging to each cell type in the model
+          description: Optional probability of each cell belonging to each cell type in the model
           pattern: "*probability_matrix.csv"
           ontologies:
             - edam: "http://edamontology.org/format_3752" # CSV
@@ -120,9 +114,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - "${prefix}_annotation_result.xlsx":
           type: file
-          description: |
-            Excel workbook with all result tables, written when `--xlsx` is given in
-            `task.ext.args`. In that case the three CSV files are not written.
+          description: Optional Excel workbook with all result tables, written when `--xlsx` is given
           pattern: "*.xlsx"
           optional: true
           ontologies:
@@ -135,7 +127,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*.pdf":
           type: file
-          description: Plots of the prediction results, written when `--plot-results` is given in `task.ext.args`
+          description: Optional plots of the prediction results, written when `--plot-results` is given
           pattern: "*.pdf"
           optional: true
           ontologies:
