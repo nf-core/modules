@@ -6,9 +6,9 @@ process SAWFISH_JOINTCALL {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/62/6279b7434989a4ae081446a1711067f80ce014772b00d739538d51ed168f6e96/data' :
-        'community.wave.seqera.io/library/sawfish_gzip:d8d79c57e7cb0e76' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4b/4bc9cc7ec96890d36b0d4a95e4bb60b4ec41fcec9ddf2fb58b7c0ea7e4cc3f19/data'
+        : 'community.wave.seqera.io/library/sawfish:2.3.1--1e964dca544b9188'}"
 
     input:
     tuple val(meta), path(sample_dirs)
