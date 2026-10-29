@@ -1,0 +1,186 @@
+nextflow_process {
+
+    name "Test Process CELLTYPIST"
+    script "../main.nf"
+    config "./nextflow.config"
+    process "CELLTYPIST"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "celltypist"
+
+    test("homo sapiens - pbmc3k - h5ad") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/pbmc3k_celltypist_query.h5ad', checkIfExists: true),
+                    [],
+                    [],
+                    []
+                ]
+                input[1] = [
+                    [ id:'pbmc3k_model' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/celltypist/pbmc3k_celltypist_model.pkl', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["decision_matrix", "probability_matrix"]),
+                    ["predicted_labels", "decision_matrix", "probability_matrix"].collect { ch -> new File(process.out[ch][0][1].toString()).readLines().size() }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo sapiens - pbmc3k - h5ad - over-clustering and majority voting") {
+
+        when {
+            params {
+                module_args = '--majority-voting'
+            }
+            process {
+                """
+                def clusters = file("\${launchDir}/over_clustering.txt")
+                clusters.text = (0..<300).collect { i -> "cluster" + (i % 5) }.join("\\n") + "\\n"
+
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/pbmc3k_celltypist_query.h5ad', checkIfExists: true),
+                    clusters,
+                    [],
+                    []
+                ]
+                input[1] = [
+                    [ id:'pbmc3k_model' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/celltypist/pbmc3k_celltypist_model.pkl', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["decision_matrix", "probability_matrix"]),
+                    ["predicted_labels", "decision_matrix", "probability_matrix"].collect { ch -> new File(process.out[ch][0][1].toString()).readLines().size() }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo sapiens - matrix market - gene and cell files") {
+
+        when {
+            process {
+                """
+                def genes = ['TNFRSF4', 'CPSF3L', 'ATAD3C', 'C1orf86', 'RER1', 'TNFRSF25', 'TNFRSF9', 'CTNNBIP1', 'SRM', 'UBIAD1', 'TNFRSF1B', 'PRDM2', 'EFHD2', 'DDI2', 'SPEN', 'SDHB', 'CAPZB', 'CDA', 'C1QA', 'C1QC', 'C1QB', 'ZNF436', 'MDS2', 'PITHD1', 'HMGCL', 'TMEM50A', 'LDLRAP1', 'RP11-70P17.1', 'STMN1', 'PDIK1L']
+                def value = Math.log1p(10000.0 / 30)
+                def mtx = file("\${launchDir}/matrix.mtx")
+                mtx.text = "%%MatrixMarket matrix coordinate real general\\n20 30 600\\n" + (1..20).collect { cell -> (1..30).collect { gene -> cell + " " + gene + " " + value }.join("\\n") }.join("\\n") + "\\n"
+                def gene_file = file("\${launchDir}/genes.txt")
+                gene_file.text = genes.join("\\n") + "\\n"
+                def cell_file = file("\${launchDir}/cells.txt")
+                cell_file.text = (1..20).collect { cell -> "cell" + cell }.join("\\n") + "\\n"
+
+                input[0] = [
+                    [ id:'test' ],
+                    mtx,
+                    [],
+                    gene_file,
+                    cell_file
+                ]
+                input[1] = [
+                    [ id:'pbmc3k_model' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/celltypist/pbmc3k_celltypist_model.pkl', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["decision_matrix", "probability_matrix"]),
+                    ["predicted_labels", "decision_matrix", "probability_matrix"].collect { ch -> new File(process.out[ch][0][1].toString()).readLines().size() }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo sapiens - pbmc3k - h5ad - xlsx and plots") {
+
+        when {
+            params {
+                module_args = '--xlsx --plot-results'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/pbmc3k_celltypist_query.h5ad', checkIfExists: true),
+                    [],
+                    [],
+                    []
+                ]
+                input[1] = [
+                    [ id:'pbmc3k_model' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/celltypist/pbmc3k_celltypist_model.pkl', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert process.out.xlsx.size() == 1 },
+                { assert process.out.plots[0][1].size() >= 1 },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["xlsx", "plots"])).match() }
+            )
+        }
+
+    }
+
+    test("homo sapiens - pbmc3k - h5ad - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/h5ad/pbmc3k_celltypist_query.h5ad', checkIfExists: true),
+                    [],
+                    [],
+                    []
+                ]
+                input[1] = [
+                    [ id:'pbmc3k_model' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/celltypist/pbmc3k_celltypist_model.pkl', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
+        }
+
+    }
+
+}
