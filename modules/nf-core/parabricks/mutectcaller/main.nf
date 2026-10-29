@@ -17,10 +17,10 @@ process PARABRICKS_MUTECTCALLER {
     path panel_of_normals_index
 
     output:
-    tuple val(meta), path("*.vcf.gz"),       emit: vcf
-    tuple val(meta), path("*.vcf.gz.tbi"),   emit: tbi
-    tuple val(meta), path("*.vcf.gz.stats"), emit: stats
-    path "compatible_versions.yml",          emit: compatible_versions, optional: true
+    tuple val(meta), path("${prefix}.vcf.gz"),       emit: vcf
+    tuple val(meta), path("${prefix}.vcf.gz.tbi"),   emit: tbi
+    tuple val(meta), path("${prefix}.vcf.gz.stats"), emit: stats
+    path "compatible_versions.yml",                  emit: compatible_versions, optional: true
     tuple val("${task.process}"), val('parabricks'), eval("pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'"), topic: versions, emit: versions_parabricks
 
     when:
@@ -33,7 +33,7 @@ process PARABRICKS_MUTECTCALLER {
     }
 
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     def intervals_command  = intervals     ? (intervals instanceof List ? intervals.collect { interval -> "--interval-file ${interval}" }.join(' ') : "--interval-file ${intervals}") : ""
     // prepon and postpon expect the index at <pon>.tbi
@@ -48,7 +48,7 @@ process PARABRICKS_MUTECTCALLER {
     def num_gpus = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ""
     def normal_bam_flag = normal_bam ? "--in-normal-bam ${normal_bam}" : ""
     """
-    # if panel of normals specified, run prepon
+    # if panel of normals specified, place its index at <pon>.tbi and run prepon
     ${pon_index_command}
     ${prepon_command}
 
@@ -69,7 +69,7 @@ process PARABRICKS_MUTECTCALLER {
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}.vcf.gz
     touch ${prefix}.vcf.gz.tbi

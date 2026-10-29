@@ -218,6 +218,68 @@ nextflow_process {
 
     }
 
+    test("human - bam - pon - renamed index") {
+
+        setup {
+            run("BCFTOOLS_REHEADER") {
+                script "../../../bcftools/reheader/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'pon' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz', checkIfExists: true),
+                        [],
+                        []
+                    ]
+                    input[1] = [
+                        [ id:'reference' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = "--tumor-name tumour --mutect-low-memory"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
+                    [],
+                    [],
+                    [],
+                    []
+                ]
+                input[1] = [ // fasta + fasta_fai
+                    [ id: 'reference' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                    ]
+                input[2] = BCFTOOLS_REHEADER.out.vcf.map { meta, vcf -> vcf }
+                input[3] = BCFTOOLS_REHEADER.out.index.map { meta, tbi -> tbi.copyTo(tbi.resolveSibling('pon.tbi')) }
+                """
+            }
+        }
+
+        then {
+            def vcf = path(process.out.vcf[0][1]).vcf
+            def mutect_command = vcf.header.otherHeaderLines.find { line -> line.key == 'GATKCommandLine' && line.value.contains('ID=mutectcaller,') }
+            assertAll(
+                { assert process.success },
+                { assert mutect_command.value.contains('--pon ') },
+                // the index copied to <pon>.tbi must not be emitted
+                { assert !(process.out.tbi[0][1] instanceof List) },
+                { assert file(process.out.tbi[0][1]).name == 'test.vcf.gz.tbi' },
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf"], unstableKeys: ["tbi"])).match() }
+            )
+        }
+
+    }
+
     test("human - bam - stub") {
 
         options '-stub'
