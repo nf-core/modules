@@ -110,23 +110,23 @@ maintainers:
   - "@phue"
 containers:
   docker:
-    linux/arm64:
-      name: community.wave.seqera.io/library/bwameth_samtools:e1514a97a6d49562
-      build_id: bd-e1514a97a6d49562_1
-      scan_id: sc-f232c7486c63599f_1
     linux/amd64:
       name: community.wave.seqera.io/library/bwameth_samtools:1ff0dd4d9a699bdc
       build_id: bd-1ff0dd4d9a699bdc_1
       scan_id: sc-3a485d11c1324c30_1
-  singularity:
     linux/arm64:
-      name: oras://community.wave.seqera.io/library/bwameth_samtools:caf9ac97a939b4af
-      build_id: bd-caf9ac97a939b4af_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f3/f3822e75d39336f62d55018860119fea334f486895baab855d2595c33e6fb867/data
+      name: community.wave.seqera.io/library/bwameth_samtools:e1514a97a6d49562
+      build_id: bd-e1514a97a6d49562_1
+      scan_id: sc-f232c7486c63599f_1
+  singularity:
     linux/amd64:
       name: oras://community.wave.seqera.io/library/bwameth_samtools:35551274f37b0ac4
       build_id: bd-35551274f37b0ac4_1
       https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1a/1a13a91efc1657e8ff4ea44354fd7ac8723d6b47f6a83b36f4ca99d035e91f05/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bwameth_samtools:caf9ac97a939b4af
+      build_id: bd-caf9ac97a939b4af_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f3/f3822e75d39336f62d55018860119fea334f486895baab855d2595c33e6fb867/data
   conda:
     linux/amd64:
       lock_file: modules/nf-core/bwameth/align/.conda-lock/linux_amd64-bd-1ff0dd4d9a699bdc_1.txt
