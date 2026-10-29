@@ -1,0 +1,139 @@
+name: "straglr"
+description: Short-tandem repeat genotyping using long reads
+keywords:
+  - tandem repeats
+  - STR
+  - short tandem repeats
+  - repeat expansion
+  - long reads
+  - genomics
+  - structural variation
+tools:
+  - "straglr":
+      description: "Straglr is a tool that can be used for genome-wide scans for tandem repeat(TR) expansions or targeted genotyping using long-read alignments."
+      homepage: "https://github.com/BirolLab/straglr/tree/master"
+      documentation: "https://github.com/BirolLab/straglr/tree/master/docs"
+      tool_dev_url: "https://github.com/BirolLab/straglr/tree/master"
+      doi: "10.1186/s13059-021-02447-3"
+      licence:
+        - "GPL v3-or-later"
+      identifier: biotools:straglr
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information.
+          Keys must include 'id'.
+    - bam:
+        type: file
+        description: BAM file containing aligned long reads
+        pattern: "*.bam"
+        ontologies: []
+    - bai:
+        type: file
+        description: BAM index file
+        pattern: "*.bam.bai"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information.
+    - reference:
+        type: file
+        description: Reference genome FASTA file
+        pattern: "*.{fa,fasta}"
+        ontologies: []
+    - index:
+        type: file
+        description: Index fai of reference fasta
+        pattern: "*.fai"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information.
+    - loci:
+        type: file
+        description: an optional BED file containing loci to be genotyped. four column BED format chromosome start end repeat
+        pattern: "*.bed"
+        ontologies: []
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map contining exclude bed sample information.
+    - exclude:
+        type: file
+        description: an optional BED file containing regions to be skipped in genome-scan (e.g. long segmental duplications or pericentromeric regions)
+        pattern: "*.bed"
+        ontologies: []
+  - - meta5:
+        type: map
+        description: |
+          Groovy Map containing regions bed sample information.
+    - regions:
+        type: file
+        description: an optional BED file containing regions to be used only in genome-scan
+        pattern: "*.bed"
+        ontologies: []
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.vcf":
+          type: file
+          description: VCF file containing Straglr repeat expansion results
+          pattern: "*.vcf"
+          ontologies: []
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.tsv":
+          type: file
+          description: TSV file containing Straglr repeat expansion results
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bed":
+          type: file
+          description: BED file containing Straglr repeat expansion results
+          pattern: "*.bed"
+          ontologies: []
+  versions_straglr:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - straglr:
+          type: string
+          description: The name of the tool
+      - straglr.py --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - straglr:
+          type: string
+          description: The name of the tool
+      - straglr.py --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@lukejroche"
+maintainers:
+  - "@lukejroche"
