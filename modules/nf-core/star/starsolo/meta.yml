@@ -286,7 +286,8 @@ output:
           type: file
           description: STAR output wiggle format file(s) (optional)
           pattern: "*.wig"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3005 # WIG
   bedgraph:
     - - meta:
           type: map
