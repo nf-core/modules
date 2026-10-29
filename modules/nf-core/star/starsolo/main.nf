@@ -89,7 +89,7 @@ process STAR_STARSOLO {
     def feature_idx = args_list.indexOf('--soloFeatures')
 
     def solo_features = feature_idx >= 0
-        ? args_list.subList(feature_idx + 1, args_list.findIndexOf(feature_idx + 1) { it.startsWith('--') } < 0
+        ? args_list.subList(feature_idx + 1, args_list.findIndexOf(feature_idx + 1) { arg -> arg.startsWith('--') } < 0
             ? args_list.size()
             : args_list.findIndexOf(feature_idx + 1) { it.startsWith('--') })
         : ['Gene']
