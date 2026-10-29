@@ -23,13 +23,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(
-                        file(process.out.hashmap[0][1]).name,
-                        file(process.out.versions[0]).name
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:['hashmap'])).match() }
             )
         }
 
@@ -51,13 +47,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(
-                        file(process.out.hashmap[0][1]).name,
-                        file(process.out.versions[0]).name
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:['hashmap'])).match() }
             )
         }
 
