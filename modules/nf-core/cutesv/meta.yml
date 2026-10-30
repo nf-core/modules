@@ -30,6 +30,12 @@ input:
         description: Index of BAM file
         pattern: "*.bai"
         ontologies: []
+    - regions:
+        type: file
+        description: Optional BED file of regions to process. cuteSV only detects SVs in these regions. Use an empty list (`[]`) to process all regions.
+        pattern: "*.bed"
+        ontologies:
+          - edam: http://edamontology.org/format_3003
   - - meta2:
         type: map
         description: |
