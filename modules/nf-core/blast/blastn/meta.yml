@@ -38,19 +38,16 @@ input:
         pattern: "*"
   - taxidlist:
       type: file
-      description: File containing NCBI taxon ids, one per line, for filtering the
-        database.
+      description: File containing NCBI taxon ids, one per line, for filtering the database.
       pattern: "*.{txt}"
       ontologies: []
   - taxids:
       type: string
-      description: Comma-delimited list of NCBI taxon ids for filtering the
-        database.
+      description: Comma-delimited list of NCBI taxon ids for filtering the database.
       pattern: "^[0-9]+(,[0-9]+)*$"
   - negative_tax:
       type: boolean
-      description: Use negative filtering (true) to exclude taxon ids or normal
-        filtering (false).
+      description: Use negative filtering (true) to exclude taxon ids or normal filtering (false).
       pattern: "true or false"
 output:
   txt:
@@ -92,3 +89,17 @@ maintainers:
   - "@joseespinosa"
   - "@drpatelh"
   - "@vagkaratzas"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/blast:2.17.0--9196f264d54655d4
+      build_id: bd-9196f264d54655d4_1
+      scan_id: sc-550538fd9107a115_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/blast:2.17.0--550e1c660fdd190f
+      build_id: bd-550e1c660fdd190f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/48/4845ad74dd459a24f390f9929801119fcf93df10161cc65292e8f416ffc05682/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/blast/blastn/.conda-lock/linux_amd64-bd-9196f264d54655d4_1.txt

@@ -60,3 +60,17 @@ authors:
   - "@toniher"
 maintainers:
   - "@toniher"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/blast:2.17.0--9196f264d54655d4
+      build_id: bd-9196f264d54655d4_1
+      scan_id: sc-550538fd9107a115_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/blast:2.17.0--550e1c660fdd190f
+      build_id: bd-550e1c660fdd190f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/48/4845ad74dd459a24f390f9929801119fcf93df10161cc65292e8f416ffc05682/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/blast/updateblastdb/.conda-lock/linux_amd64-bd-9196f264d54655d4_1.txt
