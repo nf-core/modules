@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process STAR_STARSOLO"
     script "../main.nf"
     process "STAR_STARSOLO"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -17,11 +18,11 @@ nextflow_process {
                 script "../../../star/genomegenerate/main.nf"
                 process {
                     """
-                    input[0] = Channel.of([
+                    input[0] = channel.of([
                         [ id:'test_fasta' ],
                         [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
                     ])
-                    input[1] = Channel.of([
+                    input[1] = channel.of([
                         [ id:'test_gtf' ],
                         [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
                     ])
@@ -31,26 +32,256 @@ nextflow_process {
         }
 
         when {
+            params {
+                module_args = "--soloUMIlen 12 --outSAMtype BAM SortedByCoordinate --soloBarcodeReadLength 0 --limitBAMsortRAM 5000000000 --outReadsUnmapped Fastx --outWigType bedGraph --outWigStrand Stranded --outWigNorm RPM"
+            }
+
             process {
                 """
-                input[0] = Channel.of([
-                    [ id:'test', umi_len:'12' ],
+                input[0] = channel.of([
+                    [ id:'test'],
                     'CB_UMI_Simple',
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R1_001.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R2_001.fastq.gz', checkIfExists: true)
-                    ]
+                    ],
+                    [ ]
                 ])
-                input[1] = file('./NO_FILE')
+                input[1] = channel.of([ [id: 'empty'], [] ])
                 input[2] = STAR_GENOMEGENERATE.out.index
+                input[3] = channel.of([
+                    [ id:'test_gtf' ],
+                    [ ]
+                ])
+                input[4] = channel.of([ [id: 'test'], [] ])
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log_final", "log_out", "log_progress"])).match() }
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["log_final", "log_out", "log_progress", "bam_sorted"]),
+                    file(process.out.log_final[0][1]).name,
+                    file(process.out.log_final[0][1]).readLines().size(),
+                    file(process.out.log_out[0][1]).name,
+                    file(process.out.log_out[0][1]).readLines().contains("ALL DONE!"),
+                    file(process.out.log_progress[0][1]).name,
+                    file(process.out.log_progress[0][1]).readLines().contains("ALL DONE!"),
+                    file(process.out.bam_sorted[0][1]).name,
+                    bam(process.out.bam_sorted[0][1]).getStatistics(),
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - CB_UMI_Complex") {
+
+        setup {
+            run("STAR_GENOMEGENERATE") {
+                script "../../../star/genomegenerate/main.nf"
+                process {
+                    """
+                    input[0] = channel.of([
+                        [ id:'test_fasta' ],
+                        [ file(params.modules_testdata_base_path + 'generic/starsolo/test.fa', checkIfExists: true) ]
+                    ])
+                    input[1] = channel.of([
+                        [ id:'test_gtf' ],
+                        [ file(params.modules_testdata_base_path + 'generic/starsolo/test.gtf', checkIfExists: true) ]
+                    ])
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = "--soloAdapterSequence GAGTGATTGCTTGTGACGCCTT --soloAdapterMismatchesNmax 3 --soloCBmatchWLtype 1MM --soloCBposition 0_0_2_-1 3_1_3_8 --soloUMIposition 3_9_3_14 --soloFeatures Gene GeneFull"
+            }
+
+            process {
+                """
+                input[0] = channel.of([
+                    [ id:'test'],
+                    'CB_UMI_Complex',
+                    [
+                        file(params.modules_testdata_base_path + 'generic/starsolo/indrops/IND1_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/starsolo/indrops/IND1_2.fastq.gz', checkIfExists: true)
+                    ],
+                    [ ]
+                ])
+                input[1] = channel.of([
+                    [ id: 'multiple_whitelists'],
+                    [
+                        file(params.modules_testdata_base_path + 'generic/starsolo/indrops/inDrops_Ambrose2_bc1.txt', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/starsolo/indrops/inDrops_Ambrose2_bc2.txt', checkIfExists: true)
+                    ]
+                ])
+                input[2] = STAR_GENOMEGENERATE.out.index
+                input[3] = channel.of([
+                    [ id:'test_gtf' ],
+                    [ ]
+                ])
+                input[4] = channel.of([ [id: 'test'], [] ])
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["log_final", "log_out", "log_progress", "sam"], ignorePatterns: ["**/UMIperCellSorted.txt"]),
+                    file(process.out.log_final[0][1]).name,
+                    file(process.out.log_final[0][1]).readLines().size(),
+                    file(process.out.log_out[0][1]).name,
+                    file(process.out.log_out[0][1]).readLines().contains("ALL DONE!"),
+                    file(process.out.log_progress[0][1]).name,
+                    file(process.out.log_progress[0][1]).readLines().contains("ALL DONE!"),
+                    file(process.out.sam[0][1]).name,
+                    sam(process.out.sam[0][1]).getStatistics(),
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - SmartSeq") {
+
+        setup {
+            run("STAR_GENOMEGENERATE") {
+                script "../../../star/genomegenerate/main.nf"
+                process {
+                    """
+                    input[0] = channel.of([
+                        [ id:'test_fasta' ],
+                        [ file(params.modules_testdata_base_path + 'generic/starsolo/test.fa', checkIfExists: true) ]
+                    ])
+                    input[1] = channel.of([
+                        [ id:'test_gtf' ],
+                        [ file(params.modules_testdata_base_path + 'generic/starsolo/test.gtf', checkIfExists: true) ]
+                    ])
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = "--soloUMIdedup Exact --soloStrand Unstranded --limitOutSJcollapsed 10000000 --soloCellFilter None --soloFeatures Gene GeneFull"
+            }
+
+            process {
+                """
+                file('manifest.tsv').text = 'CELL01_R1.fastq.gz\tCELL01_R2.fastq.gz\tCELL01\\nCELL02_R1.fastq.gz\tCELL02_R2.fastq.gz\tCELL02\\n'
+                file('SJ.out.tab').text = 'chrTest\t901\t1400\t1\t1\t1\t31\t0\t37\\nchrTest\t4201\t4700\t2\t2\t1\t38\t0\t37'
+
+                input[0] = channel.of([
+                    [ id:'test'],
+                    'SmartSeq',
+                    [
+                        file(params.modules_testdata_base_path + 'generic/starsolo/smartseq/CELL01_R1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/starsolo/smartseq/CELL01_R2.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/starsolo/smartseq/CELL02_R1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'generic/starsolo/smartseq/CELL02_R2.fastq.gz', checkIfExists: true),
+                    ],
+                    [ file('manifest.tsv', checkIfExists: true) ]
+                ])
+                input[1] = channel.of([ [ id:'empty'], [] ])
+                input[2] = STAR_GENOMEGENERATE.out.index
+                input[3] = channel.of([
+                    [ id:'test_gtf' ],
+                    [ ]
+                ])
+                input[4] = channel.of([ [id: 'test'], [ file('SJ.out.tab', checkIfExists: true) ] ])
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["log_final", "log_out", "log_progress", "sam"]),
+                    file(process.out.log_final[0][1]).name,
+                    file(process.out.log_final[0][1]).readLines().size(),
+                    file(process.out.log_out[0][1]).name,
+                    file(process.out.log_out[0][1]).readLines().contains("ALL DONE!"),
+                    file(process.out.log_progress[0][1]).name,
+                    file(process.out.log_progress[0][1]).readLines().contains("ALL DONE!"),
+                    file(process.out.sam[0][1]).name,
+                    sam(process.out.sam[0][1], stringency: "silent").getStatistics(),
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - CB_UMI_Simple - gtf - whitelist") {
+
+        setup {
+            run("STAR_GENOMEGENERATE") {
+                script "../../../star/genomegenerate/main.nf"
+                process {
+                    """
+                    input[0] = channel.of([
+                        [ id:'test_fasta' ],
+                        [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                    ])
+                    input[1] = channel.of([
+                        [ id:'test_gtf' ],
+                        [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
+                    ])
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = "--soloUMIlen 12 --outSAMtype BAM SortedByCoordinate --soloBarcodeReadLength 0 --limitBAMsortRAM 5000000000 --outWigType wiggle --outWigStrand Stranded --outWigNorm RPM --chimSegmentMin 20 --chimOutType Junctions --chimJunctionOverhangMin 20"
+            }
+
+            process {
+                """
+                file("whitelist.txt").text = 'AAACCCAAGAAACACT\\nAAACCCAAGAAACCAT\\nAAACCCAAGAAACCCA\\nAAACCCAAGAAACCCG\\nAAACCCAAGAAACCTG\\nAAACCCAAGAAACGAA\\nAAACCCAAGAAACGAG\\nAAACCCAAGAAACGAT\\nAAACCCAAGAAACGCC\\nAAACCCAAGAAACGGT'
+                input[0] = channel.of([
+                    [ id:'test'],
+                    'CB_UMI_Simple',
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R1_001.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R2_001.fastq.gz', checkIfExists: true)
+                    ],
+                    [ ]
+                ])
+                input[1] = channel.of([ [ id:'whitelist'], file("whitelist.txt") ])
+                input[2] = STAR_GENOMEGENERATE.out.index
+                input[3] = channel.of([
+                    [ id:'test_gtf' ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
+                ])
+                input[4] = channel.of([ [id: 'test'], [] ])
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["log_final", "log_out", "log_progress", "bam_sorted"], ignorePatterns: ["**/UMIperCellSorted.txt"]),
+                    file(process.out.log_final[0][1]).name,
+                    file(process.out.log_final[0][1]).readLines().size(),
+                    file(process.out.log_out[0][1]).name,
+                    file(process.out.log_out[0][1]).readLines().contains("ALL DONE!"),
+                    file(process.out.log_progress[0][1]).name,
+                    file(process.out.log_progress[0][1]).readLines().contains("ALL DONE!"),
+                    file(process.out.bam_sorted[0][1]).name,
+                    bam(process.out.bam_sorted[0][1]).getStatistics(),
+                ).match() }
             )
         }
 
@@ -65,11 +296,11 @@ nextflow_process {
                 script "../../../star/genomegenerate/main.nf"
                 process {
                     """
-                    input[0] = Channel.of([
+                    input[0] = channel.of([
                         [ id:'test_fasta' ],
                         [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
                     ])
-                    input[1] = Channel.of([
+                    input[1] = channel.of([
                         [ id:'test_gtf' ],
                         [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
                     ])
@@ -79,25 +310,34 @@ nextflow_process {
         }
 
         when {
+            params {
+                module_args = "--soloUMIlen 12 --outSAMtype BAM SortedByCoordinate --soloFeatures Gene GeneFull"
+            }
             process {
                 """
-                input[0] = Channel.of([
-                    [ id:'test', umi_len:'12' ],
+                input[0] = channel.of([
+                    [ id:'test'],
                     'CB_UMI_Simple',
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R1_001.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R2_001.fastq.gz', checkIfExists: true)
-                    ]
+                    ],
+                    [ ]
                 ])
-                input[1] = file('./NO_FILE')
+                input[1] = channel.of([ [ id:'empty'], [] ])
                 input[2] = STAR_GENOMEGENERATE.out.index
+                input[3] = channel.of([
+                    [ id:'test_gtf' ],
+                    [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
+                ])
+                input[4] = channel.of([ [id: 'test'], [] ])
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }

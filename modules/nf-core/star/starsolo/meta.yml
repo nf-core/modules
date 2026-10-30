@@ -5,6 +5,8 @@ keywords:
   - count
   - genome
   - reference
+  - single-cell
+  - RNA-seq
 tools:
   - "starsolo":
       description: "Mapping, demultiplexing and quantification for single cell RNA-seq."
@@ -19,9 +21,7 @@ input:
         type: map
         description: |
           Groovy Map containing sample information.
-          Here, you should add all the specific barcode/umi
-          information for each sample.
-          e.g. `[ id:'test_starsolo', umi_len:'12', cb_start:1 ]`
+          e.g. `[ id:'test_starsolo' ]`
     - solotype:
         type: string
         description: |
@@ -33,29 +33,56 @@ input:
         description: |
           List of input FastQ files of size 1 and 2 for single-end and paired-end data,
           respectively.
-        ontologies: []
-  - opt_whitelist:
-      type: file
-      description: Optional whitelist file
-      ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1930 # FASTQ
+    - manifest:
+        type: file
+        description: |
+          Optional manifest file for Smart-Seq data.
+          It should contain 3 tab-separated columns: read1, read2, cell_id. The cell_id column will be added as ReadGroup tag.
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
   - - meta2:
+        type: map
+        description: Groovy Map containing the barcode whitelist information.
+    - opt_whitelist:
+        type: file
+        description: Optional whitelist file
+        ontologies:
+          - edam: http://edamontology.org/format_2330 # TXT
+  - - meta3:
         type: map
         description: Groovy Map containing the STAR index information.
     - index:
         type: directory
         description: STAR genome index
         pattern: "star"
+  - - meta4:
+        type: map
+        description: Groovy Map containing the GTF information.
+    - gtf:
+        type: file
+        description: Optional GTF annotation file
+        pattern: "*.gtf"
+        ontologies:
+          - edam: http://edamontology.org/format_2306 # GTF
+  - - meta5:
+        type: map
+        description: Groovy Map containing the splice junction information.
+    - splice_junction:
+        type: file
+        description: Optional splice junction file
+        pattern: "*.tab"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
   counts:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
-            Here, you should add all the specific barcode/umi
-            information for each sample.
-            e.g. `[ id:'test_starsolo', umi_len:'12', cb_start:1 ]`
-      - "*.Solo.out":
-          type: file
+      - ${prefix}.Solo.out:
+          type: directory
           description: STARSolo counts matrix
           pattern: "*.Solo.out"
           ontologies: []
@@ -64,52 +91,32 @@ output:
           type: map
           description: |
             Groovy Map containing sample information.
-            Here, you should add all the specific barcode/umi
-            information for each sample.
-            e.g. `[ id:'test_starsolo', umi_len:'12', cb_start:1 ]`
-      - "*Log.final.out":
+      - ${prefix}.Log.final.out:
           type: file
           description: STAR final log file
           pattern: "*Log.final.out"
-          ontologies: []
-  log_out:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information.
-            Here, you should add all the specific barcode/umi
-            information for each sample.
-            e.g. `[ id:'test_starsolo', umi_len:'12', cb_start:1 ]`
-      - "*Log.out":
-          type: file
-          description: STAR lot out file
-          pattern: "*Log.out"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # TXT
   log_progress:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
-            Here, you should add all the specific barcode/umi
-            information for each sample.
-            e.g. `[ id:'test_starsolo', umi_len:'12', cb_start:1 ]`
-      - "*Log.progress.out":
+      - ${prefix}.Log.progress.out:
           type: file
           description: STAR log progress file
           pattern: "*Log.progress.out"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # TXT
   summary:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information.
-            Here, you should add all the specific barcode/umi
-            information for each sample.
-            e.g. `[ id:'test_starsolo', umi_len:'12', cb_start:1 ]`
-      - "*/Gene/Summary.csv":
+      - ${prefix}.Solo.out/Gene/Summary.csv:
           type: file
           description: STARSolo metrics summary CSV file.
-          pattern: "*/Gene/Summary.csv"
+          pattern: "*.Solo.out/Gene/Summary.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
   versions_star:
@@ -122,7 +129,176 @@ output:
       - STAR --version | sed -e "s/STAR_//g":
           type: eval
           description: The expression to obtain the version of the tool
-
+  raw_counts:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - ${prefix}.Solo.out/Gene/raw:
+          type: directory
+          description: STARSolo raw counts matrix
+          pattern: "*.Solo.out/Gene/raw"
+          ontologies: []
+  filtered_counts:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - ${prefix}.Solo.out/Gene/filtered:
+          type: directory
+          description: STARSolo filtered counts matrix (optional)
+          pattern: "*.Solo.out/Gene/filtered"
+          ontologies: []
+  raw_velocyto:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - ${prefix}.Solo.out/Velocyto/raw:
+          type: directory
+          description: STARSolo raw velocyto matrix (optional)
+          pattern: "*.Solo.out/Velocyto/raw"
+          ontologies: []
+  filtered_velocyto:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - ${prefix}.Solo.out/Velocyto/filtered:
+          type: directory
+          description: STARSolo filtered velocyto matrix (optional)
+          pattern: "*.Solo.out/Velocyto/filtered"
+          ontologies: []
+  bam_sorted:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - ${prefix}.Aligned.sortedByCoord.out.bam:
+          type: file
+          description: Sorted BAM file containing read alignments (optional)
+          pattern: "*.Aligned.sortedByCoord.out.bam"
+          ontologies:
+            - edam: http://edamontology.org/format_2572 # BAM
+  bam_transcript:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - ${prefix}.Aligned.toTranscriptome.out.bam:
+          type: file
+          description: Output BAM file of transcriptome alignment (optional)
+          pattern: "*.Aligned.toTranscriptome.out.bam"
+          ontologies:
+            - edam: http://edamontology.org/format_2572 # BAM
+  bam_unsorted:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - ${prefix}.Aligned.out.bam:
+          type: file
+          description: Unsorted BAM file (optional)
+          pattern: "*.Aligned.out.bam"
+          ontologies:
+            - edam: http://edamontology.org/format_2572 # BAM
+  fastq:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - ${prefix}.unmapped_{1,2}.fastq.gz:
+          type: file
+          description: Unmapped reads in gzipped FASTQ format (optional)
+          pattern: "*.fastq.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  tab:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - ${prefix}*.tab:
+          type: file
+          description: TAB file (optional)
+          pattern: "*.tab"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  log_out:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - ${prefix}.Log.out:
+          type: file
+          description: STAR log out file
+          pattern: "*.Log.out"
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # TXT
+  raw_genefull:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - ${prefix}.Solo.out/GeneFull/raw:
+          type: directory
+          description: STARSolo raw GeneFull matrix (optional)
+          pattern: "*.Solo.out/GeneFull/raw"
+          ontologies: []
+  filtered_genefull:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - ${prefix}.Solo.out/GeneFull/filtered:
+          type: directory
+          description: STARSolo filtered GeneFull matrix (optional)
+          pattern: "*.Solo.out/GeneFull/filtered"
+          ontologies: []
+  sam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - ${prefix}.Aligned.out.sam:
+          type: file
+          description: SAM file (optional)
+          pattern: "*.Aligned.out.sam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2573" # SAM
+  chimeric_juntionc:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - ${prefix}.Chimeric.out.junction:
+          type: file
+          description: STAR chimeric junction output file (optional)
+          pattern: "*Chimeric.out.junction"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  wig:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - "*.wig":
+          type: file
+          description: STAR output wiggle format file(s) (optional)
+          pattern: "*.wig"
+          ontologies:
+            - edam: http://edamontology.org/format_3005 # WIG
+  bedgraph:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - "*.bg":
+          type: file
+          description: STAR output bedGraph format file(s) (optional)
+          pattern: "*.bg"
+          ontologies:
+            - edam: http://edamontology.org/format_3583 # bedGraph
 topics:
   versions:
     - - ${task.process}:
@@ -134,7 +310,6 @@ topics:
       - STAR --version | sed -e "s/STAR_//g":
           type: eval
           description: The expression to obtain the version of the tool
-
 authors:
   - "@kevinmenden"
   - "@ggabernet"
@@ -155,3 +330,27 @@ maintainers:
   - "@vivian-chen16"
   - "@maxulysse"
   - "@joaodemeirelles"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/star:2.7.11b--113eeacc5216db85
+      build_id: bd-113eeacc5216db85_1
+      scan_id: sc-f3caa041406df584_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/star:2.7.11b--f22f015f7eb1383f
+      build_id: bd-f22f015f7eb1383f_1
+      scan_id: sc-8d56a3b94bd9fffd_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/star:2.7.11b--217afbae6d99f335
+      build_id: bd-217afbae6d99f335_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9a/9a6765552391b5012b9ec93e41a2438d547e1948b028be87f2ab9e834d18c235/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/star:2.7.11b--e0f112e5852e8139
+      build_id: bd-e0f112e5852e8139_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5b/5b04fee93569be87eedb18990e8d297a7b75f5e6fe1cb768edbc05a1a842e160/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/star/starsolo/.conda-lock/linux_amd64-bd-f22f015f7eb1383f_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/star/starsolo/.conda-lock/linux_arm64-bd-113eeacc5216db85_1.txt
