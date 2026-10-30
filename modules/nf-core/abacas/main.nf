@@ -6,9 +6,9 @@ process ABACAS {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/abacas:1.3.1--pl526_0' :
-        'quay.io/biocontainers/abacas:1.3.1--pl526_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a3/a39587a71a6860415798a17aca7d2d958a750ab460edd3617751a2a376661d45/data'
+        : 'community.wave.seqera.io/library/abacas:1.3.1--0d1658c2eafe7036'}"
 
     input:
     tuple val(meta), path(scaffold)
