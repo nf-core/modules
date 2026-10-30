@@ -23,6 +23,17 @@ workflow BAM_TUMOR_ONLY_SOMATIC_VARIANT_CALLING_GATK {
     ch_interval_file // channel: /path/to/interval/file
 
     main:
+
+    def deprecation_message = """
+    WARNING: This subworkflow has been deprecated. Please use subworkflows/nf-core/bam_somatic_variant_calling_gatk
+
+    Reason:
+    The logic from this subworkflow was merged with the analogous tumor-normal subworkflow in subworkflows/nf-core/bam_tumor_normal_somatic_variant_calling_gatk.
+    The new subworkflow in subworkflows/nf-core/bam_somatic_variant_calling_gatk handles both tumor-normal and tumor-only analyses.
+    """
+
+    assert false: deprecation_message
+
     //Perform variant calling using mutect2 module in tumor single mode.
     GATK4_MUTECT2(
         ch_input,
