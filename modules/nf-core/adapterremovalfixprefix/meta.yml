@@ -1,14 +1,12 @@
 name: adapterremovalfixprefix
-description: Fixes prefixes from AdapterRemoval2 output to make sure no clashing
-  read names are in the output. For use with DeDup.
+description: Fixes prefixes from AdapterRemoval2 output to make sure no clashing read names are in the output. For use with DeDup.
 keywords:
   - adapterremoval
   - fastq
   - dedup
 tools:
   - adapterremovalfixprefix:
-      description: Fixes adapter removal prefixes to make sure no clashing read
-        names are in the output.
+      description: Fixes adapter removal prefixes to make sure no clashing read names are in the output.
       homepage: https://github.com/apeltzer/AdapterRemovalFixPrefix
       tool_dev_url: https://github.com/apeltzer/AdapterRemovalFixPrefix
       doi: "10.1186/s13059-016-0918-z"
@@ -65,3 +63,27 @@ authors:
   - "@jfy133"
 maintainers:
   - "@jfy133"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/adapterremovalfixprefix:0.0.5--930e325758ebb090
+      build_id: bd-930e325758ebb090_1
+      scan_id: sc-03d5d45d59d11408_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/adapterremovalfixprefix:0.0.5--9486dfa95266eb8d
+      build_id: bd-9486dfa95266eb8d_1
+      scan_id: sc-d35a14003140797d_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/adapterremovalfixprefix:0.0.5--7f23dae55195e148
+      build_id: bd-7f23dae55195e148_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fc/fcbd0698a0040500e6509ae9d79603db1dd42900980b95e057459f1d87a567fa/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/adapterremovalfixprefix:0.0.5--74de37f825f5e0a9
+      build_id: bd-74de37f825f5e0a9_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c0/c02e895016dacfce42e070f552b07d9222323db5656d7275f3c45ce79fb7fe0b/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/adapterremovalfixprefix/.conda-lock/linux_amd64-bd-930e325758ebb090_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/adapterremovalfixprefix/.conda-lock/linux_arm64-bd-9486dfa95266eb8d_1.txt
