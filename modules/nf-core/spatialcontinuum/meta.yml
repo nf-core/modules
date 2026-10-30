@@ -1,0 +1,101 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "spatialcontinuum"
+description: "Universal biophysical reaction-diffusion transport framework and Bedside Composite Resistance Index (CRI) for NSCLC."
+keywords:
+  - oncology
+  - biophysics
+  - reaction-diffusion
+  - lung cancer
+  - precision oncology
+  - osimertinib
+tools:
+  - "spatial-continuum":
+      description: "Zero-dependency biophysical reaction-diffusion solver and Bedside Composite Resistance Index (CRI) calculation engine."
+      homepage: "https://github.com/Lukecele/spatial-continuum-oncology"
+      documentation: "https://github.com/Lukecele/spatial-continuum-oncology#readme"
+      tool_dev_url: "https://github.com/Lukecele/spatial-continuum-oncology"
+      doi: "10.21203/rs.3.rs-11530312/v1"
+      licence:
+        - "CC-BY-4.0"
+      identifier: "biotools:spatial-continuum-oncology"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - pattern:
+        type: string
+        description: Histologic growth pattern (e.g., lepidic, acinar, papillary, solid, micropapillary)
+    - tp53:
+        type: string
+        description: TP53 mutation status (wt or mutated)
+    - rb1:
+        type: string
+        description: RB1 mutation/loss status (wt or mutated/deleted)
+    - stroma:
+        type: string
+        description: Stromal desmoplastic density (low, moderate, dense)
+
+output:
+  report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.txt":
+          type: file
+          description: Bedside Composite Resistance Index (CRI) report and clinical recommendations
+          pattern: "*.txt"
+  versions_spatialcontinuum:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "spatial-continuum":
+          type: string
+          description: The name of the tool
+      - 'python3 -c "import importlib.metadata; print(importlib.metadata.version(''spatial-continuum''))"':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - spatial-continuum:
+          type: string
+          description: The name of the tool
+      - 'python3 -c "import importlib.metadata; print(importlib.metadata.version(''spatial-continuum''))"':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@Lukecele"
+maintainers:
+  - "@Lukecele"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/spatial-continuum:1.0.2--cb7095b94f5ea9d9
+      build_id: bd-cb7095b94f5ea9d9_1
+      scan_id: sc-1567ee172d0761ce_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/spatial-continuum:1.0.2--ae95ea9ba11f75e6
+      build_id: bd-ae95ea9ba11f75e6_1
+      scan_id: sc-2e93353d66e9cd92_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/spatial-continuum:1.0.2--640ab464aa72b3d0
+      build_id: bd-640ab464aa72b3d0_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8e/8eb3b0f9efddada384ce5d4328cabf5ea667a30cc2bec0e89cbca830c7fb4c78/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/spatial-continuum:1.0.2--15057670ae17cf12
+      build_id: bd-15057670ae17cf12_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5c/5c77e452e544aaf061fc64fb517884f91b5834ecb8d54fb088d34ddd67b723c5/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/spatialcontinuum/.conda-lock/linux_amd64-bd-ae95ea9ba11f75e6_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/spatialcontinuum/.conda-lock/linux_arm64-bd-cb7095b94f5ea9d9_1.txt
