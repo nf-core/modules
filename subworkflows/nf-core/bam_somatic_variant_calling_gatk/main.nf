@@ -92,10 +92,24 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
         .map { meta, table -> [meta.original_meta, table] } // Remove unique key and restore original meta
 
     // Contamination and segmentation tables created using calculatecontamination on the pileup summary table
-    ch_calculatecontamination_in = ch_pileup_table
-        .groupTuple()
-        .map { meta, table_files ->
-            [meta] + (table_files.size() > 1 ? table_files : [table_files[0], []])
+    ch_calculatecontamination_in = GATK4_GETPILEUPSUMMARIES.out.table
+            .map { meta, table ->
+                tuple(
+                    meta.original_meta,
+                    [(meta.id.endsWith('_tumor') ? 'tumor' : 'normal'): table]
+                )
+            }
+            .groupTuple()
+            // Ensure the correct order of the tables (tumor first, normal second)
+            .map { meta, table_maps ->
+
+                def tables = table_maps.sum([:])
+
+                tuple(
+                    meta,
+                    tables.tumor,
+                    tables.normal ? tables.normal : []
+                )
             }
 
     GATK4_CALCULATECONTAMINATION(ch_calculatecontamination_in)
