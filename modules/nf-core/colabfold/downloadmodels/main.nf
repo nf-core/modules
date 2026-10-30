@@ -13,6 +13,8 @@ process COLABFOLD_DOWNLOADMODELS {
     output:
     tuple val(meta), path("weights"), emit: weights
     tuple val("${task.process}"), val('colabfold'), eval("python -c 'import importlib.metadata as m; print(m.version(\"colabfold\"))'"), topic: versions, emit: versions_colabfold
+    tuple val("${task.process}"), val('dm-haiku'), eval("python -c 'import importlib.metadata as m; print(m.version(\"dm-haiku\"))'"), topic: versions, emit: versions_dm_haiku
+    tuple val("${task.process}"), val('flax'), eval("python -c 'import importlib.metadata as m; print(m.version(\"flax\"))'"), topic: versions, emit: versions_flax
 
     when:
     task.ext.when == null || task.ext.when
