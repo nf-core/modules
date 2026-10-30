@@ -34,6 +34,8 @@ nextflow_process {
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
                 ]
+                input[4] = [ [], [] ]
+                input[5] = [ [], [] ]
                 """
             }
         }
@@ -73,6 +75,55 @@ nextflow_process {
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
                 ]
+                input[4] = [ [], [] ]
+                input[5] = [ [], [] ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("tumor_only - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                // the real resources are 3.9 GB, so the stub test stages empty placeholder files
+                def dbsnp = workDir.resolve('dbsnp_placeholder.npz')
+                def gnomad = workDir.resolve('gnomad_placeholder.npz')
+                dbsnp.text = ''
+                gnomad.text = ''
+
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam.bai', checkIfExists: true),
+                    [],
+                    []
+                ]
+                input[1] = [
+                    [ id:'test_region' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true)
+                ]
+                input[2] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                ]
+                input[3] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                ]
+                input[4] = [ [ id:'dbsnp' ], dbsnp ]
+                input[5] = [ [ id:'gnomad' ], gnomad ]
                 """
             }
         }
