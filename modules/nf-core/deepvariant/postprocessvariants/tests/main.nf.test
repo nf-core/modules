@@ -89,8 +89,6 @@ nextflow_process {
     }
 
     test("homo_sapiens - ont - phasing") {
-        config "./ont_phasing.config"
-
         setup {
             run("DEEPVARIANT_MAKEEXAMPLES") {
                 script "../../makeexamples/main.nf"
@@ -130,6 +128,10 @@ nextflow_process {
             }
         }
         when {
+            params {
+                makeexamples_args = '--checkpoint "/opt/models/ont_r104" --checkpoint_json "/opt/models/ont_r104/model.example_info.json" --call_small_model_examples --trained_small_model_path "/opt/smallmodels/ont/model.keras"'
+                callvariants_args = '--checkpoint "/opt/models/ont_r104"'
+            }
             process {
                 """
                 input[0] = DEEPVARIANT_CALLVARIANTS.out.call_variants_tfrecords.join(
