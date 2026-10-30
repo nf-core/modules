@@ -33,7 +33,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = "--soloUMIlen 12 --outSAMtype BAM SortedByCoordinate --soloBarcodeReadLength 0 --limitBAMsortRAM 5000000000"
+                module_args = "--soloUMIlen 12 --outSAMtype BAM SortedByCoordinate --soloBarcodeReadLength 0 --limitBAMsortRAM 5000000000 --outReadsUnmapped Fastx --outWigType bedGraph --outWigStrand Stranded --outWigNorm RPM"
             }
 
             process {
@@ -177,6 +177,7 @@ nextflow_process {
             process {
                 """
                 file('manifest.tsv').text = 'CELL01_R1.fastq.gz\tCELL01_R2.fastq.gz\tCELL01\\nCELL02_R1.fastq.gz\tCELL02_R2.fastq.gz\tCELL02\\n'
+                file('SJ.out.tab').text = 'chrTest\t901\t1400\t1\t1\t1\t31\t0\t37\\nchrTest\t4201\t4700\t2\t2\t1\t38\t0\t37'
 
                 input[0] = channel.of([
                     [ id:'test'],
@@ -195,7 +196,7 @@ nextflow_process {
                     [ id:'test_gtf' ],
                     [ ]
                 ])
-                input[4] = channel.of([ [id: 'test'], [] ])
+                input[4] = channel.of([ [id: 'test'], [ file('SJ.out.tab', checkIfExists: true) ] ])
                 """
             }
         }
@@ -237,28 +238,16 @@ nextflow_process {
                     """
                 }
             }
-
-            new File("${launchDir}/whitelist.txt").text = """
-            AAACCCAAGAAACACT
-            AAACCCAAGAAACCAT
-            AAACCCAAGAAACCCA
-            AAACCCAAGAAACCCG
-            AAACCCAAGAAACCTG
-            AAACCCAAGAAACGAA
-            AAACCCAAGAAACGAG
-            AAACCCAAGAAACGAT
-            AAACCCAAGAAACGCC
-            AAACCCAAGAAACGGT
-            """.stripIndent().trim()
         }
 
         when {
             params {
-                module_args = "--soloUMIlen 12 --outSAMtype BAM SortedByCoordinate --soloBarcodeReadLength 0 --limitBAMsortRAM 5000000000"
+                module_args = "--soloUMIlen 12 --outSAMtype BAM SortedByCoordinate --soloBarcodeReadLength 0 --limitBAMsortRAM 5000000000 --outWigType wiggle --outWigStrand Stranded --outWigNorm RPM --chimSegmentMin 20 --chimOutType Junctions --chimJunctionOverhangMin 20"
             }
 
             process {
                 """
+                file("whitelist.txt").text = 'AAACCCAAGAAACACT\\nAAACCCAAGAAACCAT\\nAAACCCAAGAAACCCA\\nAAACCCAAGAAACCCG\\nAAACCCAAGAAACCTG\\nAAACCCAAGAAACGAA\\nAAACCCAAGAAACGAG\\nAAACCCAAGAAACGAT\\nAAACCCAAGAAACGCC\\nAAACCCAAGAAACGGT'
                 input[0] = channel.of([
                     [ id:'test'],
                     'CB_UMI_Simple',
@@ -268,7 +257,7 @@ nextflow_process {
                     ],
                     [ ]
                 ])
-                input[1] = channel.of([ [ id:'whitelist'], file("${launchDir}/whitelist.txt") ])
+                input[1] = channel.of([ [ id:'whitelist'], file("whitelist.txt") ])
                 input[2] = STAR_GENOMEGENERATE.out.index
                 input[3] = channel.of([
                     [ id:'test_gtf' ],

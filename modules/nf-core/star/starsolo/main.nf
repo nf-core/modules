@@ -15,7 +15,7 @@ process STAR_STARSOLO {
     tuple val(meta2), path(opt_whitelist)
     tuple val(meta3), path(index)
     tuple val(meta4), path(gtf)
-    tuple val(meta5), path(splice_juntion)
+    tuple val(meta5), path(splice_junction)
 
     output:
     tuple val(meta), path("${prefix}.Solo.out")                         , emit: counts
@@ -49,7 +49,7 @@ process STAR_STARSOLO {
     def gtf_arg = gtf ? "--sjdbGTFfile $gtf" : ""
     def (forward, reverse) = reads.collate(2).transpose()
     zcat = reads[0].getExtension() == "gz" ? "--readFilesCommand zcat" : ""
-    def splice_juntion_arg = splice_juntion ? "--sjdbFileChrStartEnd $splice_juntion" : ""
+    def splice_junction_arg = splice_junction ? "--sjdbFileChrStartEnd $splice_junction" : ""
     def whitelist_args = opt_whitelist ? "--soloCBwhitelist ${[opt_whitelist].flatten().join(' ')}" : "--soloCBwhitelist None"
     if (solotype == "SmartSeq") {
         read_files_in = "--readFilesManifest $manifest"
@@ -66,7 +66,7 @@ process STAR_STARSOLO {
         --runThreadN $task.cpus \\
         --outFileNamePrefix $prefix. \\
         --soloType $solotype \\
-        $whitelist_args $gtf_arg $splice_juntion_arg \\
+        $whitelist_args $gtf_arg $splice_junction_arg \\
         $args
 
     if [ -d ${prefix}.Solo.out ]; then
@@ -83,9 +83,9 @@ process STAR_STARSOLO {
     """
 
     stub:
-    prefix           = task.ext.prefix ?: "${meta.id}"
-    def args             = task.ext.args ?: ''
-    def args_list = (args =~ /[^\s]+/).collect()
+    prefix          = task.ext.prefix ?: "${meta.id}"
+    def args        = task.ext.args ?: ''
+    def args_list   = (args =~ /[^\s]+/).collect()
     def feature_idx = args_list.indexOf('--soloFeatures')
 
     def solo_features = feature_idx >= 0
@@ -119,10 +119,11 @@ process STAR_STARSOLO {
         touch ${prefix}.Solo.out/Gene/Summary.csv
     """ : ''
 
-    def touch_bam        = args.contains('--outSAMtype') && args.contains('BAM') ? """
+    def touch_bam = args.contains('--outSAMtype') && args.contains('BAM') ? """
         ${args.contains('SortedByCoordinate') ? "touch ${prefix}.Aligned.sortedByCoord.out.bam" : ""}
         ${args.contains('Unsorted') ? "touch ${prefix}.Aligned.out.bam" : ""}
     """ : ""
+    def touch_sam = (!args.contains('--outSAMtype') || args.contains('--outSAMtype') && !args.contains('BAM')) ? "touch ${prefix}.Aligned.out.sam" : ""
     def touch_transcriptome = args.contains('--quantMode') && args.contains('TranscriptomeSAM') ? "touch ${prefix}.Aligned.toTranscriptome.out.bam" : ""
 
     """
@@ -132,9 +133,9 @@ process STAR_STARSOLO {
     touch ${prefix}.Log.out
     touch ${prefix}.Log.progress.out
     $touch_bam
+    $touch_sam
     $touch_transcriptome
     $touch_summary
-    touch ${prefix}.Aligned.out.sam
     touch ${prefix}.SJ.out.tab
     """
 }
