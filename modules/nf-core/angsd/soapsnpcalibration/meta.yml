@@ -86,3 +86,17 @@ authors:
   - "@ASendellPrice"
 maintainers:
   - "@ASendellPrice"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/angsd_htslib:714d1c4bd0020e05
+      build_id: bd-714d1c4bd0020e05_1
+      scan_id: sc-a46e932810557d21_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/angsd_htslib:79bb9a1e1b583aa0
+      build_id: bd-79bb9a1e1b583aa0_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a0/a0185040abdace3529e7c8ae31a80bd86a47577e0d2078b2223dc1b1c362e656/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/angsd/soapsnpcalibration/.conda-lock/linux_amd64-bd-714d1c4bd0020e05_1.txt
