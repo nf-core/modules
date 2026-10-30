@@ -1,0 +1,184 @@
+name: "celltypist"
+description: Automated cell type annotation of single-cell RNA-seq data using a pre-trained CellTypist model
+keywords:
+  - single-cell
+  - scrna-seq
+  - cell type annotation
+  - classification
+tools:
+  - "celltypist":
+      description: "A tool for semi-automatic cell type annotation."
+      homepage: "https://www.celltypist.org"
+      documentation: "https://celltypist.readthedocs.io"
+      tool_dev_url: "https://github.com/Teichlab/celltypist"
+      doi: "10.1126/science.abl5197"
+      licence: ["MIT"]
+      identifier: biotools:celltypist
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - h5ad:
+        type: file
+        description: Log1p-normalised expression matrix with gene symbols (h5ad, csv, txt, tsv, tab or mtx)
+        pattern: "*.{h5ad,csv,txt,tsv,tab,mtx,mtx.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3590" # HDF5
+          - edam: "http://edamontology.org/format_3752" # CSV
+          - edam: "http://edamontology.org/format_2330" # Textual format
+          - edam: "http://edamontology.org/format_3475" # TSV
+    - over_clustering:
+        type: file
+        description: Optional text file with one over-clustering label per cell, used with `--majority-voting`
+        pattern: "*.{txt,csv,tsv}"
+        optional: true
+        ontologies:
+          - edam: "http://edamontology.org/format_2330" # Textual format
+          - edam: "http://edamontology.org/format_3752" # CSV
+          - edam: "http://edamontology.org/format_3475" # TSV
+    - gene_file:
+        type: file
+        description: Optional text file with one gene per line, for matrix market input
+        pattern: "*.{txt,tsv}"
+        optional: true
+        ontologies:
+          - edam: "http://edamontology.org/format_2330" # Textual format
+          - edam: "http://edamontology.org/format_3475" # TSV
+    - cell_file:
+        type: file
+        description: Optional text file with one cell per line, for matrix market input
+        pattern: "*.{txt,tsv}"
+        optional: true
+        ontologies:
+          - edam: "http://edamontology.org/format_2330" # Textual format
+          - edam: "http://edamontology.org/format_3475" # TSV
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing model information
+          e.g. `[ id:'Immune_All_Low' ]`
+    - model:
+        type: file
+        description: Pre-trained CellTypist model
+        pattern: "*.pkl"
+        ontologies:
+          - edam: "http://edamontology.org/format_2333" # Binary format
+output:
+  predicted_labels:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}_predicted_labels.csv":
+          type: file
+          optional: true
+          description: Optional predicted cell type label for each cell
+          pattern: "*predicted_labels.csv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3752" # CSV
+  decision_matrix:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}_decision_matrix.csv":
+          type: file
+          optional: true
+          description: Optional decision scores of each cell for each cell type in the model
+          pattern: "*decision_matrix.csv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3752" # CSV
+  probability_matrix:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}_probability_matrix.csv":
+          type: file
+          optional: true
+          description: Optional probability of each cell belonging to each cell type in the model
+          pattern: "*probability_matrix.csv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3752" # CSV
+  xlsx:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "${prefix}_annotation_result.xlsx":
+          type: file
+          description: Optional Excel workbook with all result tables, written when `--xlsx` is given
+          pattern: "*.xlsx"
+          optional: true
+          ontologies:
+            - edam: "http://edamontology.org/format_3620" # XLSX
+  plots:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.pdf":
+          type: file
+          description: Optional plots of the prediction results, written when `--plot-results` is given
+          pattern: "*.pdf"
+          optional: true
+          ontologies:
+            - edam: "http://edamontology.org/format_3508" # PDF
+  versions_celltypist:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "celltypist":
+          type: string
+          description: The name of the tool
+      - 'python3 -c ''import importlib.metadata; print(importlib.metadata.version("celltypist"))''':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - celltypist:
+          type: string
+          description: The name of the tool
+      - python3 -c 'import importlib.metadata; print(importlib.metadata.version("celltypist"))':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@iraajgangavaram"
+maintainers:
+  - "@iraajgangavaram"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/celltypist:1.7.1--81458d01ea674d65
+      build_id: bd-81458d01ea674d65_1
+      scan_id: sc-9890ac3aaf3970ca_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/celltypist:1.7.1--0277c22c7059240a
+      build_id: bd-0277c22c7059240a_1
+      scan_id: sc-c4acc7328b3e6b4e_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/celltypist:1.7.1--bc98edec4976308d
+      build_id: bd-bc98edec4976308d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e3/e33ead183a0468747d8a154e9200ab81fc88eb671f6e0473419b451d8608947b/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/celltypist:1.7.1--14bb095bacfc52f4
+      build_id: bd-14bb095bacfc52f4_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/db/db26a106d81b1b9dee9d3ce7223c13019a3b8e0ee6797b6197c402637f704017/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/celltypist/.conda-lock/linux_amd64-bd-81458d01ea674d65_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/celltypist/.conda-lock/linux_arm64-bd-0277c22c7059240a_1.txt
