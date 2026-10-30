@@ -70,7 +70,12 @@ process BUSCO_BUSCO {
     export BUSCO_BBTOOLS_MEMORY=${bbtools_memory}
 
     # Fix Augustus for Apptainer
-    ENV_AUGUSTUS=/opt/conda/etc/conda/activate.d/augustus.sh
+    if [ -d /opt/wave/.pixi/envs/default/bin ]; then
+        export PATH="/opt/wave/.pixi/envs/default/bin:\${PATH}"
+        ENV_AUGUSTUS=/opt/wave/.pixi/envs/default/etc/conda/activate.d/augustus.sh
+    else
+        ENV_AUGUSTUS=/opt/conda/etc/conda/activate.d/augustus.sh
+    fi
     set +u
     if [ -z "\${AUGUSTUS_CONFIG_PATH}" ] && [ -f "\${ENV_AUGUSTUS}" ]; then
         source "\${ENV_AUGUSTUS}"
