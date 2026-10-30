@@ -23,14 +23,18 @@ process JELLYFISH_COUNT {
     task.ext.when == null || task.ext.when
 
     script:
-    def is_compressed = fasta.getName().endsWith(".gz") ? true : false
-    def fasta_name    = fasta.getName().replace(".gz", "")
+    def fasta_list = fasta instanceof List ? fasta : [fasta]
+    def decompress = fasta_list
+        .findAll { input_file -> input_file.getName().endsWith(".gz") }
+        .collect { input_file -> "gzip -c -d ${input_file} > ${input_file.getName().replace(".gz", "")}" }
+        .join("\n")
+    def fasta_names = fasta_list
+        .collect { input_file -> input_file.getName().replace(".gz", "") }
+        .join(" ")
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    if [ "${is_compressed}" == "true" ]; then
-    gzip -c -d ${fasta} > ${fasta_name}
-    fi
+    ${decompress}
     jellyfish \\
         count \\
         $args \\
@@ -38,7 +42,7 @@ process JELLYFISH_COUNT {
         -s ${size} \\
         -t $task.cpus \\
         -o ${prefix}.jf \\
-        ${fasta_name}
+        ${fasta_names}
     """
 
     stub:
