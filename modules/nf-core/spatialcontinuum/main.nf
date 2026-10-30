@@ -6,9 +6,9 @@ process SPATIALCONTINUUM {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/spatial-continuum:1.0.1--pyhdfd78af_0' :
-        'quay.io/biocontainers/spatial-continuum:1.0.1--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8e/8eb3b0f9efddada384ce5d4328cabf5ea667a30cc2bec0e89cbca830c7fb4c78/data'
+        : 'community.wave.seqera.io/library/spatial-continuum:1.0.2--ae95ea9ba11f75e6'}"
 
     input:
     tuple val(meta), val(pattern), val(tp53), val(rb1), val(stroma)
