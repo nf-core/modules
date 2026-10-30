@@ -1,6 +1,5 @@
 name: "angsd_docounts"
-description: Calculates base frequency statistics across reference positions
-  from BAM.
+description: Calculates base frequency statistics across reference positions from BAM.
 keywords:
   - angsd
   - population genetics
@@ -82,8 +81,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.pos.gz":
           type: file
-          description: Various types of depth statistics (depending on value for
-            -dumpCounts)
+          description: Various types of depth statistics (depending on value for -dumpCounts)
           pattern: "*.pos.gz"
           ontologies:
             - edam: "http://edamontology.org/format_3675" # Compressed file
@@ -108,8 +106,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.icnts.gz":
           type: file
-          description: Internal format for dumping binary single chrs. Useful for
-            ANGSD contamination
+          description: Internal format for dumping binary single chrs. Useful for ANGSD contamination
           pattern: "*.icnts.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -138,3 +135,17 @@ authors:
   - "@jfy133"
 maintainers:
   - "@jfy133"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/angsd_htslib:714d1c4bd0020e05
+      build_id: bd-714d1c4bd0020e05_1
+      scan_id: sc-a46e932810557d21_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/angsd_htslib:79bb9a1e1b583aa0
+      build_id: bd-79bb9a1e1b583aa0_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a0/a0185040abdace3529e7c8ae31a80bd86a47577e0d2078b2223dc1b1c362e656/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/angsd/docounts/.conda-lock/linux_amd64-bd-714d1c4bd0020e05_1.txt
