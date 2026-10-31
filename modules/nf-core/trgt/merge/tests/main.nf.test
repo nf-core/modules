@@ -48,12 +48,16 @@ nextflow_process {
                         [ id:'test1' ],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true),
+                        [],
+                        [],
                         'XX'
                     ),
                     tuple(
                         [ id:'test2' ],
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true),
+                        [],
+                        [],
                         'XX'
                     )
                 ])
