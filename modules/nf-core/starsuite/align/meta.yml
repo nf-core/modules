@@ -1,0 +1,179 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: starsuite_align
+description: Align reads and optionally quantify transcripts and genes with STAR Suite
+keywords:
+  - align
+  - rnaseq
+  - quantification
+  - star
+  - salmon
+tools:
+  - starsuite:
+      description: STAR Suite extends the STAR aligner with integrated transcript quantification and additional transcriptomics workflows.
+      homepage: https://github.com/morphic-bio/STAR-suite
+      documentation: https://github.com/morphic-bio/STAR-suite/blob/master/README.md
+      tool_dev_url: https://github.com/morphic-bio/STAR-suite
+      doi: 10.64898/2026.03.09.710580
+      licence: ["MIT"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: Groovy Map with sample metadata, e.g. `[ id:'sample', single_end:false ]`
+    - reads:
+        type: file
+        description: FastQ files (gzip supported natively; no zcat needed)
+        pattern: "*.{fastq,fq}{,.gz}"
+  - - meta2:
+        type: map
+        description: Groovy Map for the reference index
+    - index:
+        type: directory
+        description: STAR-Suite genome index (from STARSUITE_GENOMEGENERATE)
+  - - meta3:
+        type: map
+        description: Groovy Map for the annotation
+    - gtf:
+        type: file
+        description: Gene annotation GTF
+        pattern: "*.gtf"
+
+output:
+  quant_results:
+    - - meta:
+          type: map
+          description: Groovy Map with sample metadata
+      - "${prefix}":
+          type: directory
+          description: Transcript-level quantification directory containing quant.sf
+          pattern: "*"
+  quant_transcripts:
+    - - meta:
+          type: map
+          description: Groovy Map with sample metadata
+      - "*quant.sf":
+          type: file
+          description: Transcript-level quantification in Salmon quant.sf format
+          pattern: "*quant.sf"
+          ontologies: []
+  quant_genes:
+    - - meta:
+          type: map
+          description: Groovy Map with sample metadata
+      - "*quant.genes.sf":
+          type: file
+          description: Gene-level quantification in Salmon quant.sf format
+          pattern: "*quant.genes.sf"
+          ontologies: []
+  quant_genes_tximport:
+    - - meta:
+          type: map
+          description: Groovy Map with sample metadata
+      - "*quant.genes.tximport.sf":
+          type: file
+          description: Gene-level tximport summary emitted by STAR Suite
+          pattern: "*quant.genes.tximport.sf"
+          ontologies: []
+  bam:
+    - - meta:
+          type: map
+          description: Groovy Map with sample metadata
+      - "*Aligned.out.bam":
+          type: file
+          description: Unsorted genome BAM
+          pattern: "*Aligned.out.bam"
+          ontologies:
+            - edam: http://edamontology.org/format_2572 # BAM
+  bam_sorted:
+    - - meta:
+          type: map
+          description: Groovy Map with sample metadata
+      - "*Aligned.sortedByCoord.out.bam":
+          type: file
+          description: Coordinate-sorted genome BAM
+          pattern: "*Aligned.sortedByCoord.out.bam"
+          ontologies:
+            - edam: http://edamontology.org/format_2572 # BAM
+  fastq:
+    - - meta:
+          type: map
+          description: Groovy Map with sample metadata
+      - "*fastq.gz":
+          type: file
+          description: Unmapped FASTQ files
+          pattern: "*fastq.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  log_final:
+    - - meta:
+          type: map
+          description: Groovy Map with sample metadata
+      - "*Log.final.out":
+          type: file
+          description: STAR final alignment summary
+          pattern: "*Log.final.out"
+          ontologies: []
+  log_out:
+    - - meta:
+          type: map
+          description: Groovy Map with sample metadata
+      - "*Log.out":
+          type: file
+          description: STAR main log
+          pattern: "*Log.out"
+          ontologies: []
+  log_progress:
+    - - meta:
+          type: map
+          description: Groovy Map with sample metadata
+      - "*Log.progress.out":
+          type: file
+          description: STAR progress log
+          pattern: "*Log.progress.out"
+          ontologies: []
+  versions_starsuite:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - starsuite:
+          type: string
+          description: The name of the tool
+      - STAR --version:
+          type: eval
+          description: The expression used to obtain the tool version
+  versions_star:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - star:
+          type: string
+          description: The name of the upstream aligner
+      - STAR --upstream-version:
+          type: eval
+          description: The expression used to obtain the upstream STAR version
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - starsuite:
+          type: string
+          description: The name of the tool
+      - STAR --version:
+          type: eval
+          description: The expression used to obtain the tool version
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - star:
+          type: string
+          description: The name of the upstream aligner
+      - STAR --upstream-version:
+          type: eval
+          description: The expression used to obtain the upstream STAR version
+
+authors:
+  - "@lhhunghimself"
+maintainers:
+  - "@lhhunghimself"
