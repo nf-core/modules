@@ -1,0 +1,86 @@
+nextflow_process {
+
+    name "Test Process CLAIRSTP"
+    script "../main.nf"
+    process "CLAIRSTO"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "clairsto"
+
+    test("bam - packaged_model") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file('http://www.bio8.cs.hku.hk/clairs/quick_demo/pacbio_hifi/HCC1395_tumor_chr17_demo.bam', checkIfExists: true),
+                    file('http://www.bio8.cs.hku.hk/clairs/quick_demo/pacbio_hifi/HCC1395_tumor_chr17_demo.bam.bai', checkIfExists: true),
+                    'hifi_revio_ssrs',
+                ])
+                input[1] = [
+                    [ id:'test'],
+                    file('http://www.bio8.cs.hku.hk/clairs/quick_demo/pacbio_hifi/GRCh38_no_alt_chr17.fa', checkIfExists: true),
+                ]
+                input[2] = [
+                    [ id: 'test'],
+                    file('http://www.bio8.cs.hku.hk/clairs/quick_demo/pacbio_hifi/GRCh38_no_alt_chr17.fa.fai', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                            process.out.vcf.collect { file(it[1]).getName() },
+                            process.out.tbi.collect { file(it[1]).getName() },
+                            process.out.versions)
+                            .match()}
+            )
+        }
+
+    }
+
+    test("bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test' ], // meta map
+                    file('http://www.bio8.cs.hku.hk/clairs/quick_demo/pacbio_hifi/HCC1395_tumor_chr17_demo.bam', checkIfExists: true),
+                    file('http://www.bio8.cs.hku.hk/clairs/quick_demo/pacbio_hifi/HCC1395_tumor_chr17_demo.bam.bai', checkIfExists: true),
+                    'hifi_revio_ssrs',
+                ])
+                input[1] = [
+                    [ id:'test'],
+                    file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                ]
+                input[2] = [
+                    [ id: 'test'],
+                    file(params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                            process.out.vcf,
+                            process.out.tbi,
+                            process.out.phased_vcf,
+                            process.out.phased_tbi,
+                            process.out.versions,)
+                            .match()}
+            )
+        }
+
+    }
+}

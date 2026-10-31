@@ -1,0 +1,105 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "clairsto"
+description: write your description here
+keywords:
+  - small
+  - variant
+  - SNV
+  - indel
+  - tumor-only
+tools:
+  - "clairs":
+      description: ""
+      homepage: "https://github.com/HKU-BAL/ClairS-TO"
+      documentation: "https://github.com/HKU-BAL/ClairS-TO"
+      tool_dev_url: "https://github.com/HKU-BAL/ClairS-TO"
+      doi: "10.1101/2023.08.17.553778 "
+      licence: ["BSD-3-clause"]
+      identifier: biotools:clairsto
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - tumor_bam:
+        type: file
+        description: |
+          BAM file for tumor sample
+        pattern: "*.vcf.gz"
+    - tumor_bai:
+        type: file
+        description: |
+          index file for tumor BAM file
+        pattern: "*.bai"
+    - model:
+        type: string
+        description: |
+          Name for ClairS model
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - reference:
+        type: file
+        description: |
+          A reference fasta file
+        pattern: "*.fasta"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+    - index:
+        type: file
+        description: |
+          index file for the reference fasta file
+        pattern: "*.fai"
+output:
+  - indel_vcf:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "*.vcf.gz"
+      - "*/indel.vcf.gz":
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "*.vcf.gz"
+  - indel_tbi:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "*.vcf.gz.tbi"
+      - "*/indel.vcf.gz.tbi":
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "*.vcf.gz.tbi"
+  - snv_vcf:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "*.vcf.gz"
+      - "*/snv.vcf.gz":
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "*.vcf.gz"
+  - snv_tbi:
+      - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "*.vcf.gz.tbi"
+      - "*/snv.vcf.gz.tbi":
+          type: map
+          description: |
+            Groovy Map containing sample information
+          pattern: "*.vcf.gz.tbi"
+authors:
+  - "@robert-a-forsyth"
+maintainers:
+  - "@robert-a-forsyth"
