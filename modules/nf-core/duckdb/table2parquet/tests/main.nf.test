@@ -174,6 +174,77 @@ nextflow_process {
 
     }
 
+    // DuckDB types each column from the first 20480 rows. A numeric column holds no text, so "NA"
+    // in the Parquet bytes means the column was typed as text.
+    test("tsv - nullstr via ext.args, NA after the type-detection sample") {
+
+        when {
+            process {
+                """
+                def table = file("\${workDir}/late_na.tsv")
+                table.text = 'id\\tvalue\\n' +
+                    (1..25000).collect { i -> "g\${i}\\t\${i <= 24000 ? i % 7 : 'NA'}\\n" }.join()
+                input[0] = [ [ id: 'nullstr-late' ], table ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert !new String(new File(process.out.parquet[0][1].toString()).bytes, 'ISO-8859-1').contains('NA') },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("tsv - nullstr via ext.args, NA in the first rows") {
+
+        when {
+            process {
+                """
+                def table = file("\${workDir}/early_na.tsv")
+                table.text = 'id\\tvalue\\n' +
+                    (1..30).collect { i -> "g\${i}\\t\${i <= 3 ? 'NA' : i % 7}\\n" }.join()
+                input[0] = [ [ id: 'nullstr-early' ], table ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert !new String(new File(process.out.parquet[0][1].toString()).bytes, 'ISO-8859-1').contains('NA') },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("tsv - NA is text without nullstr") {
+
+        when {
+            process {
+                """
+                def table = file("\${workDir}/text_na.tsv")
+                table.text = 'id\\tvalue\\n' +
+                    (1..30).collect { i -> "g\${i}\\t\${i <= 3 ? 'NA' : i % 7}\\n" }.join()
+                input[0] = [ [ id: 'plain-na' ], table ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert new String(new File(process.out.parquet[0][1].toString()).bytes, 'ISO-8859-1').contains('NA') },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
     test("csv - stub") {
 
         options "-stub"

@@ -1,6 +1,5 @@
 name: "htslib_bgziptabix"
-description: "Multi-purpose module to compress, decompress and index files using bgzip
-  and tabix."
+description: "Multi-purpose module to compress, decompress and index files using bgzip and tabix."
 keywords:
   - compress
   - decompress
@@ -39,8 +38,7 @@ input:
           - edam: http://edamontology.org/format_3616 # tabix
     - regions:
         type: file
-        description: Optional file of regions to extract (BED or chr:start-end format).
-          Only used when creating an index for the output file.
+        description: Optional file of regions to extract (BED or chr:start-end format). Only used when creating an index for the output file.
         pattern: "*.{bed,txt,tsv}"
         ontologies:
           - edam: http://edamontology.org/format_3475 # TSV
@@ -50,8 +48,7 @@ input:
       description: Action to perform, either `compress` or `decompress`
   - make_index:
       type: boolean
-      description: Whether to create a tabix index for the output file; only used
-        if `action` is `compress`
+      description: Whether to create a tabix index for the output file; only used if `action` is `compress`
   - out_ext:
       type: string
       description: Output file extension without `.gz` suffix (for example `vcf`)
@@ -123,3 +120,27 @@ authors:
   - "@itrujnara"
 maintainers:
   - "@itrujnara"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/htslib_xz:0923e29158171c28
+      build_id: bd-0923e29158171c28_1
+      scan_id: sc-322d668863dd6d97_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/htslib_xz:3acc2684784cd5dc
+      build_id: bd-3acc2684784cd5dc_1
+      scan_id: sc-2e0ba28a8c757cbe_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/htslib_xz:71aafb2045588f6f
+      build_id: bd-71aafb2045588f6f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/46/4633e9661ea3d6cdd07337295443643e484d5c8f6e3412c6fa4910223036cbad/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/htslib_xz:766bf7ac5febeee3
+      build_id: bd-766bf7ac5febeee3_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2f/2f50a1fcf60755b2afa6f511729f45e05b9a915f1cf03bbc99f124f52946fb0b/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/htslib/bgziptabix/.conda-lock/linux_amd64-bd-0923e29158171c28_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/htslib/bgziptabix/.conda-lock/linux_arm64-bd-3acc2684784cd5dc_1.txt

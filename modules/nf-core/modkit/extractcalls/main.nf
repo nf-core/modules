@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MODKIT_EXTRACTCALLS {
     tag "$meta.id"
     label 'process_high'
@@ -39,7 +42,8 @@ process MODKIT_EXTRACTCALLS {
     def args       = task.ext.args ?: ''
     def prefix     = task.ext.prefix ?: "${meta.id}"
     def out_suffix = args.tokenize().contains('--bgzf') ? 'tsv.gz' : 'tsv'
+    def make_out   = out_suffix == 'tsv.gz' ? "echo | gzip > ${prefix}.${out_suffix}" : "touch ${prefix}.${out_suffix}"
     """
-    touch ${prefix}.${out_suffix}
+    ${make_out}
     """
 }

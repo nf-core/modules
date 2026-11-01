@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FGBIO_FASTQTOBAM {
     tag "${meta.id}"
     label 'process_low'
@@ -9,6 +12,7 @@ process FGBIO_FASTQTOBAM {
 
     input:
     tuple val(meta), path(reads)
+    val extension
 
     output:
     tuple val(meta), path("*.{bam,cram}"), emit: bam
@@ -20,7 +24,7 @@ process FGBIO_FASTQTOBAM {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "bam"
+    def suffix = extension ?: "bam"
     def sample_name = args.contains("--sample") ? "" : "--sample ${prefix}"
     def library_name = args.contains("--library") ? "" : "--library ${prefix}"
 
@@ -52,7 +56,7 @@ process FGBIO_FASTQTOBAM {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "bam"
+    def suffix = extension ?: "bam"
     """
     touch ${prefix}.${suffix}
     """
