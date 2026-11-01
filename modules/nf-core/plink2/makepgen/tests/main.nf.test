@@ -25,11 +25,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert process.out.pgen[0][1].toString().endsWith('.pgen') },
-                { assert process.out.pvar[0][1].toString().endsWith('.pvar') },
-                { assert process.out.psam[0][1].toString().endsWith('.psam') },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
@@ -53,8 +50,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
