@@ -192,3 +192,17 @@ authors:
   - "@atrigila"
 maintainers:
   - "@atrigila"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/r-quilt_r-base:32b4dc10c1885bdf
+      build_id: bd-32b4dc10c1885bdf_1
+      scan_id: sc-dbb547dbf2a50141_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/r-quilt_r-base:77aef0c99c29e09f
+      build_id: bd-77aef0c99c29e09f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a0/a0931a6ab39f3182c2db473fb183cf5b69a9582fe96ec42550ead425a73746c0/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/quilt/quilt/.conda-lock/linux_amd64-bd-32b4dc10c1885bdf_1.txt

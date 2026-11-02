@@ -1,0 +1,207 @@
+nextflow_process {
+
+    name "Test Process MOBSUITE_CLUSTER"
+    script "../main.nf"
+    process "MOBSUITE_CLUSTER"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mobsuite"
+    tag "mobsuite/cluster"
+    tag "mobsuite/typer"
+    tag "xz"
+    tag "xz/decompress"
+
+    def contigs = "params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta'"
+
+    // contigs.fasta split in two: meta.id 'ref' (NODE_1-3) and 'test' (NODE_4-5)
+    def split_contigs = """
+        ch_halves = channel.fromPath(${contigs}, checkIfExists: true)
+            .splitFasta(by: 3, file: true)
+            .toList()
+            .flatMap { files -> [ [ [ id:'ref' ], files[0] ], [ [ id:'test' ], files[1] ] ] }
+    """
+
+    // mob_cluster requires identical IDs in the fasta and the MOB-typer report; the taxonomy may be a superset
+    def cluster_inputs = """
+        ${split_contigs}
+        ch_taxonomy = channel.fromPath(${contigs}, checkIfExists: true)
+            .splitFasta(record: [id: true])
+            .map { rec -> rec.id + '\\tSevere acute respiratory syndrome coronavirus 2' }
+            .collectFile(name: 'taxonomy.tsv', newLine: true, seed: 'sample_id\\torganism\\n')
+        ch_input = ch_halves
+            .join(MOBSUITE_TYPER.out.report)
+            .combine(ch_taxonomy)
+    """
+
+    def typer_setup = """
+        ${split_contigs}
+        input[0] = ch_halves
+        input[1] = []
+        input[2] = []
+        input[3] = []
+        input[4] = []
+        input[5] = []
+        input[6] = []
+        input[7] = []
+        input[8] = []
+        input[9] = false
+        input[10] = false
+    """
+
+    def xz_setup = """
+        input[0] = [
+            [ id:'taxa' ],
+            file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/misc/taxa_sqlite.xz', checkIfExists: true)
+        ]
+    """
+
+    def stub_inputs = """
+        ch_stub = channel.fromPath(${contigs}, checkIfExists: true)
+            .combine(channel.of('sample_id\\tnum_contigs').collectFile(name: 'mobtyper_results.txt', newLine: true))
+            .combine(channel.of('sample_id\\torganism').collectFile(name: 'taxonomy.tsv', newLine: true))
+            .map { fasta, report, taxonomy -> [ [ id:'test' ], fasta, report, taxonomy ] }
+        ch_stub_db = channel.of('placeholder').collectFile(name: 'taxa.sqlite', newLine: true)
+    """
+
+    test("sarscov2 - contigs - build") {
+
+        setup {
+            run("MOBSUITE_TYPER") {
+                script "../../typer/main.nf"
+                process {
+                    typer_setup
+                }
+            }
+
+            run("XZ_DECOMPRESS") {
+                script "../../../xz/decompress/main.nf"
+                process {
+                    xz_setup
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                ${cluster_inputs}
+                input[0] = ch_input.filter { meta, fasta, report, taxonomy -> meta.id == 'ref' }
+                input[1] = [ [ id:'ref' ], [], [] ]
+                input[2] = XZ_DECOMPRESS.out.file.map { meta, sqlite -> sqlite }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["blastdb"]),
+                    process.out.blastdb[0][1].size()
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - contigs - update") {
+
+        setup {
+            run("MOBSUITE_TYPER") {
+                script "../../typer/main.nf"
+                process {
+                    typer_setup
+                }
+            }
+
+            run("XZ_DECOMPRESS") {
+                script "../../../xz/decompress/main.nf"
+                process {
+                    xz_setup
+                }
+            }
+
+            run("MOBSUITE_CLUSTER", alias: "MOBSUITE_CLUSTER_BUILD") {
+                script "../main.nf"
+                process {
+                    """
+                    ${cluster_inputs}
+                    input[0] = ch_input.filter { meta, fasta, report, taxonomy -> meta.id == 'ref' }
+                    input[1] = [ [ id:'ref' ], [], [] ]
+                    input[2] = XZ_DECOMPRESS.out.file.map { meta, sqlite -> sqlite }
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                ${cluster_inputs}
+                input[0] = ch_input.filter { meta, fasta, report, taxonomy -> meta.id == 'test' }
+                input[1] = MOBSUITE_CLUSTER_BUILD.out.clusters.join(MOBSUITE_CLUSTER_BUILD.out.fasta)
+                input[2] = XZ_DECOMPRESS.out.file.map { meta, sqlite -> sqlite }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["blastdb"]),
+                    process.out.blastdb[0][1].size(),
+                    ['NODE_4_length_458_cov_1.051360', 'NODE_5_length_446_cov_1.078370'].every { id -> path(process.out.clusters[0][1]).text.contains(id) }
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - contigs - build - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                ${stub_inputs}
+                input[0] = ch_stub
+                input[1] = [ [ id:'ref' ], [], [] ]
+                input[2] = ch_stub_db
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - contigs - only ref_fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                ${stub_inputs}
+                input[0] = ch_stub
+                input[1] = [ [ id:'ref' ], [], file(${contigs}, checkIfExists: true) ]
+                input[2] = ch_stub_db
+                """
+            }
+        }
+
+        then {
+            assert process.failed
+            assertAll(
+                { assert process.errorReport.contains("ref_cluster and ref_fasta must be provided together") }
+            )
+        }
+    }
+
+}

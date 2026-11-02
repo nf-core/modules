@@ -1,0 +1,235 @@
+nextflow_process {
+
+    name "Test Process EDGER_DIFFERENTIAL"
+    script "../main.nf"
+    process "EDGER_DIFFERENTIAL"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "edger"
+    tag "edger/differential"
+
+    test("mus_musculus - rnaseq - counts - treatment") {
+
+        when {
+            params {
+                module_args = '--round_digits 5'
+            }
+            process {
+                """
+                input[0] = channel.of(['id': 'treatment_hND6_mCherry', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
+                    .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
+                input[1] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"])).match() },
+                { assert path(process.out.session_info[0][1]).text.contains("edgeR_") }
+            )
+        }
+    }
+
+    test("mus_musculus - rnaseq - counts - treatment - lrt - blocking - filter_by_expr") {
+
+        when {
+            params {
+                module_args = '--round_digits 5 --test_method lrt --blocking_variables sample_number --filter_by_expr TRUE'
+            }
+            process {
+                """
+                input[0] = channel.of(['id': 'treatment_hND6_mCherry_sample_number', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
+                    .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
+                input[1] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"])).match() }
+            )
+        }
+    }
+
+    test("variancepartition_dream - formula + comparison - interaction") {
+
+        when {
+            params {
+                module_args = '--round_digits 5 --sample_id_col sample'
+            }
+            process {
+                """
+                input[0] = channel.of([
+                    'id': 'genotype_WT_KO_treatment_Control_Treated',
+                    'formula': '~ genotype * treatment',
+                    'comparison': 'genotypeWT.treatmentTreated'
+                ])
+                .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
+                input[1] = channel.of([
+                    [ id:'test' ],
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/metadata.tsv", checkIfExists: true),
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/counts.tsv", checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"])).match() }
+            )
+        }
+    }
+
+    test("variancepartition_dream - batch - subset_to_contrast") {
+
+        when {
+            params {
+                module_args = '--round_digits 5 --sample_id_col sample --subset_to_contrast_samples TRUE'
+            }
+            process {
+                """
+                input[0] = channel.of(['id': 'batch_b1_b2', 'variable': 'batch', 'reference': 'b1', 'target': 'b2'])
+                    .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
+                input[1] = channel.of([
+                    [ id:'test' ],
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/metadata.tsv", checkIfExists: true),
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/counts.tsv", checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"])).match() }
+            )
+        }
+    }
+
+    test("mus_musculus - rnaseq - counts - treatment - exclude_samples") {
+
+        when {
+            params {
+                module_args = '--round_digits 5 --exclude_samples_col sample --exclude_samples_values SRX8042383;SRX8042386'
+            }
+            process {
+                """
+                input[0] = channel.of(['id': 'treatment_hND6_mCherry', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
+                    .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
+                input[1] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"])).match() }
+            )
+        }
+    }
+
+    test("variancepartition_dream - treatment - multiple blocking - robust false") {
+
+        when {
+            params {
+                module_args = '--round_digits 4 --sample_id_col sample --blocking_variables genotype;time --robust FALSE'
+            }
+            process {
+                """
+                input[0] = channel.of(['id': 'treatment_Control_Treated', 'variable': 'treatment', 'reference': 'Control', 'target': 'Treated'])
+                    .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
+                input[1] = channel.of([
+                    [ id:'test' ],
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/metadata.tsv", checkIfExists: true),
+                    file("https://github.com/nf-core/test-datasets/raw/differentialabundance/modules_testdata/variancepartition_dream/counts.tsv", checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["md_plot", "bcv_plot", "rdata", "session_info"])).match() }
+            )
+        }
+    }
+
+    test("mus_musculus - rnaseq - counts - treatment - exclude reference level - fails") {
+
+        when {
+            params {
+                module_args = '--exclude_samples_col treatment --exclude_samples_values hND6'
+            }
+            process {
+                """
+                input[0] = channel.of(['id': 'treatment_hND6_mCherry', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
+                    .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
+                input[1] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("Sample exclusion removed all samples of the reference or target level") }
+            )
+        }
+    }
+
+    test("mus_musculus - rnaseq - counts - treatment - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = channel.of(['id': 'treatment_hND6_mCherry', 'variable': 'treatment', 'reference': 'hND6', 'target': 'mCherry'])
+                    .map { tuple(it, it.variable, it.reference, it.target, it.formula, it.comparison) }
+                input[1] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.samplesheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

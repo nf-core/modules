@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SVTK_STANDARDIZE {
     tag "$meta.id"
     label 'process_low'
@@ -10,6 +13,7 @@ process SVTK_STANDARDIZE {
     input:
     tuple val(meta), path(input)
     tuple val(meta2), path (fai)
+    val caller
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
@@ -31,7 +35,7 @@ process SVTK_STANDARDIZE {
         ${contigs} \\
         ${input} \\
         ${prefix}.vcf.gz \\
-        $meta.caller
+        ${caller}
 
     """
 
@@ -40,7 +44,7 @@ process SVTK_STANDARDIZE {
     if ("$input" == "${prefix}.vcf.gz") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
 
     """
-    echo | gzip > ${prefix}.vcf.gz
+    echo "" | gzip > ${prefix}.vcf.gz
 
     """
 }

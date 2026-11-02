@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { KRAKEN2_KRAKEN2                } from '../../../modules/nf-core/kraken2/kraken2/main'
 include { KRAKENTOOLS_EXTRACTKRAKENREADS } from '../../../modules/nf-core/krakentools/extractkrakenreads/main'
 

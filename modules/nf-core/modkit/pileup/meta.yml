@@ -6,8 +6,7 @@ keywords:
   - long-read
 tools:
   - "modkit":
-      description: A bioinformatics tool for working with modified bases in Oxford
-        Nanopore sequencing data
+      description: A bioinformatics tool for working with modified bases in Oxford Nanopore sequencing data
       homepage: https://github.com/nanoporetech/modkit
       documentation: https://github.com/nanoporetech/modkit
       tool_dev_url: https://github.com/nanoporetech/modkit
@@ -26,8 +25,7 @@ input:
         ontologies: []
     - bai:
         type: file
-        description: Associated index file for BAM. Both BAI and CSI indices
-          are supported by modkit (via htslib).
+        description: Associated index file for BAM. Both BAI and CSI indices are supported by modkit (via htslib).
         pattern: "*.{bai,csi}"
         ontologies: []
   - - meta2:
@@ -37,10 +35,7 @@ input:
           e.g. `[ id:'hg38' ]`
     - fasta:
         type: file
-        description: Reference sequence in FASTA format. Required for motif (e.g.
-          CpG) filtering. Note that when using --cpg via ext.args, you must also
-          pass --modified-bases (e.g. '--cpg --modified-bases 5mC') or modkit
-          will error with a missing required argument.
+        description: Reference sequence in FASTA format. Required for motif (e.g. CpG) filtering. Note that when using --cpg via ext.args, you must also pass --modified-bases (e.g. '--cpg --modified-bases 5mC') or modkit will error with a missing required argument.
         pattern: "*.fasta"
         ontologies: []
     - fai:
@@ -55,13 +50,7 @@ input:
           e.g. `[ id:'regions' ]`
     - bed:
         type: file
-        description: BED file that will restrict threshold estimation and pileup
-          results to positions overlapping intervals in the file. Must be in
-          BED3 (chr, start, end) or BED6 format; modkit rejects other column
-          counts with "improperly formatted BED line, must be BED3 or BED6"
-          followed by "zero valid positions parsed from BED file". Note also
-          that modkit requires --motif or --modified-bases in ext.args whenever
-          --include-bed is used, and errors out otherwise.
+        description: BED file that will restrict threshold estimation and pileup results to positions overlapping intervals in the file. Must be in BED3 (chr, start, end) or BED6 format; modkit rejects other column counts with "improperly formatted BED line, must be BED3 or BED6" followed by "zero valid positions parsed from BED file". Note also that modkit requires --motif or --modified-bases in ext.args whenever --include-bed is used, and errors out otherwise.
         pattern: "*.bed"
         ontologies: []
 output:
@@ -115,3 +104,27 @@ authors:
 maintainers:
   - "@fellen31"
   - "@jkh00"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/ont-modkit:0.6.4--0c623277f8775a30
+      build_id: bd-0c623277f8775a30_1
+      scan_id: sc-e1e7c8b0343af77b_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/ont-modkit:0.6.4--b0cf3a2b01aa496e
+      build_id: bd-b0cf3a2b01aa496e_1
+      scan_id: sc-bd1a1a2850f5e5a1_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/ont-modkit:0.6.4--b279ba2d2cbcbf95
+      build_id: bd-b279ba2d2cbcbf95_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/65/65e515e445d31be38188af5fe636e71af18abc601afacf80e9021a4752da6332/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/ont-modkit:0.6.4--3622b11f63dc1e51
+      build_id: bd-3622b11f63dc1e51_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7d/7d6b7620af280be798b98266ea5e8542a84991bec149446f2f29567bf89259da/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/modkit/pileup/.conda-lock/linux_amd64-bd-0c623277f8775a30_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/modkit/pileup/.conda-lock/linux_arm64-bd-b0cf3a2b01aa496e_1.txt

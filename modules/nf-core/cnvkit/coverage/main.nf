@@ -1,3 +1,5 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
 
 process CNVKIT_COVERAGE {
     tag "$meta.id"
@@ -9,7 +11,8 @@ process CNVKIT_COVERAGE {
 :         'community.wave.seqera.io/library/cnvkit:0.9.14--288e98d6210b7304' }"
 
     input:
-    tuple val(meta), path(alignment_file), path(interval)
+    tuple val(meta), path(alignment_file), path(alignment_index), path(interval)
+    tuple val(meta2), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("*.cnn"), emit: coverage
@@ -23,25 +26,23 @@ process CNVKIT_COVERAGE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}" // prefix is used to distinguish between target and antitarget files in output.
+    def reference = fasta ? "--fasta ${fasta}" : ""
 
     """
     cnvkit.py \\
         coverage \\
             ${alignment_file} \\
             ${interval} \\
+            ${reference} \\
             ${args} \\
             --processes ${task.cpus} \\
             --output ${prefix}.cnn
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    echo $args
-
     touch ${prefix}.cnn
-
     """
 }

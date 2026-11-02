@@ -12,14 +12,13 @@ nextflow_workflow {
     tag "subworkflows/vcf_extract_relate_somalier"
     tag "vcf_extract_relate_somalier"
 
+    tag "bcftools"
+    tag "bcftools/merge"
+    tag "htslib"
+    tag "htslib/bgziptabix"
+    tag "somalier"
     tag "somalier/extract"
     tag "somalier/relate"
-    tag "somalier"
-    tag "htslib/bgziptabix"
-    tag "htslib"
-
-    tag "bcftools/merge"
-    tag "bcftools"
 
     test("homo_sapiens minimal - vcf 1 - fasta - fai - sites - [] - [] - []") {
         when {

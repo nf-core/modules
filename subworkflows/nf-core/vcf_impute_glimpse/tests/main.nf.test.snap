@@ -28,11 +28,11 @@
                 ]
             ]
         ],
+        "timestamp": "2026-02-05T17:55:59.489127406",
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.3"
-        },
-        "timestamp": "2026-02-05T17:55:59.489127406"
+        }
     },
     "homo_sapiens - vcf and sample, panel vcf region, chunks, map, no chunking": {
         "content": [
@@ -71,11 +71,11 @@
                 ]
             ]
         ],
+        "timestamp": "2026-02-05T17:56:13.67995817",
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.3"
-        },
-        "timestamp": "2026-02-05T17:56:13.67995817"
+        }
     },
     "homo_sapiens - stub test": {
         "content": [
@@ -83,16 +83,16 @@
                 "chunks": [
                     [
                         {
-                            "panel": "ref_panel",
-                            "chr": "22"
+                            "chr": "22",
+                            "panel": "ref_panel"
                         },
                         "chr22:16570065-16597215",
                         "chr22:16570065-16592216"
                     ],
                     [
                         {
-                            "panel": "ref_panel",
-                            "chr": "22"
+                            "chr": "22",
+                            "panel": "ref_panel"
                         },
                         "chr22:16587172-16609999",
                         "chr22:16592229-16609999"
@@ -101,9 +101,9 @@
                 "vcf_index": [
                     [
                         {
+                            "chr": "22",
                             "id": "input_vcf",
-                            "panel": "ref_panel",
-                            "chr": "22"
+                            "panel": "ref_panel"
                         },
                         "input_vcf_22_ligate.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940",
                         "input_vcf_22_ligate.vcf.gz.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
@@ -111,10 +111,10 @@
                 ]
             }
         ],
+        "timestamp": "2026-10-18T22:25:59.59304",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.3"
-        },
-        "timestamp": "2026-02-05T17:56:24.364485311"
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.2"
+        }
     }
 }
