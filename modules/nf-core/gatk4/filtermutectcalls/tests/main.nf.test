@@ -42,12 +42,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.findAll { key, val -> key.startsWith("versions") },
-                    path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    path(process.out.tbi[0][1]).linesGzip.toString().contains("TBI"),
-                    file(process.out.stats[0][1]).readLines()[0]
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf"], unstableKeys: ["tbi"])).match() }
             )
         }
 
@@ -85,12 +80,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.findAll { key, val -> key.startsWith("versions") },
-                    path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    path(process.out.tbi[0][1]).linesGzip.toString().contains("TBI"),
-                    file(process.out.stats[0][1]).readLines()[0..5]
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf"], unstableKeys: ["tbi"])).match() }
             )
         }
     }
@@ -127,22 +117,17 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.findAll { key, val -> key.startsWith("versions") },
-                    path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    path(process.out.tbi[0][1]).linesGzip.toString().contains("TBI"),
-                    file(process.out.stats[0][1]).readLines()[0]
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf"], unstableKeys: ["tbi"])).match() }
             )
         }
     }
 
-    test("human - vcf - stats-name-mismatch") {
+    test("human - vcf - stats renamed") {
 
         when {
             process {
                 """
-                // stats file name does not match the vcf (<vcf>.stats), so GATK cannot pick it up implicitly
+                // stats not named <vcf>.stats: GATK only finds it through --stats
                 def stats = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz.stats', checkIfExists: true)
                     .copyTo(file("${outputDir}/renamed.mutect2.stats"))
                 input[0] = [
@@ -172,12 +157,45 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.findAll { key, val -> key.startsWith("versions") },
-                    path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    path(process.out.tbi[0][1]).linesGzip.toString().contains("TBI"),
-                    file(process.out.stats[0][1]).readLines()[0]
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf"], unstableKeys: ["tbi"])).match() }
+            )
+        }
+
+    }
+
+    test("human - vcf - no stats - fails") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz.tbi', checkIfExists: true),
+                    [],
+                    [],
+                    [],
+                    [],
+                    []
+                    ]
+
+                input[1] = [ [ id:'genome' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                    ]
+                input[2] = [ [ id:'genome' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                    ]
+                input[3] = [ [ id:'genome' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.dict', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("Mutect stats table") }
             )
         }
 
@@ -217,7 +235,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
