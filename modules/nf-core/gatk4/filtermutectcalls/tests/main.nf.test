@@ -137,6 +137,52 @@ nextflow_process {
         }
     }
 
+    test("human - vcf - stats-name-mismatch") {
+
+        when {
+            process {
+                """
+                // stats file name does not match the vcf (<vcf>.stats), so GATK cannot pick it up implicitly
+                def stats = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz.stats', checkIfExists: true)
+                    .copyTo(file("${outputDir}/renamed.mutect2.stats"))
+                input[0] = [
+                    [ id:'test'], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/paired_mutect2_calls/test_test2_paired_mutect2_calls.vcf.gz.tbi', checkIfExists: true),
+                    stats,
+                    [],
+                    [],
+                    [],
+                    []
+                    ]
+
+                input[1] = [ [ id:'genome' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true)
+                    ]
+                input[2] = [ [ id:'genome' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                    ]
+                input[3] = [ [ id:'genome' ], // meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.dict', checkIfExists: true)
+                    ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith("versions") },
+                    path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    path(process.out.tbi[0][1]).linesGzip.toString().contains("TBI"),
+                    file(process.out.stats[0][1]).readLines()[0]
+                ).match() }
+            )
+        }
+
+    }
+
     test("human - vcf - stub") {
 
         options "-stub"

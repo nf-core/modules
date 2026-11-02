@@ -36,7 +36,7 @@ input:
         ontologies: []
     - stats:
         type: file
-        description: Stats file that pairs with output vcf file
+        description: Stats file that pairs with the input vcf file (Mutect2 or MergeMutectStats output). Passed to FilterMutectCalls via --stats. If not provided, GATK looks for <vcf>.stats next to the input vcf.
         pattern: "*vcf.gz.stats"
         ontologies: []
     - orientationbias:
