@@ -6,8 +6,7 @@ keywords:
   - antibiotic resistance
 tools:
   - amrfinderplus:
-      description: AMRFinderPlus finds antimicrobial resistance and other genes in protein
-        or nucleotide sequences.
+      description: AMRFinderPlus finds antimicrobial resistance and other genes in protein or nucleotide sequences.
       homepage: https://github.com/ncbi/amr/wiki
       documentation: https://github.com/ncbi/amr/wiki
       tool_dev_url: https://github.com/ncbi/amr
@@ -72,13 +71,11 @@ output:
   tool_version:
     - VER:
         type: string
-        description: The version of the tool in string format (useful for downstream
-          tools such as hAMRronization)
+        description: The version of the tool in string format (useful for downstream tools such as hAMRronization)
   db_version:
     - DBVER:
         type: string
-        description: The version of the used database in string format (useful for downstream
-          tools such as hAMRronization)
+        description: The version of the used database in string format (useful for downstream tools such as hAMRronization)
   versions_amrfinderplus:
     - - "${task.process}":
           type: string
@@ -127,3 +124,27 @@ maintainers:
   - "@rpetit3"
   - "@louperelo"
   - "@jfy133"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/ncbi-amrfinderplus:4.2.7--60903f6584a51c19
+      build_id: bd-60903f6584a51c19_1
+      scan_id: sc-21711be33bce781c_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/ncbi-amrfinderplus:4.2.7--01f7d2a8fad0d3aa
+      build_id: bd-01f7d2a8fad0d3aa_1
+      scan_id: sc-934b3c935d77b92b_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/ncbi-amrfinderplus:4.2.7--75163eb7e6851518
+      build_id: bd-75163eb7e6851518_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/00/00cad0bb4c7cb85b0906f357e5197bcabb32569f9b48ff049f081b5bafd04aca/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/ncbi-amrfinderplus:4.2.7--62e4093a6de0ba85
+      build_id: bd-62e4093a6de0ba85_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/10/105a6193a3e527cdd00a755ef7bd9362ea8defda0831268b010cdee48db30e7c/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/amrfinderplus/run/.conda-lock/linux_amd64-bd-01f7d2a8fad0d3aa_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/amrfinderplus/run/.conda-lock/linux_arm64-bd-60903f6584a51c19_1.txt
