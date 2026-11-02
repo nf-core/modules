@@ -6,9 +6,9 @@ process AMRFINDERPLUS_RUN {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ncbi-amrfinderplus:4.2.7--hf69ffd2_0':
-        'quay.io/biocontainers/ncbi-amrfinderplus:4.2.7--hf69ffd2_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/00/00cad0bb4c7cb85b0906f357e5197bcabb32569f9b48ff049f081b5bafd04aca/data'
+        : 'community.wave.seqera.io/library/ncbi-amrfinderplus:4.2.7--01f7d2a8fad0d3aa'}"
 
     input:
     tuple val(meta), path(fasta)
