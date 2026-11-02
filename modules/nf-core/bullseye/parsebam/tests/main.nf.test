@@ -1,0 +1,71 @@
+nextflow_process {
+
+    name "Test Process BULLSEYE_PARSEBAM"
+    script "../main.nf"
+    process "BULLSEYE_PARSEBAM"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bullseye"
+    tag "bullseye/parsebam"
+
+    test("bullseye - dart bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'dart' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/dart.chr22_test.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/dart.chr22_test.bam.bai', checkIfExists: true),
+                ]
+                input[1] = 1
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.matrix[0][1] ==~ ".*/dart.matrix.gz" },
+                { assert process.out.matrix[0][2] ==~ ".*/dart.matrix.gz.tbi" },
+                { assert path(process.out.matrix[0][1]).linesGzip.size() > 0 },
+                { assert path(process.out.matrix[0][1]).linesGzip[0].split("\t").size() >= 8 },
+                { assert path(process.out.matrix[0][1]).linesGzip[0].split("\t")[0] == 'chr22_test' },
+                { assert path(process.out.matrix[0][1]).linesGzip.every { it.split("\t")[7] as int >= 1 } },
+                { assert process.out.versions_bullseye[0][1] == 'bullseye' },
+                { assert snapshot(
+                    process.out,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("bullseye - dart bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'dart' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/dart.chr22_test.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/dart.chr22_test.bam.bai', checkIfExists: true),
+                ]
+                input[1] = 1
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.matrix[0][1] ==~ ".*/dart.matrix.gz" },
+                { assert process.out.matrix[0][2] ==~ ".*/dart.matrix.gz.tbi" }
+            )
+        }
+    }
+
+}
