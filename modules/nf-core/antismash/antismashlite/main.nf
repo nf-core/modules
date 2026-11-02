@@ -7,8 +7,8 @@ process ANTISMASH_ANTISMASHLITE {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/antismash-lite:7.1.0--pyhdfd78af_0'
-        : 'quay.io/biocontainers/antismash-lite:7.1.0--pyhdfd78af_0'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fc/fc6d66406ec944b47551bf8bb01df1305b6eb84decf18d449b395709f94f9c38/data'
+        : 'community.wave.seqera.io/library/antismash-lite:7.1.0--9ae8ceb97e6d123a'}"
 
     containerOptions (
         ['singularity', 'apptainer'].contains(workflow.containerEngine)
