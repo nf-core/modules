@@ -36,9 +36,13 @@ nextflow_process {
         }
 
         then {
+            // The database is downloaded live by AMRFINDERPLUS_UPDATE, so its version changes with each NCBI release
+            def db_version_keys = ['db_version', 'versions_amrfinderplus_database']
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert process.out.db_version[0] ==~ /\d{4}-\d{2}-\d{2}\.\d+/ },
+                { assert process.out.versions_amrfinderplus_database[0][2] ==~ /\d{4}-\d{2}-\d{2}\.\d+/ },
+                { assert snapshot(sanitizeOutput(process.out).findAll { key, val -> !(key in db_version_keys) }).match() }
             )
         }
     }
