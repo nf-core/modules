@@ -281,6 +281,8 @@ nextflow_process {
                     file(process.out.log_progress[0][1]).readLines().contains("ALL DONE!"),
                     file(process.out.bam_sorted[0][1]).name,
                     bam(process.out.bam_sorted[0][1]).getStatistics(),
+                    file(process.out.summary[0][1]).name,
+                    file(process.out.summary[0][1]).readLines().size()
                 ).match() }
             )
         }
