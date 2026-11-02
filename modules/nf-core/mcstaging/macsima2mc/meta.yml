@@ -25,10 +25,9 @@ input:
           e.g. `[ id:'sample1' ]`
     - input_dir:
         type: directory
-        description: Absolute path to the the parent folder of the raw tiles,
-          whose name follows the pattern X_Cycle_N,where N represents the cycle
-          number
-        pattern: "*Cycle*"
+        description: Absolute path to the the ROI folder containing cycle folders following the pattern of the X_Cycle_N, where N represents the cycle
+          number, containing the raw tiles.
+        pattern: "ROI*"
     - output_dir:
         type: string
         description: Absolute path to the directory in which the outputs will be
@@ -72,3 +71,14 @@ authors:
 maintainers:
   - "@EfraMP"
   - "@VictorDidier"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/python_macsima2mc:e3c1eb940a13b88b
+      build_id: bd-e3c1eb940a13b88b_1
+      scan_id: sc-25be4d73977209e3_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/python_macsima2mc:1eb779069d7f6426
+      build_id: bd-1eb779069d7f6426_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2f/2f571113c86e3216bf5fd714885f5521b813c4599a2852a15867d5bf3137a235/data
