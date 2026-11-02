@@ -61,14 +61,14 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
     ch_getpileupsummaries_in = ch_input
         .flatMap { meta, tumor_input, tumor_input_index, normal_input, normal_input_index ->
             def result = [
-                [[id: "${meta.id}_tumor", original_meta: meta], // Add unique key so output files receive differing names
+                [[id: "${meta.id}_tumor", original_meta: meta], // Add unique meta.id to ensure output files from GATK4_GETPILEUPSUMMARIES receive different names for the tumor and normal samples
                 tumor_input,
                 tumor_input_index]
                 ]
 
             if (normal_input && normal_input_index) {
                 result << [
-                    [id: "${meta.id}_normal", original_meta: meta], // Add unique key so output files receive differing names
+                    [id: "${meta.id}_normal", original_meta: meta], // Add unique meta.id to ensure output files from GATK4_GETPILEUPSUMMARIES receive different names for the tumor and normal samples
                     normal_input,
                     normal_input_index
                     ]
