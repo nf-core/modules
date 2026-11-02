@@ -25,10 +25,10 @@ input:
           e.g. `[ id:'sample1' ]`
     - input_dir:
         type: directory
-        description:
-          Absolute path to the the ROI folder containing cycle folders following the pattern of the X_Cycle_N, where N represents the cycle
-          number, containing the raw tiles.
-        pattern: "ROI*"
+        description: Absolute path to the the parent folder of the raw tiles,
+          whose name follows the pattern X_Cycle_N,where N represents the cycle
+          number
+        pattern: "*Cycle*"
     - output_dir:
         type: string
         description: Absolute path to the directory in which the outputs will be

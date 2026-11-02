@@ -28,17 +28,10 @@ process MCSTAGING_MACSIMA2MC {
     def args   = task.ext.args   ?: ''
 
     """
-    mkdir -p ${output_dir}
-
-    # iterate over individual cycle folders and create a single tiff file for each cycle
-    for cycle in ${input_dir}/*Cycle*;
-    do
-        cycle_folder=\$(basename "\$cycle")
-        macsima2mc \\
-            -i \$cycle \\
-            -o ${output_dir} \\
-            ${args}
-    done
+    macsima2mc \
+        -i ${input_dir} \
+        -o ${output_dir} \
+        ${args}
     """
 
     stub:
