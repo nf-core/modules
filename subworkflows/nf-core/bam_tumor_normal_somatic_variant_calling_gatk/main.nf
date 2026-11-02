@@ -101,8 +101,7 @@ workflow BAM_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING_GATK {
 
     GATK4_FILTERMUTECTCALLS(
         ch_filtermutect_in,
-        ch_fasta.combine(ch_fai).map { meta, fasta, _meta_fai, fai, _gzi -> [meta, fasta, fai] },
-        ch_dict,
+        ch_fasta.combine(ch_fai).combine(ch_dict).map { meta, fasta, _meta_fai, fai, _gzi, _meta_dict, dict -> [meta, fasta, fai, dict] },
     )
 
     emit:
