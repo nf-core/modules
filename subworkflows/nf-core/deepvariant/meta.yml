@@ -65,6 +65,20 @@ output:
         Index for the GVCF.
         Structure: [ val(meta), path(gvcf_index) ]
       pattern: "*.tbi"
+  - phased_reads_switches:
+      type: file
+      description: |
+        Phase set stitching status for each shard and region, from the merge
+        of the phased read inputs. Only created when with_phasing is true.
+        Structure: [ val(meta), path(phased_reads_switches) ]
+      pattern: "*.phased_reads_switches.tsv"
+  - phased_reads_corrected:
+      type: file
+      description: |
+        Corrected phase of each read after the merge of the phased read
+        inputs. Only created when with_phasing is true.
+        Structure: [ val(meta), path(phased_reads_corrected) ]
+      pattern: "*.phased_reads_corrected.tsv"
 authors:
   - "@abhi18av"
   - "@ramprasadn"
