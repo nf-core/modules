@@ -266,17 +266,6 @@ output:
           pattern: "*.Aligned.out.sam"
           ontologies:
             - edam: "http://edamontology.org/format_2573" # SAM
-  chimeric_juntionc:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information.
-      - ${prefix}.Chimeric.out.junction:
-          type: file
-          description: STAR chimeric junction output file (optional)
-          pattern: "*Chimeric.out.junction"
-          ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
   wig:
     - - meta:
           type: map
@@ -299,6 +288,17 @@ output:
           pattern: "*.bg"
           ontologies:
             - edam: http://edamontology.org/format_3583 # bedGraph
+  chimeric_junction:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information.
+      - ${prefix}.Chimeric.out.junction:
+          type: file
+          description: STAR chimeric junction output file (optional)
+          pattern: "*Chimeric.out.junction"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
 topics:
   versions:
     - - ${task.process}:

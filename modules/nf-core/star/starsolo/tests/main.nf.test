@@ -242,7 +242,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = "--soloUMIlen 12 --outSAMtype BAM SortedByCoordinate --soloBarcodeReadLength 0 --limitBAMsortRAM 5000000000 --outWigType wiggle --outWigStrand Stranded --outWigNorm RPM --chimSegmentMin 20 --chimOutType Junctions --chimJunctionOverhangMin 20"
+                module_args = "--soloUMIlen 12 --outSAMtype BAM SortedByCoordinate --soloBarcodeReadLength 0 --limitBAMsortRAM 5000000000 --outWigType wiggle --outWigStrand Stranded --outWigNorm RPM --chimSegmentMin 1 --chimOutType Junctions --chimJunctionOverhangMin 1"
             }
 
             process {
