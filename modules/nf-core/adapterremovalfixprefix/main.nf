@@ -7,9 +7,9 @@ process ADAPTERREMOVALFIXPREFIX {
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/adapterremovalfixprefix:0.0.5--hdfd78af_2':
-        'quay.io/biocontainers/adapterremovalfixprefix:0.0.5--hdfd78af_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fc/fcbd0698a0040500e6509ae9d79603db1dd42900980b95e057459f1d87a567fa/data'
+        : 'community.wave.seqera.io/library/adapterremovalfixprefix:0.0.5--930e325758ebb090'}"
 
     input:
     tuple val(meta), path(fastq)
@@ -37,6 +37,6 @@ process ADAPTERREMOVALFIXPREFIX {
     """
     echo ${args}
 
-    echo | gzip > ${prefix}.fq.gz
+    echo "" | gzip > ${prefix}.fq.gz
     """
 }
