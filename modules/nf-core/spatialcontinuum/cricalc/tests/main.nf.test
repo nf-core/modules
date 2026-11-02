@@ -1,12 +1,13 @@
 nextflow_process {
 
-    name "Test Process SPATIALCONTINUUM"
+    name "Test Process SPATIALCONTINUUM_CRICALC"
     script "../main.nf"
-    process "SPATIALCONTINUUM"
+    process "SPATIALCONTINUUM_CRICALC"
 
     tag "modules"
     tag "modules_nfcore"
     tag "spatialcontinuum"
+    tag "spatialcontinuum/cricalc"
 
     test("clinical - sample") {
 
