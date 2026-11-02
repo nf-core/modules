@@ -7,8 +7,8 @@ process BWAMETH_INDEX {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b8/b806996da500b3cc610c48536ce3a5151a0ff512228e313439534ba08a6acda2/data'
-:         'community.wave.seqera.io/library/bwameth:0.2.9--63cb7f0b9f8eae9d' }"
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/44/4405ebf9fd0b415a9e28b0cb503b11af0e86c88ab335b098ff4cf48f8f0162e1/data'
+:         'community.wave.seqera.io/library/bwameth:0.2.10--a589797f382631bc' }"
 
     input:
     tuple val(meta), path(fasta, name: "BwamethIndex/")
