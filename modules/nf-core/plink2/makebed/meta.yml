@@ -1,0 +1,117 @@
+name: "plink2_makebed"
+description: |
+  Convert a PLINK 2 PGEN/PVAR/PSAM fileset to PLINK 1 binary BED/BIM/FAM format.
+  The conversion can be lossy: PLINK 1 binary files store hard calls only, so any dosages
+  are converted to hard calls according to `--hard-call-threshold`, and multiallelic
+  variants must be split or removed beforehand. Pass such options through `ext.args`.
+keywords:
+  - plink2
+  - pgen
+  - bed
+  - genotype
+  - conversion
+tools:
+  - "plink2":
+      description: "Whole genome association analysis toolset designed for large-scale genetic analyses."
+      homepage: "https://www.cog-genomics.org/plink/2.0/"
+      documentation: "https://www.cog-genomics.org/plink/2.0/data"
+      tool_dev_url: "https://github.com/chrchang/plink-ng"
+      doi: "10.1186/s13742-015-0047-8"
+      licence: ["GPL-3.0-or-later"]
+      identifier: "biotools:plink"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing dataset information
+          e.g. `[ id:'population1' ]`
+    - pgen:
+        type: file
+        description: PLINK 2 binary genotype table; must share its basename with the PSAM and PVAR files
+        pattern: "*.pgen"
+        ontologies: []
+    - psam:
+        type: file
+        description: PLINK 2 sample information file; must share its basename with the PGEN and PVAR files
+        pattern: "*.psam"
+        ontologies: []
+    - pvar:
+        type: file
+        description: |
+          PLINK 2 variant information file; must share its basename with the PGEN and PSAM files.
+          A Zstandard-compressed `.pvar.zst` file is not read, as `--pfile` is used without the `vzs` modifier.
+        pattern: "*.pvar"
+        ontologies: []
+output:
+  bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing dataset information
+            e.g. `[ id:'population1' ]`
+      - "*.bed":
+          type: file
+          description: PLINK 1 binary genotype file
+          pattern: "*.bed"
+          ontologies: []
+      - "*.bim":
+          type: file
+          description: PLINK 1 variant information file
+          pattern: "*.bim"
+          ontologies: []
+      - "*.fam":
+          type: file
+          description: PLINK 1 sample information file
+          pattern: "*.fam"
+          ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing dataset information
+            e.g. `[ id:'population1' ]`
+      - "*.log":
+          type: file
+          description: PLINK 2 log file
+          pattern: "*.log"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Textual format
+  versions_plink2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - plink2:
+          type: string
+          description: The name of the tool
+      - plink2 --version 2>&1 | sed 's/^PLINK v//; s/ 64.*\$//; s/LM\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - plink2:
+          type: string
+          description: The name of the tool
+      - plink2 --version 2>&1 | sed 's/^PLINK v//; s/ 64.*\$//; s/LM\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@lyh970817"
+maintainers:
+  - "@lyh970817"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/plink2:2.0.0a.6.9--549de283a2a87237
+      build_id: bd-549de283a2a87237_1
+      scan_id: sc-8029dc1850d6eb4c_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/plink2:2.0.0a.6.9--c11ae8fea2238ccf
+      build_id: bd-c11ae8fea2238ccf_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/df/dfe4443bcab39516a2063882b788b30ec8f9d2edc6a83b783f89cc03e1c1e66c/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/plink2/makebed/.conda-lock/linux_amd64-bd-549de283a2a87237_1.txt
