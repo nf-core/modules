@@ -89,7 +89,7 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
     )
 
     ch_pileup_table = GATK4_GETPILEUPSUMMARIES.out.table
-        .map { meta, table -> [meta.original_meta, table] } // Remove unique key and restore original meta
+        .map { meta, table -> [meta.original_meta, table] } // Remove unique meta.id added in ch_getpileupsummaries_in and restore original meta
 
     // Contamination and segmentation tables created using calculatecontamination on the pileup summary table
     ch_calculatecontamination_in = GATK4_GETPILEUPSUMMARIES.out.table
