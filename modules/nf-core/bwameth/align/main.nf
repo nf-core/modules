@@ -7,8 +7,8 @@ process BWAMETH_ALIGN {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/27/27fa347b345bd5ebcd0c6b5a9e9bdf39350f46c1f0a09dabee16708d316bacc5/data'
-:         'community.wave.seqera.io/library/bwameth_samtools:4df060e40f3ac9d2' }"
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1a/1a13a91efc1657e8ff4ea44354fd7ac8723d6b47f6a83b36f4ca99d035e91f05/data'
+:         'community.wave.seqera.io/library/bwameth_samtools:1ff0dd4d9a699bdc' }"
 
     input:
     tuple val(meta), path(reads)

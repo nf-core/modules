@@ -6,9 +6,9 @@ process AMPCOMBI2_CLUSTER {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ampcombi:3.0.0--pyhdfd78af_0':
-        'quay.io/biocontainers/ampcombi:3.0.0--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/06/063288a19d4f267756c136b1ac8bd06ef89ecee62bf6fcc5b27732848f118b01/data'
+        : 'community.wave.seqera.io/library/ampcombi:3.0.0--3b8b8b73f38675a2'}"
 
     input:
     path(summary_file)
