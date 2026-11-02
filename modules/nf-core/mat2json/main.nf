@@ -1,9 +1,11 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
 
 process MAT2JSON {
     tag "$meta.id - $matfile.baseName"
     label 'process_single'
 
-    container 'nf-core/mat2json:1.0.0'
+    container 'quay.io/nf-core/mat2json:1.0.0'
 
     input:
     tuple val(meta), path(matfile)

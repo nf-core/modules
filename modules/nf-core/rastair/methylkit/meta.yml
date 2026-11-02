@@ -1,5 +1,6 @@
 name: rastair_methylkit
-description: Parses rastair call output and converts it into a MethylKit-compatible format.
+description: Parses rastair call output and converts it into a
+  MethylKit-compatible format.
 keywords:
   - methylation
   - rastair
@@ -16,7 +17,9 @@ tools:
         A tool for rapid genome-wide assessment of C->T conversion as a readout for methylation. The module uses a script bundled with Rastair to convert formats.
       homepage: https://bitbucket.org/bsblabludwig/rastair/src/master/
       documentation: https://bitbucket.org/bsblabludwig/rastair/src/master/README.md
-      licence: ["GPL-3.0"]
+      licence:
+        - "GPL-3.0"
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -27,6 +30,7 @@ input:
         type: file
         description: Text file from `rastair call`
         pattern: "*.rastair_call.txt"
+        ontologies: []
 output:
   methylkit:
     - - meta:
@@ -38,13 +42,29 @@ output:
           type: file
           description: Gzipped text file in MethylKit format.
           pattern: "*methylkit.txt.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989
+  versions_rastair:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rastair:
+          type: string
+          description: The name of the tool
+      - rastair --version | sed 's/rastair //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rastair:
+          type: string
+          description: The name of the tool
+      - rastair --version | sed 's/rastair //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@eduard-casas"
 maintainers:

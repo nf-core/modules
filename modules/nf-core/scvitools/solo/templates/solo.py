@@ -3,6 +3,7 @@
 import os
 
 os.environ["MPLCONFIGDIR"] = "./tmp"
+os.environ.setdefault("TORCHINDUCTOR_CACHE_DIR", os.path.join(os.getcwd(), "torch_cache"))
 
 import anndata as ad
 import scvi
@@ -23,7 +24,7 @@ max_epochs = "${max_epochs ?: ''}"
 
 
 def train_model(model):
-    if "${task.ext.use_gpu}" == "true":
+    if "${task.accelerator ? 'true' : 'false'}" == "true":
         model.to_device(0)
 
     model.train(max_epochs=int(max_epochs) if max_epochs else None, datasplitter_kwargs={"drop_last": True})

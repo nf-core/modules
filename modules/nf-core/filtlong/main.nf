@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FILTLONG {
     tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/filtlong:0.2.1--h9a82719_0' :
-        'biocontainers/filtlong:0.2.1--h9a82719_0' }"
+        'quay.io/biocontainers/filtlong:0.2.1--h9a82719_0' }"
 
     input:
     tuple val(meta), path(shortreads), path(longreads)
@@ -30,5 +33,12 @@ process FILTLONG {
         $longreads \\
         2>| >(tee ${prefix}.log >&2) \\
         | gzip -n > ${prefix}.fastq.gz
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.fastq.gz
+    touch ${prefix}.log
     """
 }

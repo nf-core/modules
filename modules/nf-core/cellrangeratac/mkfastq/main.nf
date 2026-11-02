@@ -1,8 +1,11 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CELLRANGERATAC_MKFASTQ {
     tag "mkfastq"
     label 'process_medium'
 
-    container "nf-core/cellranger-atac-mkfastq:2.1.0"
+    container "quay.io/nf-core/cellranger-atac-mkfastq:2.1.0"
 
     input:
     path bcl

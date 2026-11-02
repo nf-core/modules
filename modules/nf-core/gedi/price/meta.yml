@@ -1,0 +1,154 @@
+name: "gedi_price"
+description: Identify translated ORFs from Ribo-seq BAMs using the PRICE algorithm
+keywords:
+  - riboseq
+  - orf
+  - price
+  - gedi
+  - translation
+tools:
+  - "gedi":
+      description: "Gedi is a Java software platform for working with genomic data
+        (sequencing reads, sequences, per-base numeric values, annotations). It
+        provides the PRICE algorithm (Probabilistic Inference of Codon Activities
+        by an EM algorithm) for ribosome profiling ORF discovery with near-cognate
+        start codon detection."
+      homepage: "https://github.com/erhard-lab/gedi"
+      documentation: "https://github.com/erhard-lab/gedi/wiki"
+      tool_dev_url: "https://github.com/erhard-lab/gedi"
+      doi: "10.1038/nmeth.4631"
+      licence:
+        - "GPL-3.0"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map identifying the cohort of Ribo-seq BAMs analysed together.
+          PRICE is run jointly across all BAMs in this tuple.
+          e.g. `[ id:'all_samples' ]`
+    - bams:
+        type: file
+        description: |
+          One or more sorted Ribo-seq BAM files. Staged under `bams/` so PRICE
+          discovers them via a generated bamlist.
+        pattern: "*.{bam}"
+        ontologies:
+          - edam: http://edamontology.org/format_2572
+    - bais:
+        type: file
+        description: Index files matching the input BAMs.
+        pattern: "*.{bai}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information. `meta2.id` must match the
+          base name used when the index was built (`<id>.oml` lives inside the
+          index directory).
+          e.g. `[ id:'homo_sapiens' ]`
+    - index:
+        type: directory
+        description: GEDI genome index directory produced by GEDI_INDEXGENOME.
+        pattern: "price_index"
+output:
+  orfs_tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map identifying the analysed cohort.
+      - ${prefix}.orfs.tsv:
+          type: file
+          description: |
+            Tab-delimited table of predicted translated ORFs with start codon,
+            location, p-value and supporting read counts.
+          pattern: "*.orfs.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  orfs_cit:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map identifying the analysed cohort.
+      - ${prefix}.orfs.cit:
+          type: file
+          description: GEDI binary CIT file of called ORFs.
+          pattern: "*.orfs.cit"
+          ontologies: []
+  orfs_metadata:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map identifying the analysed cohort.
+      - ${prefix}.orfs.cit.metadata.json:
+          type: file
+          description: JSON metadata accompanying the ORF CIT file.
+          pattern: "*.orfs.cit.metadata.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464
+  codons_cit:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map identifying the analysed cohort.
+      - ${prefix}.codons.cit:
+          type: file
+          description: GEDI binary CIT file of per-codon signal.
+          pattern: "*.codons.cit"
+          ontologies: []
+  model:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map identifying the analysed cohort.
+      - ${prefix}.model:
+          type: file
+          description: PRICE model parameters fit during the run.
+          pattern: "*.model"
+          ontologies: []
+  signal:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map identifying the analysed cohort.
+      - ${prefix}.signal.tsv:
+          type: file
+          description: Tab-delimited per-position signal summary.
+          pattern: "*.signal.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  param:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map identifying the analysed cohort.
+      - ${prefix}.param:
+          type: file
+          description: PRICE run parameters file.
+          pattern: "*.param"
+          ontologies: []
+  versions_gedi:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gedi:
+          type: string
+          description: The name of the tool
+      - "gedi -e Version 2>&1 | sed -n 's/.*Gedi version \\([^ ]*\\).*/\\1/p' | head -n 1":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gedi:
+          type: string
+          description: The name of the tool
+      - "gedi -e Version 2>&1 | sed -n 's/.*Gedi version \\([^ ]*\\).*/\\1/p' | head -n 1":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@pinin4fjords"
+maintainers:
+  - "@pinin4fjords"

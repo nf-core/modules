@@ -1,9 +1,12 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FOLDMASON_EASYMSA {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
             'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/29/299b6d1a8a81632118e9c0cd110f9d89aae58b5a0132543a7fedbecb656da570/data':
             'community.wave.seqera.io/library/foldmason_pigz:289a5a7a978299df' }"
 

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TAXONKIT_LIST {
     tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/taxonkit:0.20.0--h9ee0642_0':
-        'biocontainers/taxonkit:0.20.0--h9ee0642_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c3/c33b5ce6cec42ed5986d11c706d5726b2eb7dc0902b9c1c333a319864a3b45ea/data'
+        : 'community.wave.seqera.io/library/taxonkit:0.20.0--73c6bc587e9e62ac'}"
 
     input:
     tuple val(meta), val(taxid), path(taxidfile)
@@ -13,7 +16,7 @@ process TAXONKIT_LIST {
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml",            emit: versions
+    tuple val("${task.process}"), val('taxonkit'), eval("taxonkit version | sed 's/.* v//'"), emit: versions_taxonkit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,21 +33,11 @@ process TAXONKIT_LIST {
         --threads ${task.cpus} \\
         --out-file ${prefix}.tsv \\
         ${taxid? "<<< '$taxid'": taxidfile}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        taxonkit: \$( taxonkit version | sed 's/.* v//' )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        taxonkit: \$( taxonkit version | sed 's/.* v//' )
-    END_VERSIONS
     """
 }

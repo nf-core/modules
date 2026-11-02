@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process AMPCOMBI2_PARSETABLES {
     tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ampcombi:2.0.1--pyhdfd78af_0':
-        'biocontainers/ampcombi:2.0.1--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/06/063288a19d4f267756c136b1ac8bd06ef89ecee62bf6fcc5b27732848f118b01/data'
+        : 'community.wave.seqera.io/library/ampcombi:3.0.0--3b8b8b73f38675a2'}"
 
     input:
     tuple val(meta), path(amp_input)
@@ -16,26 +19,19 @@ process AMPCOMBI2_PARSETABLES {
     path opt_interproscan
 
     output:
-    tuple val(meta), path("${prefix}/")                            , emit: sample_dir
-    tuple val(meta), path("${prefix}/contig_gbks/")                , emit: contig_gbks, optional:true
-    tuple val(meta), path("${prefix}/${prefix}_mmseqs_matches.tsv"), emit: db_tsv     , optional:true
-    tuple val(meta), path("${prefix}/${prefix}_ampcombi.tsv")      , emit: tsv        , optional:true
-    tuple val(meta), path("${prefix}/${prefix}_amp.faa")           , emit: faa        , optional:true
-    tuple val(meta), path("${prefix}/${prefix}_ampcombi.log")      , emit: sample_log , optional:true
-    tuple val(meta), path("Ampcombi_parse_tables.log")             , emit: full_log   , optional:true
-    tuple val(meta), path("amp_${opt_amp_db}_database/")           , emit: db         , optional:true
-    tuple val(meta), path("amp_${opt_amp_db}_database/*.txt")      , emit: db_txt     , optional:true
-    tuple val(meta), path("amp_${opt_amp_db}_database/*.fasta")    , emit: db_fasta   , optional:true
-    tuple val(meta), path("amp_${opt_amp_db}_database/mmseqs2/")   , emit: db_mmseqs  , optional:true
+    tuple val(meta), path("${prefix}/"), emit: sample_dir
+    tuple val(meta), path("${prefix}/${prefix}_ampcombi.tsv"), emit: tsv, optional: true
+    tuple val(meta), path("Ampcombi_parse_tables.log"), emit: full_log, optional: true
+    tuple val(meta), path("amp_${opt_amp_db}_database/"), emit: db, optional: true
     tuple val("${task.process}"), val('ampcombi'), eval("ampcombi --version | sed 's/ampcombi //'"), emit: versions_ampcombi, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args   ?: ''
-    prefix     = task.ext.prefix ?: "${meta.id}"
-    def db_dir = opt_amp_db_dir  ? "--amp_database_dir ${opt_amp_db_dir}" : ""
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def db_dir = opt_amp_db_dir ? "--amp_database_dir ${opt_amp_db_dir}" : ""
     def interpro = opt_interproscan ? "--interproscan_output ${opt_interproscan}" : ""
 
     """
@@ -55,7 +51,6 @@ process AMPCOMBI2_PARSETABLES {
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}
-    mkdir -p ${prefix}/contig_gbks
     touch ${prefix}/${meta.id}_mmseqs_matches.tsv
     touch ${prefix}/${meta.id}_ampcombi.tsv
     touch ${prefix}/${meta.id}_amp.faa

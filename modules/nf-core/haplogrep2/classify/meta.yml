@@ -10,7 +10,8 @@ tools:
       homepage: "https://github.com/seppinho/haplogrep-cmd"
       documentation: "https://github.com/seppinho/haplogrep-cmd"
       tool_dev_url: "https://github.com/seppinho/haplogrep-cmd"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -38,13 +39,27 @@ output:
           description: text file with classification information
           pattern: "*.{txt}"
           ontologies: []
+  versions_haplogrep2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - haplogrep2:
+          type: string
+          description: The name of the tool
+      - haplogrep --version 2>&1 | sed '2!d;s/.*v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - haplogrep2:
+          type: string
+          description: The name of the tool
+      - haplogrep --version 2>&1 | sed '2!d;s/.*v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@lucpen"
 maintainers:

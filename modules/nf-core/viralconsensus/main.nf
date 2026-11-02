@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VIRALCONSENSUS {
     tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/viral_consensus:1.0.0--hcf1f8c1_0':
-        'biocontainers/viral_consensus:1.0.0--hcf1f8c1_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/31/3118c77d2f8b05387921156880d31c7be0eaeaa00cc3b26d1cbc1cb8f1f2a6d5/data'
+:         'community.wave.seqera.io/library/viral_consensus:1.0.0--350716b73a1e900e' }"
 
     input:
     tuple val(meta), path(bam)

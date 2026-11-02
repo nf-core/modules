@@ -85,6 +85,9 @@ input:
     - end:
         type: integer
         description: End position of the region to impute.
+    - buffer:
+        type: integer
+        description: Buffer, in base pairs, around the region to impute.
     - K:
         type: integer
         description: Number of ancestral haplotypes to use for imputation. Refer

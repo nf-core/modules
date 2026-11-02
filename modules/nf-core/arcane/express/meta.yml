@@ -1,0 +1,109 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "arcane_express"
+description: Runs barcode correction, mapping, and UMI resolution in one go for single-cell RNA-seq quantification with Arcane
+keywords:
+  - single-cell
+  - rnaseq
+  - quantification
+  - mapping
+  - counts
+  - transcriptomics
+tools:
+  - "arcane":
+      description: "Arcane: Alignment-free single cell RNA-seq gene expression estimation"
+      homepage: "https://arcane-95885d.gitlab.io/"
+      documentation: "https://arcane-95885d.gitlab.io/"
+      tool_dev_url: "https://gitlab.com/rahmannlab/arcane"
+      licence: ["MIT"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - reads:
+        type: file
+        description: |
+          List containing two FASTQ files: Barcode + UMI sequence (R1) and cDNA sequence (R2).
+          Accepts lists of multiple lanes.
+        pattern: "*.{fq,fastq,fq.gz,fastq.gz}"
+        ontology:
+          - edam: "http://edamontology.org/format_1930"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing index information
+          e.g. `[ id:'sarscov2_index' ]`
+    - hash:
+        type: file
+        description: Binary hash table file containing the built k-mer index produced by arcane index
+        pattern: "*.hash"
+    - info:
+        type: file
+        description: Index metadata file accompanying the hash table produced by arcane index
+        pattern: "*.info"
+  - chemistry:
+      type: string
+      description: |
+        The chemistry the sample was generated with (e.g., 'v2', 'v3', 'v4', 'v3-5p').
+        Must match the 10x Genomics chemistry. Passed to `--chemistry`.
+
+output:
+  counts:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_counts.mex.gz":
+          type: file
+          description: Compressed Matrix Market exchange format file containing the raw UMI counts
+          pattern: "*_counts.mex.gz"
+  genes:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_genes.tsv.gz":
+          type: file
+          description: Compressed TSV file containing the matrix rows (gene IDs and names)
+          pattern: "*_genes.tsv.gz"
+  barcodes:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_barcodes.tsv.gz":
+          type: file
+          description: Compressed TSV file containing the matrix columns (cell barcodes)
+          pattern: "*_barcodes.tsv.gz"
+  versions_arcane:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "arcane":
+          type: string
+          description: The name of the tool
+      - "arcane --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - arcane:
+          type: string
+          description: The name of the tool
+      - arcane --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@LeonHornich"
+maintainers:
+  - "@LeonHornich"

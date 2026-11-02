@@ -1,7 +1,5 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "gatk4_concordance"
 description: Evaluate concordance of an input VCF against a validated truth VCF
-
 keywords:
   - concordance
   - gatk4
@@ -61,8 +59,7 @@ input:
           e.g. `[ id:'bed' ]`
     - intervals:
         type: file
-        description: Bed file with the genomic regions included in the library
-          (optional)
+        description: Bed file with the genomic regions included in the library (optional)
         pattern: "*.bed"
         ontologies:
           - edam: "http://edamontology.org/format_3003"
@@ -109,8 +106,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*.tsv":
           type: file
-          description: A tab-delimited file containing the metrics with number of
-            TPs, FPs, FNs, Precision, Recall and F1 statistics
+          description: A tab-delimited file containing the metrics with number of TPs, FPs, FNs, Precision, Recall and F1 statistics
           pattern: "*.tsv"
           ontologies:
             - edam: "http://edamontology.org/format_3475"
@@ -164,3 +160,17 @@ authors:
   - "@kubranarci"
 maintainers:
   - "@kubranarci"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/gatk4-lite:4.7.0.0--79918b8b2632f4b1
+      build_id: bd-79918b8b2632f4b1_1
+      scan_id: sc-3494a4d719069a23_2
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/gatk4-lite:4.7.0.0--f28eb03ad3b2bcd5
+      build_id: bd-f28eb03ad3b2bcd5_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ce/ce8f4142326abbb74e28b97633a200b09439c54480803343b1cf13dc19e51ae5/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/gatk4/concordance/.conda-lock/linux_amd64-bd-79918b8b2632f4b1_1.txt

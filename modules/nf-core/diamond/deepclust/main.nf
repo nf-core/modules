@@ -1,15 +1,18 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DIAMOND_DEEPCLUST {
     tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/diamond:2.1.24--hf93d47f_0'
-        : 'biocontainers/diamond:2.1.24--hf93d47f_0'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/diamond:2.2.1--he361c42_0'
+        : 'quay.io/biocontainers/diamond:2.2.1--he361c42_0'}"
 
     input:
     tuple val(meta), path(fasta)
-    val save_aln // WARNING: unusable in this version (2.1.24) of diamond due to bug, leaving as placeholder
+    val save_aln
 
     output:
     tuple val(meta), path("${prefix}.tsv"), emit: clusters

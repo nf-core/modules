@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TRGT_MERGE {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/trgt:5.0.0--h9ee0642_0':
-        'biocontainers/trgt:5.0.0--h9ee0642_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b9/b94772fdcba7aa8027797b0d092a77b272cebc8d566fec3c960a1470e20223cf/data':
+        'community.wave.seqera.io/library/trgt:5.1.0--66e3b26326e566e7' }"
 
     input:
     tuple val(meta) , path(vcfs), path(tbis)

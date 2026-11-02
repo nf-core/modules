@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process KHMER_NORMALIZEBYMEDIAN {
     tag "${meta.id}"
     label 'process_long'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/khmer:3.0.0a3--py37haa7609a_2' :
-        'biocontainers/khmer:3.0.0a3--py37haa7609a_2' }"
+        'quay.io/biocontainers/khmer:3.0.0a3--py37haa7609a_2' }"
 
     input:
     tuple val(meta), path(fastq_paired), path(fastq_unpaired)
 
     output:
     tuple val(meta), path("*.fastq.gz"), emit: reads
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('khmer'), eval('normalize-by-median.py --version 2>&1 | grep ^khmer | sed "s/^khmer //"'), emit: versions_khmer, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,20 +36,11 @@ process KHMER_NORMALIZEBYMEDIAN {
         ${paired} \\
         ${unpaired} \\
         ${input_sequence_filename}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        khmer: \$( normalize-by-median.py --version 2>&1 | grep ^khmer | sed 's/^khmer //' )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}_normalized"
     """
     echo "" | gzip > ${prefix}.fastq.gz
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        khmer: \$( normalize-by-median.py --version 2>&1 | grep ^khmer | sed 's/^khmer //' )
-    END_VERSIONS
     """
 }

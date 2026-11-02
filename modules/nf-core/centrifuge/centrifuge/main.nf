@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CENTRIFUGE_CENTRIFUGE {
     tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/centrifuge:1.0.4.2--hdcf5f25_0'
-        : 'biocontainers/centrifuge:1.0.4.2--hdcf5f25_0'}"
+        : 'quay.io/biocontainers/centrifuge:1.0.4.2--hdcf5f25_0'}"
 
     input:
     tuple val(meta), path(reads)

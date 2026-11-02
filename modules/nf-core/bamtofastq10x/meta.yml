@@ -1,7 +1,5 @@
 name: bamtofastq10x
-description: Tool for converting 10x BAMs produced by Cell Ranger, Space Ranger,
-  Cell Ranger ATAC, Cell Ranger DNA, and Long Ranger back to FASTQ files that
-  can be used as inputs to re-run analysis
+description: Tool for converting 10x BAMs produced by Cell Ranger, Space Ranger, Cell Ranger ATAC, Cell Ranger DNA, and Long Ranger back to FASTQ files that can be used as inputs to re-run analysis
 keywords:
   - bam
   - convert
@@ -9,9 +7,7 @@ keywords:
   - 10x
 tools:
   - bamtofastq10x:
-      description: Tool for converting 10x BAMs produced by Cell Ranger, Space
-        Ranger, Cell Ranger ATAC, Cell Ranger DNA, and Long Ranger back to FASTQ
-        files that can be used as inputs to re-run analysis
+      description: Tool for converting 10x BAMs produced by Cell Ranger, Space Ranger, Cell Ranger ATAC, Cell Ranger DNA, and Long Ranger back to FASTQ files that can be used as inputs to re-run analysis
       homepage: https://github.com/10XGenomics/bamtofastq
       documentation: https://github.com/10XGenomics/bamtofastq
       tool_dev_url: https://github.com/10XGenomics/bamtofastq
@@ -67,3 +63,27 @@ authors:
   - "@BlueBicycleBlog"
 maintainers:
   - "@BlueBicycleBlog"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/10x_bamtofastq:1.4.1--49efc1dd5fd8533c
+      build_id: bd-49efc1dd5fd8533c_1
+      scan_id: sc-0e0717fd40b71860_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/10x_bamtofastq:1.4.1--a7cbf7b60c2c3fd7
+      build_id: bd-a7cbf7b60c2c3fd7_1
+      scan_id: sc-6d7cf6cf032b5de9_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/10x_bamtofastq:1.4.1--6932e82c31d4d784
+      build_id: bd-6932e82c31d4d784_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/95/95e369e8e54b4d483c85a1584cf0874f5d2efd547928223557e3d8da2f7ee5ec/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/10x_bamtofastq:1.4.1--b3bf15698d779cd0
+      build_id: bd-b3bf15698d779cd0_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a3/a30c779e5c15d78073dd7cde7d99f843f332321a42c117c021870d6bcb130b47/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bamtofastq10x/.conda-lock/linux_amd64-bd-a7cbf7b60c2c3fd7_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/bamtofastq10x/.conda-lock/linux_arm64-bd-49efc1dd5fd8533c_1.txt

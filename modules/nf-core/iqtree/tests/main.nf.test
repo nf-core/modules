@@ -57,7 +57,7 @@ nextflow_process {
                 { assert snapshot(  path(process.out.mldist.get(0).get(1)).readLines().first(),
                                     path(process.out.report.get(0).get(1)).readLines().first(),
                                     path(process.out.log.get(0).get(1)).readLines().first(),
-                                    process.out.versions ).match() }
+                                    process.out.findAll { key, val -> key.startsWith('versions') } ).match() }
             )
         }
     }
@@ -113,7 +113,7 @@ test("setoxin - treels") {
                 { assert snapshot(  path(process.out.mldist.get(0).get(1)).readLines().first(),
                                     path(process.out.report.get(0).get(1)).readLines().first(),
                                     path(process.out.log.get(0).get(1)).readLines().first(),
-                                    process.out.versions ).match() }
+                                    process.out.findAll { key, val -> key.startsWith('versions') } ).match() }
             )
         }
     }
@@ -170,7 +170,7 @@ test("setoxin - treels") {
                                     path(process.out.mldist.get(0).get(1)).readLines().first(),
                                     path(process.out.report.get(0).get(1)).readLines().first(),
                                     path(process.out.log.get(0).get(1)).readLines().first(),
-                                    process.out.versions ).match() }
+                                    process.out.findAll { key, val -> key.startsWith('versions') } ).match() }
             )
         }
     }
@@ -228,7 +228,7 @@ test("setoxin - treels") {
                 { assert process.out.exch_matrix    == []},
                 { assert snapshot(  path(process.out.log.get(0).get(1)).readLines().first(),
                                     process.out.suptree,
-                                    process.out.versions ).match() }
+                                    process.out.findAll { key, val -> key.startsWith('versions') } ).match() }
             )
         }
     }
@@ -284,7 +284,7 @@ test("setoxin - treels") {
                                     process.out.rate,
                                     process.out.state,
                                     process.out.splits,
-                                    process.out.versions ).match() }
+                                    process.out.findAll { key, val -> key.startsWith('versions') } ).match() }
             )
         }
     }

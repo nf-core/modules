@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process QUALIMAP_BAMQC {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2b/2b795495fdae4cb3319d19ed4a694302366aa574ba15a0613b85c602f0de4911/data' :
-        'community.wave.seqera.io/library/qualimap:2.3--c1797c2253925b3a' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/43/43d53d976495e04b250e36cb8dd5dcbb0b1390542e9103071cd533a74269877d/data'
+:         'community.wave.seqera.io/library/qualimap:2.3--e70af3f76915782f' }"
 
     input:
     tuple val(meta), path(bam)
@@ -24,37 +27,30 @@ process QUALIMAP_BAMQC {
 
     def collect_pairs = meta.single_end ? '' : '--collect-overlap-pairs'
     def memory = (task.memory.mega*0.8).intValue() + 'M'
-    def regions = gff ? "--gff $gff" : ''
+    def regions = gff ? "--gff ${gff}" : ''
 
-    def strandedness = 'non-strand-specific'
-    if (meta.strandedness == 'forward') {
-        strandedness = 'strand-specific-forward'
-    } else if (meta.strandedness == 'reverse') {
-        strandedness = 'strand-specific-reverse'
-    }
     """
     unset DISPLAY
     mkdir -p tmp
     export _JAVA_OPTIONS=-Djava.io.tmpdir=./tmp
     qualimap \\
-        --java-mem-size=$memory \\
+        --java-mem-size=${memory} \\
         bamqc \\
-        $args \\
-        -bam $bam \\
-        $regions \\
-        -p $strandedness \\
-        $collect_pairs \\
-        -outdir $prefix \\
-        -nt $task.cpus
+        ${args} \\
+        -bam ${bam} \\
+        ${regions} \\
+        ${collect_pairs} \\
+        -outdir ${prefix} \\
+        -nt ${task.cpus}
     """
 
     stub:
-    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p $prefix/css
-    mkdir $prefix/images_qualimapReport
-    mkdir $prefix/raw_data_qualimapReport
-    cd $prefix/css
+    mkdir -p ${prefix}/css
+    mkdir ${prefix}/images_qualimapReport
+    mkdir ${prefix}/raw_data_qualimapReport
+    cd ${prefix}/css
     touch agogo.css
     touch basic.css
     touch bgtop.png

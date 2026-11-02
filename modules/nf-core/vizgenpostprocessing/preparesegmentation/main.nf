@@ -1,9 +1,12 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VIZGENPOSTPROCESSING_PREPARESEGMENTATION {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container 'nf-core/vizgen-postprocessing_container:v0.1.1'
+    container 'quay.io/nf-core/vizgen-postprocessing_container:v0.1.1'
 
     input:
     tuple val(meta), path(input_images), path(um_to_mosaic_file)
@@ -11,8 +14,9 @@ process VIZGENPOSTPROCESSING_PREPARESEGMENTATION {
     val(images_regex)
 
     output:
-    tuple val(meta), path("${prefix}/*.json"), emit: segmentation_files
-    path "versions.yml"                      , emit: versions
+    tuple val(meta), path("${prefix}/*.json")                                                                                 , emit: segmentation_files
+    tuple val("${task.process}"), val('vpt'), eval("pip show vpt | sed -n 's/Version: //p'")                                 , emit: versions_vpt, topic: versions
+    tuple val("${task.process}"), val('vpt-plugin-cellpose2'), eval("pip show vpt-plugin-cellpose2 | sed -n 's/Version: //p'"), emit: versions_vptplugincellpose2, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,12 +34,6 @@ process VIZGENPOSTPROCESSING_PREPARESEGMENTATION {
         --input-images "${input_images}/${images_regex}" \\
         --input-micron-to-mosaic ${um_to_mosaic_file} \\
         --output-path ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vpt: \$( pip show vpt | grep Version | sed -e "s/Version: //g" )
-        vpt-plugin-cellpose2: \$( pip show vpt-plugin-cellpose2 | grep Version | sed -e "s/Version: //g" )
-    END_VERSIONS
     """
 
     stub:
@@ -43,11 +41,5 @@ process VIZGENPOSTPROCESSING_PREPARESEGMENTATION {
     """
     mkdir -p ${prefix}
     touch ${prefix}/algorithm_specification.json
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vpt: \$( pip show vpt | grep Version | sed -e "s/Version: //g" )
-        vpt-plugin-cellpose2: \$( pip show vpt-plugin-cellpose2 | grep Version | sed -e "s/Version: //g" )
-    END_VERSIONS
     """
 }

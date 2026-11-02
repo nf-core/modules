@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ATAQV_ATAQV {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ataqv:1.3.1--py310ha155cf9_1' :
-        'biocontainers/ataqv:1.3.1--py310ha155cf9_1' }"
+        'quay.io/biocontainers/ataqv:1.3.1--py310ha155cf9_1' }"
 
     input:
     tuple val(meta), path(bam), path(bai), path(peak_file)
@@ -18,7 +21,7 @@ process ATAQV_ATAQV {
     output:
     tuple val(meta), path("*.ataqv.json"), emit: json
     tuple val(meta), path("*.problems")  , emit: problems, optional: true
-    tuple val("${task.process}"), val('ataqv'), eval("echo \$(ataqv --version)"), emit: versions_ataqv, topic: versions
+    tuple val("${task.process}"), val('ataqv'), eval("ataqv --version 2>&1 || true"), emit: versions_ataqv, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

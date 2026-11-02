@@ -18,7 +18,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'generic/csv/test.csv', checkIfExists: true)
                 ]
                 input[1] = 'csv'
@@ -47,7 +47,7 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test' ], // meta map
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'generic/csv/test.csv', checkIfExists: true)
                 ]
                 input[1] = 'csv'

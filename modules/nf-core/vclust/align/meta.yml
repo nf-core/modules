@@ -1,7 +1,7 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "vclust_align"
-description: The align command performs pairwise sequence alignments of viral genomes
-  and provides similarity measures like ANI and coverage (alignment fraction)
+description: The align command performs pairwise sequence alignments of viral
+  genomes and provides similarity measures like ANI and coverage (alignment
+  fraction)
 keywords:
   - cluster
   - virus
@@ -17,11 +17,10 @@ tools:
       documentation: "https://github.com/refresh-bio/vclust/wiki"
       tool_dev_url: "https://github.com/refresh-bio/vclust"
       doi: "10.1038/s41592-025-02701-7"
-      licence: ["GPL v3-or-later"]
+      licence:
+        - "GPL v3-or-later"
       identifier: "biotools:vclust"
-
 input:
-  # Only when we have meta
   - - meta:
         type: map
         description: |
@@ -32,7 +31,7 @@ input:
         description: Input fasta file containing sequences needed for filtering
         pattern: "*.{fasta,fna,fa}"
         ontologies:
-          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_1929
   - - meta2:
         type: map
         description: |
@@ -40,19 +39,18 @@ input:
           e.g. `[ id:'sample1' ]`
     - filter:
         type: file
-        description: Input txt file containing sequences relationships for filtering  (generated
-          with vclust prefilter)
+        description: Input txt file containing sequences relationships for
+          filtering  (generated with vclust prefilter)
         pattern: "*.txt"
         ontologies:
-          - edam: "http://edamontology.org/format_2330" # TXT
-          - edam: "http://edamontology.org/format_2082" # MATRIX
+          - edam: "http://edamontology.org/format_2330"
+          - edam: "http://edamontology.org/format_2082"
   - save_alignment:
       type: boolean
       default: false
       description: |
         Save the pairwise alignments to a blast-like file.
       pattern: "*.aln.tsv"
-
 output:
   tsv:
     - - meta:
@@ -65,7 +63,7 @@ output:
           description: Sorted TSV file
           pattern: "*.tsv"
           ontologies:
-            - edam: "http://edamontology.org/format_3475" # TSV
+            - edam: "http://edamontology.org/format_3475"
   ids:
     - - meta:
           type: map
@@ -77,7 +75,7 @@ output:
           description: File containing sequence IDs and their number of parts
           pattern: "*.ids.tsv"
           ontologies:
-            - edam: "http://edamontology.org/format_3475" # TSV
+            - edam: "http://edamontology.org/format_3475"
   aln:
     - - meta:
           type: map
@@ -89,16 +87,28 @@ output:
           description: |
             File similar to the BLASTn tabular output file,
             includes information on each local alignment between two genomes.
-
           ontologies: []
+  versions_vclust:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vclust:
+          type: string
+          description: The name of the tool
+      - vclust --version | sed 's/v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vclust:
+          type: string
+          description: The name of the tool
+      - vclust --version | sed 's/v//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@Joon-klaps"
 maintainers:

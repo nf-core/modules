@@ -68,8 +68,10 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    sanitizeOutput(process.out),
-                ).match() }
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                    process.out.plot.collect { meta, plot -> file(plot).name }
+                    ).match()
+                }
             )
         }
 

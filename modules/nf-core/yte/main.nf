@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process YTE {
     tag "${meta.id}"
     label 'process_single'
@@ -5,7 +8,7 @@ process YTE {
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
 
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a4/a427620cd214cbc7f48c8d43fa818be59c6c4ea4a622331d96a8b063a05335b0/data'
         : 'community.wave.seqera.io/library/yte:1.9.4--2a362f82cd32b54a'}"
 

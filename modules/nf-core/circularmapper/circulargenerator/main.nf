@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 // This module does the following:
 //creating a modified reference genome, with an elongation_factoration of the an specified amount of bases
 process CIRCULARMAPPER_CIRCULARGENERATOR {
@@ -6,9 +9,9 @@ process CIRCULARMAPPER_CIRCULARGENERATOR {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/circularmapper:1.93.5--h2a3209d_3':
-        'biocontainers/circularmapper:1.93.5--h2a3209d_3' }"
+        'quay.io/biocontainers/circularmapper:1.93.5--h2a3209d_3' }"
 
     input:
     tuple val(meta), path(reference)

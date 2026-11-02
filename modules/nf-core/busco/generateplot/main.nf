@@ -1,10 +1,13 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BUSCO_GENERATEPLOT {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c6/c607f319867d96a38c8502f751458aa78bbd18fe4c7c4fa6b9d8350e6ba11ebe/data'
-        : 'community.wave.seqera.io/library/busco_sepp:f2dbc18a2f7a5b64'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/dc/dc1935be05e41ef9e53df8820a4862bc2f35637af83fbe1dc402fc109824e5a2/data'
+        : 'community.wave.seqera.io/library/busco_sepp:28bfd2435aed3cc4' }"
 
     input:
     path short_summary_txt, stageAs: 'busco/*'
@@ -17,19 +20,12 @@ process BUSCO_GENERATEPLOT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args    = task.ext.args     ?: ''
-    def prefix  = task.ext.prefix   ?: 'busco_figure'
-    """
-    generate_plot.py \\
-        $args \\
-        -wd busco
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/modules/busco/plot instead.
 
-    mv ./busco/busco_figure.png ${prefix}.png
-    """
-
-    stub:
-    def prefix  = task.ext.prefix   ?: 'busco_figure'
-    """
-    touch ${prefix}.png
-    """
+Reason:
+The standalone generate_plot.py script was removed in BUSCO v6.0.0. Plotting is now
+built into BUSCO via 'busco --plot', implemented by the busco/plot module.
+"""
+    assert false: deprecation_message
 }

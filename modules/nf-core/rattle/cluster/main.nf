@@ -1,45 +1,38 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RATTLE_CLUSTER {
     tag "$meta.id"
     label 'process_low'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/rattle:1.0--h5ca1c30_0' :
-        'biocontainers/rattle:1.0--h5ca1c30_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/59/597c4110442b53dc0d73420af28bc774518719d974b2be3190dfa478da17acac/data'
+        : 'community.wave.seqera.io/library/rattle:1.0--ae3dd63e7a98745b'}"
 
     input:
     tuple val(meta), path(reads)
 
     output:
     tuple val(meta), path("clusters.out"), emit: clusters
-    path "versions.yml"                  , emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
+    tuple val("${task.process}"), val('rattle'), val("1.0"), emit: versions_rattle, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def RATTLE_VERSION = "1.0"
     """
     rattle \\
-        cluster $args \\
-        -t $task.cpus \\
-        -i $reads
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rattle: $RATTLE_VERSION
-    END_VERSIONS
+        cluster ${args} \\
+        -t ${task.cpus} \\
+        -i ${reads}
     """
 
     stub:
-    def RATTLE_VERSION = "1.0"
     """
     touch clusters.out
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rattle: $RATTLE_VERSION
-    END_VERSIONS
     """
 }

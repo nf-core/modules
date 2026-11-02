@@ -1,9 +1,12 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CTATSPLICING_PREPGENOMELIB {
     tag "$meta.id"
     label 'process_single'
     stageInMode 'copy'
 
-    container "nf-core/ctatsplicing:0.0.3"
+    container "quay.io/nf-core/ctatsplicing:0.0.3"
 
     input:
     tuple val(meta), path(genome_lib)

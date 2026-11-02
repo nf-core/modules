@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BWAMETH_ALIGN {
     tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bwameth:0.2.9--pyh7e72e81_0' :
-        'biocontainers/bwameth:0.2.9--pyh7e72e81_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1a/1a13a91efc1657e8ff4ea44354fd7ac8723d6b47f6a83b36f4ca99d035e91f05/data'
+:         'community.wave.seqera.io/library/bwameth_samtools:1ff0dd4d9a699bdc' }"
 
     input:
     tuple val(meta), path(reads)
@@ -26,7 +29,7 @@ process BWAMETH_ALIGN {
     def prefix     = task.ext.prefix ?: "${meta.id}"
     """
     export BWA_METH_SKIP_TIME_CHECKS=1
-    ln -sf \$(readlink ${fasta}) ${index}/${fasta}
+    [ -e "${index}/${fasta}" ] || ln -s \$(readlink ${fasta}) ${index}/${fasta}
 
     bwameth.py \\
         ${args} \\

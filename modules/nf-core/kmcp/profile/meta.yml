@@ -34,6 +34,9 @@ input:
   - db:
       type: directory
       description: Database directory containing taxdump files and taxid file
+  - level:
+      type: string
+      description: Taxonomic rank to generate profile at (e.g. "species", "strain", "assembly")
 output:
   profile:
     - - meta:

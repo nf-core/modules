@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ADAPTERREMOVAL {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/adapterremoval:2.3.4--pl5321haf24da9_2' :
-        'biocontainers/adapterremoval:2.3.4--pl5321haf24da9_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5afbd4ce2dc7c699955a768713e49d995f513c49ff80e393e934c7cdfa191267/data'
+        : 'community.wave.seqera.io/library/adapterremoval:2.3.4--66c0d06f6b0408b0'}"
 
     input:
     tuple val(meta), path(reads)

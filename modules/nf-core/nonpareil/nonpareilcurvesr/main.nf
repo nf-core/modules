@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process NONPAREIL_NONPAREILCURVESR {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/nonpareil:3.5.5--r43hdcf5f25_0':
-        'biocontainers/nonpareil:3.5.5--r43hdcf5f25_0' }"
+        'quay.io/biocontainers/nonpareil:3.5.5--r43hdcf5f25_0' }"
 
     input:
     tuple val(meta), path(npos)
@@ -16,7 +19,7 @@ process NONPAREIL_NONPAREILCURVESR {
     tuple val(meta), path("*.csv" ), emit: csv , optional: true
     tuple val(meta), path("*.pdf" ), emit: pdf , optional: true
 
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('nonpareil'), eval('nonpareil -V 2>&1 | sed "s/Nonpareil v//"'), emit: versions_nonpareil, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,11 +36,6 @@ process NONPAREIL_NONPAREILCURVESR {
         --csv ${prefix}.csv \\
         --pdf ${prefix}.pdf \\
         $npos
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        nonpareil: \$(echo \$(nonpareil -V 2>&1) | sed 's/Nonpareil v//' )
-    END_VERSIONS
     """
 
     stub:
@@ -47,10 +45,5 @@ process NONPAREIL_NONPAREILCURVESR {
     touch ${prefix}.tsv
     touch ${prefix}.csv
     touch ${prefix}.pdf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        nonpareil: \$(echo \$(nonpareil -V 2>&1) | sed 's/Nonpareil v//' )
-    END_VERSIONS
     """
 }

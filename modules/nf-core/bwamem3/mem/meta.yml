@@ -1,0 +1,159 @@
+name: "bwamem3_mem"
+description: Align fastq reads to a fasta reference using bwa-mem3
+keywords:
+  - mem
+  - bwa
+  - alignment
+  - map
+  - fastq
+  - bam
+  - sam
+tools:
+  - "bwamem3":
+      description: "Short-read aligner derived from bwa-mem2 with correctness fixes, performance improvements, and methylation-aware alignment."
+      homepage: "https://github.com/fg-labs/bwa-mem3"
+      documentation: "https://github.com/fg-labs/bwa-mem3"
+      tool_dev_url: "https://github.com/fg-labs/bwa-mem3"
+      licence: ["MIT AND Apache-2.0"]
+      identifier: ""
+  - "samtools":
+      description: "Tools for dealing with SAM, BAM and CRAM files"
+      homepage: "http://www.htslib.org"
+      documentation: "http://www.htslib.org/doc/samtools.html"
+      doi: "10.1093/bioinformatics/btp352"
+      licence: ["MIT"]
+      identifier: "biotools:samtools"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - reads:
+        type: file
+        description: |
+          List of input FastQ files of size 1 and 2 for single-end and paired-end data,
+          respectively.
+        ontologies:
+          - edam: "http://edamontology.org/data_2044"
+          - edam: "http://edamontology.org/format_1930"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference/index information
+          e.g. [ id:'test' ]
+    - index:
+        type: file
+        description: bwa-mem3 genome index files
+        pattern: "Directory containing bwa-mem3 index *.{0123,amb,ann,bwt.2bit.64,pac}"
+        ontologies:
+          - edam: "http://edamontology.org/data_3210"
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: Reference genome in FASTA format
+        pattern: "*.{fa,fasta,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/data_2044"
+          - edam: "http://edamontology.org/format_1929"
+  - sort_bam:
+      type: boolean
+      description: use samtools sort (true) or samtools view (false)
+output:
+  aligned:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.{sam,bam,cram}":
+          type: file
+          description: Output SAM/BAM/CRAM file containing read alignments
+          pattern: "*.{sam,bam,cram}"
+          ontologies:
+            - edam: "http://edamontology.org/format_2573"
+            - edam: "http://edamontology.org/format_2572"
+            - edam: "http://edamontology.org/format_3462"
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.{bai,csi,crai}":
+          type: file
+          description: Index file for the aligned BAM/CRAM file
+          pattern: "*.{bai,csi,crai}"
+          ontologies: []
+  versions_bwamem3:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bwamem3:
+          type: string
+          description: The name of the tool
+      - bwa-mem3 version | sed -nE '1 s/^([0-9]+(\.[0-9]+)+).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bwamem3:
+          type: string
+          description: The name of the tool
+      - bwa-mem3 version | sed -nE '1 s/^([0-9]+(\.[0-9]+)+).*/\1/p':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@nh13"
+maintainers:
+  - "@nh13"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/bwa-mem3_htslib_samtools_findutils:74a941381d73ca36
+      build_id: bd-74a941381d73ca36_1
+      scan_id: sc-c076e2fb7bf41c80_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/bwa-mem3_htslib_samtools_findutils:b08ae21c54a338c8
+      build_id: bd-b08ae21c54a338c8_1
+      scan_id: sc-97ad8a07dfa520df_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bwa-mem3_htslib_samtools_findutils:fb293a77182e2fe6
+      build_id: bd-fb293a77182e2fe6_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/04/040dc4151df127b1cd36d1b3455ab712fe1a57fbfbee26385e8f7293f7e47ead/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bwa-mem3_htslib_samtools_findutils:cc773b6ad4db0ed6
+      build_id: bd-cc773b6ad4db0ed6_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/47/47c08a3167d5c6e2c6fb9ba1be8f98471bfb9cd6e1b8896edbc4a9a84830b55e/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bwamem3/mem/.conda-lock/linux_amd64-bd-b08ae21c54a338c8_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/bwamem3/mem/.conda-lock/linux_arm64-bd-74a941381d73ca36_1.txt

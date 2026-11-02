@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 //
 // Picard MarkDuplicates, index BAM file and run samtools stats, flagstat and idxstats
 //
@@ -26,7 +29,7 @@ workflow BAM_MARKDUPLICATES_PICARD {
         .join(BAM_STATS_SAMTOOLS.out.flagstat,   remainder: true)
         .join(BAM_STATS_SAMTOOLS.out.idxstats,   remainder: true)
         .join(PICARD_MARKDUPLICATES.out.metrics, remainder: true)
-        .map { row -> [row[0], row.drop(1).findAll { it != null }.collectMany { e -> (e instanceof List) ? e : [e] }] }
+        .map { row -> [row[0], row.drop(1).findAll { f -> f != null }.collectMany { e -> (e instanceof List) ? e : [e] }] }
 
     emit:
     bam                   = PICARD_MARKDUPLICATES.out.bam // channel: [ val(meta), path(bam) ]

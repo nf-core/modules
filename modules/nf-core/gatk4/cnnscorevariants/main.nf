@@ -1,9 +1,12 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GATK4_CNNSCOREVARIANTS {
     tag "${meta.id}"
     label 'process_low'
 
     //Conda is not supported at the moment: https://github.com/broadinstitute/gatk/issues/7811
-    container "nf-core/gatk:4.5.0.0"
+    container "quay.io/nf-core/gatk:4.5.0.0"
 
     input:
     tuple val(meta), path(vcf), path(tbi), path(aligned_input), path(intervals)
@@ -59,7 +62,7 @@ process GATK4_CNNSCOREVARIANTS {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo "" | gzip -c > ${prefix}.cnn.vcf.gz
+    echo "" | gzip > ${prefix}.cnn.vcf.gz
     touch ${prefix}.cnn.vcf.gz.tbi
     """
 }

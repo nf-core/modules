@@ -1,9 +1,12 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ABRA2 {
     tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1c/1ce5e46000b343d8ec352a19ac8b067d69efacc0d82ba98346b837fc2fd9b321/data'
         : 'community.wave.seqera.io/library/abra2:2.24--1d9acdc762079672'} "
 
@@ -17,7 +20,7 @@ process ABRA2 {
 
     output:
     tuple val(meta), path("*.bam"),     emit: bam
-    tuple val(meta), path("*.bam.bai"), emit: bai, optional: true
+    tuple val(meta), path("*.bai"),     emit: bai, optional: true
     tuple val("${task.process}"), val('abra2'), eval("abra2 2>&1 | sed -n 's/.*Abra version: //p'"), topic: versions, emit: versions_abra2
 
     when:
@@ -49,6 +52,6 @@ process ABRA2 {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.abra.bam
-    touch ${prefix}.abra.bam.bai
+    touch ${prefix}.abra.bai
     """
 }

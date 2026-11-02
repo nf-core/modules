@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ANTISMASH_ANTISMASHLITE {
     tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/antismash-lite:7.1.0--pyhdfd78af_0'
-        : 'biocontainers/antismash-lite:7.1.0--pyhdfd78af_0'}"
+        : 'quay.io/biocontainers/antismash-lite:7.1.0--pyhdfd78af_0'}"
 
     containerOptions (
         ['singularity', 'apptainer'].contains(workflow.containerEngine)

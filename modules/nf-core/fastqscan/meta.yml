@@ -10,7 +10,8 @@ tools:
       homepage: https://github.com/rpetit3/fastq-scan
       documentation: https://github.com/rpetit3/fastq-scan
       tool_dev_url: https://github.com/rpetit3/fastq-scan
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -36,13 +37,27 @@ output:
           pattern: "*.json"
           ontologies:
             - edam: http://edamontology.org/format_3464 # JSON
+  versions_fastqscan:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fastqscan:
+          type: string
+          description: The name of the tool
+      - fastq-scan -v 2>&1 | sed 's/^.*fastq-scan //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fastqscan:
+          type: string
+          description: The name of the tool
+      - fastq-scan -v 2>&1 | sed 's/^.*fastq-scan //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@rpetit3"
 maintainers:

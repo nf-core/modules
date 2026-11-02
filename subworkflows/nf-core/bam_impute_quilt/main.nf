@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { QUILT_QUILT     } from '../../../modules/nf-core/quilt/quilt'
 include { GLIMPSE2_LIGATE } from '../../../modules/nf-core/glimpse2/ligate'
 include { BCFTOOLS_INDEX  } from '../../../modules/nf-core/bcftools/index'
@@ -5,7 +8,7 @@ include { BCFTOOLS_INDEX  } from '../../../modules/nf-core/bcftools/index'
 workflow BAM_IMPUTE_QUILT {
     take:
     ch_input // channel (mandatory):   [ [id], [bam], [bai], bampaths, bamnames ]
-    ch_hap_legend_posfile // channel (mandatory):   [ [panel, chr], hap, legend, posfile ]
+    ch_reference_panel // channel (mandatory):   [ [panel, chr], hap, legend ]
     ch_chunks // channel (optional) :   [ [panel, chr], chr, start, end ]
     ch_map // channel (optional) :   [ [panel, chr], map ]
     ch_fasta // channel (optional) :   [ [genome], fa, fai ]
@@ -15,9 +18,16 @@ workflow BAM_IMPUTE_QUILT {
     main:
 
     // Make final channel with parameters
-    ch_parameters = ch_hap_legend_posfile
+    ch_chunks_counts = ch_chunks
+        .groupTuple()
+        .map { metaPC, chr, _start, _end ->
+            [metaPC, chr.size()]
+        }
+
+    ch_parameters = ch_reference_panel
         .combine(ch_map, by: 0)
         .combine(ch_chunks, by: 0)
+        .combine(ch_chunks_counts, by: 0)
 
     ch_parameters.ifEmpty {
         error("ERROR: join operation resulted in an empty channel. Please provide a valid ch_chunks and ch_map channel as input.")
@@ -25,27 +35,23 @@ workflow BAM_IMPUTE_QUILT {
 
     ch_bam_params = ch_input
         .combine(ch_parameters)
-        .map { metaI, bam, bai, bampath, bamname, metaPC, hap, legend, posfile, gmap, chr, start, end ->
+        .map { metaI, bam, bai, bampath, bamname, metaPC, hap, legend, gmap, chr, start, end, region_size ->
             def regionout = "${chr}"
+            def regionoutPadded = "${chr}"
             if (start != [] && end != []) {
+                def paddedStart = String.format('%010d', start as long)
+                def paddedEnd = String.format('%010d', end as long)
+                regionoutPadded = "${chr}:${paddedStart}-${paddedEnd}"
                 regionout = "${chr}:${start}-${end}"
             }
             [
-                metaPC + metaI + ["regionout": regionout],
-                bam,
-                bai,
-                bampath,
-                bamname,
-                hap,
-                legend,
-                posfile,
-                [],
-                [],
-                chr,
-                start,
-                end,
-                n_gen,
-                buffer,
+                metaPC + metaI + ["regionout": regionout, "regionoutPadded": regionoutPadded, "regionSize": region_size],
+                bam, bai,
+                bampath, bamname,
+                hap, legend,
+                [], [], [],
+                chr, start, end,
+                n_gen, buffer,
                 gmap,
             ]
         }
@@ -56,10 +62,18 @@ workflow BAM_IMPUTE_QUILT {
     ligate_input = QUILT_QUILT.out.vcf
         .join(QUILT_QUILT.out.tbi)
         .map { meta, vcf, index ->
-            def keysToKeep = meta.keySet() - ['regionout']
-            [meta.subMap(keysToKeep), vcf, index]
+            def keysToKeep = meta.keySet() - ['regionout', 'regionoutPadded', 'regionSize']
+            [
+                groupKey(meta.subMap(keysToKeep), meta.regionSize),
+                vcf, index,
+            ]
         }
         .groupTuple()
+        .map { groupKeyObj, vcf, index ->
+            // Extract the actual meta from the groupKey
+            def meta = groupKeyObj.getGroupTarget()
+            [meta, vcf, index]
+        }
 
     GLIMPSE2_LIGATE(ligate_input)
 
@@ -67,7 +81,7 @@ workflow BAM_IMPUTE_QUILT {
 
     // Join imputed and index files
     ch_vcf_index = GLIMPSE2_LIGATE.out.merged_variants.join(
-        BCFTOOLS_INDEX.out.tbi.mix(BCFTOOLS_INDEX.out.csi),
+        BCFTOOLS_INDEX.out.index,
         failOnMismatch: true,
         failOnDuplicate: true,
     )

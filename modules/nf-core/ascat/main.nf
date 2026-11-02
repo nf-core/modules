@@ -1,9 +1,12 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ASCAT {
     tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4c/4cf02c7911ee5e974ce7db978810770efbd8d872ff5ab3462d2a11bcf022fab5/data'
         : 'community.wave.seqera.io/library/ascat_cancerit-allelecount:c3e8749fa4af0e99'}"
 
@@ -38,6 +41,7 @@ process ASCAT {
     def gender        = args.gender        ? "${args.gender}"        : "NULL"
     def genomeVersion = args.genomeVersion ? "${args.genomeVersion}" : "NULL"
     def purity        = args.purity        ? "${args.purity}"        : "NULL"
+    def penalty       = args.penalty       ? "${args.penalty}"       : "NULL"
     def ploidy        = args.ploidy        ? "${args.ploidy}"        : "NULL"
     def gc_input      = gc_file            ? "${gc_file}"            : "NULL"
     def rt_input      = rt_file            ? "${rt_file}"            : "NULL"
@@ -178,7 +182,7 @@ process ASCAT {
     }
 
     # Segment the data
-    ascat.bc = ascat.aspcf(ascat.bc, seed=42)
+    ascat.bc = ascat.aspcf(ascat.bc, penalty=${penalty}, seed=42)
 
     # Plot the segmented data
     ascat.plotSegmentedData(ascat.bc)

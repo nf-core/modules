@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SRATOOLS_PREFETCH {
     tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/sra-tools:3.2.1--h4304569_1' :
-        'biocontainers/sra-tools:3.2.1--h4304569_1' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a9/a9a7d146a9a0215c5386603fe7f0b3c347254854a447ed8dd4919a4b2eae2a88/data'
+        : 'community.wave.seqera.io/library/sra-tools_curl:c1e36977de327cd2' }"
 
     input:
     tuple val(meta), val(id)

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BIOAWK {
     tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bioawk:1.0--h5bf99c6_6' :
-        'biocontainers/bioawk:1.0--h5bf99c6_6' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/82/8266909aff235d1f423ca76029d89a7b470f17c634e001aa388b85713d71dd16/data'
+        : 'community.wave.seqera.io/library/bioawk:1.0--63ed57d97ec41790' }"
 
     input:
     tuple val(meta), path(input)
@@ -31,13 +34,12 @@ process BIOAWK {
 
     if ("${input}" == "${prefix}.${output_file_extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate."
 
-    def compress_output = output_file_extension.endsWith(".gz") ? " | gzip " : ""
     """
     bioawk \\
-            ${args} \\
-            ${program} \\
-            ${input} \\
-            ${output}
+        ${args} \\
+        ${program} \\
+        ${input} \\
+        ${output}
     """
 
     stub:
