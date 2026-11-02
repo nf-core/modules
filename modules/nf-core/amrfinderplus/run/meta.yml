@@ -26,6 +26,17 @@ input:
         pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,faa,faa.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_1929" # FASTA
+    - organism:
+        type: string
+        description: |
+          Organism name as listed by `amrfinder --list_organisms`
+          (e.g. 'Escherichia'). Enables organism-specific point-mutation
+          screening and the mutation report. Set to '' or [] to disable.
+    - is_proteins:
+        type: boolean
+        description: |
+          Whether the FASTA contains protein sequences (true, passed with `-p`)
+          or nucleotide sequences (false, passed with `-n`)
   - db:
       type: file
       description: A compressed tarball of the AMRFinderPlus database to query
