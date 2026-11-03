@@ -24,18 +24,14 @@ input:
           e.g. `[ id:'sample1', single_end:false ]`
     - taxid:
         type: string
-        description: Taxon id to look up (provide either this or taxidfile, not
-          both)
+        description: Taxon id to look up (provide either this or taxidfile, not both)
     - taxidfile:
         type: file
-        description: File with taxon ids to look up, each on their own line
-          (provide either this or name, not both; the file can contain other
-          information, see the tool's docs)
+        description: File with taxon ids to look up, each on their own line (provide either this or name, not both; the file can contain other information, see the tool's docs)
         ontologies: []
   - taxdb:
       type: file
-      description: Taxonomy database unpacked from
-        ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz
+      description: Taxonomy database unpacked from ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz
       ontologies: []
 output:
   tsv:
@@ -77,3 +73,27 @@ authors:
   - "@erikrikarddaniel"
 maintainers:
   - "@erikrikarddaniel"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/taxonkit:0.18.0--36a4cff30b2fab4e
+      build_id: bd-36a4cff30b2fab4e_1
+      scan_id: sc-5b2632f97a2ee7e6_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/taxonkit:0.18.0--de6e2e39185eebec
+      build_id: bd-de6e2e39185eebec_1
+      scan_id: sc-10438595a9c26798_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/taxonkit:0.18.0--39cc81845cd74851
+      build_id: bd-39cc81845cd74851_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/47/47a901198dfa6fd00c447557e953a64abb8794d49812ccb623bc973510069706/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/taxonkit:0.18.0--fd841a37e66b41ea
+      build_id: bd-fd841a37e66b41ea_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/64/64904ec52d65612fed6a2c0463ec860d83e56cce05a82a52144cd060e5a5e5a9/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/taxonkit/lineage/.conda-lock/linux_amd64-bd-36a4cff30b2fab4e_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/taxonkit/lineage/.conda-lock/linux_arm64-bd-de6e2e39185eebec_1.txt

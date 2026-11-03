@@ -29,10 +29,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    process.out.bam.collect{meta, bam_ ->  file(bam_).name + ':readsMD5,' + bam(bam_).getReadsMD5()},
-                    process.out.bai,
-                    file(process.out.metrics[0][1]).name,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["bai", "metrics"])
                 ).match() }
             )
         }
@@ -61,10 +58,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    process.out.bam.collect{meta, bam_ ->  file(bam_).name + ':readsMD5,' + bam(bam_).getReadsMD5()},
-                    process.out.bai,
-                    file(process.out.metrics[0][1]).name,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["bai", "metrics"])
                 ).match() }
             )
         }
@@ -94,10 +88,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    process.out.cram.collect{meta, cram_ ->  file(cram_).name + ':readsMD5,' + cram(cram_, fasta).getReadsMD5()},
-                    file(process.out.crai[0][1]).name,
-                    file(process.out.metrics[0][1]).name,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    sanitizeOutput(process.out, readsMD5Keys: ["cram"], unstableKeys: ["crai", "metrics"], referenceFasta: fasta)
                 ).match() }
             )
         }
@@ -121,8 +112,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

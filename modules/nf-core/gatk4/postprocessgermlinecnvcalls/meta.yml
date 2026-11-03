@@ -1,6 +1,5 @@
 name: "gatk4_postprocessgermlinecnvcalls"
-description: Postprocesses the output of GermlineCNVCaller and generates VCFs and
-  denoised copy ratios
+description: Postprocesses the output of GermlineCNVCaller and generates VCFs and denoised copy ratios
 keywords:
   - copy number
   - gatk4
@@ -100,3 +99,17 @@ authors:
   - "@ryanjameskennedy"
 maintainers:
   - "@ryanjameskennedy"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/gatk4-main_gcnvkernel:600cef9dfbee0739
+      build_id: bd-600cef9dfbee0739_1
+      scan_id: sc-40c20bbc31bf67e6_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/gatk4-main_gcnvkernel:a98a8de6b0fd3804
+      build_id: bd-a98a8de6b0fd3804_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b9/b9822b92da68a3e7916072218082e3fa79bebc2f377947c363613adeecd56ec5/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/gatk4/postprocessgermlinecnvcalls/.conda-lock/linux_amd64-bd-600cef9dfbee0739_1.txt

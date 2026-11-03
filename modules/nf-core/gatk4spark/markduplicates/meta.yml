@@ -1,6 +1,5 @@
 name: gatk4spark_markduplicates
-description: This tool locates and tags duplicate reads in a BAM or SAM file, where
-  duplicate reads are defined as originating from a single fragment of DNA.
+description: This tool locates and tags duplicate reads in a BAM or SAM file, where duplicate reads are defined as originating from a single fragment of DNA.
 keywords:
   - bam
   - gatk4spark
@@ -8,10 +7,7 @@ keywords:
   - sort
 tools:
   - gatk4:
-      description: Developed in the Data Sciences Platform at the Broad Institute, the
-        toolkit offers a wide variety of tools with a primary focus on variant discovery
-        and genotyping. Its powerful processing engine and high-performance computing
-        features make it capable of taking on projects of any size.
+      description: Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools with a primary focus on variant discovery and genotyping. Its powerful processing engine and high-performance computing features make it capable of taking on projects of any size.
       homepage: https://gatk.broadinstitute.org/hc/en-us
       documentation: https://gatk.broadinstitute.org/hc/en-us/articles/360037052812-MarkDuplicates-Picard-
       tool_dev_url: https://github.com/broadinstitute/gatk
@@ -109,3 +105,17 @@ maintainers:
   - "@FriederikeHanssen"
   - "@maxulysse"
   - "@SusiJo"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/gatk4-spark:4.7.0.0--fd5186004a98cd23
+      build_id: bd-fd5186004a98cd23_1
+      scan_id: sc-56d682a7ee30b26b_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/gatk4-spark:4.7.0.0--ff4aa6ba29ca0207
+      build_id: bd-ff4aa6ba29ca0207_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9c/9cd09db455e8adaa87f55b4c8f2de68f7501e2284ffce168b736df66f06bdd84/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/gatk4spark/markduplicates/.conda-lock/linux_amd64-bd-fd5186004a98cd23_1.txt

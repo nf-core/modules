@@ -78,3 +78,17 @@ authors:
   - "@nebfield"
 maintainers:
   - "@nebfield"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/plink2:2.00a2.3--1c05b6e0948ac0c2
+      build_id: bd-1c05b6e0948ac0c2_1
+      scan_id: sc-4f2ae30231afeb16_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/plink2:2.00a2.3--b7f9e8379af94ee8
+      build_id: bd-b7f9e8379af94ee8_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/27/278e4e95ad25ec7048ab124f16a7cf8b8141ced9e05c51f61803567cd9017f4d/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/plink2/score/.conda-lock/linux_amd64-bd-1c05b6e0948ac0c2_1.txt

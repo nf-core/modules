@@ -99,23 +99,23 @@ maintainers:
   - "@erikrikarddaniel"
 containers:
   docker:
-    linux/amd64:
-      name: community.wave.seqera.io/library/r-base_r-dplyr_r-purrr_r-readr_pruned:24026ac6303954f2
-      build_id: bd-24026ac6303954f2_1
-      scan_id: sc-1b4b3c1b7b6df2b4_1
     linux/arm64:
       name: community.wave.seqera.io/library/r-base_r-dplyr_r-purrr_r-readr_pruned:82bba2c9db17d64d
       build_id: bd-82bba2c9db17d64d_1
-      scan_id: sc-2dd9ea48d98fbfc3_1
-  singularity:
+      scan_id: sc-2dd9ea48d98fbfc3_2
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/r-base_r-dplyr_r-purrr_r-readr_pruned:268e9e80e614b5f5
-      build_id: bd-268e9e80e614b5f5_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/40/4047b396af338ea9fa9f58d345f84b77234dfe825a1c71ae178f502d0569b62c/data
+      name: community.wave.seqera.io/library/r-base_r-dplyr_r-purrr_r-readr_pruned:24026ac6303954f2
+      build_id: bd-24026ac6303954f2_1
+      scan_id: sc-1b4b3c1b7b6df2b4_2
+  singularity:
     linux/arm64:
       name: oras://community.wave.seqera.io/library/r-base_r-dplyr_r-purrr_r-readr_pruned:a441c3b3a698339d
       build_id: bd-a441c3b3a698339d_1
       https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a3/a3b49ce667868b1796cdc1ba9882f6d60423a8f0e7aee85e98943a587cb6c03b/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/r-base_r-dplyr_r-purrr_r-readr_pruned:268e9e80e614b5f5
+      build_id: bd-268e9e80e614b5f5_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/40/4047b396af338ea9fa9f58d345f84b77234dfe825a1c71ae178f502d0569b62c/data
   conda:
     linux/amd64:
       lock_file: modules/nf-core/custom/collectstats/.conda-lock/linux_amd64-bd-24026ac6303954f2_1.txt
