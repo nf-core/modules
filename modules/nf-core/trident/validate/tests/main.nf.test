@@ -48,7 +48,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() } // Only version is emitted.
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
@@ -94,7 +94,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() } // Only version is emitted.
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
