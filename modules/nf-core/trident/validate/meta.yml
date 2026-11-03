@@ -26,10 +26,13 @@ input:
         type: directory
         description: Path to the directory containing the Poseidon package(s) to be validated.
 output:
-  validation:
+  validated_packages:
     - - meta:
           type: map
           description: The meta information of the input package.
+      - input_package:
+          type: directory
+          description: Path to the directory containing the Poseidon package(s) that was validated.
       - EXIT_CODE:
           type: string
           description: Exit code (0 for success, non-zero otherwise) that is the result of the validation check.
