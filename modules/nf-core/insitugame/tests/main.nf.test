@@ -15,7 +15,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file("data/insitugame.tsv", checkIfExists: true)
+                    file("${projectDir}/modules/nf-core/insitugame/tests/data/insitugame.tsv", checkIfExists: true)
                 ]
                 """
             }
@@ -50,7 +50,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file("data/insitugame.tsv", checkIfExists: true)
+                    file("${projectDir}/modules/nf-core/insitugame/tests/data/insitugame.tsv", checkIfExists: true)
                 ]
                 """
             }
