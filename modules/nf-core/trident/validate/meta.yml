@@ -30,9 +30,10 @@ output:
     - - meta:
           type: map
           description: The meta information of the input package.
-      - exit_code:
+      - EXIT_CODE:
           type: string
-          description: The exit code of the validation process.
+          description: Exit code (0 for success, non-zero otherwise) that is the result of the validation check.
+          ontologies: []
   versions_trident:
     - - ${task.process}:
           type: string
