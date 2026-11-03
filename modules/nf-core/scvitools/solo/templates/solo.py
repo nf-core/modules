@@ -37,18 +37,18 @@ if batch_key:
 else:
     SCVI.setup_anndata(adata)
 
-model = SCVI(adata)
+scvi_model = SCVI(adata)
 
-train_model(model)
+train_model(scvi_model)
 
 adata.obs["doublet"] = False
 
 batches = adata.obs[batch_key].unique() if batch_key else [0]
 for batch in batches:
-    model = SOLO.from_scvi_model(model, restrict_to_batch=batch if len(batches) > 1 else None)
+    solo_model = SOLO.from_scvi_model(scvi_model, restrict_to_batch=batch if len(batches) > 1 else None)
 
-    train_model(model)
-    result = model.predict(False)
+    train_model(solo_model)
+    result = solo_model.predict(False)
 
     doublets = result[result == "doublet"].index.tolist()
     adata.obs.loc[doublets, "doublet"] = True
