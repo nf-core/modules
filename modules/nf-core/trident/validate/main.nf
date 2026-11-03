@@ -12,6 +12,7 @@ process TRIDENT_VALIDATE {
     tuple val(meta), path(input_package)
 
     output:
+    tuple val(meta), env("EXIT_CODE"), emit: validation
     tuple val("${task.process}"), val('trident'), eval('trident --version'), emit: versions_trident, topic: versions
 
     when:
@@ -22,12 +23,15 @@ process TRIDENT_VALIDATE {
     """
     trident validate \
         -d . \
-        ${args}
+        ${args} || EXIT_CODE=\$?
+
+    EXIT_CODE=\${EXIT_CODE:-0}
     """
 
     stub:
     def args = task.ext.args ?: ''
     """
+    EXIT_CODE=0
     echo trident validate -d . ${args}
     """
 }
