@@ -6,9 +6,9 @@ process ANGSD_DOSAF {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/angsd:0.940--h13024bc_4':
-        'quay.io/biocontainers/angsd:0.940--h13024bc_4' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/63/639ce33ed86c005c940303a12fc487291ffdd096934afc1fa14dd8f45c831e3b/data'
+        : 'community.wave.seqera.io/library/angsd_htslib:2b83a6f633f30127'}"
 
     input:
     tuple val(meta), path(bams), path(bam_indices)
