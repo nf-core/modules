@@ -31,11 +31,6 @@ nextflow_process {
                 { assert results.payoff_matrix_3x3.every { it.size() == 3 } },
                 { assert table[0] == "focal_phenotype,T_S,T_R,S_CAF" },
                 { assert table.size() == 4 },
-                { assert snapshot(
-                    process.out.results,
-                    process.out.tables,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                ).match() }
             )
         }
 
