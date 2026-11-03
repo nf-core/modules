@@ -26,6 +26,7 @@ process INSITUGAME {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    python -c 'import csv, sys; f=open("${spatial_data}", newline=""); first=f.readline(); f.seek(0); h=next(csv.reader(f, delimiter="\\t" if "\\t" in first else ",")); required={"T_S","T_R","S_CAF","FITNESS","HYPOXIA","VASCULAR"}; missing=required.difference(h); sys.exit("Missing required marker columns: " + ", ".join(sorted(missing)) if missing else 0)'
     insitugame \\
         ${args} \\
         --input ${spatial_data} \\
