@@ -13,7 +13,8 @@ process BULLSEYE_PARSEBAM {
 
     output:
     tuple val(meta), path("*.matrix.gz"), path("*.matrix.gz.tbi"), emit: matrix
-    tuple val("${task.process}"), val('bullseye'), val('1.0.0'), topic: versions, emit: versions_bullseye
+    // parseBAM.pl has no --version flag; extract the version from its own header comment instead of hardcoding it.
+    tuple val("${task.process}"), val('bullseye'), eval("grep -m1 -i 'version' \$(command -v parseBAM.pl) | grep -oE '[0-9]+\\.[0-9]+(\\.[0-9]+)?'"), topic: versions, emit: versions_bullseye
 
     when:
     task.ext.when == null || task.ext.when

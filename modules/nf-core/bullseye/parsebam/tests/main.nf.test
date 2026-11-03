@@ -27,15 +27,11 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.matrix[0][1] ==~ ".*/dart.matrix.gz" },
-                { assert process.out.matrix[0][2] ==~ ".*/dart.matrix.gz.tbi" },
-                { assert path(process.out.matrix[0][1]).linesGzip.size() > 0 },
-                { assert path(process.out.matrix[0][1]).linesGzip[0].split("\t").size() >= 8 },
-                { assert path(process.out.matrix[0][1]).linesGzip[0].split("\t")[0] == 'chr22_test' },
-                { assert path(process.out.matrix[0][1]).linesGzip.every { it.split("\t")[7] as int >= 1 } },
-                { assert process.out.versions_bullseye[0][1] == 'bullseye' },
                 { assert snapshot(
                     process.out,
+                    // parseBAM.pl parallelizes with MCE::Loop, so row order is not
+                    // stable across runs/CPU counts - sort before hashing content.
+                    path(process.out.matrix[0][1]).linesGzip.sort().join('\n').md5(),
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
@@ -62,8 +58,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.matrix[0][1] ==~ ".*/dart.matrix.gz" },
-                { assert process.out.matrix[0][2] ==~ ".*/dart.matrix.gz.tbi" }
+                { assert snapshot(process.out).match() }
             )
         }
     }

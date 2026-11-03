@@ -13,6 +13,7 @@ tools:
       tool_dev_url: "https://github.com/mflamand/Bullseye"
       licence:
         - "MIT"
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -24,17 +25,16 @@ input:
         description: Sorted BAM file
         pattern: "*.bam"
         ontologies:
-          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: "http://edamontology.org/format_2572"
     - bai:
         type: file
         description: BAM index file
         pattern: "*.bai"
         ontologies:
-          - edam: "http://edamontology.org/format_3327" # BAI
+          - edam: "http://edamontology.org/format_3327"
   - bullseye_parse_min_coverage:
       type: integer
       description: Minimum coverage threshold passed to parseBAM.pl
-
 output:
   matrix:
     - - meta:
@@ -54,27 +54,27 @@ output:
           pattern: "*.matrix.gz.tbi"
           ontologies: []
   versions_bullseye:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "bullseye":
+      - bullseye:
           type: string
           description: The name of the tool
-      - "1.0.0":
-          type: string
-          description: The version of the tool, pinned via environment.yml (parseBAM.pl has no --version flag)
+      - grep -m1 -i 'version' \$(command -v parseBAM.pl) | grep -oE '[0-9]+\.[0-9]+(\.[0-9]+)?':
+          type: eval
+          description: The expression to obtain the version of the tool
 
 topics:
   versions:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "bullseye":
+      - bullseye:
           type: string
           description: The name of the tool
-      - "1.0.0":
-          type: string
-          description: The version of the tool, pinned via environment.yml (parseBAM.pl has no --version flag)
+      - grep -m1 -i 'version' \$(command -v parseBAM.pl) | grep -oE '[0-9]+\.[0-9]+(\.[0-9]+)?':
+          type: eval
+          description: The expression to obtain the version of the tool
 
 authors:
   - "@brovolia"
