@@ -12,9 +12,7 @@ process GATK4_FILTERMUTECTCALLS {
 
     input:
     tuple val(meta), path(vcf), path(vcf_tbi), path(stats), path(orientationbias), path(segmentation), path(table), val(estimate)
-    tuple val(meta2), path(fasta)
-    tuple val(meta3), path(fai)
-    tuple val(meta4), path(dict)
+    tuple val(meta2), path(fasta), path(fai), path(dict)
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
@@ -32,6 +30,7 @@ process GATK4_FILTERMUTECTCALLS {
     def orientationbias_command = orientationbias ? orientationbias.collect { orientationbias_ -> "--orientation-bias-artifact-priors ${orientationbias_}" }.join(' ') : ''
     def segmentation_command = segmentation ? segmentation.collect { segmentation_ -> "--tumor-segmentation ${segmentation_}" }.join(' ') : ''
     def estimate_command = estimate ? " --contamination-estimate ${estimate} " : ''
+    def stats_command = stats ? " --stats ${stats} " : ''
     def table_command = table ? table.collect { table_ -> "--contamination-table ${table_}" }.join(' ') : ''
 
     def avail_mem = 3072
@@ -47,6 +46,7 @@ process GATK4_FILTERMUTECTCALLS {
         --variant ${vcf} \\
         --output ${prefix}.vcf.gz \\
         --reference ${fasta} \\
+        ${stats_command} \\
         ${orientationbias_command} \\
         ${segmentation_command} \\
         ${estimate_command} \\
