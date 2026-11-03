@@ -1,4 +1,196 @@
 {
+    "homo_sapiens - nanopore [bam, bai, [], bed], [], [], true, false - regions": {
+        "content": [
+            {
+                "versions_sniffles": [
+                    [
+                        "SNIFFLES",
+                        "sniffles",
+                        "2.8.1"
+                    ]
+                ]
+            },
+            "hg002.vcf.gz.tbi",
+            [
+                "chr2\t71662936\tSniffles2.INS.0S0\tN\tTGTGTGTGTGTGTGCATATTTGTGTGTGTATGTCTGTGTCCATGTGTCTGCATATGTGTGTGGTGTGTGTATATTTGTGTATGTTTACGTGTGTG\t60\tPASS\tPRECISE;SVTYPE=INS;SVLEN=95;END=71662936;SUPPORT=1;COVERAGE=1,1,1,1,1;STRAND=+;PHASE=0,NULL,1,1,PASS,FAIL;STDEV_LEN=0;STDEV_POS=0;SUPPORT_LONG=0;SUPPORT_UNSCALED=1;VAF=1.000\tGT:GQ:DR:DV:PS\t1/1:2:0:1:.",
+                "chr2\t71691502\tSniffles2.DEL.1S0\tN\t<DEL>\t60\tPASS\tPRECISE;SVTYPE=DEL;SVLEN=-92;END=71691594;SUPPORT=8;COVERAGE=16,16,16,16,16;STRAND=+-;PHASE=0,NULL,8,8,PASS,FAIL;STDEV_LEN=0.957;STDEV_POS=12.767;SUPPORT_SA=0;VAF=0.500\tGT:GQ:DR:DV:PS\t0/1:57:8:8:."
+            ]
+        ],
+        "timestamp": "2026-10-30T14:25:32.800944989",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.2"
+        }
+    },
+    "homo_sapiens - [bam, bai], fasta, [], true, false": {
+        "content": [
+            {
+                "versions_sniffles": [
+                    [
+                        "SNIFFLES",
+                        "sniffles",
+                        "2.8.1"
+                    ]
+                ]
+            },
+            "test.vcf.gz.tbi",
+            [
+                "##fileformat=VCFv4.2",
+                "##source=Sniffles2_2.8.1"
+            ],
+            [
+                "##ALT=<ID=INS,Description=\"Insertion\">",
+                "##ALT=<ID=DEL,Description=\"Deletion\">",
+                "##ALT=<ID=DUP,Description=\"Duplication\">",
+                "##ALT=<ID=INV,Description=\"Inversion\">",
+                "##ALT=<ID=BND,Description=\"Breakend; Translocation\">",
+                "##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">",
+                "##FORMAT=<ID=GQ,Number=1,Type=Integer,Description=\"Genotype quality\">",
+                "##FORMAT=<ID=DR,Number=1,Type=Integer,Description=\"Number of reference reads\">",
+                "##FORMAT=<ID=DV,Number=1,Type=Integer,Description=\"Number of variant reads\">",
+                "##FORMAT=<ID=PS,Number=1,Type=Integer,Description=\"Phase-block, zero if none or not phased\">",
+                "##FORMAT=<ID=ID,Number=1,Type=String,Description=\"Individual sample SV ID for multi-sample output\">",
+                "##FILTER=<ID=PASS,Description=\"All filters passed\">",
+                "##FILTER=<ID=GT,Description=\"Genotype filter\">",
+                "##FILTER=<ID=SUPPORT_MIN,Description=\"Minimum read support filter\">",
+                "##FILTER=<ID=STDEV_POS,Description=\"SV Breakpoint standard deviation filter\">",
+                "##FILTER=<ID=STDEV_LEN,Description=\"SV length standard deviation filter\">",
+                "##FILTER=<ID=COV_MIN,Description=\"Minimum coverage filter\">",
+                "##FILTER=<ID=COV_MIN_GT,Description=\"Minimum coverage filter (missing genotype)\">",
+                "##FILTER=<ID=COV_CHANGE_DEL,Description=\"Coverage change filter for DEL\">",
+                "##FILTER=<ID=COV_CHANGE_DUP,Description=\"Coverage change filter for DUP\">",
+                "##FILTER=<ID=COV_CHANGE_INS,Description=\"Coverage change filter for INS\">",
+                "##FILTER=<ID=COV_CHANGE_FRAC_US,Description=\"Coverage fractional change filter: upstream-start\">",
+                "##FILTER=<ID=COV_CHANGE_FRAC_SC,Description=\"Coverage fractional change filter: start-center\">",
+                "##FILTER=<ID=COV_CHANGE_FRAC_CE,Description=\"Coverage fractional change filter: center-end\">",
+                "##FILTER=<ID=COV_CHANGE_FRAC_ED,Description=\"Coverage fractional change filter: end-downstream\">",
+                "##FILTER=<ID=COV_VAR,Description=\"Coverage variance exceeded\">",
+                "##FILTER=<ID=MOSAIC_VAF,Description=\"Mosaic variant allele fraction filter\">",
+                "##FILTER=<ID=NOT_MOSAIC_VAF,Description=\"Variant allele fraction filter for non-mosaic\">",
+                "##FILTER=<ID=ALN_NM,Description=\"Length adjusted mismatch filter\">",
+                "##FILTER=<ID=STRAND_BND,Description=\"Strand support filter for BNDs\">",
+                "##FILTER=<ID=STRAND,Description=\"Strand support filter for germline SVs\">",
+                "##FILTER=<ID=STRAND_MOSAIC,Description=\"Strand support filter for mosaic SVs\">",
+                "##FILTER=<ID=SVLEN_MIN,Description=\"SV length filter\">",
+                "##FILTER=<ID=SVLEN_MIN_MOSAIC,Description=\"SV length filter for mosaic SVs (min)\">",
+                "##FILTER=<ID=SVLEN_MAX_MOSAIC,Description=\"SV length filter for mosaic SVs (max)\">",
+                "##FILTER=<ID=SINGLE_BREAK,Description=\"A single break point was detected but not classified as an SV.\">",
+                "##FILTER=<ID=INLINE_SA,Description=\"INLINE/CIGAR-based SV is mostly supported by SA reads\">",
+                "##FILTER=<ID=MOSAIC_SV_CLOSE_EDGE,Description=\"For mosaic SVs, the location is close to the end of the read (either end)\">",
+                "##FILTER=<ID=GT_FAILED,Description=\"Sniffles was unable to genotype this call.\">",
+                "##FILTER=<ID=UNRESOLVED,Description=\"Call is within an unresolved region.\">",
+                "##INFO=<ID=PRECISE,Number=0,Type=Flag,Description=\"Structural variation with precise breakpoints\">",
+                "##INFO=<ID=IMPRECISE,Number=0,Type=Flag,Description=\"Structural variation with imprecise breakpoints\">",
+                "##INFO=<ID=MOSAIC,Number=0,Type=Flag,Description=\"Structural variation classified as putative mosaic\">",
+                "##INFO=<ID=SVLEN,Number=1,Type=Integer,Description=\"Length of structural variation\">",
+                "##INFO=<ID=SVTYPE,Number=1,Type=String,Description=\"Type of structural variation\">",
+                "##INFO=<ID=CHR2,Number=1,Type=String,Description=\"Mate chromsome for BND SVs\">",
+                "##INFO=<ID=SUPPORT,Number=1,Type=Integer,Description=\"Number of reads supporting the structural variation\">",
+                "##INFO=<ID=SUPPORT_INLINE,Number=1,Type=Integer,Description=\"Number of reads supporting an INS/DEL SV (non-split events only), or reads for a DUP SV reported as INS by the mapper.\">",
+                "##INFO=<ID=SUPPORT_SA,Number=1,Type=Integer,Description=\"Number of reads supporting a DEL SV through supplementary alignments (split events)\">",
+                "##INFO=<ID=SUPPORT_LONG,Number=1,Type=Integer,Description=\"Number of soft-clipped reads putatively supporting the long insertion SV\">",
+                "##INFO=<ID=SUPPORT_UNSCALED,Number=1,Type=Float,Description=\"Base support for long insertions, before adjustment\">",
+                "##INFO=<ID=END,Number=1,Type=Integer,Description=\"End position of structural variation\">",
+                "##INFO=<ID=STDEV_POS,Number=1,Type=Float,Description=\"Standard deviation of structural variation start position\">",
+                "##INFO=<ID=STDEV_LEN,Number=1,Type=Float,Description=\"Standard deviation of structural variation length\">",
+                "##INFO=<ID=COVERAGE,Number=.,Type=Float,Description=\"Coverages near upstream, start, center, end, downstream of structural variation\">",
+                "##INFO=<ID=STRAND,Number=1,Type=String,Description=\"Strands of supporting reads for structural variant\">",
+                "##INFO=<ID=AC,Number=.,Type=Integer,Description=\"Allele count, summed up over all samples\">",
+                "##INFO=<ID=SUPP_VEC,Number=1,Type=String,Description=\"List of read support for all samples\">",
+                "##INFO=<ID=CONSENSUS_SUPPORT,Number=1,Type=Integer,Description=\"Number of reads that support the generated insertion (INS) consensus sequence\">"
+            ]
+        ],
+        "timestamp": "2026-10-06T10:06:05.589273883",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "homo_sapiens - [bam, bai], fasta, bed, true, true": {
+        "content": [
+            {
+                "versions_sniffles": [
+                    [
+                        "SNIFFLES",
+                        "sniffles",
+                        "2.8.1"
+                    ]
+                ]
+            },
+            "test.snf",
+            "test.vcf.gz.tbi",
+            [
+                "##fileformat=VCFv4.2",
+                "##source=Sniffles2_2.8.1"
+            ],
+            [
+                "##ALT=<ID=INS,Description=\"Insertion\">",
+                "##ALT=<ID=DEL,Description=\"Deletion\">",
+                "##ALT=<ID=DUP,Description=\"Duplication\">",
+                "##ALT=<ID=INV,Description=\"Inversion\">",
+                "##ALT=<ID=BND,Description=\"Breakend; Translocation\">",
+                "##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">",
+                "##FORMAT=<ID=GQ,Number=1,Type=Integer,Description=\"Genotype quality\">",
+                "##FORMAT=<ID=DR,Number=1,Type=Integer,Description=\"Number of reference reads\">",
+                "##FORMAT=<ID=DV,Number=1,Type=Integer,Description=\"Number of variant reads\">",
+                "##FORMAT=<ID=PS,Number=1,Type=Integer,Description=\"Phase-block, zero if none or not phased\">",
+                "##FORMAT=<ID=ID,Number=1,Type=String,Description=\"Individual sample SV ID for multi-sample output\">",
+                "##FILTER=<ID=PASS,Description=\"All filters passed\">",
+                "##FILTER=<ID=GT,Description=\"Genotype filter\">",
+                "##FILTER=<ID=SUPPORT_MIN,Description=\"Minimum read support filter\">",
+                "##FILTER=<ID=STDEV_POS,Description=\"SV Breakpoint standard deviation filter\">",
+                "##FILTER=<ID=STDEV_LEN,Description=\"SV length standard deviation filter\">",
+                "##FILTER=<ID=COV_MIN,Description=\"Minimum coverage filter\">",
+                "##FILTER=<ID=COV_MIN_GT,Description=\"Minimum coverage filter (missing genotype)\">",
+                "##FILTER=<ID=COV_CHANGE_DEL,Description=\"Coverage change filter for DEL\">",
+                "##FILTER=<ID=COV_CHANGE_DUP,Description=\"Coverage change filter for DUP\">",
+                "##FILTER=<ID=COV_CHANGE_INS,Description=\"Coverage change filter for INS\">",
+                "##FILTER=<ID=COV_CHANGE_FRAC_US,Description=\"Coverage fractional change filter: upstream-start\">",
+                "##FILTER=<ID=COV_CHANGE_FRAC_SC,Description=\"Coverage fractional change filter: start-center\">",
+                "##FILTER=<ID=COV_CHANGE_FRAC_CE,Description=\"Coverage fractional change filter: center-end\">",
+                "##FILTER=<ID=COV_CHANGE_FRAC_ED,Description=\"Coverage fractional change filter: end-downstream\">",
+                "##FILTER=<ID=COV_VAR,Description=\"Coverage variance exceeded\">",
+                "##FILTER=<ID=MOSAIC_VAF,Description=\"Mosaic variant allele fraction filter\">",
+                "##FILTER=<ID=NOT_MOSAIC_VAF,Description=\"Variant allele fraction filter for non-mosaic\">",
+                "##FILTER=<ID=ALN_NM,Description=\"Length adjusted mismatch filter\">",
+                "##FILTER=<ID=STRAND_BND,Description=\"Strand support filter for BNDs\">",
+                "##FILTER=<ID=STRAND,Description=\"Strand support filter for germline SVs\">",
+                "##FILTER=<ID=STRAND_MOSAIC,Description=\"Strand support filter for mosaic SVs\">",
+                "##FILTER=<ID=SVLEN_MIN,Description=\"SV length filter\">",
+                "##FILTER=<ID=SVLEN_MIN_MOSAIC,Description=\"SV length filter for mosaic SVs (min)\">",
+                "##FILTER=<ID=SVLEN_MAX_MOSAIC,Description=\"SV length filter for mosaic SVs (max)\">",
+                "##FILTER=<ID=SINGLE_BREAK,Description=\"A single break point was detected but not classified as an SV.\">",
+                "##FILTER=<ID=INLINE_SA,Description=\"INLINE/CIGAR-based SV is mostly supported by SA reads\">",
+                "##FILTER=<ID=MOSAIC_SV_CLOSE_EDGE,Description=\"For mosaic SVs, the location is close to the end of the read (either end)\">",
+                "##FILTER=<ID=GT_FAILED,Description=\"Sniffles was unable to genotype this call.\">",
+                "##FILTER=<ID=UNRESOLVED,Description=\"Call is within an unresolved region.\">",
+                "##INFO=<ID=PRECISE,Number=0,Type=Flag,Description=\"Structural variation with precise breakpoints\">",
+                "##INFO=<ID=IMPRECISE,Number=0,Type=Flag,Description=\"Structural variation with imprecise breakpoints\">",
+                "##INFO=<ID=MOSAIC,Number=0,Type=Flag,Description=\"Structural variation classified as putative mosaic\">",
+                "##INFO=<ID=SVLEN,Number=1,Type=Integer,Description=\"Length of structural variation\">",
+                "##INFO=<ID=SVTYPE,Number=1,Type=String,Description=\"Type of structural variation\">",
+                "##INFO=<ID=CHR2,Number=1,Type=String,Description=\"Mate chromsome for BND SVs\">",
+                "##INFO=<ID=SUPPORT,Number=1,Type=Integer,Description=\"Number of reads supporting the structural variation\">",
+                "##INFO=<ID=SUPPORT_INLINE,Number=1,Type=Integer,Description=\"Number of reads supporting an INS/DEL SV (non-split events only), or reads for a DUP SV reported as INS by the mapper.\">",
+                "##INFO=<ID=SUPPORT_SA,Number=1,Type=Integer,Description=\"Number of reads supporting a DEL SV through supplementary alignments (split events)\">",
+                "##INFO=<ID=SUPPORT_LONG,Number=1,Type=Integer,Description=\"Number of soft-clipped reads putatively supporting the long insertion SV\">",
+                "##INFO=<ID=SUPPORT_UNSCALED,Number=1,Type=Float,Description=\"Base support for long insertions, before adjustment\">",
+                "##INFO=<ID=END,Number=1,Type=Integer,Description=\"End position of structural variation\">",
+                "##INFO=<ID=STDEV_POS,Number=1,Type=Float,Description=\"Standard deviation of structural variation start position\">",
+                "##INFO=<ID=STDEV_LEN,Number=1,Type=Float,Description=\"Standard deviation of structural variation length\">",
+                "##INFO=<ID=COVERAGE,Number=.,Type=Float,Description=\"Coverages near upstream, start, center, end, downstream of structural variation\">",
+                "##INFO=<ID=STRAND,Number=1,Type=String,Description=\"Strands of supporting reads for structural variant\">",
+                "##INFO=<ID=AC,Number=.,Type=Integer,Description=\"Allele count, summed up over all samples\">",
+                "##INFO=<ID=SUPP_VEC,Number=1,Type=String,Description=\"List of read support for all samples\">",
+                "##INFO=<ID=CONSENSUS_SUPPORT,Number=1,Type=Integer,Description=\"Number of reads that support the generated insertion (INS) consensus sequence\">"
+            ]
+        ],
+        "timestamp": "2026-10-06T10:06:21.576995175",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
     "homo_sapiens - [bam, bai], fasta, bed, true, true -stub": {
         "content": [
             {
@@ -343,90 +535,6 @@
             "nextflow": "26.04.6"
         }
     },
-    "homo_sapiens - [bam, bai], fasta, [], true, false": {
-        "content": [
-            {
-                "versions_sniffles": [
-                    [
-                        "SNIFFLES",
-                        "sniffles",
-                        "2.8.1"
-                    ]
-                ]
-            },
-            "test.vcf.gz.tbi",
-            [
-                "##fileformat=VCFv4.2",
-                "##source=Sniffles2_2.8.1"
-            ],
-            [
-                "##ALT=<ID=INS,Description=\"Insertion\">",
-                "##ALT=<ID=DEL,Description=\"Deletion\">",
-                "##ALT=<ID=DUP,Description=\"Duplication\">",
-                "##ALT=<ID=INV,Description=\"Inversion\">",
-                "##ALT=<ID=BND,Description=\"Breakend; Translocation\">",
-                "##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">",
-                "##FORMAT=<ID=GQ,Number=1,Type=Integer,Description=\"Genotype quality\">",
-                "##FORMAT=<ID=DR,Number=1,Type=Integer,Description=\"Number of reference reads\">",
-                "##FORMAT=<ID=DV,Number=1,Type=Integer,Description=\"Number of variant reads\">",
-                "##FORMAT=<ID=PS,Number=1,Type=Integer,Description=\"Phase-block, zero if none or not phased\">",
-                "##FORMAT=<ID=ID,Number=1,Type=String,Description=\"Individual sample SV ID for multi-sample output\">",
-                "##FILTER=<ID=PASS,Description=\"All filters passed\">",
-                "##FILTER=<ID=GT,Description=\"Genotype filter\">",
-                "##FILTER=<ID=SUPPORT_MIN,Description=\"Minimum read support filter\">",
-                "##FILTER=<ID=STDEV_POS,Description=\"SV Breakpoint standard deviation filter\">",
-                "##FILTER=<ID=STDEV_LEN,Description=\"SV length standard deviation filter\">",
-                "##FILTER=<ID=COV_MIN,Description=\"Minimum coverage filter\">",
-                "##FILTER=<ID=COV_MIN_GT,Description=\"Minimum coverage filter (missing genotype)\">",
-                "##FILTER=<ID=COV_CHANGE_DEL,Description=\"Coverage change filter for DEL\">",
-                "##FILTER=<ID=COV_CHANGE_DUP,Description=\"Coverage change filter for DUP\">",
-                "##FILTER=<ID=COV_CHANGE_INS,Description=\"Coverage change filter for INS\">",
-                "##FILTER=<ID=COV_CHANGE_FRAC_US,Description=\"Coverage fractional change filter: upstream-start\">",
-                "##FILTER=<ID=COV_CHANGE_FRAC_SC,Description=\"Coverage fractional change filter: start-center\">",
-                "##FILTER=<ID=COV_CHANGE_FRAC_CE,Description=\"Coverage fractional change filter: center-end\">",
-                "##FILTER=<ID=COV_CHANGE_FRAC_ED,Description=\"Coverage fractional change filter: end-downstream\">",
-                "##FILTER=<ID=COV_VAR,Description=\"Coverage variance exceeded\">",
-                "##FILTER=<ID=MOSAIC_VAF,Description=\"Mosaic variant allele fraction filter\">",
-                "##FILTER=<ID=NOT_MOSAIC_VAF,Description=\"Variant allele fraction filter for non-mosaic\">",
-                "##FILTER=<ID=ALN_NM,Description=\"Length adjusted mismatch filter\">",
-                "##FILTER=<ID=STRAND_BND,Description=\"Strand support filter for BNDs\">",
-                "##FILTER=<ID=STRAND,Description=\"Strand support filter for germline SVs\">",
-                "##FILTER=<ID=STRAND_MOSAIC,Description=\"Strand support filter for mosaic SVs\">",
-                "##FILTER=<ID=SVLEN_MIN,Description=\"SV length filter\">",
-                "##FILTER=<ID=SVLEN_MIN_MOSAIC,Description=\"SV length filter for mosaic SVs (min)\">",
-                "##FILTER=<ID=SVLEN_MAX_MOSAIC,Description=\"SV length filter for mosaic SVs (max)\">",
-                "##FILTER=<ID=SINGLE_BREAK,Description=\"A single break point was detected but not classified as an SV.\">",
-                "##FILTER=<ID=INLINE_SA,Description=\"INLINE/CIGAR-based SV is mostly supported by SA reads\">",
-                "##FILTER=<ID=MOSAIC_SV_CLOSE_EDGE,Description=\"For mosaic SVs, the location is close to the end of the read (either end)\">",
-                "##FILTER=<ID=GT_FAILED,Description=\"Sniffles was unable to genotype this call.\">",
-                "##FILTER=<ID=UNRESOLVED,Description=\"Call is within an unresolved region.\">",
-                "##INFO=<ID=PRECISE,Number=0,Type=Flag,Description=\"Structural variation with precise breakpoints\">",
-                "##INFO=<ID=IMPRECISE,Number=0,Type=Flag,Description=\"Structural variation with imprecise breakpoints\">",
-                "##INFO=<ID=MOSAIC,Number=0,Type=Flag,Description=\"Structural variation classified as putative mosaic\">",
-                "##INFO=<ID=SVLEN,Number=1,Type=Integer,Description=\"Length of structural variation\">",
-                "##INFO=<ID=SVTYPE,Number=1,Type=String,Description=\"Type of structural variation\">",
-                "##INFO=<ID=CHR2,Number=1,Type=String,Description=\"Mate chromsome for BND SVs\">",
-                "##INFO=<ID=SUPPORT,Number=1,Type=Integer,Description=\"Number of reads supporting the structural variation\">",
-                "##INFO=<ID=SUPPORT_INLINE,Number=1,Type=Integer,Description=\"Number of reads supporting an INS/DEL SV (non-split events only), or reads for a DUP SV reported as INS by the mapper.\">",
-                "##INFO=<ID=SUPPORT_SA,Number=1,Type=Integer,Description=\"Number of reads supporting a DEL SV through supplementary alignments (split events)\">",
-                "##INFO=<ID=SUPPORT_LONG,Number=1,Type=Integer,Description=\"Number of soft-clipped reads putatively supporting the long insertion SV\">",
-                "##INFO=<ID=SUPPORT_UNSCALED,Number=1,Type=Float,Description=\"Base support for long insertions, before adjustment\">",
-                "##INFO=<ID=END,Number=1,Type=Integer,Description=\"End position of structural variation\">",
-                "##INFO=<ID=STDEV_POS,Number=1,Type=Float,Description=\"Standard deviation of structural variation start position\">",
-                "##INFO=<ID=STDEV_LEN,Number=1,Type=Float,Description=\"Standard deviation of structural variation length\">",
-                "##INFO=<ID=COVERAGE,Number=.,Type=Float,Description=\"Coverages near upstream, start, center, end, downstream of structural variation\">",
-                "##INFO=<ID=STRAND,Number=1,Type=String,Description=\"Strands of supporting reads for structural variant\">",
-                "##INFO=<ID=AC,Number=.,Type=Integer,Description=\"Allele count, summed up over all samples\">",
-                "##INFO=<ID=SUPP_VEC,Number=1,Type=String,Description=\"List of read support for all samples\">",
-                "##INFO=<ID=CONSENSUS_SUPPORT,Number=1,Type=Integer,Description=\"Number of reads that support the generated insertion (INS) consensus sequence\">"
-            ]
-        ],
-        "timestamp": "2026-10-06T10:06:05.589273883",
-        "meta": {
-            "nf-test": "0.9.5",
-            "nextflow": "26.04.6"
-        }
-    },
     "homo_sapiens - [bam, bai], fasta, [], false, true -stub": {
         "content": [
             {
@@ -454,91 +562,6 @@
             }
         ],
         "timestamp": "2026-10-06T10:06:30.810929481",
-        "meta": {
-            "nf-test": "0.9.5",
-            "nextflow": "26.04.6"
-        }
-    },
-    "homo_sapiens - [bam, bai], fasta, bed, true, true": {
-        "content": [
-            {
-                "versions_sniffles": [
-                    [
-                        "SNIFFLES",
-                        "sniffles",
-                        "2.8.1"
-                    ]
-                ]
-            },
-            "test.snf",
-            "test.vcf.gz.tbi",
-            [
-                "##fileformat=VCFv4.2",
-                "##source=Sniffles2_2.8.1"
-            ],
-            [
-                "##ALT=<ID=INS,Description=\"Insertion\">",
-                "##ALT=<ID=DEL,Description=\"Deletion\">",
-                "##ALT=<ID=DUP,Description=\"Duplication\">",
-                "##ALT=<ID=INV,Description=\"Inversion\">",
-                "##ALT=<ID=BND,Description=\"Breakend; Translocation\">",
-                "##FORMAT=<ID=GT,Number=1,Type=String,Description=\"Genotype\">",
-                "##FORMAT=<ID=GQ,Number=1,Type=Integer,Description=\"Genotype quality\">",
-                "##FORMAT=<ID=DR,Number=1,Type=Integer,Description=\"Number of reference reads\">",
-                "##FORMAT=<ID=DV,Number=1,Type=Integer,Description=\"Number of variant reads\">",
-                "##FORMAT=<ID=PS,Number=1,Type=Integer,Description=\"Phase-block, zero if none or not phased\">",
-                "##FORMAT=<ID=ID,Number=1,Type=String,Description=\"Individual sample SV ID for multi-sample output\">",
-                "##FILTER=<ID=PASS,Description=\"All filters passed\">",
-                "##FILTER=<ID=GT,Description=\"Genotype filter\">",
-                "##FILTER=<ID=SUPPORT_MIN,Description=\"Minimum read support filter\">",
-                "##FILTER=<ID=STDEV_POS,Description=\"SV Breakpoint standard deviation filter\">",
-                "##FILTER=<ID=STDEV_LEN,Description=\"SV length standard deviation filter\">",
-                "##FILTER=<ID=COV_MIN,Description=\"Minimum coverage filter\">",
-                "##FILTER=<ID=COV_MIN_GT,Description=\"Minimum coverage filter (missing genotype)\">",
-                "##FILTER=<ID=COV_CHANGE_DEL,Description=\"Coverage change filter for DEL\">",
-                "##FILTER=<ID=COV_CHANGE_DUP,Description=\"Coverage change filter for DUP\">",
-                "##FILTER=<ID=COV_CHANGE_INS,Description=\"Coverage change filter for INS\">",
-                "##FILTER=<ID=COV_CHANGE_FRAC_US,Description=\"Coverage fractional change filter: upstream-start\">",
-                "##FILTER=<ID=COV_CHANGE_FRAC_SC,Description=\"Coverage fractional change filter: start-center\">",
-                "##FILTER=<ID=COV_CHANGE_FRAC_CE,Description=\"Coverage fractional change filter: center-end\">",
-                "##FILTER=<ID=COV_CHANGE_FRAC_ED,Description=\"Coverage fractional change filter: end-downstream\">",
-                "##FILTER=<ID=COV_VAR,Description=\"Coverage variance exceeded\">",
-                "##FILTER=<ID=MOSAIC_VAF,Description=\"Mosaic variant allele fraction filter\">",
-                "##FILTER=<ID=NOT_MOSAIC_VAF,Description=\"Variant allele fraction filter for non-mosaic\">",
-                "##FILTER=<ID=ALN_NM,Description=\"Length adjusted mismatch filter\">",
-                "##FILTER=<ID=STRAND_BND,Description=\"Strand support filter for BNDs\">",
-                "##FILTER=<ID=STRAND,Description=\"Strand support filter for germline SVs\">",
-                "##FILTER=<ID=STRAND_MOSAIC,Description=\"Strand support filter for mosaic SVs\">",
-                "##FILTER=<ID=SVLEN_MIN,Description=\"SV length filter\">",
-                "##FILTER=<ID=SVLEN_MIN_MOSAIC,Description=\"SV length filter for mosaic SVs (min)\">",
-                "##FILTER=<ID=SVLEN_MAX_MOSAIC,Description=\"SV length filter for mosaic SVs (max)\">",
-                "##FILTER=<ID=SINGLE_BREAK,Description=\"A single break point was detected but not classified as an SV.\">",
-                "##FILTER=<ID=INLINE_SA,Description=\"INLINE/CIGAR-based SV is mostly supported by SA reads\">",
-                "##FILTER=<ID=MOSAIC_SV_CLOSE_EDGE,Description=\"For mosaic SVs, the location is close to the end of the read (either end)\">",
-                "##FILTER=<ID=GT_FAILED,Description=\"Sniffles was unable to genotype this call.\">",
-                "##FILTER=<ID=UNRESOLVED,Description=\"Call is within an unresolved region.\">",
-                "##INFO=<ID=PRECISE,Number=0,Type=Flag,Description=\"Structural variation with precise breakpoints\">",
-                "##INFO=<ID=IMPRECISE,Number=0,Type=Flag,Description=\"Structural variation with imprecise breakpoints\">",
-                "##INFO=<ID=MOSAIC,Number=0,Type=Flag,Description=\"Structural variation classified as putative mosaic\">",
-                "##INFO=<ID=SVLEN,Number=1,Type=Integer,Description=\"Length of structural variation\">",
-                "##INFO=<ID=SVTYPE,Number=1,Type=String,Description=\"Type of structural variation\">",
-                "##INFO=<ID=CHR2,Number=1,Type=String,Description=\"Mate chromsome for BND SVs\">",
-                "##INFO=<ID=SUPPORT,Number=1,Type=Integer,Description=\"Number of reads supporting the structural variation\">",
-                "##INFO=<ID=SUPPORT_INLINE,Number=1,Type=Integer,Description=\"Number of reads supporting an INS/DEL SV (non-split events only), or reads for a DUP SV reported as INS by the mapper.\">",
-                "##INFO=<ID=SUPPORT_SA,Number=1,Type=Integer,Description=\"Number of reads supporting a DEL SV through supplementary alignments (split events)\">",
-                "##INFO=<ID=SUPPORT_LONG,Number=1,Type=Integer,Description=\"Number of soft-clipped reads putatively supporting the long insertion SV\">",
-                "##INFO=<ID=SUPPORT_UNSCALED,Number=1,Type=Float,Description=\"Base support for long insertions, before adjustment\">",
-                "##INFO=<ID=END,Number=1,Type=Integer,Description=\"End position of structural variation\">",
-                "##INFO=<ID=STDEV_POS,Number=1,Type=Float,Description=\"Standard deviation of structural variation start position\">",
-                "##INFO=<ID=STDEV_LEN,Number=1,Type=Float,Description=\"Standard deviation of structural variation length\">",
-                "##INFO=<ID=COVERAGE,Number=.,Type=Float,Description=\"Coverages near upstream, start, center, end, downstream of structural variation\">",
-                "##INFO=<ID=STRAND,Number=1,Type=String,Description=\"Strands of supporting reads for structural variant\">",
-                "##INFO=<ID=AC,Number=.,Type=Integer,Description=\"Allele count, summed up over all samples\">",
-                "##INFO=<ID=SUPP_VEC,Number=1,Type=String,Description=\"List of read support for all samples\">",
-                "##INFO=<ID=CONSENSUS_SUPPORT,Number=1,Type=Integer,Description=\"Number of reads that support the generated insertion (INS) consensus sequence\">"
-            ]
-        ],
-        "timestamp": "2026-10-06T10:06:21.576995175",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"

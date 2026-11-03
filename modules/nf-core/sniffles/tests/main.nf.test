@@ -19,6 +19,7 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam.bai', checkIfExists: true),
+                    [],
                     []
                 ]
                 input[1] = [
@@ -55,6 +56,7 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam.bai', checkIfExists: true),
+                    [],
                     []
                 ]
                 input[1] = [
@@ -89,6 +91,7 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam.bai', checkIfExists: true),
+                    [],
                     []
                 ]
                 input[1] = [
@@ -126,6 +129,7 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam.bai', checkIfExists: true),
+                    [],
                     []
                 ]
                 input[1] = [
@@ -168,6 +172,7 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam.bai', checkIfExists: true),
+                    [],
                     []
                 ]
                 input[1] = [
@@ -201,6 +206,7 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam.bai', checkIfExists: true),
+                    [],
                     []
                 ]
                 input[1] = [
@@ -234,6 +240,7 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam.bai', checkIfExists: true),
+                    [],
                     []
                 ]
                 input[1] = [
@@ -267,6 +274,7 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/test.sorted.bam.bai', checkIfExists: true),
+                    [],
                     []
                 ]
                 input[1] = [
@@ -301,7 +309,8 @@ nextflow_process {
                     [ id:'hg002' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_sv_genotype/HG002_ont_sv_genotype.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_sv_genotype/HG002_ont_sv_genotype.bam.bai', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_sv_genotype/HG002_ont_sv_sites.vcf.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_sv_genotype/HG002_ont_sv_sites.vcf.gz', checkIfExists: true),
+                    []
                 ]
                 input[1] = [[], []]
                 input[2] = [[], []]
@@ -347,7 +356,7 @@ nextflow_process {
                     [ id:'hg002' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_sv_genotype/HG002_ont_sv_genotype.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_sv_genotype/HG002_ont_sv_genotype.bam.bai', checkIfExists: true)
-                ]).combine(GUNZIP.out.gunzip.map { _meta, vcf -> vcf })
+                ]).combine(GUNZIP.out.gunzip.map { _meta, vcf -> [vcf, []] })
                 input[1] = [[], []]
                 input[2] = [[], []]
                 input[3] = true
@@ -380,7 +389,8 @@ nextflow_process {
                     [ id:'hg002' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_sv_genotype/HG002_ont_sv_genotype.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_sv_genotype/HG002_ont_sv_genotype.bam.bai', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_sv_genotype/HG002_ont_sv_sites.vcf.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_sv_genotype/HG002_ont_sv_sites.vcf.gz', checkIfExists: true),
+                    []
                 ]
                 input[1] = [[], []]
                 input[2] = [[], []]
@@ -394,6 +404,40 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - nanopore [bam, bai, [], bed], [], [], true, false - regions") {
+
+        when {
+            process {
+                """
+                input[0] = channel.of([
+                    [ id:'hg002' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_sv_genotype/HG002_ont_sv_genotype.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_sv_genotype/HG002_ont_sv_genotype.bam.bai', checkIfExists: true),
+                    []
+                ]).combine(channel.of("chr2\t71600000\t71700000").collectFile(name: 'regions.bed', newLine: true))
+                input[1] = [[], []]
+                input[2] = [[], []]
+                input[3] = true
+                input[4] = false
+                """
+            }
+        }
+
+        then {
+            def records = path(process.out.vcf.get(0).get(1)).linesGzip.findAll { line -> !line.startsWith("#") }
+            assertAll(
+                { assert process.success },
+                { assert records.every { line -> line.startsWith("chr2\t") } },
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith("versions") },
+                    file(process.out.tbi.get(0).get(1)).name,
+                    records,
+                ).match() }
             )
         }
 
