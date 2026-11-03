@@ -26,6 +26,13 @@ input:
         type: directory
         description: Path to the directory containing the Poseidon package(s) to be validated.
 output:
+  validation:
+    - - meta:
+          type: map
+          description: The meta information of the input package.
+      - exit_code:
+          type: string
+          description: The exit code of the validation process.
   versions_trident:
     - - ${task.process}:
           type: string
