@@ -12,8 +12,7 @@ process BULLSEYE_PARSEBAM {
     val(bullseye_parse_min_coverage)
 
     output:
-    tuple val(meta), path("*.matrix.gz"), path("*.matrix.gz.tbi"), emit: matrix
-    // parseBAM.pl has no --version flag; extract the version from its own header comment instead of hardcoding it.
+    tuple val(meta), path("*.matrix"), emit: matrix
     tuple val("${task.process}"), val('bullseye'), eval("grep -m1 -i 'version' \$(command -v parseBAM.pl) | grep -oE '[0-9]+\\.[0-9]+(\\.[0-9]+)?'"), topic: versions, emit: versions_bullseye
 
     when:
@@ -31,22 +30,18 @@ process BULLSEYE_PARSEBAM {
         $args
 
     # parseBAM.pl may emit either <prefix>.matrix or <prefix>.matrix.gz depending on mode/version.
-    if [[ -s ${prefix}.matrix ]]; then
-        bgzip -f ${prefix}.matrix
-    elif [[ ! -s ${prefix}.matrix.gz ]]; then
+    # Compression and tabix-indexing are left to a dedicated downstream step (e.g. htslib/bgziptabix).
+    if [[ -s ${prefix}.matrix.gz ]]; then
+        gunzip -f ${prefix}.matrix.gz
+    elif [[ ! -s ${prefix}.matrix ]]; then
         echo "parseBAM.pl did not produce ${prefix}.matrix or ${prefix}.matrix.gz" >&2
         exit 1
-    fi
-
-    if [[ ! -s ${prefix}.matrix.gz.tbi ]]; then
-        tabix -f -s 1 -b 2 -e 2 ${prefix}.matrix.gz
     fi
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo "" | gzip > ${prefix}.matrix.gz
-    touch ${prefix}.matrix.gz.tbi
+    touch ${prefix}.matrix
     """
 }

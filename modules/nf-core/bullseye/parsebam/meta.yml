@@ -42,16 +42,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.matrix.gz":
+      - "*.matrix":
           type: file
-          description: Bgzipped per-base edit matrix
-          pattern: "*.matrix.gz"
-          ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
-      - "*.matrix.gz.tbi":
-          type: file
-          description: Tabix index for the edit matrix
-          pattern: "*.matrix.gz.tbi"
+          description: Per-base edit matrix, uncompressed. Compression and tabix-indexing are left to a dedicated downstream step (e.g. htslib/bgziptabix).
+          pattern: "*.matrix"
           ontologies: []
   versions_bullseye:
     - - ${task.process}:
