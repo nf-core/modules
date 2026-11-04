@@ -5,8 +5,6 @@ process PARABRICKS_MUTECTCALLER {
     tag "${meta.id}"
     label 'process_high'
     label 'process_gpu'
-    // needed by the module to work properly can be removed when fixed upstream - see: https://github.com/nf-core/modules/issues/7226
-    stageInMode 'copy'
 
     container "nvcr.io/nvidia/clara/clara-parabricks:4.8.0-1"
 
@@ -38,12 +36,12 @@ process PARABRICKS_MUTECTCALLER {
     def intervals_command  = intervals     ? (intervals instanceof List ? intervals.collect { interval -> "--interval-file ${interval}" }.join(' ') : "--interval-file ${intervals}") : ""
     // prepon and postpon expect the index at <pon>.tbi
     def pon_index_command = panel_of_normals && panel_of_normals_index.name != "${panel_of_normals.name}.tbi" ? "cp -L ${panel_of_normals_index} ${panel_of_normals}.tbi" : ""
-    def prepon_command = panel_of_normals ? "pbrun prepon --in-pon-file ${panel_of_normals}" : ""
+    def prepon_command = panel_of_normals ? "pbrun prepon --in-pon-file ${panel_of_normals} --preserve-file-symlinks" : ""
     def pon_command    = panel_of_normals ? "--pon ${panel_of_normals}" : ""
     // pbrun postpon requires uncompressed .vcf input; output uncompressed when PON is provided
     def mutect_out     = panel_of_normals ? "${prefix}.vcf"    : "${prefix}.vcf.gz"
     def stats_rename   = panel_of_normals ? "mv ${prefix}.vcf.stats ${prefix}.vcf.gz.stats" : ""
-    def postpon_command = panel_of_normals ? "pbrun postpon --in-vcf ${prefix}.vcf --in-pon-file ${panel_of_normals} --out-vcf ${prefix}.vcf.gz" : ""
+    def postpon_command = panel_of_normals ? "pbrun postpon --in-vcf ${prefix}.vcf --in-pon-file ${panel_of_normals} --out-vcf ${prefix}.vcf.gz --preserve-file-symlinks" : ""
 
     def num_gpus = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ""
     def normal_bam_flag = normal_bam ? "--in-normal-bam ${normal_bam}" : ""
@@ -61,6 +59,7 @@ process PARABRICKS_MUTECTCALLER {
         --out-vcf ${mutect_out} \\
         ${intervals_command} \\
         ${num_gpus} \\
+        --preserve-file-symlinks \\
         ${args}
 
     # if panel of normals specified, rename stats and run postpon
