@@ -55,11 +55,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    bam(process.out.aligned[0][1]).getHeaderMD5(),
-                    bam(process.out.aligned[0][1]).getReadsMD5(),
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["aligned"])).match() }
             )
         }
     }
@@ -83,11 +79,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    bam(process.out.aligned[0][1]).getHeaderMD5(),
-                    bam(process.out.aligned[0][1]).getReadsMD5(),
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["aligned"])).match() }
             )
         }
     }
@@ -114,11 +106,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    bam(process.out.aligned[0][1]).getHeaderMD5(),
-                    bam(process.out.aligned[0][1]).getReadsMD5(),
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["aligned"])).match() }
             )
         }
     }
@@ -145,11 +133,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    bam(process.out.aligned[0][1]).getHeaderMD5(),
-                    bam(process.out.aligned[0][1]).getReadsMD5(),
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["aligned"])).match() }
             )
         }
     }
@@ -179,11 +163,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    bam(process.out.aligned[0][1]).getHeaderMD5(),
-                    bam(process.out.aligned[0][1]).getReadsMD5(),
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["aligned"])).match() }
             )
         }
     }
@@ -212,11 +192,7 @@ nextflow_process {
                 { assert process.success },
                 { assert bam(process.out.aligned[0][1]).getHeader().any { it.startsWith('@PG') && it.contains('--meth=taps') } },
                 { assert bam(process.out.aligned[0][1]).getSamLines().with { lines -> !lines.isEmpty() && lines.every { it.contains('\tXM:Z:') } } },
-                { assert snapshot(
-                    bam(process.out.aligned[0][1]).getHeaderMD5(),
-                    bam(process.out.aligned[0][1]).getReadsMD5(),
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["aligned"])).match() }
             )
         }
     }
@@ -248,11 +224,7 @@ nextflow_process {
                 { assert process.success },
                 { assert bam(process.out.aligned[0][1]).getHeader().any { it.startsWith('@PG') && it.contains('--meth=taps') } },
                 { assert bam(process.out.aligned[0][1]).getSamLines().with { lines -> !lines.isEmpty() && lines.every { it.contains('\tXM:Z:') } } },
-                { assert snapshot(
-                    bam(process.out.aligned[0][1]).getHeaderMD5(),
-                    bam(process.out.aligned[0][1]).getReadsMD5(),
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["aligned"])).match() }
             )
         }
     }

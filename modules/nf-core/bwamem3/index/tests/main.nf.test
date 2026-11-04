@@ -85,6 +85,34 @@ nextflow_process {
 
     }
 
+    test("sarscov2 - fasta - meth - custom prefix") {
+
+        when {
+            params {
+                module_args   = '--meth'
+                module_prefix = 'custom_ref'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            def index_files = file(process.out.index[0][1]).listFiles().collect { it.name }.sort()
+            assertAll(
+                { assert process.success },
+                { assert index_files == ['custom_ref.amb', 'custom_ref.ann', 'custom_ref.bwt.2bit.64', 'custom_ref.meth.amb', 'custom_ref.meth.ann', 'custom_ref.meth.bwt.2bit.64', 'custom_ref.meth.pac', 'custom_ref.pac'] },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
     test("sarscov2 - fasta - meth - stub") {
 
         options "-stub"

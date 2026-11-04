@@ -6,9 +6,9 @@ process BWAMEM3_MEM {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/04/040dc4151df127b1cd36d1b3455ab712fe1a57fbfbee26385e8f7293f7e47ead/data'
-:         'community.wave.seqera.io/library/bwa-mem3_htslib_samtools_findutils:b08ae21c54a338c8' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ff/ffd9362ddd396e0eb431def1812e02a274552b162355b242d974af65fcf83167/data'
+        : 'community.wave.seqera.io/library/bwa-mem3_htslib_samtools_findutils:f271e572b6aa004b'}"
 
     input:
     tuple val(meta), path(reads)
@@ -39,8 +39,7 @@ process BWAMEM3_MEM {
         error("Fasta reference is required for CRAM output")
     }
     """
-    # A `bwa-mem3 index --meth` directory also holds the *.meth.* seed index. bwa-mem3 finds it
-    # from the plain index prefix under `mem --meth`, so it must not be picked as the prefix here.
+    # Skip the `index --meth` seed index: `mem --meth` derives it from the plain prefix.
     INDEX=`find -L ./ -name "*.amb" ! -name "*.meth.amb" | sed 's/\\.amb\$//'`
 
     bwa-mem3 \\
