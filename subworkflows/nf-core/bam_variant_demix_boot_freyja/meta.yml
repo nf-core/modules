@@ -21,6 +21,11 @@ input:
       description: |
         Structure: [ val(meta), path(fasta) ]
         Groovy Map containing sample information e.g. [ id:'test', single_end:false ] and the fasta reference used for the sorted BAM file
+  - ch_fai:
+      type: file
+      description: |
+        Structure: path(fai)
+        FASTA index (.fai) of the reference sequence
   - val_skip_boot:
       type: boolean
       description: Whether to skip the bootstrapping step
