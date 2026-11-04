@@ -5,9 +5,8 @@ channels:
   - bioconda
 
 dependencies:
-  # renovate: datasource=conda depName=bioconda/minimap2
+  # renovate: datasource=conda depName=conda-forge/gzip
   - bioconda::minimap2=2.31
-  # renovate: datasource=conda depName=bioconda/paraphase
   - bioconda::paraphase=4.1.0
-  # renovate: datasource=conda depName=bioconda/samtools
   - bioconda::samtools=1.25
+  - conda-forge::gzip=1.14
