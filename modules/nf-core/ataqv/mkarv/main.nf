@@ -5,9 +5,9 @@ process ATAQV_MKARV {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ataqv:1.3.1--py310ha155cf9_1':
-        'quay.io/biocontainers/ataqv:1.3.1--py310ha155cf9_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f7/f7063be8c7419222c75482548d138078837657f628d149e1a0b3e6a9080799de/data'
+        : 'community.wave.seqera.io/library/ataqv:1.3.1--13b9c1b1eb8ada3f'}"
 
     input:
     path "jsons/*"
