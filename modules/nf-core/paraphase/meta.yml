@@ -172,3 +172,17 @@ authors:
   - "@fellen31"
 maintainers:
   - "@fellen31"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/minimap2_paraphase_samtools_gzip:4cd6fe64e3d90e14
+      build_id: bd-4cd6fe64e3d90e14_1
+      scan_id: sc-f5ad836775c32d46_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/minimap2_paraphase_samtools_gzip:cbc3f1dcfab8170a
+      build_id: bd-cbc3f1dcfab8170a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/de/de7c8667e5e353fd5c63b287aad604be9a73fe95c860fd80e96980bc458c7b1c/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/paraphase/.conda-lock/linux_amd64-bd-4cd6fe64e3d90e14_1.txt

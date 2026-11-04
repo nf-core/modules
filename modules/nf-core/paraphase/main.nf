@@ -5,8 +5,8 @@ process PARAPHASE {
     conda "${moduleDir}/environment.yml"
 
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3c/3ceca2edb8705d24d4104893b4ca87dc1b2796f05b43f68864b8a9ac2a397040/data'
-        : 'community.wave.seqera.io/library/minimap2_paraphase_samtools_gzip:b328b1454e3eeb37'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/de/de7c8667e5e353fd5c63b287aad604be9a73fe95c860fd80e96980bc458c7b1c/data'
+        : 'community.wave.seqera.io/library/minimap2_paraphase_samtools_gzip:4cd6fe64e3d90e14'}"
 
     input:
     tuple val(meta), path(bam), path(bai)
