@@ -6,9 +6,9 @@ process ANNOSINE {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/annosine2:2.0.8--pyh7e72e81_0':
-        'quay.io/biocontainers/annosine2:2.0.8--pyh7e72e81_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/71/71a65e004223b2b3d1acf1c4a0d8869b613c657c66c7f44454347715fde16202/data'
+        : 'community.wave.seqera.io/library/annosine2:2.0.8--fef67f68ff78061f'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -17,7 +17,7 @@ process ANNOSINE {
     output:
     tuple val(meta), path("${prefix}.log"), emit: log
     tuple val(meta), path("${prefix}.fa") , emit: fa, optional: true
-    tuple val("${task.process}"), val('annosine'), eval("pip show annosine2 | sed -n 's/Version: //p'"), emit: versions_annosine, topic: versions
+    tuple val("${task.process}"), val('annosine'), eval("python -c 'import importlib.metadata as m; print(m.version(\"annosine2\"))'"), emit: versions_annosine, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

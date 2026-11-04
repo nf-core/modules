@@ -110,25 +110,25 @@ maintainers:
   - "@phue"
 containers:
   docker:
-    linux/arm64:
-      name: community.wave.seqera.io/library/bwameth_samtools:6b4f7ef4df9c9676
-      build_id: bd-6b4f7ef4df9c9676_2
-      scan_id: sc-01851e9bcd8f6bac_1
     linux/amd64:
-      name: community.wave.seqera.io/library/bwameth_samtools:4df060e40f3ac9d2
-      build_id: bd-4df060e40f3ac9d2_2
-      scan_id: sc-079255f8505835ba_1
+      name: community.wave.seqera.io/library/bwameth_samtools:1ff0dd4d9a699bdc
+      build_id: bd-1ff0dd4d9a699bdc_1
+      scan_id: sc-3a485d11c1324c30_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/bwameth_samtools:e1514a97a6d49562
+      build_id: bd-e1514a97a6d49562_1
+      scan_id: sc-f232c7486c63599f_1
   singularity:
-    linux/arm64:
-      name: oras://community.wave.seqera.io/library/bwameth_samtools:c43bd4fefc00919f
-      build_id: bd-c43bd4fefc00919f_2
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/94/942b26103894a34fe0e409f26ebfa14c5c4ced5a993d1a46bb5ec23e7af57703/data
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/bwameth_samtools:814138597219282f
-      build_id: bd-814138597219282f_2
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/27/27fa347b345bd5ebcd0c6b5a9e9bdf39350f46c1f0a09dabee16708d316bacc5/data
+      name: oras://community.wave.seqera.io/library/bwameth_samtools:35551274f37b0ac4
+      build_id: bd-35551274f37b0ac4_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1a/1a13a91efc1657e8ff4ea44354fd7ac8723d6b47f6a83b36f4ca99d035e91f05/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bwameth_samtools:caf9ac97a939b4af
+      build_id: bd-caf9ac97a939b4af_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f3/f3822e75d39336f62d55018860119fea334f486895baab855d2595c33e6fb867/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/bwameth/align/.conda-lock/linux_amd64-bd-4df060e40f3ac9d2_2.txt
+      lock_file: modules/nf-core/bwameth/align/.conda-lock/linux_amd64-bd-1ff0dd4d9a699bdc_1.txt
     linux/arm64:
-      lock_file: modules/nf-core/bwameth/align/.conda-lock/linux_arm64-bd-6b4f7ef4df9c9676_2.txt
+      lock_file: modules/nf-core/bwameth/align/.conda-lock/linux_arm64-bd-e1514a97a6d49562_1.txt
