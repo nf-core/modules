@@ -1,0 +1,183 @@
+name: "rastair2_call"
+description: |
+  Jointly call genetic variants (SNVs and indels) and CpG methylation from
+  5mC->T converted short-read data (TAPS, TAPS+, Illumina 5-base) with rastair
+  version 2. Writes a VCF with genotypes and methylation levels and a CpG
+  methylation BED, both bgzipped and tabix-indexed.
+  Licensing: rastair version 2 and newer is free for non-commercial research use
+  only. Commercial use (including providing paid services or developing products)
+  requires a licence from Oxford University Innovation
+  (enquiries@innovation.ox.ac.uk, reference 24811). Run `rastair license` for the
+  full terms. Publications using results must include the notice
+  "Copyright © 2025, University of Oxford".
+keywords:
+  - methylation
+  - variant calling
+  - taps
+  - 5-base
+  - snv
+  - indel
+  - vcf
+  - cpg
+tools:
+  - "rastair":
+      description: |
+        Simultaneous detection of genetic variants and methylated positions from
+        TAPS+, Illumina 5-base or other 5mC->T converted sequencing data.
+      homepage: "https://www.rastair.com"
+      documentation: "https://docs.rastair.com"
+      tool_dev_url: "https://github.com/bsbludwig/rastair"
+      licence: ["LicenseRef-NonCommercial"]
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information.
+          `single_end: true` adds `--unpaired`, which assigns strands from the
+          alignment direction instead of read-pair flags.
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam:
+        type: file
+        description: Coordinate-sorted BAM or CRAM file of 5mC->T converted reads
+        pattern: "*.{bam,cram}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+          - edam: "http://edamontology.org/format_3462"
+    - bai:
+        type: file
+        description: Index of the BAM or CRAM file
+        pattern: "*.{bai,csi,crai}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'genome' ]`
+    - fasta:
+        type: file
+        description: Reference genome FASTA (plain, or bgzipped with a .gzi index alongside)
+        pattern: "*.{fa,fasta,fna}{,.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+    - fai:
+        type: file
+        description: samtools faidx index of the reference FASTA
+        pattern: "*.fai"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475"
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - "*.vcf.gz":
+          type: file
+          description: |
+            bgzipped VCF with variant genotypes (GT/GQ/PL) and per-CpG methylation
+            (M5mC, DPM5mC, ADM5mC). Only passing records unless `--all` is set in
+            `ext.args`.
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3989"
+  tbi:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - "*.vcf.gz.tbi":
+          type: file
+          description: Tabix index of the VCF
+          pattern: "*.vcf.gz.tbi"
+          ontologies:
+            - edam: "http://edamontology.org/format_3616"
+  bed:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - "*.bed.gz":
+          type: file
+          description: |
+            bgzipped BED of per-position CpG methylation calls (beta estimate,
+            modified/unmodified read counts, genotype)
+          pattern: "*.bed.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3003"
+  bed_tbi:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - "*.bed.gz.tbi":
+          type: file
+          description: Tabix index of the BED
+          pattern: "*.bed.gz.tbi"
+          ontologies:
+            - edam: "http://edamontology.org/format_3616"
+  versions_rastair:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rastair:
+          type: string
+          description: The name of the tool
+      - "rastair --version | sed 's/^rastair //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_tabix:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tabix:
+          type: string
+          description: The name of the tool
+      - "tabix --version 2>&1 | sed -n '1s/^tabix (htslib) //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rastair:
+          type: string
+          description: The name of the tool
+      - "rastair --version | sed 's/^rastair //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tabix:
+          type: string
+          description: The name of the tool
+      - "tabix --version 2>&1 | sed -n '1s/^tabix (htslib) //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@eduard-watchmaker"
+maintainers:
+  - "@eduard-watchmaker"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/rastair:2.2.0--5a5100fc9dae6b03
+      build_id: bd-5a5100fc9dae6b03_1
+      scan_id: sc-a95c94ba810b8b0c_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/rastair:2.2.0--b28cf757ed0930dd
+      build_id: bd-b28cf757ed0930dd_1
+      scan_id: sc-c746af9a48e03d0b_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/rastair:2.2.0--1b246819f92c4dab
+      build_id: bd-1b246819f92c4dab_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/48/480dc5483f43bcf314fd9eb94bfb4d7e8186d4a60d62f8dbdfda1471573f1f37/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/rastair:2.2.0--7967fc31b214c14f
+      build_id: bd-7967fc31b214c14f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/70/70688ed658e868b0d42966215f8d2f038552877ddb3e203f37baf009841d673b/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/rastair2/call/.conda-lock/linux_amd64-bd-5a5100fc9dae6b03_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/rastair2/call/.conda-lock/linux_arm64-bd-b28cf757ed0930dd_1.txt
