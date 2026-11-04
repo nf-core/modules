@@ -1,6 +1,5 @@
 name: bandage_image
-description: Render an assembly graph in GFA 1.0 format to PNG and SVG image
-  formats
+description: Render an assembly graph in GFA 1.0 format to PNG and SVG image formats
 keywords:
   - gfa
   - graph
@@ -78,3 +77,27 @@ authors:
   - "@heuermh"
 maintainers:
   - "@heuermh"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/bandage:0.9.0--8487ba1843348363
+      build_id: bd-8487ba1843348363_1
+      scan_id: sc-7b25940bf0442c56_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/bandage:0.9.0--5aa7953644fadc5e
+      build_id: bd-5aa7953644fadc5e_1
+      scan_id: sc-aaef54fedfde1c39_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bandage:0.9.0--47051666e0a36aba
+      build_id: bd-47051666e0a36aba_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d2/d2b22c546ff6e8c3d5a32dba69ab468d186a77fe91220ae803ab4e448f306939/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bandage:0.9.0--034946e101179230
+      build_id: bd-034946e101179230_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/24/24e7692f7cb34d64c5e370dc9dac2e2b6f687d37b7140f12a6251d25dd8b6fa6/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bandage/image/.conda-lock/linux_amd64-bd-5aa7953644fadc5e_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/bandage/image/.conda-lock/linux_arm64-bd-8487ba1843348363_1.txt
