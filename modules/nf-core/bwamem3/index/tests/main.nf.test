@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process BWAMEM3_INDEX"
     script "../main.nf"
     process "BWAMEM3_INDEX"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -36,6 +37,62 @@ nextflow_process {
         options "-stub"
 
         when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - meth") {
+
+        when {
+            params {
+                module_args = '--meth'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            def index_files = file(process.out.index[0][1]).listFiles().collect { it.name }.sort()
+            assertAll(
+                { assert process.success },
+                { assert index_files.containsAll(['genome.fasta.meth.amb', 'genome.fasta.meth.ann', 'genome.fasta.meth.bwt.2bit.64', 'genome.fasta.meth.pac']) },
+                { assert !index_files.contains('genome.fasta') },
+                { assert !index_files.contains('genome.fasta.meth.fa') },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - meth - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--meth'
+            }
             process {
                 """
                 input[0] = [

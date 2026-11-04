@@ -44,7 +44,10 @@ input:
           e.g. [ id:'test' ]
     - index:
         type: file
-        description: bwa-mem3 genome index files
+        description: |
+          bwa-mem3 genome index files. Methylation-aware alignment (`ext.args = '--meth=taps'`
+          for TAPS; the `=` is required) needs an index built with `bwa-mem3 index --meth`,
+          which adds the `*.meth.*` seed index.
         pattern: "Directory containing bwa-mem3 index *.{0123,amb,ann,bwt.2bit.64,pac}"
         ontologies:
           - edam: "http://edamontology.org/data_3210"

@@ -39,7 +39,9 @@ process BWAMEM3_MEM {
         error("Fasta reference is required for CRAM output")
     }
     """
-    INDEX=`find -L ./ -name "*.amb" | sed 's/\\.amb\$//'`
+    # A `bwa-mem3 index --meth` directory also holds the *.meth.* seed index. bwa-mem3 finds it
+    # from the plain index prefix under `mem --meth`, so it must not be picked as the prefix here.
+    INDEX=`find -L ./ -name "*.amb" ! -name "*.meth.amb" | sed 's/\\.amb\$//'`
 
     bwa-mem3 \\
         mem \\

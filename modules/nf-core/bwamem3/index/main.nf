@@ -4,7 +4,8 @@
 process BWAMEM3_INDEX {
     tag "${meta.id}"
     // NOTE bwa-mem3 builds an FM-index with libsais; peak memory scales with the reference size.
-    memory { 280.MB * Math.ceil(fasta.size() / 10000000) * task.attempt }
+    // `--meth` also builds a C->T/G->A converted seed index over twice the text, roughly doubling peak memory.
+    memory { 280.MB * Math.ceil(fasta.size() / 10000000) * ("${task.ext.args ?: ''}".contains('--meth') ? 2 : 1) * task.attempt }
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
@@ -24,18 +25,36 @@ process BWAMEM3_INDEX {
     script:
     def prefix = task.ext.prefix ?: "${fasta}"
     def args = task.ext.args ?: ''
-    """
-    mkdir bwamem3
-    bwa-mem3 \\
-        index \\
-        $args \\
-        -t ${task.cpus} \\
-        -p bwamem3/${prefix} \\
-        $fasta
-    """
+    if (args.contains('--meth')) {
+        // `index --meth` rejects -p and writes <in.fasta>.* and <in.fasta>.meth.* next to its input,
+        // so index a symlink inside the output directory. Drop the symlink and the intermediate
+        // converted FASTA (<in.fasta>.meth.fa) afterwards: `mem --meth` needs neither.
+        """
+        mkdir bwamem3
+        ln -s ../${fasta} bwamem3/${prefix}
+        bwa-mem3 \\
+            index \\
+            $args \\
+            -t ${task.cpus} \\
+            bwamem3/${prefix}
+        rm bwamem3/${prefix} bwamem3/${prefix}.meth.fa
+        """
+    } else {
+        """
+        mkdir bwamem3
+        bwa-mem3 \\
+            index \\
+            $args \\
+            -t ${task.cpus} \\
+            -p bwamem3/${prefix} \\
+            $fasta
+        """
+    }
 
     stub:
     def prefix = task.ext.prefix ?: "${fasta}"
+    def args = task.ext.args ?: ''
+    def meth_files = args.contains('--meth') ? "touch bwamem3/${prefix}.meth.{amb,ann,bwt.2bit.64,pac}" : ''
     """
     mkdir bwamem3
     touch bwamem3/${prefix}.0123
@@ -43,5 +62,6 @@ process BWAMEM3_INDEX {
     touch bwamem3/${prefix}.ann
     touch bwamem3/${prefix}.bwt.2bit.64
     touch bwamem3/${prefix}.pac
+    ${meth_files}
     """
 }
