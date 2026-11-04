@@ -6,9 +6,9 @@ process ANGSD_SOAPSNPCALIBRATION {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/angsd:0.940--h13024bc_4':
-        'quay.io/biocontainers/angsd:0.940--h13024bc_4' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a0/a0185040abdace3529e7c8ae31a80bd86a47577e0d2078b2223dc1b1c362e656/data'
+        : 'community.wave.seqera.io/library/angsd_htslib:714d1c4bd0020e05'}"
 
     input:
     tuple val(meta), path(bams), path(bam_indices)
