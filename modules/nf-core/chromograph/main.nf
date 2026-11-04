@@ -8,8 +8,8 @@ process CHROMOGRAPH {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/chromograph:1.3.1--pyhdfd78af_2'
-        : 'quay.io/biocontainers/chromograph:1.3.1--pyhdfd78af_2'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e0/e0c3932ad72d6c289d680282df6bd60668ee964008b6765119f3070bdc6cd17d/data'
+        : 'community.wave.seqera.io/library/chromograph:1.3.1--0e8436aeb3c0d998'}"
 
     input:
     tuple val(meta), path(autozyg)
