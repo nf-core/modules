@@ -37,6 +37,10 @@ nextflow_process {
                     ]
                 input[2] = [] // pon
                 input[3] = [] // pon index
+                input[4] = [] // germline resource
+                input[5] = [] // germline resource index
+                input[6] = [] // alleles
+                input[7] = [] // alleles index
                 """
             }
         }
@@ -80,6 +84,10 @@ nextflow_process {
                     ]
                 input[2] = [] // pon
                 input[3] = [] // pon index
+                input[4] = [] // germline resource
+                input[5] = [] // germline resource index
+                input[6] = [] // alleles
+                input[7] = [] // alleles index
                 """
             }
         }
@@ -139,6 +147,10 @@ nextflow_process {
                     ]
                 input[2] = [] // pon
                 input[3] = [] // pon index
+                input[4] = [] // germline resource
+                input[5] = [] // germline resource index
+                input[6] = [] // alleles
+                input[7] = [] // alleles index
                 """
             }
         }
@@ -197,6 +209,10 @@ nextflow_process {
                     ]
                 input[2] = BCFTOOLS_REHEADER.out.vcf.map { meta, vcf -> vcf }
                 input[3] = BCFTOOLS_REHEADER.out.index.map { meta, tbi -> tbi }
+                input[4] = [] // germline resource
+                input[5] = [] // germline resource index
+                input[6] = [] // alleles
+                input[7] = [] // alleles index
                 """
             }
         }
@@ -261,6 +277,10 @@ nextflow_process {
                     ]
                 input[2] = BCFTOOLS_REHEADER.out.vcf.map { meta, vcf -> vcf }
                 input[3] = BCFTOOLS_REHEADER.out.index.map { meta, tbi -> tbi.copyTo(tbi.resolveSibling('pon.tbi')) }
+                input[4] = [] // germline resource
+                input[5] = [] // germline resource index
+                input[6] = [] // alleles
+                input[7] = [] // alleles index
                 """
             }
         }
@@ -274,6 +294,137 @@ nextflow_process {
                 // the index copied to <pon>.tbi must not be emitted
                 { assert !(process.out.tbi[0][1] instanceof List) },
                 { assert file(process.out.tbi[0][1]).name == 'test.vcf.gz.tbi' },
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf"], unstableKeys: ["tbi"])).match() }
+            )
+        }
+
+    }
+
+    test("human - bam - germline - f1r2") {
+
+        setup {
+            run("BCFTOOLS_REHEADER") {
+                script "../../../bcftools/reheader/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'gnomad' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz', checkIfExists: true),
+                        [],
+                        []
+                    ]
+                    input[1] = [
+                        [ id:'reference' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = "--tumor-name tumour --mutect-low-memory --mutect-f1r2-tar-gz test.f1r2.tar.gz"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
+                    [],
+                    [],
+                    [],
+                    []
+                ]
+                input[1] = [ // fasta + fasta_fai
+                    [ id: 'reference' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                    ]
+                input[2] = [] // pon
+                input[3] = [] // pon index
+                input[4] = BCFTOOLS_REHEADER.out.vcf.map { meta, vcf -> vcf }
+                // index staged under a different name, the module must place it at <germline_resource>.tbi
+                input[5] = BCFTOOLS_REHEADER.out.index.map { meta, tbi -> tbi.copyTo(tbi.resolveSibling('gnomad.tbi')) }
+                input[6] = [] // alleles
+                input[7] = [] // alleles index
+                """
+            }
+        }
+
+        then {
+            def variants = path(process.out.vcf[0][1]).vcf.variants
+            assertAll(
+                { assert process.success },
+                // Without a germline resource every POPAF is the default of 6.0
+                { assert variants.any { variant -> variant.getAttributeAsDoubleList("POPAF", 6.0).any { popaf -> popaf < 6.0 } } },
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf"], unstableKeys: ["tbi", "f1r2"])).match() }
+            )
+        }
+
+    }
+
+    test("human - bam - alleles") {
+
+        setup {
+            run("BCFTOOLS_REHEADER") {
+                script "../../../bcftools/reheader/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'alleles' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/axiom_exome_plus.genotypes.all_populations.poly.hg38.vcf.gz', checkIfExists: true),
+                        [],
+                        []
+                    ]
+                    input[1] = [
+                        [ id:'reference' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = "--tumor-name tumour --mutect-low-memory"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
+                    [],
+                    [],
+                    [],
+                    []
+                ]
+                input[1] = [ // fasta + fasta_fai
+                    [ id: 'reference' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                    ]
+                input[2] = [] // pon
+                input[3] = [] // pon index
+                input[4] = [] // germline resource
+                input[5] = [] // germline resource index
+                input[6] = BCFTOOLS_REHEADER.out.vcf.map { meta, vcf -> vcf }
+                // index staged under a different name, the module must place it at <alleles>.tbi
+                input[7] = BCFTOOLS_REHEADER.out.index.map { meta, tbi -> tbi.copyTo(tbi.resolveSibling('alleles.tbi')) }
+                """
+            }
+        }
+
+        then {
+            def vcf = path(process.out.vcf[0][1]).vcf
+            def mutect_command = vcf.header.otherHeaderLines.find { line -> line.key == 'GATKCommandLine' && line.value.contains('ID=mutectcaller,') }
+            // Sites from the alleles VCF without alt reads, absent from the "human - bam" calls
+            def force_called = [10541132, 10543336, 10552667, 10559522]
+            assertAll(
+                { assert process.success },
+                { assert mutect_command.value.contains('--mutect-alleles ') },
+                { assert vcf.variants.count { variant -> variant.start in force_called } == 4 },
                 { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf"], unstableKeys: ["tbi"])).match() }
             )
         }
@@ -305,6 +456,10 @@ nextflow_process {
                     ]
                 input[2] = [] // pon
                 input[3] = [] // pon index
+                input[4] = [] // germline resource
+                input[5] = [] // germline resource index
+                input[6] = [] // alleles
+                input[7] = [] // alleles index
                 """
             }
         }
@@ -346,6 +501,10 @@ nextflow_process {
                     ]
                 input[2] = [] // pon
                 input[3] = [] // pon index
+                input[4] = [] // germline resource
+                input[5] = [] // germline resource index
+                input[6] = [] // alleles
+                input[7] = [] // alleles index
                 """
             }
         }
@@ -384,6 +543,10 @@ nextflow_process {
                     ]
                 input[2] = [] // pon
                 input[3] = [] // pon index
+                input[4] = [] // germline resource
+                input[5] = [] // germline resource index
+                input[6] = [] // alleles
+                input[7] = [] // alleles index
                 """
             }
         }
@@ -422,6 +585,10 @@ nextflow_process {
                     ]
                 input[2] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz', checkIfExists: true)
                 input[3] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/mills_and_1000G.indels.hg38.vcf.gz.tbi', checkIfExists: true)
+                input[4] = [] // germline resource
+                input[5] = [] // germline resource index
+                input[6] = [] // alleles
+                input[7] = [] // alleles index
                 """
             }
         }
@@ -430,6 +597,51 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("human - bam - germline - f1r2 - stub") {
+
+        options '-stub'
+
+        when {
+            params {
+                module_args = "--tumor-name tumour --mutect-low-memory --mutect-f1r2-tar-gz test.f1r2.tar.gz"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test2.paired_end.recalibrated.sorted.bam', checkIfExists: true),
+                    [],
+                    [],
+                    [],
+                    []
+                ]
+                input[1] = [ // fasta + fasta_fai
+                    [ id: 'reference' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta.fai', checkIfExists: true)
+                    ]
+                input[2] = [] // pon
+                input[3] = [] // pon index
+                input[4] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz', checkIfExists: true)
+                input[5] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/germlineresources/gnomAD.r2.1.1.vcf.gz.tbi', checkIfExists: true)
+                input[6] = [] // alleles
+                input[7] = [] // alleles index
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    path(process.out.compatible_versions.get(0)).yaml
+                    ).match() }
             )
         }
 

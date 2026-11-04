@@ -36,7 +36,7 @@ input:
         ontologies: []
     - stats:
         type: file
-        description: Stats file that pairs with output vcf file
+        description: Stats file that pairs with the input vcf file (Mutect2 or MergeMutectStats output). Passed to FilterMutectCalls via --stats. If not provided, GATK looks for <vcf>.stats next to the input vcf.
         pattern: "*vcf.gz.stats"
         ontologies: []
     - orientationbias:
@@ -68,21 +68,11 @@ input:
         description: The reference fasta file
         pattern: "*.fasta"
         ontologies: []
-  - - meta3:
-        type: map
-        description: |
-          Groovy Map containing reference information
-          e.g. [ id:'genome' ]
     - fai:
         type: file
         description: Index of reference fasta file
         pattern: "*.fasta.fai"
         ontologies: []
-  - - meta4:
-        type: map
-        description: |
-          Groovy Map containing reference information
-          e.g. [ id:'genome' ]
     - dict:
         type: file
         description: GATK sequence dictionary
