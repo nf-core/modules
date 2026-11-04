@@ -6,9 +6,9 @@ process AMPIR {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-ampir:1.1.0':
-        'quay.io/biocontainers/r-ampir:1.1.0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3e/3e56d240df5c60669d29794e6d11b0c67a0016df02a443ff4f2745af34ce25fd/data'
+        : 'community.wave.seqera.io/library/r-ampir:1.1.0--6d5903523e6728bc'}"
 
     input:
     tuple val(meta), path(faa)
