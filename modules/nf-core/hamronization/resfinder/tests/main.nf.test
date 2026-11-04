@@ -9,9 +9,6 @@ nextflow_process {
     tag "hamronization"
     tag "hamronization/resfinder"
 
-    // TODO: no hay todavía un data_resfinder.json en nf-core/test-datasets.
-    // Opción A: subirlo con un PR a test-datasets (rama "modules") y cambiar esta ruta.
-    // Opción B: generarlo en un bloque setup {} con RESFINDER_RUN (ver resfinder/run/tests).
     test("hamronization/resfinder - json - tsv") {
 
         when {
