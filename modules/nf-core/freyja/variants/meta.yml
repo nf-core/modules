@@ -28,7 +28,12 @@ input:
   - fasta:
       type: file
       description: The reference sequence used for mapping and generating the BAM file
-      pattern: "*.fa"
+      pattern: "*.{fa,fasta}"
+      ontologies: []
+  - fai:
+      type: file
+      description: FASTA index (.fai) of the reference sequence, required by samtools mpileup
+      pattern: "*.fai"
       ontologies: []
 output:
   variants:
