@@ -56,7 +56,7 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.vcf_index.get(0).get(1).endsWith("tbi") },
                 { assert snapshot(
-                    path(process.out.json.get(0).get(1)).json.collectEntries { region, result -> [ region, result.subMap(['region_name', 'phase_region', 'genes_in_region', 'region_depth', 'failed_for_coverage', 'total_cn']) ] },
+                    file(process.out.json.get(0).get(1)).readLines()[0..27],
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     bam(process.out.bam.get(0).get(1)).getReadsMD5(),
                     file(process.out.bai.get(0).get(1)).name,
@@ -96,7 +96,7 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.vcf_index.get(0).get(1).endsWith("tbi") },
                 { assert snapshot(
-                    path(process.out.json.get(0).get(1)).json.collectEntries { region, result -> [ region, result.subMap(['region_name', 'phase_region', 'genes_in_region', 'region_depth', 'failed_for_coverage', 'total_cn']) ] },
+                    file(process.out.json.get(0).get(1)).readLines()[0..27],
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     bam(process.out.bam.get(0).get(1)).getReadsMD5(),
                     file(process.out.bai.get(0).get(1)).name,
@@ -136,7 +136,7 @@ nextflow_process {
                 { assert process.out.vcf.isEmpty() },
                 { assert process.out.vcf_index.isEmpty() },
                 { assert snapshot(
-                    path(process.out.json.get(0).get(1)).json.collectEntries { region, result -> [ region, result.subMap(['region_name', 'phase_region', 'genes_in_region', 'region_depth', 'failed_for_coverage', 'total_cn']) ] },
+                    file(process.out.json.get(0).get(1)).readLines()[0..27],
                     file(process.out.bam.get(0).get(1)).name,
                     file(process.out.bai.get(0).get(1)).name,
                     process.out.findAll { key, val -> key.startsWith("versions") }
@@ -175,7 +175,7 @@ nextflow_process {
                 { assert process.success },
                 { assert process.out.vcf_index.get(0).get(1).endsWith("csi") },
                 { assert snapshot(
-                    path(process.out.json.get(0).get(1)).json.collectEntries { region, result -> [ region, result.subMap(['region_name', 'phase_region', 'genes_in_region', 'region_depth', 'failed_for_coverage', 'total_cn']) ] },
+                    file(process.out.json.get(0).get(1)).readLines()[0..27],
                     path(process.out.vcf.get(0).get(1)).vcf.summary,
                     bam(process.out.bam.get(0).get(1)).getReadsMD5(),
                     file(process.out.bai.get(0).get(1)).name,
