@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MEMOTE_RUN {
     tag "$meta.id"
     label 'process_low'
@@ -36,7 +39,7 @@ process MEMOTE_RUN {
     """
     export HOME=\${PWD}
     export COBRA_SOLVER=glpk_exact
-    
+
     echo "" | gzip > ${prefix}.json.gz
     """
 }

@@ -25,10 +25,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.spatial_lda_output },
-                { assert process.out.composition_plot },
-                { assert process.out.motif_location_plot },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["motif_location_plot"])
+                ).match() },
+                { assert path(process.out.motif_location_plot[0][1]).exists() }
             )
         }
     }
@@ -47,7 +47,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

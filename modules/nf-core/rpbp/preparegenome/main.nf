@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RPBP_PREPAREGENOME {
     tag "$meta.id"
     label 'process_medium'
@@ -14,14 +17,20 @@ process RPBP_PREPAREGENOME {
     tuple val(meta), path("${prefix}.annotated.bed.gz")             , emit: transcript_bed
     tuple val(meta), path("${prefix}.orfs-genomic.annotated.bed.gz"), emit: orfs_genomic_bed
     tuple val(meta), path("${prefix}.orfs-exons.annotated.bed.gz")  , emit: orfs_exons_bed
+    tuple val(meta), path("${prefix}.orfs-labels.annotated.tab.gz"), emit: orfs_labels
     path "versions.yml"                                             , emit: versions_rpbp, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    task_ext_args = task.ext.args ?: ''
+    args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: meta.id
+
+    """
+    echo ${args}
+    """
+
     template 'prepare_rpbp_genome.py'
 
     stub:
@@ -30,6 +39,7 @@ process RPBP_PREPAREGENOME {
     echo "" | gzip > ${prefix}.annotated.bed.gz
     echo "" | gzip > ${prefix}.orfs-genomic.annotated.bed.gz
     echo "" | gzip > ${prefix}.orfs-exons.annotated.bed.gz
+    echo "" | gzip > ${prefix}.orfs-labels.annotated.tab.gz
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

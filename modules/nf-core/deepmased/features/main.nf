@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DEEPMASED_FEATURES {
     tag "$meta.id"
     label 'process_high'
@@ -13,7 +16,7 @@ process DEEPMASED_FEATURES {
 
     output:
     tuple val(meta), path("*_feature_file_paths.tsv"), emit: feature_table
-    tuple val(meta), path("*_feats.tsv"), emit: feature_files
+    tuple val(meta), path("*_feats.tsv{,.gz}"), emit: feature_files
     tuple val("${task.process}"), val('deepmased'), val('0.3.1'), emit: versions_deepmased, topic: versions
     tuple val("${task.process}"), val('setuptools'), val('78.1') , emit: versions_setuptools, topic: versions
 
@@ -41,8 +44,10 @@ process DEEPMASED_FEATURES {
 
     stub:
     prefix     = task.ext.prefix ?: "${meta.id}"
+    def args   = task.ext.args ?: ''
+    def suffix = args.contains('--gzip') ? '.gz' : ''
     """
     touch ${prefix}_feature_file_paths.tsv
-    touch ${prefix}_feats.tsv
+    touch ${prefix}_feats.tsv${suffix}
     """
 }

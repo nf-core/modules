@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FGUMI_MERGE {
     tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a5/a510706f3481fae12ff6100d6e4ad298b8bf464a2d93a6afe35e9cf26542d080/data':
-        'community.wave.seqera.io/library/fgumi:0.2.0--fe028e7a64e5da27' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8b/8b1b1f653fc1fef5eb7d31f72d7cc60e29ff0eec5552802523ce97b1b5d0f920/data'
+        : 'community.wave.seqera.io/library/fgumi:0.9.0--1f0a2f2a31a251a3'}"
 
     input:
     tuple val(meta), path(bams, stageAs: "?/*")
@@ -24,7 +27,7 @@ process FGUMI_MERGE {
     fgumi \\
         merge \\
         --output ${prefix}.bam \\
-        --threads $task.cpus \\
+        --threads ${task.cpus} \\
         ${args} \\
         ${bams}
     """

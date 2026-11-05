@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DEEPMASED_PREDICT {
     tag "$meta.id"
     label 'process_medium'
@@ -20,13 +23,14 @@ process DEEPMASED_PREDICT {
     task.ext.when == null || task.ext.when
 
     script:
-    def args   = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args     = task.ext.args ?: ''
+    def prefix   = task.ext.prefix ?: "${meta.id}"
     """
     DeepMAsED predict \\
         ${feature_file_table} \\
         --n-procs ${task.cpus} \\
         --save-name ${prefix} \\
+        --cpu-only \\
         ${args}
     """
 

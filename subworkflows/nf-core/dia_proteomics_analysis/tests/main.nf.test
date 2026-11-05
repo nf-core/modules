@@ -68,15 +68,10 @@ nextflow_workflow {
         }
 
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success },
-                { assert path("${workflow.out.diann_report[0][1]}").exists() },
-                { assert path("${workflow.out.out_triqler[0][1]}").exists() },
-                { assert path("${workflow.out.final_result[0][1]}").exists() },
-                { assert path("${workflow.out.mzml_statistics[0][1]}").exists() },
                 { assert snapshot(
-                    workflow.out.msstats_in,
-                    workflow.out.versions
+                    sanitizeOutput(workflow.out, unstableKeys: ["diann_report", "out_triqler", "final_result", "mzml_statistics"])
                 ).match() }
             )
         }

@@ -15,18 +15,6 @@ components:
   - rastair/methylkit
   - rastair/mbiasparser
 input:
-  - ch_fasta:
-      type: file
-      description: |
-        Reference genome fasta file
-        Structure: [ [:], path(fasta) ]
-      pattern: "*.{fa,fasta}"
-  - ch_fasta_index:
-      type: file
-      description: |
-        Reference genome index file
-        Structure: [ val(meta), path(fai) ]
-      pattern: "*.fai"
   - ch_bam:
       type: file
       description: |
@@ -39,6 +27,18 @@ input:
         BAM index files
         Structure: [ val(meta), path(bai) ]
       pattern: "*.bai"
+  - ch_fasta:
+      type: file
+      description: |
+        Reference genome fasta file
+        Structure: [ [:], path(fasta) ]
+      pattern: "*.{fa,fasta}"
+  - ch_fasta_index:
+      type: file
+      description: |
+        Reference genome index file
+        Structure: [ val(meta), path(fai) ]
+      pattern: "*.fai"
 output:
   - mbias:
       type: file

@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 // Database connection parameters are passed as val() inputs to support
 // dynamic per-sample configuration. Set PGPASSWORD via environment variable
 // or Nextflow secrets before running:

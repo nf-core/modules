@@ -38,17 +38,26 @@
     },
     "Params: snapaligner | generate snapaligner index": {
         "content": [
-            [
-                "Genome",
-                "GenomeIndex",
-                "GenomeIndexHash",
-                "OverflowTable"
-            ]
+            {
+                "index": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "Genome:md5,7e189c954142ba37460332b467e34ed4",
+                            "GenomeIndex:md5,298da8bcb1134f7b24379a792a7a46f8",
+                            "GenomeIndexHash",
+                            "OverflowTable"
+                        ]
+                    ]
+                ]
+            }
         ],
-        "timestamp": "2026-02-18T20:41:18.537123873",
+        "timestamp": "2026-08-31T17:54:26.053252039",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.08.0"
         }
     },
     "Params: bowtie2 | generate bowtie2 index - stub": {
@@ -153,6 +162,30 @@
             "nextflow": "25.10.4"
         }
     },
+    "Params: bwamem3 | generate bwamem3 index": {
+        "content": [
+            {
+                "index": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "genome.fasta.amb:md5,3a68b8b2287e07dd3f5f95f4344ba76e",
+                            "genome.fasta.ann:md5,c32e11f6c859f166c7525a9c1d583567",
+                            "genome.fasta.bwt.2bit.64:md5,aca80601c43c58cf25f2b145fbd12d56",
+                            "genome.fasta.pac:md5,983e3d2cd6f36e2546e6d25a0da78d66"
+                        ]
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-20T09:38:06.735496",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.7"
+        }
+    },
     "Params: bwamem | generate bwamem1 index - stub": {
         "content": [
             {
@@ -197,6 +230,31 @@
         "meta": {
             "nf-test": "0.9.4",
             "nextflow": "25.10.4"
+        }
+    },
+    "Params: bwamem3 | generate bwamem3 index - stub": {
+        "content": [
+            {
+                "index": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "genome.fasta.0123:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.fasta.amb:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.fasta.ann:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.fasta.bwt.2bit.64:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.fasta.pac:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-20T09:38:39.089351",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.7"
         }
     },
     "Params: snapaligner | generate snapaligner index - stub": {

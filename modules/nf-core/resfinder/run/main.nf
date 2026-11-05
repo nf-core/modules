@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RESFINDER_RUN {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/resfinder:4.1.11--hdfd78af_0':
-        'quay.io/biocontainers/resfinder:4.1.11--hdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5a9b883095072998e99bc53ae775aeafc744902bd976261dc5a439fe19299c31/data'
+        : 'community.wave.seqera.io/library/resfinder:4.1.11--086f50dea08746a8'}"
 
     input:
     tuple val(meta), path(fastq), path(fasta)
@@ -28,7 +31,7 @@ process RESFINDER_RUN {
     tuple val(meta), path("ResFinder_results_table.txt")      , optional: true, emit: resfinder_results_table
     tuple val(meta), path("ResFinder_results_tab.txt")        , optional: true, emit: resfinder_results_tab
     tuple val(meta), path("ResFinder_results.txt")            , optional: true, emit: resfinder_results
-    path "versions.yml"                                       , emit: versions
+    tuple val("${task.process}"), val('resfinder'), eval('run_resfinder.py -v'), emit: versions_resfinder, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -52,14 +55,9 @@ process RESFINDER_RUN {
     }
     """
     run_resfinder.py \\
-        $args \\
-        $input \\
-        $db
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        resfinder: \$(run_resfinder.py -v)
-    END_VERSIONS
+        ${args} \\
+        ${input} \\
+        ${db}
     """
 
     stub:
@@ -73,10 +71,5 @@ process RESFINDER_RUN {
         ResFinder_results_table.txt \\
         ResFinder_results_tab.txt \\
         ResFinder_results.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        resfinder: \$(run_resfinder.py -v)
-    END_VERSIONS
     """
 }

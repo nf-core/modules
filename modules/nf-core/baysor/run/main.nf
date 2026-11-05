@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BAYSOR_RUN {
     tag "${meta.id}"
     label 'process_high'
@@ -23,7 +26,7 @@ process BAYSOR_RUN {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    
+
     def prior_seg = prior_column ? ":${prior_column}" : (prior_segmentation ?: '')
     def confidence = prior_confidence ? "--prior-segmentation-confidence=${prior_confidence}" : ''
     def scaling_factor = scale ? "--scale=${scale}" : ''

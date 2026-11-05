@@ -133,6 +133,50 @@ output:
       - parallel --version | sed '1!d;s/GNU parallel //':
           type: eval
           description: The expression to obtain the version of the tool
+  versions_blast:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - blast:
+          type: string
+          description: The name of the tool
+      - blastn -version | sed '2!d;s/.*blast //;s/,.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+  versions_prokka:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - prokka:
+          type: string
+          description: The name of the tool
+      - prokka --version 2>&1 | sed 's/prokka //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+  versions_circos:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - circos:
+          type: string
+          description: The name of the tool
+      - circos --version | sed 's/.*v //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+  versions_mash:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mash:
+          type: string
+          description: The name of the tool
+      - mash --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -153,6 +197,46 @@ topics:
       - parallel --version | sed '1!d;s/GNU parallel //':
           type: eval
           description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - blast:
+          type: string
+          description: The name of the tool
+      - blastn -version | sed '2!d;s/.*blast //;s/,.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - prokka:
+          type: string
+          description: The name of the tool
+      - prokka --version 2>&1 | sed 's/prokka //':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - circos:
+          type: string
+          description: The name of the tool
+      - circos --version | sed 's/.*v //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mash:
+          type: string
+          description: The name of the tool
+      - mash --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@joseespinosa"
   - "@drpatelh"

@@ -82,6 +82,39 @@
                                 "type": "string",
                                 "description": "bio.tools identifier of the tool",
                                 "pattern": "^(biotools:.*)?$"
+                            },
+                            "publication": {
+                                "type": "object",
+                                "description": "Publication metadata for citation",
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "description": "Title of the publication"
+                                    },
+                                    "author": {
+                                        "type": "string",
+                                        "description": "Author(s) of the publication (recommended: Harvard style 'Last, F. M.' separated by commas, with '& ' before the final author, e.g. 'Einstein, A., Feynman, R. P. & Hawking, S.')"
+                                    },
+                                    "source": {
+                                        "type": "string",
+                                        "description": "Journal, conference, workshop, or preprint server name"
+                                    },
+                                    "year": {
+                                        "type": "integer",
+                                        "description": "Publication year"
+                                    }
+                                },
+                                "if": {
+                                    "anyOf": [
+                                        { "required": ["title"] },
+                                        { "required": ["author"] },
+                                        { "required": ["source"] },
+                                        { "required": ["year"] }
+                                    ]
+                                },
+                                "then": {
+                                    "required": ["title", "author", "source", "year"]
+                                }
                             }
                         },
                         "required": ["description"],

@@ -49,11 +49,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    workflow.out.fastq_filtered,
-                    workflow.out.reference,
-                    file(workflow.out.json[0][1]).name
-                ).match() }
+                { assert snapshot(sanitizeOutput(workflow.out, unstableKeys:["json"])).match() }
             )
         }
     }
@@ -92,11 +88,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    workflow.out.fastq_filtered,
-                    workflow.out.reference,
-                    file(workflow.out.json[0][1]).name
-                ).match() }
+                { assert snapshot(sanitizeOutput(workflow.out, unstableKeys:["json"])).match() }
             )
         }
     }
@@ -126,11 +118,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    workflow.out.fastq_filtered,
-                    workflow.out.index,
-                    file(workflow.out.summary[0][1]).name
-                ).match()}
+                { assert snapshot(sanitizeOutput(workflow.out, unstableKeys:["summary"])).match() }
             )
         }
     }
@@ -163,11 +151,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    workflow.out.fastq_filtered,
-                    workflow.out.index,
-                    file(workflow.out.summary[0][1]).name
-                ).match()}
+                { assert snapshot(sanitizeOutput(workflow.out, unstableKeys:["summary"])).match() }
             )
         }
     }
@@ -201,9 +185,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    workflow.out
-                ).match()}
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
             )
         }
     }
