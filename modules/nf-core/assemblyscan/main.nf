@@ -6,9 +6,9 @@ process ASSEMBLYSCAN {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/assembly-scan:1.0.0--pyhdfd78af_0' :
-        'quay.io/biocontainers/assembly-scan:1.0.0--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f8/f8b13fe9789963debbbbe0e934aea5e96cfef77277299e3152726738fb81444a/data'
+        : 'community.wave.seqera.io/library/assembly-scan:1.0.0--fdab3a3c6ba9bbd0'}"
 
     input:
     tuple val(meta), path(assembly)
