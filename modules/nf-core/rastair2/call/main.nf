@@ -1,20 +1,14 @@
-// Copyright (c) the nf-core community under an open-source MIT license.
-// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
-//
-// NOTE rastair version 2 and newer is distributed under a non-commercial use licence by the University of Oxford.
-// Commercial use requires a licence from Oxford University Innovation (see meta.yml and `rastair license`).
-
 process RASTAIR2_CALL {
     tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/48/480dc5483f43bcf314fd9eb94bfb4d7e8186d4a60d62f8dbdfda1471573f1f37/data'
-        : 'community.wave.seqera.io/library/rastair:2.2.0--5a5100fc9dae6b03'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/50/50c87ecbec7ea76f99ff4ad84e16f083c0b74651bf813d9158b1004234f6feca/data'
+        : 'community.wave.seqera.io/library/htslib_rastair:4ffd26b40813e268'}"
 
     input:
-    tuple val(meta), path(bam), path(bai)
+    tuple val(meta), path(bam), path(index)
     tuple val(meta2), path(fasta), path(fai)
 
     output:

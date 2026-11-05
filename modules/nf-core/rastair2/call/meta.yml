@@ -4,12 +4,7 @@ description: |
   5mC->T converted short-read data (TAPS, TAPS+, Illumina 5-base) with rastair
   version 2. Writes a VCF with genotypes and methylation levels and a CpG
   methylation BED, both bgzipped and tabix-indexed.
-  Licensing: rastair version 2 and newer is free for non-commercial research use
-  only. Commercial use (including providing paid services or developing products)
-  requires a licence from Oxford University Innovation
-  (enquiries@innovation.ox.ac.uk, reference 24811). Run `rastair license` for the
-  full terms. Publications using results must include the notice
-  "Copyright © 2025, University of Oxford".
+  Non-commercial licence: see the rastair tool description.
 keywords:
   - methylation
   - variant calling
@@ -24,6 +19,12 @@ tools:
       description: |
         Simultaneous detection of genetic variants and methylated positions from
         TAPS+, Illumina 5-base or other 5mC->T converted sequencing data.
+        Licensing: rastair version 2 and newer is free for non-commercial research
+        use only. Commercial use (including providing paid services or developing
+        products) requires a licence from Oxford University Innovation
+        (enquiries@innovation.ox.ac.uk, reference 24811). Run `rastair license` for
+        the full terms. Publications using results must include the notice
+        "Copyright © 2025, University of Oxford".
       homepage: "https://www.rastair.com"
       documentation: "https://docs.rastair.com"
       tool_dev_url: "https://github.com/bsbludwig/rastair"
@@ -44,7 +45,7 @@ input:
         ontologies:
           - edam: "http://edamontology.org/format_2572"
           - edam: "http://edamontology.org/format_3462"
-    - bai:
+    - index:
         type: file
         description: Index of the BAM or CRAM file
         pattern: "*.{bai,csi,crai}"
@@ -57,13 +58,17 @@ input:
           e.g. `[ id:'genome' ]`
     - fasta:
         type: file
-        description: Reference genome FASTA (plain, or bgzipped with a .gzi index alongside)
+        description: |
+          Reference genome FASTA (plain, or bgzipped with a .gzi index alongside).
+          Also used to decode CRAM input.
         pattern: "*.{fa,fasta,fna}{,.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_1929"
     - fai:
         type: file
-        description: samtools faidx index of the reference FASTA
+        description: |
+          samtools faidx index of the reference FASTA. Staged next to the FASTA,
+          where rastair finds it; it is not passed on the command line.
         pattern: "*.fai"
         ontologies:
           - edam: "http://edamontology.org/format_3475"
@@ -159,25 +164,25 @@ maintainers:
   - "@eduard-watchmaker"
 containers:
   docker:
-    linux/amd64:
-      name: community.wave.seqera.io/library/rastair:2.2.0--5a5100fc9dae6b03
-      build_id: bd-5a5100fc9dae6b03_1
-      scan_id: sc-a95c94ba810b8b0c_1
     linux/arm64:
-      name: community.wave.seqera.io/library/rastair:2.2.0--b28cf757ed0930dd
-      build_id: bd-b28cf757ed0930dd_1
-      scan_id: sc-c746af9a48e03d0b_1
+      name: community.wave.seqera.io/library/htslib_rastair:0f7189390ccfdc4d
+      build_id: bd-0f7189390ccfdc4d_1
+      scan_id: sc-68e9105b71b20e61_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/htslib_rastair:4ffd26b40813e268
+      build_id: bd-4ffd26b40813e268_1
+      scan_id: sc-b1009c453e710340_1
   singularity:
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/rastair:2.2.0--1b246819f92c4dab
-      build_id: bd-1b246819f92c4dab_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/48/480dc5483f43bcf314fd9eb94bfb4d7e8186d4a60d62f8dbdfda1471573f1f37/data
+      name: oras://community.wave.seqera.io/library/htslib_rastair:8f58b5250bf317c8
+      build_id: bd-8f58b5250bf317c8_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/50/50c87ecbec7ea76f99ff4ad84e16f083c0b74651bf813d9158b1004234f6feca/data
     linux/arm64:
-      name: oras://community.wave.seqera.io/library/rastair:2.2.0--7967fc31b214c14f
-      build_id: bd-7967fc31b214c14f_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/70/70688ed658e868b0d42966215f8d2f038552877ddb3e203f37baf009841d673b/data
+      name: oras://community.wave.seqera.io/library/htslib_rastair:42892508b9c8b619
+      build_id: bd-42892508b9c8b619_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/11/11261c0ef97d532effc21421bd7c824749330dba152db93e4d5d583c362e0620/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/rastair2/call/.conda-lock/linux_amd64-bd-5a5100fc9dae6b03_1.txt
+      lock_file: modules/nf-core/rastair2/call/.conda-lock/linux_amd64-bd-4ffd26b40813e268_1.txt
     linux/arm64:
-      lock_file: modules/nf-core/rastair2/call/.conda-lock/linux_arm64-bd-b28cf757ed0930dd_1.txt
+      lock_file: modules/nf-core/rastair2/call/.conda-lock/linux_arm64-bd-0f7189390ccfdc4d_1.txt

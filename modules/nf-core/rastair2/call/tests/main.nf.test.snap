@@ -34,7 +34,7 @@
                 ]
             }
         ],
-        "timestamp": "2026-11-04T09:20:22.096079",
+        "timestamp": "2026-11-05T10:32:44.127446",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.10.5"
@@ -95,15 +95,15 @@
                 ]
             }
         ],
-        "timestamp": "2026-11-04T09:19:49.248158",
+        "timestamp": "2026-11-05T10:33:15.062063",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.10.5"
         }
     },
-    "sarscov2 - single-end methylated bam": {
+    "homo_sapiens - paired-end cram": {
         "content": [
-            "c0f67a3593a6ce2d2fc874c57568120d",
+            "97db7cc9e80eb6bf384eef77c8bfeb3b",
             [
                 "test.vcf.gz.tbi"
             ],
@@ -111,9 +111,9 @@
                 [
                     {
                         "id": "test",
-                        "single_end": true
+                        "single_end": false
                     },
-                    "test.bed.gz:md5,16577991cfd68c9e069b209d2d14784e"
+                    "test.bed.gz:md5,503e5a079aedf6a7cfed6f5f239d0cbe"
                 ]
             ],
             [
@@ -136,7 +136,48 @@
                 ]
             }
         ],
-        "timestamp": "2026-11-04T09:20:33.20995",
+        "timestamp": "2026-11-05T10:33:04.397785",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.5"
+        }
+    },
+    "sarscov2 - single-end bam": {
+        "content": [
+            "1b3f2f0fde4de41a51853252c8ba063f",
+            [
+                "test.vcf.gz.tbi"
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": true
+                    },
+                    "test.bed.gz:md5,7b23d5b66dc44a565a7d17ecde065eef"
+                ]
+            ],
+            [
+                "test.bed.gz.tbi"
+            ],
+            {
+                "versions_rastair": [
+                    [
+                        "RASTAIR2_CALL",
+                        "rastair",
+                        "2.2.0"
+                    ]
+                ],
+                "versions_tabix": [
+                    [
+                        "RASTAIR2_CALL",
+                        "tabix",
+                        "1.24"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-11-05T10:32:53.890664",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.10.5"
