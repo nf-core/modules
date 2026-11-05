@@ -1,0 +1,53 @@
+nextflow_process {
+
+    name "Test Process TRIDENT_FORGE"
+    script "../main.nf"
+    process "TRIDENT_FORGE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "trident"
+    tag "trident/fetch"
+    tag "trident/forge"
+
+    test("Forge 2012_MeyerScience-2.1.1 & 2018_Lamnidis_Fennoscandia-2.1.1") {
+
+        setup {
+            run("TRIDENT_FETCH") {
+                script "../../fetch/main.nf"
+                process {
+                    """
+                    input[0] = channel.fromList([
+                        tuple(
+                            [], // archive_dir
+                            '*2012_MeyerScience-2.1.1*,*2018_Lamnidis_Fennoscandia-2.1.1*', // fetchString
+                            [], // fetchFile
+                        )
+                    ])
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = TRIDENT_FETCH.out.local_archive.map{
+                archive_dir ->
+                def forgeString = "'*2012_MeyerScience-2.1.1*,*2018_Lamnidis_Fennoscandia-2.1.1*'"
+                tuple(archive_dir, forgeString, [])
+                }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() } // Only version is emitted.
+            )
+        }
+
+    }
+
+}
