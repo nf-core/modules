@@ -62,8 +62,8 @@ process CAT_FASTQ {
     else {
         if (readList.size() >= 2) {
             """
-            echo '' | gzip > ${prefix}_1.merged.fastq.gz
-            echo '' | gzip > ${prefix}_2.merged.fastq.gz
+            echo "" | gzip > ${prefix}_1.merged.fastq.gz
+            echo "" | gzip > ${prefix}_2.merged.fastq.gz
             """
         } else {
             error("Could not find any FASTQ file pairs to concatenate in the process input")
