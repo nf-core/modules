@@ -1,0 +1,352 @@
+nextflow_process {
+
+    config "./nextflow.config"
+
+    name "Test Process VCF2CIRCOS"
+    script "../main.nf"
+    process "VCF2CIRCOS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "untar"
+    tag "vcf2circos"
+
+    setup {
+        run("UNTAR") {
+            script "../../../../modules/nf-core/untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'Static' ],
+                    file('https://www.lbgi.fr/~lamouche/vcf2circos/config_vcf2circos_29032023.tar.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("homo_sapiens - vcf, html output") {
+
+        when {
+            params {
+                module_args = "--assembly hg38"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/sv_query.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/sv_query.vcf.gz.tbi", checkIfExists: true),
+                    'html'
+                ]
+                input[1] = UNTAR.out.untar
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - vcf, html output - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = "--assembly hg38"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/sv_query.vcf.gz", checkIfExists: true),
+                    [],
+                    'html'
+                ]
+                input[1] = [
+                    [ id:'test' ],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - vcf, png output - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = "--assembly hg38"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/sv_query.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/sv_query.vcf.gz.tbi", checkIfExists: true),
+                    'png'
+                ]
+                input[1] = [
+                    [ id:'test' ],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - vcf, jpg output - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = "--assembly hg38"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/sv_query.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/sv_query.vcf.gz.tbi", checkIfExists: true),
+                    'jpg'
+                ]
+                input[1] = [
+                    [ id:'test' ],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - vcf, jpeg output - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = "--assembly hg38"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/sv_query.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/sv_query.vcf.gz.tbi", checkIfExists: true),
+                    'jpeg'
+                ]
+                input[1] = [
+                    [ id:'test' ],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - vcf, webp output - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = "--assembly hg38"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/sv_query.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/sv_query.vcf.gz.tbi", checkIfExists: true),
+                    'webp'
+                ]
+                input[1] = [
+                    [ id:'test' ],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - vcf, svg output - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = "--assembly hg38"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/sv_query.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/sv_query.vcf.gz.tbi", checkIfExists: true),
+                    'svg'
+                ]
+                input[1] = [
+                    [ id:'test' ],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - vcf, pdf output - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = "--assembly hg38"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/sv_query.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/sv_query.vcf.gz.tbi", checkIfExists: true),
+                    'pdf'
+                ]
+                input[1] = [
+                    [ id:'test' ],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - vcf, eps output - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = "--assembly hg38"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/sv_query.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/sv_query.vcf.gz.tbi", checkIfExists: true),
+                    'eps'
+                ]
+                input[1] = [
+                    [ id:'test' ],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - vcf, json output - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = "--assembly hg38"
+            }
+
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/sv_query.vcf.gz", checkIfExists: true),
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/illumina/vcf/sv_query.vcf.gz.tbi", checkIfExists: true),
+                    'json'
+                ]
+                input[1] = [
+                    [ id:'test' ],
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}
