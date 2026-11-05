@@ -1,0 +1,124 @@
+name: "rattle_polish"
+description: Reference-free polishing and reconstruction of transcriptomes from long-read sequencing consensus sequences
+keywords:
+  - transcriptomes
+  - polishing
+  - long-read
+  - nanopore
+  - fastq
+tools:
+  - "rattle":
+      description: "Reference-free reconstruction and quantification of transcriptomes from long-read sequencing"
+      homepage: "https://github.com/comprna/RATTLE"
+      documentation: "https://github.com/comprna/RATTLE"
+      tool_dev_url: "https://github.com/comprna/RATTLE"
+      doi: "10.1186/s13059-022-02715-w"
+      licence:
+        - "GPL-3.0"
+      identifier: biotools:rattle
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - consensi:
+        type: file
+        description: RATTLE consensus sequences in FASTA or FASTQ format
+        pattern: "*.{fasta,fastq,fasta.gz,fastq.gz,fa,fq,fa.gz,fq.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_3989 # GZIP
+output:
+  transcriptome:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.transcriptome.fq:
+          type: file
+          description: Final polished transcriptome in FASTQ format
+          pattern: "${prefix}.transcriptome.fq"
+          ontologies:
+            - edam: http://edamontology.org/format_1930 # FASTQ
+  summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.polish_summary.tsv:
+          type: file
+          description: |
+            Optional. Summary of the transcript, gene, and new cluster IDs used to generate the transcriptome,
+            produced when `--summary` is supplied.
+          pattern: "${prefix}.polish_summary.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.log:
+          type: file
+          description: RATTLE polish log
+          pattern: "${prefix}.log"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Textual format
+  versions_rattle:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rattle:
+          type: string
+          description: The name of the tool
+      - "1.0":
+          type: string
+          description: The version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - rattle:
+          type: string
+          description: The name of the tool
+      - "1.0":
+          type: string
+          description: The version of the tool
+
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@chriswyatt1"
+  - "@srisarya"
+  - "@vagkaratzas"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/rattle:1.0--30804627b1e7c1b8
+      build_id: bd-30804627b1e7c1b8_1
+      scan_id: sc-eed52931374b5026_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/rattle:1.0--ae3dd63e7a98745b
+      build_id: bd-ae3dd63e7a98745b_1
+      scan_id: sc-300528d7e593efdf_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/rattle:1.0--0ff107daf7e47b9d
+      build_id: bd-0ff107daf7e47b9d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a4/a4c0c527dd273cec6c299b426d76d8ca5d0831b2ef2e52c93436fa1969eb29c9/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/rattle:1.0--63cfd92e0ff5f788
+      build_id: bd-63cfd92e0ff5f788_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/59/597c4110442b53dc0d73420af28bc774518719d974b2be3190dfa478da17acac/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/rattle/polish/.conda-lock/linux_amd64-bd-ae3dd63e7a98745b_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/rattle/polish/.conda-lock/linux_arm64-bd-30804627b1e7c1b8_1.txt

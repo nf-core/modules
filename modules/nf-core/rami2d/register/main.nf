@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RAMI2D_REGISTER {
     tag "$meta.id"
     label 'process_single'
@@ -49,7 +52,6 @@ process RAMI2D_REGISTER {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
 
     """

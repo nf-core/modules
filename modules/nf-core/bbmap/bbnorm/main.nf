@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BBMAP_BBNORM {
     tag "$meta.id"
     label 'process_medium'
@@ -32,13 +35,20 @@ process BBMAP_BBNORM {
         memory = "-Xmx${Math.round(Math.max(1, Math.floor(task.memory.toGiga() * 0.95)))}g"
     }
 
+    // Nextflow forwards the host's \$TMPDIR into Singularity/Apptainer containers without
+    // bind-mounting it, so multipass temp files must stay under the task's own (bound) work dir.
     """
+    mkdir -p tmp
+
     bbnorm.sh \\
         $input \\
         $output \\
         $args \\
         threads=$task.cpus \\
         $memory \\
+        tmpdir=tmp \\
         &> ${prefix}.bbnorm.log
+
+    rm -rf tmp
     """
 }

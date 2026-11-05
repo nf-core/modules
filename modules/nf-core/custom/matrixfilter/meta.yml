@@ -1,6 +1,5 @@
 name: "custom_matrixfilter"
-description: filter a matrix based on a minimum value and numbers of samples
-  that must pass.
+description: filter a matrix based on a minimum value and numbers of samples that must pass.
 keywords:
   - matrix
   - filter
@@ -58,8 +57,7 @@ output:
             e.g. [ id:'test' ]
       - "*.tests.tsv":
           type: file
-          description: Boolean matrix with pass/ fail status for each test on each
-            feature
+          description: Boolean matrix with pass/ fail status for each test on each feature
           pattern: "*.tests.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -105,3 +103,27 @@ authors:
   - "@pinin4fjords"
 maintainers:
   - "@pinin4fjords"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/r-base:4.2.1--f91724a02edbff11
+      build_id: bd-f91724a02edbff11_1
+      scan_id: sc-d2dd524152b4fb2d_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/r-base:4.2.1--d903e969fe33d78c
+      build_id: bd-d903e969fe33d78c_1
+      scan_id: sc-a091e6f18746d3fe_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/r-base:4.2.1--ee850b5b0358f970
+      build_id: bd-ee850b5b0358f970_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/04/04df12e2b58fe5f85f25230d1575236a872670d4ac5dd343f188ca7c86cb2d10/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/r-base:4.2.1--e7e13e5c705c88da
+      build_id: bd-e7e13e5c705c88da_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c0/c0b9112f2b76590fd0962dd2a61479d809275552c834c1928c3e8d9a83f2b5ce/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/custom/matrixfilter/.conda-lock/linux_amd64-bd-d903e969fe33d78c_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/custom/matrixfilter/.conda-lock/linux_arm64-bd-f91724a02edbff11_1.txt
