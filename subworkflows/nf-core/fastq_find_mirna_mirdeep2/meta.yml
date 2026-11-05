@@ -26,6 +26,11 @@ input:
         The input channel containing the genome FASTA files used to build the Bowtie index.
         Structure: [ val(meta), path(fasta) ]
       pattern: "*.fa"
+  - ch_bowtie_index:
+      type: directory
+      description: |
+        The input channel containing the Bowtie genome index directory used by the miRDeep2 mapper.
+        Structure: [ val(meta), path(index) ]
   - ch_mirna_mature_hairpin:
       type: file
       description: |

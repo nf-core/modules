@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GATK4SPARK_APPLYBQSR {
     tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/49/498aea9c9bcaf736b9fb2a01366c1b7b38ccc0d38143178afc325d6a93241447/data'
-        : 'community.wave.seqera.io/library/gatk4-spark:4.6.2.0--8b5cd67ee60a714e'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9c/9cd09db455e8adaa87f55b4c8f2de68f7501e2284ffce168b736df66f06bdd84/data'
+        : 'community.wave.seqera.io/library/gatk4-spark:4.7.0.0--fd5186004a98cd23'}"
 
     // Spark's native UnixLoginModule fails to resolve a username for the container's UID
     // (LoginException "invalid null input" for name), because the container's own /etc/passwd

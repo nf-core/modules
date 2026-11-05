@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 // NB 1: You'll likely want to override this with a container containing all
 // required dependencies for your analyses, or use wave to build the container
 // for you from the environment.yml. You'll at least need Quarto itself,
@@ -92,7 +95,7 @@ process QUARTO_PRERENDER {
 
     # Write notebook package versions to YAML
     cat <<- END_VERSIONS > versions.yml
-    "${task.process}_${prefix}":
+    "${task.process}":
     \$(awk -F',' '{printf "    %s: %s\\n", \$1, \$2}' versions.csv)
     END_VERSIONS
     """

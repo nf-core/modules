@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PIGZ_COMPRESS {
     tag "$meta.id"
     label 'process_low'
@@ -29,6 +32,6 @@ process PIGZ_COMPRESS {
     stub:
     archive = raw_file.toString() + ".gz"
     """
-    touch ${archive}
+    echo "" | gzip > ${archive}
     """
 }

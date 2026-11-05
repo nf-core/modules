@@ -66,8 +66,7 @@ output:
             e.g. `[ id:'test', single_end:false ]`
       - "*.txt":
           type: file
-          description: File containing the information about mean base quality score
-            for each sequencing cycle
+          description: File containing WGS metrics produced by WgsMetricsAlgo
           pattern: "*.txt"
           ontologies: []
   versions_sentieon:
@@ -78,13 +77,8 @@ output:
           type: string
           description: The tool name
       - 'sentieon driver --version | sed "s/.*-//g"':
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
-authors:
-  - "@ramprasadn"
-maintainers:
-  - "@ramprasadn"
-
 topics:
   versions:
     - - ${task.process}:
@@ -94,5 +88,9 @@ topics:
           type: string
           description: The tool name
       - 'sentieon driver --version | sed "s/.*-//g"':
-          type: string
+          type: eval
           description: The command used to generate the version of the tool
+authors:
+  - "@ramprasadn"
+maintainers:
+  - "@ramprasadn"

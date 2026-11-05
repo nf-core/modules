@@ -8,7 +8,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test.bam"
+                        "test.bam:md5Reads,16c1c651f8ec67383bcdee3c55aed94f"
                     ]
                 ],
                 "index": [
@@ -33,10 +33,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-07-14T10:42:34.213059228",
+        "timestamp": "2026-08-25T13:48:21.615154",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.4"
+            "nextflow": "26.04.6"
         }
     },
     "sarscov - FASTQ reads (single-end) and FASTA reference as input, BAM output, BAI index": {
@@ -48,7 +48,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test.bam"
+                        "test.bam:md5Reads,f194745c0ccfcb2a9c0aee094a08750"
                     ]
                 ],
                 "index": [
@@ -79,10 +79,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-07-14T10:42:27.316740936",
+        "timestamp": "2026-08-25T13:48:04.223331",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.4"
+            "nextflow": "26.04.6"
         }
     },
     "sarscov - FASTQ reads (single-end) and FASTA reference as input, BAM output, no index - stub": {
@@ -125,7 +125,7 @@
             "nextflow": "26.04.4"
         }
     },
-    "sarscov - FASTQ reads (single-end) and FASTA reference as input, BAM output, no index": {
+    "sarscov - BAM reads and FASTA reference reference as input, BAM output, no index -stub": {
         "content": [
             {
                 "bam": [
@@ -134,7 +134,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test.bam"
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "index": [
@@ -159,10 +159,50 @@
                 ]
             }
         ],
-        "timestamp": "2026-07-14T10:42:23.822713821",
+        "timestamp": "2026-07-14T10:42:58.20779185",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.4"
+        }
+    },
+    "sarscov - FASTQ reads (single-end) and FASTA reference as input, BAM output, no index": {
+        "content": [
+            {
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.bam:md5Reads,f194745c0ccfcb2a9c0aee094a08750"
+                    ]
+                ],
+                "index": [
+                    
+                ],
+                "paf": [
+                    
+                ],
+                "versions_mm2plus": [
+                    [
+                        "MM2PLUS_ALIGN",
+                        "mm2plus",
+                        "1.3"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "MM2PLUS_ALIGN",
+                        "samtools",
+                        "1.24"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-08-25T13:47:56.229271",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
         }
     },
     "sarscov - BAM reads and FASTA reference reference as input, BAM output, BAI index -stub": {
@@ -211,6 +251,46 @@
             "nextflow": "26.04.4"
         }
     },
+    "sarscov - BAM reads and FASTA reference as input, BAM output, no index": {
+        "content": [
+            {
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": true
+                        },
+                        "test.bam:md5Reads,5d426b9a5f5b2c54f1d7f1e4c238ae94"
+                    ]
+                ],
+                "index": [
+                    
+                ],
+                "paf": [
+                    
+                ],
+                "versions_mm2plus": [
+                    [
+                        "MM2PLUS_ALIGN",
+                        "mm2plus",
+                        "1.3"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "MM2PLUS_ALIGN",
+                        "samtools",
+                        "1.24"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-08-25T13:48:32.464804",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
     "sarscov - BAM reads and FASTA reference as input, BAM output, BAI index": {
         "content": [
             {
@@ -220,7 +300,7 @@
                             "id": "test",
                             "single_end": true
                         },
-                        "test.bam"
+                        "test.bam:md5Reads,5d426b9a5f5b2c54f1d7f1e4c238ae94"
                     ]
                 ],
                 "index": [
@@ -251,10 +331,50 @@
                 ]
             }
         ],
-        "timestamp": "2026-07-14T10:42:41.357034116",
+        "timestamp": "2026-08-25T13:48:43.247409",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.4"
+            "nextflow": "26.04.6"
+        }
+    },
+    "sarscov - FASTQ reads (paired-end) and FASTA reference as input, BAM output, no index": {
+        "content": [
+            {
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam:md5Reads,1bc392244f228bf52cf0b5a8f6a654c9"
+                    ]
+                ],
+                "index": [
+                    
+                ],
+                "paf": [
+                    
+                ],
+                "versions_mm2plus": [
+                    [
+                        "MM2PLUS_ALIGN",
+                        "mm2plus",
+                        "1.3"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "MM2PLUS_ALIGN",
+                        "samtools",
+                        "1.24"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-08-25T13:48:12.975891",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
         }
     },
     "sarscov - FASTQ reads (single-end) and FASTA reference as input, BAM output, BAI index - stub": {
@@ -338,126 +458,6 @@
             }
         ],
         "timestamp": "2026-07-14T10:42:54.645250229",
-        "meta": {
-            "nf-test": "0.9.5",
-            "nextflow": "26.04.4"
-        }
-    },
-    "sarscov - BAM reads and FASTA reference reference as input, BAM output, no index -stub": {
-        "content": [
-            {
-                "bam": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "index": [
-                    
-                ],
-                "paf": [
-                    
-                ],
-                "versions_mm2plus": [
-                    [
-                        "MM2PLUS_ALIGN",
-                        "mm2plus",
-                        "1.3"
-                    ]
-                ],
-                "versions_samtools": [
-                    [
-                        "MM2PLUS_ALIGN",
-                        "samtools",
-                        "1.24"
-                    ]
-                ]
-            }
-        ],
-        "timestamp": "2026-07-14T10:42:58.20779185",
-        "meta": {
-            "nf-test": "0.9.5",
-            "nextflow": "26.04.4"
-        }
-    },
-    "sarscov - BAM reads and FASTA reference as input, BAM output, no index": {
-        "content": [
-            {
-                "bam": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.bam"
-                    ]
-                ],
-                "index": [
-                    
-                ],
-                "paf": [
-                    
-                ],
-                "versions_mm2plus": [
-                    [
-                        "MM2PLUS_ALIGN",
-                        "mm2plus",
-                        "1.3"
-                    ]
-                ],
-                "versions_samtools": [
-                    [
-                        "MM2PLUS_ALIGN",
-                        "samtools",
-                        "1.24"
-                    ]
-                ]
-            }
-        ],
-        "timestamp": "2026-07-14T10:42:37.884308486",
-        "meta": {
-            "nf-test": "0.9.5",
-            "nextflow": "26.04.4"
-        }
-    },
-    "sarscov - FASTQ reads (paired-end) and FASTA reference as input, BAM output, no index": {
-        "content": [
-            {
-                "bam": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.bam"
-                    ]
-                ],
-                "index": [
-                    
-                ],
-                "paf": [
-                    
-                ],
-                "versions_mm2plus": [
-                    [
-                        "MM2PLUS_ALIGN",
-                        "mm2plus",
-                        "1.3"
-                    ]
-                ],
-                "versions_samtools": [
-                    [
-                        "MM2PLUS_ALIGN",
-                        "samtools",
-                        "1.24"
-                    ]
-                ]
-            }
-        ],
-        "timestamp": "2026-07-14T10:42:30.859559903",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.4"

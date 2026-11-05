@@ -26,16 +26,21 @@ input:
         pattern: "*.{fa,fasta,fq,fastq,fq.gz,fastq.gz}"
         ontologies:
           - edam: http://edamontology.org/format_1930 # FASTQ
-  - fasta:
-      type: file
-      description: Reference genome FASTA file used to construct Segemehl
-      pattern: "*.{fa,fasta}"
-      ontologies: []
-  - index:
-      type: file
-      description: Segemehl Index file from SEGEMEHL_INDEX
-      pattern: "*.idx"
-      ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing genome information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: Reference genome FASTA file used to construct Segemehl
+        pattern: "*.{fa,fasta}"
+        ontologies: []
+    - index:
+        type: file
+        description: Segemehl Index file from SEGEMEHL_INDEX
+        pattern: "*.idx"
+        ontologies: []
 output:
   alignment:
     - - meta:
@@ -98,7 +103,7 @@ output:
       - segemehl:
           type: string
           description: The name of the tool
-      - segemehl.x 2>&1 | grep -A1 VERSION | tail -1 | sed "s/^ *//;s/ .*//":
+      - segemehl.x 2>&1 | sed '/^  [0-9]\.[0-9\.]*/!d;s/^  //;s/ .*//':
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -110,7 +115,7 @@ topics:
       - segemehl:
           type: string
           description: The name of the tool
-      - segemehl.x 2>&1 | grep -A1 VERSION | tail -1 | sed "s/^ *//;s/ .*//":
+      - segemehl.x 2>&1 | sed '/^  [0-9]\.[0-9\.]*/!d;s/^  //;s/ .*//':
           type: eval
           description: The expression to obtain the version of the tool
 

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FGUMI_FILTER {
     tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/64/64e8f594b6f0dd879bc5abbe4ca70b6b761e1920e407d9e1c7d27b89004aac34/data'
-        : 'community.wave.seqera.io/library/fgumi:0.5.0--a2d14bf52f73eaef'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8b/8b1b1f653fc1fef5eb7d31f72d7cc60e29ff0eec5552802523ce97b1b5d0f920/data'
+        : 'community.wave.seqera.io/library/fgumi:0.9.0--1f0a2f2a31a251a3'}"
 
     input:
     tuple val(meta), path(bam)
@@ -14,9 +17,9 @@ process FGUMI_FILTER {
     val keep_rejected
 
     output:
-    tuple val(meta), path("${prefix}.bam")        , emit: bam
+    tuple val(meta), path("${prefix}.bam"), emit: bam
     tuple val(meta), path("${prefix}.rejects.bam"), emit: rejects, optional: true
-    tuple val(meta), path("${prefix}.stats.txt")  , emit: stats
+    tuple val(meta), path("${prefix}.stats.txt"), emit: stats
     tuple val("${task.process}"), val('fgumi'), eval('fgumi --version | sed "s/^fgumi //"'), topic: versions, emit: versions_fgumi
 
     when:

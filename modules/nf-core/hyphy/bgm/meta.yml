@@ -1,0 +1,115 @@
+name: "hyphy_bgm"
+description: The Bayesian Graphical Model (BGM) method is a tool for detecting coevolutionary interactions between amino acid positions in a protein.
+keywords:
+  - co-evolution
+  - co-evolutionary interactions
+  - protein evolution
+tools:
+  - "hyphy":
+      description: "An open-source software package for comparative sequence analysis using stochastic evolutionary models."
+      homepage: "https://hyphy.org"
+      documentation: "https://hyphy.org"
+      tool_dev_url: "https://github.com/veg/hyphy"
+      doi: "10.1093/molbev/msz197"
+      licence:
+        - "MIT"
+      identifier: biotools:HyPhy
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - alignment:
+        type: file
+        description: Codon aligned sequences in FASTA format.
+        pattern: "*.{fa,fas,fasta,aln}"
+        ontologies:
+          - edam: http://edamontology.org/format_2554
+          - edam: http://edamontology.org/format_1921
+          - edam: http://edamontology.org/format_1984
+    - tree:
+        type: file
+        description: Phylogenetic gene tree in text or xml format
+        pattern: "*.{tree,txt,nwk,newick,nhx,phyloxml,xml}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1910"
+          - edam: "http://edamontology.org/format_3159"
+
+output:
+  json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.json":
+          type: file
+          description: BGM results in JSON format.
+          pattern: "*.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464" # JSON
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_output.txt":
+          type: file
+          description: BGM results in human-readable format.
+          pattern: "*.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # text
+  versions_hyphy:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hyphy:
+          type: string
+          description: The name of the tool
+      - hyphy --version | sed -E 's/.*HYPHY ([0-9]+\.[0-9]+\.[0-9]+).*/\1/':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - hyphy:
+          type: string
+          description: The name of the tool
+      - hyphy --version | sed -E 's/.*HYPHY ([0-9]+\.[0-9]+\.[0-9]+).*/\1/':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@leapicard"
+maintainers:
+  - "@leapicard"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/hyphy:2.5.101--da14606d9f2ca413
+      build_id: bd-da14606d9f2ca413_1
+      scan_id: sc-a813132dd5d55d82_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/hyphy:2.5.101--d7eddcb8b38dd49a
+      build_id: bd-d7eddcb8b38dd49a_1
+      scan_id: sc-a9a710504f769adc_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/hyphy:2.5.101--d62d556c5731c351
+      build_id: bd-d62d556c5731c351_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2e/2ebfe35a6568ab3dd8a1b88c9e02e4303e85679da7063eec6c20e4ce41d878b9/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/hyphy:2.5.101--f6c041232df72cdf
+      build_id: bd-f6c041232df72cdf_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ed/ed3d742a4b3281f09189e5010b1b26855e2bdc5259dc8bdf1121a7b1939e8ca6/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/hyphy/bgm/.conda-lock/linux_amd64-bd-da14606d9f2ca413_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/hyphy/bgm/.conda-lock/linux_arm64-bd-d7eddcb8b38dd49a_1.txt

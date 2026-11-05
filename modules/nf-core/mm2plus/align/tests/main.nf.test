@@ -33,7 +33,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"])).match() }
             )
         }
 
@@ -63,7 +63,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam", "index"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["index"])).match() }
             )
         }
 
@@ -96,7 +96,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam", "index"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["index"])).match() }
             )
         }
 
@@ -126,7 +126,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"])).match() }
             )
         }
 
@@ -156,7 +156,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"])).match() }
             )
         }
 
@@ -186,7 +186,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["bam", "index"])).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["index"])).match() }
             )
         }
     }

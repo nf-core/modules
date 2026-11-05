@@ -61,3 +61,27 @@ authors:
   - "@jfy133"
 maintainers:
   - "@jfy133"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bamaligncleaner:0.2.2--8e64749f97f80978
+      build_id: bd-8e64749f97f80978_1
+      scan_id: sc-60a693ac8aee2374_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/bamaligncleaner:0.2.2--fc3f6da8798dc3e2
+      build_id: bd-fc3f6da8798dc3e2_1
+      scan_id: sc-174535f7094066c1_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bamaligncleaner:0.2.2--24812b6c39f32f32
+      build_id: bd-24812b6c39f32f32_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/82/820a27755a50fb5b2a475e8503f3a966aece2040551184b3267ab669f8e8ab81/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bamaligncleaner:0.2.2--ec4f1e2a4121d26e
+      build_id: bd-ec4f1e2a4121d26e_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/85/857ab804ba29aedc4b653a55fe9318a182140140042cc141468a1688bdf65ac9/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bamaligncleaner/.conda-lock/linux_amd64-bd-8e64749f97f80978_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/bamaligncleaner/.conda-lock/linux_arm64-bd-fc3f6da8798dc3e2_1.txt

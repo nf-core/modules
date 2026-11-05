@@ -2,6 +2,8 @@ nextflow_process {
 
     name "Test Process SEGEMEHL_ALIGN"
     script "../main.nf"
+    config "./nextflow.config"
+
     process "SEGEMEHL_ALIGN"
     tag "modules"
     tag "modules_nfcore"
@@ -14,9 +16,10 @@ nextflow_process {
             script "../../../segemehl/index/main.nf"
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = [
+                    [id: "genome"],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                ])
+                ]
                 """
             }
         }
@@ -24,16 +27,19 @@ nextflow_process {
 
     test("homo_sapiens - single_end") {
         when {
+            params {
+                module_args = ""
+            }
             process {
                 """
-                input[0] = Channel.of([
-                    [ id:'test', single_end:true ], // meta map
+                input[0] = [
+                    [ id:'test', single_end:true ],
                     [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true) ]
-                ])
+                ]
                 input[1] = Channel.of([
+                    [id: "genome"],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                ])
-                input[2] = SEGEMEHL_INDEX.out.index
+                ]).join(SEGEMEHL_INDEX.out.index)
                 """
             }
         }
@@ -49,19 +55,22 @@ nextflow_process {
 
     test("homo_sapiens - paired_end") {
         when {
+            params {
+                module_args = ""
+            }
             process {
                 """
-                input[0] = Channel.of([
-                    [ id:'test', single_end:false ], // meta map
+                input[0] = [
+                    [ id:'test', single_end:false ],
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz', checkIfExists: true)
                     ]
-                ])
+                ]
                 input[1] = Channel.of([
+                    [id: "genome"],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                ])
-                input[2] = SEGEMEHL_INDEX.out.index
+                ]).join(SEGEMEHL_INDEX.out.index)
                 """
             }
         }
@@ -76,19 +85,20 @@ nextflow_process {
     }
 
     test("homo_sapiens - split - single_end") {
-        config "./split.config"
-
         when {
+            params {
+                module_args = "-S"
+            }
             process {
                 """
-                input[0] = Channel.of([
-                    [ id:'test', single_end:true ], // meta map
+                input[0] = [
+                    [ id:'test', single_end:true ],
                     [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true) ]
-                ])
+                ]
                 input[1] = Channel.of([
+                    [id: "genome"],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                ])
-                input[2] = SEGEMEHL_INDEX.out.index
+                ]).join(SEGEMEHL_INDEX.out.index)
                 """
             }
         }
@@ -106,22 +116,23 @@ nextflow_process {
     }
 
     test("homo_sapiens - split - paired_end") {
-        config "./split.config"
-
         when {
+            params {
+                module_args = "-S"
+            }
             process {
                 """
-                input[0] = Channel.of([
-                    [ id:'test', single_end:false ], // meta map
+                input[0] = [
+                    [ id:'test', single_end:false ],
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz', checkIfExists: true)
                     ]
-                ])
+                ]
                 input[1] = Channel.of([
+                    [id: "genome"],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
-                ])
-                input[2] = SEGEMEHL_INDEX.out.index
+                ]).join(SEGEMEHL_INDEX.out.index)
                 """
             }
         }
@@ -134,6 +145,37 @@ nextflow_process {
                 { assert path(process.out.multi_bed[0][1]).exists() },
                 { assert path(process.out.single_bed[0][1]).exists() },
                 { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["alignment", "trans_alignments", "multi_bed", "single_bed"])).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - split - paired_end -- stub") {
+        options "-stub"
+        when {
+            params {
+                module_args = "--bamabafixoida"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_rnaseq_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = Channel.of([
+                    [id: "genome"],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                ]).join(SEGEMEHL_INDEX.out.index)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

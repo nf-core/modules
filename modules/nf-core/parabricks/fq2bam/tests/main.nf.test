@@ -74,7 +74,7 @@ nextflow_process {
                 ])
 				input[2] = BWA_INDEX.out.index
                 input[3] = [ [], [] ]
-                input[4] = [ [], [] ]
+                input[4] = [ [], [], [] ]
                 input[5] = 'bam'
                 """
             }
@@ -115,7 +115,7 @@ nextflow_process {
                 ])
 				input[2] = BWA_INDEX.out.index
                 input[3] = [ [], [] ]
-                input[4] = [ [], [] ]
+                input[4] = [ [], [], [] ]
                 input[5] = 'bam'
                 """
             }
@@ -154,7 +154,7 @@ nextflow_process {
                 ])
                 input[2] = BWA_INDEX_PE.out.index
                 input[3] = [ [], [] ]
-                input[4] = [ [], [] ]
+                input[4] = [ [], [], [] ]
                 input[5] = 'bam'
                 """
             }
@@ -197,7 +197,7 @@ nextflow_process {
                 ])
                 input[2] = BWA_INDEX_PE.out.index
                 input[3] = [ [], [] ]
-                input[4] = [ [], [] ]
+                input[4] = [ [], [], [] ]
                 input[5] = 'bam'
                 """
             }
@@ -233,7 +233,7 @@ nextflow_process {
                 input[1] = [[id: 'test'],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)]
                 input[2] = BWA_INDEX_CRAM.out.index
                 input[3] = [ [], [] ]
-                input[4] = [ [], [] ]
+                input[4] = [ [], [], [] ]
                 input[5] = 'cram'
                 """
             }
@@ -280,7 +280,7 @@ nextflow_process {
                 ])
                 input[2] = BWA_INDEX_PE.out.index
                 input[3] = [ [], [] ]
-                input[4] = [ [], [] ]
+                input[4] = [ [], [], [] ]
                 input[5] = 'cram'
                 """
             }

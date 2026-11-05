@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GATK4_CNNSCOREVARIANTS {
     tag "${meta.id}"
     label 'process_low'
@@ -59,7 +62,7 @@ process GATK4_CNNSCOREVARIANTS {
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo | gzip -c > ${prefix}.cnn.vcf.gz
+    echo "" | gzip > ${prefix}.cnn.vcf.gz
     touch ${prefix}.cnn.vcf.gz.tbi
     """
 }
