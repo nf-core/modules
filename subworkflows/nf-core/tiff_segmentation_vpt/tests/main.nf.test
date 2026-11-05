@@ -58,10 +58,7 @@ nextflow_workflow {
             assertAll(
                 { assert workflow.success },
                 { assert snapshot(
-                    file(workflow.out.micron_space_segmentation[0][1]).name, // Parquet file is not stable as cellpose uses a random seed which cannot be set via VPT
-                    file(workflow.out.mosaic_space_segmentation[0][1]).name, // Parquet file is not stable as cellpose uses a random seed which cannot be set via VPT
-                    workflow.out.versions,
-                    path(workflow.out.versions[0]).yaml
+                    sanitizeOutput(workflow.out, unstableKeys: ["micron_space_segmentation", "mosaic_space_segmentation"])
                 ).match() }
             )
         }

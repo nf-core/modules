@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process NEXTCLADE_DATASETGET {
     tag "$dataset"
     label 'process_low'
@@ -14,7 +17,7 @@ process NEXTCLADE_DATASETGET {
     output:
     path "$prefix"     , emit: dataset
     tuple val("${task.process}"), val('nextclade'), eval("nextclade --version 2>&1 | sed 's/.*nextclade \\([^ ]*\\).*/\\1/'"), emit: versions_nextclade, topic: versions
-
+    tuple val("${task.process}"), val('nextclade-dataset'), eval("grep 'tag' ${prefix}/pathogen.json | sed 's/.*tag.: .\\([0-9-]\\+Z\\).*/\\1/'"), emit: versions_nextclade_dataset, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,7 +43,7 @@ process NEXTCLADE_DATASETGET {
     touch ${prefix}/CHANGELOG.md
     touch ${prefix}/README.md
     touch ${prefix}/genome_annotation.gff3
-    touch ${prefix}/pathogen.json
+    echo -e '\\t"tag": "2026-06-16--14-30-45Z"' > ${prefix}/pathogen.json
     touch ${prefix}/reference.fasta
     touch ${prefix}/sequences.fasta
     touch ${prefix}/tree.json

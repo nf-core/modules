@@ -16,7 +16,8 @@ tools:
       documentation: https://github.com/GenomeRIK/tama/wiki
       tool_dev_url: https://github.com/sguizard/gs-tama
       doi: "10.1186/s12864-020-07123-7"
-      licence: ["GPL v3 License"]
+      licence:
+        - "GPL v3 License"
       identifier: ""
 input:
   - - meta:
@@ -42,11 +43,12 @@ output:
             e.g. [ id:'test' ]
       - "*.bed":
           type: file
-          description: This is the main merged annotation file. Transcripts are coloured
-            according to the source support for each model. Sources are numbered based
-            on the order supplied in the input filelist file. For example the first
-            file named in the filelist file would have its transcripts coloured in red.
-            If a transcript has multiple sources the colour is shown as magenta.
+          description: This is the main merged annotation file. Transcripts are
+            coloured according to the source support for each model. Sources are
+            numbered based on the order supplied in the input filelist file. For
+            example the first file named in the filelist file would have its
+            transcripts coloured in red. If a transcript has multiple sources the
+            colour is shown as magenta.
           pattern: "*.bed"
           ontologies: []
   gene_report:
@@ -57,10 +59,10 @@ output:
             e.g. [ id:'test' ]
       - "*_gene_report.txt":
           type: file
-          description: This contains a report of the genes from the merged file. "num_clusters"
-            refers to the number of source transcripts that were used to make this gene
-            model. "num_final_trans" refers to the number of transcripts in the final
-            gene model.
+          description: This contains a report of the genes from the merged file.
+            "num_clusters" refers to the number of source transcripts that were
+            used to make this gene model. "num_final_trans" refers to the number
+            of transcripts in the final gene model.
           pattern: "*_gene_report.txt"
           ontologies: []
   merge:
@@ -71,13 +73,14 @@ output:
             e.g. [ id:'test' ]
       - "*_merge.txt":
           type: file
-          description: This contains a bed12 format file which shows the coordinates
-            of each input transcript matched to the merged transcript ID. I used the
-            "txt" extension even though it is a bed file just to avoid confusion with
-            the main bed file. You can use this file to map the final merged transcript
-            models to their pre-merged supporting transcripts. The 1st subfield in the
-            4th column shows the final merged transcript ID while the 2nd subfield shows
-            the pre-merged transcript ID with source prefix.
+          description: This contains a bed12 format file which shows the
+            coordinates of each input transcript matched to the merged transcript
+            ID. I used the "txt" extension even though it is a bed file just to
+            avoid confusion with the main bed file. You can use this file to map
+            the final merged transcript models to their pre-merged supporting
+            transcripts. The 1st subfield in the 4th column shows the final merged
+            transcript ID while the 2nd subfield shows the pre-merged transcript
+            ID with source prefix.
           pattern: "*_merge.txt"
           ontologies: []
   trans_report:
@@ -88,16 +91,31 @@ output:
             e.g. [ id:'test' ]
       - "*_trans_report.txt":
           type: file
-          description: This contains the source information for each merged transcript.
+          description: This contains the source information for each merged
+            transcript.
           pattern: "*_trans_report.txt"
           ontologies: []
+  versions_gstama:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gstama:
+          type: string
+          description: The name of the tool
+      - tama_merge.py -version | sed '1!d':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gstama:
+          type: string
+          description: The name of the tool
+      - tama_merge.py -version | sed '1!d':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@sguizard"
 maintainers:

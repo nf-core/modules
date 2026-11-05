@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VEMBRANE_TABLE {
     tag "${meta.id}"
     label 'process_low'
@@ -27,21 +30,11 @@ process VEMBRANE_TABLE {
         --output ${prefix}.tsv \\
         '${expression}' \\
         ${vcf}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vembrane: \$(vembrane --version | sed '1!d;s/.* //')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vembrane: \$(vembrane --version | sed '1!d;s/.* //')
-    END_VERSIONS
     """
 }

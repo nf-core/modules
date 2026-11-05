@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process KMA_KMA {
     tag "$meta.id"
     label 'process_medium'
@@ -21,7 +24,7 @@ process KMA_KMA {
     tuple val(meta), path("*.vcf.gz") , optional: true, emit: vcf
     tuple val(meta), path("*.sam")    , optional: true, emit: sam
     tuple val(meta), path("*.spa")    , optional: true, emit: spa
-    path "versions.yml"               , emit: versions
+    tuple val("${task.process}"), val('kma'), eval('kma -v 2>&1 | sed "s/^KMA-//"'), emit: versions_kma, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -63,10 +66,6 @@ process KMA_KMA {
         $args \\
         $sam_output || [ \$? -eq 95 ]
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        kma: \$(echo \$(kma -v 2>&1) | sed 's/^KMA-//')
-    END_VERSIONS
     """
 
     stub:
@@ -83,10 +82,5 @@ process KMA_KMA {
     ${create_mat}
     ${create_vcf}
     ${create_sam}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        kma: \$(echo \$(kma -v 2>&1) | sed 's/^KMA-//')
-    END_VERSIONS
     """
 }

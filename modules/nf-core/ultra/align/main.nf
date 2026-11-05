@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ULTRA_ALIGN {
     tag "$meta.id"
     label 'process_medium'
@@ -14,7 +17,8 @@ process ULTRA_ALIGN {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('ultra'), eval("uLTRA --version | sed 's/uLTRA //'"), emit: versions_ultra, topic: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools --version | sed -n '1s/samtools //p'"), emit: versions_samtools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -43,22 +47,11 @@ process ULTRA_ALIGN {
         ${prefix}.sam
 
     rm ${prefix}.sam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ultra: \$( uLTRA --version|sed 's/uLTRA //g' )
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bam
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ultra: \$( uLTRA --version|sed 's/uLTRA //g' )
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 }

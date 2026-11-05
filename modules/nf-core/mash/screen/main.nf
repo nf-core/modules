@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MASH_SCREEN {
     tag "$meta.id"
     label 'process_medium'
@@ -13,7 +16,7 @@ process MASH_SCREEN {
 
     output:
     tuple val(meta), path("*.screen"), emit: screen
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val("mash"), eval("mash --version 2>&1"), emit: versions_mash, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,26 +27,16 @@ process MASH_SCREEN {
     """
     mash \\
         screen \\
-        $args \\
-        -p $task.cpus \\
-        $sequences_sketch \\
-        $query \\
+        ${args} \\
+        -p ${task.cpus} \\
+        ${sequences_sketch} \\
+        ${query} \\
         > ${prefix}.screen
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mash: \$( mash --version )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.screen
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mash: \$( mash --version )
-    END_VERSIONS
     """
 }

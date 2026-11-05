@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 // statistics
 include { FASTQ_QC_STATS as PRE_STATS        } from '../fastq_qc_stats'
 include { FASTQ_QC_STATS as POST_STATS       } from '../fastq_qc_stats'
@@ -48,7 +51,6 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
 
     main:
 
-    ch_versions = channel.empty()
     ch_multiqc_files = channel.empty()
     ch_umi_log = channel.empty()
     ch_adapterremoval_discarded_reads = channel.empty()
@@ -120,7 +122,6 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
         ch_adapterremoval_report = FASTQ_REMOVEADAPTERS_MERGE.out.report
         ch_reads = FASTQ_REMOVEADAPTERS_MERGE.out.processed_reads
         ch_multiqc_files = ch_multiqc_files.mix(FASTQ_REMOVEADAPTERS_MERGE.out.multiqc_files)
-        ch_versions = ch_versions.mix(FASTQ_REMOVEADAPTERS_MERGE.out.versions)
     }
 
     // complexity filtering
@@ -130,7 +131,6 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
         ch_complexity_filter_log = FASTQ_COMPLEXITY_FILTER.out.logfile
         ch_complexity_filter_report = FASTQ_COMPLEXITY_FILTER.out.report
         ch_multiqc_files = ch_multiqc_files.mix(FASTQ_COMPLEXITY_FILTER.out.multiqc_files)
-        ch_versions = ch_versions.mix(FASTQ_COMPLEXITY_FILTER.out.versions)
     }
 
     // deduplication
@@ -222,5 +222,4 @@ workflow FASTQ_SHORTREADS_PREPROCESS_QC {
     deacon_index                   = ch_deacon_index
     deacon_summary                 = ch_deacon_summary
     multiqc_files                  = ch_multiqc_files
-    versions                       = ch_versions // channel: [ versions.yml ]
 }

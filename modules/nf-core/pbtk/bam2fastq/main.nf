@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PBTK_BAM2FASTQ {
     tag "$meta.id"
     label 'process_medium'
@@ -12,7 +15,7 @@ process PBTK_BAM2FASTQ {
 
     output:
     tuple val(meta), path("*.$extension")   , emit: fastq
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('pbtk'), eval("bam2fastq --version 2>&1 | sed -n 's/.*bam2fastq //p' | cut -d' ' -f1"), emit: versions_bam2fastq, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,11 +30,6 @@ process PBTK_BAM2FASTQ {
         -j $task.cpus \\
         -o ${prefix} \\
         $bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bam2fastq: \$(bam2fastq --version 2>&1 | sed -n 's/.*bam2fastq \\([0-9]\\+\\.[0-9]\\+\\.[0-9]\\+\\).*/\\1/p')
-    END_VERSIONS
     """
 
     stub:
@@ -42,10 +40,5 @@ process PBTK_BAM2FASTQ {
     """
     touch ${prefix}.fastq
     $gzip
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bam2fastq: \$(bam2fastq --version 2>&1 | sed -n 's/.*bam2fastq \\([0-9]\\+\\.[0-9]\\+\\.[0-9]\\+\\).*/\\1/p')
-    END_VERSIONS
     """
 }

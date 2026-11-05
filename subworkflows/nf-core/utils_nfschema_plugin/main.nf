@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 //
 // Subworkflow that uses the nf-schema plugin to validate parameters and render the parameter summary
 //
@@ -28,6 +31,7 @@ workflow UTILS_NFSCHEMA_PLUGIN {
 
     if(help || help_full) {
         help_options = [
+            parameter: (help instanceof String && help != "true") ? help : null,
             beforeText: before_text,
             afterText: after_text,
             command: command,
@@ -35,12 +39,10 @@ workflow UTILS_NFSCHEMA_PLUGIN {
             fullHelp: help_full,
         ]
         if(parameters_schema) {
-            help_options << [parametersSchema: parameters_schema]
+            help_options << [parameters_schema: parameters_schema]
         }
-        log.info paramsHelp(
-            help_options,
-            (help instanceof String && help != "true") ? help : "",
-        )
+
+        log.info paramsHelp(help_options)
         exit 0
     }
 
@@ -51,10 +53,10 @@ workflow UTILS_NFSCHEMA_PLUGIN {
 
     summary_options = [:]
     if(parameters_schema) {
-        summary_options << [parametersSchema: parameters_schema]
+        summary_options << [parameters_schema: parameters_schema]
     }
     log.info before_text
-    log.info paramsSummaryLog(summary_options, input_workflow)
+    log.info paramsSummaryLog(summary_options)
     log.info after_text
 
     //
@@ -64,10 +66,10 @@ workflow UTILS_NFSCHEMA_PLUGIN {
     if(validate_params) {
         validateOptions = [:]
         if(parameters_schema) {
-            validateOptions << [parametersSchema: parameters_schema]
+            validateOptions << [parameters_schema: parameters_schema]
         }
         if(cli_typecast != null) {
-            validateOptions << [cliTypecast: cli_typecast]
+            validateOptions << [cast_cli_params: cli_typecast]
         }
         validateParameters(validateOptions)
     }

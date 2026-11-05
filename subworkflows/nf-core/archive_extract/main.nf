@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { GUNZIP } from '../../../modules/nf-core/gunzip'
 include { UNTAR  } from '../../../modules/nf-core/untar'
 include { UNZIP  } from '../../../modules/nf-core/unzip'
@@ -7,7 +10,6 @@ workflow ARCHIVE_EXTRACT {
     archive // Channel: [[meta], archive]
 
     main:
-    versions = channel.empty()
 
     archive_to_extract = archive.branch { _meta, archive_ ->
         tar: archive_.toString().endsWith('.tar.gz')
@@ -33,10 +35,7 @@ workflow ARCHIVE_EXTRACT {
             UNZIP.out.unzipped_archive,
         )
 
-    versions = versions.mix(UNZIP.out.versions)
-
     emit:
     extracted = extracted     // channel: [ meta, extracted_archive ]
     not_extracted = not_extracted // channel: [ meta, not_extracted_archive ]
-    versions      // channel: [ versions.yml ]
 }

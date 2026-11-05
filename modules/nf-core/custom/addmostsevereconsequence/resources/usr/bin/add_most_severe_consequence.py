@@ -7,12 +7,12 @@ import argparse
 import gzip
 import sys
 from pathlib import Path
-from typing import TextIO, Tuple
+from typing import TextIO
 
 
 def parse_vep_csq_transcripts(
     transcripts: list, allele_ind: int, csq_ind: int, hgnc_ind: int, var_csq: list
-) -> Tuple[list, list, list, list]:
+) -> tuple[list, list, list, list]:
     """
     Parse consequences for each transcript and return HGNC IDs, alleles, and their severity rank
     based on the term's ranking in the ensembl consequences list.
@@ -109,7 +109,7 @@ def find_indices(list_to_check: list, item_to_find: str) -> list:
     return indices
 
 
-def parse_vep_csq_schema(line: str) -> Tuple[int, int, int]:
+def parse_vep_csq_schema(line: str) -> tuple[int, int, int]:
     """
     Get indices of allele, consequence, and hgnc id in the annotation
 

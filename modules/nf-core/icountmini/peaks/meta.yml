@@ -11,7 +11,8 @@ tools:
       documentation: https://github.com/ulelab/iCount-Mini
       tool_dev_url: https://github.com/ulelab/iCount-Mini
       doi: "10.1038/nsmb.1838"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -42,13 +43,27 @@ output:
           description: Crosslinks deemed significant by iCount
           pattern: "*.{bed.gz}"
           ontologies: []
+  versions_icount_mini:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - iCount-Mini:
+          type: string
+          description: The name of the tool
+      - iCount-Mini -v:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - iCount-Mini:
+          type: string
+          description: The name of the tool
+      - iCount-Mini -v:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@marc-jones"
   - "@chris-cheshire"

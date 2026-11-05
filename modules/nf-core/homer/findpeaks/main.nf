@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HOMER_FINDPEAKS {
     tag "${meta.id}"
     label 'process_medium'
@@ -12,7 +15,8 @@ process HOMER_FINDPEAKS {
 
     output:
     tuple val(meta), path("*.peaks.txt"), emit: txt
-    path "versions.yml", emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('homer'), val("4.11"), emit: versions_homer, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,8 +25,6 @@ process HOMER_FINDPEAKS {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: uniqmap ? "${meta.id}-${uniqmap.baseName}" : "${meta.id}"
     def uniqmap_flag = uniqmap ? "-uniqmap ${uniqmap}" : ""
-    def VERSION = '4.11'
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
 
     findPeaks \\
@@ -30,24 +32,11 @@ process HOMER_FINDPEAKS {
         ${args} \\
         -o ${prefix}.peaks.txt \\
         ${uniqmap_flag}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        homer: ${VERSION}
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '4.11'
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
     """
     touch ${prefix}.peaks.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        homer: ${VERSION}
-    END_VERSIONS
     """
 }

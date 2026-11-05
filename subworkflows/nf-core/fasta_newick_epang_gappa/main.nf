@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { HMMER_HMMBUILD                            } from '../../../modules/nf-core/hmmer/hmmbuild/main'
 include { HMMER_HMMALIGN as HMMER_HMMALIGNREF       } from '../../../modules/nf-core/hmmer/hmmalign/main'
 include { HMMER_HMMALIGN as HMMER_HMMALIGNQUERY     } from '../../../modules/nf-core/hmmer/hmmalign/main'
@@ -19,9 +22,9 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
 
     take:
     ch_pp_data // channel: [ meta: val(meta), data: [ alignmethod: val(alignmethod), queryseqfile: file(queryseqfile), refseqfile: file(refseqfile), refphylogeny: file(refphylogeny), hmmfile: file(hmmfile), model: val(model) ] ]
+    compress_alignment // value: boolean, write the clustalo and mafft alignments gzipped
 
     main:
-    ch_versions = channel.empty()
 
     // Divide the input channel into three: One each for hmmer, clustalo and mafft alignment
     ch_hmmer_data    = ch_pp_data.filter { it -> it.data.alignmethod == 'hmmer'    }
@@ -59,8 +62,6 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
                 .map { it -> [ it.meta, it.data.refseqfile ] }
         )
 
-    ch_versions = ch_versions.mix(HMMER_UNALIGNREF.out.versions)
-
     // 1.c Align the reference and query sequences to the profile
     ch_hmmer_alignref = ch_hmm
         .mix(ch_hmmer_unaligned)
@@ -83,17 +84,13 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
 
     // 1.d Mask the alignments (Add '--rf-is-mask' ext.args in config for the process.)
     HMMER_MASKREF ( HMMER_HMMALIGNREF.out.sto.map { it -> [ it[0], it[1], [], [], [], [], [], [] ] }, [] )
-    ch_versions = ch_versions.mix(HMMER_MASKREF.out.versions)
 
     HMMER_MASKQUERY ( HMMER_HMMALIGNQUERY.out.sto.map { it -> [ it[0], it[1], [], [], [], [], [], [] ] }, [] )
-    ch_versions = ch_versions.mix(HMMER_MASKQUERY.out.versions)
 
     // 1.e Reformat alignments to "afa" (aligned fasta)
     HMMER_AFAFORMATREF ( HMMER_MASKREF.out.maskedaln, '' )
-    ch_versions = ch_versions.mix(HMMER_AFAFORMATREF.out.versions)
 
     HMMER_AFAFORMATQUERY ( HMMER_MASKQUERY.out.maskedaln, '' )
-    ch_versions = ch_versions.mix(HMMER_AFAFORMATQUERY.out.versions)
 
     // 2.a CLUSTALO_ALIGN profile alignment of query sequences to reference alignment
     CLUSTALO_ALIGN (
@@ -103,7 +100,7 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
         [ ],
         ch_clustalo_data.map { it -> it.data.refseqfile },
         [ ],
-        false
+        compress_alignment
     )
 
     // 2.b Split the profile alignment into reference and query parts
@@ -120,7 +117,7 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
         [ [], [] ],
         [ [], [] ],
         [ [], [] ],
-        false
+        compress_alignment
     )
 
     // 3.b Split the profile alignment into reference and query parts
@@ -172,9 +169,10 @@ workflow FASTA_NEWICK_EPANG_GAPPA {
     emit:
     epang               = EPANG_PLACE.out.epang
     jplace              = EPANG_PLACE.out.jplace
+    epang_log           = EPANG_PLACE.out.log
     grafted_phylogeny   = GAPPA_GRAFT.out.newick
     taxonomy_profile    = GAPPA_ASSIGN.out.profile
     taxonomy_per_query  = GAPPA_ASSIGN.out.per_query
     heattree            = GAPPA_HEATTREE.out.svg
-    versions            = ch_versions                     // channel: [ versions.yml ]
+    hmmbuild_log        = HMMER_HMMBUILD.out.hmmbuildout
 }

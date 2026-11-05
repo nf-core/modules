@@ -1,6 +1,5 @@
 name: "custom_sratoolsncbisettings"
-description: Test for the presence of suitable NCBI settings or create them on
-  the fly.
+description: Test for the presence of suitable NCBI settings or create them on the fly.
 keywords:
   - NCBI
   - settings
@@ -52,3 +51,27 @@ authors:
   - "@Midnighter"
 maintainers:
   - "@Midnighter"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/sra-tools:3.2.1--c221ea63b92c74bf
+      build_id: bd-c221ea63b92c74bf_1
+      scan_id: sc-7230e29f780075c2_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/sra-tools:3.2.1--05c995c424c66c47
+      build_id: bd-05c995c424c66c47_1
+      scan_id: sc-f7c9675de326aae1_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/sra-tools:3.2.1--d3b66d46a31848b7
+      build_id: bd-d3b66d46a31848b7_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/12/1296a3f79e700d7479f4a294669da501d851daf93b0a246a4d951d630d908a53/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/sra-tools:3.2.1--6af08868b0e8544d
+      build_id: bd-6af08868b0e8544d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1a/1ac0b46686672c4b28f13645682481e31a478d3f2ab69f5873d2ee87ad35dd2e/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/custom/sratoolsncbisettings/.conda-lock/linux_amd64-bd-c221ea63b92c74bf_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/custom/sratoolsncbisettings/.conda-lock/linux_arm64-bd-05c995c424c66c47_1.txt

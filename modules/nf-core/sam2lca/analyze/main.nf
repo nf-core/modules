@@ -1,3 +1,5 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
 
 process SAM2LCA_ANALYZE {
     tag "$meta.id"
@@ -16,7 +18,7 @@ process SAM2LCA_ANALYZE {
     tuple val(meta), path("*.csv")  , emit: csv
     tuple val(meta), path("*.json") , emit: json
     tuple val(meta), path("*.bam")  , emit: bam     , optional: true
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('sam2lca'), eval("sam2lca --version | sed 's/.*version //'"), topic: versions, emit: versions_sam2lca
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,11 +36,6 @@ process SAM2LCA_ANALYZE {
         $args \\
         -o ${prefix} \\
         $bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sam2lca: \$(sam2lca --version | sed 's/.*version //')
-    END_VERSIONS
     """
 
     stub:
@@ -46,10 +43,5 @@ process SAM2LCA_ANALYZE {
     """
     touch ${prefix}.csv
     touch ${prefix}.json
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sam2lca: \$(sam2lca --version | sed 's/.*version //')
-    END_VERSIONS
     """
 }

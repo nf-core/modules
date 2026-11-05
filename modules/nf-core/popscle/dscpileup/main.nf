@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process POPSCLE_DSCPILEUP {
     tag "$meta.id"
     label 'process_medium'
@@ -15,7 +18,7 @@ process POPSCLE_DSCPILEUP {
     tuple val(meta), path('*.plp.gz'), emit: plp
     tuple val(meta), path('*.var.gz'), emit: var
     tuple val(meta), path('*.umi.gz'), emit: umi
-    path 'versions.yml'              , emit: versions
+    tuple val("${task.process}"), val('popscle'), val('0.1'), emit: versions_popscle, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,7 +26,6 @@ process POPSCLE_DSCPILEUP {
     script:
     def args    = task.ext.args ?: ''
     def prefix  = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '0.1' // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
 
     """
     popscle dsc-pileup \\
@@ -31,26 +33,15 @@ process POPSCLE_DSCPILEUP {
         --vcf $vcf \\
         --out $prefix \\
         $args \\
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        popscle dsc-pileup: $VERSION
-    END_VERSIONS
     """
 
     stub:
     def prefix  = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '0.1' // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
 
     """
     echo "" | gzip > ${prefix}.cel.gz
     echo "" | gzip > ${prefix}.var.gz
     echo "" | gzip > ${prefix}.plp.gz
     echo "" | gzip > ${prefix}.umi.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        popscle dsc-pileup: $VERSION
-    END_VERSIONS
     """
 }

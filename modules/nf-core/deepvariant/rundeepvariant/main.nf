@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DEEPVARIANT_RUNDEEPVARIANT {
     tag "${meta.id}"
     label 'process_high'
@@ -37,6 +40,9 @@ process DEEPVARIANT_RUNDEEPVARIANT {
     def par_regions = par_bed ? "--par_regions_bed=${par_bed}" : ""
 
     """
+    export MPLCONFIGDIR=\$PWD/.matplotlib
+    mkdir -p \$MPLCONFIGDIR
+
     /opt/deepvariant/bin/run_deepvariant \\
         --ref=${fasta} \\
         --reads=${input} \\
@@ -59,5 +65,6 @@ process DEEPVARIANT_RUNDEEPVARIANT {
     echo "stub" | gzip > ${prefix}.vcf.gz
     echo "stub" | gzip > ${prefix}.vcf.gz.tbi
     echo "stub" | gzip > ${prefix}.g.vcf.gz
-    echo "stub" | gzip > ${prefix}.g.vcf.gz.tbi    """
+    echo "stub" | gzip > ${prefix}.g.vcf.gz.tbi
+    """
 }

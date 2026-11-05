@@ -1,7 +1,11 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process S4PRED_RUNMODEL {
     tag "$meta.id"
     label 'process_high'
 
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/s4pred:1.2.1--pyhdfd78af_1':
@@ -12,7 +16,8 @@ process S4PRED_RUNMODEL {
 
     output:
     tuple val(meta), path("${prefix}"), emit: preds
-    path "versions.yml"               , emit: versions
+    tuple val("${task.process}"), val('s4pred'), val('1.2.1'), topic: versions, emit: versions_s4pred
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,7 +25,6 @@ process S4PRED_RUNMODEL {
     script:
     def args    = task.ext.args   ?: ''
     prefix      = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.2.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     mkdir ${prefix}
 
@@ -30,23 +34,12 @@ process S4PRED_RUNMODEL {
         --save-files \\
         --outdir ${prefix} \\
         ${fasta}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        s4pred: $VERSION
-    END_VERSIONS
     """
 
     stub:
     prefix      = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.2.1' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     mkdir -p ${prefix}
     touch ${prefix}/test.ss2
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        s4pred: $VERSION
-    END_VERSIONS
     """
 }

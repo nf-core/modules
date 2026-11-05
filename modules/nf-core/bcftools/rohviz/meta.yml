@@ -22,11 +22,10 @@ input:
           e.g. [ id:'sample1' ]
     - roh:
         type: file
-        description: Output of BCFtools_roh. Contains site-specific and/or
-          per-region runs of homo/autozygosity calls.
+        description: Output of BCFtools_roh. Contains site-specific and/or per-region runs of homo/autozygosity calls.
         pattern: "*.roh"
         ontologies: []
-  - - meta1:
+  - - meta2:
         type: map
         description: |
           Groovy Map containing sample information
@@ -36,11 +35,10 @@ input:
         description: VCF file
         pattern: "*.{vcf,.vcf.gz}"
         ontologies:
-          - edam: http://edamontology.org/format_3016 # VCF
+          - edam: http://edamontology.org/format_3016
   - regions_list:
       type: file
-      description: "Regions can be specified either on command line or in a VCF, BED,
-        or tab-delimited file (the default)."
+      description: "Regions can be specified either on command line or in a VCF, BED, or tab-delimited file (the default)."
       ontologies: []
   - samples_file:
       type: file
@@ -58,7 +56,7 @@ output:
           description: RoH visual report file.
           pattern: "*.html"
           ontologies:
-            - edam: http://edamontology.org/format_2331 # HTML
+            - edam: http://edamontology.org/format_2331
   versions_bcftools:
     - - ${task.process}:
           type: string
@@ -101,3 +99,25 @@ topics:
           description: The expression to obtain the version of the tool
 authors:
   - "@yz533cb"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bcftools_htslib_less:240688709276db16
+      build_id: bd-240688709276db16_4
+      scan_id: sc-89d0220c5ea543f1_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/bcftools_htslib_less:c362933a0cf0a84d
+      build_id: bd-c362933a0cf0a84d_4
+      scan_id: sc-75a163d22cb1a4f8_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bcftools_htslib_less:08671b1e7ea49548
+      build_id: bd-08671b1e7ea49548_4
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a4/a4f4f97b5df3f047f183105e4a8618e616fd14072ad128d742f4ff66621c9fc8/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bcftools_htslib_less:c8fd3b91f8db4473
+      build_id: bd-c8fd3b91f8db4473_4
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/48/48456be9c8124e1c0d7ac06b497fe3dea5a532c19e93452a7bbfc52cd295deed/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bcftools/rohviz/.conda-lock/linux_amd64-bd-240688709276db16_4.txt
