@@ -56,6 +56,51 @@ nextflow_process {
         }
     }
 
+    test("generic - [ yaml, [ csv, tsv ] ] - report") {
+
+        when {
+            process {
+                """
+                input[0] = channel.of('''
+                    datasets:
+                      test:
+                        path: test.csv
+                      network:
+                        path: network.tsv
+                    views:
+                      test:
+                        dataset: test
+                        render-table:
+                          columns: {}
+                      network:
+                        dataset: network
+                        render-table:
+                          columns: {}
+                    '''.stripIndent())
+                    .collectFile(name: 'config_multiple.datavzrd.yaml')
+                    .map { config -> [ [id: "multiple_config"],
+                        config,
+                        [
+                            file(params.modules_testdata_base_path + 'generic/csv/test.csv', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'generic/tsv/network.tsv', checkIfExists: true)
+                        ]
+                    ] }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                            sanitizeOutput(process.out, unstableKeys: ['report']),
+                            getAllFilesFromDir(process.out.report[0][1], relative: true, includeDir: false)
+                        ).match()
+                    }
+            )
+        }
+    }
+
     test("csv - stub") {
 
         options "-stub"
