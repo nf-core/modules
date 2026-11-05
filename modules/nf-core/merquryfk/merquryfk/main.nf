@@ -49,7 +49,7 @@ process MERQURYFK_MERQURYFK {
     if (concatenate_haps && haplotigs.collect { hap -> hap.getExtension() }.unique().size() > 1) {
         error("Error: Multiple haplotigs with different extensions found!")
     }
-    def concat_out = haplotigs ? "${prefix}.concat_haps.${haplotigs[0].getExtension() == 'gz' ? haplotigs[0].getName().split('\\.')[-2..-1].join('.') : haplotigs[0].getExtension()}" : ""
+    def concat_out = haplotigs ? "concat_haps.${haplotigs[0].getExtension() == 'gz' ? haplotigs[0].getName().split('\\.')[-2..-1].join('.') : haplotigs[0].getExtension()}" : ""
     def concat_command = concatenate_haps ? "cat ${haplotigs} > ${concat_out}" : ""
     def cleanup_command = concatenate_haps ? "rm ${concat_out}" : ""
     def hap_input = haplotigs && concatenate_haps ? "${concat_out}" : haplotigs
