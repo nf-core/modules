@@ -38,22 +38,18 @@ input:
         ontologies: []
   - resource_vcf:
       type: file
-      description: all resource vcf files that are used with the corresponding '--resource'
-        label
+      description: all resource vcf files that are used with the corresponding '--resource' label
       pattern: "*.vcf.gz"
       ontologies:
         - edam: http://edamontology.org/format_3989 # GZIP format
   - resource_tbi:
       type: file
-      description: all resource tbi files that are used with the corresponding '--resource'
-        label
+      description: all resource tbi files that are used with the corresponding '--resource' label
       pattern: "*.vcf.gz.tbi"
       ontologies: []
   - labels:
       type: string
-      description: necessary arguments for GATK VariantRecalibrator. Specified to directly
-        match the resources provided. More information can be found at
-        https://gatk.broadinstitute.org/hc/en-us/articles/5358906115227-VariantRecalibrator
+      description: necessary arguments for GATK VariantRecalibrator. Specified to directly match the resources provided. More information can be found at https://gatk.broadinstitute.org/hc/en-us/articles/5358906115227-VariantRecalibrator
   - fasta:
       type: file
       description: The reference fasta file
@@ -111,8 +107,7 @@ output:
           ontologies: []
       - "*plots.R":
           type: file
-          description: Optional output rscript file to aid in visualization of the input
-            data and learned model.
+          description: Optional output rscript file to aid in visualization of the input data and learned model.
           pattern: "*plots.R"
           ontologies:
             - edam: http://edamontology.org/format_3999 # R script
@@ -143,3 +138,17 @@ authors:
 maintainers:
   - "@GCJMackenzie"
   - "@nickhsmith"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/gatk4-lite_r-base_r-ggplot2_r-gplots_r-gsalib:c2ff597f2b22489d
+      build_id: bd-c2ff597f2b22489d_1
+      scan_id: sc-7708d2534a8102a5_2
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/gatk4-lite_r-base_r-ggplot2_r-gplots_r-gsalib:197223e88fceb392
+      build_id: bd-197223e88fceb392_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/99/995b2a710d77be89a04150c6d0e8303236da166648a37e072d5f5e0ca2eca593/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/gatk4/variantrecalibrator/.conda-lock/linux_amd64-bd-c2ff597f2b22489d_1.txt

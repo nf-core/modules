@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FFQ {
     tag "${ids.size() == 1 ? ids[0] : "${ids[0]+'..'+ids[-1]}"}"
     label 'process_low'
@@ -30,7 +33,6 @@ process FFQ {
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def id_list = ids.sort()
     def name = id_list.size() == 1 ? ids[0] : 'metadata'
     def prefix = task.ext.prefix ?: "${name}"

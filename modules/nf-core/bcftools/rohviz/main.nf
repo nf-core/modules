@@ -1,15 +1,18 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BCFTOOLS_ROHVIZ {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/23/2397e92afdb695a248544593b5dcd19d8a0321dd3fd7f85cacd80de6cd56290d/data'
-        : 'community.wave.seqera.io/library/bcftools_htslib_less:6e82455ad302b6f7' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a4/a4f4f97b5df3f047f183105e4a8618e616fd14072ad128d742f4ff66621c9fc8/data'
+        : 'community.wave.seqera.io/library/bcftools_htslib_less:240688709276db16'}"
 
     input:
     tuple val(meta), path(roh)
-    tuple val(meta1), path(vcf)
+    tuple val(meta2), path(vcf)
     path regions_list
     path samples_file
 

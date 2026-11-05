@@ -1,6 +1,5 @@
 name: chewbbaca_allelecall
-description: Determine the allelic profiles of a genome using a pre-defined
-  schema
+description: Determine the allelic profiles of a genome using a pre-defined schema
 keywords:
   - cgMLST
   - WGS
@@ -70,8 +69,7 @@ output:
             e.g. `[ id:'test' ]`
       - "*_results_alleles.tsv":
           type: file
-          description: File contains the allelic profiles determined for the input
-            sample
+          description: File contains the allelic profiles determined for the input sample
           pattern: "*_results_alleles.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # Tab-separated values
@@ -95,9 +93,7 @@ output:
             e.g. `[ id:'test' ]`
       - "*_paralogous_counts.tsv":
           type: file
-          description: File contains the list of paralogous loci and the number of
-            times those loci matched a CDS that was also similar to other loci in
-            the schema
+          description: File contains the list of paralogous loci and the number of times those loci matched a CDS that was also similar to other loci in the schema
           pattern: "*_paralogous_counts.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -109,8 +105,7 @@ output:
             e.g. `[ id:'test' ]`
       - "*_paralogous_loci.tsv":
           type: file
-          description: File contains the sets of paralogous loci identified in the
-            input sample
+          description: File contains the sets of paralogous loci identified in the input sample
           pattern: "*_paralogous_loci.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # Tab-separated values
@@ -122,8 +117,7 @@ output:
             e.g. `[ id:'test' ]`
       - "*_cds_coordinates.tsv":
           type: file
-          description: File contains the coordinates of the CDS in the input
-            sample
+          description: File contains the coordinates of the CDS in the input sample
           pattern: "*_cds_coordinates.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # Tab-separated values
@@ -135,8 +129,7 @@ output:
             e.g. `[ id:'test' ]`
       - "*_invalid_cds.txt":
           type: file
-          description: File contains the list of alleles predicted by Prodigal
-            that were excluded
+          description: File contains the list of alleles predicted by Prodigal that were excluded
           pattern: "*_invalid_cds.txt"
           ontologies:
             - edam: http://edamontology.org/format_2330 # Plain text
@@ -175,3 +168,27 @@ topics:
           description: The expression to obtain the version of the tool
 authors:
   - "@anwarMZ"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/chewbbaca:3.3.10--093b1970054ad1b4
+      build_id: bd-093b1970054ad1b4_1
+      scan_id: sc-15b5f483344bdc8f_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/chewbbaca:3.3.10--b5a1758ad3b24d51
+      build_id: bd-b5a1758ad3b24d51_1
+      scan_id: sc-e46f5ad4aa5d76f5_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/chewbbaca:3.3.10--8ea4fe02cdfb2489
+      build_id: bd-8ea4fe02cdfb2489_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cd/cd36a3daf430d95783dc50950badecd5f257ccd6f87248b7a3eddd8942ac26d3/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/chewbbaca:3.3.10--8deabf4384212fef
+      build_id: bd-8deabf4384212fef_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5ad49ac1eb7a9cd3b4b71198abb42744c318f0004388b423409fd0180517d9e7/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/chewbbaca/allelecall/.conda-lock/linux_amd64-bd-093b1970054ad1b4_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/chewbbaca/allelecall/.conda-lock/linux_arm64-bd-b5a1758ad3b24d51_1.txt

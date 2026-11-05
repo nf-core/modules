@@ -5,6 +5,11 @@
 # Your system is mis-configured: ‘/etc/localtime’ is not a symlink
 Sys.setenv(TZ = "UTC")
 
+# Ensure a UTF-8 native encoding: containers without LANG/LC_ALL default to the
+# "C" locale, where janitor emits "unable to translate '<U+00C4>' to native
+# encoding" warnings, which options(warn = 2) below turns into errors
+invisible(Sys.setlocale("LC_CTYPE", "C.UTF-8"))
+
 # Load necessary libraries
 library(data.table)
 library(stringr)

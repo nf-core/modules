@@ -2,7 +2,7 @@
 name: "VCF_PHASE_SHAPEIT5"
 description: |
   Subworkflow to phase a reference panel VCF file using SHAPEIT5.
-  The panel is first chunked by chromosome by glimpse2/chunk,
+  The panel is first chunked by chromosome by glimpse2/chunk (if no chunks provided),
   then genotypes are phased with shapeit5/phasecommon and
   finally the chunks are merged back together by shapeit5/ligate by chromosomes.
   Meta map of all channels will be used to perform joint operations.
@@ -19,7 +19,7 @@ components:
   - shapeit5/ligate
   - bcftools/index
 input:
-  - ch_vcf:
+  - ch_input:
       description: Channel with target VCF files
       structure:
         - meta:
@@ -38,61 +38,34 @@ input:
           description:
             Pedigree information in the following format: offspring father mother.
           pattern: "*.{txt, tsv}"
-        - region:
-          type: string
-          description: Region to perform the chunking on for GLIMPSE2_chunk
-          pattern: "[chr]+[0-9]+:[0-9]+-[0-9]+"
-  - ch_chunks:
-      description: Channel with region data
-      structure:
-        - meta:
-          type: map
-          description: Metadata map that will be combined with the input data map
-        - regionout:
-          type: string
-          description: Region to perform the phasing on
-          pattern: "[chr]+[0-9]+:[0-9]+-[0-9]+"
-  - ch_ref:
-      description: Channel with reference phased VCF files
-      structure:
-        - meta:
-          type: map
-          description: Metadata map
-        - vcf:
+        - reference_vcf:
           type: file
-          description: VCF file
+          description: Reference panel VCF file
           pattern: "*.{vcf,bcf,vcf.gz}"
-        - index:
+        - reference_index:
           type: file
-          description: VCF index file
+          description: Reference panel VCF index file
           pattern: "*.{tbi,csi}"
-  - ch_scaffold:
-      description: Channel with reference scaffold VCF files
-      structure:
-        - meta:
-          type: map
-          description: Metadata map
-        - vcf:
+        - scaffold_vcf:
           type: file
-          description: VCF file
+          description: Scaffold VCF file
           pattern: "*.{vcf,bcf,vcf.gz}"
-        - index:
+        - scaffold_index:
           type: file
-          description: VCF index file
+          description: Scaffold VCF index file
           pattern: "*.{tbi,csi}"
-  - ch_map:
-      description: Channel with genetic map data (optional)
-      structure:
-        - meta:
-          type: map
-          description: Metadata map
         - map:
           type: file
           description: Map file in GLIMPSE format
           pattern: "*.map"
-  - chunk:
-      type: boolean
-      description: Whether to perform chunking of the input data before imputation.
+        - region:
+          type: string
+          description: Region to perform the chunking on using GLIMPSE2_chunk
+          pattern: "[chr]+[0-9]+:[0-9]+-[0-9]+"
+        - chunks:
+          type: array
+          description: List of region to perform the phasing on
+          pattern: "[([chr]+[0-9]+:[0-9]+-[0-9]+)(,[chr]+[0-9]+:[0-9]+-[0-9]+)+]"
   - chunk_model:
       description: Chunk model for GLIMPSE2_chunk
       type: string
@@ -108,7 +81,7 @@ output:
           description: Metadata map
         - regionout:
           type: string
-          description: Region to perform the phasing on
+          description: Chunks regions obtained from GLIMPSE2_chunk
           pattern: "[chr]+[0-9]+:[0-9]+-[0-9]+"
   - vcf_index:
       description: Channel with phased VCF files

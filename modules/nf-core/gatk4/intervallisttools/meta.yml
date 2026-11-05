@@ -1,6 +1,5 @@
 name: gatk4_intervallisttools
-description: Splits the interval list file into unique, equally-sized interval files
-  and place it under a directory
+description: Splits the interval list file into unique, equally-sized interval files and place it under a directory
 keywords:
   - bed
   - gatk4
@@ -64,3 +63,17 @@ authors:
   - "@praveenraj2018"
 maintainers:
   - "@praveenraj2018"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/gatk4-lite_python:fb04467550379e2f
+      build_id: bd-fb04467550379e2f_1
+      scan_id: sc-3507f10debf20a56_2
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/gatk4-lite_python:18a7e10410f573fe
+      build_id: bd-18a7e10410f573fe_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/89/89c3b6ef11af604ea7e5932f5fdd3472bae1cf73ff6499fdc71b2129f577c7d3/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/gatk4/intervallisttools/.conda-lock/linux_amd64-bd-fb04467550379e2f_1.txt

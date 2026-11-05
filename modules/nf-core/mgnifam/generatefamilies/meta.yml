@@ -7,7 +7,9 @@ keywords:
   - profile hmm
   - clustering
   - sequence alignment
-  - proteomics
+  - metagenomics
+  - hmmer
+  - protein sequences
 tools:
   - "mgnifam":
       description: Python package for iterative HMM-based protein family generation
@@ -15,7 +17,7 @@ tools:
         new members, re-aligning, and either converging on a family or discarding the
         cluster
       homepage: "https://github.com/vagkaratzas/mgnifam"
-      documentation: "https://github.com/vagkaratzas/mgnifam"
+      documentation: "https://vagkaratzas.github.io/mgnifam/"
       tool_dev_url: "https://github.com/vagkaratzas/mgnifam"
       licence:
         - "MIT"
@@ -38,7 +40,7 @@ input:
         type: file
         description: Uncompressed FASTA file of the protein sequence database, with
           unique sequence names, referenced by the cluster members
-        pattern: "*.{fa,fasta,fna,faa}"
+        pattern: "*.{fa,fasta,faa}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
     - fasta_index:
@@ -186,6 +188,20 @@ output:
           pattern: "*/*_converged.txt"
           ontologies:
             - edam: http://edamontology.org/format_3671 # Plain text format
+  stats:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}/${prefix}_mgnifam_stats.json:
+          type: file
+          description: Optional. MultiQC-ready summary of the run - family counts,
+            discard reasons, and histograms of seed and full MSA size, model length and
+            representative length. Written only after a completed run
+          pattern: "*/*_mgnifam_stats.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
   versions_mgnifam:
     - - ${task.process}:
           type: string
