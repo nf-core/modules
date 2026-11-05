@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BCFTOOLS_PLOTVCFSTATS {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1a/1a3ad7cb9fce08718791cc77a6f86ba4c2c3dcf7a7644cc5ed48fa8a98d9777e/data'
-        : 'community.wave.seqera.io/library/bcftools_htslib_matplotlib_tectonic:36654ae3efcf8c5d'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2b/2b65a7cbe1415bb1e199b26568bcd4e3f49675060619fd2c354445d5d3017223/data'
+        : 'community.wave.seqera.io/library/bcftools_htslib_ca-certificates_matplotlib_pruned:8a4b0c7f740317fb'}"
 
     input:
     tuple val(meta), path(stats)
@@ -15,7 +18,8 @@ process BCFTOOLS_PLOTVCFSTATS {
     tuple val(meta), path("${prefix}.plot-vcfstats.pdf"), optional:true, emit: plot_pdf
     tuple val(meta), path("${prefix}_plots/*.pdf"),       optional:true, emit: images_pdf
     tuple val(meta), path("${prefix}_plots/*.png"),       optional:true, emit: images_png
-    tuple val("${task.process}"), val('bcftools'), eval("bcftools --version | sed '1!d; s/^.*bcftools //'"), topic: versions, emit: versions_bcftools
+    tuple val("${task.process}"), val('bcftools'), eval("bcftools --version | sed '1!d; s/^.*bcftools //'")                    , topic: versions, emit: versions_bcftools
+    tuple val("${task.process}"), val('tectonic'), eval("tectonic --version | sed '1!d; s/^.*Tectonic //'")                    , topic: versions, emit: versions_tectonic
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,7 +44,7 @@ process BCFTOOLS_PLOTVCFSTATS {
 
     if [ -e ${prefix}_plots/summary.pdf ]
     then
-      mv ${prefix}_plots/summary.pdf ${prefix}.plot-vcfstats.pdf
+        mv ${prefix}_plots/summary.pdf ${prefix}.plot-vcfstats.pdf
     fi
     """
 
