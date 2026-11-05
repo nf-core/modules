@@ -1,7 +1,5 @@
 name: "bcftools_pluginfixploidy"
-description: "The fixploidy plugin fixes ploidy in genotype fields according to specified
-  ploidy rules, sample sex assignments, or a forced ploidy value. For example, haploid
-  genotypes can be converted to diploid genotypes."
+description: "The fixploidy plugin fixes ploidy in genotype fields according to specified ploidy rules, sample sex assignments, or a forced ploidy value. For example, haploid genotypes can be converted to diploid genotypes."
 keywords:
   - fixploidy
   - bcftools
@@ -9,12 +7,7 @@ keywords:
   - vcf
 tools:
   - "bcftools":
-      description: "BCFtools is a set of utilities that manipulate variant calls in
-        the Variant Call Format (VCF) and its binary counterpart BCF. All commands work
-        transparently with both VCFs and BCFs, both uncompressed and BGZF-compressed.\
-        \  Most commands accept VCF, bgzipped VCF and BCF with filetype detected automatically
-        even when streaming from a pipe. Indexed VCF and BCF will work in all situations.
-        Un-indexed VCF and BCF and streams will work in most, but not all situations."
+      description: "BCFtools is a set of utilities that manipulate variant calls in the Variant Call Format (VCF) and its binary counterpart BCF. All commands work transparently with both VCFs and BCFs, both uncompressed and BGZF-compressed.  Most commands accept VCF, bgzipped VCF and BCF with filetype detected automatically even when streaming from a pipe. Indexed VCF and BCF will work in all situations. Un-indexed VCF and BCF and streams will work in most, but not all situations."
       homepage: "https://samtools.github.io/bcftools/howtos/index.html"
       documentation: "https://samtools.github.io/bcftools/bcftools.html"
       tool_dev_url: "https://github.com/samtools/bcftools"
@@ -24,11 +17,7 @@ tools:
       args_id: "$args"
       identifier: biotools:bcftools
   - "bcftools plugin fixploidy":
-      description: "Bcftools plugins are tools that can be used with bcftools to manipulate
-        variant calls in Variant Call Format (VCF) and BCF. The fixploidy plugin fixes
-        ploidy in genotype fields according to specified ploidy rules, sample sex assignments,
-        or a forced ploidy value. For example, haploid genotypes can be converted to
-        diploid genotypes."
+      description: "Bcftools plugins are tools that can be used with bcftools to manipulate variant calls in Variant Call Format (VCF) and BCF. The fixploidy plugin fixes ploidy in genotype fields according to specified ploidy rules, sample sex assignments, or a forced ploidy value. For example, haploid genotypes can be converted to diploid genotypes."
       homepage: "https://samtools.github.io/bcftools/howtos/plugins.html"
       documentation: "https://samtools.github.io/bcftools/howtos/plugin.setGT.html"
       tool_dev_url: "https://github.com/samtools/bcftools"
@@ -132,3 +121,27 @@ authors:
   - "@alkc"
 maintainers:
   - "@alkc"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bcftools_htslib:1.25--130aa7603bf3bf5c
+      build_id: bd-130aa7603bf3bf5c_9
+      scan_id: sc-b06bc84035abd22b_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/bcftools_htslib:1.25--f8757489807f9c95
+      build_id: bd-f8757489807f9c95_9
+      scan_id: sc-6fa01fa7c518cc7b_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bcftools_htslib:1.25--4dd0f0a20494e269
+      build_id: bd-4dd0f0a20494e269_9
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/91/914b9b38bbfa22c458ceee6c578fd3d70ee1bffc33d3a064b0663ed4944e7872/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bcftools_htslib:1.25--37bf17f884a2aca6
+      build_id: bd-37bf17f884a2aca6_9
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/aa/aaac198ac93d951bb9cbd8b1d83ba1c4485fa43e0cbcfa9403096fc7b88956b8/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bcftools/pluginfixploidy/.conda-lock/linux_amd64-bd-130aa7603bf3bf5c_9.txt
+    linux/arm64:
+      lock_file: modules/nf-core/bcftools/pluginfixploidy/.conda-lock/linux_arm64-bd-f8757489807f9c95_9.txt

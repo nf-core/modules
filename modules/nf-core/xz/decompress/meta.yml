@@ -6,8 +6,7 @@ keywords:
   - compression
 tools:
   - "xz":
-      description: "xz is a general-purpose data compression tool with command line
-        syntax similar to gzip and bzip2."
+      description: "xz is a general-purpose data compression tool with command line syntax similar to gzip and bzip2."
       homepage: "https://tukaani.org/xz/"
       documentation: "https://tukaani.org/xz/man/xz.1.html"
       tool_dev_url: "https://github.com/tukaani-project/xz"
@@ -64,3 +63,27 @@ authors:
   - "@leoisl"
 maintainers:
   - "@leoisl"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/xz:5.2.6--5bcc1ddb5aafa435
+      build_id: bd-5bcc1ddb5aafa435_1
+      scan_id: sc-023b083d8f71353f_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/xz:5.2.6--cb9a013294e18ea0
+      build_id: bd-cb9a013294e18ea0_1
+      scan_id: sc-4d0e6a5645313aa5_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/xz:5.2.6--aa0c276b79f17980
+      build_id: bd-aa0c276b79f17980_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/db/db54d725f04a667223c103459fb70612a72f9766bfd74b26f2d566e1b190a65d/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/xz:5.2.6--ff852e30e07b47d6
+      build_id: bd-ff852e30e07b47d6_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/87/8721802ad634e09743e3c829ee588493f46ea00b7e0d67ee229d3c8216378d11/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/xz/decompress/.conda-lock/linux_amd64-bd-5bcc1ddb5aafa435_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/xz/decompress/.conda-lock/linux_arm64-bd-cb9a013294e18ea0_1.txt

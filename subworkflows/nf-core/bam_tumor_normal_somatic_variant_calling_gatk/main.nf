@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 // Run GATK4_MUTECT2 in tumor normal mode, getepileupsummaries, calculatecontamination, learnreadorientationmodel and filtermutectcalls
 
 include { GATK4_CALCULATECONTAMINATION                                } from '../../../modules/nf-core/gatk4/calculatecontamination'
@@ -98,9 +101,7 @@ workflow BAM_TUMOR_NORMAL_SOMATIC_VARIANT_CALLING_GATK {
 
     GATK4_FILTERMUTECTCALLS(
         ch_filtermutect_in,
-        ch_fasta,
-        ch_fai.map { meta, fai, _gzi -> [meta, fai] },
-        ch_dict,
+        ch_fasta.combine(ch_fai).combine(ch_dict).map { meta, fasta, _meta_fai, fai, _gzi, _meta_dict, dict -> [meta, fasta, fai, dict] },
     )
 
     emit:
