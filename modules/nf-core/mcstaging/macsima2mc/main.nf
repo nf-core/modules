@@ -6,8 +6,8 @@ process MCSTAGING_MACSIMA2MC {
     label 'process_single'
 
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/numpy_python_pip_macsima2mc:b42790f2c05a215a' :
-        'community.wave.seqera.io/library/numpy_python_pip_macsima2mc:3fa6bf589964777e' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2f/2f571113c86e3216bf5fd714885f5521b813c4599a2852a15867d5bf3137a235/data' :
+        'community.wave.seqera.io/library/python_macsima2mc:e3c1eb940a13b88b' }"
 
     input:
     tuple val(meta), path(input_dir), val(output_dir)
