@@ -72,3 +72,27 @@ authors:
   - "@vagkaratzas"
 maintainers:
   - "@vagkaratzas"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/busco_phylogenomics:20240919--7d0684e0b59f34cb
+      build_id: bd-7d0684e0b59f34cb_1
+      scan_id: sc-65f8e6d315fd3c52_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/busco_phylogenomics:20240919--1ac5c165c01ef4d1
+      build_id: bd-1ac5c165c01ef4d1_1
+      scan_id: sc-1193258602180f23_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/busco_phylogenomics:20240919--f92183aef3860b5f
+      build_id: bd-f92183aef3860b5f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/88/88a27490f77e976da1d78ca0e1948a9daaa49e39bf1f50c44a1205b262320662/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/busco_phylogenomics:20240919--368644dad9091943
+      build_id: bd-368644dad9091943_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d2/d2d5ed55fe7ba6e2d8b01cf4cb5b9495dfdfddf7d461de7238e300005025456c/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/busco/phylogenomics/.conda-lock/linux_amd64-bd-1ac5c165c01ef4d1_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/busco/phylogenomics/.conda-lock/linux_arm64-bd-7d0684e0b59f34cb_1.txt

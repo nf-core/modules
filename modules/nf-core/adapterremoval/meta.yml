@@ -29,10 +29,7 @@ input:
           - edam: "http://edamontology.org/format_1930"
   - adapterlist:
       type: file
-      description: Optional text file containing list of adapters to look for for
-        removal with one adapter per line. Otherwise will look for default
-        adapters (see AdapterRemoval man page), or can be modified to remove
-        user-specified adapters via ext.args.
+      description: Optional text file containing list of adapters to look for for removal with one adapter per line. Otherwise will look for default adapters (see AdapterRemoval man page), or can be modified to remove user-specified adapters via ext.args.
       ontologies:
         - edam: "http://edamontology.org/format_2330"
 output:
@@ -151,3 +148,27 @@ authors:
 maintainers:
   - "@maxibor"
   - "@jfy133"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/adapterremoval:2.3.4--66c0d06f6b0408b0
+      build_id: bd-66c0d06f6b0408b0_1
+      scan_id: sc-eba8a2e1ed65cf50_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/adapterremoval:2.3.4--db45a71b4eebdc37
+      build_id: bd-db45a71b4eebdc37_1
+      scan_id: sc-bd8a7490073146bc_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/adapterremoval:2.3.4--9b92a09461a776b5
+      build_id: bd-9b92a09461a776b5_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3e/3e37ad4a6d8b02625c39a940606e42ee405673dc6e92f45ef7b63088cbf30bb6/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/adapterremoval:2.3.4--98da4768c3312c44
+      build_id: bd-98da4768c3312c44_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5afbd4ce2dc7c699955a768713e49d995f513c49ff80e393e934c7cdfa191267/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/adapterremoval/.conda-lock/linux_amd64-bd-66c0d06f6b0408b0_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/adapterremoval/.conda-lock/linux_arm64-bd-db45a71b4eebdc37_1.txt

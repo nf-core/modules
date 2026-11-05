@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DUCKDB_TABLE2PARQUET {
     tag "$meta.id"
     label 'process_low'
@@ -30,16 +33,18 @@ process DUCKDB_TABLE2PARQUET {
     def sqlLit = { s -> s.toString().replace("'", "''") }
     def tableSql = sqlLit.call(table)
     def prefixSql = sqlLit.call(prefix)
-    // Quoted heredoc: no shell expansion in the body. Delimiter is randomized per task so a
-    // real newline in a value can't forge a line that closes it early.
-    def heredocTag = "SQL_${java.util.UUID.randomUUID().toString().replace('-', '')}"
-    """
-    duckdb <<'${heredocTag}'
+    def sql = """\
         SET threads=${task.cpus};
         SET memory_limit='${task.memory.toGiga()}GB';
         SET temp_directory='.';
         COPY (SELECT * FROM read_csv('${tableSql}', delim='${delim}', header=true${args})) TO '${prefixSql}.parquet' (FORMAT PARQUET${args2});
-${heredocTag}
+"""
+    // Quoted heredoc: no shell expansion in the body. The delimiter is the body's own hash, so no
+    // value in the body can contain it, and it is the same on every run, which keeps -resume working.
+    def heredocTag = "SQL_${sql.md5()}"
+    """
+    duckdb <<'${heredocTag}'
+${sql}${heredocTag}
     """
 
     stub:

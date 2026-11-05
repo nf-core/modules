@@ -1,0 +1,80 @@
+name: "octopusv_filter"
+description: "Filter SVCF based on specified criteria"
+keywords:
+  - structural
+  - variant
+  - sv
+  - svcf
+  - filter
+tools:
+  - "octopusv":
+      description: "End-to-end structural variant post-processing: standardize, merge,
+        compare, and export SVs."
+      homepage: "https://github.com/ylab-hi/OctopuSV"
+      documentation: "https://github.com/ylab-hi/OctopuSV"
+      tool_dev_url: "https://github.com/ylab-hi/OctopuSV"
+      doi: "10.1093/bioinformatics/btaf599"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - svcf_in:
+        type: file
+        description: Input SVCF file to be filtered
+        pattern: "*.svcf"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016" # VCF
+output:
+  svcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*.svcf":
+          type: file
+          description: Filtered SVCF file
+          pattern: "*.svcf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # VCF
+  json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+      - "*.json":
+          type: file
+          description: JSON summary of the filtering
+          pattern: "*.json"
+          optional: true
+          ontologies:
+            - edam: "http://edamontology.org/format_3464" # JSON
+  versions_octopusv:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - octopusv:
+          type: string
+          description: The name of the tool
+      - python -c "import importlib.metadata as m; print(m.version('octopusv'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - octopusv:
+          type: string
+          description: The name of the tool
+      - python -c "import importlib.metadata as m; print(m.version('octopusv'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@manascripts"
+maintainers:
+  - "@manascripts"
