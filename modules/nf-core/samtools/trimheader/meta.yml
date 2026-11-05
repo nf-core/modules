@@ -76,24 +76,24 @@ maintainers:
 containers:
   docker:
     linux/arm64:
-      name: community.wave.seqera.io/library/gawk_htslib_samtools:b51955e87a26cfe5
-      build_id: bd-b51955e87a26cfe5_1
-      scan_id: sc-ab868510acd1f1e1_1
+      name: community.wave.seqera.io/library/htslib_samtools_gawk:585d544d62828600
+      build_id: bd-585d544d62828600_2
+      scan_id: sc-e96bf9c0fb16421e_1
     linux/amd64:
-      name: community.wave.seqera.io/library/gawk_htslib_samtools:908360748e8474ae
-      build_id: bd-908360748e8474ae_1
-      scan_id: sc-ce0c86e6aa44a470_1
+      name: community.wave.seqera.io/library/htslib_samtools_gawk:5366169842fe8538
+      build_id: bd-5366169842fe8538_2
+      scan_id: sc-c077bc5761a040b0_1
   singularity:
-    linux/amd64:
-      name: oras://community.wave.seqera.io/library/gawk_htslib_samtools:4213d948f3b62e99
-      build_id: bd-4213d948f3b62e99_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e9/e9b1a71ab018f22bcae5f800c93b0a6627516210c2f3bcf6c5a5af8cfdfb1d99/data
     linux/arm64:
-      name: oras://community.wave.seqera.io/library/gawk_htslib_samtools:090ced7c1f7ec6bd
-      build_id: bd-090ced7c1f7ec6bd_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3b/3bb445ced9ac40e4d726fd8bcdb86925f0bc813c51a1f8936323735a12e5c85d/data
+      name: oras://community.wave.seqera.io/library/htslib_samtools_gawk:07a5af3c5578a4cb
+      build_id: bd-07a5af3c5578a4cb_2
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/31/3164aa70e6a7cf319ed01a31bebab1560fcfd117f54437f14df43bf84d69f636/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/htslib_samtools_gawk:846e3cd8beca382c
+      build_id: bd-846e3cd8beca382c_2
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bf/bf776bd8977ad787661a64512dbecfbe70f88b504f939b473aa4ad87b1747edd/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/samtools/trimheader/.conda-lock/linux_amd64-bd-908360748e8474ae_1.txt
+      lock_file: modules/nf-core/samtools/trimheader/.conda-lock/linux_amd64-bd-5366169842fe8538_2.txt
     linux/arm64:
-      lock_file: modules/nf-core/samtools/trimheader/.conda-lock/linux_arm64-bd-b51955e87a26cfe5_1.txt
+      lock_file: modules/nf-core/samtools/trimheader/.conda-lock/linux_arm64-bd-585d544d62828600_2.txt
