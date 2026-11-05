@@ -15,7 +15,8 @@ tools:
       homepage: http://www.cog-genomics.org/plink/2.0/
       documentation: http://www.cog-genomics.org/plink/2.0/general_usage
       doi: "10.1186/s13742-015-0047-8"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 
 input:
@@ -26,8 +27,7 @@ input:
           e.g. [ id:'test' ]
     - plink_genotype_file:
         type: file
-        description: PLINK binary genotype table file or PLINK 2 binary genotype table
-          file
+        description: PLINK binary genotype table file or PLINK 2 binary genotype table file
         pattern: "*.{bed,pgen}"
         ontologies:
           - edam: http://edamontology.org/format_3003
@@ -111,14 +111,44 @@ output:
           description: PLINK 2 variant information file
           pattern: "*.pvar"
           ontologies: []
+  versions_plink2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - plink2:
+          type: string
+          description: The name of the tool
+      - plink2 --version 2>&1 | sed 's/^PLINK v//; s/ 64.*\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - plink2:
+          type: string
+          description: The name of the tool
+      - plink2 --version 2>&1 | sed 's/^PLINK v//; s/ 64.*\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@jodennehy"
 maintainers:
   - "@jodennehy"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/plink2:2.00a5.10--223badfc86e2b6e6
+      build_id: bd-223badfc86e2b6e6_1
+      scan_id: sc-f6906267c0a85442_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/plink2:2.00a5.10--d40179e933fa9ccc
+      build_id: bd-d40179e933fa9ccc_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c7/c7dfbbefb7c4dccd8c211a1c8bf94988dcd6a58a147e5c22e2553e80af907569/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/plink2/filter/.conda-lock/linux_amd64-bd-223badfc86e2b6e6_1.txt

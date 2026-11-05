@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process UPP_ALIGN {
     tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/sepp:4.5.6--py312h87e0c26_4'
-        : 'biocontainers/sepp:4.5.6--py312h87e0c26_4'}"
+        : 'quay.io/biocontainers/sepp:4.5.6--py312h87e0c26_4'}"
 
     input:
     tuple val(meta), path(fasta_unaligned), path(fasta_aligned)

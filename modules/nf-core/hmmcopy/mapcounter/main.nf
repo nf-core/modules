@@ -1,10 +1,13 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HMMCOPY_MAPCOUNTER {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/hmmcopy:0.1.1--h2e03b76_7'
-        : 'biocontainers/hmmcopy:0.1.1--h2e03b76_7'}"
+        : 'quay.io/biocontainers/hmmcopy:0.1.1--h2e03b76_7'}"
 
     input:
     tuple val(meta), path(bigwig)

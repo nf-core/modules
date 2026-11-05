@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HMMER_ESLALIMASK {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hmmer:3.3.2--h1b792b2_1':
-        'biocontainers/hmmer:3.3.2--h1b792b2_1' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b1/b171806a7b780537073c1e9ffe50885ba7917d8072b5941a125698df1253c4f7/data'
+:         'community.wave.seqera.io/library/hmmer:3.4--ab3efa7c16f46920' }"
 
     input:
     tuple val(meta), path(unmaskedaln), val(fmask_rf), val(fmask_all), val(gmask_rf), val(gmask_all), val(pmask_rf), val(pmask_all)
@@ -19,7 +22,8 @@ process HMMER_ESLALIMASK {
     path  "*.gmask-all.gz"                    , emit: gmask_all, optional: true
     path  "*.pmask-rf.gz"                     , emit: pmask_rf , optional: true
     path  "*.pmask-all.gz"                    , emit: pmask_all, optional: true
-    path "versions.yml"                       , emit: versions
+    tuple val("${task.process}"), val('hmmer'), eval("hmmsearch -h | sed '2!d;s/^# HMMER *//;s/ .*//'"), emit: versions_hmmer, topic: versions
+    tuple val("${task.process}"), val('easel'), eval("esl-alimask -h | sed '2!d;s/^# Easel *//;s/ .*//'"), emit: versions_easel, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -45,11 +49,6 @@ process HMMER_ESLALIMASK {
         $args $unmaskedaln $maskfile
 
     gzip ${prefix}.*mask*
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hmmer/easel: \$(esl-alimask -h | grep -o '^# Easel [0-9.]*' | sed 's/^# Easel *//')
-    END_VERSIONS
     """
 
     stub:
@@ -72,10 +71,5 @@ process HMMER_ESLALIMASK {
     ${pmask_allarg}
 
     gzip ${prefix}.*mask*
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hmmer/easel: \$(esl-alimask -h | grep -o '^# Easel [0-9.]*' | sed 's/^# Easel *//')
-    END_VERSIONS
     """
 }

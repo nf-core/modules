@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MCSTAGING_PHENOIMAGER2MC {
     tag "$meta.id"
     label 'process_single'
@@ -15,14 +18,19 @@ process MCSTAGING_PHENOIMAGER2MC {
     task.ext.when == null || task.ext.when
 
     script:
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/modules/phenoimager2mc
 
+Reason:
+Renamed module to match the tool/subtool convention
+"""
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "Phenoimager2mc module in conda does not exist. Please use Docker / Singularity / Podman instead."
     }
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
+    assert false: deprecation_message
     """
     python /phenoimager2mc/scripts/phenoimager2mc.py \
         -i ${tiles} \
@@ -33,11 +41,18 @@ process MCSTAGING_PHENOIMAGER2MC {
     """
 
     stub:
+    def deprecation_message = """
+WARNING: This module has been deprecated. Please use nf-core/modules/phenoimager2mc
+
+Reason:
+Renamed module to match the tool/subtool convention
+"""
     // Exit if running this module with -profile conda / -profile mamba
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "Phenoimager2mc module in conda does not exist. Please use Docker / Singularity / Podman instead."
     }
     def prefix = task.ext.prefix ?: "${meta.id}"
+    assert false: deprecation_message
     """
     touch input
     touch "${prefix}.tif"

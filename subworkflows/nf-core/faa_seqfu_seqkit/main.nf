@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { SEQFU_STATS as SEQFU_STATS_AFTER  } from '../../../modules/nf-core/seqfu/stats'
 include { SEQFU_STATS as SEQFU_STATS_BEFORE } from '../../../modules/nf-core/seqfu/stats'
 include { SEQKIT_REPLACE                    } from '../../../modules/nf-core/seqkit/replace'
@@ -18,7 +21,7 @@ workflow FAA_SEQFU_SEQKIT {
     if (!skip_preprocessing) {
         SEQKIT_SEQ(ch_fasta)
 
-        SEQKIT_REPLACE(SEQKIT_SEQ.out.fastx)
+        SEQKIT_REPLACE(SEQKIT_SEQ.out.fastx, 'fasta')
 
         SEQKIT_RMDUP(SEQKIT_REPLACE.out.fastx)
         ch_fasta = SEQKIT_RMDUP.out.fastx

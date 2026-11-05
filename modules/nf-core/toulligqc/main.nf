@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TOULLIGQC {
     label 'process_low'
     tag "${meta.id}"
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/toulligqc:2.8.4--pyhdfd78af_0'
-        : 'biocontainers/toulligqc:2.8.4--pyhdfd78af_0'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b1/b11e9914580bb058958bd3b2496f9bce00b001a38b0888252415ebee5c828207/data'
+:         'community.wave.seqera.io/library/toulligqc_huggingface_hub_matplotlib_numpy_pruned:190ebbd12957a8dd' }"
 
     input:
 
@@ -34,7 +37,8 @@ process TOULLIGQC {
     """
     toulligqc \\
         ${input_file} \\
-        --output-directory ${prefix} \\
+        --output-directory . \\
+        --report-name ${prefix} \\
         ${args}
     """
 

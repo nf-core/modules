@@ -1,0 +1,111 @@
+nextflow_process {
+
+    name "Test Process CAALM_CAALM"
+    script "../main.nf"
+    process "CAALM_CAALM"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "caalm"
+    tag "caalm/caalm"
+    tag "caalm/downloadmodels"
+
+    test("cazyme - faa - embeddings") {
+
+        setup {
+            run("CAALM_DOWNLOADMODELS") {
+                script "../../downloadmodels/main.nf"
+            }
+        }
+
+        when {
+            params {
+                module_args = "--save-level0-embeddings --save-level1-embeddings --save-level2-embeddings"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/database/protein_mini_with_cazymes.faa', checkIfExists: true)
+                ]
+                input[1] = CAALM_DOWNLOADMODELS.out.models
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    process.out.predictions,
+                    process.out.probabilities,
+                    process.out.statistics,
+                    path(process.out.log[0][1]).readLines().size(),
+                    path(process.out.embeddings_level0[0][1]).exists(),
+                    path(process.out.embeddings_level1[0][1]).exists(),
+                    path(process.out.embeddings_level2[0][1]).exists(),
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("cazyme - faa - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = ""
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/database/protein_mini_with_cazymes.faa', checkIfExists: true)
+                ]
+                input[1] = [[],[],[]]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("cazyme - faa - embeddings - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = "--save-level0-embeddings --save-level1-embeddings --save-level2-embeddings"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/database/protein_mini_with_cazymes.faa', checkIfExists: true)
+                ]
+                input[1] = [[],[],[]]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

@@ -28,7 +28,7 @@ nextflow_process {
                 { assert snapshot(
                     file(process.out.report[0][1]).name,
                     path(process.out.report[0][1]).readLines().contains("n_iter = 12"),
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match() }
             )
         }
@@ -54,7 +54,7 @@ nextflow_process {
                     file(process.out.report[0][1]).name,
                     path(process.out.report[0][1]).readLines().contains("n_iter = 12"),
                     process.out.artifacts,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match() }
             )
         }
@@ -81,7 +81,7 @@ nextflow_process {
                     file(process.out.report[0][1]).name,
                     path(process.out.report[0][1]).readLines().contains("n_iter = 12"),
                     process.out.artifacts,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match() }
             )
         }

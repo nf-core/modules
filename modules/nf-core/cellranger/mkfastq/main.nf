@@ -1,8 +1,11 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CELLRANGER_MKFASTQ {
     tag "${ meta.lane ? meta.id + "." + meta.lane : meta.id }"
     label 'process_medium'
 
-    container "nf-core/cellrangermkfastq:9.0.1"
+    container "quay.io/nf-core/cellrangermkfastq:9.0.1"
 
     input:
     tuple val(meta), path(csv), path(bcl)

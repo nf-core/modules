@@ -256,7 +256,8 @@ output:
       - "*.bam":
           type: file
           description: Haplotagged BAM file(s) with haplotype information in the
-            HP tag (optional, only emitted when output_bam is true)
+            HP tag, one per input BAM, named `<input BAM basename>_haplotagged.bam`
+            without the prefix (optional, only emitted when output_bam is true)
           pattern: "*.bam"
           ontologies:
             - edam: http://edamontology.org/format_2572
@@ -268,8 +269,9 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*.bam.{bai,csi}":
           type: file
-          description: Index file(s) for the haplotagged BAM file(s) (optional,
-            only emitted when output_bam is true)
+          description: Index file(s) for the haplotagged BAM file(s), named
+            `<input BAM basename>_haplotagged.bam.{bai,csi}` (optional, only emitted
+            when output_bam is true)
           pattern: "*.bam.{bai,csi}"
           ontologies: []
   versions_hiphase:

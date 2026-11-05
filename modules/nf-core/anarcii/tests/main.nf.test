@@ -1,0 +1,73 @@
+// nf-core modules test anarcii
+nextflow_process {
+
+    name "Test Process ANARCII"
+    script "../main.nf"
+    process "ANARCII"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "anarcii"
+
+    test("human - fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/anarcii/anarcii_vdjdb.fasta', checkIfExists: true),
+                ]
+                input[1] = 'tcr'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            def anarciiResults = path(process.out.anarcii.get(0).get(1)).csv
+            assert "Name" in anarciiResults.columnNames
+            assert "Chain" in anarciiResults.columnNames
+            assert "Score" in anarciiResults.columnNames
+            assert "Query start" in anarciiResults.columnNames
+            assert "Query end" in anarciiResults.columnNames
+            // A mismatched seq_type leaves sequences unnumbered as chain "F" instead of failing
+            assert anarciiResults.columns["Chain"].every { it in ["A", "B"] }
+            // Score drifts with thread count, so the file md5 is not portable across machines
+            assert snapshot(
+                anarciiResults.columnNames.sort(),
+                anarciiResults.columns["Name"],
+                anarciiResults.columns["Chain"],
+                anarciiResults.columns["Query start"],
+                anarciiResults.columns["Query end"],
+                process.out.versions_anarcii
+            ).match()
+        }
+    }
+
+    test("human - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/anarcii/anarcii_vdjdb.fasta', checkIfExists: true),
+                ]
+                input[1] = 'tcr'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

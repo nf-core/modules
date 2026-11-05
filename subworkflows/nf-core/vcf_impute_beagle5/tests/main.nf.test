@@ -78,7 +78,7 @@ nextflow_workflow {
             }
             workflow {
                 """
-                input[0] = BCFTOOLS_VIEW_BCF.out.vcf.join(BCFTOOLS_VIEW_BCF.out.csi)
+                input[0] = BCFTOOLS_VIEW_BCF.out.vcf.join(BCFTOOLS_VIEW_BCF.out.index)
                 input[1] = channel.of([
                     [panel: "1000GP", chr: "chr22"],
                     file(params.modules_testdata_base_path + "genomics/homo_sapiens/popgen/1000GP.chr22.vcf.gz", checkIfExists:true),
@@ -109,13 +109,13 @@ nextflow_workflow {
             assert workflow.success
             assert snapshot(
                 workflow.out.vcf_index.collect{[
-                    it[0],
+                    it[0].sort(),
                     path(it[1]).getFileName().toString(),
                     path(it[2]).getFileName().toString(),
                     path(it[1]).vcf.summary,
                     path(it[1]).vcf.header.getGenotypeSamples().sort(),
                     path(it[1]).vcf.variantsMD5
-                ]}
+                ]}.sort{ it[1] }
             ).match()
         }
     }

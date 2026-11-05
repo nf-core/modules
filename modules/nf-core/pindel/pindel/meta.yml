@@ -1,19 +1,16 @@
 name: "pindel_pindel"
-description: Pindel can detect breakpoints of large deletions, medium sized insertions,
-  inversions, tandem duplications and other structural variants at single-based resolution
-  from next-gen sequence data
+description: Pindel can detect breakpoints of large deletions, medium sized insertions, inversions, tandem duplications and other structural variants at single-based resolution from next-gen sequence data
 keywords:
   - deletions
   - insertions
   - tandem duplications
 tools:
   - "pindel":
-      description: "Pindel can detect breakpoints of large deletions, medium sized insertions,
-        inversions, tandem duplications and other structural variants at single-based
-        resolution from next-gen sequence data"
+      description: "Pindel can detect breakpoints of large deletions, medium sized insertions, inversions, tandem duplications and other structural variants at single-based resolution from next-gen sequence data"
       homepage: "https://gmt.genome.wustl.edu/packages/pindel/"
       documentation: https://gmt.genome.wustl.edu/packages/pindel/user-manual.html
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:pindel
 input:
   - - meta:
@@ -155,13 +152,29 @@ output:
           description: File containing tandem duplications
           pattern: "*_{TD}"
           ontologies: []
+  versions_pindel:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pindel:
+          type: string
+          description: The name of the tool
+      - pindel | grep '^Pindel version' | uniq | sed 's/Pindel version //; s/, [0-9]\+.//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pindel:
+          type: string
+          description: The name of the tool
+      - pindel | grep '^Pindel version' | uniq | sed 's/Pindel version //; s/, [0-9]\+.//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@marrip"
 maintainers:

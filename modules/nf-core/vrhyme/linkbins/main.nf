@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VRHYME_LINKBINS {
     tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vrhyme:1.1.0--pyhdfd78af_1':
-        'biocontainers/vrhyme:1.1.0--pyhdfd78af_1' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e2/e2b5a580b1eb2e3b5d4c50ba78df05d4e49e0bb1dfc988e719306fa9efb21d65/data'
+:         'community.wave.seqera.io/library/vrhyme_python_setuptools:2e133279ed381753' }"
 
     input:
     tuple val(meta), path(bins)
 
     output:
     tuple val(meta), path("*_linked_bins.fasta")        , emit: linked_bins
-    path "versions.yml"                                 , emit: versions
+    tuple val("${task.process}"), val('vrhyme'), eval("vRhyme --version 2>&1 | sed 's/^.*vRhyme v//; s/Using.*\$//'"), emit: versions_vrhyme, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,27 +25,17 @@ process VRHYME_LINKBINS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     link_bin_sequences.py \\
-        -i $bins \\
+        -i ${bins} \\
         -o vRhyme_linked_bins \\
         -e fasta \\
-        $args
+        ${args}
 
     cat vRhyme_linked_bins/*.fasta > ${prefix}_linked_bins.fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vrhyme: \$(echo \$(vRhyme --version 2>&1) | sed 's/^.*vRhyme v//; s/Using.*\$//' )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_linked_bins.fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vrhyme: \$(echo \$(vRhyme --version 2>&1) | sed 's/^.*vRhyme v//; s/Using.*\$//' )
-    END_VERSIONS
     """
 }

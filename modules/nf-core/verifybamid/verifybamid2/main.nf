@@ -1,9 +1,12 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VERIFYBAMID_VERIFYBAMID2 {
     tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/97/9700eb810dc7a72011c9149b8ab6cc7fa9d273795632ddd00af019ab32816811/data'
         : 'community.wave.seqera.io/library/verifybamid2:2.0.1--166cf392bec584ce'}"
 

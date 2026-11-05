@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ART_ILLUMINA {
     tag "${meta.id}"
     label 'process_single'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/art:2016.06.05--h589041f_9'
-        : 'biocontainers/art:2016.06.05--h589041f_9'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c8/c8c4cdb815549d4212e2ec21d1eb8bcf8fa709b5cffd2a39eaf76917c6b1be5c/data'
+        : 'community.wave.seqera.io/library/art:2016.06.05--5eb6337227f62cf5'}"
 
     input:
     tuple val(meta), path(fasta)

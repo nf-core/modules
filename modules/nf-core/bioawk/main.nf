@@ -1,14 +1,19 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BIOAWK {
     tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bioawk:1.0--h5bf99c6_6' :
-        'biocontainers/bioawk:1.0--h5bf99c6_6' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/82/8266909aff235d1f423ca76029d89a7b470f17c634e001aa388b85713d71dd16/data'
+        : 'community.wave.seqera.io/library/bioawk:1.0--63ed57d97ec41790' }"
 
     input:
     tuple val(meta), path(input)
+    path(program_file)
+    val(disable_redirect_output)
     val output_file_extension
 
     output:
@@ -21,21 +26,26 @@ process BIOAWK {
 
     script:
     def args        = task.ext.args ?: ''
+    def args2       = task.ext.args2 ?: ''
+    program         = program_file ? "-f ${program_file}" : "${args2}"
     def prefix      = task.ext.prefix ?: "${meta.id}"
+    output_cmd      = output_file_extension.endsWith("gz") ? "| gzip > ${prefix}.${output_file_extension}" : "> ${prefix}.${output_file_extension}"
+    output          = disable_redirect_output ? "" : output_cmd
+
     if ("${input}" == "${prefix}.${output_file_extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate."
 
-    def compress_output = output_file_extension.endsWith(".gz") ? " | gzip " : ""
     """
     bioawk \\
-            $args \\
-            $input \\
-            ${compress_output} > ${prefix}.${output_file_extension}
+        ${args} \\
+        ${program} \\
+        ${input} \\
+        ${output}
     """
 
     stub:
-    def prefix      = task.ext.prefix ?: "${meta.id}"
-    def compress_output = output_file_extension.endsWith(".gz") ? " | gzip " : ""
+    def prefix     = task.ext.prefix ?: "${meta.id}"
+    def create_cmd = output_file_extension.endsWith("gz") ? "echo '' | gzip >" : "touch"
     """
-    echo "" ${compress_output} > "${prefix}.${output_file_extension}"
+    ${create_cmd} ${prefix}.${output_file_extension}
     """
 }

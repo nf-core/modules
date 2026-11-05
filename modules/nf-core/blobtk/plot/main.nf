@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BLOBTK_PLOT {
     // Linked to issue https://github.com/sanger-tol/genomenote/issues/184
     // Depending on the blob dataset in use, the grid option may not
@@ -12,9 +15,9 @@ process BLOBTK_PLOT {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/24/243d043f1c9e152e75dbb0ef8c64022df50efbcaa4e1bbaea36bebd751e84e93/data' :
-        'community.wave.seqera.io/library/blobtk:0.7.1--e3f63bb2cdc8fb96' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/08/08833d1b91f41024e06e2cb5a982598531199c04e6544885d42ef2cb0480de18/data' :
+        'community.wave.seqera.io/library/blobtk:0.8.0--2fe0d833a26e0cd9' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -54,11 +57,6 @@ process BLOBTK_PLOT {
     stub:
     prefix      = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.png
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        blobtk: \$(blobtk --version | cut -d' ' -f2)
-    END_VERSIONS
+    touch ${prefix}.${format}
     """
 }

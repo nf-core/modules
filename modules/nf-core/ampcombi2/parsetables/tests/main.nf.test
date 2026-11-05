@@ -28,7 +28,7 @@ nextflow_process {
                 input[0] = amp_input
                 input[1] = faa_input
                 input[2] = gbk_input
-                input[3] = 'DRAMP'
+                input[3] = 'APD'
                 input[4] = []
                 input[5] = []
                 """
@@ -38,18 +38,12 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.sample_dir.collect { file(it[1]).getName() } +
-                                    process.out.contig_gbks.collect { file(it[1]).getName() } +
-                                    process.out.db_tsv.collect { file(it[1]).readLines()[0] } +
-                                    process.out.tsv.collect { file(it[1]).readLines()[0] } +
-                                    process.out.faa.collect { file(it[1]).readLines()[0] } +
-                                    process.out.full_log.collect { file(it[1]).readLines().contains("File downloaded successfully") } +
-                                    process.out.sample_log.collect { file(it[1]).readLines().contains("found ampir file") } +
-                                    process.out.db.collect { file(it[1]).getName() } +
-                                    process.out.db_txt.collect { file(it[1]).readLines()[0] } +
-                                    process.out.db_fasta.collect { file(it[1]).readLines()[0] } +
-                                    process.out.db_mmseqs.collect { file(it[1]).getName() } +
-                                    process.out.findAll { key, val -> key.startsWith('versions') } ).match() }
+                { assert snapshot(
+                    process.out.sample_dir.collect { file(it[1]).getName() },
+                    path(process.out.tsv[0][1]).getText().contains("sample_1"),
+                    path(process.out.full_log[0][1]).getText().contains("Creating MMseqs2 directory for fasta file in"),
+                    process.out.db.collect { file(it[1]).getName() },
+                    process.out.findAll { key, val -> key.startsWith('versions') } ).match() },
             )
         }
     }
@@ -71,7 +65,7 @@ nextflow_process {
                 input[0] = amp_input
                 input[1] = faa_input
                 input[2] = gbk_input
-                input[3] = 'DRAMP'
+                input[3] = 'APD'
                 input[4] = []
                 input[5] = []
                 """

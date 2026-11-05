@@ -83,6 +83,7 @@ output:
           type: file
           description: "Unstacked copy number spectra filled plot in PNG format"
           pattern: "*.spectra-cn.fl.png"
+          optional: true
           ontologies: []
   spectra_cn_hist:
     - - meta:
@@ -116,6 +117,7 @@ output:
           type: file
           description: "Stacked copy number spectra line plot in PNG format"
           pattern: "*.spectra-cn.st.png"
+          optional: true
           ontologies: []
   spectra_asm_fl_png:
     - - meta:
@@ -127,6 +129,7 @@ output:
           type: file
           description: "Unstacked assembly spectra filled plot in PNG format"
           pattern: "*.spectra-asm.fl.png"
+          optional: true
           ontologies: []
   spectra_asm_hist:
     - - meta:
@@ -160,6 +163,7 @@ output:
           type: file
           description: "Stacked assembly spectra line plot in PNG format"
           pattern: "*.spectra-asm.st.png"
+          optional: true
           ontologies: []
   assembly_qv:
     - - meta:
@@ -204,6 +208,7 @@ output:
           type: file
           description: "Hap-mer blob plot"
           pattern: "*.hapmers.blob.png"
+          optional: true
           ontologies: []
   versions_merqury:
     - - ${task.process}:

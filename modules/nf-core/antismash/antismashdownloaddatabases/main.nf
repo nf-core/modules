@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ANTISMASH_ANTISMASHDOWNLOADDATABASES {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "nf-core/antismash:8.0.1--pyhdfd78af_0"
+    container "quay.io/nf-core/antismash:8.0.1--pyhdfd78af_0"
 
     output:
     path "antismash_db", emit: database
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('antismash'), eval("antismash --version | sed 's/antiSMASH //;s/-.*//g'"), emit: versions_antismash, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -17,11 +20,6 @@ process ANTISMASH_ANTISMASHDOWNLOADDATABASES {
     download-antismash-databases \\
         --database-dir antismash_db \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        antismash: \$(echo \$(antismash --version) | sed 's/antiSMASH //;s/-.*//g')
-    END_VERSIONS
     """
 
     stub:
@@ -40,10 +38,5 @@ process ANTISMASH_ANTISMASHDOWNLOADDATABASES {
     mkdir antismash_db/pfam
     mkdir antismash_db/resfam
     mkdir antismash_db/tigrfam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        antismash: \$(echo \$(antismash --version) | sed 's/antiSMASH //;s/-.*//g')
-    END_VERSIONS
     """
 }

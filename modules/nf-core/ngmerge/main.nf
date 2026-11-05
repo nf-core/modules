@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process NGMERGE {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/ngmerge:0.3--ha92aebf_1':
-        'biocontainers/ngmerge:0.3--ha92aebf_1' }"
+        'quay.io/biocontainers/ngmerge:0.3--ha92aebf_1' }"
 
     input:
     tuple val(meta), path(reads)
@@ -14,7 +17,7 @@ process NGMERGE {
     tuple val(meta), path("*.merged.fq.gz"), emit: merged_reads
     tuple val(meta), path("*_1.fastq.gz")  , emit: unstitched_read1
     tuple val(meta), path("*_2.fastq.gz")  , emit: unstitched_read2
-    path "versions.yml"                    , emit: versions
+    tuple val("${task.process}"), val('ngmerge'), eval("NGmerge --version 2>&1 | sed -n '1s/^NGmerge, version //p'"), emit: versions_ngmerge, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,12 +35,6 @@ process NGMERGE {
         -z \\
         -n $task.cpus \\
         $args
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        NGmerge: \$(echo \$(NGmerge --version 2>&1) | sed 's/^.*NGmerge, version //; s/ Copyright.*// ; s/: //g' ))
-    END_VERSIONS
     """
 
     stub:
@@ -45,10 +42,5 @@ process NGMERGE {
 
     """
     echo "" | gzip > ${prefix}.merged.fq.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        NGmerge: \$(echo \$(NGmerge --version 2>&1) | sed 's/^.*NGmerge, version //; s/ Copyright.*// ; s/: //g' ))
-    END_VERSIONS
     """
 }

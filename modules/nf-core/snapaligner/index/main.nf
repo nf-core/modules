@@ -1,17 +1,20 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SNAPALIGNER_INDEX {
-    tag "$fasta"
+    tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/snap-aligner:2.0.5--h077b44d_2':
-        'biocontainers/snap-aligner:2.0.5--h077b44d_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://depot.galaxyproject.org/singularity/snap-aligner:2.0.5--h077b44d_2'
+        : 'quay.io/biocontainers/snap-aligner:2.0.5--h077b44d_2'}"
 
     input:
     tuple val(meta), path(fasta), path(altcontigfile), path(nonaltcontigfile), path(altliftoverfile)
 
     output:
-    tuple val(meta), path("snap/*") ,emit: index
+    tuple val(meta), path("snap"), emit: index
     tuple val("${task.process}"), val('snap-aligner'), eval("snap-aligner 2>&1 | sed 's/^.*version //;s/.\$//;q'"), topic: versions, emit: versions_snapaligner
 
     when:
@@ -27,14 +30,15 @@ process SNAPALIGNER_INDEX {
 
     snap-aligner \\
         index \\
-        $fasta \\
+        ${fasta} \\
         snap \\
         -t${task.cpus} \\
-        $altcontigfile_arg \\
-        $nonaltcontigfile_arg \\
-        $altliftoverfile_arg \\
-        $args
+        ${altcontigfile_arg} \\
+        ${nonaltcontigfile_arg} \\
+        ${altliftoverfile_arg} \\
+        ${args}
     """
+
     stub:
     """
     mkdir snap

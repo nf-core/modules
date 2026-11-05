@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GLIMPSE2_SPLITREFERENCE {
     tag "${meta.id}"
     label 'process_low'
@@ -13,9 +16,9 @@ process GLIMPSE2_SPLITREFERENCE {
     """
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/glimpse-bio:2.0.1--h46b9e50_1'
-        : 'biocontainers/glimpse-bio:2.0.1--h46b9e50_1'}"
+        : 'quay.io/biocontainers/glimpse-bio:2.0.1--h46b9e50_1'}"
 
     input:
     tuple val(meta), path(reference), path(reference_index), val(input_region), val(output_region), path(map)

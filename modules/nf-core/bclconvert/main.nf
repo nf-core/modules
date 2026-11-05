@@ -1,8 +1,11 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BCLCONVERT {
     tag "${ meta.lane ? meta.id + "." + meta.lane : meta.id }"
     label 'process_high'
 
-    container "nf-core/bclconvert:4.4.6"
+    container "quay.io/nf-core/bclconvert:4.6.2"
 
     input:
     tuple val(meta), path(samplesheet), path(run_dir)
@@ -70,8 +73,8 @@ process BCLCONVERT {
     stub:
     """
     mkdir -p output
-    echo "fake fastq file" | gzip > output/Sample1_S1_L001_R1_001.fastq.gz
-    echo "fake fastq file" | gzip > output/Undetermined_S0_L001_R1_001.fastq.gz
+    echo "" | gzip > output/Sample1_S1_L001_R1_001.fastq.gz
+    echo "" | gzip > output/Undetermined_S0_L001_R1_001.fastq.gz
 
     mkdir -p output/Reports
     echo "fake report file" > output/Reports/Adapter_Cycle_Metrics.csv

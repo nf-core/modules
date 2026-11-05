@@ -63,13 +63,27 @@ output:
           pattern: "*.{fa,fasta,fastq,fq,fa.gz,fasta.gz,fastq.gz,fq.gz}"
           ontologies:
             - edam: http://edamontology.org/format_1930 # FASTQ
+  versions_ngmerge:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ngmerge:
+          type: string
+          description: The name of the tool
+      - NGmerge --version 2>&1 | sed -n '1s/^NGmerge, version //p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ngmerge:
+          type: string
+          description: The name of the tool
+      - NGmerge --version 2>&1 | sed -n '1s/^NGmerge, version //p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@charlotteanne"
   - "@jsh58"

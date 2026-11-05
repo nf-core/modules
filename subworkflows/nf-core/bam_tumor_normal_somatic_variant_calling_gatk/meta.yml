@@ -26,96 +26,119 @@ input:
       description: |
         The tumor and normal BAM files, in that order, also able to take CRAM as an input
         Can contain an optional list of sample headers contained in the normal sample input file.
+
         Structure: [ val(meta), path(input), path(input_index), val(which_norm) ]
   - ch_fasta:
       description: |
         The reference fasta file
-        Structure: [ path(fasta) ]
+
+        Structure: [ val(meta), path(fasta) ]
   - ch_fai:
       description: |
-        Index of reference fasta file
-        Structure: [ path(fai) ]
+        Index of reference fasta file, and the gzip index when the reference is compressed
+
+        Structure: [ val(meta), path(fai), path(gzi) ]
   - ch_dict:
       description: |
         GATK sequence dictionary
-        Structure: [ path(dict) ]
+
+        Structure: [ val(meta), path(dict) ]
   - ch_alleles:
       description: |
         VCF file to be used for force calling of alleles.
+
         Structure: [ path(alleles) ]
   - ch_alleles_tbi:
       description: |
         Index of VCF file of alleles for force calling.
+
         Structure: [ path(alleles_tbi) ]
   - ch_germline_resource:
       description: |
         Population vcf of germline sequencing, containing allele fractions.
+
         Structure: [ path(germline_resources) ]
   - ch_germline_resource_tbi:
       description: |
         Index file for the germline resource.
+
         Structure: [ path(germline_resources_tbi) ]
   - ch_panel_of_normals:
       description: |
         Vcf file to be used as a panel of normals.
+
         Structure: [ path(panel_of_normals) ]
   - ch_panel_of_normals_tbi:
       description: |
         Index for the panel of normals.
+
         Structure: [ path(panel_of_normals_tbi) ]
   - ch_interval_file:
       description: |
         File containing intervals.
+
         Structure: [ path(interval_files) ]
 output:
-  - mutect2_vcf:
-      description: |
-        Compressed vcf file to be used for variant_calling.
-        Structure: [ val(meta), path(vcf) ]
-  - mutect2_tbi:
-      description: |
-        Indexes of the mutect2_vcf file
-        Structure: [ val(meta), path(tbi) ]
-  - mutect2_stats:
-      description: |
-        Stats files for the mutect2 vcf
-        Structure: [ val(meta), path(stats) ]
-  - mutect2_f1r2:
-      description: |
-        File containing information to be passed to LearnReadOrientationModel.
-        Structure: [ val(meta), path(f1r2) ]
   - artifact_priors:
       description: |
         File containing artifact-priors to be used by filtermutectcalls.
+
         Structure: [ val(meta), path(artifact_priors) ]
-  - pileup_table_tumor:
-      description: |
-        File containing the tumor pileup summary table, kept separate as calculatecontamination needs them individually specified.
-        Structure: [ val(meta), path(table) ]
-  - pileup_table_normal:
-      description: |
-        File containing the normal pileup summary table, kept separate as calculatecontamination needs them individually specified.
-        Structure: [ val(meta), path(table) ]
   - contamination_table:
       description: |
         File containing the contamination table.
+
+        Structure: [ val(meta), path(table) ]
+  - filtered_stats:
+      description: |
+        File containing statistics of the filtermutectcalls run.
+
+        Structure: [ val(meta), path(stats) ]
+  - filtered_tbi:
+      description: |
+        Tbi file that pairs with filtered vcf.
+
+        Structure: [ val(meta), path(tbi) ]
+  - filtered_vcf:
+      description: |
+        File containing filtered mutect2 calls.
+
+        Structure: [ val(meta), path(vcf) ]
+  - mutect2_f1r2:
+      description: |
+        File containing information to be passed to LearnReadOrientationModel.
+
+        Structure: [ val(meta), path(f1r2) ]
+  - mutect2_stats:
+      description: |
+        Stats files for the mutect2 vcf
+
+        Structure: [ val(meta), path(stats) ]
+  - mutect2_tbi:
+      description: |
+        Indexes of the mutect2_vcf file
+
+        Structure: [ val(meta), path(tbi) ]
+  - mutect2_vcf:
+      description: |
+        Compressed vcf file to be used for variant_calling.
+
+        Structure: [ val(meta), path(vcf) ]
+  - pileup_table_normal:
+      description: |
+        File containing the normal pileup summary table, kept separate as calculatecontamination needs them individually specified.
+
+        Structure: [ val(meta), path(table) ]
+  - pileup_table_tumor:
+      description: |
+        File containing the tumor pileup summary table, kept separate as calculatecontamination needs them individually specified.
+
         Structure: [ val(meta), path(table) ]
   - segmentation_table:
       description: |
         Output table containing segmentation of tumor minor allele fractions.
+
         Structure: [ val(meta), path(table) ]
-  - filtered_vcf:
-      description: |
-        File containing filtered mutect2 calls.
-        Structure: [ val(meta), path(vcf) ]
-  - filtered_tbi:
-      description: |
-        Tbi file that pairs with filtered vcf.
-        Structure: [ val(meta), path(tbi) ]
-  - filtered_stats:
-      description: |
-        File containing statistics of the filtermutectcalls run.
-        Structure: [ val(meta), path(stats) ]
 authors:
   - "@GCJMackenzie"
 maintainers:

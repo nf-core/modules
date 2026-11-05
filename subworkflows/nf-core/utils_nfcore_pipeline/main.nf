@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 //
 // Subworkflow with utility functions specific to the nf-core pipeline template
 //
@@ -17,7 +20,7 @@ workflow UTILS_NFCORE_PIPELINE {
     checkProfileProvided(nextflow_cli_args)
 
     emit:
-    valid_config
+    valid_config = valid_config
 }
 
 /*

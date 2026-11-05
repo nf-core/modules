@@ -1,9 +1,12 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CHECKM2_PREDICT {
     tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0a/0af812c983aeffc99c0fca9ed2c910816b2ddb9a9d0dcad7b87dab0c9c08a16f/data':
         'community.wave.seqera.io/library/checkm2:1.1.0--60f287bc25d7a10d' }"
 
@@ -23,12 +26,15 @@ process CHECKM2_PREDICT {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
+    # Passing the database via CHECKM2DB instead of --database_path skips CheckM2's
+    # hardcoded checksum check, allowing custom/reduced databases (e.g. for testing)
+    export CHECKM2DB=${db}
+
     checkm2 \\
         predict \\
         --input ${fasta} \\
         --output-directory ${prefix} \\
         --threads ${task.cpus} \\
-        --database_path ${db} \\
         ${args}
 
     cp ${prefix}/quality_report.tsv ${prefix}_checkm2_report.tsv

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process AMPCOMBI {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ampcombi:0.1.7--pyhdfd78af_0':
-        'biocontainers/ampcombi:0.1.7--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6b/6b674f35642274bb1530f902b78c7f53483e22c2d3515f12bbb4fc2adcb074b5/data'
+        : 'community.wave.seqera.io/library/ampcombi_pandas_python:b587b9835b2adf6b'}"
 
     input:
     tuple val(meta),  path(amp_input)
@@ -24,7 +27,9 @@ process AMPCOMBI {
     tuple val(meta), path("amp_ref_database/*.dmnd")        , emit: results_db_dmnd , optional:true
     tuple val(meta), path("amp_ref_database/*.clean.fasta") , emit: results_db_fasta, optional:true
     tuple val(meta), path("amp_ref_database/*.tsv")         , emit: results_db_tsv  , optional:true
-    path "versions.yml"                                     , emit: versions
+    tuple val("${task.process}"), val('ampcombi'), val('0.1.7'), emit: versions_ampcombi, topic: versions
+// As the module is deprecated and not run, we're hardcoding the version as instructed in
+// https://nf-co.re/docs/guidelines/components/modules#emission-of-versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -54,11 +59,6 @@ process AMPCOMBI {
         ${args} \\
         --log True \\
         --threads ${task.cpus} \\
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ampcombi: \$(ampcombi --version | sed 's/ampcombi //')
-    END_VERSIONS
     """
     stub:
     def deprecation_message = """
@@ -88,10 +88,5 @@ process AMPCOMBI {
     touch amp_ref_database/*.dmnd
     touch amp_ref_database/*.clean.fasta
     touch amp_ref_database/*.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ampcombi: \$(ampcombi --version | sed 's/ampcombi //')
-    END_VERSIONS
     """
 }
