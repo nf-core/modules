@@ -53,7 +53,7 @@ process CAT_FASTQ {
     if (meta.single_end) {
         if (readList.size() >= 1) {
             """
-            echo '' | gzip > ${prefix}.merged.fastq.gz
+            echo "" | gzip > ${prefix}.merged.fastq.gz
             """
         } else {
             error("Could not find any FASTQ files to concatenate in the process input")
