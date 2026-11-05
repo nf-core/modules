@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DASTOOL_SCAFFOLDS2BIN {
     tag "$meta.id"
     label 'process_single'
 
     // Do not bump! This is the 'old name' of contigs2bin which is only available up until 1.1.3!
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/das_tool:1.1.3--r41hdfd78af_0' :
-        'biocontainers/das_tool:1.1.3--r41hdfd78af_0' }"
+        'quay.io/biocontainers/das_tool:1.1.3--r41hdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -14,7 +17,7 @@ process DASTOOL_SCAFFOLDS2BIN {
 
     output:
     tuple val(meta), path("*.tsv"), emit: scaffolds2bin
-    path "versions.yml"                         , emit: versions
+    tuple val("${task.process}"), val('dastool'), val("1.1.3"), emit: versions_dastool, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

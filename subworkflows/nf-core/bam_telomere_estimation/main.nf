@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 //
 // Estimate telomere length and content from aligned reads
 //
@@ -17,6 +20,7 @@ workflow BAM_TELOMERE_ESTIMATION {
                         //   data_type: 'short' or 'long'; bed: optional exome BED for telseq ([] if not needed)
     ch_control          // channel: [ val(meta), path(control_bam), path(control_bai) ]
     ch_fasta            // channel: [ val(meta2), path(fasta), path(fai) ]
+    ch_cytoband         // channel: [ path(cytoband) ] - optional cytoband file for telomerehunter
     run_telomerehunter  // val(boolean): enable telomerehunter content profiling
     length_estimator    // val(string):  'short'|'long'|null - global override
 
@@ -78,7 +82,13 @@ workflow BAM_TELOMERE_ESTIMATION {
         }
         .filter { _meta, _bam, _bai, _cbam, _cbai -> run_telomerehunter as boolean }
 
-    TELOMEREHUNTER(ch_th_input)
+    // Append optional cytoband to fasta tuple for telomerehunter
+    // Callers pass Channel.value([cytoband_path]) or Channel.value([[]])
+    ch_fasta_cytoband = ch_fasta
+        .combine(ch_cytoband)
+        .map { meta, fasta, fai, cytoband -> [ meta, fasta, fai, cytoband ] }
+
+    TELOMEREHUNTER(ch_th_input, ch_fasta_cytoband)
 
     ch_content_tsv          = TELOMEREHUNTER.out.summary
     ch_telomerehunter_tumor = TELOMEREHUNTER.out.tumor

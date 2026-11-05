@@ -59,7 +59,7 @@ nextflow_process {
 					process.out.fasta,
 					file(process.out.qual[0][1]).name, // empty
 					file(process.out.mpileup[0][1]).name, // empty
-					process.out.versions
+					process.out.findAll { key, val -> key.startsWith('versions') }
 					).match()
 				}
             )

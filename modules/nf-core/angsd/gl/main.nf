@@ -1,15 +1,18 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ANGSD_GL {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/angsd:0.940--hce60e53_2':
-        'biocontainers/angsd:0.940--hce60e53_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a0/a0185040abdace3529e7c8ae31a80bd86a47577e0d2078b2223dc1b1c362e656/data'
+        : 'community.wave.seqera.io/library/angsd_htslib:714d1c4bd0020e05'}"
 
     input:
-    tuple val(meta),  path(bam)
-    tuple val(meta2), path(fasta)      //Optionally
+    tuple val(meta), path(bam), path(bai)
+    tuple val(meta2), path(fasta), path(fai) //Optionally.
     tuple val(meta3), path(error_file) //Optionally. Used for SYK model only.
 
     output:
@@ -25,14 +28,16 @@ process ANGSD_GL {
 
     def GL_model = args.contains("-GL 1") ? 1 : args.contains("-GL 2") ? 2 : args.contains("-GL 3") ? 3 : args.contains("-GL 4") ? 4 : 0
 
-    def ref         = fasta                   ? "-ref ${fasta}"         : ''         // Use reference fasta if provided
-    def errors      = error_file              ? "-errors ${error_file}" : ''         // Only applies to SYK model
-    def output_mode = args.contains("-doGlf") ? ""                      : '-doGlf 1' // Default to outputting binary glf (10 log likelihoods) if not set in args
+    def ref         = fasta                   ? "-ref ${fasta}"            : ''         // Use reference fasta if provided
+    def touch       = fai                     ? "sleep 1 && touch ${fai}"  : ''         // Touch fai to ensure timestamp is newer than fasta
+    def errors      = error_file              ? "-errors ${error_file}"    : ''         // Only applies to SYK model
+    def output_mode = args.contains("-doGlf") ? ""                         : '-doGlf 1' // Default to outputting binary glf (10 log likelihoods) if not set in args
     // NOTE: GL is specified within args, so is not provided as a separate argument
 
     if (GL_model != 3 && GL_model != 4) {
         """
-        ls -1 *.bam > bamlist.txt
+        ${touch}
+        printf '%s\n' ${bam} > bamlist.txt
 
         angsd \\
             -nThreads ${task.cpus} \\
@@ -46,7 +51,8 @@ process ANGSD_GL {
         // No args for this part.
         // GL is hardcoded to 3 here to avoid passing all other arguments to the calibration step
         """
-        ls -1 *.bam > bamlist.txt
+        ${touch}
+        printf '%s\n' ${bam} > bamlist.txt
 
         ## SOAPsnp model
         ## First get the calibration matrix. minQ MUST be 0 for this step. Will create the directory angsd_tmpdir/ with the required files for the next step.
@@ -69,7 +75,8 @@ process ANGSD_GL {
         """
     } else if (GL_model == 4) {
         """
-        ls -1 *.bam > bamlist.txt
+        ${touch}
+        printf '%s\n' ${bam} > bamlist.txt
 
         ## SYK model
         angsd \\

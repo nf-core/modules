@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "gatk4_analyzecovariates"
 description: Evaluate and compare base quality score recalibration (BQSR) tables
 keywords:
@@ -24,20 +23,17 @@ input:
           e.g. `[ id:'test' ]`
     - before_table:
         type: file
-        description: Base quality score recalibration (BQSR) table before
-          recalibration
+        description: Base quality score recalibration (BQSR) table before recalibration
         pattern: "*.table"
         ontologies: []
     - after_table:
         type: file
-        description: Base quality score recalibration (BQSR) table after
-          recalibration
+        description: Base quality score recalibration (BQSR) table after recalibration
         pattern: "*.table"
         ontologies: []
     - additional_table:
         type: file
-        description: An additional base quality score recalibration (BQSR) table
-          to be included in the comparison (optional)
+        description: An additional base quality score recalibration (BQSR) table to be included in the comparison (optional)
         pattern: "*.table"
         ontologies: []
 output:
@@ -90,3 +86,17 @@ authors:
   - "@thomasisensee"
 maintainers:
   - "@thomasisensee"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/gatk4-lite_r-base_r-ggplot2_r-gplots_r-gsalib:c2ff597f2b22489d
+      build_id: bd-c2ff597f2b22489d_1
+      scan_id: sc-7708d2534a8102a5_2
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/gatk4-lite_r-base_r-ggplot2_r-gplots_r-gsalib:197223e88fceb392
+      build_id: bd-197223e88fceb392_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/99/995b2a710d77be89a04150c6d0e8303236da166648a37e072d5f5e0ca2eca593/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/gatk4/analyzecovariates/.conda-lock/linux_amd64-bd-c2ff597f2b22489d_1.txt

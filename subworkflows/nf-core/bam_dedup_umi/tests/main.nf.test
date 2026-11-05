@@ -12,6 +12,7 @@ nextflow_workflow {
     tag "subworkflows/bam_dedup_stats_samtools_umitools"
     tag "subworkflows/bam_sort_stats_samtools"
     tag "umitools/prepareforrsem"
+    tag "samtools"
     tag "samtools/sort"
 
     test("sarscov2_bam_bai - umitools - with transcriptome bams") {
@@ -55,7 +56,13 @@ nextflow_workflow {
                     workflow.out.flagstat,
                     workflow.out.idxstats
                 ).match() },
-                { assert path(workflow.out.index.get(0).get(1)).exists() }
+                { assert path(workflow.out.index.get(0).get(1)).exists() },
+                { assert workflow.out.genome_stats.size() == 1 },
+                { assert workflow.out.genome_flagstat.size() == 1 },
+                { assert workflow.out.genome_idxstats.size() == 1 },
+                { assert workflow.out.per_sample_mqc_bundle.size() == 1 },
+                { assert workflow.out.per_sample_mqc_bundle[0][0] == [ id:'test' ] },
+                { assert workflow.out.per_sample_mqc_bundle[0][1].size() == 4 }
             )
         }
 
@@ -94,7 +101,13 @@ nextflow_workflow {
                     workflow.out.flagstat,
                     workflow.out.idxstats
                 ).match() },
-                { assert path(workflow.out.index.get(0).get(1)).exists() }
+                { assert path(workflow.out.index.get(0).get(1)).exists() },
+                { assert workflow.out.genome_stats.size() == 1 },
+                { assert workflow.out.genome_flagstat.size() == 1 },
+                { assert workflow.out.genome_idxstats.size() == 1 },
+                { assert workflow.out.per_sample_mqc_bundle.size() == 1 },
+                { assert workflow.out.per_sample_mqc_bundle[0][0] == [ id:'test' ] },
+                { assert workflow.out.per_sample_mqc_bundle[0][1].size() == 4 }
             )
         }
     }

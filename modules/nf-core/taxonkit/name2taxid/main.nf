@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TAXONKIT_NAME2TAXID {
     tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/taxonkit:0.15.1--h9ee0642_0':
-        'biocontainers/taxonkit:0.15.1--h9ee0642_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/91/91013897d309411f36f0bf958988adf50d8abeeecd910b7debd446bfc1e3f2d8/data'
+        : 'community.wave.seqera.io/library/taxonkit:0.15.1--96f7341bd5c149a7'}"
 
     input:
     tuple val(meta), val(name), path(names_txt)
@@ -13,7 +16,7 @@ process TAXONKIT_NAME2TAXID {
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('taxonkit'), eval("taxonkit version | sed 's/.* v//'"), emit: versions_taxonkit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,26 +28,16 @@ process TAXONKIT_NAME2TAXID {
     """
     taxonkit \\
         name2taxid \\
-        $args \\
-        --data-dir $taxdb \\
-        --threads $task.cpus \\
+        ${args} \\
+        --data-dir ${taxdb} \\
+        --threads ${task.cpus} \\
         --out-file ${prefix}.tsv \\
-        ${name? "<<< '$name'": names_txt}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        taxonkit: \$( taxonkit version | sed 's/.* v//' )
-    END_VERSIONS
+        ${name? "<<< '${name}'": names_txt}
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        taxonkit: \$( taxonkit version | sed 's/.* v//' )
-    END_VERSIONS
     """
 }

@@ -73,12 +73,6 @@ output:
         Execution report
         (trimmomatic {summary}, trimgalore {html,zip}, fastp {html})
       pattern: "*.{summary,html,zip}"
-  - versions:
-      type: file
-      description: |
-        File containing software versions
-        Structure: [ path(versions.yml) ]
-      pattern: "versions.yml"
   - multiqc_files:
       type: file
       description: |

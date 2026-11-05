@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HMMER_HMMALIGN {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/07/07c4cbd91c4459dc86b13b5cd799cacba96b27d66c276485550d299c7a4c6f8a/data' :
-        'community.wave.seqera.io/library/hmmer:3.4--cb5d2dd2e85974ca' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b1/b171806a7b780537073c1e9ffe50885ba7917d8072b5941a125698df1253c4f7/data'
+:         'community.wave.seqera.io/library/hmmer:3.4--ab3efa7c16f46920' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -13,7 +16,7 @@ process HMMER_HMMALIGN {
 
     output:
     tuple val(meta), path("*.sto.gz"), emit: sto
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('hmmer'), eval("hmmsearch -h | sed '2!d;s/^# HMMER *//;s/ .*//'"), emit: versions_hmmer, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,21 +29,11 @@ process HMMER_HMMALIGN {
         $args \\
         $hmm \\
         $fasta | gzip -c > ${prefix}.sto.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hmmer: \$(hmmalign -h | grep -o '^# HMMER [0-9.]*' | sed 's/^# HMMER *//')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo | gzip > ${prefix}.sto.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hmmer: \$(hmmalign -h | grep -o '^# HMMER [0-9.]*' | sed 's/^# HMMER *//')
-    END_VERSIONS
+    echo "" | gzip > ${prefix}.sto.gz
     """
 }

@@ -1,22 +1,23 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process METHYLDACKEL_EXTRACT {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/methyldackel:0.6.1--he4a0461_7' :
-        'biocontainers/methyldackel:0.6.1--he4a0461_7' }"
+        'quay.io/biocontainers/methyldackel:0.6.1--he4a0461_7' }"
 
     input:
-    tuple val(meta), path(bam)
-    tuple val(meta2), path(bai)
-    tuple val(meta3), path(fasta)
-    tuple val(meta4), path(fai)
+    tuple val(meta), path(bam), path(bai)
+    tuple val(meta2), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("*.bedGraph") , optional: true, emit: bedgraph
     tuple val(meta), path("*.methylKit"), optional: true, emit: methylkit
-    path  "versions.yml"                                , emit: versions
+    tuple val("${task.process}"), val('methyldackel'), eval("MethylDackel --version 2>&1 | cut -f1 -d' '"), emit: versions_methyldackel, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,14 +26,9 @@ process METHYLDACKEL_EXTRACT {
     def args = task.ext.args ?: ''
     """
     MethylDackel extract \\
-        $args \\
-        $fasta \\
-        $bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        methyldackel: \$(MethylDackel --version 2>&1 | cut -f1 -d" ")
-    END_VERSIONS
+        ${args} \\
+        ${fasta} \\
+        ${bam}
     """
 
     stub:
@@ -40,10 +36,5 @@ process METHYLDACKEL_EXTRACT {
     def out_extension = args.contains('--methylKit') ? 'methylKit' : 'bedGraph'
     """
     touch ${bam.baseName}_CpG.${out_extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        methyldackel: \$(MethylDackel --version 2>&1 | cut -f1 -d" ")
-    END_VERSIONS
     """
 }

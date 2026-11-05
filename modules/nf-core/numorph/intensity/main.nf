@@ -1,8 +1,11 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process NUMORPH_INTENSITY {
     tag "$meta.id"
     label 'process_low'
 
-    container "nf-core/numorph_preprocessing:1.0.0"
+    container "quay.io/nf-core/numorph_preprocessing:1.0.0"
 
 
     input:

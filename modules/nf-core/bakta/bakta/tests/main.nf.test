@@ -52,6 +52,7 @@ nextflow_process {
                 { assert path(process.out.hypotheticals_faa.get(0).get(1)).text.contains("MKNLILVLGCFFFLISCQQTEKEKLEELVKNWNGKEVLL") },
                 { assert path(process.out.tsv.get(0).get(1)).text.contains("SO:0001217, UniRef:UniRef50_A0A0I9S7A3") },
                 { assert path(process.out.txt.get(0).get(1)).text.contains("Length: 1739120") },
+                { assert path(process.out.json.get(0).get(1)).text.contains("features") },
                 { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }

@@ -13,7 +13,8 @@ tools:
         sequences to a variation graph encoding the sequences and their alignments.
       homepage: https://github.com/ekg/seqwish
       documentation: https://github.com/ekg/seqwish
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -43,13 +44,29 @@ output:
           pattern: "*.{gfa}"
           ontologies:
             - edam: http://edamontology.org/format_3975 # GFA 1
+  versions_seqwish:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - seqwish:
+          type: string
+          description: The name of the tool
+      - seqwish --version |& sed 's/v//;s/-.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - seqwish:
+          type: string
+          description: The name of the tool
+      - seqwish --version |& sed 's/v//;s/-.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@heuermh"
 maintainers:

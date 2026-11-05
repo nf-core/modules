@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HICEXPLORER_HICPCA {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hicexplorer:3.7.2--pyhdfd78af_1':
-        'biocontainers/hicexplorer:3.7.2--pyhdfd78af_1' }"
+        'quay.io/biocontainers/hicexplorer:3.7.2--pyhdfd78af_1' }"
 
     input:
     tuple val(meta), path(matrix)
@@ -14,7 +17,7 @@ process HICEXPLORER_HICPCA {
     tuple val(meta), path("${prefix}_*")           , emit:results
     tuple val(meta), path("${prefix}_pca1.$format"), emit:pca1
     tuple val(meta), path("${prefix}_pca2.$format"), emit:pca2
-    path("versions.yml")                           , emit:versions
+    tuple val("${task.process}"), val("hicexplorer"), eval("hicPCA --version 2>&1 | sed 's/hicPCA //'"), topic: versions, emit: versions_hicexplorer
 
     when:
     task.ext.when == null || task.ext.when
@@ -41,17 +44,13 @@ process HICEXPLORER_HICPCA {
     args = args.join(' ')
     """
     hicPCA \\
-        -m $matrix \\
-        $args \\
-        --format $format \\
-        --whichEigenvectors $eigenvectors \\
+        -m ${matrix} \\
+        ${args} \\
+        --format ${format} \\
+        --whichEigenvectors ${eigenvectors} \\
         --outputFileName ${outfilenames}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hicexplorer: \$(hicPCA --version 2>&1 | sed 's/hicPCA //')
-    END_VERSIONS
     """
+
     stub:
     def args = task.ext.args ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
@@ -66,11 +65,6 @@ process HICEXPLORER_HICPCA {
     """
     touch ${prefix}_pca1.${format}
     touch ${prefix}_pca2.${format}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hicexplorer: \$(hicPCA --version 2>&1 | sed 's/hicPCA //')
-    END_VERSIONS
     """
 
 }

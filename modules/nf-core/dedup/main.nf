@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DEDUP {
     tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/dedup:0.12.9--hdfd78af_0'
-        : 'biocontainers/dedup:0.12.9--hdfd78af_0'}"
+        : 'quay.io/biocontainers/dedup:0.12.9--hdfd78af_0'}"
 
     input:
     tuple val(meta), path(bam)

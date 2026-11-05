@@ -1,0 +1,98 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "stitchr_stitchrdl"
+description: Download and format IMGT/GENE-DB reference data for use with stitchr
+keywords:
+  - TCR
+  - IMGT
+  - immunology
+  - reference
+tools:
+  - "stitchr":
+      description: "Automatic TCR nucleotide sequence generation from V, J and CDR3
+        information"
+      homepage: "https://github.com/JamieHeather/stitchr"
+      documentation: "https://jamieheather.github.io/stitchr/index.html"
+      tool_dev_url: "https://github.com/JamieHeather/stitchr"
+      doi: "10.1093/nar/gkac190"
+      licence:
+        - "MIT"
+      identifier: ""
+  - "imgtgenedl":
+      description: "provides access to TCR and IG genes stored in IMGT/GENE-DB"
+      homepage: "https://github.com/JamieHeather/IMGTgeneDL"
+      documentation: "https://github.com/JamieHeather/IMGTgeneDL/blob/main/README.md"
+      tool_dev_url: "https://github.com/JamieHeather/IMGTgeneDL"
+      doi: "10.1093/nar/gkab1136"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'human' ]`
+    - species:
+        type: string
+        description: Species (common name) to download IMGT reference data for
+        pattern: "human|mouse"
+output:
+  stitchrdl_data:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing reference information
+            e.g. `[ id:'human' ]`
+      - species:
+          type: string
+          description: Species the reference data was downloaded for
+      - Data/:
+          type: directory
+          description: |
+            Stitchr `Data` package holding the downloaded IMGT reference. Must be
+            staged as a directory named `Data` by consumers so that it resolves
+            ahead of the copy packaged inside the container.
+  versions_stitchr:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - stitchr:
+          type: string
+          description: The name of the tool
+      - stitchr --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_imgtgenedl:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - imgtgenedl:
+          type: string
+          description: The name of the tool
+      - "pip show IMGTgeneDL | sed -n 's/^Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - stitchr:
+          type: string
+          description: The name of the tool
+      - stitchr --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - imgtgenedl:
+          type: string
+          description: The name of the tool
+      - "pip show IMGTgeneDL | sed -n 's/^Version: //p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@mapo9"
+maintainers:
+  - "@mapo9"

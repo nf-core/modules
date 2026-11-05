@@ -1,0 +1,142 @@
+nextflow_process {
+
+    name "Test Process ALDY_GENOTYPE"
+    script "../main.nf"
+    process "ALDY_GENOTYPE"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "aldy"
+    tag "aldy/genotype"
+    tag "samtools/view"
+
+    test("homo_sapiens - bam - cyp2d6") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.PGx.CYP2D6.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.PGx.CYP2D6.bam.bai', checkIfExists: true),
+                    'CYP2D6',
+                    'illumina'
+                ]
+                input[1] = [ [], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - cram - cyp2d6") {
+
+        setup {
+            run("SAMTOOLS_VIEW") {
+                script "../../../samtools/view/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.PGx.CYP2D6.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.PGx.CYP2D6.bam.bai', checkIfExists: true)
+                    ]
+                    input[1] = [
+                        [ id:'GRCh37' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/GRCh37_chr22.fasta.gz', checkIfExists: true),
+                        []
+                    ]
+                    input[2] = [ [], [] ]
+                    input[3] = [ [], [] ]
+                    input[4] = 'crai'
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = SAMTOOLS_VIEW.out.cram
+                    .join(SAMTOOLS_VIEW.out.crai)
+                    .map { meta, cram, crai -> [ meta, cram, crai, 'CYP2D6', 'illumina' ] }
+                input[1] = [
+                    [ id:'GRCh37' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/GRCh37_chr22.fasta.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - vcf - cyp2c19") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pharmcat/test.single.sample.vcf.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pharmcat/test.single.sample.vcf.gz.tbi', checkIfExists: true),
+                    'CYP2C19',
+                    'illumina'
+                ]
+                input[1] = [ [], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - bam - cyp2d6 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.PGx.CYP2D6.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.PGx.CYP2D6.bam.bai', checkIfExists: true),
+                    'CYP2D6',
+                    'illumina'
+                ]
+                input[1] = [ [], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ANY2FASTA {
     tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/any2fasta:0.8.1--hdfd78af_0'
-        : 'biocontainers/any2fasta:0.8.1--hdfd78af_0'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/76/767085935412cfe206a24e1ad6b98b9c6739f962868002b7e27abe53c38b7b72/data'
+        : 'community.wave.seqera.io/library/any2fasta:0.8.1--c9e72290385007c3'}"
 
     input:
     tuple val(meta), path(sequence)

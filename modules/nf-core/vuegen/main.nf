@@ -1,8 +1,12 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VUEGEN {
     label 'process_single'
     conda "${moduleDir}/environment.yml"
-    container "nf-core/vuegen:0.5.1"
-
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/36/36930e2052335dcdddb0d3ec8c78609d459762110428df99c7e3fe72901db7d2/data'
+:         'community.wave.seqera.io/library/python_pytinytex_quarto_r-tinytex_pruned:33502ed02f7198e6' }"
     input:
     val input_type
     path input_path
@@ -10,7 +14,7 @@ process VUEGEN {
 
     output:
     path "*report", emit: output_folder
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('vuegen'), eval('python -c "import vuegen; print(vuegen.__version__)"'), emit: versions_vuegen, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -18,37 +22,45 @@ process VUEGEN {
     script:
     def args = task.ext.args ?: ''
     """
-        # Validate quarto_check flag if using a conda environment
-        if [[ "${task.conda}" != "null" ]]; then
-            QUARTO_CHECK_FLAG="--quarto_checks"
-        else
-            QUARTO_CHECK_FLAG=""
-        fi
+    # Validate quarto_check flag if using a conda environment
+    if [[ "${task.conda}" != "null" ]]; then
+        QUARTO_CHECK_FLAG="--quarto-checks"
+    else
+        QUARTO_CHECK_FLAG=""
+    fi
 
-        # Execute VueGen based on the input type
-        if [ "${input_type}" == "config" ]; then
-            echo "Running VueGen with config file: ${input_path}"
-            vuegen --config ${input_path} --report_type ${report_type} \$QUARTO_CHECK_FLAG ${args}
-        elif [ "${input_type}" == "directory" ]; then
-            echo "Running VueGen with directory: ${input_path}"
-            vuegen --directory ${input_path} --report_type ${report_type} \$QUARTO_CHECK_FLAG ${args}
-        fi
+    # Same Quarto cache fix as modules/nf-core/quartonotebook.
+    # Fix Quarto for Apptainer (see https://community.seqera.io/t/confusion-over-why-a-tool-works-in-docker-but-fails-in-singularity-when-the-installation-doesnt-differ-i-e-using-wave-micromamba/1244)
+    # HOME is also made writable so Quarto can install TinyTeX for PDF reports.
+    # Same fix as in modules/nf-core/memote/report and modules/nf-core/bcftools/plotvcfstats.
+    mkdir -p nxf_home
+    export HOME=\$PWD/nxf_home
+    export XDG_CACHE_HOME="./.xdg_cache_home"
+    export XDG_DATA_HOME="./.xdg_data_home"
+    ENV_QUARTO=/opt/conda/etc/conda/activate.d/quarto.sh
+    set +u
+    if [ -z "\${QUARTO_DENO}" ] && [ -f "\${ENV_QUARTO}" ]; then
+        source "\${ENV_QUARTO}"
+    fi
+    set -u
 
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            vuegen: \$( python -c "import vuegen; print(vuegen.__version__)" )
-        END_VERSIONS
-        """
+    # Same fix as in modules/nf-core/huggingface/download.
+    export SSL_CERT_FILE="\${SSL_CERT_FILE:-\$(python -m certifi)}"
+
+    # Execute VueGen based on the input type
+    if [ "${input_type}" == "config" ]; then
+        echo "Running VueGen with config file: ${input_path}"
+        vuegen --config ${input_path} --report-type ${report_type} \$QUARTO_CHECK_FLAG ${args}
+    elif [ "${input_type}" == "directory" ]; then
+        echo "Running VueGen with directory: ${input_path}"
+        vuegen --directory ${input_path} --report-type ${report_type} \$QUARTO_CHECK_FLAG ${args}
+    fi
+    """
 
     stub:
     """
-        echo "STUB MODE: Creating a generic report directory"
-        mkdir -p report
-        touch report/report.txt
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            vuegen: \$( python -c "import vuegen; print(vuegen.__version__)" )
-        END_VERSIONS
-        """
+    echo "STUB MODE: Creating a generic report directory"
+    mkdir -p report
+    touch report/report.txt
+    """
 }

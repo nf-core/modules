@@ -1,10 +1,13 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BBMAP_CLUMPIFY {
     tag "$meta.id"
     label 'process_single'
     label 'process_high_memory'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5aae5977ff9de3e01ff962dc495bfa23f4304c676446b5fdf2de5c7edfa2dc4e/data' :
         'community.wave.seqera.io/library/bbmap_pigz:07416fe99b090fa9' }"
 
@@ -30,5 +33,15 @@ process BBMAP_CLUMPIFY {
         $clumped \\
         $args \\
         &> ${prefix}.clumpify.log
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def output_command = meta.single_end ?
+        "echo '' | gzip > ${prefix}.clumped.fastq.gz" :
+        "echo '' | gzip > ${prefix}_1.clumped.fastq.gz ; echo '' | gzip > ${prefix}_2.clumped.fastq.gz"
+    """
+    touch ${prefix}.clumpify.log
+    $output_command
     """
 }

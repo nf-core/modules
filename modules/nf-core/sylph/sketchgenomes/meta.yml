@@ -15,7 +15,8 @@ tools:
       documentation: https://github.com/bluenote-1577/sylph
       tool_dev_url: https://github.com/bluenote-1577/sylph
       doi: 10.1038/s41587-024-02412-y
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:sylph
 input:
   - - meta:
@@ -25,10 +26,11 @@ input:
           e.g. `[ id:'test', single_end:false ]`
     - fasta:
         type: file
-        description: List of reference genome FASTA file to convert to sylph database file
+        description: List of reference genome FASTA files to convert to sylph database
+          file
         pattern: "*.{fasta,fas,fa,fna}"
         ontologies:
-          - edam: http://edamontology.org/format_1929 # FASTA format
+          - edam: http://edamontology.org/format_1929 # FASTA
 output:
   syldb:
     - - meta:
@@ -38,13 +40,27 @@ output:
           type: file
           description: Sylph database sketch file for profiling
           pattern: "*.syldb"
+  versions_sylph:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sylph:
+          type: string
+          description: The name of the tool
+      - sylph -V | sed "s/sylph //g":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sylph:
+          type: string
+          description: The name of the tool
+      - sylph -V | sed "s/sylph //g":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:

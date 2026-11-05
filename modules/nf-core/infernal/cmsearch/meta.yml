@@ -13,9 +13,9 @@ tools:
       documentation: "http://eddylab.org/infernal/Userguide.pdf"
       tool_dev_url: "https://github.com/EddyRivasLab/infernal"
       doi: "10.1093/bioinformatics/btt509"
-      licence: ["BSD-3-clause"]
+      licence:
+        - "BSD-3-clause"
       identifier: biotools:infernal
-
 input:
   - - meta:
         type: map
@@ -27,14 +27,14 @@ input:
         description: |
           A calibrated Infernal covariance model file
         ontologies:
-          - edam: "http://edamontology.org/data_1364"
+          - edam: http://edamontology.org/data_1364 # HMM
     - seqdb:
         type: file
         description: |
           A FASTA file of sequences to search the covariance models
           against. Can be gzipped.
         ontologies:
-          - edam: "http://edamontology.org/format_1929"
+          - edam: http://edamontology.org/format_1929 # FASTA
   - write_align:
       type: boolean
       description: |
@@ -45,7 +45,6 @@ input:
       description: |
         Flag to save optional per target summary in a tabular
         format. Specify with 'true' to save.
-
 output:
   output:
     - - meta:
@@ -58,7 +57,7 @@ output:
           description: Human readable output summarizing hmmsearch results
           pattern: "*.{txt.gz}"
           ontologies:
-            - edam: "http://edamontology.org/data_3671"
+            - edam: http://edamontology.org/data_3671 # Text
   alignments:
     - - meta:
           type: map
@@ -67,10 +66,11 @@ output:
             e.g. [ id:'test' ]
       - "*.sto.gz":
           type: file
-          description: Optional multiple sequence alignment (MSA) in Stockholm format
+          description: Optional multiple sequence alignment (MSA) in Stockholm
+            format
           pattern: "*.{sto.gz}"
           ontologies:
-            - edam: "http://edamontology.org/format_1961"
+            - edam: http://edamontology.org/format_1961 # Stockholm
   target_summary:
     - - meta:
           type: map
@@ -79,18 +79,51 @@ output:
             e.g. [ id:'test' ]
       - "*.tbl.gz":
           type: file
-          description: Optional tabular (space-delimited) summary of per-target output
+          description: Optional tabular (space-delimited) summary of per-target
+            output
           pattern: "*.{tbl.gz}"
           ontologies:
-            - edam: "http://edamontology.org/format_3475"
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions_infernal:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - infernal:
+          type: string
+          description: The name of the tool
+      - cmsearch -h | sed '2!d;s/.*INFERNAL //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_gzip:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gzip:
+          type: string
+          description: The name of the tool
+      - gzip --version |& sed '1!d;s/gzip //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750"
-
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - infernal:
+          type: string
+          description: The name of the tool
+      - cmsearch -h | sed '2!d;s/.*INFERNAL //;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gzip:
+          type: string
+          description: The name of the tool
+      - gzip --version |& sed '1!d;s/gzip //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@prototaxites"
 maintainers:

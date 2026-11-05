@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 // NOTE because the default indexer, piscem, needs to frequently read and write a large number of intermediate files, if your use case involves the situations where the CPU and storage are not physically connected, we recommend setting `--work-dir /path/to/a/local/dir` or in the `ext.args` in nextflow.config, or  `scratch = true`, to avoid runtime issues.
 process SIMPLEAF_INDEX {
     tag "${meta.id ?: meta2.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/simpleaf:0.19.5--ha6fb395_0':
-        'biocontainers/simpleaf:0.19.5--ha6fb395_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d0/d04c6d819d0712b766a7cf18aa39a15cced3ea4d79178c0811966d8a741b4db1/data'
+:         'community.wave.seqera.io/library/piscem_simpleaf:8fd648760a75594c' }"
 
     input:
     tuple val(meta),  path(genome_fasta), path(genome_gtf)
@@ -18,7 +21,9 @@ process SIMPLEAF_INDEX {
     tuple val(meta), path("${prefix}/index")                    , emit: index
     tuple val(meta), path("${prefix}/ref")                      , emit: ref, optional: true
     tuple val(meta), path("${prefix}/ref/{t2g,t2g_3col}.tsv")   , emit: t2g, optional: true
-    path "versions.yml"                                         , emit: versions
+    tuple val("${task.process}"), val('alevin-fry'), eval("alevin-fry --version | sed 's/alevin-fry //'"),                    topic: versions, emit: versions_alevin_fry
+    tuple val("${task.process}"), val('piscem'),     eval("piscem --version | sed 's/piscem //'"),                            topic: versions, emit: versions_piscem
+    tuple val("${task.process}"), val('simpleaf'),   eval("ALEVIN_FRY_HOME=. simpleaf --version | sed 's/simpleaf //'"),      topic: versions, emit: versions_simpleaf
 
     when:
     task.ext.when == null || task.ext.when
@@ -46,14 +51,6 @@ process SIMPLEAF_INDEX {
         $seq_inputs \\
         $args \\
         -o ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        alevin-fry: \$(alevin-fry --version | sed -e "s/alevin-fry //g")
-        piscem: \$(piscem --version | sed -e "s/piscem //g")
-        salmon: \$(salmon --version | sed -e "s/salmon //g")
-        simpleaf: \$(simpleaf --version | sed -e "s/simpleaf //g")
-    END_VERSIONS
     """
 
     stub:
@@ -64,18 +61,12 @@ process SIMPLEAF_INDEX {
     mkdir -p ${prefix}/index
     mkdir -p ${prefix}/ref
     touch ${prefix}/index/piscem_idx_cfish.json
+    touch ${prefix}/index/piscem_idx_ver.json
     touch ${prefix}/index/piscem_idx.ectab
-    touch ${prefix}/index/piscem_idx.sshash
+    touch ${prefix}/index/piscem_idx.ssi
+    touch ${prefix}/index/piscem_idx.ssi.mphf
     touch ${prefix}/ref/t2g_3col.tsv
     touch ${prefix}/ref/roers_ref.fa
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        alevin-fry: \$(alevin-fry --version | sed -e "s/alevin-fry //g")
-        piscem: \$(piscem --version | sed -e "s/piscem //g")
-        salmon: \$(salmon --version | sed -e "s/salmon //g")
-        simpleaf: \$(simpleaf --version | sed -e "s/simpleaf //g")
-    END_VERSIONS
     """
 }
 

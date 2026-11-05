@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BAMREADCOUNT {
     tag "$meta.id"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bam-readcount:1.0.1--h9aeec6d_3':
-        'biocontainers/bam-readcount:1.0.1--h9aeec6d_3' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ba/ba411ade937a374925c79cd8d5e1783f80b0d007f559e673eb9815dd111c3c63/data'
+        : 'community.wave.seqera.io/library/bam-readcount:1.0.1--a0d174a92a8b106d' }"
 
     input:
     tuple val(meta), path(bam), path(bai)

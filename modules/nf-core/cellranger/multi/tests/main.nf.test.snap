@@ -1,18 +1,15 @@
 {
-    "versions-flex-singleplex": {
-        "content": [
-            [
-                "versions.yml:md5,1e16f7d40ef563f7d0a24f8944374d4d"
-            ]
-        ],
-        "timestamp": "2026-03-16T17:20:25.065276862",
-        "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
-        }
-    },
     "cellranger - multi - 10k - PBMC": {
         "content": [
+            {
+                "versions_cellranger": [
+                    [
+                        "CELLRANGER_MULTI",
+                        "cellranger",
+                        "10.1.0"
+                    ]
+                ]
+            },
             [
                 "all_contig.fasta:md5,494adf38d81f749fc87409c982a1dd2d"
             ],
@@ -23,6 +20,7 @@
                 "all_contig.fastq:md5,e5b0cec096f4d57981916d2247a9f9b7"
             ],
             [
+                "consensus.bam.bai:md5,125978e04496fe193a5c162603a7e6f6",
                 "consensus.bam.bai:md5,125978e04496fe193a5c162603a7e6f6"
             ],
             [
@@ -30,151 +28,268 @@
             ],
             [
                 "cell_barcodes.json:md5,d751713988987e9331980363e24189ce",
+                "cell_barcodes.json:md5,d751713988987e9331980363e24189ce",
                 "all_contig_annotations.json:md5,cf33174fc4dbbadc5e74051bc13a5bd2",
-                "reference.json:md5,384f6efabad59f6da5c89b862aee71a8"
+                "reference.json:md5,384f6efabad59f6da5c89b862aee71a8",
+                "all_contig_annotations.json:md5,d751713988987e9331980363e24189ce"
+            ],
+            [
+                "all_contig.bam",
+                "all_contig.bam.bai",
+                "all_contig.fasta",
+                "all_contig.fastq",
+                "all_contig_annotations.bed",
+                "all_contig_annotations.csv",
+                "all_contig_annotations.json"
             ]
         ],
-        "timestamp": "2026-03-13T15:20:21.751016877",
+        "timestamp": "2026-09-30T18:40:35.414656594",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
         }
     },
-    "versions-PBMC": {
+    "cellranger - multi - 10k - PBMC - with cmo - pipeline scenario where different references might be available for different samples": {
         "content": [
+            {
+                "versions_cellranger": [
+                    [
+                        "CELLRANGER_MULTI",
+                        "cellranger",
+                        "10.1.0"
+                    ]
+                ]
+            },
             [
-                "versions.yml:md5,1e16f7d40ef563f7d0a24f8944374d4d"
+                "assignment_confidence_table.csv:md5,1bccc6e7e9105f12f938d61ec6f94d3c"
+            ],
+            [
+                "tag_calls_summary.csv:md5,55d2c04c1426c3f7a1d9282a9948ba6a"
+            ],
+            [
+                "cells_per_tag.json:md5,3f28cb95f291228519bb80734c7ed570"
+            ],
+            [
+                "metrics_summary.csv:md5,292174f1c6870cef04d6ea4432396c34",
+                "metrics_summary.csv:md5,319f8b46ce5f0f6eba62821394bf37f2"
+            ],
+            [
+                "sample_filtered_feature_bc_matrix.h5:md5,929c9c722ab16493b63c1290cc4219c8",
+                "sample_filtered_feature_bc_matrix.h5:md5,ca29355554b0a71f45227f7198cf9771"
             ]
         ],
-        "timestamp": "2026-03-13T15:20:21.797381186",
+        "timestamp": "2026-10-01T09:35:56.796691468",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "cellranger - multi - 10k - PBMC - vdj-t-gd only with gex reference - stub": {
+        "content": [
+            {
+                "versions_cellranger": [
+                    [
+                        "CELLRANGER_MULTI",
+                        "cellranger",
+                        "10.1.0"
+                    ]
+                ]
+            },
+            [
+                "[vdj]",
+                "reference,$PWD/references/vdj/vdj_reference_stub",
+                "inner-enrichment-primers,$PWD/references/vdj/primers/gd_primers.txt",
+                "[libraries]",
+                "fastq_id,fastqs,lanes,feature_types",
+                "subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_t_gd,,VDJ-T-GD"
+            ]
+        ],
+        "timestamp": "2026-09-30T17:44:30.642055396",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
         }
     },
     "cellranger - multi - 10k - PBMC - with cmo": {
         "content": [
+            {
+                "versions_cellranger": [
+                    [
+                        "CELLRANGER_MULTI",
+                        "cellranger",
+                        "10.1.0"
+                    ]
+                ]
+            },
             [
-                "all_contig.fasta:md5,494adf38d81f749fc87409c982a1dd2d"
+                "assignment_confidence_table.csv:md5,1bccc6e7e9105f12f938d61ec6f94d3c"
             ],
             [
-                "all_contig.fasta.fai:md5,95e967ffde85602135d22764664d9e3e"
+                "tag_calls_summary.csv:md5,55d2c04c1426c3f7a1d9282a9948ba6a"
             ],
             [
-                "all_contig.fastq:md5,e5b0cec096f4d57981916d2247a9f9b7"
+                "cells_per_tag.json:md5,3f28cb95f291228519bb80734c7ed570"
             ],
             [
-                "consensus.bam.bai:md5,125978e04496fe193a5c162603a7e6f6"
+                "metrics_summary.csv:md5,292174f1c6870cef04d6ea4432396c34",
+                "metrics_summary.csv:md5,319f8b46ce5f0f6eba62821394bf37f2"
             ],
             [
-                "regions.fa:md5,1953406d913fb0fd753c6b56e847da83"
-            ],
-            [
-                "cell_barcodes.json:md5,d751713988987e9331980363e24189ce",
-                "all_contig_annotations.json:md5,7cc7d06c7650d20c7330513ae2e383bf",
-                "reference.json:md5,384f6efabad59f6da5c89b862aee71a8"
+                "sample_filtered_feature_bc_matrix.h5:md5,929c9c722ab16493b63c1290cc4219c8",
+                "sample_filtered_feature_bc_matrix.h5:md5,ca29355554b0a71f45227f7198cf9771"
             ]
         ],
-        "timestamp": "2026-03-13T15:21:51.02923865",
+        "timestamp": "2026-10-01T09:27:31.924645902",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
         }
     },
     "cellranger - multi - 10k - kidney - flex - singleplex": {
         "content": [
+            {
+                "versions_cellranger": [
+                    [
+                        "CELLRANGER_MULTI",
+                        "cellranger",
+                        "10.1.0"
+                    ]
+                ]
+            },
             [
-                "metrics_summary.csv:md5,065d5fa688d8a27d2fa25a8e0f03670d"
+                "metrics_summary.csv:md5,0baa073812fdd8df5c2e057a35b4746c"
             ],
             [
-                "filtered_feature_bc_matrix.h5:md5,9dd51a9b7bcbed4e33fca2fd912894b1"
+                "filtered_feature_bc_matrix.h5:md5,ca5b896c260a17b2e88920c5f4564adb"
             ],
             [
-                "raw_feature_bc_matrix.h5:md5,3a9537d19966914ed90da35c9c5fe455"
+                "raw_feature_bc_matrix.h5:md5,2303d5a38c638a7d919fad4594bf3978"
             ],
             [
-                "sample_filtered_feature_bc_matrix.h5:md5,12f93947e14929d7a5c4ba340e4aa81c"
+                "sample_filtered_feature_bc_matrix.h5:md5,bb7ac3fc77d4662b7315f229b8d9d4fd"
             ],
             [
-                "sample_raw_feature_bc_matrix.h5:md5,45c0a4f2907c78b3aca295d0623e2163"
+                "sample_raw_feature_bc_matrix.h5:md5,95e2f32011387b05cc658bedaae0e998"
             ]
         ],
-        "timestamp": "2026-03-13T15:26:14.797582185",
+        "timestamp": "2026-10-01T09:32:39.156415523",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
         }
     },
-    "versions-with-cmo": {
+    "cellranger - multi - 10k - PBMC - vdj-t-gd + vdj-b + antibody capture without gex - stub": {
         "content": [
+            {
+                "versions_cellranger": [
+                    [
+                        "CELLRANGER_MULTI",
+                        "cellranger",
+                        "10.1.0"
+                    ]
+                ]
+            },
             [
-                "versions.yml:md5,1e16f7d40ef563f7d0a24f8944374d4d"
+                "[gene-expression]",
+                "reference,$PWD/references/gex/homo_sapiens_chr22_reference",
+                "create-bam,true",
+                "[feature]",
+                "reference,$PWD/fb_reference_copy.csv",
+                "[vdj]",
+                "reference,$PWD/references/vdj/vdj_reference_stub",
+                "inner-enrichment-primers,$PWD/references/vdj/primers/gd_primers.txt",
+                "[libraries]",
+                "fastq_id,fastqs,lanes,feature_types",
+                "subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_t_gd,,VDJ-T-GD",
+                "subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_b,,VDJ-B",
+                "subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/ab,,Antibody Capture"
             ]
         ],
-        "timestamp": "2026-03-13T15:21:51.055006548",
+        "timestamp": "2026-09-30T14:59:53.125453826",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
         }
     },
     "cellranger - multi - 5k - a549 - sc3 v3 - gex + crispr": {
         "content": [
+            {
+                "versions_cellranger": [
+                    [
+                        "CELLRANGER_MULTI",
+                        "cellranger",
+                        "10.1.0"
+                    ]
+                ]
+            },
             [
-                "metrics_summary.csv:md5,a51dcadefdd5b76cee5c3d4340181a5a"
+                "metrics_summary.csv:md5,99b49df8fbb21832ff02451f970bc393"
             ],
             [
-                "raw_feature_bc_matrix.h5:md5,01c558f6a5b96cd40b1ed41217164460"
+                "raw_feature_bc_matrix.h5:md5,39fbcc1701143097d6899186ba660e67"
             ],
             [
-                "sample_filtered_feature_bc_matrix.h5:md5,8903d36c96c4de869eba434c4722817d"
+                "sample_filtered_feature_bc_matrix.h5:md5,005ca583fe9fe93004a40892bff63122"
             ],
             [
-                
-            ],
-            [
-                
+                "protospacer_calls_per_cell.csv:md5,a94184bddcd8107421f62986b9e0984a"
             ]
         ],
-        "timestamp": "2026-03-13T15:24:54.664342753",
+        "timestamp": "2026-10-01T09:31:10.579381566",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
         }
     },
-    "versions-a549-crispr": {
+    "cellranger - multi - 10k - PBMC - vdj-t + vdj-t-gd + vdj-b - stub": {
         "content": [
+            {
+                "versions_cellranger": [
+                    [
+                        "CELLRANGER_MULTI",
+                        "cellranger",
+                        "10.1.0"
+                    ]
+                ]
+            },
             [
-                "versions.yml:md5,1e16f7d40ef563f7d0a24f8944374d4d"
+                "[gene-expression]",
+                "reference,$PWD/references/gex/homo_sapiens_chr22_reference",
+                "chemistry,SC5P-PE",
+                "expect-cells,1000",
+                "no-secondary,true",
+                "create-bam,false",
+                "[vdj]",
+                "reference,$PWD/references/vdj/vdj_reference_stub",
+                "inner-enrichment-primers,$PWD/references/vdj/primers/gd_primers.txt",
+                "r1-length,26",
+                "[libraries]",
+                "fastq_id,fastqs,lanes,feature_types",
+                "subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/gex,,Gene Expression",
+                "subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_t,,VDJ-T",
+                "subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_t_gd,,VDJ-T-GD",
+                "subsampled_sc5p_v2_hs_PBMC_10k,$PWD/fastq_all/vdj_b,,VDJ-B"
             ]
         ],
-        "timestamp": "2026-03-13T15:24:54.695962129",
+        "timestamp": "2026-09-30T15:28:14.672620722",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
-        }
-    },
-    "versions-with-vdj": {
-        "content": [
-            [
-                "versions.yml:md5,1e16f7d40ef563f7d0a24f8944374d4d"
-            ]
-        ],
-        "timestamp": "2026-03-13T15:23:20.241947226",
-        "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
         }
     },
     "cellranger - multi - 10k - PBMC - with vdj": {
         "content": [
+            {
+                "versions_cellranger": [
+                    [
+                        "CELLRANGER_MULTI",
+                        "cellranger",
+                        "10.1.0"
+                    ]
+                ]
+            },
             [
-                "all_contig.fasta:md5,494adf38d81f749fc87409c982a1dd2d"
-            ],
-            [
-                "all_contig.fasta.fai:md5,95e967ffde85602135d22764664d9e3e"
-            ],
-            [
-                "all_contig.fastq:md5,e5b0cec096f4d57981916d2247a9f9b7"
+                
             ],
             [
                 "consensus.bam.bai:md5,125978e04496fe193a5c162603a7e6f6"
@@ -184,14 +299,14 @@
             ],
             [
                 "cell_barcodes.json:md5,d751713988987e9331980363e24189ce",
-                "all_contig_annotations.json:md5,dadfaf5ce1daff9f2454d012837bd58b",
-                "reference.json:md5,384f6efabad59f6da5c89b862aee71a8"
+                "reference.json:md5,384f6efabad59f6da5c89b862aee71a8",
+                "all_contig_annotations.json:md5,d751713988987e9331980363e24189ce"
             ]
         ],
-        "timestamp": "2026-03-13T15:23:20.211799407",
+        "timestamp": "2026-10-01T09:29:12.778044559",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
         }
     }
 }

@@ -33,7 +33,7 @@ nextflow_process {
                     "--diff_feature_id_col \"${params.differential_feature_id_column}\"",
                     "--fold_change_threshold \"${params.differential_min_fold_change}\"",
                     "--p_value_threshold \"${params.differential_max_qval}\"",
-                    "--unlog_foldchanges \"${params.differential_foldchanges_logged}\"",
+                    params.differential_foldchanges_logged ? "--unlog_foldchanges" : "",
                     "--palette_name \"${params.differential_palette_name}\""
                 ].join(' ').trim()
             }
@@ -62,7 +62,7 @@ nextflow_process {
                 { assert snapshot(
                     file(process.out.volcanos_png[0][1]).name, //assert unstable file
                     process.out.volcanos_html,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -94,7 +94,7 @@ nextflow_process {
                     "--diff_feature_id_col \"${params.differential_feature_id_column}\"",
                     "--fold_change_threshold \"${params.differential_min_fold_change}\"",
                     "--p_value_threshold \"${params.differential_max_qval}\"",
-                    "--unlog_foldchanges \"${params.differential_foldchanges_logged}\"",
+                    params.differential_foldchanges_logged ? "--unlog_foldchanges" : "",
                     "--palette_name \"${params.differential_palette_name}\""
                 ].join(' ').trim()
             }

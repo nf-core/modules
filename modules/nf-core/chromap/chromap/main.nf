@@ -1,15 +1,18 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CHROMAP_CHROMAP {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5d/5d39e0b3f00c5469ffc2ceef4bd76959fba6313064ed2408dd4ccac498022ad6/data' :
         'community.wave.seqera.io/library/chromap_samtools:b975c17adf0096ba' }"
 
     input:
     tuple val(meta), path(reads)
-    tuple val(meta2), path(fasta), path(fai)
+    tuple val(meta2), path(fasta)
     tuple val(meta3), path(index)
     path barcodes
     path whitelist

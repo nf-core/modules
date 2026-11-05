@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MSISENSOR2_MSI {
     tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/msisensor2:0.1--hd03093a_0'
-        : 'biocontainers/msisensor2:0.1--hd03093a_0'}"
+        : 'quay.io/biocontainers/msisensor2:0.1--hd03093a_0'}"
 
     input:
     tuple val(meta), path(tumor_bam), path(tumor_bam_index)

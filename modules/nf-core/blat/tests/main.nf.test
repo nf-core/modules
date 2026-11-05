@@ -17,17 +17,15 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:false ], // meta map
+				    [ id:'test', single_end:false ],
 				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
 				]
-
                 """
             }
         }
     }
 
     test("test-blat") {
-
         when {
             process {
                 """
@@ -36,7 +34,6 @@ nextflow_process {
 				    [ id:'sarscov2' ],
 				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
 				]
-
                 """
             }
         }
@@ -44,7 +41,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -59,7 +56,6 @@ nextflow_process {
 				    [ id:'sarscov2' ],
 				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
 				]
-
                 """
             }
         }
@@ -67,7 +63,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

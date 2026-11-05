@@ -2,49 +2,6 @@
     "sarscov2_fastq_se_stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.report.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.results.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.sam:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "3": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.mapped.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "4": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.unmapped.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "5": [
-                    "versions.yml:md5,1ce028d9f968eca6df31586fe3b77c84"
-                ],
                 "fastq_mapped": [
                     [
                         {
@@ -85,16 +42,20 @@
                         "test.sam:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,1ce028d9f968eca6df31586fe3b77c84"
+                "versions_centrifuge": [
+                    [
+                        "CENTRIFUGE_CENTRIFUGE",
+                        "centrifuge",
+                        "1.0.4"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-04-20T07:13:09.233326937",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.2"
-        },
-        "timestamp": "2024-07-09T10:36:42.919054"
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
     },
     "sarscov2_fastq_se": {
         "content": [
@@ -102,15 +63,21 @@
             "test.results.txt",
             "",
             "",
-            [
-                "versions.yml:md5,1ce028d9f968eca6df31586fe3b77c84"
-            ]
+            {
+                "versions_centrifuge": [
+                    [
+                        "CENTRIFUGE_CENTRIFUGE",
+                        "centrifuge",
+                        "1.0.4"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-04-20T07:12:51.508440737",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.2"
-        },
-        "timestamp": "2024-07-09T10:36:23.087465"
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
     },
     "sarscov2_fastq_pe": {
         "content": [
@@ -118,14 +85,20 @@
             "test.results.txt",
             "test.mapped.fastq.1.gz",
             "test.unmapped.fastq.1.gz",
-            [
-                "versions.yml:md5,1ce028d9f968eca6df31586fe3b77c84"
-            ]
+            {
+                "versions_centrifuge": [
+                    [
+                        "CENTRIFUGE_CENTRIFUGE",
+                        "centrifuge",
+                        "1.0.4"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-04-20T07:13:00.307791402",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.2"
-        },
-        "timestamp": "2024-07-09T10:36:33.471335"
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
     }
 }

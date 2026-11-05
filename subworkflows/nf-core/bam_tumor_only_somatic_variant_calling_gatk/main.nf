@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 // Run GATK mutect2 in tumor only mode, getepileupsummaries, calculatecontamination and filtermutectcalls
 
 include { GATK4_CALCULATECONTAMINATION } from '../../../modules/nf-core/gatk4/calculatecontamination'
@@ -45,7 +48,7 @@ workflow BAM_TUMOR_ONLY_SOMATIC_VARIANT_CALLING_GATK {
     GATK4_GETPILEUPSUMMARIES(
         ch_pileup_input,
         ch_fasta,
-        ch_fai,
+        ch_fai.map { meta, fai, _gzi -> [meta, fai] },
         ch_dict,
         ch_germline_resource,
         ch_germline_resource_tbi,
@@ -54,7 +57,6 @@ workflow BAM_TUMOR_ONLY_SOMATIC_VARIANT_CALLING_GATK {
     //Contamination and segmentation tables created using calculatecontamination on the pileup summary table.
     //[] is a placeholder for the optional input where the matched normal sample would be passed in for tumor-normal samples, which is not necessary for this workflow.
     ch_pileup = GATK4_GETPILEUPSUMMARIES.out.table.collect().map { meta, table -> [meta, table, []] }
-
 
     GATK4_CALCULATECONTAMINATION(ch_pileup)
 
@@ -73,7 +75,10 @@ workflow BAM_TUMOR_ONLY_SOMATIC_VARIANT_CALLING_GATK {
         .join(ch_contamination, failOnDuplicate: true, failOnMismatch: true)
         .map { meta, vcf, tbi, stats, segment, contamination -> [meta, vcf, tbi, stats, [], segment, contamination, []] }
 
-    GATK4_FILTERMUTECTCALLS(ch_filtermutect_in, ch_fasta, ch_fai, ch_dict)
+    GATK4_FILTERMUTECTCALLS(
+        ch_filtermutect_in,
+        ch_fasta.combine(ch_fai).combine(ch_dict).map { meta, fasta, _meta_fai, fai, _gzi, _meta_dict, dict -> [meta, fasta, fai, dict] },
+    )
 
     emit:
     contamination_table = GATK4_CALCULATECONTAMINATION.out.contamination.collect() // channel: [ val(meta), [ contamination ] ]

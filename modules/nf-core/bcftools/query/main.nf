@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BCFTOOLS_QUERY {
     tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0b/0b4d52ca9a56d07be3f78a12af654e5116f5112908dba277e6796fd9dfb83fe5/data'
-        : 'community.wave.seqera.io/library/bcftools_htslib:1.23.1--9f08ec665533d64a'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/91/914b9b38bbfa22c458ceee6c578fd3d70ee1bffc33d3a064b0663ed4944e7872/data'
+        : 'community.wave.seqera.io/library/bcftools_htslib:1.25--130aa7603bf3bf5c'}"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
@@ -14,7 +17,7 @@ process BCFTOOLS_QUERY {
     path samples
 
     output:
-    tuple val(meta), path("*.${suffix}"), emit: output
+    tuple val(meta), path("*.txt"), emit: output
     tuple val("${task.process}"), val('bcftools'), eval("bcftools --version | sed '1!d; s/^.*bcftools //'"), topic: versions, emit: versions_bcftools
 
     when:
@@ -23,7 +26,6 @@ process BCFTOOLS_QUERY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    suffix = task.ext.suffix ?: "txt"
     def regions_file = regions ? "--regions-file ${regions}" : ""
     def targets_file = targets ? "--targets-file ${targets}" : ""
     def samples_file = samples ? "--samples-file ${samples}" : ""
@@ -34,13 +36,12 @@ process BCFTOOLS_QUERY {
         ${samples_file} \\
         ${args} \\
         ${vcf} \\
-        > ${prefix}.${suffix}
+        > ${prefix}.txt
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    suffix = task.ext.suffix ?: "txt"
     """
-    touch ${prefix}.${suffix} \\
+    touch ${prefix}.txt
     """
 }

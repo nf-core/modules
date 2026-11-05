@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HMMER_HMMPRESS {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hmmer:3.4--hdbdd923_1' :
-        'biocontainers/hmmer:3.4--hdbdd923_1' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b1/b171806a7b780537073c1e9ffe50885ba7917d8072b5941a125698df1253c4f7/data'
+:         'community.wave.seqera.io/library/hmmer:3.4--ab3efa7c16f46920' }"
 
     input:
     tuple val(meta), path(hmmfile)
 
     output:
     tuple val(meta), path("*.h3?"), emit: compressed_db
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('hmmer'), eval("hmmsearch -h | sed '2!d;s/^# HMMER *//;s/ .*//'"), emit: versions_hmmer, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,11 +27,6 @@ process HMMER_HMMPRESS {
     hmmpress \\
         $args \\
         ${hmmfile}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hmmer: \$(echo \$(hmmpress -h | grep HMMER | sed 's/# HMMER //' | sed 's/ .*//' 2>&1))
-    END_VERSIONS
     """
 
     stub:
@@ -39,10 +37,5 @@ process HMMER_HMMPRESS {
     touch ${prefix}.h3i
     touch ${prefix}.h3f
     touch ${prefix}.h3p
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hmmer: \$(echo \$(hmmpress -h | grep HMMER | sed 's/# HMMER //' | sed 's/ .*//' 2>&1))
-    END_VERSIONS
     """
 }

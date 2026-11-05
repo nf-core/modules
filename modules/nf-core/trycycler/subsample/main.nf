@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TRYCYCLER_SUBSAMPLE {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/trycycler:0.5.3--pyhdfd78af_0':
-        'biocontainers/trycycler:0.5.3--pyhdfd78af_0' }"
+        'quay.io/biocontainers/trycycler:0.5.3--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(reads)
 
     output:
     tuple val(meta), path("*/*.fastq.gz") , emit: subreads
-    path "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val('trycycler'), eval("trycycler --version | sed 's/Trycycler v//'"), emit: versions_trycycler, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,17 +28,12 @@ process TRYCYCLER_SUBSAMPLE {
     """
     trycycler \\
         subsample \\
-        $args \\
+        ${args} \\
         --reads ${reads} \\
         --threads $task.cpus \\
         --out_dir ${prefix}
 
-    gzip $args2 ${prefix}/*.fastq
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        trycycler: \$(trycycler --version | sed 's/Trycycler v//')
-    END_VERSIONS
+    gzip ${args2} ${prefix}/*.fastq
     """
 
     stub:
@@ -51,10 +49,5 @@ process TRYCYCLER_SUBSAMPLE {
         mkdir -p ${prefix}
         echo "" | gzip > ${prefix}/sample_\${i}.fastq.gz
     done
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        trycycler: \$(trycycler --version | sed 's/Trycycler v//')
-    END_VERSIONS
     """
 }

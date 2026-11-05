@@ -1,9 +1,12 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FORCE_TILEEXTENT {
     tag "${aoi.simpleName}"
     label 'process_single'
     stageInMode 'copy' // needed by the module to work properly when aoi is a shapefile
 
-    container "nf-core/force:3.8.01"
+    container "quay.io/nf-core/force:3.8.01"
 
     input:
     path aoi

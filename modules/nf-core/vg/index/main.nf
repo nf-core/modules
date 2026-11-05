@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VG_INDEX {
     tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vg:1.45.0--h9ee0642_0':
-        'biocontainers/vg:1.45.0--h9ee0642_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cc/cc480ae940534804b86db6edfcbd5ed096d06443ba8062b7808d297cd37dfe6f/data'
+:         'community.wave.seqera.io/library/vg:1.73.0--d74ddeb77d3e6db3' }"
 
     input:
     tuple val(meta), path(input)
@@ -13,7 +16,7 @@ process VG_INDEX {
     output:
     tuple val(meta), path("*.xg")       , emit: xg
     tuple val(meta), path("*.vgi")      , emit: vg_index, optional: true
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('vg'), eval("vg 2>&1 | sed -n 's/.*version v\\([0-9.]*\\).*/\\1/p'"), topic: versions, emit: versions_vg
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,11 +30,6 @@ process VG_INDEX {
         --threads ${task.cpus} \\
         --xg-name ${prefix}.xg \\
         ${input}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vg: \$(echo \$(vg 2>&1 | head -n 1 | sed 's/vg: variation graph tool, version v//;s/ ".*"//' ))
-    END_VERSIONS
     """
 
     stub:
@@ -43,10 +41,5 @@ process VG_INDEX {
     """
     touch ${prefix}.xg
     ${vg_index}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vg: \$(echo \$(vg 2>&1 | head -n 1 | sed 's/vg: variation graph tool, version v//;s/ ".*"//' ))
-    END_VERSIONS
     """
 }

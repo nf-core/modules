@@ -4,22 +4,26 @@ nextflow_workflow {
     script "../main.nf"
     workflow "FASTQ_CREATE_UMI_CONSENSUS_FGBIO"
 
-    tag "subworkflows"
-    tag "subworkflows_nfcore"
-    tag "subworkflows/fastq_create_umi_consensus_fgbio"
+    tag "bwa"
     tag "bwa/index"
     tag "bwa/mem"
-    tag "bwamem2/mem"
+    tag "bwamem2"
     tag "bwamem2/index"
-    tag "fgbio/callmolecularconsensusreads"
+    tag "bwamem2/mem"
+    tag "fgbio"
     tag "fgbio/callduplexconsensusreads"
+    tag "fgbio/callmolecularconsensusreads"
     tag "fgbio/fastqtobam"
     tag "fgbio/filterconsensusreads"
     tag "fgbio/groupreadsbyumi"
     tag "fgbio/zipperbams"
+    tag "samtools"
     tag "samtools/fastq"
-    tag "samtools/sort"
     tag "samtools/index"
+    tag "samtools/sort"
+    tag "subworkflows"
+    tag "subworkflows/fastq_create_umi_consensus_fgbio"
+    tag "subworkflows_nfcore"
 
     test("single_umi") {
 
@@ -38,19 +42,19 @@ nextflow_workflow {
             }
             workflow {
                 """
-                input[0] = [
+                input[0] = Channel.value([
                     [ id:'test_single', single_end:false ], // meta map
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test.umi_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test.umi_2.fastq.gz', checkIfExists: true),
                     ]
-                ]
-                input[1] = [
+                ])
+                input[1] = Channel.value([
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
-                ]
+                ])
                 input[2] = false
                 input[3] = "Adjacency"
                 input[4] = "bwa-mem"
@@ -85,19 +89,19 @@ nextflow_workflow {
             }
             workflow {
                 """
-                input[0] = [
+                input[0] = Channel.value([
                     [ id:'test_single', single_end:false ], // meta map
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_duplex_umi_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_duplex_umi_2.fastq.gz', checkIfExists: true),
                     ]
-                ]
-                input[1] = [
+                ])
+                input[1] = Channel.value([
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
-                ]
+                ])
                 input[2] = false
                 input[3] = "Adjacency"
                 input[4] = "bwa-mem"
@@ -133,19 +137,19 @@ nextflow_workflow {
             }
             workflow {
                 """
-                input[0] = [
+                input[0] = Channel.value([
                     [ id:'test_single', single_end:false ], // meta map
                     [
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test.umi_1.fastq.gz', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test.umi_2.fastq.gz', checkIfExists: true),
                     ]
-                ]
-                input[1] = [
+                ])
+                input[1] = Channel.value([
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
-                ]
+                ])
                 input[2] = false
                 input[3] = "Adjacency"
                 input[4] = "bwa-mem"

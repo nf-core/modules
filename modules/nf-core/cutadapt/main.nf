@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CUTADAPT {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cutadapt:5.2--py311haab0aaa_0' :
-        'biocontainers/cutadapt:5.2--py311haab0aaa_0'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f2/f26f1ce0aac66b8f199594c1ed6bb39f256b5a08d524167e84176fb5799f776a/data'
+:         'community.wave.seqera.io/library/cutadapt:5.2--efafca34ac3f6c8a' }"
 
     input:
     tuple val(meta), path(reads)

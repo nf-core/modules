@@ -6,7 +6,6 @@ nextflow_process {
     process "JVARKIT_DICT2BED"
     config "./nextflow.config"
 
-
     tag "modules"
     tag "modules_nfcore"
     tag "jvarkit"
@@ -33,14 +32,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    path(process.out.bed[0][1]),
-                    process.out.versions
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match()}
             )
         }
-
     }
 
     test("sarscov2 - stub") {
@@ -66,13 +60,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    path(process.out.bed[0][1]),
-                    process.out.versions
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match()}
             )
         }
-
     }
 }

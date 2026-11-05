@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process NARFMAP_HASHTABLE {
     tag "$fasta"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/narfmap:1.4.2--h43eeafb_0':
-        'biocontainers/narfmap:1.4.2--h43eeafb_0' }"
+        'quay.io/biocontainers/narfmap:1.4.2--h43eeafb_0' }"
 
     input:
     tuple val(meta), path(fasta)

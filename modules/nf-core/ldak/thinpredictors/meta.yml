@@ -1,0 +1,73 @@
+name: ldak_thinpredictors
+description: Run linkage disequilibrium (LD) pruning with linkage disequilibrium-adjusted kinship (LDAK) to create a thinned predictor list for weighted kinship workflows
+keywords:
+  - ldak
+  - thinning
+  - predictors
+  - kinship
+tools:
+  - ldak6:
+      description: LDAK toolset for kinship, heritability, and association analyses
+      homepage: https://dougspeed.com/ldak/
+      documentation: https://dougspeed.com/ldak/
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing genotype-bundle metadata.
+          Expected keys:
+            - id (string): Sample identifier used as thin output prefix (for example, 'plink_merged').
+    - bed:
+        type: file
+        description: PLINK BED genotype file
+        ontologies: []
+    - bim:
+        type: file
+        description: PLINK BIM variant file
+        ontologies:
+          - edam: http://edamontology.org/format_3285 # PLINK MAP
+    - fam:
+        type: file
+        description: PLINK FAM sample file
+        ontologies:
+          - edam: http://edamontology.org/format_3286 # PLINK PED
+  - window_prune:
+      type: float
+      description: Correlation squared (r²) threshold passed to LDAK `--window-prune` (for example, 0.98)
+  - window_kb:
+      type: integer
+      description: Window size in kilobases passed to LDAK `--window-kb` (for example, 100)
+output:
+  thin_predictors:
+    - - meta:
+          type: map
+          description: Metadata map carried forward from input
+      - "${prefix}.in":
+          type: file
+          description: LDAK thinned predictor list emitted by `--thin`
+          ontologies: []
+  versions_ldak6:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ldak6:
+          type: string
+          description: The tool name
+      - ldak6 --version 2>&1 | grep -oP '(?<=^Version )[0-9.]+':
+          type: eval
+          description: The expression used to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ldak6:
+          type: string
+          description: The tool name
+      - ldak6 --version 2>&1 | grep -oP '(?<=^Version )[0-9.]+':
+          type: eval
+          description: The expression used to obtain the version of the tool
+authors:
+  - "@lyh970817"
+maintainers:
+  - "@lyh970817"

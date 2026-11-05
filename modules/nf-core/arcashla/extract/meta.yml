@@ -1,19 +1,18 @@
 name: "arcashla_extract"
-description: Extracts reads mapped to chromosome 6 and any HLA decoys or chromosome
-  6 alternates.
+description: Extracts reads mapped to chromosome 6 and any HLA decoys or chromosome 6 alternates.
 keywords:
   - HLA
   - genotype
   - RNA-seq
 tools:
   - "arcashla":
-      description: "arcasHLA performs high resolution genotyping for HLA class I and
-        class II genes from RNA sequencing, supporting both paired and single-end samples."
+      description: "arcasHLA performs high resolution genotyping for HLA class I and class II genes from RNA sequencing, supporting both paired and single-end samples."
       homepage: "https://github.com/RabadanLab/arcasHLA"
       documentation: "https://github.com/RabadanLab/arcasHLA"
       tool_dev_url: "https://github.com/RabadanLab/arcasHLA"
       doi: "10.1093/bioinformatics/btz474"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 input:
   - - meta:
@@ -23,8 +22,7 @@ input:
           e.g. [ id:'test', single_end:false ]
     - bam:
         type: file
-        description: BAM file. If the BAM file is not indexed, this tool will run samtools
-          index before extracting reads.
+        description: BAM file. If the BAM file is not indexed, this tool will run samtools index before extracting reads.
         pattern: "*.bam"
         ontologies:
           - edam: "http://edamontology.org/format_2572" # BAM
@@ -85,27 +83,53 @@ output:
           ontologies:
             - edam: "http://edamontology.org/format_2572" # BAM
   versions_arcashla:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "arcashla":
+      - arcashla:
           type: string
           description: The name of the tool
-      - "echo 0.5.0":
-          type: eval
-          description: The expression to obtain the version of the tool
+      - 0.5.0:
+          type: string
+          description: The version of the tool
+
 topics:
   versions:
-    - - "${task.process}":
+    - - ${task.process}:
           type: string
           description: The name of the process
-      - "arcashla":
+      - arcashla:
           type: string
           description: The name of the tool
-      - "echo 0.5.0":
-          type: eval
-          description: The expression to obtain the version of the tool
+      - 0.5.0:
+          type: string
+          description: The version of the tool
+
 authors:
   - "@christopher-mohr"
 maintainers:
   - "@christopher-mohr"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/arcas-hla:0.5.0--2c5eef54bb09f8c8
+      build_id: bd-2c5eef54bb09f8c8_1
+      scan_id: sc-2f58883e68656066_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/arcas-hla:0.5.0--c084d3000cfb0aab
+      build_id: bd-c084d3000cfb0aab_1
+      scan_id: sc-d9f102a5f7e7f950_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/arcas-hla:0.5.0--56f5d7856254bbc9
+      build_id: bd-56f5d7856254bbc9_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cb/cb783fd6aeff146e9cd9a28c02d7b13bd4bac594b7f6ae15ab34d1e62c7e3647/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/arcas-hla:0.5.0--5fa7ca9c4f6f72a1
+      build_id: bd-5fa7ca9c4f6f72a1_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d4/d48b4e97a69babf746f2547fa5a8d3c87cf75bd8b345339d54e8086763d4c90e/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/arcashla/extract/.conda-lock/linux_amd64-bd-2c5eef54bb09f8c8_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/arcashla/extract/.conda-lock/linux_arm64-bd-c084d3000cfb0aab_1.txt

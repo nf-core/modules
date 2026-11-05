@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CELLSNP_MODEA {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cellsnp-lite:1.2.3--h6141fd1_2' :
-        'biocontainers/cellsnp-lite:1.2.3--h6141fd1_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/78/7821bddb522e1464358357f3209f22c81988db7b1d7477be7a21b038c14aee34/data'
+        : 'community.wave.seqera.io/library/cellsnp-lite:1.2.3--777dfc22dc268b85'}"
 
     input:
     tuple val(meta), path(bam), path(bai), path(region_vcf), path(barcode)

@@ -1,20 +1,23 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ENSEMBLVEP_DOWNLOAD {
     tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3d/3da6e21cbf9803529421d7e136d1ebec5ff71ec50e0d996eda2ce11ec2c19bf9/data'
-        : 'community.wave.seqera.io/library/ensembl-vep_perl-math-cdf:1e13f65f931a6954'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6f/6febf703e6df28e6259f8b382a75e16cd7039be1da722a8ee716004479b82458/data'
+        : 'community.wave.seqera.io/library/ensembl-vep_perl-math-cdf_htslib_gzip_tar:43f77a48cc79bf38'}"
 
     input:
     tuple val(meta), val(assembly), val(species), val(cache_version)
-    val(preflight_check)
+    val preflight_check
 
     output:
     tuple val(meta), path(prefix), emit: cache
     tuple val("${task.process}"), val('ensemblvep'), eval("vep --help | sed -n '/ensembl-vep/s/.*: //p'"), topic: versions, emit: versions_ensemblvep
-    tuple val("${task.process}"), val('perl-math-cdf'), eval("perl -MMath::CDF -e 'print \$Math::CDF::VERSION'"), topic: versions, emit: versions_perlmathcdf
+    tuple val("${task.process}"), val('perl-math-cdf'), eval("perl -MMath::CDF -e 'print \\\$Math::CDF::VERSION'"), topic: versions, emit: versions_perlmathcdf
 
     when:
     task.ext.when == null || task.ext.when

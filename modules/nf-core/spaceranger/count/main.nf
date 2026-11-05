@@ -1,8 +1,11 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SPACERANGER_COUNT {
     tag "$meta.id"
     label 'process_high'
 
-    container "nf-core/spaceranger:9c5e7dc93c32448e"
+    container "quay.io/nf-core/spaceranger:9c5e7dc93c32448e"
 
     input:
     tuple val(meta), path(reads), path(image), val(slide), val(area), path(cytaimage), path(darkimage), path(colorizedimage), path(alignment), path(slidefile)
