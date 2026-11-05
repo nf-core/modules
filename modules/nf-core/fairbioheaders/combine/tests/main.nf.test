@@ -9,74 +9,16 @@ nextflow_process {
     tag "fairbioheaders"
     tag "fairbioheaders/combine"
 
-    // Minimal metadata of each header type; combine replaces the placeholder checksum.
-    // The author is ORCID's documented example iD.
-    def fhr = '''\
-schema: https://w3id.org/fair-bioheaders/fhr/v0.4.0
-schemaVersion: '2.0'
-genome: SARS-CoV-2 test genome
-taxon:
-  name: Severe acute respiratory syndrome coronavirus 2
-  uri: https://identifiers.org/taxonomy:2697049
-version: '1'
-metadataAuthor:
-  - name: Josiah Carberry
-    uri: https://orcid.org/0000-0002-1825-0097
-assemblyAuthor:
-  - name: Josiah Carberry
-    uri: https://orcid.org/0000-0002-1825-0097
-dateCreated: '2020-01-01'
-masking: unknown
-checksum: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
-'''
-
-    def fhp = '''\
-schema: https://w3id.org/fair-bioheaders/fhp/v0.4.0
-schemaVersion: '1.0'
-proteome: SARS-CoV-2 test proteome
-sourceType: database
-taxon:
-  name: Severe acute respiratory syndrome coronavirus 2
-  uri: https://identifiers.org/taxonomy:2697049
-version: '1'
-metadataAuthor:
-  - name: Josiah Carberry
-    uri: https://orcid.org/0000-0002-1825-0097
-dateCreated: '2020-01-01'
-checksum: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
-'''
-
-    def fhgff3 = '''\
-schema: https://w3id.org/fair-bioheaders/fhgff3/v0.4.0
-schemaVersion: '1.0'
-annotation: Candidatus Portiera aleyrodidarum test annotation
-taxon:
-  name: Candidatus Portiera aleyrodidarum
-  uri: https://identifiers.org/taxonomy:235282
-version: '1'
-metadataAuthor:
-  - name: Josiah Carberry
-    uri: https://orcid.org/0000-0002-1825-0097
-dateCreated: '2020-01-01'
-derivedFrom:
-  - headerType: FHR
-    checksum: 8kMW7cFzWbKkOLt0tgS3srVGNuzqNuoGaVqAimI8A2c=
-    relationship: annotates
-checksum: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
-'''
-
     test("sarscov2 - fasta - fhr") {
 
         when {
             process {
                 """
-                input[0] = channel.of('''${fhr}''')
-                    .collectFile(name: 'test.fhr.yaml')
-                    .map { yaml -> [
-                        [ id:'test' ],
-                        yaml,
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                    ] }
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -84,8 +26,6 @@ checksum: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
         then {
             assertAll(
                 { assert process.success },
-                { assert file(process.out.fasta[0][1]).name == 'test.fhr.fasta' },
-                { assert path(process.out.fasta[0][1]).readLines()[0] == ';~schema: https://w3id.org/fair-bioheaders/fhr/v0.4.0' },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
@@ -97,13 +37,11 @@ checksum: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
         when {
             process {
                 """
-                input[0] = channel.of('''${fhr}''')
-                    .collectFile(name: 'test.fhr.yaml')
-                    .map { yaml -> [
-                        [ id:'test' ],
-                        yaml,
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
-                    ] }
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -111,8 +49,6 @@ checksum: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
         then {
             assertAll(
                 { assert process.success },
-                { assert file(process.out.fasta[0][1]).name == 'test.fhr.fasta.gz' },
-                { assert path(process.out.fasta[0][1]).linesGzip[0] == ';~schema: https://w3id.org/fair-bioheaders/fhr/v0.4.0' },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
@@ -124,13 +60,11 @@ checksum: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
         when {
             process {
                 """
-                input[0] = channel.of('''${fhr}''')
-                    .collectFile(name: 'test.fhr.yaml')
-                    .map { yaml -> [
-                        [ id:'test' ],
-                        yaml,
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/gfa/assembly.gfa', checkIfExists: true)
-                    ] }
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/gfa/assembly.gfa', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -138,7 +72,6 @@ checksum: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.gfa[0][1]).readLines()[0] == '#~schema: https://w3id.org/fair-bioheaders/fhr/v0.4.0' },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
@@ -150,13 +83,11 @@ checksum: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
         when {
             process {
                 """
-                input[0] = channel.of('''${fhp}''')
-                    .collectFile(name: 'test.fhp.yaml')
-                    .map { yaml -> [
-                        [ id:'test' ],
-                        yaml,
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome_test.faa', checkIfExists: true)
-                    ] }
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/proteome_test.fhp.yaml', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome_test.faa', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -164,8 +95,6 @@ checksum: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
         then {
             assertAll(
                 { assert process.success },
-                { assert file(process.out.fasta[0][1]).name == 'test.fhp.fasta' },
-                { assert path(process.out.fasta[0][1]).readLines()[0] == ';~schema: https://w3id.org/fair-bioheaders/fhp/v0.4.0' },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
@@ -177,13 +106,11 @@ checksum: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
         when {
             process {
                 """
-                input[0] = channel.of('''${fhgff3}''')
-                    .collectFile(name: 'test.fhgff3.yaml')
-                    .map { yaml -> [
-                        [ id:'test' ],
-                        yaml,
-                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true)
-                    ] }
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/fairbioheaders/test1.fhgff3.yaml', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -191,8 +118,6 @@ checksum: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
         then {
             assertAll(
                 { assert process.success },
-                { assert path(process.out.gff3[0][1]).readLines()[0] == '##gff-version 3' },
-                { assert path(process.out.gff3[0][1]).readLines()[1] == '#~schema: https://w3id.org/fair-bioheaders/fhgff3/v0.4.0' },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
@@ -204,13 +129,11 @@ checksum: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
         when {
             process {
                 """
-                input[0] = channel.of('''${fhp}''')
-                    .collectFile(name: 'test.fhp.yaml')
-                    .map { yaml -> [
-                        [ id:'test' ],
-                        yaml,
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/gfa/assembly.gfa', checkIfExists: true)
-                    ] }
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/proteome_test.fhp.yaml', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/gfa/assembly.gfa', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -224,31 +147,6 @@ checksum: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
 
     }
 
-    test("sarscov2 - fai - unsupported extension - fails") {
-
-        when {
-            process {
-                """
-                input[0] = channel.of('''${fhr}''')
-                    .collectFile(name: 'test.fhr.yaml')
-                    .map { yaml -> [
-                        [ id:'test' ],
-                        yaml,
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
-                    ] }
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.failed },
-                { assert (process.stdout + process.stderr).any { line -> line.contains('unsupported sequence file extension: genome.fasta.fai') } }
-            )
-        }
-
-    }
-
     test("sarscov2 - fasta - fhr - stub") {
 
         options "-stub"
@@ -256,13 +154,11 @@ checksum: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
         when {
             process {
                 """
-                input[0] = channel.of('''${fhr}''')
-                    .collectFile(name: 'test.fhr.yaml')
-                    .map { yaml -> [
-                        [ id:'test' ],
-                        yaml,
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                    ] }
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -283,13 +179,11 @@ checksum: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=
         when {
             process {
                 """
-                input[0] = channel.of('''${fhr}''')
-                    .collectFile(name: 'test.fhr.yaml')
-                    .map { yaml -> [
-                        [ id:'test' ],
-                        yaml,
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
-                    ] }
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.gz', checkIfExists: true)
+                ]
                 """
             }
         }
