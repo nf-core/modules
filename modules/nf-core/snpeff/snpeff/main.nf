@@ -14,6 +14,7 @@ process SNPEFF_SNPEFF {
     tuple val(meta), path(vcf)
     val db
     tuple val(meta2), path(cache)
+    path canon_list
 
     output:
     tuple val(meta), path("*.ann.vcf"), emit: vcf
@@ -36,6 +37,7 @@ process SNPEFF_SNPEFF {
     }
     def prefix = task.ext.prefix ?: "${meta.id}"
     def cache_command = cache ? "-dataDir \${PWD}/${cache}" : ""
+    def canon_list_command = canon_list ? "-canonList ${canon_list}" : ""
     """
     snpEff \\
         -Xmx${avail_mem}M \\
@@ -44,6 +46,7 @@ process SNPEFF_SNPEFF {
         ${args} \\
         -csvStats ${prefix}.csv \\
         ${cache_command} \\
+        ${canon_list_command} \\
         ${vcf} \\
         > ${prefix}.ann.vcf
     """
