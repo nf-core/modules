@@ -1,23 +1,39 @@
 {
     "homo_sapiens - test_paired_end_markduplicates_sorted_bam": {
         "content": [
-            [
-                "test_chr21:1-23354000.bam",
-                "test_chr21:24132499-24910998.bam",
-                "test_chr21:25689497-46709983.bam"
-            ],
-            [
-                "69b8f2fcde9e5946e78a81c8b58092c2",
-                "702c1ba6211f7b165f590ba4e1f6cd0",
-                "71d00f300415558974b01137e668b830"
-            ],
-            [
-                "test_chr21:1-23354000.bam.bai",
-                "test_chr21:24132499-24910998.bam.bai",
-                "test_chr21:25689497-46709983.bam.bai"
-            ]
+            {
+                "bam_bai": [
+                    [
+                        {
+                            "genomic_region": "chr21:1-23354000",
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test_chr21:1-23354000.bam",
+                        "test_chr21:1-23354000.bam.bai"
+                    ],
+                    [
+                        {
+                            "genomic_region": "chr21:24132499-24910998",
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test_chr21:24132499-24910998.bam",
+                        "test_chr21:24132499-24910998.bam.bai"
+                    ],
+                    [
+                        {
+                            "genomic_region": "chr21:25689497-46709983",
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test_chr21:25689497-46709983.bam",
+                        "test_chr21:25689497-46709983.bam.bai"
+                    ]
+                ]
+            }
         ],
-        "timestamp": "2026-07-15T09:20:57.409504266",
+        "timestamp": "2026-08-25T16:01:20.199518",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"

@@ -1,0 +1,241 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "nucleoatac_run"
+description: Call nucleosome positions and occupancy from paired-end ATAC-seq data
+keywords:
+  - atac-seq
+  - nucleosome
+  - occupancy
+  - positioning
+tools:
+  - nucleoatac:
+      description: "Python package for calling nucleosomes using ATAC-seq data"
+      homepage: "https://github.com/GreenleafLab/NucleoATAC"
+      documentation: "https://nucleoatac.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/GreenleafLab/NucleoATAC"
+      doi: "10.1101/gr.192294.115"
+      licence: ["MIT"]
+      identifier: "biotools:nucleoatac"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam:
+        type: file
+        description: Coordinate-sorted BAM file
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+    - bai:
+        type: file
+        description: BAM index file
+        pattern: "*.{bai,csi}"
+        ontologies: []
+    - bed:
+        type: file
+        description: Sorted non-overlapping BED file with regions for nucleosome analysis
+        pattern: "*.bed"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
+    - fasta:
+        type: file
+        description: Reference genome FASTA used for alignment
+        pattern: "*.{fa,fasta}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+    - fai:
+        type: file
+        description: FASTA index file
+        pattern: "*.fai"
+        ontologies: []
+output:
+  nucpos:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.nucpos.bed*":
+          type: file
+          description: Nucleosome dyad calls
+          pattern: "*.nucpos.bed*"
+          ontologies:
+            - edam: "http://edamontology.org/format_3003"
+  nucpos_redundant:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.nucpos.redundant.bed*":
+          type: file
+          description: Redundant nucleosome dyad calls
+          pattern: "*.nucpos.redundant.bed*"
+          ontologies:
+            - edam: "http://edamontology.org/format_3003"
+  nfrpos:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.nfrpos.bed*":
+          type: file
+          description: Nucleosome-free region positions
+          pattern: "*.nfrpos.bed*"
+          ontologies:
+            - edam: "http://edamontology.org/format_3003"
+  nucmap_combined:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.nucmap_combined.bed*":
+          type: file
+          description: Combined low- and high-resolution nucleosome calls
+          pattern: "*.nucmap_combined.bed*"
+          ontologies:
+            - edam: "http://edamontology.org/format_3003"
+  occpeaks:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.occpeaks.bed*":
+          type: file
+          description: Low-resolution nucleosome occupancy peaks
+          pattern: "*.occpeaks.bed*"
+          ontologies:
+            - edam: "http://edamontology.org/format_3003"
+  occupancy:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.occ.bedgraph*":
+          type: file
+          description: Nucleosome occupancy score bedGraph
+          pattern: "*.occ.bedgraph*"
+          ontologies:
+            - edam: "http://edamontology.org/format_3583"
+  occupancy_lower_bound:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.occ.lower_bound.bedgraph*":
+          type: file
+          description: Lower-bound nucleosome occupancy score bedGraph
+          pattern: "*.occ.lower_bound.bedgraph*"
+          ontologies:
+            - edam: "http://edamontology.org/format_3583"
+  occupancy_upper_bound:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.occ.upper_bound.bedgraph*":
+          type: file
+          description: Upper-bound nucleosome occupancy score bedGraph
+          pattern: "*.occ.upper_bound.bedgraph*"
+          ontologies:
+            - edam: "http://edamontology.org/format_3583"
+  signal:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.nucleoatac_signal.bedgraph*":
+          type: file
+          description: Normalized NucleoATAC cross-correlation signal bedGraph
+          pattern: "*.nucleoatac_signal.bedgraph*"
+          ontologies:
+            - edam: "http://edamontology.org/format_3583"
+  signal_smooth:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.nucleoatac_signal.smooth.bedgraph*":
+          type: file
+          description: Smoothed normalized NucleoATAC signal bedGraph
+          pattern: "*.nucleoatac_signal.smooth.bedgraph*"
+          ontologies:
+            - edam: "http://edamontology.org/format_3583"
+  fragment_sizes:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.fragmentsizes.txt":
+          type: file
+          description: Fragment size distribution in the input regions
+          pattern: "*.fragmentsizes.txt"
+          ontologies: []
+  nuc_dist:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.nuc_dist.txt":
+          type: file
+          description: Estimated nucleosomal fragment size distribution
+          pattern: "*.nuc_dist.txt"
+          ontologies: []
+  vmat:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.VMat":
+          type: file
+          description: Normalized V-plot matrix for cross-correlation
+          pattern: "*.VMat"
+          ontologies: []
+  plots:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.eps":
+          type: file
+          description: EPS diagnostic plots
+          pattern: "*.eps"
+          ontologies: []
+  versions_nucleoatac:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - nucleoatac:
+          type: string
+          description: The name of the tool
+      - nucleoatac --version | sed "s/^nucleoatac //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - nucleoatac:
+          type: string
+          description: The name of the tool
+      - nucleoatac --version | sed "s/^nucleoatac //":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@PFRoux"
+maintainers:
+  - "@PFRoux"

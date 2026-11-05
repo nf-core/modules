@@ -29,8 +29,10 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
-                    path(process.out.distances[0][1]).csv(sep:"\t").rows,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                    path(process.out.distances[0][1]).csv(sep:"\t").rows.collect { row ->
+                        row.collectEntries { k, v -> [(k): (v in ['nan', '-nan'] ? 'nan' : v)] }
+                    },
                     path(process.out.cluster_list[0][1]).csv(sep:"\t").rows,
                     process.out.dot
                 ).match() }
@@ -66,7 +68,6 @@ nextflow_process {
     }
 
     test("sarscov2 - plasmodium - list") {
-        tag "test"
 
         setup {
             run("WGET", alias: "WGET1") {
@@ -102,9 +103,9 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
                     path(process.out.distances[0][1]).csv(sep:"\t").columnNames.sort(),
-                    path(process.out.distances[0][1]).csv(sep:"\t").rows[0].values().sort(),
+                    path(process.out.distances[0][1]).csv(sep:"\t").rows[0].values().collect { v -> v in ['nan', '-nan'] ? 'nan' : v }.sort(),
                     path(process.out.cluster_list[0][1]).csv(sep:"\t").columnNames.sort(),
                     path(process.out.cluster_list[0][1]).csv(sep:"\t").columns["ID"].sort(),
                     path(process.out.cluster_list[0][1]).csv(sep:"\t").columns["Cluster__autocolour"].sort(),

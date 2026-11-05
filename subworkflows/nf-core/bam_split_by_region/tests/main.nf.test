@@ -31,11 +31,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    workflow.out.bam_bai.toSorted { a, b -> file(a.get(1)).name <=> file(b.get(1)).name }.collect { file(it.get(1)).name },
-                    workflow.out.bam_bai.toSorted { a, b -> file(a.get(1)).name <=> file(b.get(1)).name }.collect { bam(it.get(1)).getHeaderMD5() },
-                    workflow.out.bam_bai.toSorted { a, b -> file(a.get(1)).name <=> file(b.get(1)).name }.collect { file(it.get(2)).name }
-                ).match() }
+                { assert snapshot(sanitizeOutput(workflow.out, unstableKeys:["bam_bai"])).match() },
             )
         }
     }

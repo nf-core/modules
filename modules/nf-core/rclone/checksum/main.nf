@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RCLONE_CHECKSUM {
     tag "${meta.id}"
     label 'process_low'
@@ -29,9 +32,31 @@ process RCLONE_CHECKSUM {
     prefix = task.ext.prefix ?: "${meta.id}"
     def configArg = rclone_config ? "--config ${rclone_config}" : ''
 
+    def destinationString = destination.toString()
+    def normalizedDestination = destinationString.replaceFirst('^([a-zA-Z][a-zA-Z0-9+.-]*)://', '$1:')
+    def destinationHttpUrlArg = ''
+
+    if (destinationString ==~ /^https?:\/\/.*/) {
+        def destinationMatcher = (destinationString =~ /^(https?:\/\/[^\/]+)(\/.*)?$/)
+        if (!destinationMatcher.matches()) {
+            throw new IllegalArgumentException("Invalid HTTP(S) destination '${destinationString}' for sample '${meta.id}'.")
+        }
+        destinationHttpUrlArg = "--http-url '${destinationMatcher[0][1]}'"
+        normalizedDestination = ":http:${(destinationMatcher[0][2] ?: '/').replaceFirst('^/', '')}"
+    }
+
     """
+    touch \\
+        ${prefix}.combined.txt \\
+        ${prefix}.differ.txt \\
+        ${prefix}.missing_on_dst.txt \\
+        ${prefix}.missing_on_src.txt \\
+        ${prefix}.match.txt \\
+        ${prefix}.error.txt
+
     rclone checksum ${configArg} \\
         --copy-links \\
+        ${destinationHttpUrlArg} \\
         $args \\
         --combined ${prefix}.combined.txt \\
         --differ ${prefix}.differ.txt \\
@@ -42,7 +67,9 @@ process RCLONE_CHECKSUM {
         --checkers $task.cpus \\
         $hash \\
         $sumfile \\
-        ${destination} || echo \$? > ${prefix}.exit_code.txt
+        "${normalizedDestination}" \\
+        && echo 0 > ${prefix}.exit_code.txt \\
+        || echo \$? > ${prefix}.exit_code.txt
 
     sort -k2 ${prefix}.combined.txt -o ${prefix}.combined.txt
     sort ${prefix}.differ.txt -o ${prefix}.differ.txt

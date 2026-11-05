@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CALDER2 {
     tag "$meta.id"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-calder2:0.7--r43hdfd78af_1' :
-        'quay.io/biocontainers/r-calder2:0.7--r43hdfd78af_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b0/b0b8cc629084e7e837fed38f2633b51f9d54f5e3ea76625c762147d5f73366d7/data'
+        : 'community.wave.seqera.io/library/r-calder2:0.7--cce8a313df599b5d'}"
 
     input:
     tuple val(meta), path(cool)

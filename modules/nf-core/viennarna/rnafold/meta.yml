@@ -1,7 +1,5 @@
 name: "viennarna_rnafold"
-description: Predict RNA secondary structure using the ViennaRNA RNAfold tools.
-  Calculate minimum free energy secondary structures and partition function of
-  RNAs.
+description: Predict RNA secondary structure using the ViennaRNA RNAfold tools. Calculate minimum free energy secondary structures and partition function of RNAs.
 keywords:
   - RNA
   - fasta
@@ -83,3 +81,27 @@ authors:
   - "@kokul-atx"
 maintainers:
   - "@kokul-atx"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/viennarna:2.7.2--57c349bf20a41eac
+      build_id: bd-57c349bf20a41eac_1
+      scan_id: sc-7bc811c203663145_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/viennarna:2.7.2--6e8b02540b675a6c
+      build_id: bd-6e8b02540b675a6c_1
+      scan_id: sc-a66ad13df50b0c06_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/viennarna:2.7.2--53f2d9d6676a2a66
+      build_id: bd-53f2d9d6676a2a66_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ab/ab295700229a0167197d24bc8dbfaccd4d38221b6ec1d498436e9d5791fcc107/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/viennarna:2.7.2--8731ab37e9c410b1
+      build_id: bd-8731ab37e9c410b1_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/10/1048b2d5571e2deab1e43e6629bbe4e6c7e9d8780b9dfbf0d3e0f44adb131021/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/viennarna/rnafold/.conda-lock/linux_amd64-bd-6e8b02540b675a6c_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/viennarna/rnafold/.conda-lock/linux_arm64-bd-57c349bf20a41eac_1.txt
