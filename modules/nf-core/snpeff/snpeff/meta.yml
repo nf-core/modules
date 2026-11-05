@@ -40,6 +40,19 @@ input:
         description: |
           path to snpEff cache (optional)
         ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing canonical transcript list information
+          e.g. `[ id:'canon_list' ]`
+    - canon_list:
+        type: file
+        description: |
+          Optional. Headerless tab-separated `gene_id <TAB> transcript_id` file.
+          Restricts annotation to canonical transcripts, using the listed transcript as canonical for each listed gene.
+        pattern: "*.{txt,tsv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
   vcf:
     - - meta:
