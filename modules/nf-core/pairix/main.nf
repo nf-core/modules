@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PAIRIX {
     tag "$meta.id"
     label 'process_medium'
@@ -26,8 +29,6 @@ process PAIRIX {
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${pair}.px2
     """

@@ -182,3 +182,27 @@ authors:
   - "@vagkaratzas"
 maintainers:
   - "@vagkaratzas"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/carveme_scip:8b66c18ea3a4fb1b
+      build_id: bd-8b66c18ea3a4fb1b_1
+      scan_id: sc-da9aef8fdec54158_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/carveme_scip:78b0bcb418a06f19
+      build_id: bd-78b0bcb418a06f19_1
+      scan_id: sc-a8b55490419830ee_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/carveme_scip:9fbe586364e87ca1
+      build_id: bd-9fbe586364e87ca1_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/96/9662f19dc7815dd4aaaf24cd6b19c11a3b507e3b52a066d1557c77517fed9f47/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/carveme_scip:ef071b5448e559bb
+      build_id: bd-ef071b5448e559bb_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2c/2c0d183e443bf7c4f09b43603a455cf801af40b28e656376046025f90a4ba316/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/carveme/carve/.conda-lock/linux_amd64-bd-8b66c18ea3a4fb1b_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/carveme/carve/.conda-lock/linux_arm64-bd-78b0bcb418a06f19_1.txt

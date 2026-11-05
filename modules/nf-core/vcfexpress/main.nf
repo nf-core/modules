@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VCFEXPRESS {
     tag "$meta.id"
     label 'process_single'
@@ -10,6 +13,7 @@ process VCFEXPRESS {
     input:
     tuple val(meta), path(vcf)
     path(prelude) // optional : empty channel [] if not needed
+    val extension
 
     output:
     tuple val(meta), path("*.{vcf,vcf.gz,bcf,bcf.gz}"), emit: vcf
@@ -21,7 +25,7 @@ process VCFEXPRESS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_express"
-    def suffix = task.ext.suffix ?: 'vcf.gz'
+    def suffix = extension ?: 'vcf.gz'
     def lua_prelude = prelude ? "--lua-prelude $prelude" : ''
 
     """
@@ -35,7 +39,7 @@ process VCFEXPRESS {
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}_express"
-    def suffix = task.ext.suffix ?: 'vcf.gz'
+    def suffix = extension ?: 'vcf.gz'
 
     """
     echo $args

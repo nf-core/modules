@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PBMM2_ALIGN {
     tag "$meta.id"
     label 'process_high'
@@ -14,6 +17,7 @@ process PBMM2_ALIGN {
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.{bai,csi}"), emit: index, optional: true
     tuple val("${task.process}"), val('pbmm2'), eval("pbmm2 --version  | sed '1s/pbmm2 //;q'"), topic: versions, emit: versions_pbmm2
 
     when:
@@ -23,10 +27,21 @@ process PBMM2_ALIGN {
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
+    fasta="${fasta}"
+    if [[ \${fasta} == *.fna ]]; then
+        new_name=\${fasta%.fna}.fa
+        mv \${fasta} \${new_name}
+        fasta=\${new_name}
+    elif [[ \${fasta} == *.fna.gz ]]; then
+        new_name=\${fasta%.fna.gz}.fa.gz
+        mv \${fasta} \${new_name}
+        fasta=\${new_name}
+    fi
+
     pbmm2 \\
         align \\
         $args \\
-        $fasta \\
+        \${fasta} \\
         $bam \\
         ${prefix}.bam \\
         --num-threads ${task.cpus}
@@ -36,5 +51,6 @@ process PBMM2_ALIGN {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.bam
+    touch ${prefix}.bai
     """
 }

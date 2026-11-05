@@ -39,9 +39,7 @@ output:
             e.g. [ id:'sample1', single_end:false ]
       - "*.seqtk_stats.tsv":
           type: file
-          description: The output TSV file summarizing sequence statistics with
-            columns for sequence name, length, counts of A, C, G, T, and N bases,
-            and GC content percentage."
+          description: The output TSV file summarizing sequence statistics with columns for sequence name, length, counts of A, C, G, T, and N bases, and GC content percentage."
           pattern: "*.seqtk_stats.tsv"
 
           ontologies:
@@ -71,3 +69,27 @@ authors:
   - "@sainsachiko"
 maintainers:
   - "@sainsachiko"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/seqtk:1.4--20d400e8a7f5eb7e
+      build_id: bd-20d400e8a7f5eb7e_1
+      scan_id: sc-3863a472a1da47de_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/seqtk:1.4--3fa479d3961a5b8d
+      build_id: bd-3fa479d3961a5b8d_1
+      scan_id: sc-ce4f3c5be9ad8af2_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/seqtk:1.4--8d54b40dc573ee9c
+      build_id: bd-8d54b40dc573ee9c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2d/2dae00435c9dff9202076069bf0d252db26a3e8c708741f17b5fbd053886ff9a/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/seqtk:1.4--dd03f6cad911cec9
+      build_id: bd-dd03f6cad911cec9_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b2/b218d2e8e3c7a6464b397655a8e7277071ca34e69c8bd0cf7432d0a6c66b150c/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/seqtk/comp/.conda-lock/linux_amd64-bd-3fa479d3961a5b8d_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/seqtk/comp/.conda-lock/linux_arm64-bd-20d400e8a7f5eb7e_1.txt

@@ -90,3 +90,27 @@ authors:
   - "@rpetit3"
 maintainers:
   - "@rpetit3"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/bio_hansel_numpy_pandas_python_setuptools:8b7b45f953ff9526
+      build_id: bd-8b7b45f953ff9526_1
+      scan_id: sc-63ebd4f30dce6516_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/bio_hansel_numpy_pandas_python_setuptools:7c4db842c7382657
+      build_id: bd-7c4db842c7382657_1
+      scan_id: sc-7ec43b58f153f10e_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bio_hansel_numpy_pandas_python_setuptools:b9961768d928877f
+      build_id: bd-b9961768d928877f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/61/61577ddf1d5f46bc0ca02b85ebf1a3a07fb20b07e2292fe180231b65490ee351/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bio_hansel_numpy_pandas_python_setuptools:ac26e123d3e6ff37
+      build_id: bd-ac26e123d3e6ff37_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b1/b1a531965c239cfcd2a4055dbd1258e5dc24fe06da4393df52d9102de0e1100e/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/biohansel/.conda-lock/linux_amd64-bd-7c4db842c7382657_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/biohansel/.conda-lock/linux_arm64-bd-8b7b45f953ff9526_1.txt
