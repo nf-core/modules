@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "fairbioheaders_validate"
 description: |
   Validate standalone FAIR-bioHeaders metadata (FHR, FHP or FHGFF3, as JSON, YAML or
@@ -16,8 +15,7 @@ keywords:
   - yaml
 tools:
   - "fair-bioheaders":
-      description: "Toolkit to validate, convert, combine, strip and verify FAIR-bioHeaders
-        (FHR, FHP, FHGFF3) provenance metadata embedded in FASTA, GFA and GFF3 headers"
+      description: "Toolkit to validate, convert, combine, strip and verify FAIR-bioHeaders (FHR, FHP, FHGFF3) provenance metadata embedded in FASTA, GFA and GFF3 headers"
       homepage: "https://github.com/FAIR-bioHeaders/FAIR-bioHeaders-Tools"
       documentation: "https://github.com/FAIR-bioHeaders/FAIR-bioHeaders-Tools#readme"
       tool_dev_url: "https://github.com/FAIR-bioHeaders/FAIR-bioHeaders-Tools"
@@ -75,33 +73,33 @@ topics:
       - bioheaders --version:
           type: eval
           description: The expression to obtain the version of the tool
-containers:
-  docker:
-    linux/amd64:
-      name: community.wave.seqera.io/library/fair-bioheaders:0.8.5--e659fa573f6f4d5b
-      build_id: bd-e659fa573f6f4d5b_1
-      scan_id: sc-1e836063ec7c6163_1
-    linux/arm64:
-      name: community.wave.seqera.io/library/fair-bioheaders:0.8.5--9277f43f2a9e1018
-      build_id: bd-9277f43f2a9e1018_1
-      scan_id: sc-2567c823c23179aa_1
-  singularity:
-    linux/arm64:
-      name: oras://community.wave.seqera.io/library/fair-bioheaders:0.8.5--956dd02a49e9f6ce
-      build_id: bd-956dd02a49e9f6ce_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/00/00f13158b549a22c139457189f4766990259aa200d406a9c7d7861ed07e56d2b/data
-    linux/amd64:
-      name: oras://community.wave.seqera.io/library/fair-bioheaders:0.8.5--7041c0efcf0bfd58
-      build_id: bd-7041c0efcf0bfd58_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d0/d07f6d7a9ec156ba40d7b5c2b4f2f1685aea26601fdcec7252f3146fc61fceb0/data
-  conda:
-    linux/amd64:
-      lock_file: modules/nf-core/fairbioheaders/validate/.conda-lock/linux_amd64-bd-e659fa573f6f4d5b_1.txt
-    linux/arm64:
-      lock_file: modules/nf-core/fairbioheaders/validate/.conda-lock/linux_arm64-bd-9277f43f2a9e1018_1.txt
 authors:
   - "@molikd"
   - "@adamjohnwright"
 maintainers:
   - "@molikd"
   - "@adamjohnwright"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/fair-bioheaders:0.9.0--1ff11621d7e9a7c8
+      build_id: bd-1ff11621d7e9a7c8_1
+      scan_id: sc-94d51cd9641c2d5a_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/fair-bioheaders:0.9.0--71029206d3ce1119
+      build_id: bd-71029206d3ce1119_1
+      scan_id: sc-96639927185509c4_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/fair-bioheaders:0.9.0--85ff19c0d1de6e1f
+      build_id: bd-85ff19c0d1de6e1f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3a/3a69700529d3e088166672547fbd632315145414a75ee81a1686e1208038a937/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/fair-bioheaders:0.9.0--bd870dcf0291b69f
+      build_id: bd-bd870dcf0291b69f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/86/862c484484f878e5a99c0ee038f1e03206cac16d3f1763ae65a0663762a19f93/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/fairbioheaders/validate/.conda-lock/linux_amd64-bd-71029206d3ce1119_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/fairbioheaders/validate/.conda-lock/linux_arm64-bd-1ff11621d7e9a7c8_1.txt

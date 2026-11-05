@@ -6,9 +6,9 @@ process FAIRBIOHEADERS_VALIDATE {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d0/d07f6d7a9ec156ba40d7b5c2b4f2f1685aea26601fdcec7252f3146fc61fceb0/data'
-        : 'community.wave.seqera.io/library/fair-bioheaders:0.8.5--e659fa573f6f4d5b' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3a/3a69700529d3e088166672547fbd632315145414a75ee81a1686e1208038a937/data'
+        : 'community.wave.seqera.io/library/fair-bioheaders:0.9.0--71029206d3ce1119'}"
 
     input:
     tuple val(meta), path(metadata)
@@ -23,22 +23,20 @@ process FAIRBIOHEADERS_VALIDATE {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    def quote = { value -> "'" + value.toString().replace("'", "'\\''") + "'" }
     // A group, not a pipe, so that invalid metadata fails the task.
     """
     {
-        printf 'file: %s\\n' ${quote.call(metadata)}
+        printf 'file: %s\\n' ${metadata}
         bioheaders \\
             validate \\
             ${args} \\
-            ${quote.call(metadata)}
-    } > ${quote.call("${prefix}.validate.txt")}
+            ${metadata}
+    } > ${prefix}.validate.txt
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    def quote = { value -> "'" + value.toString().replace("'", "'\\''") + "'" }
     """
-    touch ${quote.call("${prefix}.validate.txt")}
+    touch ${prefix}.validate.txt
     """
 }
