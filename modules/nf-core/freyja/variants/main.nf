@@ -13,8 +13,7 @@ process FREYJA_VARIANTS {
 
     input:
     tuple val(meta), path(bam)
-    path fasta
-    path fai
+    tuple val(meta), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("*.variants.tsv"), path("*.depth.tsv"), emit: variants
