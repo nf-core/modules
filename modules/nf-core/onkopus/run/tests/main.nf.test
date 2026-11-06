@@ -1,0 +1,67 @@
+nextflow_process {
+
+    name "Test Process ONKOPUS_RUN"
+    script "../main.nf"
+    process "ONKOPUS_RUN"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "onkopus"
+    tag "onkopus/run"
+
+    test("homo_sapiens - vcf - hg38 - clinvar") {
+
+        when {
+            params {
+                module_args = "-m clinvar"
+            }
+            process {
+                """
+                input[0] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pharmcat/test.chr22.single.sample.vcf.gz', checkIfExists: true)
+                ])
+                input[1] = 'hg38'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    file(process.out.vcf[0][1]).name + ",variantsMD5:" + path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    sanitizeOutput(process.out).findAll { key, val -> key != 'vcf' }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - vcf - hg38 - clinvar - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = "-m clinvar"
+            }
+            process {
+                """
+                input[0] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/pharmcat/test.chr22.single.sample.vcf.gz', checkIfExists: true)
+                ])
+                input[1] = 'hg38'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}
