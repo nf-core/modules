@@ -13,7 +13,10 @@ process GPROFILER2_GCONVERT {
     output:
     tuple val(meta), path("*.gprofiler2.gconvert.tsv"), emit: converted_ids
     tuple val(meta), path("*R_sessionInfo.log")        , emit: session_info
-    path "versions.yml"                                , emit: versions, topic: versions
+    tuple val("${task.process}"), val("r-base")        , eval("Rscript -e 'cat(as.character(getRversion()))'")                                     , topic: versions, emit: versions_rbase
+    tuple val("${task.process}"), val("r-nfcore.utils"), eval("Rscript -e 'cat(as.character(packageVersion(\"nfcore.utils\")))'")                   , topic: versions, emit: versions_nfcoreutils
+    tuple val("${task.process}"), val("r-gprofiler2")  , eval("Rscript -e 'cat(as.character(packageVersion(\"gprofiler2\")))'")                     , topic: versions, emit: versions_gprofiler2
+    tuple val("${task.process}"), val("gprofiler-data"), eval("Rscript -e 'cat(gprofiler2::get_version_info()[[\"gprofiler_version\"]])'")          , topic: versions, emit: versions_gprofilerdata
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,16 +29,8 @@ process GPROFILER2_GCONVERT {
     """
     touch ${prefix}.gprofiler2.gconvert.tsv
 
-    Rscript -e "nfcore.utils::process_end(
-        packages = list('r-gprofiler2' = 'gprofiler2'),
-        task_name = '${task.process}',
-        versions_path = 'versions.yml',
+    Rscript -e "nfcore.utils::create_log_session_info(
         log_path = '${prefix}.R_sessionInfo.log'
-    )"
-    Rscript -e "write(
-        paste0('    gprofiler-data: ', gprofiler2::get_version_info()[['gprofiler_version']]),
-        file = 'versions.yml',
-        append = TRUE
     )"
     """
 }

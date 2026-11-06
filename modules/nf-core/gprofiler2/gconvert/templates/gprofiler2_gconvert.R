@@ -143,25 +143,11 @@ if (length(query) > 0) {
 
 ################################################
 ################################################
-## R SESSION INFO AND VERSIONS FILE           ##
+## R SESSION INFO                             ##
 ################################################
 ################################################
 
 create_log_session_info()
-
-create_versions_yml(
-    packages = list("r-gprofiler2" = "gprofiler2"),
-    task_name = '$task.process',
-    versions_path = "versions.yml"
-)
-
-gprofiler_data.version <- gprofiler2::get_version_info(opt[["organism"]])[["gprofiler_version"]]
-
-write(
-    paste0('    gprofiler-data: ', gprofiler_data.version),
-    file = "versions.yml",
-    append = TRUE
-)
 
 ################################################
 ################################################

@@ -55,19 +55,84 @@ output:
           description: R session information.
           pattern: "*R_sessionInfo.log"
           ontologies: []
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+  versions_rbase:
+    - - ${task.process}:
+          type: string
+          description: The process
+      - r-base:
+          type: string
+          description: The tool name
+      - "Rscript -e 'cat(as.character(getRversion()))'":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_nfcoreutils:
+    - - ${task.process}:
+          type: string
+          description: The process
+      - r-nfcore.utils:
+          type: string
+          description: The tool name
+      - "Rscript -e 'cat(as.character(packageVersion(\"nfcore.utils\")))'":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_gprofiler2:
+    - - ${task.process}:
+          type: string
+          description: The process
+      - r-gprofiler2:
+          type: string
+          description: The tool name
+      - "Rscript -e 'cat(as.character(packageVersion(\"gprofiler2\")))'":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_gprofilerdata:
+    - - ${task.process}:
+          type: string
+          description: The process
+      - gprofiler-data:
+          type: string
+          description: The tool name
+      - "Rscript -e 'cat(gprofiler2::get_version_info()[[\"gprofiler_version\"]])'":
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
-    - versions.yml:
-        type: file
-        description: YAML file containing versions of tools used in the module
-        ontologies: []
+    - - ${task.process}:
+          type: string
+          description: The process
+      - r-base:
+          type: string
+          description: The tool name
+      - "Rscript -e 'cat(as.character(getRversion()))'":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process
+      - r-nfcore.utils:
+          type: string
+          description: The tool name
+      - "Rscript -e 'cat(as.character(packageVersion(\"nfcore.utils\")))'":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process
+      - r-gprofiler2:
+          type: string
+          description: The tool name
+      - "Rscript -e 'cat(as.character(packageVersion(\"gprofiler2\")))'":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process
+      - gprofiler-data:
+          type: string
+          description: The tool name
+      - "Rscript -e 'cat(gprofiler2::get_version_info()[[\"gprofiler_version\"]])'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@Schansiate"
 maintainers:
