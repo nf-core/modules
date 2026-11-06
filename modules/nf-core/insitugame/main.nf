@@ -17,6 +17,7 @@ process INSITUGAME {
     tuple val(meta), path("${prefix}_results.json"), emit: results
     tuple val(meta), path("${prefix}_tables.csv"), emit: tables
     tuple val("${task.process}"), val('insitugame'), eval("python -c \"import importlib.metadata; print(importlib.metadata.version('insitugame'))\""), topic: versions, emit: versions_insitugame
+    tuple val("${task.process}"), val('gzip'), eval("gzip --version 2>&1 | sed '1!d;s/gzip //'"), topic: versions, emit: versions_gzip
 
     when:
     task.ext.when == null || task.ext.when
