@@ -1,0 +1,82 @@
+nextflow_process {
+
+    name "Test Process PMLST_PREPARE_PMLST_DB"
+    script "../main.nf"
+    process "PMLST_PREPARE_PMLST_DB"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pmlst"
+    tag "pmlst/prepare_pmlst_db"
+    tag "wget"
+    tag "untar"
+
+    test("pmlst db prepare") {
+
+        setup {
+            run("WGET", alias: "WGET_PMLST_DB") {
+                script "modules/nf-core/wget/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id: 'pmlst_db' ],
+                        'https://bitbucket.org/genomicepidemiology/pmlst_db/get/master.tar.gz'
+                    ]
+                    """
+                }
+            }
+
+            run("UNTAR", alias: "UNTAR_PMLST_DB") {
+                script "modules/nf-core/untar/main.nf"
+                process {
+                    """
+                    input[0] = WGET_PMLST_DB.out.outfile
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = UNTAR_PMLST_DB.out.untar
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("pmlst db prepare - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                def pmlst_db = file("pmlst_db")
+                pmlst_db.mkdirs()
+                input[0] = [[id:'test'], pmlst_db]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+
+    }
+}
