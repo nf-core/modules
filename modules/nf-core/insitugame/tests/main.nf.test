@@ -52,6 +52,28 @@ nextflow_process {
 
     }
 
+    test("spatial - csv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_csv' ],
+                    file(params.modules_testdata_base_path + "spatial_omics/insitugame/insitugame.csv", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() },
+            )
+        }
+
+    }
+
     test("spatial - tsv - stub") {
 
         options "-stub"
