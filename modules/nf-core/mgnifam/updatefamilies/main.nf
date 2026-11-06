@@ -6,9 +6,9 @@ process MGNIFAM_UPDATEFAMILIES {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mgnifam:4.0.0--pyhdfd78af_0' :
-        'quay.io/biocontainers/mgnifam:4.0.0--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/07/07d734ffff975d82e7381943964ea0b875606d69d7f3b3c35d1488833fff960b/data'
+        : 'community.wave.seqera.io/library/mgnifam:4.1.0--818ca9d3b99bfbca'}"
 
     input:
     tuple val(meta), path(hmms, stageAs: 'hmm_input/*'), path(fasta_file), path(fasta_index)
