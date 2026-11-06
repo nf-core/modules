@@ -137,11 +137,13 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
             ]
         }
 
+    ch_fasta_fai_dict = ch_fasta
+        .join(ch_fai.map { meta, fai, _gzi -> [meta, fai] }, failOnDuplicate: true, failOnMismatch: true)
+        .join(ch_dict, failOnDuplicate: true, failOnMismatch: true)
+
     GATK4_FILTERMUTECTCALLS(
         ch_filtermutect_in,
-        ch_fasta,
-        ch_fai.map { meta, fai, _gzi -> [meta, fai] },
-        ch_dict,
+        ch_fasta_fai_dict,
     )
 
     emit:
