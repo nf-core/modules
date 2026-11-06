@@ -2,7 +2,7 @@
 // See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
 
 process SPATIALCONTINUUM_CRICALC {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
@@ -29,12 +29,11 @@ process SPATIALCONTINUUM_CRICALC {
         --tp53 "${tp53}" \\
         --rb1 "${rb1}" \\
         --stroma "${stroma}" \\
-        $args \\
+        ${args} \\
         > ${prefix}_cri_report.txt
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_cri_report.txt
