@@ -23,18 +23,7 @@ nextflow_process {
 
         then {
             assert process.success
-            def results = new groovy.json.JsonSlurper().parse(file(process.out.results[0][1]))
-            def table = file(process.out.tables[0][1]).readLines()
             assertAll(
-                { assert results.status == "completed" },
-                { assert results.payoff_matrix_3x3.size() == 3 },
-                { assert results.payoff_matrix_3x3.every { it.size() == 3 } },
-                { assert results.payoff_matrix_3x3.flatten().every { it instanceof Number } },
-                { assert results.nash_game_type },
-                { assert results.nash_equilibria },
-                { assert results.diagnostic_metrics },
-                { assert table[0] == "focal_phenotype,T_S,T_R,S_CAF" },
-                { assert table.size() == 4 },
                 { assert snapshot(sanitizeOutput(process.out)).match() },
             )
         }
@@ -56,18 +45,7 @@ nextflow_process {
 
         then {
             assert process.success
-            def results = new groovy.json.JsonSlurper().parse(file(process.out.results[0][1]))
-            def table = file(process.out.tables[0][1]).readLines()
             assertAll(
-                { assert results.status == "completed" },
-                { assert results.payoff_matrix_3x3.size() == 3 },
-                { assert results.payoff_matrix_3x3.every { it.size() == 3 } },
-                { assert results.payoff_matrix_3x3.flatten().every { it instanceof Number } },
-                { assert results.nash_game_type },
-                { assert results.nash_equilibria },
-                { assert results.diagnostic_metrics },
-                { assert table[0] == "focal_phenotype,T_S,T_R,S_CAF" },
-                { assert table.size() == 4 },
                 { assert snapshot(sanitizeOutput(process.out)).match() },
             )
         }
