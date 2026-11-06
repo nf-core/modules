@@ -28,14 +28,17 @@ nextflow_workflow {
                     [ id:'test', single_end:false ], // meta map
                       file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                 ])
-                input[1] = Channel.of([file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
-                input[2] = Channel.of([file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)])
-                input[3] = false
-                input[4] = 3
-                input[5] = 'freyja_db'
+                input[1] = Channel.of([
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ])
+                input[2] = false
+                input[3] = 3
+                input[4] = 'freyja_db'
+                input[5] = []
                 input[6] = []
                 input[7] = []
-                input[8] = []
                 """
             }
         }
@@ -81,14 +84,17 @@ nextflow_workflow {
                     [ id:'test', single_end:false ], // meta map
                       file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                 ])
-                input[1] = Channel.of([file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
-                input[2] = Channel.of([file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)])
-                input[3] = false
-                input[4] = 3
-                input[5] = 'test_db'
-                input[6] = FREYJA_UPDATE.out.barcodes
-                input[7] = FREYJA_UPDATE.out.lineages_meta
-                input[8] = FREYJA_UPDATE.out.lineages_topology
+                input[1] = Channel.of([
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ])
+                input[2] = false
+                input[3] = 3
+                input[4] = 'test_db'
+                input[5] = FREYJA_UPDATE.out.barcodes
+                input[6] = FREYJA_UPDATE.out.lineages_meta
+                input[7] = FREYJA_UPDATE.out.lineages_topology
                 """
             }
         }
@@ -123,14 +129,17 @@ nextflow_workflow {
                     [ id:'test', single_end:false ], // meta map
                       file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                 ])
-                input[1] = Channel.of([file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
-                input[2] = Channel.of([file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)])
-                input[3] = true     // skip bootstrapping
-                input[4] = 0
-                input[5] = 'test_db'
+                input[1] = Channel.of([
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ])
+                input[2] = true     // skip bootstrapping
+                input[3] = 0
+                input[4] = 'test_db'
+                input[5] = []
                 input[6] = []
                 input[7] = []
-                input[8] = []
                 """
             }
         }
@@ -161,14 +170,17 @@ nextflow_workflow {
                     [ id:'test', single_end:false ], // meta map
                       file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
                 ])
-                input[1] = Channel.of([file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
-                input[2] = Channel.of([file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)])
-                input[3] = false
-                input[4] = 3
-                input[5] = 'freyja_db'
+                input[1] = Channel.of([
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ])
+                input[2] = false
+                input[3] = 3
+                input[4] = 'freyja_db'
+                input[5] = []
                 input[6] = []
                 input[7] = []
-                input[8] = []
                 """
             }
         }

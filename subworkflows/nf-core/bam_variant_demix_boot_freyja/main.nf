@@ -10,7 +10,7 @@ workflow BAM_VARIANT_DEMIX_BOOT_FREYJA {
 
     take:
     ch_bam               // channel: [ val(meta), path(bam) ]
-    ch_fasta_fai             // channel: [ val(meta), path(fasta), path(fai) ]
+    ch_fasta_fai         // channel: [ val(meta), path(fasta), path(fai) ]
     val_skip_boot        // value skip_boot
     val_repeats          // value repeats
     val_db_name          // string db_name
