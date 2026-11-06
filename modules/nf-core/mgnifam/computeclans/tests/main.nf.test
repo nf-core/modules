@@ -1,0 +1,132 @@
+nextflow_process {
+
+    name "Test Process MGNIFAM_COMPUTECLANS"
+    script "../main.nf"
+    process "MGNIFAM_COMPUTECLANS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mgnifam"
+    tag "mgnifam/computeclans"
+    tag "mgnifam/generatefamilies"
+
+    config "./nextflow.config"
+
+    test("mgnify - [ families_tsv ] - faa") {
+
+        setup {
+            run("MGNIFAM_GENERATEFAMILIES") {
+                script "../../generatefamilies/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins_trimmed_clustering.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true),
+                        []
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = MGNIFAM_GENERATEFAMILIES.out.tsv.map { meta, tsv ->
+                    [
+                        meta,
+                        tsv,
+                        file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true)
+                    ]
+                }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                // "log" contains timings and the scratch path
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
+            )
+        }
+
+    }
+
+    test("mgnify - [ families_tsv, families_tsv ] - faa") {
+
+        setup {
+            run("MGNIFAM_GENERATEFAMILIES") {
+                script "../../generatefamilies/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins_trimmed_clustering.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true),
+                        []
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = MGNIFAM_GENERATEFAMILIES.out.tsv.map { meta, tsv ->
+                    [
+                        meta,
+                        [ tsv, tsv.copyTo(tsv.parent.resolve('copy_' + tsv.name)) ],
+                        file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true)
+                    ]
+                }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
+            )
+        }
+
+    }
+
+    test("mgnify - [ families_tsv ] - faa - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins_trimmed_clustering.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
