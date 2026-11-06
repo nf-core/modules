@@ -6,9 +6,9 @@ process FUSIONINSPECTOR {
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/97/974f93a02c730f5a9dfe45d9265a67db4caa362dae070102164b1a942c025d9b/data' :
-        'community.wave.seqera.io/library/fusion-inspector_gzip_igv-reports_perl-json-xs_pruned:d8f08a9b21d3399a'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bd/bd1e83e196b8989930525832da96ad1535bb36ef04ea5cba53be98c371b58a87/data'
+        : 'community.wave.seqera.io/library/fusion-inspector_igv-reports_perl-json-xs_pysam_pruned:9f1b4c0a736e1d8a'}"
 
     input:
     tuple val(meta), path(reads), path(fusion_list)
