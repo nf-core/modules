@@ -1,0 +1,42 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
+process HAMRONIZATION_RESFINDER {
+    tag "${meta.id}"
+    label 'process_single'
+
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/hamronization:1.3.1--pyhdfd78af_0':
+        'quay.io/biocontainers/hamronization:1.3.1--pyhdfd78af_0' }"
+
+    input:
+    tuple val(meta), path(report)
+    val format
+
+    output:
+    tuple val(meta), path("*.json"), optional: true, emit: json
+    tuple val(meta), path("*.tsv"), optional: true, emit: tsv
+    tuple val("${task.process}"), val('hamronization'), eval("hamronize --version 2>&1 | sed 's/hamronize //'"), topic: versions, emit: versions_hamronization
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    hamronize \\
+        resfinder \\
+        ${report} \\
+        ${args} \\
+        --format ${format} \\
+        > ${prefix}.${format}
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.${format}
+    """
+}
