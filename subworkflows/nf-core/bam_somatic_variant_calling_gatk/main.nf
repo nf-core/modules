@@ -93,24 +93,15 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
 
     // Contamination and segmentation tables created using calculatecontamination on the pileup summary table
     ch_calculatecontamination_in = GATK4_GETPILEUPSUMMARIES.out.table
-            .map { meta, table ->
-                tuple(
-                    meta.original_meta,
-                    [(meta.id.endsWith('_tumor') ? 'tumor' : 'normal'): table]
-                )
-            }
-            .groupTuple()
-            // Ensure the correct order of the tables (tumor first, normal second)
-            .map { meta, table_maps ->
-
-                def tables = table_maps.sum([:])
-
-                tuple(
-                    meta,
-                    tables.tumor,
-                    tables.normal ? tables.normal : []
-                )
-            }
+    .map { meta, table ->
+        def type = meta.id.endsWith('_tumor') ? 'tumor' : 'normal'
+        [ meta.original_meta, type, table ]
+    }
+    .groupTuple()
+    .map { meta, types, tables ->
+        def by_type = [types, tables].transpose().collectEntries()
+        [ meta, by_type.tumor, by_type.get('normal', []) ]
+    }
 
     GATK4_CALCULATECONTAMINATION(ch_calculatecontamination_in)
 
