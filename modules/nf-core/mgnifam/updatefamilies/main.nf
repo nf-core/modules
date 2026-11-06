@@ -35,7 +35,7 @@ process MGNIFAM_UPDATEFAMILIES {
     script:
     def args  = task.ext.args ?: ''
     prefix    = task.ext.prefix ?: "${meta.id}"
-    def index = fasta_index ? "--fasta_index ${fasta_index}" : ''
+    def index = fasta_index ? "--fasta_index \"${fasta_index}\"" : ''
     """
     lib_file=\$(find hmm_input -maxdepth 1 -name '*.hmm.lib*' -print -quit)
 

@@ -34,14 +34,14 @@ process MGNIFAM_GENERATEFAMILIES {
     script:
     def args  = task.ext.args ?: ''
     prefix    = task.ext.prefix ?: "${meta.id}"
-    def index = fasta_index ? "--fasta_index ${fasta_index}" : ''
+    def index = fasta_index ? "--fasta_index \"${fasta_index}\"" : ''
     """
     mgnifam generate_families \\
-        --clusters_chunk ${clustering} \\
-        --fasta_file ${fasta_file} \\
-        --output_dir ${prefix} \\
+        --clusters_chunk "${clustering}" \\
+        --fasta_file "${fasta_file}" \\
+        --output_dir "${prefix}" \\
         --cpus ${task.cpus} \\
-        --chunk_id ${prefix} \\
+        --chunk_id "${prefix}" \\
         ${index} \\
         ${args}
     """
