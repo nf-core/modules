@@ -219,7 +219,7 @@ nextflow_process {
                     "--max_seq_identity 0.7 " +                          // 0.8
                     "--max_seed_seqs 1000 " +                            // 2000
                     "--max_gap_occupancy 0.6 " +                         // 0.5
-                    "--batch_size 4 " +                                  // 2 * cpus
+                    "--batch_size 4 " +                                  // 0 (2 * cpus)
                     "--prefetch_targets " +                              // off
                     "--skip_refine"                                      // off
             }

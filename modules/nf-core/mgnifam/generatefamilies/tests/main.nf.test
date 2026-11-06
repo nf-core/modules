@@ -167,7 +167,7 @@ nextflow_process {
                     "--max_gap_occupancy 0.6 " +               // 0.5
                     "--recruit_evalue_cutoff 0.01 " +          // 0.001
                     "--recruit_hit_length_percentage 0.8 " +   // 0.9
-                    "--batch_size 4 " +                        // 0
+                    "--batch_size 4 " +                        // 0 (2 * cpus)
                     "--prefetch_targets"                       // off
             }
             process {
