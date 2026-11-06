@@ -7,8 +7,8 @@ process KAIJU_KAIJU {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/kaiju:1.10.0--h43eeafb_0'
-        : 'quay.io/biocontainers/kaiju:1.10.0--h43eeafb_0'}"
+        ? 'https://depot.galaxyproject.org/singularity/kaiju:1.10.3--h5814d7d_0'
+        : 'quay.io/biocontainers/kaiju:1.10.3--h5814d7d_0'}"
 
     input:
     tuple val(meta), path(reads)
