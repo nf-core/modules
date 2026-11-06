@@ -54,7 +54,10 @@ nextflow_process {
             assert process.success
             assertAll(
                 // "log" contains wall-clock timestamps
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["log"]),
+                    file(process.out.log[0][1]).readLines()[0].findAll(/(?:skip_refine|prefetch|index)=\S+/)
+                ).match() }
             )
         }
 
@@ -101,7 +104,10 @@ nextflow_process {
             assertAll(
                 // "log" has timestamps; "converged" is empty under --skip_refine,
                 // and nf-core lint rejects empty-file md5s
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log", "converged"])).match() }
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["log", "converged"]),
+                    file(process.out.log[0][1]).readLines()[0].findAll(/(?:skip_refine|prefetch|index)=\S+/)
+                ).match() }
             )
         }
 
@@ -158,7 +164,10 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert file(process.out.log[0][1]).readLines()[0].endsWith("index=mgnify_proteins.faa.ssi") },
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["log"]),
+                    file(process.out.log[0][1]).readLines()[0].findAll(/(?:skip_refine|prefetch|index)=\S+/)
+                ).match() }
             )
         }
 
