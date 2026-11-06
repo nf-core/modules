@@ -24,11 +24,13 @@ process INSITUGAME {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    def input_file = spatial_data.name.endsWith('.gz') ? 'input.tsv' : spatial_data
+    def decompress = spatial_data.name.endsWith('.gz') ? "gzip -dc ${spatial_data} > ${input_file}" : ''
     """
-    python -c 'import csv, gzip, pathlib, sys; p=pathlib.Path("${spatial_data}"); f=(gzip.open if p.suffix == ".gz" else open)(p, "rt", newline=""); first=f.readline(); f.seek(0); h=next(csv.reader(f, delimiter="\\t" if "\\t" in first else ",")); required={"T_S":{"T_S","Sensitive"},"T_R":{"T_R","Resistant"},"S_CAF":{"S_CAF","Stroma"},"FITNESS":{"FITNESS","Fitness"},"HYPOXIA":{"HYPOXIA","Hypoxia"},"VASCULAR":{"VASCULAR","Vascular"}}; missing=[key for key, names in required.items() if not names.intersection(h)]; sys.exit("Missing required marker columns: " + ", ".join(missing) if missing else 0)'
+    ${decompress}
     insitugame \\
         ${args} \\
-        --input "${spatial_data}" \\
+        --input "${input_file}" \\
         --output-prefix "${prefix}"
     """
 
