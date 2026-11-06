@@ -25,14 +25,14 @@ input:
           e.g. `[ id:'sample1' ]`
     - members:
         type: file
-        description: One or more headerless TSV files (plain or gzipped) of family members, one family<TAB>member pair per line (e.g. `<chunk>_families.tsv` from mgnifam/generatefamilies). Members are regions (`sequence/start-end`) or bare protein names
+        description: Headerless family<TAB>member TSV files (plain or gzipped), e.g. from mgnifam/generatefamilies
         pattern: "*.{tsv,tsv.gz}"
         ontologies:
           - edam: http://edamontology.org/format_3475 # TSV
           - edam: http://edamontology.org/format_3989 # GZIP format
     - fasta_file:
         type: file
-        description: Optional. FASTA file of the protein sequence database, required when any member is a bare protein name
+        description: Optional. Protein FASTA file, required when members are bare protein names
         pattern: "*.{fa,fasta,faa}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
@@ -45,7 +45,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - ${prefix}/${prefix}_clans.csv:
           type: file
-          description: Clan assignment of each family, with columns `clan_id,family_id,is_representative`
+          description: Clan assignment of each family
           pattern: "*/*_clans.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
@@ -57,7 +57,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - ${prefix}/${prefix}_clan_edges.csv:
           type: file
-          description: Pairwise family similarities, with columns `family_1,family_2,shared_proteins,protein_jaccard,residue_jaccard,residue_containment`
+          description: Pairwise family similarity metrics
           pattern: "*/*_clan_edges.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
@@ -81,7 +81,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - ${prefix}/${prefix}_clans_summary.json:
           type: file
-          description: Summary of the run - command, version, chunk ID, parameters and counts
+          description: Run summary with parameters and counts
           pattern: "*/*_clans_summary.json"
           ontologies:
             - edam: http://edamontology.org/format_3464 # JSON
