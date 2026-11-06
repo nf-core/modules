@@ -7,9 +7,9 @@ process CANU {
 
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/canu:2.3--h3fb4750_1':
-        'quay.io/biocontainers/canu:2.3--h3fb4750_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2c/2c4614cb3b913e993e9e543be76bafaf92f7dbbad8ea7156941ec33632c2e7af/data'
+        : 'community.wave.seqera.io/library/canu_minimap2_samtools:995ba74386646698'}"
 
     input:
     tuple val(meta), path(reads)
