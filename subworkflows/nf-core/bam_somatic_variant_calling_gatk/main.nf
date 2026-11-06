@@ -61,14 +61,20 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
     ch_getpileupsummaries_in = ch_input
         .flatMap { meta, tumor_input, tumor_input_index, normal_input, normal_input_index ->
             def result = [
-                [[id: "${meta.id}_tumor", original_meta: meta], // Add unique meta.id to ensure output files from GATK4_GETPILEUPSUMMARIES receive different names for the tumor and normal samples
+                [[
+                    id: "${meta.id}_tumor", // Add unique meta.id to ensure output files from GATK4_GETPILEUPSUMMARIES receive different names for the tumor and normal samples
+                    sample_type: 'tumor', // Add sample type to facilitate correct ordering for GATK4_CALCULATECONTAMINATION
+                    original_meta: meta],
                 tumor_input,
                 tumor_input_index]
                 ]
 
             if (normal_input && normal_input_index) {
                 result << [
-                    [id: "${meta.id}_normal", original_meta: meta], // Add unique meta.id to ensure output files from GATK4_GETPILEUPSUMMARIES receive different names for the tumor and normal samples
+                    [
+                        id: "${meta.id}_normal", // Add unique meta.id to ensure output files from GATK4_GETPILEUPSUMMARIES receive different names for the tumor and normal samples
+                        sample_type: 'normal', // Add sample type to facilitate correct ordering for GATK4_CALCULATECONTAMINATION
+                        original_meta: meta],
                     normal_input,
                     normal_input_index
                     ]
@@ -92,10 +98,10 @@ workflow BAM_SOMATIC_VARIANT_CALLING_GATK {
         .map { meta, table -> [meta.original_meta, table] } // Remove unique meta.id added in ch_getpileupsummaries_in and restore original meta
 
     // Contamination and segmentation tables created using calculatecontamination on the pileup summary table
+    // Use meta.sample_type to order the pileup summary tables as expected by GATK4_CALCULATECONTAMINATION (tumor first, normal second)
     ch_calculatecontamination_in = GATK4_GETPILEUPSUMMARIES.out.table
     .map { meta, table ->
-        def type = meta.id.endsWith('_tumor') ? 'tumor' : 'normal'
-        [ meta.original_meta, type, table ]
+        [ meta.original_meta, meta.sample_type, table ]
     }
     .groupTuple()
     .map { meta, types, tables ->
