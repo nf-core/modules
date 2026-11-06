@@ -12,7 +12,7 @@ keywords:
   - protein sequences
 tools:
   - "mgnifam":
-      description: Python package for iterative HMM-based protein family generation over large sequence databases, building an HMM from each cluster, recruiting new members, re-aligning, and either converging on a family or discarding the cluster
+      description: Iterative HMM-based protein family generation over large protein sequence databases
       homepage: "https://github.com/vagkaratzas/mgnifam"
       documentation: "https://vagkaratzas.github.io/mgnifam/"
       tool_dev_url: "https://github.com/vagkaratzas/mgnifam"
@@ -40,7 +40,7 @@ input:
           - edam: http://edamontology.org/format_1929 # FASTA
     - fasta_index:
         type: file
-        description: Optional. Precomputed Easel SSI index of the FASTA file, e.g. from `esl-sfetch --index` (hmmer/eslsfetchindex). Used as given and never rebuilt, so parallel chunk tasks can share one read-only index. Built automatically when omitted
+        description: Optional. Easel SSI index of the FASTA file (e.g. from hmmer/eslsfetchindex), built when omitted
         pattern: "*.ssi"
         ontologies: []
 output:
