@@ -33,6 +33,7 @@ process MGNIFAM_COMPUTECLANS {
         --output_dir "${prefix}" \\
         --cpus ${task.cpus} \\
         --chunk_id "${prefix}" \\
+        --tmp_dir . \\
         ${fasta} \\
         ${args}
     """
