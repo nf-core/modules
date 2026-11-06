@@ -3,7 +3,7 @@
 
 process INSITUGAME {
     tag "${meta.id}"
-    label 'process_medium'
+    label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
@@ -34,7 +34,7 @@ process INSITUGAME {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}_results.json
-    touch ${prefix}_tables.csv
+    touch "${prefix}_results.json"
+    touch "${prefix}_tables.csv"
     """
 }
