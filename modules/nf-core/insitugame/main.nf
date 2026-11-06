@@ -14,9 +14,8 @@ process INSITUGAME {
     tuple val(meta), path(spatial_data)
 
     output:
-    tuple val(meta), path("*.png"), emit: figures, optional: true
-    tuple val(meta), path("*.json"), emit: results
-    tuple val(meta), path("*.csv"), emit: tables
+    tuple val(meta), path("${prefix}_results.json"), emit: results
+    tuple val(meta), path("${prefix}_tables.csv"), emit: tables
     tuple val("${task.process}"), val('insitugame'), eval("python -c \"import importlib.metadata; print(importlib.metadata.version('insitugame'))\""), topic: versions, emit: versions_insitugame
 
     when:
@@ -24,20 +23,19 @@ process INSITUGAME {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
-    python -c 'import csv, sys; f=open("${spatial_data}", newline=""); first=f.readline(); f.seek(0); h=next(csv.reader(f, delimiter="\\t" if "\\t" in first else ",")); required={"T_S","T_R","S_CAF","FITNESS","HYPOXIA","VASCULAR"}; missing=required.difference(h); sys.exit("Missing required marker columns: " + ", ".join(sorted(missing)) if missing else 0)'
+    python -c 'import csv, gzip, pathlib, sys; p=pathlib.Path("${spatial_data}"); f=(gzip.open if p.suffix == ".gz" else open)(p, "rt", newline=""); first=f.readline(); f.seek(0); h=next(csv.reader(f, delimiter="\\t" if "\\t" in first else ",")); required={"T_S":{"T_S","Sensitive"},"T_R":{"T_R","Resistant"},"S_CAF":{"S_CAF","Stroma"},"FITNESS":{"FITNESS","Fitness"},"HYPOXIA":{"HYPOXIA","Hypoxia"},"VASCULAR":{"VASCULAR","Vascular"}}; missing=[key for key, names in required.items() if not names.intersection(h)]; sys.exit("Missing required marker columns: " + ", ".join(missing) if missing else 0)'
     insitugame \\
         ${args} \\
-        --input ${spatial_data} \\
-        --output-prefix ${prefix}
+        --input "${spatial_data}" \\
+        --output-prefix "${prefix}"
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_results.json
     touch ${prefix}_tables.csv
-    touch ${prefix}_figure.png
     """
 }

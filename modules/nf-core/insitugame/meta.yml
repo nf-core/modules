@@ -30,36 +30,26 @@ input:
         pattern: "*.{tsv,csv,tsv.gz,csv.gz}"
 
 output:
-  figures:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. `[ id:'sample1' ]`
-      - "*.png":
-          type: file
-          description: Spatial payoff simplex and subclonal interaction figures
-          pattern: "*.png"
   results:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.json":
+      - "${prefix}_results.json":
           type: file
           description: Inferred payoff matrices and Nash equilibria in JSON format
-          pattern: "*.json"
+          pattern: "${prefix}_results.json"
   tables:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*.csv":
+      - "${prefix}_tables.csv":
           type: file
-          description: Inferred game payoff matrix and spot metrics table
-          pattern: "*.csv"
+          description: Inferred game payoff matrix
+          pattern: "${prefix}_tables.csv"
   versions_insitugame:
     - - "${task.process}":
           type: string

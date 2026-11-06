@@ -2,6 +2,7 @@ nextflow_process {
 
     name "Test Process INSITUGAME"
     script "../main.nf"
+    config "./nextflow.config"
     process "INSITUGAME"
 
     tag "modules"
@@ -15,7 +16,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file("${projectDir}/modules/nf-core/insitugame/tests/data/insitugame.tsv", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "spatial_omics/insitugame/insitugame.tsv", checkIfExists: true)
                 ]
                 """
             }
@@ -29,6 +30,42 @@ nextflow_process {
                 { assert results.status == "completed" },
                 { assert results.payoff_matrix_3x3.size() == 3 },
                 { assert results.payoff_matrix_3x3.every { it.size() == 3 } },
+                { assert results.payoff_matrix_3x3.flatten().every { it instanceof Number } },
+                { assert results.nash_game_type },
+                { assert results.nash_equilibria },
+                { assert results.diagnostic_metrics },
+                { assert table[0] == "focal_phenotype,T_S,T_R,S_CAF" },
+                { assert table.size() == 4 },
+            )
+        }
+
+    }
+
+    test("spatial - tsv.gz") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_gz' ],
+                    file(params.modules_testdata_base_path + "spatial_omics/insitugame/insitugame.tsv.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            def results = new groovy.json.JsonSlurper().parse(file(process.out.results[0][1]))
+            def table = file(process.out.tables[0][1]).readLines()
+            assertAll(
+                { assert results.status == "completed" },
+                { assert results.payoff_matrix_3x3.size() == 3 },
+                { assert results.payoff_matrix_3x3.every { it.size() == 3 } },
+                { assert results.payoff_matrix_3x3.flatten().every { it instanceof Number } },
+                { assert results.nash_game_type },
+                { assert results.nash_equilibria },
+                { assert results.diagnostic_metrics },
                 { assert table[0] == "focal_phenotype,T_S,T_R,S_CAF" },
                 { assert table.size() == 4 },
             )
@@ -45,7 +82,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file("${projectDir}/modules/nf-core/insitugame/tests/data/insitugame.tsv", checkIfExists: true)
+                    file(params.modules_testdata_base_path + "spatial_omics/insitugame/insitugame.tsv", checkIfExists: true)
                 ]
                 """
             }
