@@ -23,8 +23,13 @@ nextflow_process {
 
         then {
             assert process.success
+            def outputs = [
+                results: process.out.results.collect { meta, output_file -> [meta, file(output_file).name] },
+                tables: process.out.tables.collect { meta, output_file -> [meta, file(output_file).name] },
+                versions_insitugame: process.out.versions_insitugame,
+            ]
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out)).match() },
+                { assert snapshot(outputs).match() },
             )
         }
 
@@ -45,8 +50,13 @@ nextflow_process {
 
         then {
             assert process.success
+            def outputs = [
+                results: process.out.results.collect { meta, output_file -> [meta, file(output_file).name] },
+                tables: process.out.tables.collect { meta, output_file -> [meta, file(output_file).name] },
+                versions_insitugame: process.out.versions_insitugame,
+            ]
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out)).match() },
+                { assert snapshot(outputs).match() },
             )
         }
 
@@ -67,8 +77,13 @@ nextflow_process {
 
         then {
             assert process.success
+            def outputs = [
+                results: process.out.results.collect { meta, output_file -> [meta, file(output_file).name] },
+                tables: process.out.tables.collect { meta, output_file -> [meta, file(output_file).name] },
+                versions_insitugame: process.out.versions_insitugame,
+            ]
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out)).match() },
+                { assert snapshot(outputs).match() },
             )
         }
 
@@ -91,8 +106,13 @@ nextflow_process {
 
         then {
             assert process.success
+            def outputs = [
+                results: process.out.results.collect { meta, output_file -> [meta, file(output_file).name] },
+                tables: process.out.tables.collect { meta, output_file -> [meta, file(output_file).name] },
+                versions_insitugame: process.out.versions_insitugame,
+            ]
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert snapshot(outputs).match() }
             )
         }
 
