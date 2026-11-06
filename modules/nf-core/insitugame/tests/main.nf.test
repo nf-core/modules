@@ -24,7 +24,11 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["results", "tables"])).match() },
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["results", "tables"]),
+                    path(process.out.results[0][1]).readLines().size(),
+                    path(process.out.tables[0][1]).readLines().size(),
+                ).match() },
                 { assert file(process.out.results[0][1]).text.contains('"status": "completed"') },
                 { assert file(process.out.tables[0][1]).readLines().first() == "focal_phenotype,T_S,T_R,S_CAF" },
             )
@@ -48,7 +52,11 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["results", "tables"])).match() },
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["results", "tables"]),
+                    path(process.out.results[0][1]).readLines().size(),
+                    path(process.out.tables[0][1]).readLines().size(),
+                ).match() },
                 { assert file(process.out.results[0][1]).text.contains('"status": "completed"') },
                 { assert file(process.out.tables[0][1]).readLines().first() == "focal_phenotype,T_S,T_R,S_CAF" },
             )
@@ -72,7 +80,11 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["results", "tables"])).match() },
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["results", "tables"]),
+                    path(process.out.results[0][1]).readLines().size(),
+                    path(process.out.tables[0][1]).readLines().size(),
+                ).match() },
                 { assert file(process.out.results[0][1]).text.contains('"status": "completed"') },
                 { assert file(process.out.tables[0][1]).readLines().first() == "focal_phenotype,T_S,T_R,S_CAF" },
             )
@@ -97,11 +109,6 @@ nextflow_process {
 
         then {
             assert process.success
-            def outputs = [
-                results: process.out.results.collect { meta, output_file -> [meta, file(output_file).name] },
-                tables: process.out.tables.collect { meta, output_file -> [meta, file(output_file).name] },
-                versions_insitugame: process.out.versions_insitugame,
-            ]
             assertAll(
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
