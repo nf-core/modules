@@ -10,8 +10,6 @@ nextflow_process {
     tag "mgnifam/computeclans"
     tag "mgnifam/generatefamilies"
 
-    config "./nextflow.config"
-
     test("mgnify - [ families_tsv ] - faa") {
 
         setup {
@@ -31,9 +29,6 @@ nextflow_process {
         }
 
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = MGNIFAM_GENERATEFAMILIES.out.tsv.map { meta, tsv ->
@@ -50,14 +45,16 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                // "log" contains timings and the scratch path
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["log"]),
+                    process.out.log.collect { meta, log -> file(log).readLines().find { l -> l.contains('members rows=') }.replaceAll(/^.*members rows=| elapsed=.*/, '') }
+                ).match() }
             )
         }
 
     }
 
-    test("mgnify - [ families_tsv, families_tsv ] - faa") {
+    test("mgnify - [ families_tsv ] - no_fasta") {
 
         setup {
             run("MGNIFAM_GENERATEFAMILIES") {
@@ -76,18 +73,13 @@ nextflow_process {
         }
 
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
-                input[0] = MGNIFAM_GENERATEFAMILIES.out.tsv.map { meta, tsv ->
-                    [
-                        meta,
-                        [ tsv, tsv.copyTo(tsv.parent.resolve('copy_' + tsv.name)) ],
-                        file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true)
-                    ]
-                }
+                // bare protein names need the FASTA for lengths, so keep region members only
+                input[0] = MGNIFAM_GENERATEFAMILIES.out.tsv
+                    .flatMap { meta, tsv -> tsv.readLines().findAll { l -> l.contains('/') } }
+                    .collectFile(name: 'test_families.tsv', newLine: true)
+                    .map { regions -> [ [ id:'test' ], regions, [] ] }
                 """
             }
         }
@@ -95,7 +87,10 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["log"]),
+                    process.out.log.collect { meta, log -> file(log).readLines().find { l -> l.contains('members rows=') }.replaceAll(/^.*members rows=| elapsed=.*/, '') }
+                ).match() }
             )
         }
 
@@ -106,9 +101,6 @@ nextflow_process {
         options "-stub"
 
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = [
