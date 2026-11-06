@@ -9,6 +9,7 @@ nextflow_process {
     tag "mgnifam"
     tag "mgnifam/updatefamilies"
     tag "mgnifam/generatefamilies"
+    tag "hmmer"
     tag "hmmer/eslsfetchindex"
 
     config "./nextflow.config"
@@ -156,6 +157,7 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
+                { assert file(process.out.log[0][1]).readLines()[0].endsWith("index=mgnify_proteins.faa.ssi") },
                 { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
             )
         }
