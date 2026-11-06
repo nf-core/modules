@@ -142,7 +142,7 @@ nextflow_process {
     // Extra `generate_families --help` options that main.nf does not already
     // hardcode, as documentation (default values as comments):
     // `--fasta_index` is skipped here: it is a module input, not an ext.arg,
-    // and is covered by the `esl-sfetch index` test below.
+    // and is covered by the `esl-sfetch index` test above.
     test("mgnify - faa - mgnifams - custom_args - stub") {
 
         options "-stub"
