@@ -462,6 +462,12 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R1_001.fastq.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/5k_cmvpos_tcells/fastqs/gex_1/subsampled_5k_human_antiCMV_T_TBNK_connect_GEX_1_S1_L001_R2_001.fastq.gz', checkIfExists: true)
                 ]
+                // An R1 token in the sample name must survive read-pair validation.
+                def filename_test_dir = file("${workDir}/r1_filename_regression")
+                filename_test_dir.mkdirs()
+                gex_fastqs_5k_cmvpos_tcells = gex_fastqs_5k_cmvpos_tcells.collect { read ->
+                    read.copyTo(filename_test_dir.resolve("sample_R1_" + read.name))
+                }
                 def gex_fastq_samplename_5k_cmvpos_tcells = "subsampled_5k_human_antiCMV_T_TBNK_connect"
 
                 // stage VDJ data
