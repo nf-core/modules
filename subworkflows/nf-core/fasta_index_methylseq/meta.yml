@@ -1,10 +1,11 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
 name: "fasta_index_methylseq"
-description: Generate index files from reference fasta for bismark, bwameth and bwamem aligners
+description: Generate index files from reference fasta for bismark, bwameth, bwamem and bwamem3 aligners
 keywords:
   - bismark
   - bwameth
   - bwamem
+  - bwamem3
   - prepare genome
   - index
 components:
@@ -13,6 +14,7 @@ components:
   - bismark/genomepreparation
   - bwameth/index
   - bwa/index
+  - bwamem3/index
   - samtools/faidx
 input:
   - fasta:
@@ -40,12 +42,12 @@ input:
   - bwamem_index:
       type: file
       description: |
-        Bwamem genome index files
+        Bwamem genome index files, or a bwa-mem3 methylation index (`bwa-mem3 index --meth`) when the aligner is bwamem3
         Structure: [ val(meta), path(bwamem_index) ]
   - aligner:
       type: string
       description: |
-        Aligner name (bismark, bismark_hisat, bwameth, or bwamem)
+        Aligner name (bismark, bismark_hisat, bwameth, bwamem or bwamem3)
   - collecthsmetrics:
       type: boolean
       description: |
@@ -82,7 +84,7 @@ output:
   - bwamem_index:
       type: file
       description: |
-        Bwamem genome index files
+        Bwamem genome index files, or the bwa-mem3 methylation index when the aligner is bwamem3
         Structure: [ val(meta), path(bwamem_index) ]
         pattern: "index"
 authors:

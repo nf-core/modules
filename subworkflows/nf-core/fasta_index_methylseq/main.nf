@@ -8,6 +8,7 @@ include { BISMARK_GENOMEPREPARATION as BISMARK_GENOMEPREPARATION_BOWTIE } from '
 include { BISMARK_GENOMEPREPARATION as BISMARK_GENOMEPREPARATION_HISAT } from '../../../modules/nf-core/bismark/genomepreparation/main'
 include { BWAMETH_INDEX             } from '../../../modules/nf-core/bwameth/index/main'
 include { BWA_INDEX                 } from '../../../modules/nf-core/bwa/index/main'
+include { BWAMEM3_INDEX             } from '../../../modules/nf-core/bwamem3/index/main'
 include { SAMTOOLS_FAIDX            } from '../../../modules/nf-core/samtools/faidx/main'
 
 workflow FASTA_INDEX_METHYLSEQ {
@@ -17,8 +18,8 @@ workflow FASTA_INDEX_METHYLSEQ {
     fasta_index      // channel: [ val(meta), [ fasta index ] ]
     bismark_index    // channel: [ val(meta), [ bismark index ] ]
     bwameth_index    // channel: [ val(meta), [ bwameth index ] ]
-    bwamem_index     // channel: [ val(meta), [ bwamem index ] ]
-    aligner          // string: bismark, bismark_hisat, bwameth or bwamem
+    bwamem_index     // channel: [ val(meta), [ bwamem index ] ] (bwa-mem3 `--meth` index when aligner is bwamem3)
+    aligner          // string: bismark, bismark_hisat, bwameth, bwamem or bwamem3
     collecthsmetrics // boolean: whether to run picard collecthsmetrics
     use_mem2         // boolean: generate mem2 index if no index provided, and bwameth is selected
 
@@ -135,10 +136,36 @@ workflow FASTA_INDEX_METHYLSEQ {
         }
     }
 
+    else if ( aligner == 'bwamem3' ){
+        /*
+         * Generate bwa-mem3 methylation index (`index --meth`) from FASTA file
+         */
+        if (bwamem_index) {
+            bwamem_index
+                .branch { _meta, file ->
+                    gzipped: file.toString().endsWith('.gz')
+                    unzipped: true
+                }
+                .set { ch_bwamem3_index_branched }
+
+            UNTAR_BISMARK (
+                ch_bwamem3_index_branched.gzipped
+            )
+
+            ch_bwamem_index = ch_bwamem3_index_branched.unzipped.mix(UNTAR_BISMARK.out.untar)
+        } else {
+            log.info "bwa-mem3 index not provided. Generating bwa-mem3 methylation index from FASTA file."
+            BWAMEM3_INDEX (
+                ch_fasta
+            )
+            ch_bwamem_index = BWAMEM3_INDEX.out.index
+        }
+    }
+
     /*
     * Generate fasta index if not supplied for bwameth workflow or picard collecthsmetrics tool
     */
-    if (aligner == 'bwameth' || aligner == 'bwamem' || collecthsmetrics) {
+    if (aligner == 'bwameth' || aligner == 'bwamem' || aligner == 'bwamem3' || collecthsmetrics) {
         // already existing fasta index
         if (fasta_index) {
             ch_fasta_index = fasta_index
