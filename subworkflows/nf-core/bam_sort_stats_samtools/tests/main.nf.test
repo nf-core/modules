@@ -11,7 +11,6 @@ nextflow_workflow {
     tag "subworkflows/../bam_stats_samtools"
     tag "bam_stats_samtools"
     tag "samtools"
-    tag "samtools/index"
     tag "samtools/sort"
     tag "samtools/stats"
     tag "samtools/idxstats"
@@ -31,6 +30,7 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ])
+                input[2] = 'bai'
                 """
             }
         }
@@ -62,6 +62,7 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ])
+                input[2] = 'bai'
                 """
             }
         }
@@ -71,6 +72,38 @@ nextflow_workflow {
                 { assert workflow.success},
                 { assert workflow.out.bam.get(0).get(1) ==~ ".*.bam"},
                 { assert workflow.out.index.get(0).get(1) ==~ ".*.bai"},
+                { assert snapshot(
+                    workflow.out.flagstat,
+                    workflow.out.idxstats,
+                    workflow.out.stats).match() }
+            )
+        }
+    }
+
+    test("test_bam_sort_stats_samtools_paired_end - csi") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                ])
+                input[1] = Channel.of([
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ])
+                input[2] = 'csi'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success},
+                { assert workflow.out.bam.get(0).get(1) ==~ ".*.bam"},
+                { assert workflow.out.index.get(0).get(1) ==~ ".*.csi"},
                 { assert snapshot(
                     workflow.out.flagstat,
                     workflow.out.idxstats,
@@ -95,6 +128,7 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ])
+                input[2] = 'bai'
                 """
             }
         }
@@ -123,6 +157,7 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ])
+                input[2] = 'bai'
                 """
             }
         }

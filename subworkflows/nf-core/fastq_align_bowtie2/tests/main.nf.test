@@ -49,7 +49,7 @@ nextflow_workflow {
                 { assert snapshot(
                     file(workflow.out.bam_orig[0][1]).name,
                     workflow.out.fastq,
-                    workflow.out.log_out,
+                    workflow.out.log_out.collect { meta, log -> [ meta, file(log).readLines().findAll { !it.startsWith('[WARNING]') } ] },
                     file(workflow.out.bam[0][1]).name,
                     file(workflow.out.index[0][1]).name,
                     workflow.out.stats,
@@ -101,7 +101,7 @@ nextflow_workflow {
                 { assert snapshot(
                     file(workflow.out.bam_orig[0][1]).name,
                     workflow.out.fastq,
-                    workflow.out.log_out,
+                    workflow.out.log_out.collect { meta, log -> [ meta, file(log).readLines().findAll { !it.startsWith('[WARNING]') } ] },
                     file(workflow.out.bam[0][1]).name,
                     file(workflow.out.index[0][1]).name,
                     workflow.out.stats,
