@@ -1,0 +1,170 @@
+nextflow_process {
+
+    name "Test Process DORADO_BASECALLER"
+    script "../main.nf"
+    process "DORADO_BASECALLER"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "dorado"
+    tag "dorado/basecaller"
+
+    // -------------------------------------------------------------------------
+    // Stub tests — run in CI without GPU or real basecalling
+    // -------------------------------------------------------------------------
+
+    test("homo sapiens - GIAB HG002 pod5, sup,5mCG_5hmCG@latest, no models_dir, no reference - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id: 'HG002' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/pod5/HG002_PAW70337_giab_10reads.pod5',
+                         checkIfExists: true)
+                ]
+                input[1] = "sup,5mCG_5hmCG@latest"
+                input[2] = [[], []]
+                input[3] = [[], [], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("homo sapiens - GIAB HG002 pod5, sup,5mCG_5hmCG@latest, no models_dir, with reference - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--mm2-opts "-Y"'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id: 'HG002_aligned' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/pod5/HG002_PAW70337_giab_10reads.pod5',
+                         checkIfExists: true)
+                ]
+                input[1] = "sup,5mCG_5hmCG@latest"
+                input[2] = [[], []]
+                input[3] = [
+                    [ id: 'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta',
+                         checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai',
+                         checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Real GPU tests — require --tag "gpu" and a GPU node
+    // Run via SLURM: nf-test test ... --profile singularity,gpu --tag gpu
+    //
+    // dorado's basecalled BAM is not byte-reproducible: the docker and singularity
+    // shards of one CI run, on the same g4dn.xlarge, emit different md5s for the
+    // same output. These tests therefore assert on structure (output name, read
+    // count, presence of @SQ when a reference is given) and snapshot only the
+    // versions topic.
+    //
+    // The nft-bam calls need stringency: "silent" — dorado writes an @RG line
+    // with no SM tag, which htsjdk rejects at default stringency with
+    // "Error parsing SAM header. @RG line missing SM tag".
+    // -------------------------------------------------------------------------
+
+    test("homo sapiens - GIAB HG002 pod5, sup,5mCG_5hmCG@latest, no models_dir, no reference") {
+
+        tag "gpu"
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = [
+                    [ id: 'HG002' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/pod5/HG002_PAW70337_giab_10reads.pod5',
+                         checkIfExists: true)
+                ]
+                input[1] = "sup,5mCG_5hmCG@latest"
+                input[2] = [[], []]
+                input[3] = [[], [], []]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.bam[0][1]).name == 'HG002.bam' },
+                { assert bam(process.out.bam[0][1], stringency: "silent").getStatistics(include:["readCount"]).readCount > 0 },
+                { assert snapshot([versions: process.out.versions_dorado]).match() }
+            )
+        }
+    }
+
+    test("homo sapiens - GIAB HG002 pod5, sup,5mCG_5hmCG@latest, no models_dir, with reference") {
+
+        tag "gpu"
+
+        when {
+            params {
+                module_args = '--mm2-opts "-Y"'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id: 'HG002_aligned' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/pod5/HG002_PAW70337_giab_10reads.pod5',
+                         checkIfExists: true)
+                ]
+                input[1] = "sup,5mCG_5hmCG@latest"
+                input[2] = [[], []]
+                input[3] = [
+                    [ id: 'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta',
+                         checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai',
+                         checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.bam[0][1]).name == 'HG002_aligned.bam' },
+                { assert bam(process.out.bam[0][1], stringency: "silent").getStatistics(include:["readCount"]).readCount > 0 },
+                // with a reference supplied the output is aligned, so the header
+                // carries the reference contigs
+                { assert bam(process.out.bam[0][1], stringency: "silent").getHeader().any { it.startsWith('@SQ') } },
+                { assert snapshot([versions: process.out.versions_dorado]).match() }
+            )
+        }
+    }
+}
