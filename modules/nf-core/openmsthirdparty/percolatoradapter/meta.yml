@@ -1,0 +1,153 @@
+name: "openmsthirdparty_percolatoradapter"
+description: Rescores peptide-spectrum matches with the semi-supervised learning of Percolator and assigns q-values and posterior error probabilities.
+keywords:
+  - fdr
+  - idxml
+  - openms
+  - percolator
+  - proteomics
+  - rescoring
+tools:
+  - openms:
+      description: "OpenMS is an open-source software C++ library for LC-MS data management and analyses"
+      homepage: "https://openms.de"
+      documentation: "https://openms.readthedocs.io/en/latest/index.html"
+      tool_dev_url: "https://github.com/OpenMS/OpenMS"
+      doi: "10.1038/s41592-024-02197-7"
+      licence: ["BSD"]
+      identifier: "biotools:openms"
+  - PercolatorAdapter:
+      description: "Converts identifications to Percolator input, runs Percolator and writes the rescored identifications."
+      homepage: "https://openms.de"
+      documentation: "https://openms.readthedocs.io/en/latest/index.html"
+      tool_dev_url: "https://github.com/OpenMS/OpenMS"
+      doi: "10.1038/s41592-024-02197-7"
+      licence: ["BSD"]
+      identifier: ""
+  - percolator:
+      description: "Semi-supervised learning for peptide identification from shotgun proteomics datasets."
+      homepage: "https://github.com/percolator/percolator"
+      documentation: "https://github.com/percolator/percolator/wiki"
+      tool_dev_url: "https://github.com/percolator/percolator"
+      doi: "10.1038/nmeth1113"
+      licence: ["Apache-2.0"]
+      identifier: "biotools:percolator"
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'test' ]`
+    - id_file:
+        type: file
+        description: |
+          One or more files with peptide identifications and target/decoy annotation, e.g. from a search engine.
+          PercolatorAdapter merges multiple files and rescores them together.
+          Add extra features with OpenMS PSMFeatureExtractor before rescoring to improve the result.
+        pattern: "*.{idXML,mzid}"
+        ontologies:
+          - edam: http://edamontology.org/format_3247 # mzIdentML
+  - seed:
+      type: integer
+      description: |
+        Optional random seed for Percolator. Pass `[]` to use the Percolator default.
+        A `-seed` value in `ext.args` takes precedence.
+output:
+  idxml:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - ${prefix}.idXML:
+          type: file
+          description: Rescored peptide identifications with Percolator scores, q-values and posterior error probabilities.
+          pattern: "*.idXML"
+          ontologies: []
+  feature_weights:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'test' ]`
+      - "*_feature_weights.tsv":
+          type: file
+          description: |
+            Final Percolator feature weights. Written only if `ext.args` contains `-weights <name>_feature_weights.tsv`.
+            Use the suffix `_percolator_feature_weights.tsv` to make the file visible to MultiQC.
+            With `-weights`, PercolatorAdapter runs the external percolator binary instead of the in-process engine.
+            The q-values of the two engines can differ. Add `-post_processing_tdc` to use target-decoy competition in the binary.
+          pattern: "*_feature_weights.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions_percolatoradapter:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - PercolatorAdapter:
+          type: string
+          description: The name of the tool
+      - "PercolatorAdapter --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_percolator:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - percolator:
+          type: string
+          description: The name of the tool
+      - "percolator -h 2>&1 | sed -nE 's/^Percolator version ([0-9.]+).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - PercolatorAdapter:
+          type: string
+          description: The name of the tool
+      - "PercolatorAdapter --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - percolator:
+          type: string
+          description: The name of the tool
+      - "percolator -h 2>&1 | sed -nE 's/^Percolator version ([0-9.]+).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@jonasscheid"
+maintainers:
+  - "@jonasscheid"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/openms-thirdparty:3.6.0--566f6f290d39203b
+      build_id: bd-566f6f290d39203b_1
+      scan_id: sc-a28d9c9d6bfbc9d2_2
+    linux/arm64:
+      name: community.wave.seqera.io/library/openms-thirdparty:3.6.0--d2d9f579a8433638
+      build_id: bd-d2d9f579a8433638_1
+      scan_id: sc-386a0dc7f296f5d0_2
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/openms-thirdparty:3.6.0--bf79a98718c9095f
+      build_id: bd-bf79a98718c9095f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/64/6475e53b3776cd3b71b8ff525f01da9c45dbe9401a00e5630d91ab976f20e8aa/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/openms-thirdparty:3.6.0--cba109fedfaf5591
+      build_id: bd-cba109fedfaf5591_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fa/fab21993def9185648d74dc91446f5bad859dfb51f48a6fc078687a02496823a/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/openmsthirdparty/percolatoradapter/.conda-lock/linux_amd64-bd-566f6f290d39203b_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/openmsthirdparty/percolatoradapter/.conda-lock/linux_arm64-bd-d2d9f579a8433638_1.txt
