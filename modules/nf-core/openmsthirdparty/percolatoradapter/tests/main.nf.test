@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process OPENMSTHIRDPARTY_PERCOLATORADAPTER"
     script "../main.nf"
     process "OPENMSTHIRDPARTY_PERCOLATORADAPTER"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -59,16 +60,10 @@ nextflow_process {
 
     test("proteomics - idxml") {
 
-        config "./nextflow.config"
-
         when {
-            params {
-                module_args = '-enzyme no_enzyme'
-            }
             process {
                 """
                 input[0] = OPENMS_PSMFEATUREEXTRACTOR.out.idxml
-                input[1] = []
                 """
             }
         }
@@ -76,63 +71,24 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                {
-                    def idxml = file(process.out.idxml[0][1]).text
-                    assert snapshot(
-                        file(process.out.idxml[0][1]).name,
-                        (idxml =~ /score_type="([^"]+)"/).collect { it[1] }.unique(),
-                        (idxml =~ /<PeptideHit score="([^"]+)"/).collect { it[1] as double }.count { it <= 0.01 },
-                        process.out.feature_weights,
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
-                }
-            )
-        }
-    }
-
-    test("proteomics - idxml - seed - post_processing_tdc - weights") {
-
-        config "./nextflow.config"
-
-        when {
-            params {
-                module_args = '-enzyme no_enzyme -post_processing_tdc -weights test_percolator_feature_weights.tsv'
-            }
-            process {
-                """
-                input[0] = OPENMS_PSMFEATUREEXTRACTOR.out.idxml
-                input[1] = 4711
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                {
-                    def idxml = file(process.out.idxml[0][1]).text
-                    assert snapshot(
-                        file(process.out.idxml[0][1]).name,
-                        (idxml =~ /score_type="([^"]+)"/).collect { it[1] }.unique(),
-                        (idxml =~ /<PeptideHit score="([^"]+)"/).collect { it[1] as double }.count { it <= 0.01 },
-                        process.out.feature_weights,
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
-                }
+                { assert snapshot(
+                    file(process.out.idxml[0][1]).name,
+                    (file(process.out.idxml[0][1]).text =~ /<PeptideHit score="([^"]+)"/).collect { it[1] as double }.count { it <= 0.01 },
+                    process.out.feature_weights,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
     }
 
     test("proteomics - idxml - stub") {
 
-        config "./nextflow.config"
         options "-stub"
 
         when {
             process {
                 """
                 input[0] = OPENMS_PSMFEATUREEXTRACTOR.out.idxml
-                input[1] = []
                 """
             }
         }

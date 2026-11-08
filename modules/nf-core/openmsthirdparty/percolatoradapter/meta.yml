@@ -48,11 +48,6 @@ input:
         pattern: "*.{idXML,mzid}"
         ontologies:
           - edam: http://edamontology.org/format_3247 # mzIdentML
-  - seed:
-      type: integer
-      description: |
-        Optional random seed for Percolator. Pass `[]` to use the Percolator default.
-        A `-seed` value in `ext.args` takes precedence.
 output:
   idxml:
     - - meta:
@@ -88,7 +83,7 @@ output:
       - PercolatorAdapter:
           type: string
           description: The name of the tool
-      - "PercolatorAdapter --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p'":
+      - "PercolatorAdapter --help 2>&1 | grep -oP '^Version: \\K[0-9.]+'":
           type: eval
           description: The expression to obtain the version of the tool
   versions_percolator:
@@ -98,7 +93,7 @@ output:
       - percolator:
           type: string
           description: The name of the tool
-      - "percolator -h 2>&1 | sed -nE 's/^Percolator version ([0-9.]+).*/\\1/p'":
+      - "percolator -h 2>&1 | grep -oP 'version \\K[0-9.]+'":
           type: eval
           description: The expression to obtain the version of the tool
 
@@ -110,7 +105,7 @@ topics:
       - PercolatorAdapter:
           type: string
           description: The name of the tool
-      - "PercolatorAdapter --help 2>&1 | sed -nE 's/^Version: ([0-9.]+).*/\\1/p'":
+      - "PercolatorAdapter --help 2>&1 | grep -oP '^Version: \\K[0-9.]+'":
           type: eval
           description: The expression to obtain the version of the tool
     - - ${task.process}:
@@ -119,7 +114,7 @@ topics:
       - percolator:
           type: string
           description: The name of the tool
-      - "percolator -h 2>&1 | sed -nE 's/^Percolator version ([0-9.]+).*/\\1/p'":
+      - "percolator -h 2>&1 | grep -oP 'version \\K[0-9.]+'":
           type: eval
           description: The expression to obtain the version of the tool
 
