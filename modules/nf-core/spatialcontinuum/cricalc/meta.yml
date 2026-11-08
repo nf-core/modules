@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "spatialcontinuum_cricalc"
-description: "Universal biophysical reaction-diffusion transport framework and Bedside Composite Resistance Index (CRI) for NSCLC."
+description: "Universal biophysical reaction-diffusion transport framework and In Silico Composite Resistance Index (CRI) for NSCLC (RUO)."
 keywords:
   - oncology
   - biophysics
@@ -10,7 +10,7 @@ keywords:
   - osimertinib
 tools:
   - "spatial-continuum":
-      description: "Zero-dependency biophysical reaction-diffusion solver and Bedside Composite Resistance Index (CRI) calculation engine."
+      description: "Zero-dependency biophysical reaction-diffusion solver and In Silico Composite Resistance Index (CRI) calculation engine (RUO)."
       homepage: "https://github.com/Lukecele/spatial-continuum-oncology"
       documentation: "https://github.com/Lukecele/spatial-continuum-oncology#readme"
       tool_dev_url: "https://github.com/Lukecele/spatial-continuum-oncology"
@@ -50,7 +50,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*.txt":
           type: file
-          description: Bedside Composite Resistance Index (CRI) report and clinical recommendations
+          description: In Silico Composite Resistance Index (CRI) report and translational cohort stratification (RUO)
           pattern: "*.txt"
           ontologies: []
   versions_spatialcontinuum:
