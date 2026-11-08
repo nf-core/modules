@@ -27,7 +27,9 @@ process PLINK2_MAKEBED {
     def mem_mb = task.memory.toMega()
     """
     plink2 \\
-        --pfile ${pgen.baseName} \\
+        --pgen ${pgen} \\
+        --pvar ${pvar} \\
+        --psam ${psam} \\
         --threads ${task.cpus} \\
         --memory ${mem_mb} \\
         ${args} \\
