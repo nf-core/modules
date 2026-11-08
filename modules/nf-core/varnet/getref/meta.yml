@@ -1,6 +1,5 @@
 name: "varnet_getref"
-description: Downloads the GRCh38 germline filtering resources that VarNet needs for tumor-only
-  calling, and checks their md5 sums. The outputs feed varnet/filter and varnet/predict.
+description: Downloads the GRCh38 germline filtering resources that VarNet needs for tumor-only calling, and checks their md5 sums. The outputs feed varnet/filter and varnet/predict.
 keywords:
   - variant calling
   - somatic
@@ -11,7 +10,7 @@ tools:
   - "varnet":
       description: "A deep learning-based somatic variant caller"
       homepage: "https://github.com/skandlab/VarNet"
-      documentation: "https://github.com/skandlab/VarNet"
+      documentation: "https://github.com/skandlab/VarNet#new-tumor-only-mode"
       tool_dev_url: "https://github.com/skandlab/VarNet"
       doi: "10.1038/s41467-022-31765-8"
       licence:
@@ -43,8 +42,7 @@ output:
             e.g. `[ id:'varnet_resources' ]`
       - ${prefix}/combined_gnomAD_v4.1_genomes_exomes_dict.hg38.chunks.npz:
           type: file
-          description: gnomAD v4.1 genome and exome variants for germline filtering, as a NumPy
-            archive
+          description: gnomAD v4.1 genome and exome variants for germline filtering, as a NumPy archive
           pattern: "combined_gnomAD_v4.1_genomes_exomes_dict.hg38.chunks.npz"
           ontologies: []
   pon:
@@ -85,3 +83,17 @@ authors:
   - "@kiranchari"
 maintainers:
   - "@kiranchari"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/varnet:1.5.4--fbf7cf960ce9c736
+      build_id: bd-fbf7cf960ce9c736_1
+      scan_id: sc-6cf3f4e8aa119882_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/varnet:1.5.4--53912a00be292d5e
+      build_id: bd-53912a00be292d5e_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/95/952c5ca190b3f0c8937f0b71bd43cc3741eb3065705dc253bd669ea18bc0b91d/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/varnet/getref/.conda-lock/linux_amd64-bd-fbf7cf960ce9c736_1.txt
