@@ -21,6 +21,8 @@ input:
         type: file
         description: PLINK binary genotype table
         pattern: "*.bed"
+        ontologies:
+          - edam: http://edamontology.org/format_3003 # BED
     - bim:
         type: file
         description: PLINK variant table
