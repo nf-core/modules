@@ -28,19 +28,15 @@ input:
     - pattern:
         type: string
         description: Histologic growth pattern (e.g., lepidic, acinar, papillary, solid, micropapillary)
-        ontologies: []
     - tp53:
         type: string
         description: TP53 mutation status (wt or mutated)
-        ontologies: []
     - rb1:
         type: string
         description: RB1 mutation/loss status (wt or mutated/deleted)
-        ontologies: []
     - stroma:
         type: string
         description: Stromal desmoplastic density (low, moderate, dense)
-        ontologies: []
 output:
   report:
     - - meta:
@@ -52,7 +48,8 @@ output:
           type: file
           description: In Silico Composite Resistance Index (CRI) report and translational cohort stratification (RUO)
           pattern: "*.txt"
-          ontologies: []
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Textual format
   versions_spatialcontinuum:
     - - "${task.process}":
           type: string
