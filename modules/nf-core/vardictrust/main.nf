@@ -4,8 +4,8 @@ process VARDICTRUST {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/da/da588dd1fbadf23f023c90173503829e7d7e9615f40d2956a36aa490d8557ab9/data'
-:         'community.wave.seqera.io/library/htslib_vardictrust:1920a853de03683c' }"
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/12/1235da44581a255a1c14bfb295838e7806045c142766f7ed78da4222a2a624ae/data'
+:         'community.wave.seqera.io/library/htslib_vardictrust:b705f1632518b05e' }"
 
     input:
     tuple val(meta), path(bams), path(bais), path(bed)
