@@ -1,0 +1,91 @@
+nextflow_process {
+
+    name "Test Process XENIUMRANGER_IMPORTSEGMENTATION"
+    script "../main.nf"
+    process "XENIUMRANGER_IMPORTSEGMENTATION"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "xeniumranger"
+    tag "xeniumranger/importsegmentation"
+    tag "untar"
+
+
+    setup {
+
+        run("UNTAR") {
+            script "modules/nf-core/untar/main.nf"
+            process {
+                """
+                input[0] = [[], file('https://raw.githubusercontent.com/nf-core/test-datasets/spatialaxe/xenium_bundle.tar.gz', checkIfExists: true)]
+                """
+            }
+        }
+
+    }
+
+    test("xeniumranger importsegmentation nuclei") {
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                    .map { meta, bundle ->
+                        [
+                            [id: "test_xeniumranger_importsegmentation"],
+                            bundle,
+                            [],
+                            [],
+                            bundle + "/cells.zarr.zip",
+                            [],
+                            [],
+                            [],
+                            5
+                        ]
+                    }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.outs != null },
+                { assert file(process.out.outs.get(0).get(1)).isDirectory() },
+                { assert file(process.out.outs.get(0).get(1)).list().size() > 0 },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["outs"])).match()},
+            )
+        }
+    }
+
+    test("xeniumranger importsegmentation stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar
+                    .map { meta, bundle ->
+                        [
+                            [id: "test_xeniumranger_importsegmentation"],
+                            bundle,
+                            [],
+                            [],
+                            bundle + "/cells.zarr.zip",
+                            [],
+                            [],
+                            [],
+                            5
+                        ]
+                    }
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

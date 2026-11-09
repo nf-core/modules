@@ -28,16 +28,16 @@
     },
     "sarscov2 - bam": {
         "content": [
-            [
-                "@HD\tVN:1.6\tSO:unsorted",
-                "@SQ\tSN:MT192765.1\tLN:29829",
-                "@RG\tID:1\tLB:lib1\tPL:ILLUMINA\tSM:test\tPU:barcode1",
-                "@PG\tID:minimap2\tPN:minimap2\tVN:2.17-r941\tCL:minimap2 -ax sr tests/data/fasta/sarscov2/GCA_011545545.1_ASM1154554v1_genomic.fna tests/data/fastq/dna/sarscov2_1.fastq.gz tests/data/fastq/dna/sarscov2_2.fastq.gz",
-                "@PG\tID:samtools\tPN:samtools\tPP:minimap2\tVN:1.11\tCL:samtools view -Sb sarscov2_aln.sam",
-                "@PG\tID:tagbam\tPN:tagbam\tVN:0.1.0\tCL:tagbam --tag HP --value 1 --threads 2 --input test.paired_end.bam --output-file test.bam"
-            ],
-            "762e859a3d0ed1553655cde77665c940",
             {
+                "bam": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam:md5Reads,762e859a3d0ed1553655cde77665c940"
+                    ]
+                ],
                 "versions_tagbam": [
                     [
                         "TAGBAM",
@@ -47,10 +47,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-03-17T12:32:52.549747629",
+        "timestamp": "2026-08-25T15:19:37.282259",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "26.02.0"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
         }
     }
 }

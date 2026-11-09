@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CSVTK_JOIN {
     tag "$meta.id"
     label 'process_single'
@@ -11,7 +14,7 @@ process CSVTK_JOIN {
     tuple val(meta), path(csv)
 
     output:
-    tuple val(meta), path("${prefix}.${out_extension}"), emit: csv
+    tuple val(meta), path("${prefix}.${out_extension}"), emit: out_file
     tuple val("${task.process}"), val('csvtk'), eval("csvtk version | sed -e 's/csvtk v//g'"), emit: versions_csvtk, topic: versions
 
     when:
@@ -20,7 +23,7 @@ process CSVTK_JOIN {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    out_extension = args.contains('--out-delimiter "\t"') || args.contains('-D "\t"') || args.contains("-D \$'\t'") ? "tsv" : "csv"
+    out_extension = args.contains('--out-delimiter "\t"') || args.contains('-D "\t"') || args.contains("-D \$'\t'") || args.contains("-T") || args.contains("--out-tabs") ? "tsv" : "csv"
     """
     csvtk \\
         join \\
@@ -31,8 +34,9 @@ process CSVTK_JOIN {
     """
 
     stub:
+    def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
-    out_extension = args.contains('--out-delimiter "\t"') || args.contains('-D "\t"') || args.contains("-D \$'\t'") ? "tsv" : "csv"
+    out_extension = args.contains('--out-delimiter "\t"') || args.contains('-D "\t"') || args.contains("-D \$'\t'") || args.contains("-T") || args.contains("--out-tabs") ? "tsv" : "csv"
     """
     touch ${prefix}.${out_extension}
     """

@@ -1,0 +1,144 @@
+name: "quarto_prerender"
+description: Pre-render a Quarto document to markdown, including parametrization
+keywords:
+  - quarto
+  - notebook
+  - reports
+  - python
+  - r
+tools:
+  - "quarto":
+      description: An open-source scientific and technical publishing system.
+      homepage: https://quarto.org/
+      documentation: https://quarto.org/docs/reference/
+      tool_dev_url: https://github.com/quarto-dev/quarto-cli
+      licence:
+        - "MIT"
+      identifier: ""
+  - papermill:
+      description: Parameterize, execute, and analyze notebooks
+      homepage: https://github.com/nteract/papermill
+      documentation: http://papermill.readthedocs.io/en/latest/
+      tool_dev_url: https://github.com/nteract/papermill
+      licence:
+        - "BSD 3-clause"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information, e.g. `[ id:'sample1' ]`.
+    - notebook:
+        type: file
+        description: The Quarto notebook to be rendered into markdown.
+        pattern: "*.qmd"
+        ontologies: []
+  - parameters:
+      type: map
+      description: |
+        Groovy map with notebook parameters which will be passed to Quarto.
+  - input_files:
+      type: file
+      description: One or multiple files serving as input data.
+      pattern: "*"
+      ontologies: []
+output:
+  rendered:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information, e.g. `[ id:'sample1' ]`.
+      - ${prefix}{.md,_files}:
+          type: file
+          description: Rendered output (a markdown file) and associated files (a
+            directory; optional).
+          pattern: "${prefix}{.md,_files}.md"
+          ontologies: []
+  notebook:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information, e.g. `[ id:'sample1' ]`.
+      - notebook:
+          type: file
+          description: The original Quarto notebook; allows the user to continue
+            working on the notebook.
+          pattern: "*.qmd"
+          ontologies: []
+  params_yaml:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information, e.g. `[ id:'sample1' ]`.
+      - ${prefix}-params.yml:
+          type: file
+          description: Parameters used during rendering.
+          pattern: "*"
+          ontologies: []
+  artifacts:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information, e.g. `[ id:'sample1' ]`.
+      - ${notebook_parameters.artifact_dir}/*:
+          type: file
+          description: Artifacts generated during rendering.
+          pattern: "*"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: Optional YAML file containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
+  versions_quarto:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - quarto:
+          type: string
+          description: The name of the tool
+      - quarto -v:
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_papermill:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - papermill:
+          type: string
+          description: The name of the tool
+      - papermill --version | cut -f1 -d" ":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - versions.yml:
+        type: file
+        description: Optional YAML file containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - quarto:
+          type: string
+          description: The name of the tool
+      - quarto -v:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - papermill:
+          type: string
+          description: The name of the tool
+      - papermill --version | cut -f1 -d" ":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@fasterius"
+maintainers:
+  - "@fasterius"

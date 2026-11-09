@@ -12,69 +12,52 @@ components:
   - freebayes
   - bcftools/sort
 input:
-  - meta:
-      type: map
+  - ch_input:
+      type: file
       description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
-  - input1:
+        Alignments to call variants from, where `input1` is a BAM/CRAM/SAM file with its
+        index `index1`, `input2` is an optional second BAM/CRAM/SAM file with its index
+        `index2` used to run variant calling with a pair (normal vs tumour), and `bed` is
+        an optional BED file limiting the analysis to the targets listed in it.
+
+        Structure: [ val(meta), path(input1), path(index1), path(input2), path(index2), path(bed) ]
+  - ch_fasta_fai:
       type: file
-      description: BAM/CRAM/SAM file;
-      pattern: "*.{bam,cram,sam}"
-  - index1:
-      type: file
-      description: Index BAI/CRAI/CSI file
-      pattern: "*.{bai,crai,csi}"
-  - input2:
-      type: file
-      description: BAM/CRAM/SAM file; used to run variant calling with pair (normal vs tumor)
-      pattern: "*.{bam,cram,sam}"
-  - index2:
-      type: file
-      description: Index BAI/CRAI/CSI file
-      pattern: "*.{bai,crai,csi}"
-  - bed:
-      type: file
-      description: Optional - Limit analysis to targets listed in this BED-format FILE.
-      pattern: "*.bed"
-  - meta2:
-      type: map
       description: |
-        Groovy Map containing reference information
-        e.g. [ id:'test' ]
-  - fasta:
+        Reference fasta file and its index.
+
+        Structure: [ val(meta2), path(fasta), path(fai) ]
+  - ch_samples:
       type: file
-      description: reference fasta file
-      pattern: ".{fa,fa.gz,fasta,fasta.gz}"
-  - fai:
-      type: file
-      description: reference fasta file index
-      pattern: "*.{fa,fasta}.fai"
-  - samples:
-      type: file
-      description: Optional - Limit analysis to samples listed (one per line) in the FILE.
+      description: |
+        Optional - Limit analysis to samples listed (one per line) in the file.
+
+        Structure: [ val(meta3), path(samples) ]
       pattern: "*.txt"
-  - populations:
-      type: file
-      description: Optional - Each line of FILE should list a sample and a population which it is part of.
-      pattern: "*.txt"
-  - cnv:
+  - ch_populations:
       type: file
       description: |
-        A copy number map BED file, which has either a sample-level ploidy:
+        Optional - Each line of the file should list a sample and a population which it is part of.
+
+        Structure: [ val(meta4), path(populations) ]
+      pattern: "*.txt"
+  - ch_cnv:
+      type: file
+      description: |
+        Optional - A copy number map BED file, which has either a sample-level ploidy:
         sample_name copy_number
         or a region-specific format:
         seq_name start end sample_name copy_number
+
+        Structure: [ val(meta5), path(cnv) ]
       pattern: "*.bed"
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - vcf_index:
       type: file
-      description: Sorted VCF file with index
+      description: |
+        Sorted VCF file with its index.
+
+        Structure: [ val(meta), path(vcf), path(index) ]
 authors:
   - "@priyanka-surana"
   - "@FriederikeHanssen"

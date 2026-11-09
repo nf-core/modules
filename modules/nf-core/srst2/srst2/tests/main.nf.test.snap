@@ -2,48 +2,6 @@
     "bacteroides_fragilis - fastq.gz - single_end - stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test__genes__resFinder_20180221_srst2__results.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test__fullgenes__resFinder_20180221_srst2__results.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
-                    
-                ],
-                "3": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.pileup:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "4": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.sorted.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "5": [
-                    "versions.yml:md5,9049759bd3f4ff70b879ef3b3407f90d"
-                ],
                 "fullgene_results": [
                     [
                         {
@@ -83,61 +41,24 @@
                         "test.sorted.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,9049759bd3f4ff70b879ef3b3407f90d"
+                "versions_srst2": [
+                    [
+                        "SRST2_SRST2",
+                        "srst2",
+                        "0.2.0"
+                    ]
                 ]
-            },
-            {
-                "SRST2_SRST2": {
-                    "srst2": "0.2.0"
-                }
             }
         ],
+        "timestamp": "2026-08-24T20:38:40.730044682",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.4"
-        },
-        "timestamp": "2025-05-28T12:43:32.769524"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     },
     "delete_me - fastq.gz - stub": {
         "content": [
             {
-                "0": [
-                    
-                ],
-                "1": [
-                    
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test__mlst__MLST_DB__results.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "3": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.pileup:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "4": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.sorted.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "5": [
-                    "versions.yml:md5,9049759bd3f4ff70b879ef3b3407f90d"
-                ],
                 "fullgene_results": [
                     
                 ],
@@ -171,21 +92,20 @@
                         "test.sorted.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,9049759bd3f4ff70b879ef3b3407f90d"
+                "versions_srst2": [
+                    [
+                        "SRST2_SRST2",
+                        "srst2",
+                        "0.2.0"
+                    ]
                 ]
-            },
-            {
-                "SRST2_SRST2": {
-                    "srst2": "0.2.0"
-                }
             }
         ],
+        "timestamp": "2026-08-24T20:38:31.889484638",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.4"
-        },
-        "timestamp": "2025-05-28T12:43:26.650941"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     },
     "delete_me - fastq.gz": {
         "content": [
@@ -214,16 +134,23 @@
                 "minQuality": 1,
                 "meanQuality": 3,
                 "readCount": 19788,
-                "duplicateReadCount": 0
+                "duplicateReadCount": 0,
+                "sorted": false
             },
-            [
-                "versions.yml:md5,9049759bd3f4ff70b879ef3b3407f90d"
-            ]
+            {
+                "versions_srst2": [
+                    [
+                        "SRST2_SRST2",
+                        "srst2",
+                        "0.2.0"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-08-24T20:38:21.588832517",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.4"
-        },
-        "timestamp": "2025-05-28T12:43:17.676435"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     }
 }

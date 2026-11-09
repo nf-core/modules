@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 //
 // Run VEP and/or SNPEFF to annotate VCF files
 //
@@ -23,6 +26,7 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
     ch_snpeff_cache // channel: [ path(cache) ] (optional)
     val_tools_to_use //   value: a list of tools to use options are: ["ensemblvep", "snpeff"]
     val_sites_per_chunk //   value: the amount of variants per scattered VCF
+    ch_vep_gtf // channel: [ path(gtf), path(gtf_tbi) ] (optional) -- mutually exclusive with ch_vep_cache
 
     main:
     def ch_vep_input = channel.empty()
@@ -91,6 +95,7 @@ workflow VCF_ANNOTATE_ENSEMBLVEP_SNPEFF {
             ch_vep_cache,
             ch_fasta,
             ch_vep_extra_files,
+            ch_vep_gtf,
         )
         ch_vep_output = ENSEMBLVEP_VEP.out.vcf
         ch_vep_reports = ENSEMBLVEP_VEP.out.report

@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TRTOOLS_DUMPSTR {
     tag "$meta.id"
     label 'process_single'
@@ -26,7 +29,7 @@ process TRTOOLS_DUMPSTR {
     def prefix = task.ext.prefix ?: "${meta.id}_dumpstr"
     if ("${vcf}" == "${prefix}.vcf" || "${vcf}" == "${prefix}.vcf.gz") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
 
-    def region_names = filter_regions ? filter_regions.collect { it.name.replaceFirst(/\.bed\.gz$/, '') }.join(',') : ''
+    def region_names = filter_regions ? filter_regions.collect { region -> region.name.replaceFirst(/\.bed\.gz$/, '') }.join(',') : ''
     def filter_regions_arg = filter_regions ? "--filter-regions ${filter_regions.join(',')}" : ''
     def filter_regions_names_arg = filter_regions ? "--filter-regions-names ${region_names}" : ''
 

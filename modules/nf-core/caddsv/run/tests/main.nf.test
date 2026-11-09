@@ -1,0 +1,57 @@
+nextflow_process {
+
+    name "Test Process CADDSV_RUN"
+    script "../main.nf"
+    process "CADDSV_RUN"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "caddsv"
+    tag "caddsv/run"
+
+    test("test.bed - stub") {
+
+        options "-stub" // since the actual run requires a large set of annotations, only a stub test is included.
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+        when {
+            process {
+                """
+                variants = file("test.bed")
+                variants.text = "chr1\\t999999\\t1000049\\tDEL\\n"
+
+                annotations_dir = file("caddsv_annotations", type: "dir")
+                annotations_dir.mkdirs()
+                file(annotations_dir.toString() + "/stub.txt").text = "stub\\n"
+
+                caddsv_yml = file("caddsv.yml")
+                caddsv_yml.text = "{}\\n"
+
+                input[0] = [
+                    [ id:'test' ],
+                    variants
+                ]
+                input[1] = [
+                    annotations_dir
+                ]
+                input[2] = [
+                    caddsv_yml
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

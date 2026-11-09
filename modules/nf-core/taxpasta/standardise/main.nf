@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TAXPASTA_STANDARDISE {
     tag "${meta.id}"
     label 'process_single'
@@ -15,7 +18,7 @@ process TAXPASTA_STANDARDISE {
 
     output:
     tuple val(meta), path("*.{tsv,csv,arrow,parquet,biom}"), emit: standardised_profile
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('taxpasta'), eval('taxpasta --version'), emit: versions_taxpasta, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,21 +34,11 @@ process TAXPASTA_STANDARDISE {
         ${args} \\
         ${taxonomy_option} \\
         ${profile}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        taxpasta: \$(taxpasta --version)
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.${format}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        taxpasta: \$(taxpasta --version)
-    END_VERSIONS
     """
 }
