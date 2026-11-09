@@ -6,7 +6,8 @@ process VCF2MAF {
     tag "$meta.id"
     label 'process_low'
 
-    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
+    // WARN: Version information not provided by tool on CLI. Please update version strings below when bumping container versions.
+    // ensembl-vep 113.4 still reports "113.0" on the CLI.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/04/04730c70a408fbee8c4a479832b340ca860113c09787061078a66ac56bd3ab56/data':
@@ -20,7 +21,7 @@ process VCF2MAF {
     output:
     tuple val(meta), path("*.maf"), emit: maf
     tuple val("${task.process}"), val('vcf2maf'), val("1.6.22"), emit: versions_vcf2maf, topic: versions
-    tuple val("${task.process}"), val('ensemblvep'), eval('vep --help 2>&1 | sed -n "s/^  ensembl-vep *: //p"'), emit: versions_ensemblvep, topic: versions
+    tuple val("${task.process}"), val('ensemblvep'), val("113.4"), emit: versions_ensemblvep, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
