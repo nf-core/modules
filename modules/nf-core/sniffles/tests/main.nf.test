@@ -429,14 +429,15 @@ nextflow_process {
         }
 
         then {
-            def records = path(process.out.vcf.get(0).get(1)).linesGzip.findAll { line -> !line.startsWith("#") }
+            def vcf = path(process.out.vcf.get(0).get(1)).vcf
             assertAll(
                 { assert process.success },
-                { assert records.every { line -> line.startsWith("chr2\t") } },
+                { assert vcf.chromosomes == ['chr2'] as Set },
                 { assert snapshot(
                     process.out.findAll { key, val -> key.startsWith("versions") },
                     file(process.out.tbi.get(0).get(1)).name,
-                    records,
+                    vcf.summary,
+                    vcf.variantsMD5,
                 ).match() }
             )
         }
