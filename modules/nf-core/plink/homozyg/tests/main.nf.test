@@ -9,6 +9,31 @@ nextflow_process {
     tag "plink"
     tag "plink/homozyg"
 
+    test("simulated ROH data - finds planted segments") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [id:'test', single_end:false],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/roh_simulated.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/roh_simulated.bim', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/popgen/roh_simulated.fam', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            def segments = path(process.out.hom[0][1]).readLines().findAll { it.trim() }.size() - 1
+            assertAll(
+                { assert process.success },
+                { assert segments == 4 : "expected 4 ROH segments, found ${segments}" },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
+            )
+        }
+    }
+
     test("stub run produces every declared output") {
         options "-stub"
 
