@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { HOSTILE_FETCH } from '../../../modules/nf-core/hostile/fetch/main'
 include { HOSTILE_CLEAN } from '../../../modules/nf-core/hostile/clean/main'
 

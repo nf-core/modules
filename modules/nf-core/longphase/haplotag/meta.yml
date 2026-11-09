@@ -1,16 +1,12 @@
 name: "longphase_haplotag"
-description: LongPhase is an ultra-fast program for simultaneously co-phasing
-  SNPs, small indels, large SVs, and (5mC) modifications for Nanopore and PacBio
-  platforms.
+description: LongPhase is an ultra-fast program for simultaneously co-phasing SNPs, small indels, large SVs, and (5mC) modifications for Nanopore and PacBio platforms.
 keywords:
   - haplotag
   - long-read
   - genomics
 tools:
   - "longphase":
-      description: "LongPhase is an ultra-fast program for simultaneously co-phasing
-        SNPs, small indels, large SVs, and (5mC) modifications for Nanopore and PacBio
-        platforms."
+      description: "LongPhase is an ultra-fast program for simultaneously co-phasing SNPs, small indels, large SVs, and (5mC) modifications for Nanopore and PacBio platforms."
       homepage: "https://github.com/twolinin/longphase"
       documentation: "https://github.com/twolinin/longphase"
       tool_dev_url: "https://github.com/twolinin/longphase"
@@ -99,7 +95,7 @@ output:
       - longphase:
           type: string
           description: The name of the tool
-      - "longphase --version | head -n 1 | sed 's/Version: //'":
+      - "longphase --version | head -n 1 | sed 's/^LongPhase Ver //'":
           type: eval
           description: The expression to obtain the version of the tool
 topics:
@@ -110,10 +106,34 @@ topics:
       - longphase:
           type: string
           description: The name of the tool
-      - "longphase --version | head -n 1 | sed 's/Version: //'":
+      - "longphase --version | head -n 1 | sed 's/^LongPhase Ver //'":
           type: eval
           description: The expression to obtain the version of the tool
 authors:
   - "@fellen31"
 maintainers:
   - "@fellen31"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/htslib_longphase:af28edaa0ad32c04
+      build_id: bd-af28edaa0ad32c04_1
+      scan_id: sc-1674b664ec9df99c_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/htslib_longphase:3418df83ebc1fb9a
+      build_id: bd-3418df83ebc1fb9a_1
+      scan_id: sc-433dba9124c158e8_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/htslib_longphase:2a80e3b482f47b34
+      build_id: bd-2a80e3b482f47b34_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/76/760ff81d5219ea953cdaa115ed70316afe201715c6e25fc8cc26c3d7cee57e1f/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/htslib_longphase:6b715be86adb1018
+      build_id: bd-6b715be86adb1018_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a4/a4c81218238ecde517d907a53f2d54958779efdafd3aafd8d6948e2e678b5a86/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/longphase/haplotag/.conda-lock/linux_amd64-bd-3418df83ebc1fb9a_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/longphase/haplotag/.conda-lock/linux_arm64-bd-af28edaa0ad32c04_1.txt

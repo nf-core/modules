@@ -1,0 +1,95 @@
+name: "stitchr_thimble"
+description: Automatic TCR nucleotide sequence generation from V, J and CDR3
+  information
+keywords:
+  - TCR
+  - sequence
+  - immunology
+tools:
+  - "stitchr":
+      description: "Automatic TCR nucleotide sequence generation from V, J and CDR3
+        information"
+      homepage: "https://github.com/JamieHeather/stitchr"
+      documentation: "https://jamieheather.github.io/stitchr/index.html"
+      tool_dev_url: "https://github.com/JamieHeather/stitchr"
+      doi: "10.1093/nar/gkac190"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing per sample information
+          e.g. `[ id:'sample1' ]`
+    - tcr_table:
+        type: file
+        description: tsv containing J,V and CDR3 information
+        pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
+  - alt_codon_usage:
+      type: file
+      description: txt containing alternative codon usage in kazusa-like format
+      pattern: "*.txt"
+      ontologies: []
+  - allele_preferences:
+      type: file
+      description: tsv containing alternative allele preferences
+      pattern: "*.tsv"
+      ontologies:
+        - edam: http://edamontology.org/format_3475
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'human' ]`
+    - species:
+        type: string
+        description: Species the reference data was downloaded for
+        pattern: "human|mouse"
+    - stitchr_data:
+        type: directory
+        description: |
+          IMGT reference produced by STITCHR_STITCHRDL. Staged as a directory named
+          `Data` so that it resolves ahead of the empty copy packaged in the
+          container.
+output:
+  thimble:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_stitchr.tsv:
+          type: file
+          description: |
+            tsv containing full TCR sequences
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  versions_stitchr:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - stitchr:
+          type: string
+          description: The name of the tool
+      - stitchr --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - stitchr:
+          type: string
+          description: The name of the tool
+      - stitchr --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@Clara0611"
+maintainers:
+  - "@mapo9"

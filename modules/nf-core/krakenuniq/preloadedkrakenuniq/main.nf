@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     tag "${meta.id}"
     label 'process_high'
@@ -109,7 +112,7 @@ process KRAKENUNIQ_PRELOADEDKRAKENUNIQ {
     assert (meta.single_end ? sequences.size() : sequences.size() / 2) == prefixes.size()
 
     def merged_suffix = meta.single_end ? '' : '.merged'
-    def prefix_list = prefixes.collect { "'${it}'" }.join(' ')
+    def prefix_list = prefixes.collect { item -> "'${item}'" }.join(' ')
 
     """
     for PREFIX in ${prefix_list}; do

@@ -9,7 +9,9 @@ nextflow_workflow {
     tag "subworkflows_nfcore"
     tag "bam_applybqsr"
     tag "subworkflows/bam_applybqsr"
+    tag "gatk4"
     tag "gatk4/applybqsr"
+    tag "samtools"
     tag "samtools/merge"
 
     test("homo_sapiens - cram - with intervals") {
@@ -36,7 +38,7 @@ nextflow_workflow {
                     [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.intervals1_multi.bed', checkIfExists: true), 2],
                     [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.intervals2_multi.bed', checkIfExists: true), 2]
                 )
-                input[3] = 'cram'
+                input[3] = ['cram', 'crai']
                 """
                 }
             }
@@ -76,7 +78,7 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
                 ])
                 input[2] = channel.of([[], 0])
-                input[3] = 'cram'
+                input[3] = ['cram', 'crai']
                 """
                 }
             }
@@ -119,7 +121,48 @@ nextflow_workflow {
                     [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.intervals1_multi.bed', checkIfExists: true), 2],
                     [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.intervals2_multi.bed', checkIfExists: true), 2]
                 )
-                input[3] = 'bam'
+                input[3] = ['bam', 'bai']
+                """
+                }
+            }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.recal_out.collect { meta, reads, index ->
+                        [ file(reads).name + ':readsMD5,' + bam(reads).getReadsMD5(), file(index).name]
+                    }
+                ).match()}
+            )
+        }
+    }
+
+    test("homo_sapiens - bam - csi - with intervals") {
+
+        when {
+            params {
+                samtools_args = '--write-index'
+            }
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/test.baserecalibrator.table', checkIfExists: true)
+                ])
+                input[1] = channel.value([
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
+                ])
+                input[2] = channel.of(
+                    [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.intervals1_multi.bed', checkIfExists: true), 2],
+                    [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.intervals2_multi.bed', checkIfExists: true), 2]
+                )
+                input[3] = ['bam', 'csi']
                 """
                 }
             }
@@ -157,7 +200,7 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
                 ])
                 input[2] = channel.of([[], 0])
-                input[3] = 'bam'
+                input[3] = ['bam', 'bai']
                 """
                 }
             }
@@ -195,7 +238,7 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
                 ])
                 input[2] = channel.of([[], 0])
-                input[3] = 'bam'
+                input[3] = ['bam', 'bai']
                 """
                 }
         }
@@ -225,7 +268,7 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
                 ])
                 input[2] = channel.of([[], 0])
-                input[3] = 'cram'
+                input[3] = ['cram', 'crai']
                 """
             }
         }
@@ -235,6 +278,34 @@ nextflow_workflow {
                     { assert workflow.success },
                     { assert snapshot(sanitizeOutput(workflow.out)).match() }
             )
+        }
+    }
+
+    test("invalid output_format - cram with bai") {
+        options "-stub"
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gatk/test.baserecalibrator.table', checkIfExists: true)
+                ])
+                input[1] = channel.value([
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true)
+                ])
+                input[2] = channel.of([[], 0])
+                input[3] = ['cram', 'bai']
+                """
+            }
+        }
+
+        then {
+            assert workflow.failed
         }
     }
 }

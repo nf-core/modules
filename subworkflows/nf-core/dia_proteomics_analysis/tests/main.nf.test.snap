@@ -35,18 +35,18 @@
                 "msstats_in": [
                     [
                         {
-                            "id": "RD139_Narrow_UPS1_design_ecoli",
-                            "enzyme": "Trypsin",
-                            "fixed_mods": "Carbamidomethyl (C)",
-                            "variable_mods": "Oxidation (M)",
-                            "precursor_tolerance": 20,
-                            "fragment_tolerance": 20,
-                            "precursor_tolerance_unit": "ppm",
-                            "fragment_tolerance_unit": "ppm",
                             "dia_params": "20;ppm;20;ppm;Trypsin;Carbamidomethyl (C);Oxidation (M)",
+                            "enzyme": "Trypsin",
                             "experiment": {
                                 "id": "RD139_Narrow_UPS1_design_ecoli"
-                            }
+                            },
+                            "fixed_mods": "Carbamidomethyl (C)",
+                            "fragment_tolerance": 20,
+                            "fragment_tolerance_unit": "ppm",
+                            "id": "RD139_Narrow_UPS1_design_ecoli",
+                            "precursor_tolerance": 20,
+                            "precursor_tolerance_unit": "ppm",
+                            "variable_mods": "Oxidation (M)"
                         },
                         "RD139_Narrow_UPS1_design_msstats_in.csv:md5,d493a4a02aaceba430c7d492620697d9"
                     ]
@@ -91,10 +91,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-07-31T12:09:50.246706022",
+        "timestamp": "2026-10-16T11:21:38.23441",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.6"
+            "nextflow": "26.10.0"
         }
     }
 }
