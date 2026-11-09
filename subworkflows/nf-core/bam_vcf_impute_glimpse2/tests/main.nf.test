@@ -10,13 +10,13 @@ nextflow_workflow {
     tag "bam_vcf_impute_glimpse2"
     tag "subworkflows/bam_vcf_impute_glimpse2"
 
-    tag "glimpse2/chunk"
-    tag "glimpse2/splitreference"
-    tag "glimpse2/phase"
-    tag "glimpse2/ligate"
-    tag "glimpse2"
-    tag "bcftools/index"
     tag "bcftools"
+    tag "bcftools/index"
+    tag "glimpse2"
+    tag "glimpse2/chunk"
+    tag "glimpse2/ligate"
+    tag "glimpse2/phase"
+    tag "glimpse2/splitreference"
 
     test("homo_sapiens - vcf no list and no sample, panel vcf region, no chunks, no map, no fasta, chunk recursive + splitreference") {
         when {

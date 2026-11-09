@@ -8,9 +8,12 @@ nextflow_workflow {
     tag "subworkflows"
     tag "subworkflows_nfcore"
     tag "subworkflows/vcf_filter_survivor_bcftools"
-    tag "survivor/filter"
+    tag "bcftools"
     tag "bcftools/filter"
+    tag "htslib"
     tag "htslib/bgziptabix"
+    tag "survivor"
+    tag "survivor/filter"
 
     test("homo sapiens - sv vcf gz - survivor bcftools") {
 

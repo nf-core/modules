@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { MINIMAC4_COMPRESSREF                    } from '../../../modules/nf-core/minimac4/compressref'
 include { MINIMAC4_IMPUTE                         } from '../../../modules/nf-core/minimac4/impute'
 include { GLIMPSE2_LIGATE                         } from '../../../modules/nf-core/glimpse2/ligate'
