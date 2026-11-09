@@ -1,0 +1,131 @@
+name: "isescan"
+description: Identify insertion sequence (IS) elements in prokaryotic genome
+  or metagenome assemblies
+keywords:
+  - insertion sequence
+  - is element
+  - transposase
+  - mobile genetic elements
+  - prokaryote
+  - genomics
+tools:
+  - "isescan":
+      description: "A python pipeline to identify insertion sequence (IS) elements
+        in genome and metagenome"
+      homepage: "https://github.com/xiezhq/ISEScan"
+      documentation: "https://github.com/xiezhq/ISEScan"
+      tool_dev_url: "https://github.com/xiezhq/ISEScan"
+      doi: "10.1093/bioinformatics/btx433"
+      licence:
+        - "GPL v3"
+      identifier: biotools:isescan
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - fasta:
+        type: file
+        description: Genome or metagenome assembly in FASTA format (can be gzipped)
+        pattern: "*.{fa,fasta,fna,fas}{,.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+output:
+  sum:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}.sum:
+          type: file
+          description: Summary of the IS copies found for each IS family
+          pattern: "*.sum"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}.tsv:
+          type: file
+          description: Details of each IS copy, one copy per line
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  gff:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}.gff:
+          type: file
+          description: Annotation of each IS copy and its terminal inverted repeats
+          pattern: "*.gff"
+          ontologies:
+            - edam: http://edamontology.org/format_1975 # GFF3
+  is_fna:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}.is.fna:
+          type: file
+          description: Nucleotide sequence of each IS copy
+          pattern: "*.is.fna"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+  orf_fna:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}.orf.fna:
+          type: file
+          description: Nucleotide sequence of the transposase gene in each IS copy
+          pattern: "*.orf.fna"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+  orf_faa:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}.orf.faa:
+          type: file
+          description: Amino acid sequence of the transposase in each IS copy
+          pattern: "*.orf.faa"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+  versions_isescan:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - isescan:
+          type: string
+          description: The name of the tool
+      - isescan.py --version 2>&1 | sed 's/isescan //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - isescan:
+          type: string
+          description: The name of the tool
+      - isescan.py --version 2>&1 | sed 's/isescan //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@pabloestepaa"
+maintainers:
+  - "@pabloestepaa"
