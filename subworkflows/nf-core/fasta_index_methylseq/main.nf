@@ -3,6 +3,7 @@
 
 include { UNTAR as UNTAR_BISMARK    } from '../../../modules/nf-core/untar/main'
 include { UNTAR as UNTAR_BWAMETH    } from '../../../modules/nf-core/untar/main'
+include { UNTAR as UNTAR_BWAMEM     } from '../../../modules/nf-core/untar/main'
 include { GUNZIP                    } from '../../../modules/nf-core/gunzip/main'
 include { BISMARK_GENOMEPREPARATION as BISMARK_GENOMEPREPARATION_BOWTIE } from '../../../modules/nf-core/bismark/genomepreparation/main'
 include { BISMARK_GENOMEPREPARATION as BISMARK_GENOMEPREPARATION_HISAT } from '../../../modules/nf-core/bismark/genomepreparation/main'
@@ -123,11 +124,11 @@ workflow FASTA_INDEX_METHYLSEQ {
                 }
                 .set { ch_bwamem_index_branched }
 
-            UNTAR_BISMARK (
+            UNTAR_BWAMEM (
                 ch_bwamem_index_branched.gzipped
             )
 
-            ch_bwamem_index = ch_bwamem_index_branched.unzipped.mix(UNTAR_BISMARK.out.untar)
+            ch_bwamem_index = ch_bwamem_index_branched.unzipped.mix(UNTAR_BWAMEM.out.untar)
         } else if (aligner == 'bwamem3') {
             log.info "bwa-mem3 index not provided. Generating bwa-mem3 index from FASTA file."
             BWAMEM3_INDEX (
