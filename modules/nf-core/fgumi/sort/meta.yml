@@ -1,0 +1,106 @@
+name: "fgumi_sort"
+description: |
+  Sorts a SAM or BAM file. Several sort orders are available, including coordinate,
+  queryname, and template-coordinate. This is a high-performance replacement for fgbio SortBam.
+keywords:
+  - sort
+  - bam
+  - sam
+tools:
+  - "fgumi":
+      description: "High-performance tools for working with UMI-tagged sequencing data."
+      homepage: "https://github.com/fulcrumgenomics/fgumi"
+      documentation: "https://docs.rs/fgumi"
+      tool_dev_url: "https://github.com/fulcrumgenomics/fgumi"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test', single_end:false ]
+    - bam:
+        type: file
+        description: |
+          The input SAM or BAM file to be sorted.
+        pattern: "*.{bam,sam}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.bam":
+          type: file
+          description: |
+            Sorted output BAM file.
+          pattern: "*.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572"
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.{csi,bai}":
+          type: file
+          description: |
+            Index file if the bam file is coordinate sorted.
+          pattern: "*.{csi,bai}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3327"
+  versions_fgumi:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - fgumi:
+          type: string
+          description: The tool name
+      - 'fgumi --version | sed "s/^fgumi //"':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - fgumi:
+          type: string
+          description: The tool name
+      - 'fgumi --version | sed "s/^fgumi //"':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@sppearce"
+maintainers:
+  - "@sppearce"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/fgumi:0.9.0--8555aea4f4d2153a
+      build_id: bd-8555aea4f4d2153a_1
+      scan_id: sc-3ec536ae7be75a2b_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/fgumi:0.9.0--1f0a2f2a31a251a3
+      build_id: bd-1f0a2f2a31a251a3_1
+      scan_id: sc-f32c857ae4d5cab5_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/fgumi:0.9.0--d52cc5c94c4a9b55
+      build_id: bd-d52cc5c94c4a9b55_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8b/8b1b1f653fc1fef5eb7d31f72d7cc60e29ff0eec5552802523ce97b1b5d0f920/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/fgumi:0.9.0--831508723e491e14
+      build_id: bd-831508723e491e14_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ac/acae7f270300e612a9f0528b66b7b31fb05dcbf6fb4e16dc1f3a1f7b23149774/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/fgumi/sort/.conda-lock/linux_amd64-bd-1f0a2f2a31a251a3_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/fgumi/sort/.conda-lock/linux_arm64-bd-8555aea4f4d2153a_1.txt

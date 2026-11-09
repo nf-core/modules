@@ -1,6 +1,5 @@
 name: "openms_peakpickerhires"
-description: A tool for peak detection in high-resolution profile data (Orbitrap
-  or FTICR)
+description: A tool for peak detection in high-resolution profile data (Orbitrap or FTICR)
 keywords:
   - peak picking
   - mzml
@@ -8,8 +7,7 @@ keywords:
   - proteomics
 tools:
   - "openms":
-      description: "OpenMS is an open-source software C++ library for LC-MS data management
-        and analyses"
+      description: "OpenMS is an open-source software C++ library for LC-MS data management and analyses"
       homepage: "https://openms.de"
       documentation: "https://openms.readthedocs.io/en/latest/index.html"
       tool_dev_url: "https://github.com/OpenMS/OpenMS"
@@ -67,3 +65,27 @@ authors:
   - "@jonasscheid"
 maintainers:
   - "@jonasscheid"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/openms:3.6.0--88df48c0a426b7f7
+      build_id: bd-88df48c0a426b7f7_1
+      scan_id: sc-745984b7226b5573_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/openms:3.6.0--2837b648650a004a
+      build_id: bd-2837b648650a004a_1
+      scan_id: sc-0cfaea311edd0db0_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/openms:3.6.0--3ba584771b14a51e
+      build_id: bd-3ba584771b14a51e_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/02/02063b1e10bab9efbd993befdec5ff48cec8a5b2bb791bc774ba7fdbf2114ccc/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/openms:3.6.0--b3f7fd15faaf04c0
+      build_id: bd-b3f7fd15faaf04c0_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/84/84ad5437e080c0b3ec0ce315a54c0bb62950277a4496f4d1be911f82078dd2a1/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/openms/peakpickerhires/.conda-lock/linux_amd64-bd-88df48c0a426b7f7_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/openms/peakpickerhires/.conda-lock/linux_arm64-bd-2837b648650a004a_1.txt

@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CHROMAP_INDEX {
     tag "$fasta"
     label 'process_medium'
@@ -8,7 +11,7 @@ process CHROMAP_INDEX {
         'community.wave.seqera.io/library/chromap:0.3.2--4ec4bca51cd82195' }"
 
     input:
-    tuple val(meta), path(fasta), path(fai)
+    tuple val(meta), path(fasta)
 
     output:
     tuple val(meta), path ("*.index"), emit: index

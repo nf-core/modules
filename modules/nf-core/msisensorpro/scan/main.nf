@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MSISENSORPRO_SCAN {
     tag "$meta.id"
     label 'process_low'
@@ -12,7 +15,7 @@ process MSISENSORPRO_SCAN {
 
     output:
     tuple val(meta), path("*.list"), emit: list
-    tuple val("${task.process}"), val('msisensor-pro'), eval("msisensor-pro --version 2>&1 | sed -nE 's/Version:\\s*//p'") , emit: versions_msisensorpro, topic: versions
+    tuple val("${task.process}"), val('msisensor-pro'), eval("msisensor-pro --version 2>&1 | sed -nE 's/Version:\\s*v//p'") , emit: versions_msisensorpro, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

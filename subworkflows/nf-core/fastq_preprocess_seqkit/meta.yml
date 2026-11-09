@@ -45,12 +45,6 @@ output:
         Channel containing filtered FASTQ files.
         Structure: [ val(meta), [ fastq ] ]
       pattern: "*.{fastq,fastq.gz,fq,fq.gz}"
-  - versions:
-      type: file
-      description: |
-        File containing software versions
-        Structure: [ path(versions.yml) ]
-      pattern: "versions.yml"
 authors:
   - "@maia-munteanu"
 maintainers:

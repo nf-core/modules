@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HELITRONSCANNER_DRAW {
     tag "$meta.id"
     label 'process_medium'
@@ -14,7 +17,7 @@ process HELITRONSCANNER_DRAW {
 
     output:
     tuple val(meta), path("*.draw"), emit: draw
-    path "versions.yml"            , emit: versions
+    tuple val("${task.process}"), val('helitronscanner'), eval("HelitronScanner |& sed -n 's/HelitronScanner V//p'"), topic: versions, emit: versions_helitronscanner
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,8 +40,8 @@ process HELITRONSCANNER_DRAW {
     HelitronScanner \\
         pairends \\
         -Xmx${avail_mem}g \\
-        -head_score $head \\
-        -tail_score $tail \\
+        -head_score ${head} \\
+        -tail_score ${tail} \\
         -output ${prefix}.pairends \\
         ${args2}
 
@@ -46,27 +49,17 @@ process HELITRONSCANNER_DRAW {
         draw \\
         -Xmx${avail_mem}g \\
         -pscore ${prefix}.pairends \\
-        -g $fasta \\
+        -g ${fasta} \\
         -output ${prefix}.draw \\
         ${args}
 
     mv ${prefix}.draw.hel.fa \\
         ${prefix}.draw
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        helitronscanner: \$(HelitronScanner |& sed -n 's/HelitronScanner V\\(.*\\)/V\\1/p')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.draw
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        helitronscanner: \$(HelitronScanner |& sed -n 's/HelitronScanner V\\(.*\\)/V\\1/p')
-    END_VERSIONS
     """
 }

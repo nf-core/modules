@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process KHMER_TRIMLOWABUND {
     tag "${meta.id}"
     label 'process_medium'
@@ -12,7 +15,7 @@ process KHMER_TRIMLOWABUND {
 
     output:
     tuple val(meta), path("${output_path}"), emit: trimmed
-    path "versions.yml"                    , emit: versions
+    tuple val("${task.process}"), val('khmer'), eval('trim-low-abund.py --version 2>&1 | grep ^khmer | sed "s/^khmer //"'), emit: versions_khmer, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,11 +43,6 @@ process KHMER_TRIMLOWABUND {
         -M ${avail_mem}e9 \\
         --output ${output_path} \\
         $seq_file
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        khmer: \$( trim-low-abund.py --version 2>&1 | grep ^khmer | sed 's/^khmer //' )
-    END_VERSIONS
     """
 
     stub:
@@ -60,10 +58,5 @@ process KHMER_TRIMLOWABUND {
     }
     """
     echo "" | gzip > ${output_path}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        khmer: \$( trim-low-abund.py --version 2>&1 | grep ^khmer | sed 's/^khmer //' )
-    END_VERSIONS
     """
 }

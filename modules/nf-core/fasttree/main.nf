@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FASTTREE {
     label 'process_medium'
 
@@ -11,7 +14,7 @@ process FASTTREE {
 
     output:
     path "*.tre"                                                                                                                     , emit: phylogeny
-    tuple val("${task.process}"), val('fasttree'), eval('fasttree -help 2>&1 | head -1 | sed \'s/^FastTree \\([0-9.]*\\) .*$/\\1/\''), emit: versions_fasttree, topic: versions
+    tuple val("${task.process}"), val('fasttree'), eval('fasttree -help 2>&1 | head -1 | sed \'s/^FastTree \\([0-9.]*\\) .*$/\\1/\''), topic: versions, emit: versions_fasttree
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,5 +27,10 @@ process FASTTREE {
         -log fasttree_phylogeny.tre.log \\
         -nt $alignment \\
         > fasttree_phylogeny.tre
+    """
+
+    stub:
+    """
+    touch fasttree_phylogeny.tre
     """
 }

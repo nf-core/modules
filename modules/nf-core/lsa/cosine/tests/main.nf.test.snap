@@ -2,25 +2,6 @@
     "Stub run": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test_sample"
-                        },
-                        "test_sample_matrix.csv:md5,3932b231a8a14016bc1e7a245f05246c"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test_sample"
-                        },
-                        "test_sample_heatmap.png:md5,3932b231a8a14016bc1e7a245f05246c"
-                    ]
-                ],
-                "2": [
-                    "versions.yml:md5,b77351a76d91db12e57dd88f7e2e0184"
-                ],
                 "heatmap": [
                     [
                         {
@@ -42,31 +23,47 @@
                 ]
             }
         ],
-        "timestamp": "2026-02-20T15:51:35.612855607",
+        "timestamp": "2026-06-18T16:08:43.693749929",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.04.7"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
         }
     },
     "Should run successfully with a simple CSV": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test_sample"
-                    },
-                    "test_sample_matrix.csv:md5,d84209a90c22f35ef4e6ea89a9d11770"
+            {
+                "heatmap": [
+                    [
+                        {
+                            "id": "test_sample"
+                        },
+                        "test_sample_heatmap.png"
+                    ]
+                ],
+                "matrix": [
+                    [
+                        {
+                            "id": "test_sample"
+                        },
+                        "test_sample_matrix.csv:md5,d84209a90c22f35ef4e6ea89a9d11770"
+                    ]
+                ],
+                "versions": [
+                    "versions.yml:md5,b77351a76d91db12e57dd88f7e2e0184"
                 ]
-            ],
-            [
-                "versions.yml:md5,b77351a76d91db12e57dd88f7e2e0184"
-            ],
-            "test_sample_heatmap.png"
+            },
+            {
+                "LSA_COSINE": {
+                    "r-base": "4.5.2",
+                    "r-lsa": "0.73.4",
+                    "r-pheatmap": "1.0.13"
+                }
+            }
         ],
-        "timestamp": "2026-02-13T02:24:53.88495333",
+        "timestamp": "2026-06-18T16:08:37.172956317",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.04.7"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
         }
     }
 }

@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MOBSUITE_RECON {
     tag "$meta.id"
     label 'process_medium'
@@ -15,7 +18,7 @@ process MOBSUITE_RECON {
     tuple val(meta), path("results/contig_report.txt")   , emit: contig_report
     tuple val(meta), path("results/plasmid_*.fasta")     , emit: plasmids        , optional: true
     tuple val(meta), path("results/mobtyper_results.txt"), emit: mobtyper_results, optional: true
-    path "versions.yml"                                  , emit: versions
+    tuple val("${task.process}"), val('mobsuite'), eval("mob_recon --version 2>&1 | sed 's/.*mob_recon //; s/ .*//'"), emit: versions_mobsuite, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,21 +29,16 @@ process MOBSUITE_RECON {
     def is_compressed = fasta.getName().endsWith(".gz") ? true : false
     def fasta_name = fasta.getName().replace(".gz", "")
     """
-    if [ "$is_compressed" == "true" ]; then
-        gzip -c -d $fasta > $fasta_name
+    if [ "${is_compressed}" == "true" ]; then
+        gzip -c -d ${fasta} > ${fasta_name}
     fi
 
     mob_recon \\
-        --infile $fasta_name \\
-        $args \\
-        --num_threads $task.cpus \\
+        --infile ${fasta_name} \\
+        ${args} \\
+        --num_threads ${task.cpus} \\
         --outdir results \\
-        --sample_id $prefix
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mobsuite: \$(echo \$(mob_recon --version 2>&1) | sed 's/^.*mob_recon //; s/ .*\$//')
-    END_VERSIONS
+        --sample_id ${prefix}
     """
 
     stub:
@@ -49,10 +47,5 @@ process MOBSUITE_RECON {
 
     touch results/chromosome.fasta
     touch results/contig_report.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mobsuite: \$(echo \$(mob_recon --version 2>&1) | sed 's/^.*mob_recon //; s/ .*\$//')
-    END_VERSIONS
     """
 }

@@ -1,8 +1,10 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SLIMFASTQ {
     tag "$meta.id"
     label 'process_low'
 
-    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/slimfastq:2.04--h87f3376_2':
@@ -13,7 +15,8 @@ process SLIMFASTQ {
 
     output:
     tuple val(meta), path("*.sfq"), emit: sfq
-    tuple val("${task.process}"), val('slimfastq'), eval('echo 2.04'), emit: versions_slimfastq, topic: versions
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
+    tuple val("${task.process}"), val('slimfastq'), val('2.04'), emit: versions_slimfastq, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

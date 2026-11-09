@@ -6,13 +6,14 @@ keywords:
   - guide tree
 tools:
   - "mafft":
-      description: Multiple alignment program for amino acid or nucleotide sequences
-        based on fast Fourier transform
+      description: Multiple alignment program for amino acid or nucleotide
+        sequences based on fast Fourier transform
       homepage: https://mafft.cbrc.jp/alignment/software/
       documentation: https://mafft.cbrc.jp/alignment/software/manual/manual.html
       tool_dev_url: https://mafft.cbrc.jp/alignment/software/source.html
       doi: "10.1093/nar/gkf436"
-      licence: ["BSD"]
+      licence:
+        - "BSD"
       identifier: biotools:MAFFT
 input:
   - - meta:
@@ -22,7 +23,8 @@ input:
           e.g. [ id:'test' ]
     - fasta:
         type: file
-        description: FASTA file containing the sequences to be used to render the guidetree.
+        description: FASTA file containing the sequences to be used to render the
+          guidetree.
         pattern: "*.{fa,fasta}"
         ontologies:
           - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
@@ -40,13 +42,29 @@ output:
           pattern: "*.dnd"
           ontologies:
             - edam: http://edamontology.org/format_2006 # PHYLOGENETIC TREE
+  versions_mafft:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mafft:
+          type: string
+          description: The name of the tool
+      - mafft --version 2>&1 | sed 's/v//;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mafft:
+          type: string
+          description: The name of the tool
+      - mafft --version 2>&1 | sed 's/v//;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@luisas"
 maintainers:

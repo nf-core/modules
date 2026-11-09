@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VEMBRANE_SORT {
     tag "${meta.id}"
     label 'process_low'
@@ -30,11 +33,6 @@ process VEMBRANE_SORT {
         --output ${prefix}.${suffix} \\
         '${expression}' \\
         ${vcf}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vembrane: \$(vembrane --version 2>&1 | head -n1 | sed 's/vembrane //')
-    END_VERSIONS
     """
 
     stub:
@@ -45,10 +43,5 @@ process VEMBRANE_SORT {
         : args.contains('--output-fmt bcf.gz') ? 'bcf.gz' : 'vcf'
     """
     touch ${prefix}.${suffix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vembrane: \$(vembrane --version 2>&1 | head -n1 | sed 's/vembrane //')
-    END_VERSIONS
     """
 }

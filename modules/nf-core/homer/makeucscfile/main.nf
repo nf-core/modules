@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HOMER_MAKEUCSCFILE {
     tag "${meta.id}"
     label 'process_medium'
@@ -11,7 +14,8 @@ process HOMER_MAKEUCSCFILE {
 
     output:
     tuple val(meta), path("*.bedGraph.gz"), emit: bedGraph
-    path "versions.yml", emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('homer'), val("4.11"), emit: versions_homer, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -19,31 +23,16 @@ process HOMER_MAKEUCSCFILE {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '4.11'
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     makeUCSCfile \\
         ${tagDir} \\
         -o ${prefix}.bedGraph \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        homer: ${VERSION}
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '4.11'
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
-
     """
-    echo '' | gzip > ${prefix}.bedGraph.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        homer: ${VERSION}
-    END_VERSIONS
+    echo "" | gzip > ${prefix}.bedGraph.gz
     """
 }

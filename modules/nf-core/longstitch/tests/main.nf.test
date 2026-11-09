@@ -32,32 +32,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.tigmint_ntLink_fasta,
-                    process.out.tigmint_ntLink_arcs_fasta,
-                    process.out.ntLink_arcs_fasta,
-                    file(process.out.scaffold_dot[0][1]).name,
-                    process.out.links_scaffolds_dist_gv,
-                    process.out.links_assembly_correspondence_tsv,
-                    process.out.links_gv,
-                    process.out.links_log,
-                    process.out.links_scaffolds,
-                    process.out.links_scaffolds_fa,
-                    process.out.arcs_tsv,
-                    process.out.arcs_gv,
-                    process.out.arcs_scaffolds_fa,
-                    process.out.arcs_scaffolds_renamed,
-                    process.out.abyss_scaffolds_fa,
-                    process.out.stitch_path,
-                    process.out.trimmed_scaffolds_agp,
-                    process.out.trimmed_scaffolds_fasta,
-                    process.out.trimmed_scaffolds_path,
-                    process.out.trimmed_scaffolds_tsv,
-                    process.out.verbose_mapping_tsv,
-                    process.out.tsv,
-                    process.out.versions
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["scaffold_dot"])).match() }
             )
         }
     }
@@ -86,32 +61,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.tigmint_ntLink_fasta,
-                    process.out.tigmint_ntLink_arcs_fasta,
-                    process.out.ntLink_arcs_fasta,
-                    file(process.out.scaffold_dot[0][1]).name,
-                    process.out.links_scaffolds_dist_gv,
-                    process.out.links_assembly_correspondence_tsv,
-                    file(process.out.links_gv[0][1]).name,
-                    file(process.out.links_log[0][1]).name,
-                    process.out.links_scaffolds,
-                    process.out.links_scaffolds_fa,
-                    process.out.arcs_tsv,
-                    file(process.out.arcs_gv[0][1]).name,
-                    process.out.arcs_scaffolds_fa,
-                    process.out.arcs_scaffolds_renamed,
-                    process.out.abyss_scaffolds_fa,
-                    process.out.stitch_path,
-                    process.out.trimmed_scaffolds_agp,
-                    process.out.trimmed_scaffolds_fasta,
-                    process.out.trimmed_scaffolds_path,
-                    process.out.trimmed_scaffolds_tsv,
-                    process.out.verbose_mapping_tsv,
-                    process.out.tsv,
-                    process.out.versions
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["scaffold_dot", "links_gv", "links_log", "arcs_gv"])).match() }
             )
         }
     }
@@ -140,32 +90,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.tigmint_ntLink_fasta,
-                    process.out.tigmint_ntLink_arcs_fasta,
-                    process.out.ntLink_arcs_fasta,
-                    file(process.out.scaffold_dot[0][1]).name,
-                    process.out.links_scaffolds_dist_gv,
-                    process.out.links_assembly_correspondence_tsv,
-                    process.out.links_gv,
-                    process.out.links_log,
-                    process.out.links_scaffolds,
-                    process.out.links_scaffolds_fa,
-                    process.out.arcs_tsv,
-                    process.out.arcs_gv,
-                    process.out.arcs_scaffolds_fa,
-                    process.out.arcs_scaffolds_renamed,
-                    process.out.abyss_scaffolds_fa,
-                    process.out.stitch_path,
-                    process.out.trimmed_scaffolds_agp,
-                    process.out.trimmed_scaffolds_fasta,
-                    process.out.trimmed_scaffolds_path,
-                    process.out.trimmed_scaffolds_tsv,
-                    process.out.verbose_mapping_tsv,
-                    process.out.tsv,
-                    process.out.versions
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["scaffold_dot"])).match() }
             )
         }
     }
@@ -194,32 +119,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.tigmint_ntLink_fasta,
-                    process.out.tigmint_ntLink_arcs_fasta,
-                    process.out.ntLink_arcs_fasta,
-                    file(process.out.scaffold_dot[0][1]).name,
-                    process.out.links_scaffolds_dist_gv,
-                    process.out.links_assembly_correspondence_tsv,
-                    file(process.out.links_gv[0][1]).name,
-                    file(process.out.links_log[0][1]).name,
-                    process.out.links_scaffolds,
-                    process.out.links_scaffolds_fa,
-                    process.out.arcs_tsv,
-                    file(process.out.arcs_gv[0][1]).name,
-                    process.out.arcs_scaffolds_fa,
-                    process.out.arcs_scaffolds_renamed,
-                    process.out.abyss_scaffolds_fa,
-                    process.out.stitch_path,
-                    process.out.trimmed_scaffolds_agp,
-                    process.out.trimmed_scaffolds_fasta,
-                    process.out.trimmed_scaffolds_path,
-                    process.out.trimmed_scaffolds_tsv,
-                    process.out.verbose_mapping_tsv,
-                    process.out.tsv,
-                    process.out.versions
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["scaffold_dot", "links_gv", "links_log", "arcs_gv"])).match() }
             )
         }
     }
@@ -248,32 +148,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.tigmint_ntLink_fasta,
-                    process.out.tigmint_ntLink_arcs_fasta,
-                    process.out.ntLink_arcs_fasta,
-                    file(process.out.scaffold_dot[0][1]).name,
-                    process.out.links_scaffolds_dist_gv,
-                    process.out.links_assembly_correspondence_tsv,
-                    process.out.links_gv,
-                    process.out.links_log,
-                    process.out.links_scaffolds,
-                    process.out.links_scaffolds_fa,
-                    process.out.arcs_tsv,
-                    process.out.arcs_gv,
-                    process.out.arcs_scaffolds_fa,
-                    process.out.arcs_scaffolds_renamed,
-                    process.out.abyss_scaffolds_fa,
-                    process.out.stitch_path,
-                    process.out.trimmed_scaffolds_agp,
-                    process.out.trimmed_scaffolds_fasta,
-                    process.out.trimmed_scaffolds_path,
-                    process.out.trimmed_scaffolds_tsv,
-                    process.out.verbose_mapping_tsv,
-                    process.out.tsv,
-                    process.out.versions
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["scaffold_dot"])).match() }
             )
         }
     }
@@ -302,32 +177,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.tigmint_ntLink_fasta,
-                    process.out.tigmint_ntLink_arcs_fasta,
-                    process.out.ntLink_arcs_fasta,
-                    file(process.out.scaffold_dot[0][1]).name,
-                    process.out.links_scaffolds_dist_gv,
-                    process.out.links_assembly_correspondence_tsv,
-                    file(process.out.links_gv[0][1]).name,
-                    file(process.out.links_log[0][1]).name,
-                    process.out.links_scaffolds,
-                    process.out.links_scaffolds_fa,
-                    process.out.arcs_tsv,
-                    file(process.out.arcs_gv[0][1]).name,
-                    process.out.arcs_scaffolds_fa,
-                    process.out.arcs_scaffolds_renamed,
-                    process.out.abyss_scaffolds_fa,
-                    process.out.stitch_path,
-                    process.out.trimmed_scaffolds_agp,
-                    process.out.trimmed_scaffolds_fasta,
-                    process.out.trimmed_scaffolds_path,
-                    process.out.trimmed_scaffolds_tsv,
-                    process.out.verbose_mapping_tsv,
-                    process.out.tsv,
-                    process.out.versions
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(
+                    process.out,
+                    unstableKeys:["scaffold_dot", "links_gv", "links_log", "arcs_gv", "arcs_checkpoint_tsv", "links_checkpoint_tsv"]
+                )).match() }
             )
         }
     }
@@ -356,32 +209,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.tigmint_ntLink_fasta,
-                    process.out.tigmint_ntLink_arcs_fasta,
-                    process.out.ntLink_arcs_fasta,
-                    file(process.out.scaffold_dot[0][1]).name,
-                    process.out.links_scaffolds_dist_gv,
-                    process.out.links_assembly_correspondence_tsv,
-                    process.out.links_gv,
-                    process.out.links_log,
-                    process.out.links_scaffolds,
-                    process.out.links_scaffolds_fa,
-                    process.out.arcs_tsv,
-                    process.out.arcs_gv,
-                    process.out.arcs_scaffolds_fa,
-                    process.out.arcs_scaffolds_renamed,
-                    process.out.abyss_scaffolds_fa,
-                    process.out.stitch_path,
-                    process.out.trimmed_scaffolds_agp,
-                    process.out.trimmed_scaffolds_fasta,
-                    process.out.trimmed_scaffolds_path,
-                    process.out.trimmed_scaffolds_tsv,
-                    process.out.verbose_mapping_tsv,
-                    process.out.tsv,
-                    process.out.versions
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["scaffold_dot"])).match() }
             )
         }
     }
@@ -410,32 +238,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.tigmint_ntLink_fasta,
-                    process.out.tigmint_ntLink_arcs_fasta,
-                    process.out.ntLink_arcs_fasta,
-                    file(process.out.scaffold_dot[0][1]).name,
-                    process.out.links_scaffolds_dist_gv,
-                    process.out.links_assembly_correspondence_tsv,
-                    file(process.out.links_gv[0][1]).name,
-                    file(process.out.links_log[0][1]).name,
-                    process.out.links_scaffolds,
-                    process.out.links_scaffolds_fa,
-                    process.out.arcs_tsv,
-                    file(process.out.arcs_gv[0][1]).name,
-                    process.out.arcs_scaffolds_fa,
-                    process.out.arcs_scaffolds_renamed,
-                    process.out.abyss_scaffolds_fa,
-                    process.out.stitch_path,
-                    process.out.trimmed_scaffolds_agp,
-                    process.out.trimmed_scaffolds_fasta,
-                    process.out.trimmed_scaffolds_path,
-                    process.out.trimmed_scaffolds_tsv,
-                    process.out.verbose_mapping_tsv,
-                    process.out.tsv,
-                    process.out.versions
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["scaffold_dot", "links_gv", "links_log", "arcs_gv", "arcs_checkpoint_tsv"])).match() }
             )
         }
     }
@@ -466,7 +269,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

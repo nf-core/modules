@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FASTQSCAN {
     tag "$meta.id"
     label 'process_low'
@@ -12,7 +15,7 @@ process FASTQSCAN {
 
     output:
     tuple val(meta), path("*.json"), emit: json
-    path "versions.yml"            , emit: versions
+    tuple val("${task.process}"), val('fastqscan'), eval('fastq-scan -v 2>&1 | sed \'s/^.*fastq-scan //\''), emit: versions_fastqscan, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,10 +27,11 @@ process FASTQSCAN {
     zcat $reads | \\
         fastq-scan \\
         $args > ${prefix}.json
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fastqscan: \$( echo \$(fastq-scan -v 2>&1) | sed 's/^.*fastq-scan //' )
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.json
     """
 }

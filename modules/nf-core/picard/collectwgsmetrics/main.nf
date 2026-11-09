@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PICARD_COLLECTWGSMETRICS {
     tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/08/0861295baa7c01fc593a9da94e82b44a729dcaf8da92be8e565da109aa549b25/data'
-        : 'community.wave.seqera.io/library/picard:3.4.0--e9963040df0a9bf6'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/eb/eb0017f30def00fe4a6b81c0667759b4b9092c1772443c719cab854346a68daa/data'
+        : 'community.wave.seqera.io/library/picard_r-base:5659104ba2ac5868'}"
 
     input:
     tuple val(meta), path(bam), path(bai)

@@ -1,20 +1,24 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CUSTOM_GENETICMAPCONVERT {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/06/062aabd31ebac6f139125e485d5566e928c1b79caf488daa596df02bd1ccbf23/data':
-        'community.wave.seqera.io/library/r-data.table_r-janitor_r-r.utils:c8ebef5bb002374e' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0e/0e625d9794fe4feb2e1126731121ca9750eb6f43d63e896730ad14e170421546/data'
+        : 'community.wave.seqera.io/library/r-data.table_r-janitor_r-nfcore.utils_r-r.utils:d8b49a10459ef83c'}"
 
     input:
     tuple val(meta), path(map_file)
 
     output:
-    tuple val(meta), path("${prefix}.glimpse.map"), emit: glimpse_map
-    tuple val(meta), path("${prefix}.plink.map")  , emit: plink_map
-    tuple val(meta), path("${prefix}.stitch.map") , emit: stitch_map
-    tuple val(meta), path("${prefix}.minimac.map"), emit: minimac_map
+    tuple val(meta), path("${prefix}.glimpse.map")      , emit: glimpse_map
+    tuple val(meta), path("${prefix}.plink.map")        , emit: plink_map
+    tuple val(meta), path("${prefix}.stitch.map")       , emit: stitch_map
+    tuple val(meta), path("${prefix}.minimac.map")      , emit: minimac_map
+    tuple val(meta), path("${prefix}.R_sessionInfo.log"), emit: session_info
     path "versions.yml", emit: versions, topic: versions
 
     when:
@@ -39,11 +43,11 @@ process CUSTOM_GENETICMAPCONVERT {
     touch ${prefix}.minimac.map
     touch ${prefix}.eagle.map
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        r-base: \$(R --version | sed '1!d; s/.*version //; s/ .*//')
-        r-data.table: \$(Rscript -e "cat(as.character(packageVersion('data.table')))")
-        r-janitor: \$(Rscript -e "cat(as.character(packageVersion('janitor')))")
-    END_VERSIONS
+    Rscript -e "nfcore.utils::process_end(
+        packages = list('r-data.table' = 'data.table', 'r-janitor' = 'janitor'),
+        task_name = '${task.process}',
+        versions_path = 'versions.yml',
+        log_path = '${prefix}.R_sessionInfo.log'
+    )"
     """
 }

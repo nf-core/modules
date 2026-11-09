@@ -16,20 +16,14 @@ nextflow_workflow {
             workflow {
                 """
                 // Define the input channels required by the METHYLDACKEL workflow
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam", checkIfExists: true)
-                ])
-                input[1] = Channel.of([
-                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai", checkIfExists: true)
                 ])
-                input[2] = Channel.of([
-                    [ id:'test' ],
-                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
-                ])
-                input[3] = Channel.of([
-                    [ id:'test' ],
+                input[1] = channel.of([
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true),
                     file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta.fai", checkIfExists: true)
                 ])
                 """
@@ -39,7 +33,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match() }
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
             )
         }
     }

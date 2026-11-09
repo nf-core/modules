@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HICAP {
     tag "$meta.id"
     label 'process_low'
@@ -16,7 +19,7 @@ process HICAP {
     tuple val(meta), path("*.gbk"), emit: gbk, optional: true
     tuple val(meta), path("*.svg"), emit: svg, optional: true
     tuple val(meta), path("*.tsv"), emit: tsv, optional: true
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('hicap'), eval("hicap --version 2>&1 | sed 's/^.*hicap //'"), emit: versions_hicap, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,33 +31,23 @@ process HICAP {
     def is_compressed = fasta.getName().endsWith(".gz") ? true : false
     def fasta_name = fasta.getName().replace(".gz", "")
     """
-    if [ "$is_compressed" == "true" ]; then
-        gzip -c -d $fasta > $fasta_name
+    if [ "${is_compressed}" == "true" ]; then
+        gzip -c -d $fasta > ${fasta_name}
     fi
     hicap \\
-        --query_fp $fasta_name \\
-        $database_args \\
-        $model_args \\
-        $args \\
-        --threads $task.cpus \\
+        --query_fp ${fasta_name} \\
+        ${database_args} \\
+        ${model_args} \\
+        ${args} \\
+        --threads ${task.cpus} \\
         -o ./
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hicap: \$( echo \$( hicap --version 2>&1 ) | sed 's/^.*hicap //' )
-    END_VERSIONS
     """
 
     stub:
-    def fasta_name = fasta.getName().split('\\.')[0] // Get the base name without extension
+    def fasta_name = fasta.getName().split('\\.')[0]
     """
     touch ${fasta_name}.gbk
     touch ${fasta_name}.svg
     touch ${fasta_name}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hicap: \$( echo \$( hicap --version 2>&1 ) | sed 's/^.*hicap //' )
-    END_VERSIONS
     """
 }

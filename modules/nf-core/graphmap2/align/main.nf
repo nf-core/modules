@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GRAPHMAP2_ALIGN {
     tag "$meta.id"
     label 'process_medium'
@@ -15,7 +18,7 @@ process GRAPHMAP2_ALIGN {
 
     output:
     tuple val(meta), path("*.sam"), emit: sam
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('graphmap2'), eval("graphmap2 2>&1 | sed -n 's/Version: v//p'"), emit: versions_graphmap2, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,17 +29,12 @@ process GRAPHMAP2_ALIGN {
     """
     graphmap2 \\
         align \\
-        -t $task.cpus \\
-        -r $fasta \\
-        -i $index \\
-        -d $reads \\
+        -t ${task.cpus} \\
+        -r ${fasta} \\
+        -i ${index} \\
+        -d ${reads} \\
         -o ${prefix}.sam \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        graphmap2: \$(echo \$(graphmap2 align 2>&1) | sed 's/^.*Version: v//; s/ .*\$//')
-    END_VERSIONS
+        ${args}
     """
 
     stub:
@@ -44,11 +42,6 @@ process GRAPHMAP2_ALIGN {
 
     """
     touch ${prefix}.sam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        graphmap2: \$(echo \$(graphmap2 align 2>&1) | sed 's/^.*Version: v//; s/ .*\$//')
-    END_VERSIONS
     """
 
 }

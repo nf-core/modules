@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FUSIONCATCHER_BUILD {
     tag "${meta.id}"
     label 'process_medium'
@@ -11,8 +14,8 @@ process FUSIONCATCHER_BUILD {
     val(meta)
 
     output:
-    tuple val(meta), path("${prefix}")  , emit: reference
-    path "versions.yml"                 , emit: versions
+    tuple val(meta), path("${prefix}"), emit: reference
+    tuple val("${task.process}"), val('fusioncatcher'), eval("fusioncatcher --version |& sed 's/.* //'"), topic: versions, emit: versions_fusioncatcher
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,21 +28,11 @@ process FUSIONCATCHER_BUILD {
         ${args} \\
         --output=${prefix} \\
         --threads=${task.cpus}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fusioncatcher: "\$(fusioncatcher --version 2>&1 | awk '{print \$2}')"
-    END_VERSIONS
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        fusioncatcher: "\$(fusioncatcher --version 2>&1 | awk '{print \$2}')"
-    END_VERSIONS
     """
 }

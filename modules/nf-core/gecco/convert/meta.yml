@@ -19,9 +19,9 @@ tools:
       documentation: "https://gecco.embl.de"
       tool_dev_url: "https://github.com/zellerlab/GECCO"
       doi: "10.1101/2021.05.03.442509"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -44,12 +44,19 @@ input:
           - edam: "http://edamontology.org/format_1936" # GenBank
   - mode:
       type: string
-      description: Either clusters or gbk folder output, depending on what is reformatted
-      enum: ["clusters", "gbk"]
+      description: Either clusters or gbk folder output, depending on what is
+        reformatted
+      enum:
+        - "clusters"
+        - "gbk"
   - format:
       type: string
       description: Format for the output file
-      enum: ["gff", "bigslice", "faa", "fna"]
+      enum:
+        - "gff"
+        - "bigslice"
+        - "faa"
+        - "fna"
 output:
   gff:
     - - meta:
@@ -104,14 +111,27 @@ output:
           pattern: "*.fna"
           ontologies:
             - edam: "http://edamontology.org/format_1929" # FASTA
+  versions_gecco:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gecco:
+          type: string
+          description: The name of the tool
+      - gecco -V |& sed 's/gecco //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
-
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gecco:
+          type: string
+          description: The name of the tool
+      - gecco -V |& sed 's/gecco //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@vagkaratzas"
 maintainers:

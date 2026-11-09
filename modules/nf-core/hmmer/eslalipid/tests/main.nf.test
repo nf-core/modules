@@ -1,0 +1,51 @@
+nextflow_process {
+
+    name "Test Process HMMER_ESLALIPID"
+    script "../main.nf"
+    process "HMMER_ESLALIPID"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hmmer"
+    tag "hmmer/eslalipid"
+
+    test("PF14720 - alnfaa - alipid") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'PF14720' ],
+                    file(params.modules_testdata_base_path + 'delete_me/hmmer/PF14720_seed.alnfaa.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("PF14720 - alnfaa - alipid - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'PF14720' ],
+                    file(params.modules_testdata_base_path + 'delete_me/hmmer/PF14720_seed.alnfaa.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

@@ -24,18 +24,18 @@ input:
           Groovy Map containing sample information
           e.g. [ id:'test', single_end:false ]
     - custom_library_dir:
-        type: directory
-        description: Optional directory containing custom fasta files for database
+        type: file
+        description: List of custom fasta files for adding to database
           build
         pattern: "*"
     - custom_taxonomy_dir:
-        type: directory
-        description: Optional directory containing custom taxonomy files for
-          database build
+        type: file
+        description: |
+          List of NCBI style taxdmp files (at a minimum: nodes.dmp, names.dmp)
         pattern: "*"
     - custom_seqid2taxid:
         type: file
-        description: custom seqid2taxid
+        description: Custom seqid2taxid file of mapping sequence accessions to taxid
         ontologies: []
   - keep_intermediate:
       type: boolean
