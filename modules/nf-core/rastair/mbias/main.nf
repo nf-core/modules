@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RASTAIR_MBIAS {
     label 'process_medium'
 
@@ -20,9 +23,12 @@ process RASTAIR_MBIAS {
     task.ext.when == null || task.ext.when
 
     script:
+    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+
     """
     rastair mbias \\
+        ${args} \\
         --threads ${task.cpus} \\
         --fasta-file ${fasta} \\
         ${bam} > ${prefix}.rastair_mbias.txt

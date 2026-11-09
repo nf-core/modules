@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ECHTVAR_ANNO {
     tag "$meta.id"
     label 'process_single'
@@ -13,7 +16,7 @@ process ECHTVAR_ANNO {
     val(output_suffix)
 
     output:
-    tuple val(meta), path("*.{vcf.gz,bcf}"), emit: vcf
+    tuple val(meta), path("*.{vcf.gz,bcf,bcf.gz}"), emit: vcf
     tuple val("${task.process}"), val('echtvar'), eval("echtvar --version | sed 's/echtvar //g'"), topic: versions, emit: versions_echtvar
 
     when:

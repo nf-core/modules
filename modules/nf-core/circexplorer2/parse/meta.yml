@@ -1,6 +1,5 @@
 name: "circexplorer2_parse"
-description: CIRCexplorer2 parses fusion junction files from multiple aligners
-  to prepare them for CIRCexplorer2 annotate.
+description: CIRCexplorer2 parses fusion junction files from multiple aligners to prepare them for CIRCexplorer2 annotate.
 keywords:
   - parse
   - circrna
@@ -22,8 +21,7 @@ input:
           e.g. [ id:'test', single_end:false ]
     - fusions:
         type: file
-        description: BAM (BWA), BED (Segemehl), TXT (MapSplice), or Junction
-          (STAR) file. Aligner will be autodetected based on file suffix.
+        description: BAM (BWA), BED (Segemehl), TXT (MapSplice), or Junction (STAR) file. Aligner will be autodetected based on file suffix.
         pattern: "*.{bam,junction,bed,txt}"
         ontologies: []
 output:
@@ -63,3 +61,27 @@ authors:
   - "@BarryDigby"
 maintainers:
   - "@BarryDigby"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/circexplorer2:2.3.8--e7bd86dae7edb272
+      build_id: bd-e7bd86dae7edb272_1
+      scan_id: sc-c3e34d8c8b2481c9_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/circexplorer2:2.3.8--2716c75300788f5b
+      build_id: bd-2716c75300788f5b_1
+      scan_id: sc-d10b8d1869e04f07_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/circexplorer2:2.3.8--2b1f7bf3f4e2740e
+      build_id: bd-2b1f7bf3f4e2740e_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/95/95ba7bdab39073db3be97880fa940fc2752fa49243f337c3a180cb21eeb971c3/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/circexplorer2:2.3.8--a5f1c9e7a3396d53
+      build_id: bd-a5f1c9e7a3396d53_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/94/94b03d0007dd8092dfe7f057c6bdb521f772da234455e82112c12af3215af8ff/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/circexplorer2/parse/.conda-lock/linux_amd64-bd-2716c75300788f5b_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/circexplorer2/parse/.conda-lock/linux_arm64-bd-e7bd86dae7edb272_1.txt

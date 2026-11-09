@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 //
 // Perform differential analysis
 //
@@ -182,8 +185,6 @@ workflow ABUNDANCE_DIFFERENTIAL_FILTER {
         inputs.contrasts_for_diff.filter{index -> index[0].differential_method == 'propd'},
         inputs.samples_and_matrix.filter {index -> index[0].differential_method == 'propd' }
     )
-
-    ch_versions = ch_versions.mix(PROPR_PROPD.out.versions.first())
 
     // ----------------------------------------------------
     // Run DREAM

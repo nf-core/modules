@@ -16,6 +16,9 @@ nextflow_workflow {
     tag "bwamem2"
     tag "bwamem2/index"
     tag "bwamem2/mem"
+    tag "bwamem3"
+    tag "bwamem3/index"
+    tag "bwamem3/mem"
     tag "dragmap"
     tag "dragmap/hashtable"
     tag "dragmap/align"
@@ -56,9 +59,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(
-                    file(workflow.out.bam[0][1]).name,
-                ).match() }
+                { assert snapshot(sanitizeOutput(workflow.out, unstableKeys:["bam", "bam_index"])).match() }
             )
         }
     }
@@ -92,9 +93,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(
-                    file(workflow.out.bam[0][1]).name,
-                ).match() }
+                { assert snapshot(sanitizeOutput(workflow.out, unstableKeys:["bam", "bam_index"])).match() }
             )
         }
     }
@@ -124,12 +123,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    file(workflow.out.bam[0][1]).name,
-                    workflow.out.bam_index,
-                    workflow.out.reports,
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"], unstableKeys:["bam_index"])).match() }
             )
         }
     }
@@ -159,12 +153,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    file(workflow.out.bam[0][1]).name,
-                    workflow.out.bam_index,
-                    workflow.out.reports,
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"], unstableKeys:["bam_index"])).match() }
             )
         }
     }
@@ -194,12 +183,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    file(workflow.out.bam[0][1]).name,
-                    workflow.out.bam_index,
-                    workflow.out.reports,
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"], unstableKeys:["bam_index"])).match() }
             )
         }
     }
@@ -229,12 +213,67 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(
-                    file(workflow.out.bam[0][1]).name,
-                    workflow.out.bam_index,
-                    workflow.out.reports,
-                    ).match()
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"], unstableKeys:["bam_index"])).match() }
+            )
+        }
+    }
+    test ("test_fastq_align_bwamem3_SE"){
+        setup {
+            run("BWAMEM3_INDEX") {
+                script "../../../../modules/nf-core/bwamem3/index/main.nf"
+                process {
+                    """
+                    input[0] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                    """
                 }
+            }
+        }
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([[ id:'test', single_end:true ], [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)]])
+                input[1] = BWAMEM3_INDEX.out.index
+                input[2] = Channel.of([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                input[3] = "bwamem3"
+                input[4] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"], unstableKeys:["bam_index"])).match() }
+            )
+        }
+    }
+    test ("test_fastq_align_bwamem3_PE"){
+        setup {
+            run("BWAMEM3_INDEX") {
+                script "../../../../modules/nf-core/bwamem3/index/main.nf"
+                process {
+                    """
+                    input[0] = Channel.value([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                    """
+                }
+            }
+        }
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([[ id:'test', single_end:false ], [file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)]])
+                input[1] = BWAMEM3_INDEX.out.index
+                input[2] = Channel.of([ [ id:'genome' ],file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)])
+                input[3] = "bwamem3"
+                input[4] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"], unstableKeys:["bam_index"])).match() }
             )
         }
     }
@@ -264,10 +303,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(
-                    file(workflow.out.bam[0][1]).name,
-                    file(workflow.out.reports[0][1]).readLines().findAll { it.startsWith("decompHash") },
-                ).match() }
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"], unstableKeys:["bam_index", "reports"])).match() }
             )
         }
     }
@@ -297,10 +333,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(
-                    file(workflow.out.bam[0][1]).name,
-                    file(workflow.out.reports[0][1]).readLines().findAll { it.startsWith("decompHash") },
-                ).match() }
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"], unstableKeys:["bam_index", "reports"])).match() }
             )
         }
     }
@@ -330,7 +363,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"], unstableKeys:["bam_index"])).match() }
             )
         }
     }
@@ -360,7 +393,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"])).match() }
             )
         }
     }
@@ -380,7 +413,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"], unstableKeys:["bam_index"])).match() }
             )
         }
     }
@@ -400,7 +433,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(workflow.out).match()}
+                { assert snapshot(sanitizeOutput(workflow.out, readsMD5Keys:["bam"], unstableKeys:["bam_index"])).match() }
             )
         }
     }

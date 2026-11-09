@@ -50,14 +50,52 @@ output:
           pattern: "*.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
+  versions_pydamage:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pydamage:
+          type: string
+          description: The name of the tool
+      - NUMBA_CACHE_DIR=./tmp pydamage --version | sed -n 's/pydamage, version //p':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pydamage:
+          type: string
+          description: The name of the tool
+      - NUMBA_CACHE_DIR=./tmp pydamage --version | sed -n 's/pydamage, version //p':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@maxibor"
 maintainers:
   - "@maxibor"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/pydamage:1.0--1c195c7c48e87ebb
+      build_id: bd-1c195c7c48e87ebb_1
+      scan_id: sc-510b8d0d2be9820a_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/pydamage:1.0--f34ec9a9a17b6a3f
+      build_id: bd-f34ec9a9a17b6a3f_1
+      scan_id: sc-e08d4ecbb9773f21_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/pydamage:1.0--a216f9aef981c5d6
+      build_id: bd-a216f9aef981c5d6_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5b/5b5b5289345c54b75f42a54d300d222b9c0de8de5a60ecbe9ad829b6b85f1abd/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/pydamage:1.0--ecc649418d55b511
+      build_id: bd-ecc649418d55b511_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/99/997ea943a81a9f008fc556b4f8722fb8900ac0bb234593aa011974018f8ac32e/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/pydamage/analyze/.conda-lock/linux_amd64-bd-1c195c7c48e87ebb_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/pydamage/analyze/.conda-lock/linux_arm64-bd-f34ec9a9a17b6a3f_1.txt

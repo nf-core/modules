@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GEDI_INDEXGENOME {
     tag "$meta.id"
     label 'process_medium'
@@ -23,8 +26,12 @@ process GEDI_INDEXGENOME {
     prefix   = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p ${prefix}
+
+    # GEDI records -s relative only when the FASTA sits beside the .fi
+    cp -L ${fasta} ${prefix}/${fasta.name}
+
     gedi -e IndexGenome \\
-        -s ${fasta} \\
+        -s ${prefix}/${fasta.name} \\
         -a ${gtf} \\
         -n ${name} \\
         -f ${prefix} \\

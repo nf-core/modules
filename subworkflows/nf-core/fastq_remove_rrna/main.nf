@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { BOWTIE2_ALIGN                            } from '../../../modules/nf-core/bowtie2/align'
 include { BOWTIE2_ALIGN as BOWTIE2_ALIGN_PE        } from '../../../modules/nf-core/bowtie2/align'
 include { BOWTIE2_BUILD                            } from '../../../modules/nf-core/bowtie2/build'
@@ -68,7 +71,7 @@ workflow FASTQ_REMOVE_RRNA {
                 ch_sortmerna_fastas,
                 [[], []],
             )
-            ch_sortmerna_index = SORTMERNA_INDEX.out.index.first()
+            ch_sortmerna_index = SORTMERNA_INDEX.out.index
         }
 
         SORTMERNA(
