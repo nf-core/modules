@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PBPTYPER {
     tag "$meta.id"
     label 'process_single'
@@ -14,26 +17,21 @@ process PBPTYPER {
     output:
     tuple val(meta), path("${prefix}.tsv"), emit: tsv
     tuple val(meta), path("*.tblastn.tsv"), emit: blast
-    path "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val('pbptyper'), eval("pbptyper --version 2>&1 | sed 's/^.*pbptyper, version //;'"), topic: versions, emit: versions_pbptyper
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def db_args = db ? '--db ${db}' : ''
+    def db_args = db ? "--db ${db}" : ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     pbptyper \\
-        $db_args \\
-        $args \\
-        --prefix $prefix \\
-        --assembly $fasta
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pbptyper: \$(echo \$(pbptyper --version 2>&1) | sed 's/^.*pbptyper, version //;' )
-    END_VERSIONS
+        ${db_args} \\
+        ${args} \\
+        --prefix ${prefix} \\
+        --assembly ${fasta}
     """
 
     stub:
@@ -43,10 +41,5 @@ process PBPTYPER {
     touch ${prefix}-1A.tblastn.tsv
     touch ${prefix}-2B.tblastn.tsv
     touch ${prefix}-2X.tblastn.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        pbptyper: \$(echo \$(pbptyper --version 2>&1) | sed 's/^.*pbptyper, version //;' )
-    END_VERSIONS
     """
 }

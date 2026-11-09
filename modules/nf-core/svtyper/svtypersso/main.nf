@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SVTYPER_SVTYPERSSO {
     tag "$meta.id"
     label 'process_single'
@@ -14,7 +17,7 @@ process SVTYPER_SVTYPERSSO {
     output:
     tuple val(meta), path("*.vcf") , emit: gt_vcf
     tuple val(meta), path("*.json"), emit: json
-    path "versions.yml"            , emit: versions
+    tuple val("${task.process}"), val('svtyper'), eval("svtyper-sso -h 2>&1 | grep 'version:' | sed 's/^version: v//'"), emit: versions_svtyper, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,18 +31,13 @@ process SVTYPER_SVTYPERSSO {
     if ("$bam" == "${prefix}.bam") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     svtyper-sso \\
-        --bam $bam \\
-        $vcf_opt \\
-        $fasta_opt \\
+        --bam ${bam} \\
+        ${vcf_opt} \\
+        ${fasta_opt} \\
         --output_vcf ${prefix}.vcf \\
         --lib_info ${prefix}.json \\
-        --cores $task.cpus \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        svtyper: \$(echo \$(svtyper-sso -h 2>&1 | grep "version:" | sed 's/^version: v//'))
-    END_VERSIONS
+        --cores ${task.cpus} \\
+        ${args}
     """
 
     stub:
@@ -47,10 +45,5 @@ process SVTYPER_SVTYPERSSO {
     """
     touch ${prefix}.json
     touch ${prefix}.vcf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        svtyper: \$(echo \$(svtyper-sso -h 2>&1 | grep "version:" | sed 's/^version: v//'))
-    END_VERSIONS
     """
 }

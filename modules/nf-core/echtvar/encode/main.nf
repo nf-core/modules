@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ECHTVAR_ENCODE {
     tag "$meta.id"
     label 'process_single'
@@ -13,7 +16,7 @@ process ECHTVAR_ENCODE {
 
     output:
     tuple val(meta), path("*.zip"), emit: db
-    tuple val("${task.process}"), val('echtvar'), eval("echtvar --version | sed 's/echtvar //g'"), emit: versions_echtvar, topic: versions 
+    tuple val("${task.process}"), val('echtvar'), eval("echtvar --version | sed 's/echtvar //g'"), emit: versions_echtvar, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

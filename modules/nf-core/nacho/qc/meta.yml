@@ -20,7 +20,8 @@ tools:
       homepage: https://github.com/mcanouil/NACHO
       documentation: https://cran.r-project.org/web/packages/NACHO/vignettes/NACHO.html
       doi: "10.1093/bioinformatics/btz647"
-      licence: ["GPL-3.0"]
+      licence:
+        - "GPL-3.0"
       identifier: ""
 input:
   - - meta:
@@ -91,7 +92,30 @@ output:
         pattern: "versions.yml"
         ontologies:
           - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: file
+        description: |
+          File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
 authors:
   - "@alanmmobbs93"
 maintainers:
   - "@alanmmobbs93"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/r-base_r-dplyr_r-fs_r-ggplot2_pruned:2bcf3b351adffd77
+      build_id: bd-2bcf3b351adffd77_1
+      scan_id: sc-c47a97ca9aec93b4_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/r-base_r-dplyr_r-fs_r-ggplot2_pruned:390d625a6878bfac
+      build_id: bd-390d625a6878bfac_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/43/43e3f488da4c74d940f7f920a0be6c8d238e586ee14e7e08c24d6a8b4f682a1c/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/nacho/qc/.conda-lock/linux_amd64-bd-2bcf3b351adffd77_1.txt

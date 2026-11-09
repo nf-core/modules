@@ -18,7 +18,6 @@ import rpbp
 import yaml
 from rpbp.ribo_utils.utils import get_periodic_lengths_and_offsets
 
-
 prefix = "${prefix}"
 
 parser = argparse.ArgumentParser()
@@ -26,7 +25,7 @@ parser.add_argument("--min-count", type=int, default=1000, dest="min_count")
 parser.add_argument("--min-bf-mean", type=float, default=5.0, dest="min_bf_mean")
 parser.add_argument("--max-bf-var", type=float, default=None, dest="max_bf_var")
 parser.add_argument("--min-bf-likelihood", type=float, default=0.5, dest="min_bf_likelihood")
-args = parser.parse_args(shlex.split("${task_ext_args}"))
+args = parser.parse_args(shlex.split("${args}"))
 
 work_dir = os.path.join("rpbp_work", "metagene-profiles")
 os.makedirs(work_dir, exist_ok=True)

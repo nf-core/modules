@@ -1,6 +1,5 @@
 name: "gatk4_svcluster"
-description: Clusters structural variants based on coordinates, event type, and supporting
-  algorithms
+description: Clusters structural variants based on coordinates, event type, and supporting algorithms
 keywords:
   - gatk4
   - structural variants
@@ -47,14 +46,12 @@ input:
       ontologies: []
   - fasta_fai:
       type: file
-      description: Index of the reference FASTA file needed when the input is a CRAM
-        file
+      description: Index of the reference FASTA file needed when the input is a CRAM file
       pattern: "*.fai"
       ontologies: []
   - dict:
       type: file
-      description: Sequence dictionary of the reference FASTA file needed when the input
-        is a CRAM file
+      description: Sequence dictionary of the reference FASTA file needed when the input is a CRAM file
       pattern: "*.dict"
       ontologies: []
 output:
@@ -106,3 +103,17 @@ authors:
   - "@nvnieuwk"
 maintainers:
   - "@nvnieuwk"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/gatk4-lite:4.7.0.0--79918b8b2632f4b1
+      build_id: bd-79918b8b2632f4b1_1
+      scan_id: sc-3494a4d719069a23_2
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/gatk4-lite:4.7.0.0--f28eb03ad3b2bcd5
+      build_id: bd-f28eb03ad3b2bcd5_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ce/ce8f4142326abbb74e28b97633a200b09439c54480803343b1cf13dc19e51ae5/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/gatk4/svcluster/.conda-lock/linux_amd64-bd-79918b8b2632f4b1_1.txt

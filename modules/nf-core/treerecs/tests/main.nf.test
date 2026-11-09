@@ -1,0 +1,62 @@
+nextflow_process {
+
+    name "Test Process TREERECS"
+    script "../main.nf"
+    process "TREERECS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "treerecs"
+
+    test("reconciliation - txt") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'generic/newick/gene_tree.nwk', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/newick/species_tree.nwk', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out)
+                ).match() }
+            )
+        }
+
+    }
+
+    test("reconciliation - txt - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'generic/newick/gene_tree.nwk', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'generic/newick/species_tree.nwk', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out)
+                ).match() }
+            )
+        }
+
+    }
+
+}

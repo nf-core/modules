@@ -25,12 +25,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.distribution).match("distribution_single_end") },
-                { assert snapshot(file(process.out.pdf[0][1]).name).match("pdf_single_end") },
-                { assert snapshot(process.out.offset).match("offset_single_end") },
-                { assert snapshot(process.out.versions).match("versions_single_end") }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["pdf", "distribution"])).match() }
             )
         }
     }
@@ -53,12 +50,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(process.out.distribution).match("distribution_single_end_stub") },
-                { assert snapshot(file(process.out.pdf[0][1]).name).match("pdf_single_end_stub") },
-                { assert snapshot(process.out.offset).match("offset_single_end_stub") },
-                { assert snapshot(process.out.versions).match("versions_single_end_stub") }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

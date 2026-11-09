@@ -61,12 +61,6 @@ output:
         Use publishDir in a modules.conf file to change default name for user
         Structure: [ val(meta), path(k2d_files), path(map_files), path(added_files), path(taxonomy_files) ]
       pattern: "kraken2-database/"
-  - versions:
-      type: file
-      description: |
-        File containing software versions
-        Structure: [ path(versions.yml) ]
-      pattern: "versions.yml"
 authors:
   - "@jfy133"
 maintainers:

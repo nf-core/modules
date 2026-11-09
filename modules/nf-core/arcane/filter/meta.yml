@@ -1,0 +1,153 @@
+name: "arcane_filter"
+description: Filter GTF annotations and genome sequence for alignment-free single-cell RNA-seq quantification with Arcane
+keywords:
+  - single-cell
+  - rnaseq
+  - filter
+  - gtf
+  - fasta
+  - transcriptomics
+tools:
+  - "arcane":
+      description: "Arcane: Alignment-free single cell RNA-seq gene expression estimation"
+      homepage: "https://arcane-95885d.gitlab.io/"
+      documentation: "https://arcane-95885d.gitlab.io/"
+      tool_dev_url: "https://gitlab.com/rahmannlab/arcane"
+      licence: ["MIT"]
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing reference genome metadata
+          e.g. `[ id:'human' ]`
+    - fasta:
+        type: file
+        description: Reference genome FASTA file
+        pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+        ontology:
+          - edam: "http://edamontology.org/format_1929"
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing annotation metadata
+          e.g. `[ id:'human_annotation' ]`
+    - gtf:
+        type: file
+        description: Genome annotation GTF file
+        pattern: "*.{gtf,gtf.gz}"
+        ontology:
+          - edam: "http://edamontology.org/format_2306"
+
+output:
+  genes:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*/*_genes.txt":
+          type: file
+          description: Gene IDs, one per line, in gene_number order
+          pattern: "*/*_genes.txt"
+          ontology:
+            - edam: "http://edamontology.org/format_2330"
+  pickle:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*/*_mapping_gene_ids.pickle":
+          type: file
+          description: Python pickle object mapping gene_number to gene_id
+          pattern: "*/*_mapping_gene_ids.pickle"
+  csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*/*_new_id_to_original.csv":
+          type: file
+          description: CSV file mapping internal gene numbers to original annotation gene IDs and coordinates
+          pattern: "*/*_new_id_to_original.csv"
+          ontology:
+            - edam: "http://edamontology.org/format_3752"
+  reference:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*/*_ref.fa.gz":
+          type: file
+          description: Filtered sequence reference FASTA file ready for indexing
+          pattern: "*/*_ref.fa.gz"
+          ontology:
+            - edam: "http://edamontology.org/format_1929"
+  extracted_genes:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*/*_extracted_genes.fa.gz":
+          type: file
+          description: |
+            FASTA file containing each gene from start to end including introns.
+            Only produced when `--extract_genes` is provided in `task.ext.args`.
+          pattern: "*/*_extracted_genes.fa.gz"
+          ontology:
+            - edam: "http://edamontology.org/format_1929"
+  versions_arcane:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "arcane":
+          type: string
+          description: The name of the tool
+      - "arcane --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - arcane:
+          type: string
+          description: The name of the tool
+      - arcane --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@LeonHornich"
+maintainers:
+  - "@LeonHornich"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/arcane:1.0.0--752a60e8ee27a43e
+      build_id: bd-752a60e8ee27a43e_1
+      scan_id: sc-a1ae7e8ee4a9bd42_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/arcane:1.0.0--d2e66a3ae9fa2825
+      build_id: bd-d2e66a3ae9fa2825_1
+      scan_id: sc-ae1380a072a5413f_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/arcane:1.0.0--637a22ae50dea3c2
+      build_id: bd-637a22ae50dea3c2_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c6/c6d1b38ce02081f5481cdf0e4efe51db15ec77e1982196f01c58b66b544e1740/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/arcane:1.0.0--70426d4b7f8c5f2d
+      build_id: bd-70426d4b7f8c5f2d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/02/0253df676409f725ec17f768adfb6bb906cfe371557751703964be159372c290/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/arcane/filter/.conda-lock/linux_amd64-bd-d2e66a3ae9fa2825_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/arcane/filter/.conda-lock/linux_arm64-bd-752a60e8ee27a43e_1.txt
