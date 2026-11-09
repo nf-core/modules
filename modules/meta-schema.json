@@ -93,7 +93,9 @@
                                     },
                                     "author": {
                                         "type": "string",
-                                        "description": "Author(s) of the publication (recommended: Harvard style 'Last, F. M.' separated by commas, with '& ' before the final author, e.g. 'Einstein, A., Feynman, R. P. & Hawking, S.')"
+                                        "description": "Author(s) of the publication in Harvard style: 'Last, F. M.' separated by commas, with '& ' before the final author, e.g. 'Einstein, A., Feynman, R. P. & Hawking, S.'. Group authors are written as is, e.g. '1000 Genome Project Data Processing Subgroup'",
+                                        "pattern": "^(?:[^,&]+, [A-Z]\\.(?:[ -][A-Z]\\.)*|[^,&]*[^,&.A-Z ])(?:, (?:[^,&]+, [A-Z]\\.(?:[ -][A-Z]\\.)*|[^,&]*[^,&.A-Z ]))*(?: & (?:[^,&]+, [A-Z]\\.(?:[ -][A-Z]\\.)*|[^,&]*[^,&.A-Z ]))?$",
+                                        "message": "Author must be in Harvard style, e.g. 'Einstein, A., Feynman, R. P. & Hawking, S.'"
                                     },
                                     "source": {
                                         "type": "string",
