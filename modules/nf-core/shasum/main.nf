@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SHASUM {
     tag "${meta.id}"
     label 'process_low'
@@ -8,7 +11,8 @@ process SHASUM {
         : 'community.wave.seqera.io/library/coreutils_grep_gzip_lbzip2_pruned:838ba80435a629f8'}"
 
     input:
-    tuple val(meta), path(file)
+    tuple val(meta), path(files)
+    val as_separate_files
 
     output:
     tuple val(meta), path("*.sha256"), emit: checksum
@@ -19,15 +23,36 @@ process SHASUM {
 
     script:
     def args = task.ext.args ?: ''
-    """
-    sha256sum \\
-        ${args} \\
-        ${file} \\
-        > ${file}.sha256
-    """
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    // will only use when as_separate_files = false
+    if (as_separate_files) {
+        """
+        find -L * -maxdepth 0 -type f \\
+            ! -name '*.sha256' \\
+            -exec sh -c 'sha256sum ${args} "\$1" > "\$1.sha256"' _ "{}" \\;
+        """
+    }
+    else {
+        """
+        find -L * -type f \\
+            ! -name '*.sha256' \\
+            -exec sha256sum ${args} "{}" + \\
+            > ${prefix}.sha256
+        """
+    }
 
     stub:
-    """
-    touch ${file}.sha256
-    """
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    if (as_separate_files) {
+        """
+        find -L * -type f \\
+            ! -name '*.sha256' \\
+            -exec sh -c 'touch "\$1.sha256"' _ "{}" \\;
+        """
+    }
+    else {
+        """
+        touch ${prefix}.sha256
+        """
+    }
 }

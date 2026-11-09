@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process IVAR_VARIANTS {
     tag "$meta.id"
     label 'process_medium'
@@ -17,7 +20,7 @@ process IVAR_VARIANTS {
     output:
     tuple val(meta), path("*.tsv")    , emit: tsv
     tuple val(meta), path("*.mpileup"), optional:true, emit: mpileup
-    path "versions.yml"               , emit: versions
+    tuple val("${task.process}"), val('ivar'), eval("ivar version | sed -n 's|iVar version \\(.*\\)|\\1|p'"), emit: versions_ivar, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -41,11 +44,6 @@ process IVAR_VARIANTS {
             $features \\
             -r $fasta \\
             -p $prefix
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ivar: \$(ivar version | sed -n 's|iVar version \\(.*\\)|\\1|p')
-    END_VERSIONS
     """
 
     stub:
@@ -54,10 +52,5 @@ process IVAR_VARIANTS {
     """
     touch ${prefix}.tsv
     $touch_mpileup
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ivar: \$(ivar version | sed -n 's|iVar version \\(.*\\)|\\1|p')
-    END_VERSIONS
     """
 }

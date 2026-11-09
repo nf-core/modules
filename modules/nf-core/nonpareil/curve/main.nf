@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process NONPAREIL_CURVE {
     tag "$meta.id"
     label 'process_single'
@@ -12,7 +15,7 @@ process NONPAREIL_CURVE {
 
     output:
     tuple val(meta), path("*.png"), optional: true, emit: png
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('Nonpareil'), eval('Rscript -e "library(Nonpareil); cat(paste(unlist(packageVersion(\'Nonpareil\')), collapse = \'.\'))"'), emit: versions_nonpareil, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,29 +25,17 @@ process NONPAREIL_CURVE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def args_cmd = args != '' ? ", ${args}" : ""
     """
-    #!/usr/bin/env Rscript
+    Rscript - <<EOF
     library(Nonpareil)
-
     png(file='${prefix}.png')
     Nonpareil.curve('${npo}'${args_cmd})
     dev.off()
-
-    version_file_path <- "versions.yml"
-    version_nonpareil <- paste(unlist(packageVersion("Nonpareil")), collapse = ".")
-    f <- file(version_file_path, "w")
-    writeLines('"${task.process}":', f)
-    writeLines("    nonpareil: ", f, sep = "")
-    writeLines(version_nonpareil, f)
-    close(f)
+    EOF
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.png
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}": \$(Rscript -e 'library('Nonpareil'); cat(paste(unlist(packageVersion("Nonpareil")),collapse="."))')
-    END_VERSIONS
     """
 }

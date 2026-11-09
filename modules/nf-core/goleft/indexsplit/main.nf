@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GOLEFT_INDEXSPLIT {
     tag "$meta.id"
     label 'process_single'
@@ -14,7 +17,7 @@ process GOLEFT_INDEXSPLIT {
 
     output:
     tuple val(meta), path("*.bed") , emit: bed
-    path  "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('goleft'), eval("goleft --version 2>&1 | sed '1!d;s/^.*goleft Version: //'"), topic: versions, emit: versions_goleft
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,16 +28,11 @@ process GOLEFT_INDEXSPLIT {
     """
     goleft \\
         indexsplit \\
-        $args \\
+        ${args} \\
         -n ${split} \\
         --fai ${fai} \\
         ${bai} \\
         > ${prefix}.bed
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        goleft: \$(goleft --version 2>&1 | head -n 1 | sed 's/^.*goleft Version: //')
-    END_VERSIONS
     """
 
     stub:
@@ -42,10 +40,5 @@ process GOLEFT_INDEXSPLIT {
 
     """
     touch ${prefix}.bed
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        goleft: \$(goleft --version 2>&1 | head -n 1 | sed 's/^.*goleft Version: //')
-    END_VERSIONS
     """
 }

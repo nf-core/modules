@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process IGVREPORTS {
     tag "$meta.id"
     label 'process_low'
@@ -13,7 +16,7 @@ process IGVREPORTS {
 
     output:
     tuple val(meta), path("*.html") , emit: report
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val("igvreports"), eval("python -c 'import igv_reports; print(igv_reports.__version__)'"), topic: versions, emit: versions_igvreports
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,26 +35,16 @@ process IGVREPORTS {
     }
 
     """
-    create_report $sites \
-    $args \
-    $fasta_opt \
-    $track_arg \
-    --output ${prefix}_report.html
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        igvreports: \$(python -c "import igv_reports; print(igv_reports.__version__)")
-    END_VERSIONS
+    create_report ${sites} \\
+        ${args} \\
+        ${fasta_opt} \\
+        ${track_arg} \\
+        --output ${prefix}_report.html
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}_report.html
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        igvreports: \$(python -c "import igv_reports; print(igv_reports.__version__)")
-    END_VERSIONS
     """
 }

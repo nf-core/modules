@@ -13,9 +13,9 @@ tools:
       homepage: "https://github.com/Markusjsommer/TD2"
       documentation: "https://github.com/Markusjsommer/TD2"
       tool_dev_url: "https://github.com/Markusjsommer/TD2"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -28,6 +28,32 @@ input:
         pattern: "*.{fasta}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - min_len:
+        type: integer
+        description: minimum protein length for proteins in long transcripts,
+          default=90
+        default: 90
+    - abs_min_len:
+        type: integer
+        description: minimum protein length for proteins in short transcripts,
+          default=90
+        default: 90
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - gene_transmap:
+        type: file
+        description: Gene to transcript mapping file, default=none
+        pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
 output:
   orfs:
     - - meta:
@@ -35,15 +61,14 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - ${prefix}/longest_orfs.{cds,gff3,pep}:
+      - ${prefix}/longorfs/longest_orfs.{cds,pep,gff3}:
           type: file
-          description: Files containing the longest ORFs predicted from the input
-            transcript sequences
-          pattern: "${prefix}/longest_orfs.{cds,gff3,pep}"
+          description: Longest ORFs in the transcript sequences
+          pattern: "*.{cds,pep,gff3}"
           ontologies:
             - edam: http://edamontology.org/format_1929 # FASTA
-            - edam: http://edamontology.org/format_1975 # GFF3
-            - edam: http://edamontology.org/format_1960 # Protein FASTA
+            - edam: http://edamontology.org/format_1960 # GFF3
+            - edam: http://edamontology.org/format_3603 # PEP
   versions_td2:
     - - ${task.process}:
           type: string
@@ -51,9 +76,9 @@ output:
       - TD2.LongOrfs:
           type: string
           description: The tool name
-      - 1.0.6:
+      - 1.1.0:
           type: string
-          description: The tool version
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -62,9 +87,9 @@ topics:
       - TD2.LongOrfs:
           type: string
           description: The tool name
-      - 1.0.6:
+      - 1.1.0:
           type: string
-          description: The tool version
+          description: The expression to obtain the version of the tool
 authors:
   - "@khersameesh24"
 maintainers:

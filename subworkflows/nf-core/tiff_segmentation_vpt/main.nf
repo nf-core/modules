@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 //
 // Perform segmentation of MERSCOPE TIFF images using the vizgen-postprocessing tool
 //
@@ -15,9 +18,6 @@ workflow TIFF_SEGMENTATION_VPT {
     ch_custom_weights    // channel: [ custom_weights ]
 
     main:
-
-    ch_versions = channel.empty()
-
     //
     // Generate segmentation parameters file
     //
@@ -26,7 +26,6 @@ workflow TIFF_SEGMENTATION_VPT {
         ch_algorithm_json,
         ch_images_regex
     )
-    ch_versions = ch_versions.mix(VIZGENPOSTPROCESSING_PREPARESEGMENTATION.out.versions)
 
     // Create list sequence of 0..N tiles
     // Get N from segmentation params JSON file
@@ -54,7 +53,6 @@ workflow TIFF_SEGMENTATION_VPT {
         ch_algorithm_json,
         ch_custom_weights
     )
-    ch_versions = ch_versions.mix(VIZGENPOSTPROCESSING_RUNSEGMENTATIONONTILE.out.versions.first())
 
     /// collect segmented tiles
     VIZGENPOSTPROCESSING_RUNSEGMENTATIONONTILE.out.segmented_tile
@@ -71,7 +69,6 @@ workflow TIFF_SEGMENTATION_VPT {
         ch_algorithm_json,
         ch_segmented_tiles
     )
-    ch_versions = ch_versions.mix(VIZGENPOSTPROCESSING_COMPILETILESEGMENTATION.out.versions.first())
 
     // Output channels for segmentations
     ch_micron_space_parquet =
@@ -82,5 +79,4 @@ workflow TIFF_SEGMENTATION_VPT {
     emit:
     micron_space_segmentation       = ch_micron_space_parquet  // channel: [ meta, parquet ]
     mosaic_space_segmentation       = ch_mosaic_space_parquet  // channel: [ meta, parquet ]
-    versions                        = ch_versions              // channel: [ versions.yml ]
 }

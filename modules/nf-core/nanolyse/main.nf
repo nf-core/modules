@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process NANOLYSE {
     tag "$meta.id"
     label 'process_low'
@@ -14,7 +17,7 @@ process NANOLYSE {
     output:
     tuple val(meta), path("*.fastq.gz"), emit: fastq
     path "*.log"                       , emit: log
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('nanolyse'), eval('NanoLyse --version 2>&1 | sed -e "s/NanoLyse //g"'), emit: versions_nanolyse, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,22 +27,12 @@ process NANOLYSE {
     """
     gunzip -c $fastq | NanoLyse -r $fasta | gzip > ${prefix}.fastq.gz
     mv NanoLyse.log ${prefix}.nanolyse.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        nanolyse: \$(NanoLyse --version 2>&1 | sed -e "s/NanoLyse //g")
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo | gzip > ${prefix}.fastq.gz
+    echo "" | gzip > ${prefix}.fastq.gz
     touch ${prefix}.nanolyse.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        nanolyse: \$(NanoLyse --version 2>&1 | sed -e "s/NanoLyse //g")
-    END_VERSIONS
     """
 }

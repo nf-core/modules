@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TRUVARI_SEGMENT {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/truvari:5.4.0--pyhdfd78af_0':
-        'quay.io/biocontainers/truvari:5.4.0--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bc/bcb554578972eea4ca66731f80a41017d591edf30d34f7b3c4a6ef78b0ef4ff3/data'
+        : 'community.wave.seqera.io/library/truvari:5.4.0--a783dff809870f2f'}"
 
     input:
     tuple val(meta), path(vcf)

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FUSIONINSPECTOR {
     tag "$meta.id"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/13/139b94a1f10c6e23a8c27eaed1e5a689db978a513d0ee155e74d35f0970814fe/data' :
-        'community.wave.seqera.io/library/fusion-inspector_igv-reports_perl-json-xs_pysam_pruned:c6147971d107ab11'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bd/bd1e83e196b8989930525832da96ad1535bb36ef04ea5cba53be98c371b58a87/data'
+        : 'community.wave.seqera.io/library/fusion-inspector_igv-reports_perl-json-xs_pysam_pruned:9f1b4c0a736e1d8a'}"
 
     input:
     tuple val(meta), path(reads), path(fusion_list)

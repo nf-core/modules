@@ -18,7 +18,8 @@ nextflow_process {
                     minCounts :  '1',
                     min_base_qual : '1',
                     min_map_qual  : '1',
-                    chrom_names  : 'c("21")'
+                    chrom_names  : 'c("21")',
+                    penalty: '70'
                 ]
             }
             process {
@@ -71,7 +72,8 @@ nextflow_process {
                     min_base_qual : '1',
                     min_map_qual  : '1',
                     chrom_names  : 'c("21")',
-                    additional_allelecounter_flags: '-f 0'
+                    additional_allelecounter_flags: '-f 0',
+                    penalty: '70'
                 ]
             }
             process {
@@ -124,7 +126,8 @@ nextflow_process {
                     minCounts :  '1',
                     min_base_qual : '1',
                     min_map_qual  : '1',
-                    chrom_names  : 'c("21")'
+                    chrom_names  : 'c("21")',
+                    penalty: '70'
                 ]
             }
             process {
@@ -178,7 +181,8 @@ nextflow_process {
                     min_base_qual : '1',
                     min_map_qual  : '1',
                     chrom_names  : 'c("21")',
-                    additional_allelecounter_flags: '-f 0'
+                    additional_allelecounter_flags: '-f 0',
+                    penalty: '70'
                 ]
             }
             process {
@@ -230,7 +234,8 @@ nextflow_process {
                     minCounts :  '1',
                     min_base_qual : '1',
                     min_map_qual  : '1',
-                    chrom_names  : 'c("21")'
+                    chrom_names  : 'c("21")',
+                    penalty: '70'
                 ]
                 allele_folder = "G1000_alleles_hg38"
                 loci_folder   = "G1000_loci_hg38"

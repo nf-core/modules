@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TAILFINDR {
     tag "$meta.id"
     label 'process_high'
@@ -12,7 +15,8 @@ process TAILFINDR {
 
     output:
     tuple val(meta), path("*.csv.gz"), emit: csv_gz
-    path("versions.yml"), emit: versions
+    tuple val("${task.process}"), val('tailfindr'), eval('Rscript -e "cat(paste(packageVersion(\'tailfindr\'), collapse=\'.\'))"'), topic: versions, emit: versions_tailfindr
+    tuple val("${task.process}"), val('ont-fast5-api'), eval('python -c "import ont_fast5_api; print(ont_fast5_api.__version__)"'), topic: versions, emit: versions_ont_fast5_api
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,11 +32,11 @@ process TAILFINDR {
     csv_filename = \'${prefix}.csv\',
     num_cores = ${task.cpus})";
     gzip ${prefix}.csv
+    """
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        tailfindr: \$(Rscript -e "cat(paste(packageVersion('tailfindr'), collapse='.'))")
-        ont-fast5-api: \$(pip show ont-fast5-api | grep Version | awk '{print \$2}')
-    END_VERSIONS
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "" | gzip > ${prefix}.csv.gz
     """
 }

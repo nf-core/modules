@@ -1,4 +1,5 @@
-#!/usr/bin/env nextflow
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
 
 //
 // FASTA_INDEX_DNA: Build aligner specific index for fasta files
@@ -7,6 +8,7 @@
 include { BOWTIE2_BUILD                     } from '../../../modules/nf-core/bowtie2/build/main'
 include { BWA_INDEX as BWAMEM1_INDEX        } from '../../../modules/nf-core/bwa/index/main'
 include { BWAMEM2_INDEX                     } from '../../../modules/nf-core/bwamem2/index/main'
+include { BWAMEM3_INDEX                     } from '../../../modules/nf-core/bwamem3/index/main'
 include { DRAGMAP_HASHTABLE                 } from '../../../modules/nf-core/dragmap/hashtable/main'
 include { SNAPALIGNER_INDEX as SNAP_INDEX   } from '../../../modules/nf-core/snapaligner/index/main'
 
@@ -29,15 +31,7 @@ workflow FASTA_INDEX_DNA {
 
     // Handle different aligners using conditional logic
     if (val_aligner == 'bowtie2') {
-
-        /*
-        This is a temporary fix until all aligner handle ch_fasta_fai
-        */
-        ch_fasta_fai = ch_fasta.map { meta, fasta ->
-            tuple(meta, fasta, [])
-        }
-
-        BOWTIE2_BUILD(ch_fasta_fai)
+        BOWTIE2_BUILD(ch_fasta)
         ch_aligner_index = BOWTIE2_BUILD.out.index
     } else if (val_aligner == 'bwamem') {
         BWAMEM1_INDEX(ch_fasta)
@@ -46,6 +40,9 @@ workflow FASTA_INDEX_DNA {
     } else if (val_aligner == 'bwamem2') {
         BWAMEM2_INDEX(ch_fasta)
         ch_aligner_index = BWAMEM2_INDEX.out.index
+    } else if (val_aligner == 'bwamem3') {
+        BWAMEM3_INDEX(ch_fasta)
+        ch_aligner_index = BWAMEM3_INDEX.out.index
     } else if (val_aligner == 'dragmap') {
         DRAGMAP_HASHTABLE(ch_fasta)
         ch_aligner_index = DRAGMAP_HASHTABLE.out.hashmap

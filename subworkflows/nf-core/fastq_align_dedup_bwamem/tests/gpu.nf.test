@@ -9,21 +9,20 @@ nextflow_workflow {
     tag "subworkflows"
     tag "subworkflows_nfcore"
     tag "subworkflows/fastq_align_dedup_bwamem"
-    tag "parabricks/fq2bam"
-    tag "samtools/index"
-    tag "picard/markduplicates"
+    tag "bam_sort_stats_samtools"
     tag "bwa"
     tag "bwa/index"
+    tag "parabricks"
     tag "parabricks/fq2bam"
-    tag "samtools"
-    tag "samtools/sort"
-    tag "samtools/index"
-    tag "samtools/idxstats"
-    tag "samtools/flagstat"
-    tag "samtools/stats"
-    tag "bam_sort_stats_samtools"
-    tag "picard/markduplicates"
     tag "picard/addorreplacereadgroups"
+    tag "picard/markduplicates"
+    tag "samtools"
+    tag "samtools/flagstat"
+    tag "samtools/idxstats"
+    tag "samtools/index"
+    tag "samtools/index"
+    tag "samtools/sort"
+    tag "samtools/stats"
 
     setup {
         run("BWA_INDEX") {
@@ -50,11 +49,11 @@ nextflow_workflow {
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ])
                 input[2] = BWA_INDEX.out.index
-                input[3] = false                    // skip_deduplication
-                input[4] = true                     // use_gpu
-                input[5] = "bam"                    // output_fmt
-                input[6] = Channel.of([[:], []])    // interval_file
-                input[7] = Channel.of([[:], []])    // known_sites
+                input[3] = false                     // skip_deduplication
+                input[4] = true                      // use_gpu
+                input[5] = "bam"                     // output_fmt
+                input[6] = Channel.of([[:], []])     // interval_file
+                input[7] = Channel.of([[:], [], []]) // known_sites
                 """
             }
         }
@@ -91,11 +90,11 @@ nextflow_workflow {
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ])
                 input[2] = BWA_INDEX.out.index
-                input[3] = true                     // skip_deduplication
-                input[4] = true                     // use_gpu
-                input[5] = "bam"                    // output_fmt
-                input[6] = Channel.of([[:], []])    // interval_file
-                input[7] = Channel.of([[:], []])    // known_sites
+                input[3] = true                      // skip_deduplication
+                input[4] = true                      // use_gpu
+                input[5] = "bam"                     // output_fmt
+                input[6] = Channel.of([[:], []])     // interval_file
+                input[7] = Channel.of([[:], [], []]) // known_sites
                 """
             }
         }
@@ -136,11 +135,11 @@ nextflow_workflow {
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ])
                 input[2] = BWA_INDEX.out.index
-                input[3] = true                     // skip_deduplication
-                input[4] = true                     // use_gpu
-                input[5] = "bam"                    // output_fmt
-                input[6] = Channel.of([[:], []])    // interval_file
-                input[7] = Channel.of([[:], []])    // known_sites
+                input[3] = true                      // skip_deduplication
+                input[4] = true                      // use_gpu
+                input[5] = "bam"                     // output_fmt
+                input[6] = Channel.of([[:], []])     // interval_file
+                input[7] = Channel.of([[:], [], []]) // known_sites
                 """
             }
         }
@@ -178,11 +177,11 @@ nextflow_workflow {
                             file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ])
                 input[2] = BWA_INDEX.out.index
-                input[3] = false                    // skip_deduplication
-                input[4] = true                     // use_gpu
-                input[5] = "bam"                    // output_fmt
-                input[6] = Channel.of([[:], []])    // interval_file
-                input[7] = Channel.of([[:], []])    // known_sites
+                input[3] = false                     // skip_deduplication
+                input[4] = true                      // use_gpu
+                input[5] = "bam"                     // output_fmt
+                input[6] = Channel.of([[:], []])     // interval_file
+                input[7] = Channel.of([[:], [], []]) // known_sites
                 """
             }
         }

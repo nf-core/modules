@@ -14,7 +14,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--t-max 10 --minimum-coverage 1 --compute_ci'
+                module_args = '--t-max 10 --minimum-coverage 1'
             }
 
             process {
@@ -22,7 +22,8 @@ nextflow_process {
                 input[0] = [ [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 """
             }
@@ -45,14 +46,15 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--t-max 10 --minimum-coverage 1 --compute_ci'
+                module_args = '--t-max 10 --minimum-coverage 1'
             }
             process {
                 """
                 input[0] = [ [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ]
                 """
             }

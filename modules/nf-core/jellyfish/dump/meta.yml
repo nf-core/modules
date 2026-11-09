@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "jellyfish_dump"
-description: Dumps the results from a jellyfish binary file into a human readable
-  format
+description: Dumps the results from a jellyfish binary file into a human
+  readable format
 keywords:
   - k-mer
   - DNA
@@ -15,7 +14,8 @@ tools:
       documentation: "https://github.com/gmarcais/Jellyfish/blob/master/doc/Readme.md"
       tool_dev_url: "https://github.com/gmarcais/Jellyfish"
       doi: "10.1093/bioinformatics/btr011"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:jellyfish
 input:
   - - meta:
@@ -37,19 +37,33 @@ output:
             e.g. `[ id:'sample1' ]`
       - ${prefix}.${extension}:
           type: file
-          description: Human readable k-mer database in fasta format, or in 2-column
-            space delimited format if the -c argument is provided
+          description: Human readable k-mer database in fasta format, or in
+            2-column space delimited format if the -c argument is provided
           pattern: "*.{fa,txt}"
           ontologies:
             - edam: http://edamontology.org/format_1929 # FASTA
             - edam: http://edamontology.org/format_2330 # Textual format
+  versions_jellyfish:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - jellyfish:
+          type: string
+          description: The name of the tool
+      - jellyfish --version |& sed '1!d;s/jellyfish //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - jellyfish:
+          type: string
+          description: The name of the tool
+      - jellyfish --version |& sed '1!d;s/jellyfish //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@vagkaratzas"
 maintainers:

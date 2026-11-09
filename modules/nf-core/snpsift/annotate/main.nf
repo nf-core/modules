@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SNPSIFT_ANNOTATE {
     tag "${meta.id}"
     label 'process_medium'
@@ -13,7 +16,7 @@ process SNPSIFT_ANNOTATE {
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('snpsift'), eval("SnpSift -version 2>&1 | grep -oE '[0-9]+\\.[0-9]+[a-z]?'"), emit: versions_snpsift, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,20 +31,11 @@ process SNPSIFT_ANNOTATE {
         ${args} \\
         ${database} \\
         ${vcf} > ${prefix}.vcf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        snpsift: \$( echo \$(SnpSift split -h 2>&1) | sed 's/^.*version //' | sed 's/(.*//' | sed 's/t//g' )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.vcf
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        snpsift: \$( echo \$(SnpSift split -h 2>&1) | sed 's/^.*version //' | sed 's/(.*//' | sed 's/t//g' )
-    END_VERSIONS
     """
 }

@@ -1,5 +1,11 @@
 name: "bam_vcf_impute_glimpse2"
-description: Impute VCF/BCF files, but also CRAM and BAM files with Glimpse2
+description: |
+  Subworkflow to impute VCF and BAM files using GLIMPSE V2 software. The subworkflow
+  takes VCF files, phased reference panel, and genetic maps to perform imputation
+  and outputs phased and imputed VCF files.
+  Meta map of all channels, except ch_input, will be used to perform joint operations.
+  "regionout", "regionoutPadded", "regionSize" keys will be added to the meta map to distinguish
+  the different files before ligation and therefore should not be used.
 keywords:
   - glimpse
   - chunk
@@ -58,12 +64,12 @@ input:
       description: Whether to split the reference panel and convert it to binary files before imputation.
 
 output:
-  - ch_chunks:
+  - chunks:
       type: string
       description: |
         Channel containing the chunking regions for each chromosome.
         Structure: [ meta, region with buffer, region without buffer ]
-  - ch_vcf_index:
+  - vcf_index:
       type: file
       description: |
         Output VCF/BCF file for the merged regions.

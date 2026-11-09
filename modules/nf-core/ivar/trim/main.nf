@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process IVAR_TRIM {
     tag "$meta.id"
     label 'process_medium'
@@ -14,7 +17,7 @@ process IVAR_TRIM {
     output:
     tuple val(meta), path("*.bam"), emit: bam
     tuple val(meta), path('*.log'), emit: log
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('ivar'), eval("ivar version | sed -n 's|iVar version \\(.*\\)|\\1|p'"), emit: versions_ivar, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,11 +32,6 @@ process IVAR_TRIM {
         -b ${bed} \\
         -p ${prefix} \\
         > ${prefix}.ivar.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ivar: \$(ivar version | sed -n 's|iVar version \\(.*\\)|\\1|p')
-    END_VERSIONS
     """
 
     stub:
@@ -41,10 +39,5 @@ process IVAR_TRIM {
     """
     touch ${prefix}.ivar.log
     touch ${prefix}.bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ivar: \$(ivar version | sed -n 's|iVar version \\(.*\\)|\\1|p')
-    END_VERSIONS
     """
 }

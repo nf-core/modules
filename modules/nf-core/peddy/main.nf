@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PEDDY {
     tag "$meta.id"
     label 'process_low'
@@ -37,7 +40,6 @@ process PEDDY {
     peddy \\
         $args \\
         --prefix $prefix \\
-        --plot \\
         -p $task.cpus \\
         $vcf \\
         $sites_arg \\

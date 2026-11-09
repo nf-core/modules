@@ -1,6 +1,6 @@
 name: "hlala_typing"
-description: Performs HLA typing based on a population reference graph and employs
-  a new linear projection method to align reads to the graph.
+description: Performs HLA typing based on a population reference graph and
+  employs a new linear projection method to align reads to the graph.
 keywords:
   - hla
   - hlala
@@ -13,7 +13,8 @@ tools:
       documentation: "https://github.com/DiltheyLab/HLA-LA#running-hlala"
       tool_dev_url: "https://github.com/DiltheyLab/HLA-LA"
       doi: "10.1093/bioinformatics/btz235"
-      licence: ["GPL"]
+      licence:
+        - "GPL"
       identifier: ""
 input:
   - - meta:
@@ -150,9 +151,10 @@ output:
       - hla-la:
           type: string
           description: The name of the tool
-      - echo 1.0.4:
-          type: eval
-          description: The expression to obtain the version of the tool
+      - 1.0.4:
+          type: string
+          description: The version of the tool
+
 topics:
   versions:
     - - ${task.process}:
@@ -161,9 +163,10 @@ topics:
       - hla-la:
           type: string
           description: The name of the tool
-      - echo 1.0.4:
-          type: eval
-          description: The expression to obtain the version of the tool
+      - 1.0.4:
+          type: string
+          description: The version of the tool
+
 authors:
   - "@mapo9"
 maintainers:

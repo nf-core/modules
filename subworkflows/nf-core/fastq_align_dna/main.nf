@@ -1,4 +1,5 @@
-#!/usr/bin/env nextflow
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
 
 //
 // FASTQ_ALIGN_DNA: Align fastq files to a reference genome
@@ -8,6 +9,7 @@
 include { BOWTIE2_ALIGN                   } from "../../../modules/nf-core/bowtie2/align/main"
 include { BWA_MEM as BWAMEM1_MEM          } from '../../../modules/nf-core/bwa/mem/main'
 include { BWAMEM2_MEM as BWAMEM2_MEM      } from '../../../modules/nf-core/bwamem2/mem/main'
+include { BWAMEM3_MEM as BWAMEM3_MEM      } from '../../../modules/nf-core/bwamem3/mem/main'
 include { DRAGMAP_ALIGN                   } from "../../../modules/nf-core/dragmap/align/main"
 include { SNAPALIGNER_ALIGN as SNAP_ALIGN } from '../../../modules/nf-core/snapaligner/align/main'
 include { STROBEALIGN                     } from "../../../modules/nf-core/strobealign/main"
@@ -31,14 +33,7 @@ workflow FASTQ_ALIGN_DNA {
     // Align fastq files to reference genome and (optionally) sort
     if (aligner == 'bowtie2') {
 
-        /*
-        This is a temporary fix until all aligner handle ch_fasta_fai
-        */
-        ch_fasta_fai = ch_fasta.map { meta, fasta ->
-            tuple(meta, fasta, [])
-        }
-
-        BOWTIE2_ALIGN(ch_reads, ch_aligner_index, ch_fasta_fai, false, sort)
+        BOWTIE2_ALIGN(ch_reads, ch_aligner_index, ch_fasta, false, sort)
         // if aligner is bowtie2
         ch_bam = ch_bam.mix(BOWTIE2_ALIGN.out.bam)
     }
@@ -52,6 +47,12 @@ workflow FASTQ_ALIGN_DNA {
         BWAMEM2_MEM(ch_reads, ch_aligner_index, ch_fasta, sort)
         // If aligner is bwa-mem2
         ch_bam = ch_bam.mix(BWAMEM2_MEM.out.bam)
+    }
+    else if (aligner == 'bwamem3') {
+        BWAMEM3_MEM(ch_reads, ch_aligner_index, ch_fasta, sort)
+        // If aligner is bwa-mem3
+        ch_bam = ch_bam.mix(BWAMEM3_MEM.out.aligned)
+        ch_bam_index = ch_bam_index.mix(BWAMEM3_MEM.out.index)
     }
     else if (aligner == 'dragmap') {
         DRAGMAP_ALIGN(ch_reads, ch_aligner_index, ch_fasta, sort)

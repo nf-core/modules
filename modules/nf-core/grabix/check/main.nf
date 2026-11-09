@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GRABIX_CHECK {
     label 'process_low'
 
@@ -11,7 +14,7 @@ process GRABIX_CHECK {
 
     output:
     tuple val(meta), stdout, emit: compress_bgzip
-    path "versions.yml"    , emit: versions
+    tuple val("${task.process}"), val('grabix'), eval("grabix |& sed -n 's/^version: //p'"), topic: versions, emit: versions_grabix
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,21 +23,11 @@ process GRABIX_CHECK {
 
     """
     grabix check ${input} | tr -d '\\n'
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        grabix: \$(grabix | sed -n -E 's/version: (.*)/\\1/p')
-    END_VERSIONS
     """
 
     stub:
 
     """
-    \$(echo yes)
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        grabix: \$(grabix | sed -n -E 's/version: (.*)/\\1/p')
-    END_VERSIONS
+    echo yes | tr -d '\\n'
     """
 }
