@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process INTERPROSCAN {
     tag "$meta.id"
     // will throw NullPointer exceptions and crush with more than 1 cpu
@@ -27,8 +30,11 @@ process INTERPROSCAN {
     def args             = task.ext.args ?: ''
     def prefix           = task.ext.prefix ?: "${meta.id}"
     def is_compressed    = fasta.getExtension() == "gz"
-    def fasta_name       = is_compressed ? fasta.getBaseName() : fasta
-    def uncompress_input = is_compressed ? "gzip -c -d ${fasta} > ${fasta_name}" : ''
+    def fasta_name       = is_compressed ? fasta.getBaseName() : "stripped_${fasta}"
+    // InterProScan rejects '*': drop the trailing stop, mask internal ones as X so coordinates still match the input.
+    def uncompress_input = is_compressed ?
+        "gzip -c -d ${fasta} | sed '/^>/!{s/\\*\$//; s/\\*/X/g}' > ${fasta_name}" :
+        "sed '/^>/!{s/\\*\$//; s/\\*/X/g}' ${fasta} > ${fasta_name}"
     """
     $uncompress_input
 

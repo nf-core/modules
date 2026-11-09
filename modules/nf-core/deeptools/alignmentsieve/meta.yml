@@ -1,6 +1,5 @@
 name: deeptools_alignmentSieve
-description: This tool filters alignments in a BAM/CRAM file according the the
-  specified parameters.
+description: This tool filters alignments in a BAM/CRAM file according the the specified parameters.
 keywords:
   - ATACseq
   - filter
@@ -8,8 +7,7 @@ keywords:
   - ATACshift
 tools:
   - deeptools:
-      description: A set of user-friendly tools for normalization and
-        visualization of deep-sequencing data
+      description: A set of user-friendly tools for normalization and visualization of deep-sequencing data
       homepage: https://deeptools.readthedocs.io/en/develop/content/tools/alignmentSieve.html
       documentation: https://deeptools.readthedocs.io/en/develop/content/tools/alignmentSieve.html
       tool_dev_url: https://github.com/deeptools/deepTools/
@@ -95,3 +93,27 @@ authors:
   - "@lpantano"
 maintainers:
   - "@lpantano"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/deeptools_samtools:880d1e7812674fd9
+      build_id: bd-880d1e7812674fd9_1
+      scan_id: sc-7d532d41561e7d57_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/deeptools_samtools:22ef5f45259c4336
+      build_id: bd-22ef5f45259c4336_1
+      scan_id: sc-721f192f6659c701_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/deeptools_samtools:da7a15a39029f22f
+      build_id: bd-da7a15a39029f22f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/aa/aa2a707745965f561e777fdce54f18881d0e53a12c1b3a29ba1b2a6f2112f099/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/deeptools_samtools:8c584f40b5f12a7c
+      build_id: bd-8c584f40b5f12a7c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ef/efa24b1272fbbb0985c155fa32d9721c50809cfd031aeb2c79000f7ba6beb182/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/deeptools/alignmentsieve/.conda-lock/linux_amd64-bd-22ef5f45259c4336_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/deeptools/alignmentsieve/.conda-lock/linux_arm64-bd-880d1e7812674fd9_1.txt
