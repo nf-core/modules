@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process METAPROVIZ_INTERNALSTANDARD"
     script "../main.nf"
     process "METAPROVIZ_INTERNALSTANDARD"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -19,6 +20,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
                     [], [], []
                 ]
+                input[1] = ''
                 """
             }
         }
@@ -26,12 +28,17 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.versions_metaproviz != null },
-                { assert process.out.versions_r_base != null },
-                { assert process.out.high_var != null },
+                { assert path(process.out.report[0][1]).text.contains("58 samples") },
+                { assert path(process.out.report[0][1]).text.contains("180 features after 2 IS were removed") },
+                { assert path(process.out.log[0][1]).text.contains("Removed 2 IS from the SE, 180 features are kept.") },
+                { assert path(process.out.log[0][1]).text.contains("columns with database IDs: HMDB, KEGG.ID, KEGGCompound") },
+                { assert path(process.out.se[0][1]).exists() },
+                { assert path(process.out.plots[0][1]).exists() },
+                { assert path(process.out.cv_table[0][1]).readLines()*.split("\t")*.getAt(0) == ["Metabolite", "valine-d8", "hippuric acid-d5"] },
                 { assert snapshot(
                     cv_table: process.out.cv_table,
-                    versions_metaproviz: process.out.versions_metaproviz
+                    condition_cv: process.out.condition_cv,
+                    versions: process.out.findAll { key, val -> key.startsWith('versions') }
                   ).match() }
             )
         }
@@ -49,6 +56,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/csv/feature_matrix.csv', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/csv/sample_matrix.csv', checkIfExists: true)
                 ]
+                input[1] = 'se'
                 """
             }
         }
@@ -56,18 +64,78 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.versions_metaproviz != null },
-                { assert process.out.versions_r_base != null },
-                { assert process.out.high_var != null },
+                { assert path(process.out.se[0][1]).exists() },
                 { assert snapshot(
                     cv_table: process.out.cv_table,
-                    versions_metaproviz: process.out.versions_metaproviz
+                    versions: process.out.findAll { key, val -> key.startsWith('versions') }
                   ).match() }
             )
         }
     }
 
-    test("internal standard - no IS features found (tissue)") {
+    test("internal standard - a single IS does not stop the run") {
+
+        when {
+            params {
+                module_args = "--internal_standards valine-d8"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
+                    [], [], []
+                ]
+                input[1] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert !path(process.out.log[0][1]).text.contains("ERROR") },
+                { assert path(process.out.report[0][1]).text.contains("181 features after 1 IS was removed") },
+                { assert path(process.out.report[0][1]).text.contains("With only one IS, a high CV cannot show whether the problem is specific to this compound or affects the whole run.") },
+                { assert path(process.out.cv_table[0][1]).readLines()*.split("\t")*.getAt(0) == ["Metabolite", "valine-d8"] },
+                { assert snapshot(
+                    cv_table: process.out.cv_table,
+                    versions: process.out.findAll { key, val -> key.startsWith('versions') }
+                  ).match() }
+            )
+        }
+    }
+
+    test("internal standard - list not found falls back to the default naming conventions") {
+
+        when {
+            params {
+                module_args = "--internal_standards not_a_feature_a,not_a_feature_b"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
+                    [], [], []
+                ]
+                input[1] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.log[0][1]).text.contains("Requested IS feature(s) not found in SE: not_a_feature_a, not_a_feature_b") },
+                { assert path(process.out.log[0][1]).text.contains("The IS detection falls back to the default naming conventions.") },
+                { assert path(process.out.report[0][1]).text.contains("fallback, since no IS features were found by the explicit list") },
+                { assert path(process.out.cv_table[0][1]).readLines()*.split("\t")*.getAt(0) == ["Metabolite", "valine-d8", "hippuric acid-d5"] }
+            )
+        }
+    }
+
+    test("internal standard - no IS features found stops the run") {
 
         when {
             process {
@@ -77,6 +145,30 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/patient/tissue/SE.RData', checkIfExists: true),
                     [], [], []
                 ]
+                input[1] = ''
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("No IS features were found by the default naming conventions") }
+            )
+        }
+    }
+
+    test("internal standard - output format csv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
+                    [], [], []
+                ]
+                input[1] = 'csv'
                 """
             }
         }
@@ -84,14 +176,67 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.cv_table != null },
-                { assert process.out.high_var != null },
-                { assert process.out.condition_cv != null },
-                { assert process.out.plots != null },
-                { assert process.out.report != null },
-                { assert process.out.log != null },
-                { assert process.out.versions_metaproviz != null },
-                { assert process.out.versions_r_base != null }
+                { assert process.out.se.isEmpty() },
+                { assert process.out.filtered_matrices[0][1].size() == 3 },
+                { assert path(process.out.filtered_matrices[0][1].find { it.toString().endsWith("data_matrix.csv") }).text.readLines().size() == 181 },
+                { assert !path(process.out.filtered_matrices[0][1].find { it.toString().endsWith("data_matrix.csv") }).text.contains("valine-d8") },
+                { assert path(process.out.report[0][1]).text.contains("test.is_filtered.data_matrix.csv") },
+                { assert path(process.out.filtered_matrices[0][1].find { it.toString().endsWith("feature_matrix.csv") }).text.readLines().size() == 181 },
+                { assert path(process.out.filtered_matrices[0][1].find { it.toString().endsWith("feature_matrix.csv") }).text.readLines()[0] == '"Feature","HMDB","KEGG.ID","KEGGCompound","Pathway"' },
+                { assert path(process.out.filtered_matrices[0][1].find { it.toString().endsWith("feature_matrix.csv") }).text.readLines().contains('"2-aminoadipic acid","HMDB0302754",NA,NA,"Not assigned"') },
+                { assert snapshot(
+                    filtered_matrices: process.out.filtered_matrices
+                  ).match() }
+            )
+        }
+    }
+
+    test("internal standard - output format tsv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
+                    [], [], []
+                ]
+                input[1] = 'tsv'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.se.isEmpty() },
+                { assert process.out.filtered_matrices[0][1].every { it.toString().endsWith(".tsv") } },
+                { assert snapshot(
+                    filtered_matrices: process.out.filtered_matrices
+                  ).match() }
+            )
+        }
+    }
+
+    test("internal standard - unknown output format fails") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
+                    [], [], []
+                ]
+                input[1] = 'xlsx'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("output_format must be se, tsv or csv") }
             )
         }
     }
@@ -108,6 +253,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'metabolomics/raw_annotation_data/cellline/intracell/SE.RData', checkIfExists: true),
                     [], [], []
                 ]
+                input[1] = ''
                 """
             }
         }

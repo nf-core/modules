@@ -2,40 +2,37 @@ process METAPROVIZ_INTERNALSTANDARD {
     tag "$meta.id"
     label 'process_single'
 
-    // needs to be changed once new bioconda version is up
-    container "ghcr.io/saezlab/metaproviz:0.0.1"
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/bioconductor-metaproviz:4.99.0--r45hdfd78af_0' :
+        'quay.io/biocontainers/bioconductor-metaproviz:4.99.0--r45hdfd78af_0' }"
 
     input:
     tuple val(meta), path(se_rds), path(data_matrix), path(feature_matrix), path(sample_matrix)
+    val output_format
 
     output:
-    tuple val(meta), path("*.cv.tsv")            , emit: cv_table
-    tuple val(meta), path("*.high_var.txt")      , emit: high_var
-    tuple val(meta), path("*.condition_cv.tsv")  , emit: condition_cv
-    tuple val(meta), path("*.plots.rds")         , emit: plots
-    tuple val(meta), path("*.report.html")       , emit: report
-    tuple val(meta), path("*.log")               , emit: log
-    tuple val("${task.process}"), val('metaproviz'), val('4.0.0'), emit: versions_metaproviz, topic: versions
-    tuple val("${task.process}"), val('r-base'), val('4.6.1'), emit: versions_r_base, topic: versions
+    tuple val(meta), path("*.is_filtered.rds")                , optional: true, emit: se
+    tuple val(meta), path("*.is_filtered.*_matrix.{tsv,csv}") , optional: true, emit: filtered_matrices
+    tuple val(meta), path("*.cv.tsv")                         , emit: cv_table
+    tuple val(meta), path("*.condition_cv.tsv")               , emit: condition_cv
+    tuple val(meta), path("*.plots.rds")                      , emit: plots
+    tuple val(meta), path("*.report.html")                    , emit: report
+    tuple val(meta), path("*.log")                            , emit: log
+    tuple val("${task.process}"), val('metaproviz'), val('4.99.0'), emit: versions_metaproviz, topic: versions
+    tuple val("${task.process}"), val('r-base'), val('4.5.3'), emit: versions_r_base, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "METAPROVIZ_INTERNALSTANDARD module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
     template 'metaproviz_internalstandard.R'
 
     stub:
-    // Exit if running this module with -profile conda / -profile mamba
-    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
-        error "METAPROVIZ_INTERNALSTANDARD module does not support Conda. Please use Docker / Singularity / Podman instead."
-    }
     def prefix  = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.cv.tsv ${prefix}.high_var.txt \\
+    touch ${prefix}.is_filtered.rds ${prefix}.cv.tsv \\
+          ${prefix}.is_filtered.{data_matrix,feature_matrix,sample_matrix}.tsv \\
           ${prefix}.condition_cv.tsv ${prefix}.plots.rds \\
           ${prefix}.report.html ${prefix}.log
     """

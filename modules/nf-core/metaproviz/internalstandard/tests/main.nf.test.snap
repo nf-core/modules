@@ -7,19 +7,36 @@
                         {
                             "id": "test"
                         },
-                        "test.cv.tsv:md5,ce90edb73160e27103e2fdbd78aee934"
+                        "test.cv.tsv:md5,7aada8669e2853d099d3b4bf7aa9c3b0"
                     ]
                 ],
-                "versions_metaproviz": [
+                "condition_cv": [
                     [
-                        "METAPROVIZ_INTERNALSTANDARD",
-                        "metaproviz",
-                        "4.0.0"
+                        {
+                            "id": "test"
+                        },
+                        "test.condition_cv.tsv:md5,55d087e49ccdfa3eece26165dcdf7c20"
                     ]
-                ]
+                ],
+                "versions": {
+                    "versions_metaproviz": [
+                        [
+                            "METAPROVIZ_INTERNALSTANDARD",
+                            "metaproviz",
+                            "4.99.0"
+                        ]
+                    ],
+                    "versions_r_base": [
+                        [
+                            "METAPROVIZ_INTERNALSTANDARD",
+                            "r-base",
+                            "4.5.3"
+                        ]
+                    ]
+                }
             }
         ],
-        "timestamp": "2026-09-30T10:43:26.443311",
+        "timestamp": "2026-11-09T15:02:24.448653",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
@@ -33,7 +50,7 @@
                         {
                             "id": "test"
                         },
-                        "test.cv.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.is_filtered.rds:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "1": [
@@ -41,7 +58,11 @@
                         {
                             "id": "test"
                         },
-                        "test.high_var.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        [
+                            "test.is_filtered.data_matrix.tsv:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.is_filtered.feature_matrix.tsv:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.is_filtered.sample_matrix.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
                     ]
                 ],
                 "2": [
@@ -49,7 +70,7 @@
                         {
                             "id": "test"
                         },
-                        "test.condition_cv.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.cv.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "3": [
@@ -57,7 +78,7 @@
                         {
                             "id": "test"
                         },
-                        "test.plots.rds:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.condition_cv.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "4": [
@@ -65,7 +86,7 @@
                         {
                             "id": "test"
                         },
-                        "test.report.html:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.plots.rds:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "5": [
@@ -73,21 +94,29 @@
                         {
                             "id": "test"
                         },
-                        "test.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.report.html:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "6": [
                     [
-                        "METAPROVIZ_INTERNALSTANDARD",
-                        "metaproviz",
-                        "4.0.0"
+                        {
+                            "id": "test"
+                        },
+                        "test.log:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "7": [
                     [
                         "METAPROVIZ_INTERNALSTANDARD",
+                        "metaproviz",
+                        "4.99.0"
+                    ]
+                ],
+                "8": [
+                    [
+                        "METAPROVIZ_INTERNALSTANDARD",
                         "r-base",
-                        "4.6.1"
+                        "4.5.3"
                     ]
                 ],
                 "condition_cv": [
@@ -106,12 +135,16 @@
                         "test.cv.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "high_var": [
+                "filtered_matrices": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.high_var.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        [
+                            "test.is_filtered.data_matrix.tsv:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.is_filtered.feature_matrix.tsv:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "test.is_filtered.sample_matrix.tsv:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
                     ]
                 ],
                 "log": [
@@ -138,23 +171,77 @@
                         "test.report.html:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
+                "se": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.is_filtered.rds:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
                 "versions_metaproviz": [
                     [
                         "METAPROVIZ_INTERNALSTANDARD",
                         "metaproviz",
-                        "4.0.0"
+                        "4.99.0"
                     ]
                 ],
                 "versions_r_base": [
                     [
                         "METAPROVIZ_INTERNALSTANDARD",
                         "r-base",
-                        "4.6.1"
+                        "4.5.3"
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-09-30T10:45:08.805851",
+        "timestamp": "2026-11-03T17:19:56.922131",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "internal standard - output format csv": {
+        "content": [
+            {
+                "filtered_matrices": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "test.is_filtered.data_matrix.csv:md5,148e22494dc4578071025ba43e07fdfe",
+                            "test.is_filtered.feature_matrix.csv:md5,4850db99fcdff98ce24ad6217c52b7c1",
+                            "test.is_filtered.sample_matrix.csv:md5,0ac147893f0c9943c0ef01d4ff965bb9"
+                        ]
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-11-09T12:22:26.241773",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "internal standard - output format tsv": {
+        "content": [
+            {
+                "filtered_matrices": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "test.is_filtered.data_matrix.tsv:md5,0c2a8facbdf748926a399a993472159a",
+                            "test.is_filtered.feature_matrix.tsv:md5,6e64f294e2a24c6f3979b22e4e452f7b",
+                            "test.is_filtered.sample_matrix.tsv:md5,444589721e01b19cdc166d4195631495"
+                        ]
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-11-09T15:19:57.550461",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
@@ -168,19 +255,63 @@
                         {
                             "id": "test"
                         },
-                        "test.cv.tsv:md5,ce90edb73160e27103e2fdbd78aee934"
+                        "test.cv.tsv:md5,7aada8669e2853d099d3b4bf7aa9c3b0"
                     ]
                 ],
-                "versions_metaproviz": [
-                    [
-                        "METAPROVIZ_INTERNALSTANDARD",
-                        "metaproviz",
-                        "4.0.0"
+                "versions": {
+                    "versions_metaproviz": [
+                        [
+                            "METAPROVIZ_INTERNALSTANDARD",
+                            "metaproviz",
+                            "4.99.0"
+                        ]
+                    ],
+                    "versions_r_base": [
+                        [
+                            "METAPROVIZ_INTERNALSTANDARD",
+                            "r-base",
+                            "4.5.3"
+                        ]
                     ]
-                ]
+                }
             }
         ],
-        "timestamp": "2026-09-30T10:44:24.06011",
+        "timestamp": "2026-11-09T15:05:36.46661",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "internal standard - a single IS does not stop the run": {
+        "content": [
+            {
+                "cv_table": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.cv.tsv:md5,809249d9cc34dd61f642ee4d10325689"
+                    ]
+                ],
+                "versions": {
+                    "versions_metaproviz": [
+                        [
+                            "METAPROVIZ_INTERNALSTANDARD",
+                            "metaproviz",
+                            "4.99.0"
+                        ]
+                    ],
+                    "versions_r_base": [
+                        [
+                            "METAPROVIZ_INTERNALSTANDARD",
+                            "r-base",
+                            "4.5.3"
+                        ]
+                    ]
+                }
+            }
+        ],
+        "timestamp": "2026-11-09T15:08:23.569196",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.6"
