@@ -30,11 +30,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-					file(process.out.cram[0][1]).name,
-					process.out.gzi,
-					process.out.versions
-					).match()
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["cram"])).match()
 				}
             )
         }
@@ -61,7 +57,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match()
+                { assert snapshot(sanitizeOutput(process.out)).match()
 				}
             )
         }

@@ -1,27 +1,30 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process STROBEALIGN {
     tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/59/59cce6872df48a1e5cc9ccee89f066210694c6ec9f62d9c931cc6925ca0f6a5f/data' :
-        'community.wave.seqera.io/library/htslib_samtools_strobealign_pigz:4fa4f439c6bea386' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/42/4240bef64ff1f1d212a1b7cfc57f20ae03bdc140ea043fd7757c150f3a83a360/data'
+:         'community.wave.seqera.io/library/htslib_samtools_strobealign_pigz:b2f7ae6e1f5935e1' }"
 
     input:
-    tuple val(meta) , path(reads)
+    tuple val(meta), path(reads)
     tuple val(meta2), path(fasta)
     tuple val(meta3), path(index)
     val sort_bam
 
     output:
-    tuple val(meta), path("*.bam")      , emit: bam , optional: true
-    tuple val(meta), path("*.cram")     , emit: cram, optional: true
-    tuple val(meta), path("*.csi")      , emit: csi , optional: true
-    tuple val(meta), path("*.crai")     , emit: crai, optional: true
-    tuple val(meta), path("*.paf.gz")   , emit: paf , optional: true
-    tuple val(meta), path("*.tsv.gz")   , emit: tsv , optional: true
-    tuple val(meta), path("*.sti")      , emit: sti , optional: true
-    tuple val("${task.process}"), val('strobealign'), eval("strobealign --version"), topic: versions, emit: versions_strobealign
+    tuple val(meta), path("*.bam"), emit: bam, optional: true
+    tuple val(meta), path("*.cram"), emit: cram, optional: true
+    tuple val(meta), path("*.csi"), emit: csi, optional: true
+    tuple val(meta), path("*.crai"), emit: crai, optional: true
+    tuple val(meta), path("*.paf.gz"), emit: paf, optional: true
+    tuple val(meta), path("*.tsv.gz"), emit: tsv, optional: true
+    tuple val(meta), path("*.sti"), emit: sti, optional: true
+    tuple val("${task.process}"), val('strobealign'), eval("strobealign --version | sed '1!d;s/.* //'"), topic: versions, emit: versions_strobealign
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), emit: versions_samtools, topic: versions
     tuple val("${task.process}"), val('pigz'), eval("pigz --version 2>&1 | sed 's/pigz //'"), emit: versions_pigz, topic: versions
 
@@ -91,8 +94,8 @@ process STROBEALIGN {
     touch ${prefix}.${extension}
     touch ${prefix}.csi
     touch ${prefix}.crai
-    echo "" | pigz > ${prefix}.paf.gz
-    echo "" | pigz > ${prefix}.tsv.gz
+    echo "" | gzip > ${prefix}.paf.gz
+    echo "" | gzip > ${prefix}.tsv.gz
     touch ${prefix}.sti
     """
 }

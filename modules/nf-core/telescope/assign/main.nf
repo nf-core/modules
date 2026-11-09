@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TELESCOPE_ASSIGN {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ea/eaa68e02f66957e51ecba656dfeaa8576bada172780d95592105bc316a01a65c/data':
-        'community.wave.seqera.io/library/telescope:1.0.3_fix--d176f12022b914cf' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/92/9203f566b3081849549cd5c3df73fccc3dcabad4fc108f9028c8cc58646d8dea/data':
+        'community.wave.seqera.io/library/telescope:1.0.4.1--40b9d7949368a4ed' }"
 
     input:
     tuple val(meta), path(bam)

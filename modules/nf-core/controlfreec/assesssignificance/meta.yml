@@ -1,6 +1,5 @@
 name: controlfreec_assesssignificance
-description: Add both Wilcoxon test and Kolmogorov-Smirnov test p-values to each
-  CNV output of FREEC
+description: Add both Wilcoxon test and Kolmogorov-Smirnov test p-values to each CNV output of FREEC
 keywords:
   - cna
   - cnv
@@ -9,8 +8,7 @@ keywords:
   - tumor-only
 tools:
   - controlfreec/assesssignificance:
-      description: Copy number and genotype annotation from whole genome and whole
-        exome sequencing data.
+      description: Copy number and genotype annotation from whole genome and whole exome sequencing data.
       homepage: http://boevalab.inf.ethz.ch/FREEC
       documentation: http://boevalab.inf.ethz.ch/FREEC/tutorial.html
       tool_dev_url: https://github.com/BoevaLab/FREEC/
@@ -71,3 +69,17 @@ authors:
   - "@FriederikeHanssen"
 maintainers:
   - "@FriederikeHanssen"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/control-freec:11.6--44126e4b3b49c589
+      build_id: bd-44126e4b3b49c589_1
+      scan_id: sc-d4b1b2e008661382_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/control-freec:11.6--293876868c367e56
+      build_id: bd-293876868c367e56_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d4/d4f13d580f9baf1033ec932a671a3ffaa9df2ed423465d97fab604ecc12b5358/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/controlfreec/assesssignificance/.conda-lock/linux_amd64-bd-44126e4b3b49c589_1.txt

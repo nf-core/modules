@@ -62,10 +62,11 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "*_feats.tsv":
+      - "*_feats.tsv{,.gz}":
           type: file
-          description: Per-contig feature tables (one per parallel bin)
-          pattern: "*_feats.tsv"
+          description: Per-contig feature tables (one per parallel processing bin),
+            gzipped if `--gzip` is set
+          pattern: "*_feats.tsv{,.gz}"
           ontologies:
             - edam: "http://edamontology.org/format_3475"
   versions_deepmased:

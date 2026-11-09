@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "custom_orfmerge"
 description: |
   Cluster normalised per-sample, per-caller ORF predictions into a single
@@ -6,19 +5,29 @@ description: |
   (typically) `bedtools/getfasta` + `seqkit/translate` downstream to obtain
   the AA FASTA.
 
-  Strategy is class-aware (operating on the harmonised `orf_class` written
-  by `custom/orfnormalise`):
+  Rows sharing an identical exon structure are grouped first and clustered as a
+  single proxy chosen by class specificity, then the members are restored. Class
+  selects the strategy, so without this an ORF that two callers class differently
+  would be split across strategies and could never merge.
 
-    - canonical_cds:        collapse by (transcript_id, strand). One
-                            canonical CDS per transcript by definition.
-    - uORF, dORF, other:    collapse by (transcript_id, strand, start,
-                            end). A single transcript can host multiple
+  Proxies are then partitioned by clustering strategy. The harmonised `orf_class`
+  written by `custom/orfnormalise` selects the strategy but is never part of a
+  grouping key, because callers disagree on class for the same ORF (Ribo-TISH
+  reports `5'UTR` for both uORFs and CDS-overlapping uORFs) and keying on it
+  would emit one catalogue row per disagreeing caller:
+
+    - canonical_cds:        grouped by (transcript_id, strand), then
+                            reciprocal-overlap clustered within the
+                            transcript so a short truncated variant is
+                            not folded into the full-length CDS.
+    - uORF, uoORF, dORF,    collapse by (transcript_id, strand, start,
+      doORF, intORF, other: end). A single transcript can host multiple
                             distinct uORFs / dORFs / internal ORFs, so
                             keying on the outer span keeps them in
                             separate clusters while still merging
                             cross-caller calls that agree on coordinates.
-    - novel_u, smORF:       greedy reciprocal-overlap clustering on the
-                            outer genomic span at `--reciprocal-overlap`
+    - novel_u:              greedy reciprocal-overlap clustering on summed
+                            exon-block intersection at `--reciprocal-overlap`
                             (default 0.8). Catches fuzzy cross-caller
                             matches and exact-coordinate collapses in
                             one pass. Order-dependent at the boundary:
@@ -45,6 +54,13 @@ description: |
 
   Emits a small MultiQC custom-content TSV (per-class counts) for
   inclusion in downstream MultiQC reports.
+
+  Alongside the full catalogue, emits a consensus view (`*.consensus.*`)
+  filtered to ORFs supported by at least `--min-callers` distinct callers
+  and recurring in at least `--min-samples` samples (both default 1, i.e.
+  no filtering, so the consensus view equals the full catalogue). Raising
+  either threshold yields a higher-confidence catalogue without altering
+  the full one.
 keywords:
   - orf
   - ribo-seq
@@ -105,7 +121,9 @@ output:
             Per-ORF table with `called_by_<caller>` and `score_<caller>`
             columns for each supported caller, `n_samples` / `samples`
             cross-sample recurrence columns, plus orf_class, aa_length,
-            and host gene_id / transcript_id.
+            host gene_id / transcript_id, `orf_type_native` listing every
+            caller-native ORF-type label in the cluster, and the
+            `is_smorf` length flag.
           pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -136,6 +154,44 @@ output:
           pattern: "*.mqc.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
+  consensus_bed12:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map matching the input meta.
+      - ${prefix}.consensus.bed12:
+          type: file
+          description: |
+            Consensus-filtered catalogue as BED12 (ORFs meeting the
+            `--min-callers` / `--min-samples` thresholds).
+          pattern: "*.consensus.bed12"
+          ontologies:
+            - edam: http://edamontology.org/format_3586 # BED
+  consensus_tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map matching the input meta.
+      - ${prefix}.consensus.tsv:
+          type: file
+          description: |
+            Consensus-filtered per-ORF table, same columns as the full
+            catalogue TSV.
+          pattern: "*.consensus.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  consensus_orf_to_gene_tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map matching the input meta.
+      - ${prefix}.consensus.orf_to_gene.tsv:
+          type: file
+          description: |
+            ORF-to-gene mapping restricted to the consensus-filtered ORFs.
+          pattern: "*.consensus.orf_to_gene.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   versions:
     - versions.yml:
         type: file
@@ -152,3 +208,27 @@ authors:
   - "@pinin4fjords"
 maintainers:
   - "@pinin4fjords"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/python_pyyaml:14e95bf7fff3fa6c
+      build_id: bd-14e95bf7fff3fa6c_1
+      scan_id: sc-533215ae91f0141f_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/python_pyyaml:264783d6b9f9a7b5
+      build_id: bd-264783d6b9f9a7b5_1
+      scan_id: sc-a229a6c09def1276_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/python_pyyaml:f020547ede680f65
+      build_id: bd-f020547ede680f65_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/79/79111ab0c4b3db9262b682feabc57271946d6679f21d33b38a67f5cdbabc4c00/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/python_pyyaml:782724861fccb0d9
+      build_id: bd-782724861fccb0d9_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ca/caf07471ede03189e710de9163ae02e17bf33643bdcd6f1084ef57484174bf7c/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/custom/orfmerge/.conda-lock/linux_amd64-bd-14e95bf7fff3fa6c_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/custom/orfmerge/.conda-lock/linux_arm64-bd-264783d6b9f9a7b5_1.txt

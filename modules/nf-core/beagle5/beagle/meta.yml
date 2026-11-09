@@ -1,14 +1,12 @@
 name: "beagle5_beagle"
-description: Beagle v5.5 is a software package for phasing genotypes and for
-  imputing ungenotyped markers.
+description: Beagle v5.5 is a software package for phasing genotypes and for imputing ungenotyped markers.
 keywords:
   - phasing
   - imputation
   - genotype
 tools:
   - "beagle5":
-      description: "Beagle is a software package for phasing genotypes and for imputing
-        ungenotyped markers."
+      description: "Beagle is a software package for phasing genotypes and for imputing ungenotyped markers."
       homepage: "https://faculty.washington.edu/browning/beagle/beagle.html"
       documentation: "https://faculty.washington.edu/browning/beagle/beagle_5.5_17Dec24.pdf"
       doi: "10.1016/j.ajhg.2021.08.005; doi:10.1016/j.ajhg.2018.07.015"
@@ -48,14 +46,12 @@ input:
         ontologies: []
     - exclsamples:
         type: file
-        description: text file containing samples one sample per line to be
-          excluded from the analysis
+        description: text file containing samples one sample per line to be excluded from the analysis
         pattern: "*.*"
         ontologies: []
     - exclmarkers:
         type: file
-        description: text file containing markers one marker per line to be
-          excluded from the analysis
+        description: text file containing markers one marker per line to be excluded from the analysis
         pattern: "*.*"
         ontologies: []
     - region:
@@ -71,8 +67,7 @@ output:
             e.g. [ id:'test' ]
       - "*.vcf.gz":
           type: file
-          description: bgzip compressed VCF file that contains phased non missing
-            genotypes for all non reference samples
+          description: bgzip compressed VCF file that contains phased non missing genotypes for all non reference samples
           pattern: "*.vcf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3016 #VCF
@@ -85,8 +80,7 @@ output:
             e.g. [ id:'test' ]
       - "*.log":
           type: file
-          description: a summary of the analysis that includes the Beagle version,
-            the command line arguments, and compute time.
+          description: a summary of the analysis that includes the Beagle version, the command line arguments, and compute time.
           pattern: "*.log"
           ontologies: []
   versions_beagle:
@@ -114,3 +108,27 @@ authors:
   - "@ashotmarg"
 maintainers:
   - "@ashotmarg"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/beagle:5.5_27Feb25.75f--91b06b1834ac8be3
+      build_id: bd-91b06b1834ac8be3_1
+      scan_id: sc-2cb56f46f344e139_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/beagle:5.5_27Feb25.75f--30bdd31e53923776
+      build_id: bd-30bdd31e53923776_1
+      scan_id: sc-dc64d4f0cc2ec0fc_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/beagle:5.5_27Feb25.75f--31536931ae28748d
+      build_id: bd-31536931ae28748d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bc/bc62b4b2f62be44cf5ee0ef6f57b8d94c8180c96451ca00d46b8ce5067040522/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/beagle:5.5_27Feb25.75f--60c6131e604f8f55
+      build_id: bd-60c6131e604f8f55_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/41/413c96a140d3d7277b01bf0ea4b6e374fa528fada57d65151ca4467fd2910377/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/beagle5/beagle/.conda-lock/linux_amd64-bd-30bdd31e53923776_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/beagle5/beagle/.conda-lock/linux_arm64-bd-91b06b1834ac8be3_1.txt

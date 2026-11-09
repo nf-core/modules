@@ -83,6 +83,15 @@ output:
           description: Per-ORF exons BED used by `extract-orf-profiles`.
           pattern: "*.orfs-exons.annotated.bed.gz"
           ontologies: []
+  orfs_labels:
+    - - meta:
+          type: map
+          description: Groovy Map inherited from input meta.
+      - "${prefix}.orfs-labels.annotated.tab.gz":
+          type: file
+          description: Per-ORF positional labels from `label-orfs`; columns orf_num, id, orf_type, transcripts.
+          pattern: "*.orfs-labels.annotated.tab.gz"
+          ontologies: []
   versions_rpbp:
     - versions.yml:
         type: file

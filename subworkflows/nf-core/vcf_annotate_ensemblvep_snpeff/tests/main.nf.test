@@ -7,12 +7,16 @@ nextflow_workflow {
     tag "subworkflows"
     tag "subworkflows_nfcore"
     tag "subworkflows/vcf_annotate_ensemblvep_snpeff"
-    tag "ensemblvep/vep"
-    tag "snpeff/snpeff"
-    tag "htslib/bgziptabix"
-    tag "bcftools/pluginscatter"
+    tag "bcftools"
     tag "bcftools/concat"
+    tag "bcftools/pluginscatter"
     tag "bcftools/sort"
+    tag "ensemblvep"
+    tag "ensemblvep/vep"
+    tag "htslib"
+    tag "htslib/bgziptabix"
+    tag "snpeff"
+    tag "snpeff/snpeff"
 
     config "./nextflow.config"
 
@@ -45,6 +49,7 @@ nextflow_workflow {
                 input[8] = []
                 input[9] = ["ensemblvep"]
                 input[10] = 5
+                input[11] = [[], []]
                 """
             }
         }
@@ -99,6 +104,7 @@ nextflow_workflow {
                 input[8] = snpeff_cache
                 input[9] = ["snpeff"]
                 input[10] = 5
+                input[11] = [[], []]
                 """
             }
         }
@@ -151,6 +157,7 @@ nextflow_workflow {
                 input[8] = snpeff_cache
                 input[9] = ["snpeff", "ensemblvep"]
                 input[10] = 5
+                input[11] = [[], []]
                 """
             }
         }
@@ -199,6 +206,7 @@ nextflow_workflow {
                 input[8] = []
                 input[9] = ["ensemblvep"]
                 input[10] = 100
+                input[11] = [[], []]
                 """
             }
         }
@@ -247,6 +255,7 @@ nextflow_workflow {
                 input[8] = []
                 input[9] = ["ensemblvep"]
                 input[10] = []
+                input[11] = [[], []]
                 """
             }
         }

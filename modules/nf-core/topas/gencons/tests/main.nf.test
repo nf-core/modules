@@ -99,11 +99,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.fasta,
-                    process.out.vcf,
-                    process.out.ccf,
-                    file(process.out.log[0][1]).name,
-                    process.out.versions
+                    sanitizeOutput(process.out, unstableKeys: ["log"])
                     ).match() }
             )
         }
@@ -133,11 +129,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.fasta,
-                    process.out.vcf,
-                    process.out.ccf,
-                    file(process.out.log[0][1]).name,
-                    process.out.versions
+                    sanitizeOutput(process.out, unstableKeys: ["log"])
                     ).match() }
             )
         }
@@ -163,11 +155,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.fasta,
-                    process.out.vcf,
-                    process.out.ccf,
-                    file(process.out.log[0][1]).name,
-                    process.out.versions
+                    sanitizeOutput(process.out, unstableKeys: ["log"])
                     ).match() }
             )
         }
@@ -227,7 +215,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

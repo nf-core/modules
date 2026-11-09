@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GAPSEQ_FINDTRANSPORT {
     tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'community.wave.seqera.io/library/gapseq:2.1.0--31c8824b3592beaf' :
-        'quay.io/biocontainers/gapseq:2.1.0--hdfd78af_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/93/933e301b11c1ec1699da6382e9e35b0e4e31edb80763eb2fa1b69ad7d6d1e5c7/data'
+:         'community.wave.seqera.io/library/gapseq:2.1.0--c32b876ebb5e5f5b' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -21,34 +24,21 @@ process GAPSEQ_FINDTRANSPORT {
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    gapseq_bin=\$(readlink -f \$(which gapseq))
-    gapseq_root=\$(dirname "\$gapseq_bin")
-
-    mkdir -p gapseq_runtime/dat
-    cp "\$gapseq_bin" gapseq_runtime/gapseq
-    cp -r "\$gapseq_root/src" gapseq_runtime/
-
-    while IFS= read -r -d '' directory; do
-        mkdir -p "gapseq_runtime/dat/\${directory#\$gapseq_root/dat/}"
-    done < <(find "\$gapseq_root/dat" -type d -print0)
-
-    while IFS= read -r -d '' file; do
-        ln -s "\$file" "gapseq_runtime/dat/\${file#\$gapseq_root/dat/}"
-    done < <(find "\$gapseq_root/dat" -type f -print0)
-
-    ./gapseq_runtime/gapseq \\
+    export LANG=C
+    export LC_ALL=C
+    export TZ=UTC
+    export R_LIBS_USER=
+    gapseq \\
         find-transport \\
-        -b 200 \\
         -K ${task.cpus} \
-        $args \\
-        $fasta
+        ${args} \\
+        ${fasta}
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def fasta_name = fasta.getBaseName()
     """
-    touch ${prefix}_transporters.tbl
+    touch ${fasta_name}_transporters.tbl
     """
 }

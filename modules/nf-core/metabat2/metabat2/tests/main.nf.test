@@ -18,10 +18,10 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                                [id: 'test', single_end: false],
-                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
-                                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
-                            ]
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                ]
                 """
             }
         }
@@ -42,10 +42,10 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                                [id: 'test', single_end: false],
-                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
-                                []
-                            ]
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    []
+                ]
                 """
             }
         }
@@ -53,10 +53,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                        process.out,
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
@@ -67,10 +64,11 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel
-                            .fromPath(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                            .map { it -> [[ id:'test', single_end:false ], it] }
-                            .join(METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS.out.depth)
+                input[0] = channel.of([
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                .join(METABAT2_JGISUMMARIZEBAMCONTIGDEPTHS.out.depth)
                 """
             }
         }
@@ -78,10 +76,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                        file(process.out.membership[0][1]).name,
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["membership"])).match() }
             )
         }
 
@@ -92,10 +87,11 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel
-                            .fromPath(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                            .map { it -> [[ id:'test', single_end:false ], it] }
-                            .join(GUNZIP.out.gunzip)
+                input[0] = channel.of([
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                .join(GUNZIP.out.gunzip)
                 """
             }
         }
@@ -103,10 +99,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                        file(process.out.membership[0][1]).name,
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["membership"])).match() }
             )
         }
 
@@ -120,10 +113,10 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                                [id: 'test', single_end: false],
-                                file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
-                                []
-                            ]
+                    [id: 'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    []
+                ]
                 """
             }
         }
@@ -131,10 +124,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                        process.out,
-                        process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

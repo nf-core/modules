@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HMMER_HMMSEARCH {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hmmer:3.4--hb6cb901_4' :
-        'quay.io/biocontainers/hmmer:3.4--hb6cb901_4' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b1/b171806a7b780537073c1e9ffe50885ba7917d8072b5941a125698df1253c4f7/data'
+:         'community.wave.seqera.io/library/hmmer:3.4--ab3efa7c16f46920' }"
 
     input:
     tuple val(meta), path(hmmfile), path(seqdb), val(write_align), val(write_target), val(write_domain)
@@ -21,12 +24,16 @@ process HMMER_HMMSEARCH {
     task.ext.when == null || task.ext.when
 
     script:
-    def args       = task.ext.args   ?: ''
-    def prefix     = task.ext.prefix ?: "${meta.id}"
-    output         = "${prefix}.txt"
-    alignment      = write_align     ? "-A ${prefix}.sto" : ''
-    target_summary = write_target    ? "--tblout ${prefix}.tbl" : ''
-    domain_summary = write_domain    ? "--domtblout ${prefix}.domtbl" : ''
+    def args   = task.ext.args   ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def output         = "${prefix}.txt"
+    def alignment      = write_align  ? "-A ${prefix}.sto" : ''
+    def target_summary = write_target ? "--tblout ${prefix}.tbl" : ''
+    def domain_summary = write_domain ? "--domtblout ${prefix}.domtbl" : ''
+    def to_gzip = ["${prefix}.txt"]
+    if (write_align)  to_gzip << "${prefix}.sto"
+    if (write_target) to_gzip << "${prefix}.tbl"
+    if (write_domain) to_gzip << "${prefix}.domtbl"
     """
     hmmsearch \\
         $args \\
@@ -38,23 +45,18 @@ process HMMER_HMMSEARCH {
         $hmmfile \\
         $seqdb
 
-    gzip --no-name *.txt \\
-        ${write_align ? '*.sto' : ''} \\
-        ${write_target ? '*.tbl' : ''} \\
-        ${write_domain ? '*.domtbl' : ''}
+    ${to_gzip ? "gzip --no-name ${to_gzip.join(' ')}" : ''}
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def to_gzip = ["${prefix}.txt"]
+    if (write_align)  to_gzip << "${prefix}.sto"
+    if (write_target) to_gzip << "${prefix}.tbl"
+    if (write_domain) to_gzip << "${prefix}.domtbl"
     """
-    touch "${prefix}.txt"
-    ${write_align ? "touch ${prefix}.sto" : ''} \\
-    ${write_target ? "touch ${prefix}.tbl" : ''} \\
-    ${write_domain ? "touch ${prefix}.domtbl" : ''}
+    ${to_gzip ? "touch ${to_gzip.join(' ')}" : ''}
 
-    gzip --no-name *.txt \\
-        ${write_align ? '*.sto' : ''} \\
-        ${write_target ? '*.tbl' : ''} \\
-        ${write_domain ? '*.domtbl' : ''}
+    ${to_gzip ? "gzip --no-name ${to_gzip.join(' ')}" : ''}
     """
 }

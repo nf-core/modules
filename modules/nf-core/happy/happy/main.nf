@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HAPPY_HAPPY {
     tag "$meta.id"
     label 'process_medium'
@@ -36,7 +39,7 @@ process HAPPY_HAPPY {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def regions = regions_bed ? "-f ${regions_bed}" : ""
+    def regions = regions_bed ? "-R ${regions_bed}" : ""
     def targets = targets_bed ? "-T ${targets_bed}" : ""
     def false_positives = false_positives_bed ? "--false-positives ${false_positives_bed}" : ""
     def stratification = stratification_tsv && stratification_beds ? "--stratification ${stratification_tsv}" : ""

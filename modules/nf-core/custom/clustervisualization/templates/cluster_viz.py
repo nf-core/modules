@@ -29,10 +29,24 @@ from sklearn.manifold import TSNE
 
 
 def load_features(path):
-    """Read a TSV of `sample_id` + numeric feature columns, indexed by sample_id."""
-    df = pd.read_csv(path, sep="\\t")
+    """Read sample-by-feature matrix, indexed by sample_id.
+
+    Accepts a TSV with a sample_id column, or a PLINK2 .eigenvec file
+    (`#FID IID PC1 ...` or `#IID PC1 ...`). FID/SID are dropped.
+    """
+    df = pd.read_csv(path, sep="\\t", dtype=str)
+    df.columns = [str(col).lstrip("#") for col in df.columns]
+
+    if "IID" in df.columns:
+        df = df.rename(columns={"IID": "sample_id"})
+
+    drop = [col for col in ("FID", "SID") if col in df.columns]
+    if drop:
+        df = df.drop(columns=drop)
+
     if "sample_id" not in df.columns:
         raise ValueError(f"features file must have a 'sample_id' column. Found: {list(df.columns)}")
+
     df["sample_id"] = df["sample_id"].astype(str)
     return df.set_index("sample_id").apply(pd.to_numeric, errors="coerce").fillna(0.0)
 
@@ -54,34 +68,48 @@ def embed(x, method, umap_neighbors, tsne_perplexity):
     """
     n = len(x)
     if method == "umap":
-        reducer = umap.UMAP(n_components=2, n_neighbors=min(umap_neighbors, max(2, n - 1)), random_state=42)
+        reducer = umap.UMAP(n_components=2, n_neighbors=min(umap_neighbors, max(2, n - 1)), n_jobs=1, random_state=42)
     elif method == "tsne":
-        reducer = TSNE(n_components=2, perplexity=min(tsne_perplexity, max(2, n - 1)), random_state=42)
+        reducer = TSNE(n_components=2, perplexity=min(tsne_perplexity, max(2, n - 1)), n_jobs=1, random_state=42)
     else:
         raise ValueError(f"Unknown method '{method}' (expected 'umap' or 'tsne')")
     return reducer.fit_transform(x)
 
 
 def plot_embedding(emb, labels, method, out_png):
-    plt.figure(figsize=(8, 6))
+    bg_figure = "#f7f7f9"  # background figure
+    bg_axes = "#eaeef5"  # background axes
+
+    fig, ax = plt.subplots(figsize=(8, 6), facecolor=bg_figure)
+    ax.set_facecolor(bg_axes)
+
+    # White grid lines, no spines, no ticks, axes below points.
+    ax.grid(True, color="white", linewidth=1.2)
+    ax.set_axisbelow(True)
+    for spine in ax.spines.values():
+        spine.set_visible(False)
+    ax.tick_params(length=0)
+
     palette = sns.color_palette("tab10", n_colors=max(1, len(np.unique(labels))))
     sns.scatterplot(
         x=emb[:, 0],
         y=emb[:, 1],
         hue=labels.astype(str),
         palette=palette,
-        alpha=0.8,
+        alpha=0.85,
         s=60,
         edgecolor="k",
         linewidth=0.3,
+        ax=ax,
     )
-    plt.title(f"{method.upper()} projection colored by cluster")
-    plt.xlabel(f"{method.upper()} 1")
-    plt.ylabel(f"{method.upper()} 2")
-    plt.legend(title="Cluster", bbox_to_anchor=(1.05, 1), loc="upper left")
-    plt.tight_layout()
-    plt.savefig(out_png, dpi=200, bbox_inches="tight")
-    plt.close()
+    ax.set_title(f"{method.upper()} projection colored by cluster")
+    ax.set_xlabel(f"{method.upper()} 1")
+    ax.set_ylabel(f"{method.upper()} 2")
+    ax.legend(title="Cluster", bbox_to_anchor=(1.05, 1), loc="upper left", frameon=True, facecolor=bg_figure)
+
+    fig.tight_layout()
+    fig.savefig(out_png, dpi=200, bbox_inches="tight", facecolor=fig.get_facecolor())
+    plt.close(fig)
 
 
 def main():

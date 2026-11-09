@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MEMOTE_REPORT {
     tag "$meta.id"
     label 'process_low'
@@ -35,7 +38,7 @@ process MEMOTE_REPORT {
     """
     export HOME=\${PWD}
     export COBRA_SOLVER=glpk_exact
-    
+
     touch ${prefix}.html
     """
 }

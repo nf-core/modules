@@ -1,0 +1,79 @@
+nextflow_process {
+
+    name "Test Process FERROHGVS_PARSE"
+    script "../main.nf"
+    process "FERROHGVS_PARSE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "ferrohgvs"
+    tag "ferrohgvs/parse"
+
+    test("hgvs variants - text") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of("NM_000088.3:c.589G>T", "NM_000088.3:c.79_80insG")
+                    .collectFile(name: 'variants.txt', newLine: true)
+                    .map { variants -> [ [ id:'test' ], variants ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("hgvs variants - json") {
+
+        config "./nextflow_json.config"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of("NM_000088.3:c.589G>T", "NM_000088.3:c.79_80insG")
+                    .collectFile(name: 'variants.txt', newLine: true)
+                    .map { variants -> [ [ id:'test' ], variants ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("hgvs variants - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of("NM_000088.3:c.589G>T")
+                    .collectFile(name: 'variants.txt', newLine: true)
+                    .map { variants -> [ [ id:'test' ], variants ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

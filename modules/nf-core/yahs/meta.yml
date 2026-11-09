@@ -148,3 +148,27 @@ authors:
 maintainers:
   - "@ksenia-krasheninnikova"
   - "@yy5"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/yahs:1.2.2--74863c109c60f9cd
+      build_id: bd-74863c109c60f9cd_1
+      scan_id: sc-e28b928223b2e988_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/yahs:1.2.2--5a61538ab6dbd63d
+      build_id: bd-5a61538ab6dbd63d_1
+      scan_id: sc-f2115e4a0d2bf44c_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/yahs:1.2.2--02e226068fd7ba8a
+      build_id: bd-02e226068fd7ba8a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/47/47e6425421c6823260bf4bd8d2d431f1f509e9bc9110bb3aa6b4652b85e63eac/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/yahs:1.2.2--ba63617dffb57d35
+      build_id: bd-ba63617dffb57d35_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/67/67d2aaad045d5bc67ca0128bcf93935ba052b369a6c7e2b7f573d0f665cd4412/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/yahs/.conda-lock/linux_amd64-bd-5a61538ab6dbd63d_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/yahs/.conda-lock/linux_arm64-bd-74863c109c60f9cd_1.txt

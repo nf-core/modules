@@ -124,6 +124,30 @@ nextflow_process {
 
     }
 
+    test("sarscov2 - proteome_fasta with stop codons") {
+        config "./nextflow.config"
+        when {
+            process {
+                """
+                input[0] = channel.fromPath(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true)
+                    .splitFasta(record: [header: true, seqString: true])
+                    .collectFile(name: 'proteome_with_stops.fasta', newLine: true, sort: 'index') { r -> ">\${r.header}\\n\${r.seqString}*" }
+                    .map { f -> [ [ id:'test' ], f ] }
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                // Same md5 and length as the plain proteome test: exactly the '*' was removed
+                { assert path(process.out.tsv[0][1]).readLines()[0]
+                    .contains("ENSSASP00005000004.1	4c35f09aac2f7be4f3cffd30c6aecac8	1273	Coils	Coil	Coil	1176	1203	-	T") }
+            )
+        }
+    }
+
     test("sarscov2 - proteome_fasta_gz - stub") {
         config "./nextflow.config"
         options '-stub'
