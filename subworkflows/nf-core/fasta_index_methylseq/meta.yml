@@ -47,7 +47,8 @@ input:
   - aligner:
       type: string
       description: |
-        Aligner name (bismark, bismark_hisat, bwameth, bwamem or bwamem3)
+        Aligner name (bismark, bismark_hisat, bwameth, bwamem or bwamem3).
+        For bwamem3, set `ext.args = '--meth'` on `BWAMEM3_INDEX` so the generated index supports `bwa-mem3 mem --meth`.
   - collecthsmetrics:
       type: boolean
       description: |

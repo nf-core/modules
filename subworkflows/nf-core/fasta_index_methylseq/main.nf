@@ -109,12 +109,13 @@ workflow FASTA_INDEX_METHYLSEQ {
     }
 
 
-    else if ( aligner == 'bwamem' ){
+    else if ( aligner in ['bwamem', 'bwamem3'] ){
         /*
-         * Generate BWA index from FASTA file
+         * Use the supplied BWA / bwa-mem3 index, or generate one from the FASTA file
+         * (bwa-mem3: set `ext.args = '--meth'` on BWAMEM3_INDEX for a methylation index)
          */
         if (bwamem_index) {
-            // Handle channel-based bwamem index
+            // Handle channel-based bwamem / bwamem3 index
             bwamem_index
                 .branch { _meta, file ->
                     gzipped: file.toString().endsWith('.gz')
@@ -127,6 +128,12 @@ workflow FASTA_INDEX_METHYLSEQ {
             )
 
             ch_bwamem_index = ch_bwamem_index_branched.unzipped.mix(UNTAR_BISMARK.out.untar)
+        } else if (aligner == 'bwamem3') {
+            log.info "bwa-mem3 index not provided. Generating bwa-mem3 index from FASTA file."
+            BWAMEM3_INDEX (
+                ch_fasta
+            )
+            ch_bwamem_index = BWAMEM3_INDEX.out.index
         } else {
             log.info "BWA index not provided. Generating BWA index from FASTA file."
             BWA_INDEX (
@@ -136,36 +143,10 @@ workflow FASTA_INDEX_METHYLSEQ {
         }
     }
 
-    else if ( aligner == 'bwamem3' ){
-        /*
-         * Generate bwa-mem3 methylation index (`index --meth`) from FASTA file
-         */
-        if (bwamem_index) {
-            bwamem_index
-                .branch { _meta, file ->
-                    gzipped: file.toString().endsWith('.gz')
-                    unzipped: true
-                }
-                .set { ch_bwamem3_index_branched }
-
-            UNTAR_BISMARK (
-                ch_bwamem3_index_branched.gzipped
-            )
-
-            ch_bwamem_index = ch_bwamem3_index_branched.unzipped.mix(UNTAR_BISMARK.out.untar)
-        } else {
-            log.info "bwa-mem3 index not provided. Generating bwa-mem3 methylation index from FASTA file."
-            BWAMEM3_INDEX (
-                ch_fasta
-            )
-            ch_bwamem_index = BWAMEM3_INDEX.out.index
-        }
-    }
-
     /*
     * Generate fasta index if not supplied for bwameth workflow or picard collecthsmetrics tool
     */
-    if (aligner == 'bwameth' || aligner == 'bwamem' || aligner == 'bwamem3' || collecthsmetrics) {
+    if (aligner in ['bwameth', 'bwamem', 'bwamem3'] || collecthsmetrics) {
         // already existing fasta index
         if (fasta_index) {
             ch_fasta_index = fasta_index
