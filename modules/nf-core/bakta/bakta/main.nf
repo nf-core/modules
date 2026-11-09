@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BAKTA_BAKTA {
     tag "${meta.id}"
     label 'process_medium'
@@ -26,6 +29,7 @@ process BAKTA_BAKTA {
     tuple val(meta), path("${prefix}.hypotheticals.faa"), emit: hypotheticals_faa
     tuple val(meta), path("${prefix}.tsv"), emit: tsv
     tuple val(meta), path("${prefix}.txt"), emit: txt
+    tuple val(meta), path("${prefix}.json"), emit: json
     tuple val("${task.process}"), val('bakta'), eval("bakta --version 2>&1 | sed 's/.*bakta //'"), emit: versions_bakta, topic: versions
 
     when:
@@ -63,6 +67,8 @@ process BAKTA_BAKTA {
     export FONTCONFIG_PATH=\$PWD/.fontconfig
     export XDG_CACHE_HOME=\$PWD/.cache
     mkdir .fontconfig .cache
+    mkdir nxf_home
+    export HOME=\$PWD/nxf_home
 
     touch ${prefix}.embl
     touch ${prefix}.faa
@@ -74,5 +80,6 @@ process BAKTA_BAKTA {
     touch ${prefix}.hypotheticals.faa
     touch ${prefix}.tsv
     touch ${prefix}.txt
+    touch ${prefix}.json
     """
 }

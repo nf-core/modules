@@ -1,6 +1,5 @@
 name: "canu"
-description: Accurate assembly of segmental duplications, satellites, and
-  allelic variants from high-fidelity long reads.
+description: Accurate assembly of segmental duplications, satellites, and allelic variants from high-fidelity long reads.
 keywords:
   - Assembly
   - pacbio
@@ -8,8 +7,7 @@ keywords:
   - nanopore
 tools:
   - "canu":
-      description: "Canu is a fork of the Celera Assembler designed for high-noise single-molecule
-        sequencing."
+      description: "Canu is a fork of the Celera Assembler designed for high-noise single-molecule sequencing."
       homepage: "https://canu.readthedocs.io/en/latest/index.html#"
       documentation: "https://canu.readthedocs.io/en/latest/tutorial.html"
       tool_dev_url: "https://github.com/marbl/canu"
@@ -35,8 +33,7 @@ input:
       pattern: "-pacbio|-nanopore|-pacbio-hifi"
   - genomesize:
       type: string
-      description: An estimate of the size of the genome. Common suffices are
-        allowed, for example, 3.7m or 2.8g
+      description: An estimate of the size of the genome. Common suffices are allowed, for example, 3.7m or 2.8g
       pattern: "<number>[g|m|k]"
 output:
   report:
@@ -58,8 +55,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.contigs.fasta.gz":
           type: file
-          description: Everything which could be assembled and is the full
-            assembly, including both unique, repetitive, and bubble elements.
+          description: Everything which could be assembled and is the full assembly, including both unique, repetitive, and bubble elements.
           pattern: "*.contigs.fasta"
           ontologies: []
   contigs:
@@ -70,8 +66,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.unassembled.fasta.gz":
           type: file
-          description: Reads and low-coverage contigs which could not be
-            incorporated into the primary assembly.
+          description: Reads and low-coverage contigs which could not be incorporated into the primary assembly.
           pattern: "*.unassembled.fasta"
           ontologies: []
   corrected_reads:
@@ -128,9 +123,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.contigs.layout.tigInfo":
           type: file
-          description: A list of the contigs, lengths, coverage, number of reads
-            and other metadata. Essentially the same information provided in the
-            FASTA header line.
+          description: A list of the contigs, lengths, coverage, number of reads and other metadata. Essentially the same information provided in the FASTA header line.
           pattern: "*.contigs.layout.tigInfo"
           ontologies: []
   versions_canu:
@@ -196,3 +189,17 @@ authors:
   - "@scorreard"
 maintainers:
   - "@scorreard"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/canu_minimap2_samtools:995ba74386646698
+      build_id: bd-995ba74386646698_1
+      scan_id: sc-1935bb46baa1e877_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/canu_minimap2_samtools:5c0467dc93256784
+      build_id: bd-5c0467dc93256784_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2c/2c4614cb3b913e993e9e543be76bafaf92f7dbbad8ea7156941ec33632c2e7af/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/canu/.conda-lock/linux_amd64-bd-995ba74386646698_1.txt

@@ -12,51 +12,93 @@ components:
   - bclconvert
   - multiqcsav
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'string', lane: int ]
-  - samplesheet:
+  - ch_flowcell:
       type: file
       description: |
-        CSV file containing information about samples to be demultiplexed in Illumina SampleSheet format
-  - flowcell:
-      type: file
-      description: Directory or tar archive containing Illumina BCL data, sequencer output directory
+        Channel containing the Illumina SampleSheet CSV describing the samples to be
+        demultiplexed, together with the directory or tar archive holding the Illumina
+        BCL data (the sequencer output directory). The meta map carries the flowcell
+        identifier and lane, e.g. [ id:'string', lane: int ].
+
+        Structure: [ val(meta), path(samplesheet), path(flowcell) ]
   - demultiplexer:
       type: string
       description: Which demultiplexer to use, bcl2fastq or bclconvert
+
 output:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - fastq:
       type: file
-      description: Demultiplexed fastq files
+      description: |
+        Demultiplexed FASTQ files, with read group information added to the meta map.
+        Samples whose FASTQ files are empty are routed to `empty_fastq` instead.
+
+        Structure: [ val(meta), [ path(fastq) ] ]
+      pattern: "*.fastq.gz"
+  - empty_fastq:
+      type: file
+      description: |
+        Demultiplexed FASTQ files that contain no reads, separated out so that
+        downstream processes do not have to handle them.
+
+        Structure: [ val(meta), [ path(fastq) ] ]
       pattern: "*.fastq.gz"
   - reports:
       type: file
-      description: Demultiplexing reports
+      description: |
+        Demultiplexing reports.
+
+        Structure: [ val(meta), path(reports) ]
       pattern: "Reports/*"
-  - interop:
-      type: file
-      description: InterOp files
-      pattern: "InterOp/*"
   - stats:
       type: file
-      description: Demultiplexing statistics (bcl2fastq only)
+      description: |
+        Demultiplexing statistics (bcl2fastq only).
+
+        Structure: [ val(meta), path(stats) ]
       pattern: "Stats/*"
+  - interop:
+      type: file
+      description: |
+        InterOp files.
+
+        Structure: [ val(meta), path(interop) ]
+      pattern: "InterOp/*"
   - logs:
       type: file
-      description: Demultiplexing logs (bclconvert only)
+      description: |
+        Demultiplexing logs (bclconvert only).
+
+        Structure: [ val(meta), path(logs) ]
       pattern: "Logs/*"
-  - versions:
+  - undetermined:
       type: file
-      description: File containing software versions
-      pattern: "versions.yml"
+      description: |
+        FASTQ files holding the reads that could not be assigned to any sample.
+
+        Structure: [ val(meta), [ path(fastq) ] ]
+      pattern: "Undetermined_S0*_R?_00?.fastq.gz"
+  - sav_report:
+      type: file
+      description: |
+        MultiQC report summarising the sequencing analysis viewer (SAV) metrics for
+        the flowcell.
+
+        Structure: [ val(meta), path(html) ]
+      pattern: "*.html"
+  - sav_data:
+      type: directory
+      description: |
+        MultiQC data directory for the SAV report.
+
+        Structure: [ val(meta), path(data) ]
+      pattern: "*_data"
+  - sav_plots:
+      type: file
+      description: |
+        Plots created by MultiQC for the SAV report.
+
+        Structure: [ val(meta), path(plots) ]
+      pattern: "*_plots"
 authors:
   - "@matthdsm"
 maintainers:

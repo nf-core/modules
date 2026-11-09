@@ -35,7 +35,7 @@ input:
     - feature_files:
         type: file
         description: Per-contig feature table files (output of deepmased/features)
-        pattern: "*_feats.tsv"
+        pattern: "*_feats.tsv{,.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_3475"
 output:

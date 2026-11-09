@@ -37,10 +37,15 @@ input:
           Renaming the files does not affect the results (see README.md for detailed tests).
         pattern: "*{R1,R2}*.fastq.gz"
         ontologies: []
-  - reference:
-      type: directory
-      description: Folder containing all the reference indices needed by Cell
-        Ranger
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - reference:
+        type: directory
+        description: Folder containing all the reference indices needed by Cell
+          Ranger
 output:
   outs:
     - - meta:

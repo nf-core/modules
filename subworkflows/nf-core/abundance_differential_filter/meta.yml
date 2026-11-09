@@ -86,16 +86,10 @@ input:
             type: list
             description: List of contrast formula
         - comparison:
-            type list:
+            type: list
             description: List of contrast comparison
 
 output:
-  - versions:
-      description: Channel containing software versions file
-      structure:
-        - versions.yml:
-            type: file
-            description: File containing versions of the software used
   - results_genewise:
       description: Channel containing unfiltered differential analysis results
       structure:
@@ -157,26 +151,62 @@ output:
             type: file
             description: Statistical model object file
             pattern: "*.rds"
-  - plots:
-      description: Channel containing plots from differential analysis
+  - size_factors:
+      description: Channel containing DESeq2 size factors (DESeq2 only)
       structure:
         - meta:
             type: map
             description: Metadata map
-        - plots:
+        - size_factors:
             type: file
-            description: Plot file
-            pattern: "*.{png,pdf}"
-  - other:
-      description: Channel containing other outputs from differential analysis
+            description: TSV-format table containing DESeq2 size factors
+            pattern: "*.tsv"
+  - dispersion_plot:
+      description: Channel containing DESeq2 dispersion plots (DESeq2 only)
       structure:
         - meta:
             type: map
             description: Metadata map
-        - other_files:
+        - dispersion_plot:
             type: file
-            description: Other output file from differential analysis
-            pattern: "*.{rds,tsv,log}"
+            description: DESeq2 dispersion plot in PNG format
+            pattern: "*.png"
+  - md_plot:
+      description: Channel containing limma mean difference plots (limma only)
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - md_plot:
+            type: file
+            description: Limma mean difference plot in PNG format
+            pattern: "*.png"
+  - rdata:
+      description: Channel containing serialised R objects from differential analysis
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - rdata:
+            type: file
+            description: Serialised DESeq2 or MArrayLM object
+            pattern: "*.rds"
+  - session_info:
+      description: Channel containing R session information
+      structure:
+        - meta:
+            type: map
+            description: Metadata map
+        - session_info:
+            type: file
+            description: Dump of R SessionInfo
+            pattern: "*.log"
+  - versions:
+      description: Channel containing software versions file
+      structure:
+        - versions.yml:
+            type: file
+            description: File containing versions of the software used
 authors:
   - "@pinin4fjords"
   - "@bjlang"

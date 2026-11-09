@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ABRA2 {
     tag "${meta.id}"
     label 'process_high'
@@ -17,7 +20,7 @@ process ABRA2 {
 
     output:
     tuple val(meta), path("*.bam"),     emit: bam
-    tuple val(meta), path("*.bam.bai"), emit: bai, optional: true
+    tuple val(meta), path("*.bai"),     emit: bai, optional: true
     tuple val("${task.process}"), val('abra2'), eval("abra2 2>&1 | sed -n 's/.*Abra version: //p'"), topic: versions, emit: versions_abra2
 
     when:
@@ -49,6 +52,6 @@ process ABRA2 {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.abra.bam
-    touch ${prefix}.abra.bam.bai
+    touch ${prefix}.abra.bai
     """
 }
