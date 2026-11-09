@@ -7,8 +7,8 @@ process HAMRONIZATION_RESFINDER {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hamronization:1.3.1--pyhdfd78af_0':
-        'quay.io/biocontainers/hamronization:1.3.1--pyhdfd78af_0' }"
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3f/3ffa68bd667eec67b6efbf2bf8aeeafd7f69228d537959be178249d021018817/data':
+        'community.wave.seqera.io/library/hamronization:1.3.1--86ff1149c2d6acff' }"
 
     input:
     tuple val(meta), path(report)
