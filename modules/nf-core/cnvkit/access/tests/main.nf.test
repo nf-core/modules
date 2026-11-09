@@ -31,7 +31,6 @@ nextflow_process {
             assert process.success
             assert snapshot(
                 process.out,
-                path(process.out.versions[0]).yaml
             ).match()
         }
     }
@@ -57,7 +56,6 @@ nextflow_process {
             assert process.success
             assert snapshot(
                 process.out,
-                path(process.out.versions[0]).yaml
             ).match()
         }
     }
@@ -86,7 +84,6 @@ nextflow_process {
             assert process.success
             assert snapshot(
                 process.out,
-                path(process.out.versions[0]).yaml
             ).match()
         }
     }
@@ -115,7 +112,6 @@ nextflow_process {
             assert process.success
             assert snapshot(
                 process.out,
-                path(process.out.versions[0]).yaml
             ).match()
         }
     }

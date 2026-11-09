@@ -1,0 +1,60 @@
+nextflow_process {
+
+    name "Test Process PICRUST2_PIPELINE"
+    script "../main.nf"
+    config "./nextflow.config"
+
+    process "PICRUST2_PIPELINE"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "picrust2"
+    tag "picrust2/pipeline"
+
+
+    test("picrust2 pipeline [16s otu]") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'metabarcoding/16S_OTU/rep-seq.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'metabarcoding/16S_OTU/feature-table.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["output_dir"])).match() }
+            )
+        }
+    }
+
+    test("picrust2 pipeline [16s otu] - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'metabarcoding/16S_OTU/rep-seq.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'metabarcoding/16S_OTU/feature-table.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+}

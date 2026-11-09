@@ -14,9 +14,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [                                                                                                                                                                    
-                 [ id:'test', single_end:false ], // meta map                                                                                                                             
-                 file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/hamronization/genome.mapping.potential.ARG', checkIfExists: true),
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/hamronization/genome.mapping.potential.ARG', checkIfExists: true),
                 ]
                 input[1] = 'tsv'
                 input[2] = '1.0.2'
@@ -28,7 +28,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
@@ -41,9 +41,9 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [                                                                                                                                                                    
-                 [ id:'test', single_end:false ], // meta map                                                                                                                             
-                 file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/hamronization/genome.mapping.potential.ARG', checkIfExists: true),
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/hamronization/genome.mapping.potential.ARG', checkIfExists: true),
                 ]
                 input[1] = 'tsv'
                 input[2] = '1.0.2'
@@ -55,7 +55,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "clustalo_guidetree"
 description: Renders a guidetree in clustalo
 keywords:
@@ -13,7 +12,8 @@ tools:
       documentation: "http://www.clustal.org/omega/"
       tool_dev_url: "http://www.clustal.org/omega/"
       doi: "10.1038/msb.2011.75"
-      licence: ["GPL v2"]
+      licence:
+        - "GPL v2"
       identifier: ""
 input:
   - - meta:
@@ -41,13 +41,27 @@ output:
           pattern: "*.{dnd}"
           ontologies:
             - edam: http://edamontology.org/format_2006 # PHYLOGENETIC TREE
+  versions_clustalo:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - clustalo:
+          type: string
+          description: The name of the tool
+      - clustalo --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - clustalo:
+          type: string
+          description: The name of the tool
+      - clustalo --version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@luisas"
   - "@JoseEspinosa"

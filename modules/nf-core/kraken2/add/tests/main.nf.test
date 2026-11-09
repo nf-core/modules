@@ -49,10 +49,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.db.get(0).get(1) ==~ ".*/test" },
                 { assert snapshot (
-                        path("${process.out.db[0][1]}/library/added/").list().size(),
-                        path("${process.out.db[0][1]}/taxonomy/")
+                        process.out.library_added_files.get(0).get(1).size(),
+                        process.out.seqid2taxid_map,
+                        process.out.taxonomy_files
                     ).match()
                 }
             )
@@ -83,10 +83,10 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.db.get(0).get(1) ==~ ".*/test" },
                 { assert snapshot (
-                        path("${process.out.db[0][1]}/library/added/").list().size(),
-                        path("${process.out.db[0][1]}/taxonomy/")
+                        process.out.library_added_files.get(0).get(1).size(),
+                        process.out.seqid2taxid_map,
+                        process.out.taxonomy_files
                     ).match()
                 }
             )

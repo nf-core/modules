@@ -22,7 +22,8 @@ nextflow_process {
                     ]
                     input[1] = [
                         [ id:'Sample_X' ], // meta map
-                        file(params.modules_testdata_base_path + 'genomics/mus_musculus/genome/chr19.fa.gz', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/mus_musculus/genome/chr19.fa.gz', checkIfExists: true),
+                        []
                     ]
                     input[2] = ''
                     """
@@ -53,8 +54,8 @@ nextflow_process {
             { assert process.success },
             {
                 assert snapshot(
-                    process.out.versions
-                ).match("version")
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                ).match()
             },
             // this is to check if velocyto is correctly skipping the samtools sort part
             {
@@ -92,8 +93,8 @@ nextflow_process {
             { assert process.success },
             {
                 assert snapshot(
-                    process.out.versions
-                ).match("presorted_version")
+                    process.out.findAll { key, val -> key.startsWith('versions') },
+                ).match()
             },
             // this is to check if velocyto is correctly skipping the samtools sort part
             {
@@ -127,13 +128,10 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 {
-                    assert snapshot(
-                        process.out.versions,
-                        process.out.loom
-                    ).match()
+                    assert snapshot(sanitizeOutput(process.out)).match()
                 },
             )
         }

@@ -11,10 +11,6 @@ nextflow_process {
     test("selectvariants - vcf input") {
 
         when {
-            params {
-                // define parameters here. Example:
-                // outdir = "tests/results"
-            }
             process {
                 """
                 input[0] = [
@@ -28,13 +24,14 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-            {assert process.success},
-            {assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.2")}
+                { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.2") },
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
-
     }
 
     test("selectvariants - gz input") {
@@ -53,12 +50,13 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-            {assert process.success},
-            {assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.2")}
+                { assert path(process.out.vcf.get(0).get(1)).linesGzip.contains("##fileformat=VCFv4.2") },
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
-
 }

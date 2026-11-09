@@ -1,14 +1,17 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RIBOWALTZ {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ribowaltz:2.0--r43hdfd78af_0':
-        'biocontainers/ribowaltz:2.0--r43hdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/56/56049a13d022d8e63efc68add0d5ea5292dfafd389b7c37c9b1b97e89be71c71/data'
+        : 'community.wave.seqera.io/library/bioconductor-genomicfeatures_ribowaltz_r-base_r-dplyr:51ff674deeb6ddb9'}"
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta) , path(bam)
     tuple val(meta2), path(gtf)
     tuple val(meta3), path(fasta)
 
@@ -22,7 +25,8 @@ process RIBOWALTZ {
     tuple val(meta), path("*.cds_coverage_psite.tsv{,.gz}")   , emit: cds_coverage         , optional: true
     tuple val(meta), path("*nt_coverage_psite.tsv{,.gz}")     , emit: cds_window_coverage  , optional: true
     tuple val(meta), path("ribowaltz_qc/*.pdf")               , emit: ribowaltz_qc         , optional: true
-    path "versions.yml"                                       , emit: versions
+    tuple val(meta), path("ribowaltz_qc/*.tsv")               , emit: ribowaltz_qc_data    , optional: true
+    path "versions.yml"                                       , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -41,6 +45,9 @@ process RIBOWALTZ {
     touch ${prefix}.cds_coverage_psite.tsv
     mkdir -p offset_plot/${prefix} && touch offset_plot/${prefix}/29.pdf
     mkdir -p ribowaltz_qc && touch ribowaltz_qc/${prefix}.metaprofile_psite.pdf
+    touch ribowaltz_qc/${prefix}.psite_region.tsv
+    touch ribowaltz_qc/${prefix}.frames.tsv
+    touch ribowaltz_qc/${prefix}.frames_stratified.tsv
 
     cat <<-END_VERSIONS > versions.yml
     "${task.process}":

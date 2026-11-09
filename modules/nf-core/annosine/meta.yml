@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "annosine"
 description: Accelerating de novo SINE annotation in plant and animal genomes
 keywords:
@@ -13,9 +12,9 @@ tools:
       documentation: "https://github.com/liaoherui/AnnoSINE_v2"
       tool_dev_url: "https://github.com/liaoherui/AnnoSINE_v2"
       doi: "10.1101/2024.03.01.582874"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:annosine
-
 input:
   - - meta:
         type: map
@@ -59,14 +58,52 @@ output:
           description: |
             Non-redundant SINE library with serial number
           pattern: "*.{fa}"
+  versions_annosine:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "annosine":
+          type: string
+          description: The name of the tool
+      - python -c 'import importlib.metadata as m; print(m.version("annosine2"))':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "annosine":
+          type: string
+          description: The name of the tool
+      - python -c 'import importlib.metadata as m; print(m.version("annosine2"))':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@GallVp"
 maintainers:
   - "@GallVp"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/annosine2:2.0.8--a19514ed9d2d6d13
+      build_id: bd-a19514ed9d2d6d13_1
+      scan_id: sc-554d0bf95c9158a9_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/annosine2:2.0.8--fef67f68ff78061f
+      build_id: bd-fef67f68ff78061f_1
+      scan_id: sc-e6b303ddc9f20b00_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/annosine2:2.0.8--0905ba1febaea69f
+      build_id: bd-0905ba1febaea69f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b6/b67c7ac396bf587adf2f2b26e5e532ef03843556b1650c509d960927078256f1/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/annosine2:2.0.8--bcbecb4240f3a8b1
+      build_id: bd-bcbecb4240f3a8b1_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/71/71a65e004223b2b3d1acf1c4a0d8869b613c657c66c7f44454347715fde16202/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/annosine/.conda-lock/linux_amd64-bd-fef67f68ff78061f_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/annosine/.conda-lock/linux_arm64-bd-a19514ed9d2d6d13_1.txt

@@ -7,7 +7,9 @@ nextflow_workflow {
     tag "subworkflows"
     tag "subworkflows_nfcore"
     tag "subworkflows/bam_ngscheckmate"
+    tag "ngscheckmate"
     tag "ngscheckmate/ncm"
+    tag "bcftools"
     tag "bcftools/mpileup"
 
     config "./nextflow.config"
@@ -35,7 +37,8 @@ nextflow_workflow {
                 input[1] = Channel.of([ [id:'test_bed'], bed_file])
                 input[2] = Channel.of([
                     [ id:'sarscov2'],
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                        []
                     ])
                 """
             }
@@ -44,14 +47,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(
-                    workflow.out.corr_matrix,
-                    file(workflow.out.matched[0][1]).name,
-                    workflow.out.all,
-                    workflow.out.vcf.collect {meta, vcf -> path(vcf).vcf.variantsMD5 },
-                    file(workflow.out.pdf[0][1]).name,
-                    workflow.out.versions
-                    ).match()}
+                { assert snapshot(sanitizeOutput(workflow.out, variantsMD5Keys: ['vcf'], unstableKeys: ['pdf', 'matched'])).match()}
             )
         }
     }
@@ -76,7 +72,8 @@ nextflow_workflow {
                 input[1] = Channel.of([ [id:'test_bed'], bed_file])
                 input[2] = Channel.of([
                     [ id:'homo_sapiens'],
-                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
+                        []
                     ])
                 """
             }
@@ -85,14 +82,7 @@ nextflow_workflow {
         then {
             assertAll(
                 { assert workflow.success},
-                { assert snapshot(
-                    workflow.out.corr_matrix,
-                    workflow.out.matched,
-                    workflow.out.all,
-                    workflow.out.vcf.collect {meta, vcf -> path(vcf).vcf.variantsMD5 },
-                    file(workflow.out.pdf[0][1]).name,
-                    workflow.out.versions
-                    ).match()}
+                { assert snapshot(sanitizeOutput(workflow.out, variantsMD5Keys: ['vcf'], unstableKeys: ['pdf'])).match()}
             )
         }
     }
@@ -120,7 +110,8 @@ nextflow_workflow {
                 input[1] = Channel.of([ [id:'test_bed'], bed_file])
                 input[2] = Channel.of([
                     [ id:'sarscov2'],
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                        []
                     ])
                 """
             }

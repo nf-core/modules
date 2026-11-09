@@ -1,10 +1,5 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "bamreadcount"
-description: bam-readcount is a utility that runs on a BAM or CRAM file and
-  generates low-level information about sequencing data at specific nucleotide
-  positions. Its outputs include observed bases, readcounts, summarized mapping
-  and base qualities, strandedness information, mismatch counts, and position
-  within the reads.
+description: bam-readcount is a utility that runs on a BAM or CRAM file and generates low-level information about sequencing data at specific nucleotide positions. Its outputs include observed bases, readcounts, summarized mapping and base qualities, strandedness information, mismatch counts, and position within the reads.
 keywords:
   - BAM
   - CRAM
@@ -17,9 +12,9 @@ tools:
       documentation: "https://github.com/genome/bam-readcount/blob/master/README.md"
       tool_dev_url: "https://github.com/genome/bam-readcount"
       doi: "10.21105/joss.03722"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:bam-readcount
-
 input:
   - - meta:
         type: map
@@ -31,29 +26,28 @@ input:
         description: Sorted BAM/CRAM file
         pattern: "*.{bam,cram}"
         ontologies:
-          - edam: "http://edamontology.org/format_2572" # BAM
-          - edam: "http://edamontology.org/format_2573" # CRAM
+          - edam: "http://edamontology.org/format_2572"
+          - edam: "http://edamontology.org/format_2573"
     - bai:
         type: file
         description: BAM/CRAM index file
         pattern: "*.{bai,crai}"
         ontologies:
-          - edam: "http://edamontology.org/format_2574" # BAM index
-          - edam: "http://edamontology.org/format_2575" # CRAM index
+          - edam: "http://edamontology.org/format_2574"
+          - edam: "http://edamontology.org/format_2575"
   - reference:
       type: file
       description: Reference genome FASTA file
       pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
       ontologies:
-        - edam: "http://edamontology.org/format_1922" # FASTA
-        - edam: "http://edamontology.org/format_3989" # GZIP format
+        - edam: "http://edamontology.org/format_1922"
+        - edam: "http://edamontology.org/format_3989"
   - bed:
       type: file
       description: BED file with regions to analyze
       pattern: "*.bed"
       ontologies:
-        - edam: "http://edamontology.org/format_1920" # BED
-
+        - edam: "http://edamontology.org/format_1920"
 output:
   rc:
     - - meta:
@@ -66,15 +60,52 @@ output:
           description: Readcount file with metrics
           pattern: "*.rc"
           ontologies: []
+  versions_bamreadcount:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bamreadcount:
+          type: string
+          description: The name of the tool
+      - "bam-readcount --version | awk -F'version: ' '{print \\$2}' | awk -F'-' '{print \\$1}'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
-
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bamreadcount:
+          type: string
+          description: The name of the tool
+      - "bam-readcount --version | awk -F'version: ' '{print \\$2}' | awk -F'-' '{print \\$1}'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@vmelichar"
 maintainers:
   - "@vmelichar"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bam-readcount:1.0.1--a0d174a92a8b106d
+      build_id: bd-a0d174a92a8b106d_1
+      scan_id: sc-8ec091e57c6929cc_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/bam-readcount:1.0.1--1ba22f7a5d75ba5c
+      build_id: bd-1ba22f7a5d75ba5c_1
+      scan_id: sc-b4e57e2418d47369_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bam-readcount:1.0.1--a56d63d6c728a1fe
+      build_id: bd-a56d63d6c728a1fe_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2e/2e190c713a77767a9ea2bb7b0589e75507f8b23143263b5dc6bcbeba73fa17d5/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bam-readcount:1.0.1--913a5718d7776744
+      build_id: bd-913a5718d7776744_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ba/ba411ade937a374925c79cd8d5e1783f80b0d007f559e673eb9815dd111c3c63/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bamreadcount/.conda-lock/linux_amd64-bd-a0d174a92a8b106d_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/bamreadcount/.conda-lock/linux_arm64-bd-1ba22f7a5d75ba5c_1.txt

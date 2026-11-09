@@ -6,3 +6,5 @@ channels:
 dependencies:
   - bioconda::authentict=1.0.1
   - bioconda::samtools=1.16.1
+  # AuthentiCT 1.0.1 expects a 2-tuple from Hessian(full_output=True); numdifftools >=0.10 returns an EstimateResult
+  - conda-forge::numdifftools=0.9.42

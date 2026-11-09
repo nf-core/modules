@@ -8,13 +8,13 @@ keywords:
   - k-mer
 tools:
   - "peka":
-      description: "Positionally-enriched k-mer analysis (PEKA) is a software package
-        for identifying enriched protein-RNA binding motifs from CLIP datasets"
+      description: "Positionally-enriched k-mer analysis (PEKA) is a software package for identifying enriched protein-RNA binding motifs from CLIP datasets"
       homepage: "https://github.com/ulelab/peka"
       documentation: "https://github.com/ulelab/peka"
       tool_dev_url: "https://github.com/ulelab/peka"
       doi: "10.1186/s13059-022-02755-2"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 input:
   - - meta:
@@ -27,7 +27,7 @@ input:
         description: BED file of peak regions
         pattern: "*.{bed,bed.gz}"
         ontologies: []
-  - - meta:
+  - - meta2:
         type: map
         description: |
           Groovy Map containing sample information
@@ -37,16 +37,21 @@ input:
         description: BED file of crosslinks
         pattern: "*.{bed,bed.gz}"
         ontologies: []
-  - fasta:
-      type: file
-      description: Genome reference sequence used
-      pattern: "*.{fa,fasta}"
-      ontologies: []
-  - fai:
-      type: file
-      description: FAI file corresponding to the reference sequence
-      pattern: "*.{fai}"
-      ontologies: []
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing genome information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: Genome reference sequence used
+        pattern: "*.{fa,fasta}"
+        ontologies: []
+    - fai:
+        type: file
+        description: FAI file corresponding to the reference sequence
+        pattern: "*.{fai}"
+        ontologies: []
   - gtf:
       type: file
       description: A segmented GTF used to annotate peaks
@@ -56,38 +61,33 @@ output:
   cluster:
     - - meta:
           type: file
-          description: TSV file of summed occurrence distributions of k-mers within
-            defined clusters
+          description: TSV file of summed occurrence distributions of k-mers within defined clusters
           pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
       - "*mer_cluster_distribution*":
           type: file
-          description: TSV file of summed occurrence distributions of k-mers within
-            defined clusters
+          description: TSV file of summed occurrence distributions of k-mers within defined clusters
           pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
   distribution:
     - - meta:
           type: file
-          description: TSV file of summed occurrence distributions of k-mers within
-            defined clusters
+          description: TSV file of summed occurrence distributions of k-mers within defined clusters
           pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
       - "*mer_distribution*":
           type: file
-          description: TSV file with calculated PEKA score and occurrence distribution
-            for all possible k-mers
+          description: TSV file with calculated PEKA score and occurrence distribution for all possible k-mers
           pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
   rtxn:
     - - meta:
           type: file
-          description: TSV file of summed occurrence distributions of k-mers within
-            defined clusters
+          description: TSV file of summed occurrence distributions of k-mers within defined clusters
           pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -99,22 +99,19 @@ output:
   pdf:
     - - meta:
           type: file
-          description: TSV file of summed occurrence distributions of k-mers within
-            defined clusters
+          description: TSV file of summed occurrence distributions of k-mers within defined clusters
           pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
       - "*.pdf":
           type: file
-          description: PDF file with graphs showing k-mer occurrence distributions around
-            thresholded crosslink sites
+          description: PDF file with graphs showing k-mer occurrence distributions around thresholded crosslink sites
           pattern: "*.pdf"
           ontologies: []
   tsites:
     - - meta:
           type: file
-          description: TSV file of summed occurrence distributions of k-mers within
-            defined clusters
+          description: TSV file of summed occurrence distributions of k-mers within defined clusters
           pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -127,8 +124,7 @@ output:
   oxn:
     - - meta:
           type: file
-          description: TSV file of summed occurrence distributions of k-mers within
-            defined clusters
+          description: TSV file of summed occurrence distributions of k-mers within defined clusters
           pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -141,8 +137,7 @@ output:
   clust:
     - - meta:
           type: file
-          description: TSV file of summed occurrence distributions of k-mers within
-            defined clusters
+          description: TSV file of summed occurrence distributions of k-mers within defined clusters
           pattern: "*.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
@@ -152,13 +147,29 @@ output:
           pattern: "*_clusters.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
+  versions_peka:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - peka:
+          type: string
+          description: The name of the tool
+      - 1.0.2:
+          type: string
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - peka:
+          type: string
+          description: The name of the tool
+      - 1.0.2:
+          type: string
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@kkuret"
   - "@codeprimate123"

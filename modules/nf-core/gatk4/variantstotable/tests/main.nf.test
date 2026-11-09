@@ -40,13 +40,12 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
     }
-
 
     test("test1_gatk4_variant_to_table - stub") {
 
@@ -80,12 +79,10 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }
     }
-
-
 }

@@ -14,12 +14,12 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel
+                input[0] = channel
                     .fromPath(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
                     .map { it -> [
                         [id:it.baseName], it
                     ]}
-                input[1] = Channel.of(['gene_id', 'gene_name'])
+                input[1] = channel.of(['gene_id', 'gene_name'])
                 """
             }
         }
@@ -27,10 +27,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.chip,
-                    process.out.versions
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
@@ -43,12 +40,12 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel
+                input[0] = channel
                     .fromPath(params.modules_testdata_base_path + 'genomics/mus_musculus/rnaseq_expression/SRP254919.salmon.merged.gene_counts.top1000cov.tsv', checkIfExists: true)
                     .map { it -> [
                         [id:it.baseName], it
                     ]}
-                input[1] = Channel.of(['gene_id', 'gene_name'])
+                input[1] = channel.of(['gene_id', 'gene_name'])
                 """
             }
         }
@@ -56,10 +53,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.chip,
-                    process.out.versions
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

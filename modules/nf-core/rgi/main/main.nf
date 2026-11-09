@@ -1,32 +1,39 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RGI_MAIN {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/rgi:6.0.3--pyha8f3691_1':
-        'biocontainers/rgi:6.0.3--pyha8f3691_1' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3f/3f452c8e124ee58ab6b26442d15401c57d471cb753f53921570dc484df4e7620/data'
+        : 'community.wave.seqera.io/library/rgi_kma:e905ecb8305e2609' }"
 
     input:
     tuple val(meta), path(fasta)
-    path(card)
-    path(wildcard)
+    path card
+    path wildcard
 
     output:
-    tuple val(meta), path("*.json"), emit: json
-    tuple val(meta), path("*.txt") , emit: tsv
-    tuple val(meta), path("temp/") , emit: tmp
-    env RGI_VERSION                , emit: tool_version
-    env DB_VERSION                 , emit: db_version
-    path "versions.yml"            , emit: versions
+    tuple val(meta), path("${prefix}.json"), emit: json
+    tuple val(meta), path("${prefix}.txt"), emit: tsv
+    tuple val(meta), path("temp/"), emit: tmp
+    env 'RGI_VERSION', emit: tool_version
+    env 'DB_VERSION', emit: db_version
+    tuple val("${task.process}"), val('rgi'), eval("rgi main --version"),  emit: versions_rgi, topic: versions
+    tuple val("${task.process}"), val('rgi-database'), eval("echo \$DB_VERSION"),  emit: versions_db , topic: versions
+    tuple val("${task.process}"), val('kma'), eval("kma -v | sed 's/KMA-//'"),  emit: versions_kma, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args = task.ext.args ?: '' // This customizes the command: rgi load
-    def args2 = task.ext.args2 ?: '' // This customizes the command: rgi main
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def args = task.ext.args ?: ''
+    // This customizes the command: rgi load
+    def args2 = task.ext.args2 ?: ''
+    // This customizes the command: rgi main
+    prefix = task.ext.prefix ?: "${meta.id}"
     def load_wildcard = ""
 
     if (wildcard) {
@@ -41,49 +48,39 @@ process RGI_MAIN {
     }
 
     """
+    export MPLCONFIGDIR=\$PWD
     DB_VERSION=\$(ls ${card}/card_database_*_all.fasta | sed "s/${card}\\/card_database_v\\([0-9].*[0-9]\\).*/\\1/")
 
     rgi \\
         load \\
-        $args \\
+        ${args} \\
         --card_json ${card}/card.json \\
         --debug --local \\
         --card_annotation ${card}/card_database_v\$DB_VERSION.fasta \\
         --card_annotation_all_models ${card}/card_database_v\$DB_VERSION\\_all.fasta \\
-        $load_wildcard
+        ${load_wildcard}
 
     rgi \\
         main \\
-        $args2 \\
-        --num_threads $task.cpus \\
-        --output_file $prefix \\
-        --input_sequence $fasta
+        ${args2} \\
+        --threads ${task.cpus} \\
+        --output_file ${prefix} \\
+        --input_sequence ${fasta}
 
     mkdir temp/
     for FILE in *.xml *.fsa *.{nhr,nin,nsq} *.draft *.potentialGenes *{variant,rrna,protein,predictedGenes,overexpression,homolog}.json; do [[ -e \$FILE ]] && mv \$FILE temp/; done
 
     RGI_VERSION=\$(rgi main --version)
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rgi: \$(echo \$RGI_VERSION)
-        rgi-database: \$(echo \$DB_VERSION)
-    END_VERSIONS
     """
 
     stub:
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p temp
-    touch test.json
-    touch test.txt
+    touch ${prefix}.json
+    touch ${prefix}.txt
 
     RGI_VERSION=\$(rgi main --version)
     DB_VERSION=stub_version
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rgi: \$(echo \$RGI_VERSION)
-        rgi-database: \$(echo \$DB_VERSION)
-    END_VERSIONS
     """
 }

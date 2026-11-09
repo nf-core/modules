@@ -8,6 +8,92 @@ nextflow_process {
     tag "modules_nfcore"
     tag "scanpy"
     tag "scanpy/filter"
+    tag "untar"
+
+    test("Should emit zarr output for zarr input - stub") {
+
+        options '-stub'
+
+        setup {
+            run("UNTAR") {
+                config "./nextflow.config"
+                script "modules/nf-core/untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id: 'test_zarr' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/zarr/test_zarr.zarr.tar.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar.map { meta, zarr -> [ meta, zarr ] }
+                input[1] = 0
+                input[2] = 0
+                input[3] = 0
+                input[4] = 0
+                input[5] = 100
+                input[6] = 'index'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert process.out.anndata },
+            { assert file(process.out.anndata[0][1]).name == "test_zarr_filtered.zarr" }
+            )
+        }
+
+    }
+
+    test("Should run with zarr input") {
+
+        setup {
+            run("UNTAR") {
+                config "./nextflow.config"
+                script "modules/nf-core/untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id: 'test_zarr' ],
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/scrnaseq/zarr/test_zarr.zarr.tar.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = UNTAR.out.untar.map { meta, zarr -> [ meta, zarr ] }
+                input[1] = 0
+                input[2] = 0
+                input[3] = 0
+                input[4] = 0
+                input[5] = 100
+                input[6] = 'index'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+            { assert process.success },
+            { assert process.out.anndata },
+            { assert file(process.out.anndata[0][1]).name == "test_zarr_filtered.zarr" },
+            { assert file(process.out.anndata[0][1] + "/X/.zarray").exists() }
+            )
+        }
+
+    }
 
     test("Should run without failures") {
 

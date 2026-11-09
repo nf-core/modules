@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "mmseqs_search"
-description: Search and calculate a score for similar sequences in a query and a target
-  database.
+description: Search and calculate a score for similar sequences in a query and a
+  target database.
 keywords:
   - protein sequence
   - databases
@@ -17,7 +16,8 @@ tools:
       documentation: "https://mmseqs.com/latest/userguide.pdf"
       tool_dev_url: "https://github.com/soedinglab/MMseqs2"
       doi: "10.1093/bioinformatics/btw006"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:mmseqs
 input:
   - - meta:
@@ -48,13 +48,27 @@ output:
       - ${prefix}/:
           type: directory
           description: an MMseqs2 database with search results
+  versions_mmseqs:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mmseqs:
+          type: string
+          description: The name of the tool
+      - mmseqs version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mmseqs:
+          type: string
+          description: The name of the tool
+      - mmseqs version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@Joon-Klaps"
 maintainers:

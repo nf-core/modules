@@ -1,55 +1,119 @@
 name: fastani
-description: Alignment-free computation of average nucleotide Identity (ANI)
+description: Alignment-free computation of Average Nucleotide Identity (ANI)
 keywords:
   - genome
   - fasta
   - ANI
 tools:
   - fastani:
-      description: FastANI is developed for fast alignment-free computation of whole-genome
-        Average Nucleotide Identity (ANI).
+      description: FastANI is developed for fast alignment-free computation of
+        whole-genome Average Nucleotide Identity (ANI).
       homepage: https://github.com/ParBLiSS/FastANI
       documentation: https://github.com/ParBLiSS/FastANI
       tool_dev_url: https://github.com/ParBLiSS/FastANI
       doi: 10.1038/s41467-018-07641-9
-      licence: ["Apache-2.0"]
+      licence:
+        - "Apache-2.0"
       identifier: biotools:fastani
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          e.g. [ id:'test' ]
     - query:
         type: file
-        description: Fasta file(s) to be queried
-        pattern: "*.fasta"
-        ontologies: []
-  - reference:
+        description: Fasta file to be used as the query. If provided, ql will be
+          ignored.
+        pattern: "*.{fasta,fna,fa}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - - meta2:
+        type: map
+        description: Groovy Map containing sample information for the reference
+    - reference:
+        type: file
+        description: Fasta file to be used as the reference. If provided, rl will
+          be ignored.
+        pattern: "*.{fasta,fna,fa}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - ql:
       type: file
-      description: Fasta file(s) to be used as reference for the query
-      pattern: "*.fasta"
-      ontologies: []
+      description: File containing a list of query fasta paths. query input takes
+        precedence over this list if both are provided.
+      pattern: "*.txt"
+      ontologies:
+        - edam: "http://edamontology.org/format_2330"
+  - rl:
+      type: file
+      description: File containing a list of reference fasta paths. reference
+        input takes precedence over this list if both are provided.
+      pattern: "*.txt"
+      ontologies:
+        - edam: "http://edamontology.org/format_2330" # Textual format
 output:
   ani:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.ani.txt":
+            e.g. [ id:'test' ]
+      - "*.txt":
           type: file
-          description: Results of the query
-          pattern: "*.ani.txt"
-          ontologies: []
+          description: ANI results file
+          pattern: "*.txt"
+          ontologies:
+            - edam: "http://edamontology.org/format_2330" # Textual format
+  visual:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.visual":
+          type: file
+          optional: true
+          description: FastANI visualization output
+          pattern: "*.visual"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  matrix:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - "*.matrix":
+          type: file
+          optional: true
+          description: ANI matrix output
+          ontologies:
+            - edam: "http://edamontology.org/format_3033"
+  versions_fastani:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fastani:
+          type: string
+          description: The name of the tool
+      - fastANI --version 2>&1 | head -1 | sed "s/version\ //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fastani:
+          type: string
+          description: The name of the tool
+      - fastANI --version 2>&1 | head -1 | sed "s/version\ //":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@abhi18av"
+  - "@Ethan-Hetrick"
 maintainers:
   - "@abhi18av"
+  - "@Ethan-Hetrick"

@@ -56,6 +56,9 @@ input:
       description: GATK sequence dictionary
       pattern: "*.dict"
       ontologies: []
+  - output_suffix:
+      type: string
+      description: Output file format, either "bam" or "cram" (cram is the default)
 output:
   bam:
     - - meta:
@@ -63,10 +66,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.bam":
+      - ${prefix}.bam:
           type: file
           description: Recalibrated BAM file
-          pattern: "*.{bam}"
+          pattern: "${prefix}.bam"
           ontologies: []
   bai:
     - - meta:
@@ -74,10 +77,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.bai":
+      - ${prefix}*bai:
           type: file
-          description: Recalibrated BAM file index
-          pattern: "*.{bai}"
+          description: Recalibrated BAM index file
+          pattern: "${prefix}*bai"
           ontologies: []
   cram:
     - - meta:
@@ -85,18 +88,34 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.cram":
+      - ${prefix}.cram:
           type: file
           description: Recalibrated CRAM file
-          pattern: "*.{cram}"
+          pattern: "${prefix}.cram"
           ontologies: []
+  versions_gatk4:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - gatk4:
+          type: string
+          description: The name of the tool
+      - gatk --version | sed -n '/GATK.*v/s/.*v//p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@yocra3"
   - "@FriederikeHanssen"
@@ -105,3 +124,17 @@ maintainers:
   - "@yocra3"
   - "@FriederikeHanssen"
   - "@maxulysse"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/gatk4-spark:4.7.0.0--fd5186004a98cd23
+      build_id: bd-fd5186004a98cd23_1
+      scan_id: sc-56d682a7ee30b26b_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/gatk4-spark:4.7.0.0--ff4aa6ba29ca0207
+      build_id: bd-ff4aa6ba29ca0207_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9c/9cd09db455e8adaa87f55b4c8f2de68f7501e2284ffce168b736df66f06bdd84/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/gatk4spark/applybqsr/.conda-lock/linux_amd64-bd-fd5186004a98cd23_1.txt

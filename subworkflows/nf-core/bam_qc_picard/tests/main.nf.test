@@ -35,6 +35,7 @@ nextflow_workflow {
                     [id:'genome'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)
                 ]
+                input[4] = [[:],[]]
                 """
             }
         }
@@ -56,8 +57,7 @@ nextflow_workflow {
                     file(workflow.out.multiple_metrics[0][1][3]).name,
                     path(workflow.out.multiple_metrics[0][1][3]).readLines()[0..2],
                     file(workflow.out.multiple_metrics[0][1][4]).name,
-                    path(workflow.out.multiple_metrics[0][1][4]).readLines()[0..2],
-                    workflow.out.versions
+                    path(workflow.out.multiple_metrics[0][1][4]).readLines()[0..2]
                     ).match()
                 }
 
@@ -89,6 +89,7 @@ nextflow_workflow {
                     [id:'genome'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)
                 ]
+                input[4] = [[:],[]]
                 """
             }
         }
@@ -110,8 +111,7 @@ nextflow_workflow {
                     file(workflow.out.multiple_metrics[0][1][3]).name,
                     path(workflow.out.multiple_metrics[0][1][3]).readLines()[0..2],
                     file(workflow.out.multiple_metrics[0][1][4]).name,
-                    path(workflow.out.multiple_metrics[0][1][4]).readLines()[0..2],
-                    workflow.out.versions
+                    path(workflow.out.multiple_metrics[0][1][4]).readLines()[0..2]
                     ).match()
                 }
 
@@ -146,6 +146,7 @@ nextflow_workflow {
                     [id:'genome'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.dict', checkIfExists: true)
                 ]
+                input[4] = [[:],[]]
                 """
             }
         }

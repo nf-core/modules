@@ -11,7 +11,8 @@ tools:
       homepage: https://gitlab.com/german.tischler/biobambam2
       documentation: https://gitlab.com/german.tischler/biobambam2/-/blob/master/README.md
       doi: 10.1186/1751-0473-9-13
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 input:
   - - meta:
@@ -22,7 +23,8 @@ input:
     - bam:
         type: file
         description: List containing 1 or more bam files
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_2572
 output:
   bam:
     - - meta:
@@ -34,7 +36,8 @@ output:
           type: file
           description: Merged BAM file
           pattern: "*.bam"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_2572
   bam_index:
     - - meta:
           type: map
@@ -44,8 +47,9 @@ output:
       - "*.bai":
           type: file
           description: BAM index file
-          pattern: "*"
-          ontologies: []
+          pattern: "*.bai"
+          ontologies:
+            - edam: http://edamontology.org/format_2573
   checksum:
     - - meta:
           type: map
@@ -55,16 +59,45 @@ output:
       - "*.md5":
           type: file
           description: Checksum file
-          pattern: "*"
-          ontologies: []
+          pattern: "*.md5"
+          ontologies:
+            - edam: http://edamontology.org/format_2330
+  versions_biobambam:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - biobambam:
+          type: string
+          description: The name of the tool
+      - bammerge --version |& sed '1!d; s/.*version //; s/.\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - biobambam:
+          type: string
+          description: The name of the tool
+      - bammerge --version |& sed '1!d; s/.*version //; s/.\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@matthdsm"
 maintainers:
   - "@matthdsm"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/biobambam:2.0.185--f2942b2c30c9eb0a
+      build_id: bd-f2942b2c30c9eb0a_1
+      scan_id: sc-4aa1432d211836d9_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/biobambam:2.0.185--97142ab63c6fabee
+      build_id: bd-97142ab63c6fabee_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4d/4d04c55ec247a77fa53dba65675e35e714ef614cc549f2193058e14312d2448c/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/biobambam/bammerge/.conda-lock/linux_amd64-bd-f2942b2c30c9eb0a_1.txt

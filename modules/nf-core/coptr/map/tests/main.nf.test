@@ -44,7 +44,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.bam.collect{bam(it[1]).getReads(10)},
                     process.out.bam.collect{bam(it[1]).getStatistics(include:["readCount"])},
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match() }
             )
         }
@@ -72,7 +72,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     process.out.bam.collect{bam(it[1]).getStatistics(include:["readCount"])},
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match() }
             )
         }

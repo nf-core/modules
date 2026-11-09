@@ -49,7 +49,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
+                    process.out.findAll { it.key.startsWith("versions_") },
                     process.out.aberrations_bed.collect { it.collect { it instanceof Map ? it : file(it).name }},
                     process.out.bins_bed.collect { it.collect { it instanceof Map ? it : file(it).name }},
                     process.out.segments_bed.collect { it.collect { it instanceof Map ? it : file(it).name }},

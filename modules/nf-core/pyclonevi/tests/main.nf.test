@@ -1,0 +1,68 @@
+nextflow_process {
+
+    name "Test Process PYCLONEVI"
+    script "../main.nf"
+    process "PYCLONEVI"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "pyclonevi"
+
+    test("pyclonevi") {
+
+        config "./nextflow.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id : "test", patient : "HCC1395", tumour_sample : "HCC1395_HCC1395T" ],
+                    file(params.modules_testdata_base_path + 'delete_me/pyclonevi/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true),
+                    [ 'HCC1395_HCC1395T' ]
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out,
+                        unstableKeys: ["ctree_input", "pyclone_input", "pyclone_all_fits", "pyclone_best_fit"]),
+                    path(process.out.versions_pyclonevi[0]).yaml
+                    ).match() }
+            )
+        }
+
+    }
+
+    test("pyclonevi - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id : "test", patient : "HCC1395", tumour_sample : "HCC1395_HCC1395T" ],
+                    file(params.modules_testdata_base_path + 'delete_me/pyclonevi/HCC1395_WXS_HCC1395_joint_table.tsv', checkIfExists: true),
+                    [ 'HCC1395_HCC1395T']
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out),
+                    path(process.out.versions_pyclonevi[0]).yaml
+                    ).match() }
+            )
+        }
+
+    }
+
+}

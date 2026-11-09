@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RAGTAG_PATCH {
     tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/ragtag:2.1.0--pyhb7b1952_0'
-        : 'biocontainers/ragtag:2.1.0--pyhb7b1952_0'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e7/e783bbc5474a09f51a0f93142fb94a864715e77b40d9b33e11b53b9c6c4d08cf/data'
+        : 'community.wave.seqera.io/library/ragtag:2.1.0--6125126fe9d553ab'}"
 
     input:
     tuple val(meta), path(target, name: 'target/*')
@@ -23,7 +26,8 @@ process RAGTAG_PATCH {
     tuple val(meta), path("*.rename.agp"),          emit: qry_rename_agp,           optional: true
     tuple val(meta), path("*.rename.fasta"),        emit: qry_rename_fasta,         optional: true
     tuple val(meta), path("*.patch.err"),           emit: stderr
-    path "versions.yml",                            emit: versions
+    tuple val("${task.process}"), val('ragtag'), eval("ragtag.py -v | sed 's/v//'"), emit: versions_ragtag, topic: versions
+
 
     when:
     task.ext.when == null || task.ext.when
@@ -79,11 +83,6 @@ process RAGTAG_PATCH {
         do
             mv "\$alignment_file" "\${alignment_file/${prefix}\\//${prefix}_}"
         done
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        ragtag: \$(echo \$(ragtag.py -v | sed 's/v//'))
-    END_VERSIONS
     """
 
     stub:
@@ -101,9 +100,5 @@ process RAGTAG_PATCH {
     touch ${prefix}.rename.fasta
     touch ${prefix}.ragtag.patch.asm.1
     touch ${prefix}.patch.err
-
-    cat <<-END_VERSIONS > versions.yml
-        ragtag: \$(echo \$(ragtag.py -v | sed 's/v//'))
-    END_VERSIONS
     """
 }

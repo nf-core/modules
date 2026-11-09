@@ -1,18 +1,22 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MENINGOTYPE {
     tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/meningotype:0.8.5--pyhdfd78af_0' :
-        'biocontainers/meningotype:0.8.5--pyhdfd78af_0' }"
+        'quay.io/biocontainers/meningotype:0.8.5--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val("meningotype"), eval("meningotype --version 2>&1 | sed 's/^.*meningotype v//'"), emit: versions_meningotype, topic: versions
+    tuple val("${task.process}"), val("biopython"), eval("python -c 'import Bio; print(Bio.__version__)'"), emit: versions_biopython, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,24 +26,14 @@ process MENINGOTYPE {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     meningotype \\
-        $args \\
-        $fasta \\
+        ${args} \\
+        ${fasta} \\
         > ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        meningotype: \$( echo \$(meningotype --version 2>&1) | sed 's/^.*meningotype v//' )
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        meningotype: \$( echo \$(meningotype --version 2>&1) | sed 's/^.*meningotype v//' )
-    END_VERSIONS
     """
 }

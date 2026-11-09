@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CLUSTALO_ALIGN {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mulled-v2-4cefc38542f86c17596c29b35a059de10387c6a7:adbe4fbad680f9beb083956d79128039a727e7b3-0':
-        'biocontainers/mulled-v2-4cefc38542f86c17596c29b35a059de10387c6a7:adbe4fbad680f9beb083956d79128039a727e7b3-0' }"
+        'quay.io/biocontainers/mulled-v2-4cefc38542f86c17596c29b35a059de10387c6a7:adbe4fbad680f9beb083956d79128039a727e7b3-0' }"
 
     input:
     tuple val(meta) , path(fasta)
@@ -18,7 +21,8 @@ process CLUSTALO_ALIGN {
 
     output:
     tuple val(meta), path("*.aln{.gz,}"), emit: alignment
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('clustalo'), eval('clustalo --version'), emit: versions_clustalo, topic: versions
+    tuple val("${task.process}"), val('pigz'), eval('pigz --version 2>&1 | sed "s/^.*pigz[[:space:]]*//"'), emit: versions_pigz, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,12 +35,9 @@ process CLUSTALO_ALIGN {
     def fhmm_batch   = hmm_batch ? "--hmm-batch=${hmm_batch}" : ""
     def fprofile1    = profile1  ? "--profile1=${profile1}"   : ""
     def fprofile2    = profile2  ? "--profile2=${profile2}"   : ""
-    def write_output = compress ? "--force -o >(pigz -cp ${task.cpus} > ${prefix}.aln.gz)" : "-o ${prefix}.aln"
-    // using >() is necessary to preserve the return value,
-    // so nextflow knows to display an error when it failed
-    // the --force -o is necessary, as clustalo expands the commandline input,
-    // causing it to treat the pipe as a parameter and fail
-    // this way, the command expands to /dev/fd/<id>, and --force allows writing output to an already existing file
+    def write_output = compress ? "--force -o >(pigz -cp ${task.cpus} > ${prefix}.aln.gz) && wait \$!" : "-o ${prefix}.aln"
+    // The shell does not wait for a process substitution: without wait the task can end before pigz
+    // has finished, leaving a truncated .aln.gz. --force lets clustalo open the existing /dev/fd/<id> path.
     """
     clustalo \
         -i ${fasta} \
@@ -48,24 +49,11 @@ process CLUSTALO_ALIGN {
         --threads=${task.cpus} \
         $args \
         $write_output
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        clustalo: \$( clustalo --version )
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.aln${compress ? '.gz' : ''}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        clustalo: \$( clustalo --version )
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
-    END_VERSIONS
     """
 }

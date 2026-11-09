@@ -1,0 +1,329 @@
+nextflow_process {
+
+    name "Test Process HUGGINGFACE_DOWNLOAD"
+    script "../main.nf"
+    process "HUGGINGFACE_DOWNLOAD"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "huggingface"
+    tag "huggingface/download"
+
+    test("download config.json - tiny-random-gpt2") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_gpt2' ],
+                    "hf-internal-testing/tiny-random-gpt2",
+                    "config.json"
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.output.size(),
+                    process.out.output[0][0],
+                    file(process.out.output[0][1]).name,
+                    file(process.out.output[0][1]).size() > 0,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("download config.json - tiny-random-bert") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_bert' ],
+                    "hf-internal-testing/tiny-random-bert",
+                    "config.json"
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.output.size(),
+                    process.out.output[0][0],
+                    file(process.out.output[0][1]).name,
+                    file(process.out.output[0][1]).size() > 0,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("download config.json - tiny-random-gpt2 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_gpt2' ],
+                    "hf-internal-testing/tiny-random-gpt2",
+                    "config.json"
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("download repository - demo1") {
+
+        config "./nextflow.config"
+
+        when {
+            params {
+                module_args = "--repo-type dataset --revision 87ecf163bedca9d80598b528940a9c4f99e14c11"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test_dataset' ],
+                    "lhoestq/demo1",
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.output[0][1]).isDirectory() },
+                { assert file(process.out.output[0][1] + "/README.md").exists() },
+                { assert file(process.out.output[0][1] + "/.gitattributes").exists() },
+                { assert snapshot(
+                    process.out.output.size(),
+                    process.out.output[0][0],
+                    file(process.out.output[0][1]).name,
+                    file(process.out.output[0][1] + "/data/train.csv"),
+                    file(process.out.output[0][1] + "/data/test.csv"),
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("download filtered repository - demo1 - custom prefix") {
+
+        config "./nextflow.config"
+
+        when {
+            params {
+                module_args = "--repo-type dataset --revision 87ecf163bedca9d80598b528940a9c4f99e14c11 --include 'data/*' --exclude 'data/test.csv'"
+                module_prefix = "demo_subset"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test_dataset' ],
+                    "lhoestq/demo1",
+                    ''
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.output[0][1]).isDirectory() },
+                { assert !file(process.out.output[0][1] + "/README.md").exists() },
+                { assert !file(process.out.output[0][1] + "/data/test.csv").exists() },
+                { assert snapshot(
+                    process.out.output.size(),
+                    process.out.output[0][0],
+                    file(process.out.output[0][1]).name,
+                    file(process.out.output[0][1] + "/data/train.csv"),
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("download nested file - demo1") {
+
+        config "./nextflow.config"
+
+        when {
+            params {
+                module_args = "--repo-type dataset --revision 87ecf163bedca9d80598b528940a9c4f99e14c11"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test_dataset' ],
+                    "lhoestq/demo1",
+                    "data/train.csv"
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.output[0][1]).isFile() },
+                { assert snapshot(
+                    process.out.output.size(),
+                    process.out.output[0][0],
+                    file(process.out.output[0][1]).name,
+                    file(process.out.output[0][1]),
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("download Xet repository - tiny-random-gpt2") {
+
+        config "./nextflow.config"
+
+        when {
+            params {
+                module_args = "--revision 71034c5d8bde858ff824298bdedc65515b97d2b9 --include model.safetensors"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test_xet' ],
+                    "hf-internal-testing/tiny-random-gpt2",
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.output[0][1]).isDirectory() },
+                { assert snapshot(
+                    process.out.output.size(),
+                    process.out.output[0][0],
+                    file(process.out.output[0][1]).name,
+                    file(process.out.output[0][1] + "/model.safetensors"),
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("download repository - demo1 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_dataset' ],
+                    "lhoestq/demo1",
+                    []
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.output[0][1]).isDirectory() },
+                { assert snapshot(
+                    process.out.output.size(),
+                    process.out.output[0][0],
+                    file(process.out.output[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("download repository - demo1 - custom prefix - stub") {
+
+        config "./nextflow.config"
+
+        options "-stub"
+
+        when {
+            params {
+                module_prefix = "demo_subset"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test_dataset' ],
+                    "lhoestq/demo1",
+                    ''
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.output[0][1]).isDirectory() },
+                { assert snapshot(
+                    process.out.output.size(),
+                    process.out.output[0][0],
+                    file(process.out.output[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("download nested file - demo1 - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_dataset' ],
+                    "lhoestq/demo1",
+                    "data/train.csv"
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert file(process.out.output[0][1]).isFile() },
+                { assert snapshot(
+                    process.out.output.size(),
+                    process.out.output[0][0],
+                    file(process.out.output[0][1]).name,
+                    file(process.out.output[0][1]),
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+}

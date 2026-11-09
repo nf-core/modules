@@ -2,44 +2,6 @@
     "rgi/main - haemophilus_influenzae - genome_fna_gz - stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.json:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        [
-                            
-                        ]
-                    ]
-                ],
-                "3": [
-                    "6.0.3"
-                ],
-                "4": [
-                    "stub_version"
-                ],
-                "5": [
-                    "versions.yml:md5,f77ce9bdc8d309c9d6f7ec63bd53f5cf"
-                ],
                 "db_version": [
                     "stub_version"
                 ],
@@ -64,7 +26,7 @@
                     ]
                 ],
                 "tool_version": [
-                    "6.0.3"
+                    "6.0.8"
                 ],
                 "tsv": [
                     [
@@ -75,69 +37,98 @@
                         "test.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,f77ce9bdc8d309c9d6f7ec63bd53f5cf"
+                "versions_db": [
+                    [
+                        "RGI_MAIN",
+                        "rgi-database",
+                        "stub_version"
+                    ]
+                ],
+                "versions_kma": [
+                    [
+                        "RGI_MAIN",
+                        "kma",
+                        "1.6.11"
+                    ]
+                ],
+                "versions_rgi": [
+                    [
+                        "RGI_MAIN",
+                        "rgi",
+                        "6.0.8"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-08-13T15:48:17.425352268",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.2"
-        },
-        "timestamp": "2024-12-10T13:33:59.209306934"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     },
     "rgi/main - haemophilus_influenzae - genome_fna_gz": {
         "content": [
-            [
-                "versions.yml:md5,306dec3569e66a74bff07184f2f801ec"
-            ],
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test.txt:md5,5854d6bef754d91da80980e96b6a054b"
+            {
+                "db_version": [
+                    "4.0.2"
+                ],
+                "json": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.json:md5,74b89120ae465892ef013014e44a8ab4"
+                    ]
+                ],
+                "tmp": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "temp"
+                    ]
+                ],
+                "tool_version": [
+                    "6.0.8"
+                ],
+                "tsv": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.txt:md5,9dd0afe6946da9c6608e775f954813a1"
+                    ]
+                ],
+                "versions_db": [
+                    [
+                        "RGI_MAIN",
+                        "rgi-database",
+                        "4.0.2"
+                    ]
+                ],
+                "versions_kma": [
+                    [
+                        "RGI_MAIN",
+                        "kma",
+                        "1.6.11"
+                    ]
+                ],
+                "versions_rgi": [
+                    [
+                        "RGI_MAIN",
+                        "rgi",
+                        "6.0.8"
+                    ]
                 ]
-            ],
-            [
-                [
-                    {
-                        "id": "test",
-                        "single_end": false
-                    },
-                    "test.json:md5,f9ca00ea1ff6e733c7c25bb2dfd65128"
-                ]
-            ],
-            [
-                "genome.fna.gz.temp.uncompressed.fsa",
-                "genome.fna.gz.temp.uncompressed.fsa.temp.blastRes.rrna.xml",
-                "genome.fna.gz.temp.uncompressed.fsa.temp.contig.fsa",
-                "genome.fna.gz.temp.uncompressed.fsa.temp.contig.fsa.blastRes.xml",
-                "genome.fna.gz.temp.uncompressed.fsa.temp.contigToORF.fsa",
-                "genome.fna.gz.temp.uncompressed.fsa.temp.db.nhr",
-                "genome.fna.gz.temp.uncompressed.fsa.temp.db.nin",
-                "genome.fna.gz.temp.uncompressed.fsa.temp.db.nsq",
-                "genome.fna.gz.temp.uncompressed.fsa.temp.draft",
-                "genome.fna.gz.temp.uncompressed.fsa.temp.homolog.json",
-                "genome.fna.gz.temp.uncompressed.fsa.temp.overexpression.json",
-                "genome.fna.gz.temp.uncompressed.fsa.temp.potentialGenes",
-                "genome.fna.gz.temp.uncompressed.fsa.temp.predictedGenes.json",
-                "genome.fna.gz.temp.uncompressed.fsa.temp.predictedGenes.protein.json",
-                "genome.fna.gz.temp.uncompressed.fsa.temp.rrna.json",
-                "genome.fna.gz.temp.uncompressed.fsa.temp.variant.json"
-            ],
-            [
-                "6.0.3"
-            ],
-            [
-                "3.3.0"
-            ]
+            }
         ],
+        "timestamp": "2026-08-14T06:26:18.644709278",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.2"
-        },
-        "timestamp": "2024-12-10T13:33:40.479165988"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     }
 }

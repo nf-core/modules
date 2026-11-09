@@ -21,7 +21,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true),
                 ]
                 input[1] = [
-                    [ id:'test'], 
+                    [ id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                 ]
                 """
@@ -33,14 +33,14 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.log[0][1]).name,
-                    process.out.pairing_issues,
+                    path(process.out.pairing_issues[0][1]).text == "",
                     process.out.scaffolds_csv,
                     process.out.scaffolds_fasta,
                     process.out.bloom,
                     file(process.out.scaffolds_graph[0][1]).name,
                     process.out.assembly_correspondence,
-                    process.out.tigpair_checkpoint,
-                    process.out.versions
+                    file(process.out.tigpair_checkpoint[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -62,7 +62,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/scaffolds.fasta', checkIfExists: true),
                 ]
                 input[1] = [
-                    [ id:'test'], 
+                    [ id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true),
                 ]
                 """
@@ -74,14 +74,14 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.log[0][1]).name,
-                    process.out.pairing_issues,
+                    file(process.out.pairing_issues[0][1]).text=="",
                     process.out.scaffolds_csv,
                     process.out.scaffolds_fasta,
                     process.out.bloom,
                     file(process.out.scaffolds_graph[0][1]).name,
                     process.out.assembly_correspondence,
-                    process.out.tigpair_checkpoint,
-                    process.out.versions
+                    file(process.out.tigpair_checkpoint[0][1]).text=="",
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -104,7 +104,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                 ]
                 input[1] = [
-                    [ id:'test'], 
+                    [ id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true),
                 ]
                 """

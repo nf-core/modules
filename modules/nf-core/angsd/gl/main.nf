@@ -1,20 +1,23 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ANGSD_GL {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/angsd:0.940--hce60e53_2':
-        'biocontainers/angsd:0.940--hce60e53_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a0/a0185040abdace3529e7c8ae31a80bd86a47577e0d2078b2223dc1b1c362e656/data'
+        : 'community.wave.seqera.io/library/angsd_htslib:714d1c4bd0020e05'}"
 
     input:
-    tuple val(meta),  path(bam)
-    tuple val(meta2), path(fasta)      //Optionally
+    tuple val(meta), path(bam), path(bai)
+    tuple val(meta2), path(fasta), path(fai) //Optionally.
     tuple val(meta3), path(error_file) //Optionally. Used for SYK model only.
 
     output:
     tuple val(meta), path("*.{glf,beagle}.gz"), emit: genotype_likelihood
-    path "versions.yml"                       , emit: versions
+    tuple val("${task.process}"), val('angsd'), eval("angsd 2>&1 | sed '1!d;s/.*version: //;s/ .*//'"), emit: versions_angsd, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,14 +28,16 @@ process ANGSD_GL {
 
     def GL_model = args.contains("-GL 1") ? 1 : args.contains("-GL 2") ? 2 : args.contains("-GL 3") ? 3 : args.contains("-GL 4") ? 4 : 0
 
-    def ref         = fasta                   ? "-ref ${fasta}"         : ''         // Use reference fasta if provided
-    def errors      = error_file              ? "-errors ${error_file}" : ''         // Only applies to SYK model
-    def output_mode = args.contains("-doGlf") ? ""                      : '-doGlf 1' // Default to outputting binary glf (10 log likelihoods) if not set in args
+    def ref         = fasta                   ? "-ref ${fasta}"            : ''         // Use reference fasta if provided
+    def touch       = fai                     ? "sleep 1 && touch ${fai}"  : ''         // Touch fai to ensure timestamp is newer than fasta
+    def errors      = error_file              ? "-errors ${error_file}"    : ''         // Only applies to SYK model
+    def output_mode = args.contains("-doGlf") ? ""                         : '-doGlf 1' // Default to outputting binary glf (10 log likelihoods) if not set in args
     // NOTE: GL is specified within args, so is not provided as a separate argument
 
     if (GL_model != 3 && GL_model != 4) {
         """
-        ls -1 *.bam > bamlist.txt
+        ${touch}
+        printf '%s\n' ${bam} > bamlist.txt
 
         angsd \\
             -nThreads ${task.cpus} \\
@@ -41,17 +46,13 @@ process ANGSD_GL {
             ${ref} \\
             ${output_mode} \\
             -out ${prefix}
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            angsd: \$(echo \$(angsd 2>&1) | grep 'angsd version' | head -n 1 | sed 's/.*version: //g;s/ .*//g')
-        END_VERSIONS
         """
     } else if (GL_model == 3) {
         // No args for this part.
         // GL is hardcoded to 3 here to avoid passing all other arguments to the calibration step
         """
-        ls -1 *.bam > bamlist.txt
+        ${touch}
+        printf '%s\n' ${bam} > bamlist.txt
 
         ## SOAPsnp model
         ## First get the calibration matrix. minQ MUST be 0 for this step. Will create the directory angsd_tmpdir/ with the required files for the next step.
@@ -71,15 +72,11 @@ process ANGSD_GL {
             ${ref} \\
             ${output_mode} \\
             -out ${prefix}
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            angsd: \$(echo \$(angsd 2>&1) | grep 'angsd version' | head -n 1 | sed 's/.*version: //g;s/ .*//g')
-        END_VERSIONS
         """
     } else if (GL_model == 4) {
         """
-        ls -1 *.bam > bamlist.txt
+        ${touch}
+        printf '%s\n' ${bam} > bamlist.txt
 
         ## SYK model
         angsd \\
@@ -91,23 +88,12 @@ process ANGSD_GL {
             ${errors} \\
             -doCounts 1 \\
             -out ${prefix}
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            angsd: \$(echo \$(angsd 2>&1) | grep 'angsd version' | head -n 1 | sed 's/.*version: //g;s/ .*//g')
-        END_VERSIONS
         """
     }
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.glf
-    gzip ${prefix}.glf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        angsd: \$(echo \$(angsd 2>&1) | grep 'angsd version' | head -n 1 | sed 's/.*version: //g;s/ .*//g')
-    END_VERSIONS
+    echo "" | gzip > ${prefix}.glf.gz
     """
 }

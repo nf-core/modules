@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process LINKS {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/links:2.0.1--h4ac6f70_5':
-        'biocontainers/links:2.0.1--h4ac6f70_5' }"
+        'quay.io/biocontainers/links:2.0.1--h4ac6f70_5' }"
 
     input:
     tuple val(meta), path(assembly)
@@ -22,7 +25,7 @@ process LINKS {
     tuple val(meta), path("*.assembly_correspondence.tsv"), emit: assembly_correspondence
     tuple val(meta), path("*.simplepair_checkpoint.tsv"),   emit: simplepair_checkpoint, optional: true
     tuple val(meta), path("*.tigpair_checkpoint.tsv"),      emit: tigpair_checkpoint
-    path "versions.yml",                                    emit: versions
+    tuple val("${task.process}"), val('liftoff'), eval("LINKS | sed '/LINKS/!d;s/.*LINKS v//;s/ .*//'"), emit: versions_links, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -44,7 +47,7 @@ process LINKS {
     for read_file in ${reads};
         do
             if [[ \$read_file == *.gz ]];
-            then 
+            then
                 gzip -dc \$read_file > \$(basename \$read_file .gz)
                 echo \$(basename \$read_file .gz) >> readfile.fof
             else
@@ -54,14 +57,9 @@ process LINKS {
 
     LINKS -f assembly.fa \\
         -s readfile.fof \\
-        -j $nthreads \\
+        -j ${nthreads} \\
         -b ${prefix} \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        LINKS: \$(echo \$(LINKS | grep -o 'LINKS v.*' | sed 's/LINKS v//'))
-    END_VERSIONS
+        ${args}
     """
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
@@ -77,10 +75,5 @@ process LINKS {
     touch ${prefix}.assembly_correspondence.tsv
     touch ${prefix}.simplepair_checkpoint.tsv
     touch ${prefix}.tigpair_checkpoint.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        LINKS: \$(echo \$(LINKS | grep -o 'LINKS v.*' | sed 's/LINKS v//'))
-    END_VERSIONS
     """
     }

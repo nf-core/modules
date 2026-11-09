@@ -1,7 +1,5 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "proovframe_fix"
-description: frame-shift correction for long read (meta)genomics - fix frameshifts
-  in reads
+description: frame-shift correction for long read (meta)genomics - fix frameshifts in reads
 keywords:
   - frame-shift correction
   - long-read sequencing
@@ -13,7 +11,8 @@ tools:
       documentation: "https://github.com/thackl/proovframe"
       tool_dev_url: "https://github.com/thackl/proovframe"
       doi: "10.1101/2021.08.23.457338"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:proovframe
 
 input:
@@ -34,8 +33,7 @@ input:
           e.g. [ id:'test' ]
     - tsv:
         type: file
-        description: "Output TSV file from proovframe/map with the frameshift-aware
-          protein to read alignments from proovframe/map"
+        description: "Output TSV file from proovframe/map with the frameshift-aware protein to read alignments from proovframe/map"
         pattern: "*.{tsv}"
 
         ontologies:
@@ -52,16 +50,32 @@ output:
           description: "Result FASTA with fixed frameshift reads"
           pattern: "*.{fa}"
           ontologies: []
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+  versions_proovframe:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - proovframe:
+          type: string
+          description: The name of the tool
+      - proovframe 2>&1 | sed '/proovframe-v/!d;s/proovframe-v//;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
 
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - proovframe:
+          type: string
+          description: The name of the tool
+      - proovframe 2>&1 | sed '/proovframe-v/!d;s/proovframe-v//;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@mcarbajo"
   - "@vagkaratzas"
 maintainers:
   - "@vagkaratzas"
+  - "@Ge94"

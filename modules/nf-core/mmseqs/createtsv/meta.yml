@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "mmseqs_createtsv"
-description: Create a tsv file from a query and a target database as well as the result
-  database
+description: Create a tsv file from a query and a target database as well as the
+  result database
 keywords:
   - protein sequence
   - databases
@@ -18,10 +17,10 @@ tools:
       documentation: "https://mmseqs.com/latest/userguide.pdf"
       tool_dev_url: "https://github.com/soedinglab/MMseqs2"
       doi: "10.1093/bioinformatics/btw006"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:mmseqs
 input:
-  # Only when we have meta
   - - meta:
         type: map
         description: |
@@ -47,7 +46,6 @@ input:
         type: directory
         description: an MMseqs2 database with target data
 output:
-  #Only when we have meta
   tsv:
     - - meta:
           type: map
@@ -56,18 +54,32 @@ output:
             e.g. `[ id:'test', single_end:false ]`
       - "*.tsv":
           type: file
-          description: The resulting tsv file created using the query, target and result
-            MMseqs databases
+          description: The resulting tsv file created using the query, target and
+            result MMseqs databases
           pattern: "*.{tsv}"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
+  versions_mmseqs:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mmseqs:
+          type: string
+          description: The name of the tool
+      - mmseqs version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mmseqs:
+          type: string
+          description: The name of the tool
+      - mmseqs version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@Joon-Klaps"
 maintainers:

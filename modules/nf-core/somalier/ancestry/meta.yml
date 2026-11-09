@@ -1,6 +1,5 @@
 name: "somalier_ancestry"
-description: Somalier can extract informative sites, evaluate relatedness, and perform
-  quality-control on BAM/CRAM/BCF/VCF/GVCF or from jointly-called VCFs
+description: Somalier can extract informative sites, evaluate relatedness, and perform quality-control on BAM/CRAM/BCF/VCF/GVCF or from jointly-called VCFs
 keywords:
   - relatedness
   - QC
@@ -15,13 +14,13 @@ keywords:
   - family
 tools:
   - "somalier":
-      description: "Somalier can extract informative sites, evaluate relatedness, and
-        perform quality-control on BAM/CRAM/BCF/VCF/GVCF or from jointly-called VCFs"
+      description: "Somalier can extract informative sites, evaluate relatedness, and perform quality-control on BAM/CRAM/BCF/VCF/GVCF or from jointly-called VCFs"
       homepage: "https://github.com/brentp/somalier"
       documentation: "https://github.com/brentp/somalier"
       tool_dev_url: "https://github.com/brentp/somalier"
       doi: "10.1186/s13073-020-00761-2"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:somalier
 input:
   - - meta:
@@ -31,8 +30,7 @@ input:
           e.g. [ id:'test', single_end:false ]
     - query_somalier_files:
         type: file
-        description: Set of somalier files for query samples. Obtained via somalier
-          extract.
+        description: Set of somalier files for query samples. Obtained via somalier extract.
         pattern: "*.{somalier}"
         ontologies: []
   - - meta2:
@@ -42,15 +40,13 @@ input:
           e.g. [ id:'test', single_end:false ]
     - labels_tsv:
         type: file
-        description: TSV for labelled samples. e.g. Somalier labels for 1kg
-          https://raw.githubusercontent.com/brentp/somalier/master/scripts/ancestry-labels-1kg.tsv
+        description: TSV for labelled samples. e.g. Somalier labels for 1kg https://raw.githubusercontent.com/brentp/somalier/master/scripts/ancestry-labels-1kg.tsv
         pattern: "*.{tsv}"
         ontologies:
-          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3475
     - labelled_somalier_files:
         type: file
-        description: Set of somalier files for labelled samples. e.g. Somalier files
-          for 1kg https://zenodo.org/record/3479773/files/1kg.somalier.tar.gz?download=1
+        description: Set of somalier files for labelled samples. e.g. Somalier files for 1kg https://zenodo.org/record/3479773/files/1kg.somalier.tar.gz?download=1
         pattern: "*.{somalier}"
         ontologies: []
 output:
@@ -65,7 +61,7 @@ output:
           description: TSV with ancestry information for query and labelled samples.
           pattern: "*.somalier-ancestry.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   html:
     - - meta:
           type: map
@@ -77,14 +73,52 @@ output:
           description: html file with ancestry information for query and labelled samples.
           pattern: "*.somalier-ancestry.html"
           ontologies: []
+  versions_somalier:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - somalier:
+          type: string
+          description: The name of the tool
+      - "somalier 2>&1 | sed -n 's/.*version: \\([0-9.]*\\).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - somalier:
+          type: string
+          description: The name of the tool
+      - "somalier 2>&1 | sed -n 's/.*version: \\([0-9.]*\\).*/\\1/p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@atrigila"
 maintainers:
   - "@atrigila"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/somalier:0.3.6--76b5278bf32df42f
+      build_id: bd-76b5278bf32df42f_1
+      scan_id: sc-17f16146fcb05675_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/somalier:0.3.6--127e0e29751f4940
+      build_id: bd-127e0e29751f4940_1
+      scan_id: sc-d34171139d0f9edf_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/somalier:0.3.6--616e8a160c41dcb7
+      build_id: bd-616e8a160c41dcb7_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/47/47d07f6bfed89f10492f67cd64ccc33efb18a9fc1dc596dd55642efca5d67c0e/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/somalier:0.3.6--b3834d7a12ae1f53
+      build_id: bd-b3834d7a12ae1f53_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f5/f5ad8a7223d537f18f2899b16bd2b14f93866656c4ddce6d16181319d9a82f63/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/somalier/ancestry/.conda-lock/linux_amd64-bd-127e0e29751f4940_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/somalier/ancestry/.conda-lock/linux_arm64-bd-76b5278bf32df42f_1.txt

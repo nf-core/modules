@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: abritamr_run
-description: A NATA accredited tool for reporting the presence of antimicrobial resistance
-  genes in bacterial genomes
+description: A NATA accredited tool for reporting the presence of antimicrobial
+  resistance genes in bacterial genomes
 keywords:
   - bacteria
   - fasta
@@ -14,7 +13,8 @@ tools:
       documentation: "https://github.com/MDU-PHL/abritamr"
       tool_dev_url: "https://github.com/MDU-PHL/abritamr"
       doi: "10.1038/s41467-022-35713-4"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:abritamr
 input:
   - - meta:
@@ -35,8 +35,8 @@ output:
           description: Groovy Map containing sample information
       - "*.summary_matches.txt":
           type: file
-          description: Tab-delimited file, with a row per sequence, and columns representing
-            functional drug classes
+          description: Tab-delimited file, with a row per sequence, and columns
+            representing functional drug classes
           pattern: "*.summary_matches.txt"
           ontologies:
             - edam: "http://edamontology.org/format_2330" # Textual format
@@ -46,8 +46,8 @@ output:
           description: Groovy Map containing sample information
       - "*.summary_partials.txt":
           type: file
-          description: Tab-delimited file, with a row per sequence, and columns representing
-            partial hits to functional drug classes
+          description: Tab-delimited file, with a row per sequence, and columns
+            representing partial hits to functional drug classes
           pattern: "*.summary_partials.txt"
           ontologies:
             - edam: "http://edamontology.org/format_2330" # Textual format
@@ -57,8 +57,8 @@ output:
           description: Groovy Map containing sample information
       - "*.summary_virulence.txt":
           type: string
-          description: Tab-delimited file, with a row per sequence, and columns representing
-            AMRFinderPlus virulence gene classification
+          description: Tab-delimited file, with a row per sequence, and columns
+            representing AMRFinderPlus virulence gene classification
           pattern: "*.summary_virulence.txt"
           ontologies:
             - edam: "http://edamontology.org/format_2330" # Textual format
@@ -82,13 +82,27 @@ output:
           pattern: "*.abritamr.txt"
           ontologies:
             - edam: "http://edamontology.org/format_2330" # Textual format
+  versions_abritamr:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - abritamr:
+          type: string
+          description: The name of the tool
+      - abritamr --version 2>&1 | sed 's/^.*abritamr \([0-9.]*\).*/\1/':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - abritamr:
+          type: string
+          description: The name of the tool
+      - abritamr --version 2>&1 | sed 's/^.*abritamr \([0-9.]*\).*/\1/':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@rpetit3"
 maintainers:

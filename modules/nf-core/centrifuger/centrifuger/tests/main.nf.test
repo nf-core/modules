@@ -1,0 +1,109 @@
+nextflow_process {
+
+    name "Test Process CENTRIFUGER_CENTRIFUGER"
+    script "../main.nf"
+    process "CENTRIFUGER_CENTRIFUGER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "centrifuger"
+    tag "centrifuger/centrifuger"
+    tag "untar"
+
+    setup {
+        run("UNTAR") {
+            script "../../../untar/main.nf"
+            process {
+                """
+                input[0] = [ [], file('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/delete_me/cfr_files_short.tar.gz', checkIfExists: true) ]
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - fastq - single_end") {
+        when {
+            process {
+                """
+                input[0] = [[ id:'test', single_end: true ],
+                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = UNTAR.out.untar.map{ meta, db -> [ [id:'sarscov2'], db] }
+                input[2] = true
+                input[3] = true
+                input[4] = []
+                input[5] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                {assert process.success },
+                { assert snapshot(
+                    process.out.classification_file,
+                    file(process.out.fastq_classified[0][1]).name,
+                    file(process.out.fastq_unclassified[0][1]).name,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+    test("sarscov2 - fastq - paired_end") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end: false ],
+                    [
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = UNTAR.out.untar.map{ meta, db -> [ [id:'sarscov2'], db] }
+                input[2] = true
+                input[3] = true
+                input[4] = []
+                input[5] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                {assert process.success },
+                { assert snapshot(
+                    process.out.classification_file,
+                    process.out.fastq_classified[0][1].collect { file(it).name },
+                    process.out.fastq_unclassified[0][1].collect {file (it).name },
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+    test("sarscov2 - fastq - single_end - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [[ id:'test', single_end: true ],
+                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = UNTAR.out.untar.map{ meta, db -> [ [id:'sarscov2'], db] }
+                input[2] = true
+                input[3] = true
+                input[4] = []
+                input[5] = []
+                """
+            }
+        }
+        then {
+            assertAll(
+                {assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() } // strips paths and empty MD5s automatically
+            )
+        }
+
+    }
+
+}

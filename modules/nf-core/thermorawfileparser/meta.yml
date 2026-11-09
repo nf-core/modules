@@ -1,5 +1,6 @@
 name: "thermorawfileparser"
-description: Parses a Thermo RAW file containing mass spectra to an open file format
+description: Parses a Thermo RAW file containing mass spectra to an open file
+  format
 keywords:
   - raw
   - mzml
@@ -41,13 +42,29 @@ output:
           description: Mass spectra in open format
           pattern: "*.{mzML,mzML.gz,mgf,mgf.gz,parquet,parquet.gz}"
           ontologies: []
+  versions_thermorawfileparser:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - thermorawfileparser:
+          type: string
+          description: The name of the tool
+      - ThermoRawFileParser.sh --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - thermorawfileparser:
+          type: string
+          description: The name of the tool
+      - ThermoRawFileParser.sh --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@jonasscheid"
 maintainers:

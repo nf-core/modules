@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SUMMARIZEDEXPERIMENT_SUMMARIZEDEXPERIMENT {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/bioconductor-summarizedexperiment:1.32.0--r43hdfd78af_0' :
-        'biocontainers/bioconductor-summarizedexperiment:1.32.0--r43hdfd78af_0' }"
+        'quay.io/biocontainers/bioconductor-summarizedexperiment:1.32.0--r43hdfd78af_0' }"
 
     input:
     tuple val(meta), path(matrix_files)
@@ -15,7 +18,7 @@ process SUMMARIZEDEXPERIMENT_SUMMARIZEDEXPERIMENT {
     output:
     tuple val(meta), path("*.rds")              , emit: rds
     tuple val(meta), path("*.R_sessionInfo.log"), emit: log
-    path "versions.yml"                         , emit: versions
+    path "versions.yml"                         , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

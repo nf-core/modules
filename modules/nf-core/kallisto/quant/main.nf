@@ -1,17 +1,18 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process KALLISTO_QUANT {
     tag "$meta.id"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/kallisto:0.51.1--heb0cbe2_0':
-        'biocontainers/kallisto:0.51.1--heb0cbe2_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e2/e21d2cff2526b0995996977c057f0c17844073781f86a18b15fef178a97ed7cb/data':
+        'community.wave.seqera.io/library/kallisto:0.52.0--31c771060d82d25c' }"
 
     input:
     tuple val(meta), path(reads)
-    tuple val(meta2), path(index)
-    path gtf
-    path chromosomes
+    tuple val(meta2), path(index), path(gtf), path(chromosomes)
     val fragment_length
     val fragment_length_sd
 
@@ -19,7 +20,7 @@ process KALLISTO_QUANT {
     tuple val(meta), path("${prefix}")        , emit: results
     tuple val(meta), path("*.run_info.json")  , emit: json_info
     tuple val(meta), path("*.log")            , emit: log
-    path "versions.yml"                       , emit: versions
+    tuple val("${task.process}"), val('kallisto'), eval("kallisto version | sed 's/.*version //'"), emit: versions_kallisto, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -41,12 +42,6 @@ process KALLISTO_QUANT {
         single_end_params = "--single --fragment-length=${fragment_length} --sd=${fragment_length_sd}"
     }
 
-    def strandedness = ''
-    if (!args.contains('--fr-stranded') && !args.contains('--rf-stranded')) {
-        strandedness =  (meta.strandedness == 'forward') ? '--fr-stranded' :
-                        (meta.strandedness == 'reverse') ? '--rf-stranded' : ''
-    }
-
     """
     mkdir -p $prefix && kallisto quant \\
             --threads ${task.cpus} \\
@@ -54,18 +49,12 @@ process KALLISTO_QUANT {
             ${gtf_input} \\
             ${chromosomes_input} \\
             ${single_end_params} \\
-            ${strandedness} \\
             ${args} \\
             -o $prefix \\
             ${reads} 2>| >(tee -a ${prefix}/kallisto_quant.log >&2)
 
     cp ${prefix}/kallisto_quant.log ${prefix}.log
     cp ${prefix}/run_info.json ${prefix}.run_info.json
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        kallisto: \$(echo \$(kallisto version) | sed "s/kallisto, version //g" )
-    END_VERSIONS
     """
 
     stub:
@@ -75,10 +64,5 @@ process KALLISTO_QUANT {
     mkdir -p $prefix
     touch ${prefix}.log
     touch ${prefix}.run_info.json
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        kallisto: \$(echo \$(kallisto version) | sed "s/kallisto, version //g" )
-    END_VERSIONS
     """
 }

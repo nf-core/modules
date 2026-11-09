@@ -1,0 +1,208 @@
+name: carveme_carve
+description: Reconstruct genome-scale metabolic models from protein FASTA files using CarveMe
+keywords:
+  - metabolic model
+  - genome-scale
+  - sbml
+  - flux balance analysis
+  - metabolic reconstruction
+tools:
+  - carveme:
+      description: CarveMe is a python-based tool for genome-scale metabolic model reconstruction.
+      homepage: https://carveme.readthedocs.io
+      documentation: https://carveme.readthedocs.io
+      tool_dev_url: https://github.com/cdanielmachado/carveme
+      doi: "10.1093/nar/gky537"
+      licence:
+        - "Apache-2.0"
+      identifier: biotools:carveme
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: |
+          Protein FASTA file
+          or DNA fasta file if the --dna flag is provided
+        pattern: "*.{fa,faa,fasta,fna}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+    - universe_file:
+        type: file
+        description: Optional. Reaction universe file in SBML format, passed to --universe-file.
+        pattern: "*.xml"
+        ontologies:
+          - edam: "http://edamontology.org/format_2332" # XML
+    - mediadb:
+        type: file
+        description: |
+          Optional. Media database file, passed to --mediadb.
+          --gapfill X,Y,Z with medium names from the database must also be provided
+        pattern: "*.{tsv,csv,txt}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+          - edam: "http://edamontology.org/format_3752" # CSV
+          - edam: "http://edamontology.org/format_2330" # Textual format
+    - soft:
+        type: file
+        description: Optional. Soft constraints file, passed to --soft.
+        pattern: "*.{tsv,csv,txt}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+          - edam: "http://edamontology.org/format_3752" # CSV
+          - edam: "http://edamontology.org/format_2330" # Textual format
+    - hard:
+        type: file
+        description: Optional. Hard constraints file, passed to --hard.
+        pattern: "*.{tsv,csv,txt}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+          - edam: "http://edamontology.org/format_3752" # CSV
+          - edam: "http://edamontology.org/format_2330" # Textual format
+    - reference:
+        type: file
+        description: Optional. Manually curated model of a close reference species, passed to --reference.
+        pattern: "*.xml"
+        ontologies:
+          - edam: "http://edamontology.org/format_2332" # XML
+output:
+  model:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.xml:
+          type: file
+          description: SBML genome-scale metabolic model file
+          pattern: "*.xml"
+          ontologies:
+            - edam: "http://edamontology.org/format_2332" # XML
+  gene_scores:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_gene_scores.tsv:
+          type: file
+          description: |
+            Optional. Tab-separated file produced when --debug is passed. Maps each query gene to its
+            corresponding BiGG gene identifier, protein group, reaction, source model, and BLAST
+            bit-score used during model reconstruction.
+          pattern: "*_gene_scores.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  milp_problem:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_milp_problem.lp:
+          type: file
+          description: |
+            Optional. Linear programming problem file in LP format produced when --debug is passed.
+            Contains the MILP formulation (variables, constraints, and objective function) passed to
+            the SCIP solver during gap-filling or reaction selection.
+          pattern: "*_milp_problem.lp"
+          ontologies: []
+  milp_solution:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_milp_solution.tsv:
+          type: file
+          description: |
+            Optional. Tab-separated file produced when --debug is passed. Contains the MILP solver
+            solution, listing each reaction identifier and its corresponding flux value selected
+            during model gap-filling.
+          pattern: "*_milp_solution.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  protein_scores:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_protein_scores.tsv:
+          type: file
+          description: |
+            Optional. Tab-separated file produced when --debug is passed. Lists the BLAST alignment
+            scores for each query protein against the template model database, including the matched
+            protein group, reaction, source model, and GPR rule used for scoring.
+          pattern: "*_protein_scores.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  reaction_scores:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}_reaction_scores.tsv:
+          type: file
+          description: |
+            Optional. Tab-separated file produced when --debug is passed. Lists each candidate
+            reaction with its GPR rule, raw BLAST bit-score, and normalised score used to weight
+            the MILP objective during model reconstruction.
+          pattern: "*_reaction_scores.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  versions_carveme:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - carveme:
+          type: string
+          description: The name of the tool
+      - python -c "from importlib.metadata import version; print(version('carveme'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - carveme:
+          type: string
+          description: The name of the tool
+      - python -c "from importlib.metadata import version; print(version('carveme'))":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/carveme_scip:8b66c18ea3a4fb1b
+      build_id: bd-8b66c18ea3a4fb1b_1
+      scan_id: sc-da9aef8fdec54158_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/carveme_scip:78b0bcb418a06f19
+      build_id: bd-78b0bcb418a06f19_1
+      scan_id: sc-a8b55490419830ee_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/carveme_scip:9fbe586364e87ca1
+      build_id: bd-9fbe586364e87ca1_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/96/9662f19dc7815dd4aaaf24cd6b19c11a3b507e3b52a066d1557c77517fed9f47/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/carveme_scip:ef071b5448e559bb
+      build_id: bd-ef071b5448e559bb_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2c/2c0d183e443bf7c4f09b43603a455cf801af40b28e656376046025f90a4ba316/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/carveme/carve/.conda-lock/linux_amd64-bd-8b66c18ea3a4fb1b_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/carveme/carve/.conda-lock/linux_arm64-bd-78b0bcb418a06f19_1.txt

@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "gt_gff3"
 description: "GenomeTools gt-gff3 utility to parse, possibly transform, and output
   GFF3 files"
@@ -13,7 +12,8 @@ tools:
       documentation: "https://genometools.org/documentation.html"
       tool_dev_url: "https://github.com/genometools/genometools"
       doi: "10.1109/TCBB.2013.68"
-      licence: ["ISC"]
+      licence:
+        - "ISC"
       identifier: ""
 input:
   - - meta:
@@ -49,13 +49,27 @@ output:
           description: Error log if gt-gff3 failed to parse the input gff3 file
           pattern: "*.error.log"
           ontologies: []
+  versions_gt:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - genometools:
+          type: string
+          description: The name of the tool
+      - gt --version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - genometools:
+          type: string
+          description: The name of the tool
+      - gt --version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@gallvp"
 maintainers:

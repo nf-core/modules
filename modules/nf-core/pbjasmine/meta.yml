@@ -1,0 +1,69 @@
+name: "pbjasmine"
+description: Identify specific base modifications in PacBio HiFi reads by
+  analyzing polymerase kinetic signatures
+keywords:
+  - genomics
+  - methylation
+  - bam
+  - pacbio
+tools:
+  - "pbjasmine":
+      description: "Call select base modifications in PacBio HiFi reads."
+      homepage: "https://github.com/pacificbiosciences/jasmine"
+      documentation: "https://github.com/pacificbiosciences/jasmine"
+      tool_dev_url: "https://github.com/pacificbiosciences/jasmine"
+      doi: "no DOI available"
+      licence:
+        - "BSD-3-clause-Clear"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: BAM/CRAM file
+        pattern: "*.{bam,cram}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+          - edam: "http://edamontology.org/format_2573"
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bam":
+          type: file
+          description: Consensus reads with jasmine modification calls
+          pattern: "*.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572"
+  versions_pbjasmine:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pbjasmine:
+          type: string
+          description: The name of the tool
+      - jasmine --version | head -n 1 | sed 's/jasmine //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pbjasmine:
+          type: string
+          description: The name of the tool
+      - jasmine --version | head -n 1 | sed 's/jasmine //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@YiJin-Xiong"
+maintainers:
+  - "@YiJin-Xiong"

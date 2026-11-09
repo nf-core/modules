@@ -50,8 +50,6 @@ nextflow_process {
                         [ file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true) ]
                     ])
                     input[3] = false
-                    input[4] = 'illumina'
-                    input[5] = false
                     """
                 }
             }

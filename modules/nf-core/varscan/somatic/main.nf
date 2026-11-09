@@ -1,9 +1,12 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VARSCAN_SOMATIC {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ed/ed57a091507c62e990bbd08d532281d161d99f060316e0a991791f167d7b1daf/data':
         'community.wave.seqera.io/library/htslib_varscan:24b3b3db2ca78de8' }"
 
@@ -13,7 +16,7 @@ process VARSCAN_SOMATIC {
     output:
     tuple val(meta), path("*.snvs.vcf.gz")  , emit: vcf_snvs
     tuple val(meta), path("*.indels.vcf.gz"), emit: vcf_indels
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('varscan'), eval("varscan 2>&1 | sed -n 's/VarScan v//p'"), emit: versions_varscan, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,11 +40,6 @@ process VARSCAN_SOMATIC {
 
     bgzip ${prefix}.snvs.vcf
     bgzip ${prefix}.indels.vcf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        varscan: \$(varscan 2>&1 | grep VarScan | head -n 1 | sed 's/VarScan //g' | sed 's/,.*//g' | sed 's/^v//' | sed 's/_.*//')
-    END_VERSIONS
     """
 
     stub:
@@ -52,10 +50,5 @@ process VARSCAN_SOMATIC {
 
     echo "" | gzip > ${prefix}.snvs.vcf.gz
     echo "" | gzip > ${prefix}.indels.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        varscan: \$(varscan 2>&1 | grep VarScan | head -n 1 | sed 's/VarScan //g' | sed 's/,.*//g' | sed 's/^v//' | sed 's/_.*//')
-    END_VERSIONS
     """
 }

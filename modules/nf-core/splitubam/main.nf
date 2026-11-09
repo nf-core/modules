@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SPLITUBAM {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/splitubam:0.1.1--hc9368f3_0':
-        'biocontainers/splitubam:0.1.1--hc9368f3_0' }"
+        'quay.io/biocontainers/splitubam:0.1.1--hc9368f3_0' }"
 
     input:
     tuple val(meta), path(bam)
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('splitubam'), eval("splitubam --version | sed 's/.* //'"), emit: versions_splitubam, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,11 +27,6 @@ process SPLITUBAM {
         $args \\
         --threads $task.cpus \\
         $bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        splitubam: \$(splitubam --version | sed 's/splitubam //')
-    END_VERSIONS
     """
 
     stub:
@@ -44,10 +42,5 @@ process SPLITUBAM {
     } else { error("No `--split N` detected in args") }
     """
     $create_cmd
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        splitubam: \$(splitubam --version | sed 's/splitubam //')
-    END_VERSIONS
     """
 }

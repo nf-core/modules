@@ -15,11 +15,11 @@ nextflow_process {
     setup {
         run("MYKROBE_PREDICT") {
             script "../../../mykrobe/predict/main.nf"
-            
+
             process {
                 """
                 input[0] = [
-                    [id:'test',single_end:false],// meta map
+                    [id:'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam',checkIfExists:true)
                     ]
                 input[1] = "typhi"
@@ -30,7 +30,7 @@ nextflow_process {
 
     test("sarscov2 - json") {
         when {
-            
+
             process {
                 """
                 input[0] = MYKROBE_PREDICT.out.json
@@ -40,7 +40,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
@@ -48,7 +48,7 @@ nextflow_process {
     test("sarscov2 - json -- stub") {
         options "-stub"
         when {
-            
+
             process {
                 """
                 input[0] = MYKROBE_PREDICT.out.json
@@ -58,10 +58,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

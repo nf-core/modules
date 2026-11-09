@@ -6,13 +6,14 @@ keywords:
   - multiple sequence alignment
 tools:
   - "mafft":
-      description: Multiple alignment program for amino acid or nucleotide sequences
-        based on fast Fourier transform
+      description: Multiple alignment program for amino acid or nucleotide
+        sequences based on fast Fourier transform
       homepage: https://mafft.cbrc.jp/alignment/software/
       documentation: https://mafft.cbrc.jp/alignment/software/manual/manual.html
       tool_dev_url: https://mafft.cbrc.jp/alignment/software/source.html
       doi: "10.1093/nar/gkf436"
-      licence: ["BSD"]
+      licence:
+        - "BSD"
       identifier: biotools:MAFFT
   - "pigz":
       description: "Parallel implementation of the gzip algorithm."
@@ -27,8 +28,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - fasta:
         type: file
-        description: FASTA file containing the sequences to align. May be gzipped or
-          uncompressed.
+        description: FASTA file containing the sequences to align. May be gzipped
+          or uncompressed.
         pattern: "*.{fa,fasta}{.gz,}"
         ontologies:
           - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
@@ -40,8 +41,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - add:
         type: file
-        description: FASTA file containing sequences to align to the sequences in `fasta`
-          using `--add`. May be gzipped or uncompressed.
+        description: FASTA file containing sequences to align to the sequences in
+          `fasta` using `--add`. May be gzipped or uncompressed.
         pattern: "*.{fa,fasta}{.gz,}"
         ontologies:
           - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
@@ -53,8 +54,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - addfragments:
         type: file
-        description: FASTA file containing sequences to align to the sequences in `fasta`
-          using `--addfragments`. May be gzipped or uncompressed.
+        description: FASTA file containing sequences to align to the sequences in
+          `fasta` using `--addfragments`. May be gzipped or uncompressed.
         pattern: "*.{fa,fasta}{.gz,}"
         ontologies:
           - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
@@ -66,8 +67,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - addfull:
         type: file
-        description: FASTA file containing sequences to align to the sequences in `fasta`
-          using `--addfull`. May be gzipped or uncompressed.
+        description: FASTA file containing sequences to align to the sequences in
+          `fasta` using `--addfull`. May be gzipped or uncompressed.
         pattern: "*.{fa,fasta}{.gz,}"
         ontologies:
           - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
@@ -79,8 +80,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - addprofile:
         type: file
-        description: FASTA file containing sequences to align to the sequences in `fasta`
-          using `--addprofile`. May be gzipped or uncompressed.
+        description: FASTA file containing sequences to align to the sequences in
+          `fasta` using `--addprofile`. May be gzipped or uncompressed.
         pattern: "*.{fa,fasta}{.gz,}"
         ontologies:
           - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
@@ -92,17 +93,17 @@ input:
           e.g. [ id:'test', single_end:false ]
     - addlong:
         type: file
-        description: FASTA file containing sequences to align to the sequences in `fasta`
-          using `--addlong`. May be gzipped or uncompressed.
+        description: FASTA file containing sequences to align to the sequences in
+          `fasta` using `--addlong`. May be gzipped or uncompressed.
         pattern: "*.{fa,fasta}{.gz,}"
         ontologies:
           - edam: http://edamontology.org/format_1919 # SEQUENCE-LIKE
           - edam: http://edamontology.org/format_1929 # FASTA
   - compress:
       type: boolean
-      description: Flag representing whether the output MSA should be compressed. Set
-        to true to enable/false to disable compression. Compression is done using pigz,
-        and is multithreaded.
+      description: Flag representing whether the output MSA should be compressed.
+        Set to true to enable/false to disable compression. Compression is done
+        using pigz, and is multithreaded.
 output:
   fas:
     - - meta:
@@ -112,19 +113,57 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.fas{.gz,}":
           type: file
-          description: Aligned sequences in FASTA format. May be gzipped or uncompressed.
+          description: Aligned sequences in FASTA format. May be gzipped or
+            uncompressed.
           pattern: "*.fas{.gz,}"
           ontologies:
             - edam: http://edamontology.org/format_2554 # ALIGNMENT FORMAT TXT
             - edam: http://edamontology.org/format_1921 # ALIGNMENT FORMAT
             - edam: http://edamontology.org/format_1984 # FASTA-ALN
+  versions_mafft:
+    - - ${task.process}:
+          type: string
+          description: The process name
+      - mafft:
+          type: string
+          description: The tool name
+      - mafft --version 2>&1 | sed 's/v//;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+  versions_pigz:
+    - - ${task.process}:
+          type: string
+          description: The process name
+      - pigz:
+          type: string
+          description: The tool name
+      - pigz --version 2>&1 | sed 's/pigz //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process name
+      - mafft:
+          type: string
+          description: The tool name
+      - mafft --version 2>&1 | sed 's/v//;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+    - - ${task.process}:
+          type: string
+          description: The process name
+      - pigz:
+          type: string
+          description: The tool name
+      - pigz --version 2>&1 | sed 's/pigz //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@MillironX"
 maintainers:

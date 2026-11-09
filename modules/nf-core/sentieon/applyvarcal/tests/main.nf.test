@@ -4,15 +4,15 @@ nextflow_process {
     config "./nextflow.config"
     script "../main.nf"
     process "SENTIEON_APPLYVARCAL"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "sentieon"
     tag "sentieon/applyvarcal"
     config './nextflow.config'
-   
+
     test("homo sapiens") {
-        
+
         when {
             params {
                 module_args  = ''
@@ -37,15 +37,14 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     path(process.out.vcf[0][1]).vcf.summary,
-                    file(process.out.tbi[0][1]).name,
-                    path(process.out.versions[0]).yaml
+                    file(process.out.tbi[0][1]).name
                     ).match()
                 }
             )
         }
     }
-    
-    
+
+
     test("homo sapiens -- stub") {
         options '-stub'
         when {
@@ -71,8 +70,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    process.out,
-                    path(process.out.versions[0]).yaml
+                    process.out
                     ).match()
                 }
             )

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
     tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b2/b28daf5d9bb2f0d129dcad1b7410e0dd8a9b087aaf3ec7ced929b1f57624ad98/data'
-        : 'community.wave.seqera.io/library/gatk4_gcnvkernel:e48d414933d188cd'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b9/b9822b92da68a3e7916072218082e3fa79bebc2f377947c363613adeecd56ec5/data'
+        : 'community.wave.seqera.io/library/gatk4-main_gcnvkernel:600cef9dfbee0739'}"
 
     input:
     tuple val(meta), path(counts), path(bed), path(exclude_beds)
@@ -15,7 +18,7 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
     output:
     tuple val(meta), path("${prefix}-calls"), emit: calls
     tuple val(meta), path("${prefix}-model"), emit: model, optional: true
-    path "versions.yml",                      emit: versions
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,10 +27,10 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def intervals = bed ? "--intervals ${bed}" : ""
-    def exclude = exclude_beds ? exclude_beds.collect { "--exclude-intervals ${it}" }.join(" ") : ""
+    def exclude = exclude_beds ? exclude_beds.collect { bed_ -> "--exclude-intervals ${bed_}" }.join(" ") : ""
     def contig_ploidy = contig_ploidy_table ? "--contig-ploidy-priors ${contig_ploidy_table}" : ""
     def model = ploidy_model ? "--model ${ploidy_model}" : ""
-    def input_list = counts.collect { "--input ${it}" }.join(" ")
+    def input_list = counts.collect { count -> "--input ${count}" }.join(" ")
 
     def avail_mem = 3072
     if (!task.memory) {
@@ -39,6 +42,8 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
     """
     export THEANO_FLAGS="base_compiledir=\$PWD"
     export PYTENSOR_FLAGS="base_compiledir=\$PWD"
+    export MPLCONFIGDIR="\$PWD"
+    export XDG_CACHE_HOME="\$PWD"
     export OMP_NUM_THREADS=${task.cpus}
     export MKL_NUM_THREADS=${task.cpus}
 
@@ -53,11 +58,6 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
         ${model} \\
         --tmp-dir . \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -65,10 +65,5 @@ process GATK4_DETERMINEGERMLINECONTIGPLOIDY {
     """
     touch ${prefix}-calls
     touch ${prefix}-model
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }

@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SENTIEON_DATAMETRICS {
     tag "${meta.id}"
     label 'process_medium'
     label 'sentieon'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/20/2050c5321a5426e31b9ed1e3e98356913fe3c316a7ef02c4fb872983a730db6f/data'
-        : 'community.wave.seqera.io/library/sentieon_gnuplot:a6da525a6c9ce6e3'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cc/cc38c6c54118622727fc9495edd2b318f3d85f45b84c00681cb8eae623ec12e0/data'
+        : 'community.wave.seqera.io/library/sentieon_gnuplot:84874a80b33697db'}"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -25,7 +28,7 @@ process SENTIEON_DATAMETRICS {
     tuple val(meta), path('*qd_metrics.pdf'),  emit: qd_plot, optional: true
     tuple val(meta), path('*is_metrics.pdf'),  emit: is_plot, optional: true
     tuple val(meta), path('*gc_metrics.pdf'),  emit: gc_plot, optional: true
-    path "versions.yml",                       emit: versions
+    tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,7 +36,7 @@ process SENTIEON_DATAMETRICS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input = bam.sort().collect { "-i ${it}" }.join(' ')
+    def input = bam.sort().collect {in -> "-i ${in}" }.join(' ')
     def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64
         ? "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; "
         : ""
@@ -59,11 +62,6 @@ process SENTIEON_DATAMETRICS {
         sentieon plot QualDistribution -o ${prefix}_qd_metrics.pdf  ${prefix}_qd_metrics.txt
         sentieon plot InsertSizeMetricAlgo -o ${prefix}_is_metrics.pdf ${prefix}_is_metrics.txt
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-    END_VERSIONS
     """
 
     stub:
@@ -83,10 +81,5 @@ process SENTIEON_DATAMETRICS {
         touch ${prefix}_qd_metrics.pdf
         touch ${prefix}_is_metrics.pdf
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-    END_VERSIONS
     """
 }

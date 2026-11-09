@@ -1,0 +1,201 @@
+nextflow_process {
+
+    name "Test Process HIFICNV"
+    script "../main.nf"
+    process "HIFICNV"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hificnv"
+
+    test("homo_sapiens - [bam] [fasta] - no_optional_inputs") {
+
+        when {
+            params {
+                module_args = '--cov-regex "."'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true), //bam
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true), //bai;csi
+                    [] // maf (optional)
+                ]
+                input[1] = [
+                    [ id:'genome' ], // meta2
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true)
+                ]
+                input[2] = [
+                    [:], // meta3 - empty
+                    []   // exclude - empty file
+                ]
+                input[3] = [
+                    [:], // meta4 - empty
+                    []   // expected_cn - empty file
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - [bam] [fasta] - with_maf_input") {
+
+        when {
+            params {
+                module_args = '--cov-regex "."'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test_with_maf', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true), //bam
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true), //bai;csi
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/NA03697B2_new.pbmm2.repeats.vcf.gz', checkIfExists: true) // maf file
+                ]
+                input[1] = [
+                    [ id:'genome' ], // meta2
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true)
+                ]
+                input[2] = [
+                    [:], // meta3 - empty
+                    []   // exclude - empty file
+                ]
+                input[3] = [
+                    [:], // meta4 - empty
+                    []   // expected_cn - empty file
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() },
+                { assert process.out.maf.size() == 1 } // Verify MAF output is produced
+            )
+        }
+    }
+
+    test("homo_sapiens - [bam] [fasta] - with_exclude_bed") {
+
+        when {
+            params {
+                module_args = '--cov-regex "."'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test_with_exclude', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true), //bam
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true), //bai;csi
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/NA03697B2_new.pbmm2.repeats.vcf.gz', checkIfExists: true) // maf file
+                ]
+                input[1] = [
+                    [ id:'genome' ], // meta2
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true)
+                ]
+                input[2] = channel.of('chr19:45760000-45770300\\t45760000\\t45770300\\tchr19_bogus\\t2')
+                            .collectFile(name: 'exclude.bed', newLine: false)
+                            .map { file -> [ [ id: 'exclude' ], file ] }
+                input[3] = [
+                    [:], // meta4 - empty
+                    []   // expected_cn - empty file
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - [bam] [fasta] - with_expected_cn_bed") {
+
+        when {
+            params {
+                module_args = '--cov-regex "."'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test_with_expected_cn', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true), //bam
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true), //bai;csi
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/vcf/NA03697B2_new.pbmm2.repeats.vcf.gz', checkIfExists: true) // maf file
+                ]
+                input[1] = [
+                    [ id:'genome' ], // meta2
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true)
+                ]
+                input[2] = channel.of('chr19:45760000-45770300\\t45760000\\t45770300\\tchr19_bogus\\t2')
+                            .collectFile(name: 'exclude.bed', newLine: false)
+                            .map { file -> [ [ id: 'exclude' ], file ] }
+                input[3] = channel.of('chr19:45760000-45770300\\t45761000\\t45762000\\tchr19_bogus_exp\\t0')
+                            .collectFile(name: 'expected_cn.bed', newLine: false)
+                            .map { file -> [ [ id: 'expected_cn' ], file ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - bam - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--cov-regex "."'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam', checkIfExists: true), //bam
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/NA03697B2_downsampled.pbmm2.repeats.bam.bai', checkIfExists: true), //bai;csi
+                    []
+                ]
+                input[1] = [
+                    [ id:'genome' ], // meta2
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome3.fasta', checkIfExists: true)
+                ]
+                input[2] = [
+                    [:], // meta3 - empty
+                    []   // exclude - empty file
+                ]
+                input[3] = [
+                    [:], // meta4 - empty
+                    []   // expected_cn - empty file
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

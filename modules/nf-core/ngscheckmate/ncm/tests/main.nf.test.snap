@@ -38,7 +38,18 @@
                     
                 ],
                 "5": [
-                    "versions.yml:md5,7ac92d9cbf4fc44b3253832f3a8b2a80"
+                    [
+                        "NGSCHECKMATE_NCM",
+                        "ngscheckmate",
+                        "1.0.1"
+                    ]
+                ],
+                "6": [
+                    [
+                        "NGSCHECKMATE_NCM",
+                        "bcftools",
+                        "1.21"
+                    ]
                 ],
                 "all": [
                     [
@@ -75,61 +86,150 @@
                 "vcf": [
                     
                 ],
-                "versions": [
-                    "versions.yml:md5,7ac92d9cbf4fc44b3253832f3a8b2a80"
+                "versions_bcftools": [
+                    [
+                        "NGSCHECKMATE_NCM",
+                        "bcftools",
+                        "1.21"
+                    ]
+                ],
+                "versions_ngscheckmate": [
+                    [
+                        "NGSCHECKMATE_NCM",
+                        "ngscheckmate",
+                        "1.0.1"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-10-28T12:12:20.721445",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.1"
-        },
-        "timestamp": "2024-05-22T15:02:55.532427413"
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.4"
+        }
     },
     "sarscov2 - vcf": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test1"
-                    },
-                    "test1_output_corr_matrix.txt:md5,3a23347ff7071d5d8e273bfc29731d4a"
+            {
+                "all": [
+                    [
+                        {
+                            "id": "test1"
+                        },
+                        "test1_all.txt:md5,7e6ca5eb3daf6f589ea20fa117269edf"
+                    ]
+                ],
+                "corr_matrix": [
+                    [
+                        {
+                            "id": "test1"
+                        },
+                        "test1_output_corr_matrix.txt:md5,3a23347ff7071d5d8e273bfc29731d4a"
+                    ]
+                ],
+                "matched": [
+                    [
+                        {
+                            "id": "test1"
+                        },
+                        "test1_matched.txt"
+                    ]
+                ],
+                "pdf": [
+                    [
+                        {
+                            "id": "test1"
+                        },
+                        "test1.pdf"
+                    ]
+                ],
+                "vcf": [
+                    
+                ],
+                "versions_bcftools": [
+                    [
+                        "NGSCHECKMATE_NCM",
+                        "bcftools",
+                        "1.21"
+                    ]
+                ],
+                "versions_ngscheckmate": [
+                    [
+                        "NGSCHECKMATE_NCM",
+                        "ngscheckmate",
+                        "1.0.1"
+                    ]
                 ]
-            ],
-            "test1_matched.txt",
-            [
-                [
-                    {
-                        "id": "test1"
-                    },
-                    "test1_all.txt:md5,7e6ca5eb3daf6f589ea20fa117269edf"
-                ]
-            ],
-            "test1.pdf",
-            [
-                "versions.yml:md5,7ac92d9cbf4fc44b3253832f3a8b2a80"
-            ]
+            }
         ],
+        "timestamp": "2026-10-28T12:12:13.945331",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.4"
-        },
-        "timestamp": "2025-03-05T15:40:36.013242151"
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.4"
+        }
     },
     "sarscov2 - bam": {
         "content": [
-            "combined_bams_output_corr_matrix.txt",
-            "combined_bams_matched.txt",
-            "combined_bams_all.txt",
-            [
-                "versions.yml:md5,7ac92d9cbf4fc44b3253832f3a8b2a80"
-            ]
+            {
+                "all": [
+                    [
+                        {
+                            "id": "combined_bams"
+                        },
+                        "combined_bams_all.txt"
+                    ]
+                ],
+                "corr_matrix": [
+                    [
+                        {
+                            "id": "combined_bams"
+                        },
+                        "combined_bams_output_corr_matrix.txt"
+                    ]
+                ],
+                "matched": [
+                    [
+                        {
+                            "id": "combined_bams"
+                        },
+                        "combined_bams_matched.txt"
+                    ]
+                ],
+                "pdf": [
+                    
+                ],
+                "vcf": [
+                    [
+                        {
+                            "id": "combined_bams"
+                        },
+                        [
+                            "test.paired_end.methylated.sorted.vcf",
+                            "test.paired_end.sorted.vcf"
+                        ]
+                    ]
+                ],
+                "versions_bcftools": [
+                    [
+                        "NGSCHECKMATE_NCM",
+                        "bcftools",
+                        "1.21"
+                    ]
+                ],
+                "versions_ngscheckmate": [
+                    [
+                        "NGSCHECKMATE_NCM",
+                        "ngscheckmate",
+                        "1.0.1"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-10-28T12:19:57.037444",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.3"
-        },
-        "timestamp": "2024-08-06T11:05:56.136156"
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.4"
+        }
     },
     "sarscov2 - vcf - stub": {
         "content": [
@@ -170,7 +270,18 @@
                     
                 ],
                 "5": [
-                    "versions.yml:md5,7ac92d9cbf4fc44b3253832f3a8b2a80"
+                    [
+                        "NGSCHECKMATE_NCM",
+                        "ngscheckmate",
+                        "1.0.1"
+                    ]
+                ],
+                "6": [
+                    [
+                        "NGSCHECKMATE_NCM",
+                        "bcftools",
+                        "1.21"
+                    ]
                 ],
                 "all": [
                     [
@@ -207,15 +318,26 @@
                 "vcf": [
                     
                 ],
-                "versions": [
-                    "versions.yml:md5,7ac92d9cbf4fc44b3253832f3a8b2a80"
+                "versions_bcftools": [
+                    [
+                        "NGSCHECKMATE_NCM",
+                        "bcftools",
+                        "1.21"
+                    ]
+                ],
+                "versions_ngscheckmate": [
+                    [
+                        "NGSCHECKMATE_NCM",
+                        "ngscheckmate",
+                        "1.0.1"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-10-28T12:12:27.696538",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.1"
-        },
-        "timestamp": "2024-05-22T15:20:40.816531052"
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.4"
+        }
     }
 }

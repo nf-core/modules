@@ -11,7 +11,8 @@ tools:
       homepage: "https://github.com/Ivarz/Conifer"
       documentation: "https://github.com/Ivarz/Conifer"
       tool_dev_url: "https://github.com/Ivarz/Conifer"
-      licence: ["BSD / BSD-2-Clause"]
+      licence:
+        - "BSD / BSD-2-Clause"
       identifier: biotools:conifer
 input:
   - - meta:
@@ -41,13 +42,27 @@ output:
             Conifer report file containing confidence scores of Kraken2 classified reads.
           pattern: "*.score"
           ontologies: []
+  versions_conifer:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - conifer:
+          type: string
+          description: The name of the tool
+      - conifer --version 2>&1 | sed 's/^.*Conifer //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - conifer:
+          type: string
+          description: The name of the tool
+      - conifer --version 2>&1 | sed 's/^.*Conifer //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@icaromsc"
   - "@rpetit3"

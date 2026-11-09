@@ -1,25 +1,27 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FOLDCOMP_DECOMPRESS {
     tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/foldcomp:0.0.7--h43eeafb_0':
-        'biocontainers/foldcomp:0.0.7--h43eeafb_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/foldcomp:1.0.0--h7f5d12c_0':
+        'quay.io/biocontainers/foldcomp:1.0.0--h7f5d12c_0' }"
 
     input:
     tuple val(meta), path(fcz)
 
     output:
-    tuple val(meta), path("{*pdb,*.cif}"), emit: pdb
-    path "versions.yml"                  , emit: versions
+    tuple val(meta), path("{*pdb,*.cif}")                                                    , emit: pdb
+    tuple val("${task.process}"), val('foldcomp'), eval("foldcomp --version | cut -d' ' -f2"), emit: versions_foldcomp, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     foldcomp \\
         $args \\
@@ -27,21 +29,12 @@ process FOLDCOMP_DECOMPRESS {
         -t ${task.cpus} \\
         ${fcz}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        foldcomp: \$(foldcomp --version)
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.pdb
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        foldcomp: \$(foldcomp --version)
-    END_VERSIONS
     """
 }

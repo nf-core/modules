@@ -4,12 +4,12 @@ nextflow_process {
     config "./nextflow.config"
     script "../main.nf"
     process "BAMTOOLS_CONVERT"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "bamtools"
     tag "bamtools/convert"
-   
+
     test("test_bamtools_convert_ext_error") {
         when {
             params {
@@ -116,8 +116,8 @@ nextflow_process {
         }
     }
     test("test_bamtools_convert_json") {
-        
-        
+
+
         when {
             params {
                 module_args = "-format json"
@@ -139,8 +139,8 @@ nextflow_process {
         }
     }
     test("test_bamtools_convert_pileup") {
-        
-        
+
+
         when {
             params {
                 module_args = "-format pileup"
@@ -162,8 +162,8 @@ nextflow_process {
         }
     }
     test("test_bamtools_convert_sam") {
-        
-        
+
+
         when {
             params {
                 module_args = "-format sam"

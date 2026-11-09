@@ -1,14 +1,14 @@
 nextflow_process {
 
     name "Test Process DUPHOLD"
-    
+
     script "../main.nf"
     process "DUPHOLD"
-   
+
     tag "modules"
     tag "modules_nfcore"
     tag "duphold"
-   
+
     test("homo_sapiens - bam gvcf - fasta") {
         when {
             process {
@@ -30,7 +30,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
                     process.out.vcf.collect{ [
                         path(it[1]).vcf.summary,
                         path(it[1]).vcf.variantsMD5
@@ -40,10 +40,10 @@ nextflow_process {
         }
     }
     test("homo_sapiens - cram gvcf - fasta") {
-        
-        
+
+
         when {
-            
+
             process {
                 """
                 input[0] = [
@@ -63,7 +63,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
                     process.out.vcf.collect{ [
                         path(it[1]).vcf.summary,
                         path(it[1]).vcf.variantsMD5
@@ -74,7 +74,7 @@ nextflow_process {
     }
     test("homo_sapiens - bam gvcf snp - fasta") {
         when {
-            
+
             process {
                 """
                 input[0] = [
@@ -94,7 +94,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
                     process.out.vcf.collect{ [
                         path(it[1]).vcf.summary,
                         path(it[1]).vcf.variantsMD5
@@ -108,7 +108,7 @@ nextflow_process {
         options '-stub'
 
         when {
-            
+
             process {
                 """
                 input[0] = [

@@ -32,7 +32,7 @@ input:
           are provided.
         pattern: "*.bai"
         ontologies: []
-    - interval_file:
+    - intervals:
         type: file
         description: file or files containing genomic intervals for use in base quality
           score recalibration.
@@ -55,7 +55,7 @@ output:
           description: |
             Groovy Map containing sample information.
             e.g. [ id:'test' ]
-      - "*.vcf":
+      - "*.vcf.gz":
           type: file
           description: vcf file created with deepvariant (does not support .gz for normal
             vcf), optional
@@ -73,13 +73,34 @@ output:
           pattern: "*.g.vcf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
-  versions:
-    - versions.yml:
+  compatible_versions:
+    - compatible_versions.yml:
         type: file
-        description: File containing software versions.
-        pattern: "versions.yml"
+        description: File containing info on compatible CPU-based software versions.
+        pattern: "compatible_versions.yml"
         ontologies:
           - edam: http://edamontology.org/format_3750 # YAML
+  versions_parabricks:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - parabricks:
+          type: string
+          description: The tool name
+      - "pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - parabricks:
+          type: string
+          description: The tool name
+      - "pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@bsiranosian"
 maintainers:

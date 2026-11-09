@@ -1,9 +1,12 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ARTIC_GUPPYPLEX {
     tag "$meta.id"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5a747cc579edfc0cb2176b749afc02550ab5de678ae6a40d2cfadeba6c0de25d/data' :
         'community.wave.seqera.io/library/artic:1.6.2--d4956cdc155b8612' }"
 
@@ -12,7 +15,7 @@ process ARTIC_GUPPYPLEX {
 
     output:
     tuple val(meta), path("*.fastq.gz"), emit: fastq
-    path  "versions.yml"               , emit: versions
+    tuple val("${task.process}"), val('artic'), eval('artic -v 2>&1 | sed "s/^.*artic //; s/ .*$//"')   , emit: versions_artic, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,20 +31,11 @@ process ARTIC_GUPPYPLEX {
         --output ${prefix}.fastq
 
     pigz -p ${task.cpus} *.fastq
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        artic: \$(artic -v 2>&1 | sed 's/^.*artic //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo '' | gzip > ${prefix}.fastq.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        artic: \$(artic -v 2>&1 | sed 's/^.*artic //; s/ .*\$//')
-    END_VERSIONS
     """
 }

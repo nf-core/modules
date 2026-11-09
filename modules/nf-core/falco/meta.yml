@@ -11,7 +11,8 @@ tools:
         of sequence reads."
       homepage: "https://falco.readthedocs.io/"
       documentation: "https://falco.readthedocs.io/"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:falco-rna
 input:
   - - meta:
@@ -24,7 +25,8 @@ input:
         description: |
           List of input FastQ files of size 1 and 2 for single-end and paired-end data,
           respectively.
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1930
 output:
   html:
     - - meta:
@@ -36,7 +38,8 @@ output:
           type: file
           description: FastQC like report
           pattern: "*_{fastqc_report.html}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3474
   txt:
     - - meta:
           type: map
@@ -47,14 +50,29 @@ output:
           type: file
           description: falco report data
           pattern: "*_{data.txt}"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3474
+  versions_falco:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - falco:
+          type: string
+          description: The name of the tool
+      - falco --version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - falco:
+          type: string
+          description: The name of the tool
+      - falco --version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@lucacozzuto"
 maintainers:

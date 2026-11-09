@@ -1,19 +1,20 @@
 #!/usr/bin/env python3
 
+import argparse
 import os
 import platform
-import yaml
 import shlex
-import argparse
+
+import yaml
 
 os.environ["MPLCONFIGDIR"] = "./tmp/mpl"
 os.environ["NUMBA_CACHE_DIR"] = "./tmp/numba"
 
+import matplotlib
+import pandas as pd
 import scanpy as sc
 import scanpy.external as sce
-import pandas as pd
-import matplotlib
-import matplotlib.pyplot as plt
+
 
 class Arguments:
     # adopted from mygene module (Suzanne Jin)
@@ -22,9 +23,6 @@ class Arguments:
     """
 
     def __init__(self) -> None:
-
-
-
         self.data = "$data"
 
         self.use_10x = True
@@ -34,12 +32,12 @@ class Arguments:
         cell_hashing_columns = "${cell_hashing_columns.join(' ')}".split()
         self.cell_hashing_columns = [str(x) for x in cell_hashing_columns]
 
-        self.prefix               = "$task.ext.prefix" if "$task.ext.prefix" != "null" else "$meta.id"
+        self.prefix = "$task.ext.prefix" if "$task.ext.prefix" != "null" else "$meta.id"
 
         self.path_assignment = self.prefix + "_assignment_hashsolo.csv"
         # self.path_plot       = self.prefix + "_hashsolo.jpg"
-        self.path_h5ad       = self.prefix + "_hashsolo.h5ad"
-        self.path_params     = self.prefix + "_params_hashsolo.csv"
+        self.path_h5ad = self.prefix + "_hashsolo.h5ad"
+        self.path_params = self.prefix + "_params_hashsolo.csv"
         self.parse_ext_args("$task.ext.args")
 
     def parse_ext_args(self, args_string: str) -> None:
@@ -62,8 +60,7 @@ class Arguments:
             help="""List of priors for each hypothesis:
             NEGATIVE = prior for negative hypothesis
             SINGLET  = prior for singlet hypothesis
-            DOUBLET  = prior for doublet hypothesis"""
-            ,
+            DOUBLET  = prior for doublet hypothesis""",
             default=[0.01, 0.8, 0.19],
         )
 
@@ -120,8 +117,8 @@ class Arguments:
         for attr in vars(self):
             print(f"{attr}: {getattr(self, attr)}")
 
-if __name__ == "__main__":
 
+if __name__ == "__main__":
     # ------------------------------ parse and print arguments ------------------------------
     args = Arguments()
     args.print_args()
@@ -135,7 +132,7 @@ if __name__ == "__main__":
             # Convert sparse matrix to dense array if needed, otherwise use as-is
             cell_hashing_data.X.toarray() if hasattr(cell_hashing_data.X, "toarray") else cell_hashing_data.X,
             index=cell_hashing_data.obs_names,
-            columns=cell_hashing_data.var_names
+            columns=cell_hashing_data.var_names,
         )
         args.cell_hashing_columns = list(cell_hashing_data.obs.columns)
     else:
@@ -144,7 +141,6 @@ if __name__ == "__main__":
     if len(args.cell_hashing_columns) == 2:
         # This edge case issue may be fixed in future versions: https://github.com/calico/solo/issues/91
         args.number_of_noise_barcodes = 1
-
 
     # -------------------------------------- call hashsolo -----------------------------------
     if args.clustering_data is not None:
@@ -166,7 +162,6 @@ if __name__ == "__main__":
             pre_existing_clusters=args.pre_existing_clusters,
             number_of_noise_barcodes=args.number_of_noise_barcodes,
         )
-
 
     # ------------------------------------- save results -------------------------------------
 
@@ -193,10 +188,10 @@ if __name__ == "__main__":
 
     versions = {
         "${task.process}": {
-            "python"    : platform.python_version(),
-            "scanpy"    : sc.__version__,
+            "python": platform.python_version(),
+            "scanpy": sc.__version__,
             "matplotlib": matplotlib.__version__,
-            "pandas"    : pd.__version__,
+            "pandas": pd.__version__,
         }
     }
 

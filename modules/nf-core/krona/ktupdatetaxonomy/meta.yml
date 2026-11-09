@@ -11,10 +11,15 @@ tools:
         Bioinformatics tools as well as from text and XML files.
       homepage: https://github.com/marbl/Krona/wiki/KronaTools
       documentation: https://github.com/marbl/Krona/wiki/Installing
-      doi:
-        10.1186/1471-2105-12-385
-        # There is no input. This module downloads a pre-built taxonomy database for use with Krona Tools.
+      doi: 10.1186/1471-2105-12-385
+      publication:
+        author: "Ondov B.D., Bergman N.H. & Phillippy A.M."
+        year: 2011
+        title: "Interactive metagenomic visualization in a Web browser"
+        source: "BMC Bioinformatics"
+      licence: ["https://raw.githubusercontent.com/marbl/Krona/master/KronaTools/LICENSE.txt"]
       identifier: biotools:krona
+#  There is no input. This module downloads a pre-built taxonomy database for use with Krona Tools.
 output:
   db:
     - taxonomy/taxonomy.tab:
@@ -23,13 +28,27 @@ output:
         pattern: "*.{tab}"
         ontologies:
           - edam: http://edamontology.org/format_3475 # TSV
+  versions_krona:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - krona:
+          type: string
+          description: The name of the tool
+      - ktImportTaxonomy | grep -Po '(?<=KronaTools )[0-9.]+':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - krona:
+          type: string
+          description: The name of the tool
+      - ktImportTaxonomy | grep -Po '(?<=KronaTools )[0-9.]+':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@mjakobs"
 maintainers:

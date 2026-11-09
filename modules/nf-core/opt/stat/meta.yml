@@ -1,0 +1,87 @@
+name: "opt_stat"
+description: "stat summarizes opt binding predictions"
+keywords:
+  - opt
+  - opt stat
+  - transcripts
+  - binding predictions
+  - off-target probes
+  - align probes
+  - summary stats
+tools:
+  - "opt":
+      description: "opt is a simple program that aligns probe sequences to transcript
+        sequences to detect potential off-target probe activity"
+      homepage: "https://github.com/JEFworks-Lab/off-target-probe-tracker"
+      documentation: "https://github.com/JEFworks-Lab/off-target-probe-tracker/blob/main/README.md"
+      tool_dev_url: "https://github.com/JEFworks-Lab/off-target-probe-tracker"
+      licence:
+        - GPL-3.0 license
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing information of the probe targets generated from the panel sequences with `opt track`
+          e.g. `[ id:'breast_cancer_probe_panel_sequences' ]`
+    - probe_targets:
+        type: file
+        description: Generated probe targets
+        pattern: "*.tsv"
+        ontologies:
+          - edam: http://edamontology.org/format_3475
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing information of the forward oriented fasta generated with the probes panel sequences 'opt flip'
+          e.g. `[ id:'breast_cancer_probe_panel_sequences' ]`
+    - fwd_oriented_probes:
+        type: file
+        description: The forward oriented fasta file
+        pattern: "*.fa"
+        ontologies: []
+  - gene_synonyms:
+      type: file
+      description: Gene synonyms that may have been counted as off-targets but
+        simply differ in name (optional input)
+      pattern: "*.csv"
+      ontologies:
+        - edam: http://edamontology.org/format_3752
+output:
+  summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing summary of the forward oriented probes generated with the panel sequences 'opt flip and track'
+            e.g. `[ id:'breast_cancer_probe_panel_sequences' ]`
+      - ${prefix}/collapsed_summary.tsv:
+          type: file
+          description: Summary of the opt binding predictions
+          pattern: "*collapsed_summary.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  versions_opt:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - opt:
+          type: string
+          description: The name of the tool
+      - opt --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - opt:
+          type: string
+          description: The name of the tool
+      - opt --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@khersameesh24"
+maintainers:
+  - "@khersameesh24"

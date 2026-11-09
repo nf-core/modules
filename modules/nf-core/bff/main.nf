@@ -1,10 +1,13 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BFF {
     tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'oras://community.wave.seqera.io/library/bioconductor-cellhashr_r-seurat:1c94360d8ed188c4':
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/21/21d3acad5fd1818f00b1c267fcc8c8be88c930cf31e74fb6b5ce444f96827604/data':
         'community.wave.seqera.io/library/bioconductor-cellhashr_r-seurat:25c4bc76749af5ac' }"
 
     input:
@@ -14,7 +17,7 @@ process BFF {
     tuple val(meta), path("*_assignment_bff.csv"), emit: assignment
     tuple val(meta), path("*_metrics_bff.csv")   , emit: metrics
     tuple val(meta), path("*_params_bff.csv")    , emit: params
-    path "versions.yml"                          , emit: versions
+    path "versions.yml"                          , emit: versions_bff, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

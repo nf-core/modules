@@ -1,6 +1,5 @@
 name: "art_illumina"
-description: Simulation tool to generate synthetic Illumina next-generation sequencing
-  reads
+description: Simulation tool to generate synthetic Illumina next-generation sequencing reads
 keywords:
   - fastq
   - fasta
@@ -8,14 +7,11 @@ keywords:
   - simulate
 tools:
   - "art":
-      description: "ART is a set of simulation tools to generate synthetic next-generation
-        sequencing reads. ART simulates sequencing reads by mimicking real sequencing
-        process with empirical error models or quality profiles summarized from large
-        recalibrated sequencing data. ART can also simulate reads using user own read
-        error model or quality profiles. "
+      description: "ART is a set of simulation tools to generate synthetic next-generation sequencing reads. ART simulates sequencing reads by mimicking real sequencing process with empirical error models or quality profiles summarized from large recalibrated sequencing data. ART can also simulate reads using user own read error model or quality profiles. "
       homepage: "https://www.niehs.nih.gov/research/resources/software/biostatistics/art/index.cfm"
       doi: "10.1093/bioinformatics/btr708"
-      licence: ["GPL version 3 license"]
+      licence:
+        - "GPL version 3 license"
       identifier: ""
 input:
   - - meta:
@@ -30,12 +26,10 @@ input:
         ontologies: []
   - sequencing_system:
       type: string
-      description: The name of Illumina sequencing system of the built-in profile used
-        for simulation
+      description: The name of Illumina sequencing system of the built-in profile used for simulation
   - fold_coverage:
       type: integer
-      description: The fold of read coverage to be simulated or number of reads/read
-        pairs generated for each amplicon
+      description: The fold of read coverage to be simulated or number of reads/read pairs generated for each amplicon
   - read_length:
       type: integer
       description: The length of reads to be simulated
@@ -60,8 +54,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.aln":
           type: file
-          description: OPTIONAL Alignment file of the simulated reads. Enabled by default,
-            to disable, use -na/--noALN.
+          description: OPTIONAL Alignment file of the simulated reads. Enabled by default, to disable, use -na/--noALN.
           pattern: "*.aln"
           ontologies: []
   sam:
@@ -72,19 +65,56 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.sam":
           type: file
-          description: OPTIONAL Alignment file in SAM format of the simulated reads.
-            Enabled with -sam/--samout.
+          description: OPTIONAL Alignment file in SAM format of the simulated reads. Enabled with -sam/--samout.
           pattern: "*.sam"
           ontologies: []
+  versions_art_illumina:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - art:
+          type: string
+          description: The name of the tool
+      - 2016.06.05:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - art:
+          type: string
+          description: The name of the tool
+      - 2016.06.05:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@MarieLataretu"
 maintainers:
   - "@MarieLataretu"
   - "@gallvp"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/art:2016.06.05--5eb6337227f62cf5
+      build_id: bd-5eb6337227f62cf5_1
+      scan_id: sc-7d3564656d77d94d_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/art:2016.06.05--4bc5c895a427b1ce
+      build_id: bd-4bc5c895a427b1ce_1
+      scan_id: sc-44304677b4ecb380_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/art:2016.06.05--441d6326b641e4dd
+      build_id: bd-441d6326b641e4dd_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fc/fc5cc0179109b3579ebcb1f8ad4ff5b3833e29cfd3ea171e671569eeab51a9bd/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/art:2016.06.05--4a34ef2b67cad43c
+      build_id: bd-4a34ef2b67cad43c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c8/c8c4cdb815549d4212e2ec21d1eb8bcf8fa709b5cffd2a39eaf76917c6b1be5c/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/art/illumina/.conda-lock/linux_amd64-bd-5eb6337227f62cf5_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/art/illumina/.conda-lock/linux_arm64-bd-4bc5c895a427b1ce_1.txt

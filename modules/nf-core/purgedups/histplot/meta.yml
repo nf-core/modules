@@ -43,13 +43,27 @@ output:
           description: A png file of the read depth coverage.
           pattern: "*.png"
           ontologies: []
+  versions_purgedups:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - purge_dups:
+          type: string
+          description: The name of the tool
+      - 1.2.6:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - purge_dups:
+          type: string
+          description: The name of the tool
+      - 1.2.6:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@mahesh-panchal"
 maintainers:

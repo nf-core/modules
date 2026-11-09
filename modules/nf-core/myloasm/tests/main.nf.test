@@ -1,0 +1,70 @@
+nextflow_process {
+
+    name "Test Process MYLOASM"
+    script "../main.nf"
+    process "MYLOASM"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "myloasm"
+
+    test("homo_sapiens - pacbio - hifi - fastq") {
+        when {
+            params {
+                module_args = '--hifi'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test_hifi' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists:true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out,
+                        unstableKeys: ["contigs", "contigs_alt", "contigs_dup", "mapping"],
+                        ignoreKeys: ["results", "log"]
+                    )
+                ).match() },
+                { assert path(process.out.log[0][1]).readLines().any { l -> l.contains('Assembly completed') } }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - pacbio - hifi - fastq - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--hifi'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test_stub' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/fastq/test_hifi.fastq.gz', checkIfExists:true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    sanitizeOutput(process.out, ignoreKeys: ["results"])
+                ).match() }
+            )
+        }
+
+    }
+
+}

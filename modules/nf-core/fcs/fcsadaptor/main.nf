@@ -1,9 +1,12 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FCS_FCSADAPTOR {
     tag "$meta.id"
     label 'process_low'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://ftp.ncbi.nlm.nih.gov/genomes/TOOLS/FCS/releases/0.5.0/fcs-adaptor.sif':
         'docker.io/ncbi/fcs-adaptor:0.5.0' }"
 
@@ -16,7 +19,8 @@ process FCS_FCSADAPTOR {
     tuple val(meta), path("*.fcs_adaptor.log")        , emit: log
     tuple val(meta), path("*.pipeline_args.yaml")     , emit: pipeline_args
     tuple val(meta), path("*.skipped_trims.jsonl")    , emit: skipped_trims
-    path "versions.yml"                               , emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('fcsadaptor'), val("0.5.0"), emit: versions_fcsadaptor, topic: versions
 
     // Downstream handling of optional cleaned_assembly
     //
@@ -41,7 +45,6 @@ process FCS_FCSADAPTOR {
     }
     def args = task.ext.args ?: '--prok' // --prok || --euk
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def FCSADAPTOR_VERSION = '0.5.0' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     # To avoid permanentFail: See https://github.com/ncbi/fcs/issues/42
     sed -E 's/^(>[^[:space:]]+).*/\\1/'  \\
@@ -50,7 +53,7 @@ process FCS_FCSADAPTOR {
 
     av_screen_x \\
         -o output/ \\
-        $args \\
+        ${args} \\
         ${prefix}.id.only.fasta
 
     # compress and/or rename files with prefix
@@ -63,11 +66,6 @@ process FCS_FCSADAPTOR {
     cp "output/fcs_adaptor.log"           "${prefix}.fcs_adaptor.log"
     cp "output/pipeline_args.yaml"        "${prefix}.pipeline_args.yaml"
     cp "output/skipped_trims.jsonl"       "${prefix}.skipped_trims.jsonl"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        FCS-adaptor: $FCSADAPTOR_VERSION
-    END_VERSIONS
     """
 
     stub:
@@ -76,17 +74,11 @@ process FCS_FCSADAPTOR {
         error "FCS_FCSADAPTOR module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def FCSADAPTOR_VERSION = '0.5.0'
 
     """
     touch ${prefix}.fcs_adaptor_report.txt
     touch ${prefix}.fcs_adaptor.log
     touch ${prefix}.pipeline_args.yaml
     touch ${prefix}.skipped_trims.jsonl
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        FCS-adaptor: $FCSADAPTOR_VERSION
-    END_VERSIONS
     """
 }

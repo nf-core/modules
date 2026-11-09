@@ -1,101 +1,119 @@
-include { BEDTOOLS_MAKEWINDOWS              } from '../../../modules/nf-core/bedtools/makewindows/main.nf'
-include { SHAPEIT5_PHASECOMMON              } from '../../../modules/nf-core/shapeit5/phasecommon/main.nf'
-include { SHAPEIT5_LIGATE                   } from '../../../modules/nf-core/shapeit5/ligate/main.nf'
-include { BCFTOOLS_INDEX as VCF_INDEX1      } from '../../../modules/nf-core/bcftools/index/main.nf'
-include { BCFTOOLS_INDEX as VCF_INDEX2      } from '../../../modules/nf-core/bcftools/index/main.nf'
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
+include { GLIMPSE2_CHUNK                          } from '../../../modules/nf-core/glimpse2/chunk'
+include { SHAPEIT5_PHASECOMMON                    } from '../../../modules/nf-core/shapeit5/phasecommon'
+include { SHAPEIT5_LIGATE                         } from '../../../modules/nf-core/shapeit5/ligate'
+include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_PHASE  } from '../../../modules/nf-core/bcftools/index'
+include { BCFTOOLS_INDEX as BCFTOOLS_INDEX_LIGATE } from '../../../modules/nf-core/bcftools/index'
 
 workflow VCF_PHASE_SHAPEIT5 {
 
     take:
-    ch_vcf        // channel (mandatory): [ val(meta), path(vcf), path(csi), path(pedigree), val(region) ]
-    ch_ref        // channel (optional) : [ val(meta), path(ref), path(csi) ]
-    ch_scaffold   // channel (optional) : [ val(meta), path(scaffold), path(csi) ]
-    ch_map        // channel (optional) : [ val(meta), path(map)]
+    ch_input          // channel (mandatory) : [ [id, panelid, scaffoldid, chr], vcf, index, pedigree, ref, index, scaffold, index, region, gmap, [chunks] ]
+    chunk_model       // val     (mandatory) : model to used for GLIMPSE2_chunk
 
     main:
 
-    ch_versions = Channel.empty()
+    ch_input.map{ items ->
+        assert items.size() == 11 : "Input channel must contain exactly 11 elements, but got ${items.size()}"
+        assert items[0] instanceof Map: "First element of input channel must be a metadata map, but got ${items[0].getClass()}"
+        assert items[1].size() > 0: "Second element of input channel must be a non-empty VCF file path, but got ${items[1]}"
+        assert items[2].size() > 0: "Third element of input channel must be a non-empty index file path, but got ${items[2]}"
+    }
 
-    // It is needed to generate a file containing the region to phase in a Chr \tab Start \tab End format
-    // The meta map needing to be conserved the following steps a required
+    ch_input_branch = ch_input.branch{ _meta, _vcf, _index, _pedigree, _ref, _ref_index, _scaffold, _scaffold_index, _region, _gmap, chunks ->
+        with_chunks: chunks.size() > 0
+        without_chunks: chunks.size() == 0
+    }
 
-    // Keep the meta map and the region in two separated channel but keed id field to link them back
-    ch_region = ch_vcf
-        .multiMap { meta, _vcf, _csi, _pedigree, region ->
-            metadata: [ meta.id, meta]
-            region  : [ meta.id, region]
-        }
+    GLIMPSE2_CHUNK ( ch_input_branch.without_chunks.map{ meta, vcf, index, _pedigree, _ref, _ref_index, _scaffold, _scaffold_index, region, gmap, _chunks -> [
+        meta, vcf, index, region, gmap
+    ]}, chunk_model )
 
-    // Create the File in bed format and use the meta id for the file name
-    ch_merged_region = ch_region.region
-        .collectFile { metaid, region -> ["${metaid}.bed", region.replace(":","\t").replace("-","\t")] }
-        .map { file -> [file.baseName, file] }
+    ch_chunks = GLIMPSE2_CHUNK.out.chunk_chr
+        .splitCsv(header: [
+            'ID', 'Chr', 'RegionBuf', 'RegionCnk', 'WindowCm',
+            'WindowMb', 'NbTotVariants', 'NbComVariants'
+        ], sep: "\t", skip: 0)
+        .map { meta, rows -> [meta, rows["RegionBuf"]]}
 
-    // Link back the meta map with the file
-    ch_region_file = ch_region.metadata
-        .join(ch_merged_region, failOnMismatch:true, failOnDuplicate:true)
-        .map { _mid, meta, region_file -> [meta, region_file]}
+    ch_parameters = ch_input_branch.with_chunks
+        .mix(ch_input_branch.without_chunks
+            .join(ch_chunks.groupTuple(), failOnMismatch: true, failOnDuplicate: true)
+            .map{ meta, vcf, index, pedigree, ref, ref_index, scaffold, scaffold_index, region, gmap, _old_chunks, new_chunks -> [
+                meta, vcf, index, pedigree, ref, ref_index, scaffold, scaffold_index, region, gmap, new_chunks
+            ]}
+        )
+        .map{ meta, vcf, index, pedigree, ref_vcf, ref_index, scaffold_vcf, scaffold_index, regionout, gmap, chunks -> [
+            meta, vcf, index, pedigree, ref_vcf, ref_index, scaffold_vcf, scaffold_index, regionout, gmap, chunks, chunks.size()
+        ]}
+        .transpose(by: 10)
 
-    BEDTOOLS_MAKEWINDOWS(ch_region_file)
-    ch_versions = ch_versions.mix(BEDTOOLS_MAKEWINDOWS.out.versions.first())
-
-    ch_chunk_output = BEDTOOLS_MAKEWINDOWS.out.bed
-        .splitCsv(header: ['Chr', 'Start', 'End'], sep: "\t", skip: 0)
-        .map { meta, it -> [meta, it["Chr"]+":"+it["Start"]+"-"+it["End"]]}
-
-    // Count the number of chunks
-    ch_chunks_number = BEDTOOLS_MAKEWINDOWS.out.bed
-        .map { meta, bed -> [meta, bed.countLines().intValue()]}
-
-    ch_phase_input = ch_vcf
-        .map { meta, vcf, index, pedigree, _region ->
-            [meta, vcf, index, pedigree] }
-        .combine(ch_chunk_output, by:0)
-        .map { meta, vcf, index, pedigree, chunk ->
-                [meta + [id: "${meta.id}_${chunk.replace(":","-")}"], // The meta.id field need to be modified to be unique for each chunk
-                vcf, index, pedigree, chunk]}
-
-    SHAPEIT5_PHASECOMMON (
-        ch_phase_input,
-        ch_ref,
-        ch_scaffold,
-        ch_map
-    )
-    ch_versions = ch_versions.mix(SHAPEIT5_PHASECOMMON.out.versions)
-
-    VCF_INDEX1(SHAPEIT5_PHASECOMMON.out.phased_variant)
-    ch_versions = ch_versions.mix(VCF_INDEX1.out.versions)
-
-    ch_ligate_input = SHAPEIT5_PHASECOMMON.out.phased_variant
-        .join(VCF_INDEX1.out.csi, failOnMismatch:true, failOnDuplicate:true)
-        .map{ meta, vcf, csi ->
-            def newmeta = meta + [id: meta.id.split("_")[0..-2].join("_")]
-            [newmeta, vcf, csi]}
-        .combine(ch_chunks_number, by:0)
-        .map{meta, vcf, csi, chunks_num ->
-            [groupKey(meta, chunks_num), vcf, csi]}
-        .groupTuple()
-        .map{ meta, vcf, csi ->
+    // Rearrange channel for phasing
+    ch_phase_input = ch_parameters
+        .map{
+            meta, vcf, index, pedigree, ref_vcf, ref_index, scaffold_vcf, scaffold_index, _regionout, gmap, regionbuf, region_size ->
+            def chr = regionbuf.tokenize(':')[0]
+            def region = regionbuf.tokenize(':')[1]
+            def start = region.tokenize('-')[0]
+            def end = region.tokenize('-')[1]
+            def paddedStart = String.format('%010d', start as long)
+            def paddedEnd = String.format('%010d', end as long)
+            def regionoutPadded = "${chr}:${paddedStart}-${paddedEnd}"
             [
-                meta.target,
-                vcf.sort { a, b ->
-                    def aStart = a.getName().split('-')[-2].toInteger()
-                    def bStart = b.getName().split('-')[-2].toInteger()
-                    aStart <=> bStart
-                },
-                csi
+                meta + ["regionout": regionbuf, "regionoutPadded": regionoutPadded, "regionSize": region_size],
+                vcf, index,
+                pedigree,
+                regionbuf,
+                ref_vcf, ref_index,
+                scaffold_vcf, scaffold_index,
+                gmap
             ]
         }
 
-    SHAPEIT5_LIGATE(ch_ligate_input)
-    ch_versions = ch_versions.mix(SHAPEIT5_LIGATE.out.versions)
+    SHAPEIT5_PHASECOMMON (ch_phase_input)
 
-    VCF_INDEX2(SHAPEIT5_LIGATE.out.merged_variants)
-    ch_versions = ch_versions.mix(VCF_INDEX2.out.versions)
+    BCFTOOLS_INDEX_PHASE(SHAPEIT5_PHASECOMMON.out.phased_variant)
+
+    ch_ligate_input = SHAPEIT5_PHASECOMMON.out.phased_variant
+        .join(
+            BCFTOOLS_INDEX_PHASE.out.index,
+            failOnMismatch:true, failOnDuplicate:true
+        )
+        .map { meta, vcf, index ->
+            def keysToKeep = meta.keySet() - ['regionout', 'regionoutPadded', 'regionSize']
+            [
+                groupKey(meta.subMap(keysToKeep), meta.regionSize),
+                vcf, index
+            ]
+        }
+        .groupTuple()
+        .map { groupKeyObj, vcf, index ->
+            // Extract the actual meta from the groupKey
+            def meta = groupKeyObj.getGroupTarget()
+            [meta, vcf, index]
+        }
+        .branch { meta, vcf, index ->
+            one: vcf.size() == 1
+                return [meta, vcf.get(0), index.get(0)]
+            more: vcf.size() > 1
+                return [meta, vcf, index]
+        }
+
+    SHAPEIT5_LIGATE(ch_ligate_input.more, '')
+
+    BCFTOOLS_INDEX_LIGATE(SHAPEIT5_LIGATE.out.merged_variants)
+
+    ch_vcf_index = ch_ligate_input.one
+        .mix(SHAPEIT5_LIGATE.out.merged_variants
+            .join(
+                BCFTOOLS_INDEX_LIGATE.out.index,
+                failOnMismatch:true, failOnDuplicate:true
+            )
+        )
 
     emit:
-    bed                 = BEDTOOLS_MAKEWINDOWS.out.bed           // channel: [ val(meta), bed ]
-    variants_phased     = SHAPEIT5_LIGATE.out.merged_variants    // channel: [ val(meta), vcf ]
-    variants_index      = VCF_INDEX2.out.csi                     // channel: [ val(meta), csi ]
-    versions            = ch_versions                            // channel: [ versions.yml ]
+    chunks    = ch_chunks    // channel: [ [id, chr], regionout]
+    vcf_index = ch_vcf_index // channel: [ [id, chr], vcf, index ]
 }

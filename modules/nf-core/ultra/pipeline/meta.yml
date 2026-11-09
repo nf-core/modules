@@ -1,5 +1,6 @@
 name: ultra_pipeline
-description: uLTRA aligner - A wrapper around minimap2 to improve small exon detection
+description: uLTRA aligner - A wrapper around minimap2 to improve small exon
+  detection
 keywords:
   - uLTRA
   - index
@@ -14,49 +15,76 @@ tools:
       documentation: https://github.com/ksahlin/uLTRA
       tool_dev_url: https://github.com/ksahlin/uLTRA
       doi: "10.1093/bioinformatics/btab540"
-      licence: ["GNU GPLV3"]
+      licence:
+        - "GNU GPLV3"
       identifier: ""
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          e.g. [ id:'test' ]
     - reads:
         type: file
         description: A fasta or fastq file of reads to align
         pattern: "*.{fasta,fastq}"
         ontologies:
           - edam: http://edamontology.org/format_1930 # FASTQ
-  - genome:
-      type: file
-      description: fasta file of reference genome
-      pattern: "*.fasta"
-      ontologies: []
-  - gtf:
-      type: file
-      description: A annotation of use the genome
-      pattern: "*.gtf"
-      ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - fasta:
+        type: file
+        description: fasta file of reference genome
+        pattern: "*.fasta"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - gtf:
+        type: file
+        description: Genome annotation file
+        pattern: "*.gtf"
+        ontologies:
+          - edam: "http://edamontology.org/format_2306" # GTF
 output:
   sam:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "*.sam":
           type: file
           description: The aligned reads in sam format
           pattern: "*.sam"
           ontologies: []
+  versions_ultra:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ultra:
+          type: string
+          description: The name of the tool
+      - uLTRA --version | sed 's/uLTRA //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - ultra:
+          type: string
+          description: The name of the tool
+      - uLTRA --version | sed 's/uLTRA //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@sguizard"
   - "@lassefolkersen"

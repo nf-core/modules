@@ -33,7 +33,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(mask_paths,
-                    process.out.versions).match() }
+                    process.out.findAll { key, val -> key.startsWith('versions')}).match() }
             )
         }
 
@@ -65,7 +65,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(mask_paths,
-                    process.out.versions).match() }
+                    process.out.findAll { key, val -> key.startsWith('versions')}).match() }
             )
         }
 
@@ -97,7 +97,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(mask_paths,
-                    process.out.versions).match() }
+                    process.out.findAll { key, val -> key.startsWith('versions')}).match() }
             )
         }
 

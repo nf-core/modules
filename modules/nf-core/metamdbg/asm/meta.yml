@@ -1,5 +1,4 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
-name: "METAMDBG_ASM"
+name: "metamdbg_asm"
 description: Metagenome assembler for long-read sequences (HiFi and ONT).
 keywords:
   - assembly
@@ -23,14 +22,13 @@ input:
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-
     - reads:
         type: file
         description: Long read sequence data from ONT or HiFi in fasta format (can be
           gzipped)
         pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
-
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
   - input_type:
       type: string
       description: Sequencing technology for reads - either "hifi" for PacBio HiFi reads
@@ -48,7 +46,9 @@ output:
           description: |
             Gzipped fasta file containing the assembled contigs from the input
             reads.
-          ontologies: []
+          pattern: "*.contigs.fasta.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
   log:
     - - meta:
           type: map
@@ -58,15 +58,33 @@ output:
       - "*.metaMDBG.log":
           type: file
           description: Log file describing the metaMDBG run.
-          ontologies: []
+          pattern: "*.metaMDBG.log"
+          ontologies:
+            - edam: http://edamontology.org/format_3671 # Plain text
+  versions_metamdbg:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metamdbg:
+          type: string
+          description: The name of the tool
+      - 'metaMDBG | sed -n "s/.*Version: //p"':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metamdbg:
+          type: string
+          description: The name of the tool
+      - 'metaMDBG | sed -n "s/.*Version: //p"':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@prototaxites"
+  - "@eit-maxlcummins"
 maintainers:
   - "@prototaxites"

@@ -1,0 +1,66 @@
+nextflow_process {
+
+    name "Test Process BULLSEYE_PARSEBAM"
+    script "../main.nf"
+    process "BULLSEYE_PARSEBAM"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "bullseye"
+    tag "bullseye/parsebam"
+
+    test("bullseye - dart bam") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'dart' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/dart.chr22_test.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/dart.chr22_test.bam.bai', checkIfExists: true),
+                ]
+                input[1] = 1
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out,
+                    // parseBAM.pl parallelizes with MCE::Loop, so row order is not
+                    // stable across runs/CPU counts - sort before hashing content.
+                    path(process.out.matrix[0][1]).linesGzip.sort().join('\n').md5(),
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("bullseye - dart bam - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'dart' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/dart.chr22_test.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/dart.chr22_test.bam.bai', checkIfExists: true),
+                ]
+                input[1] = 1
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+}

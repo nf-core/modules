@@ -1,6 +1,5 @@
 name: "custom_filterdifferentialtable"
-description: Filters a differential expression table based on logFC and adjusted p-value
-  thresholds
+description: Filters a differential expression table based on logFC and adjusted p-value thresholds
 keywords:
   - filter
   - differential expression
@@ -14,7 +13,8 @@ tools:
       documentation: "https://pandas.pydata.org/docs/"
       tool_dev_url: "https://github.com/pandas-dev/pandas"
       doi: "10.5281/zenodo.3509134"
-      licence: ["BSD-3-Clause"]
+      licence:
+        - "BSD-3-Clause"
       identifiers:
         - "biotools:pandas"
         - "conda:pandas"
@@ -30,8 +30,8 @@ input:
         description: Input differential expression table (CSV, TSV, or TXT format)
         pattern: "*.{csv,tsv,txt}"
         ontologies:
-          - edam: http://edamontology.org/format_3752 # CSV
-          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3752
+          - edam: http://edamontology.org/format_3475
   - - logfc_column:
         type: string
         description: Name of the column containing log fold change values
@@ -68,17 +68,73 @@ output:
           description: Filtered differential expression table
           pattern: "*_filtered.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
+  filtered_up:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_filtered_up.tsv":
+          type: file
+          description: Filtered differential expression table for overexpressed genes
+          pattern: "*_filtered_up.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
+  filtered_down:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*_filtered_down.tsv":
+          type: file
+          description: Filtered differential expression table for underexpressed genes
+          pattern: "*_filtered_down.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475
   versions:
     - versions.yml:
         type: file
         description: File containing software versions
         pattern: "versions.yml"
         ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+          - edam: http://edamontology.org/format_3750
+topics:
+  versions:
+    - versions.yml:
+        type: file
+        description: File containing software versions
+        pattern: "versions.yml"
+        ontologies:
+          - edam: http://edamontology.org/format_3750
 authors:
   - "@pinin4fjords"
   - "@WackerO"
 maintainers:
   - "@pinin4fjords"
   - "@WackerO"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/pandas_python:3116f093aa26dc56
+      build_id: bd-3116f093aa26dc56_1
+      scan_id: sc-2ce39145fe317ba2_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/pandas_python:09ac177fe7cf9c94
+      build_id: bd-09ac177fe7cf9c94_1
+      scan_id: sc-6bda3c2ddd830190_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/pandas_python:9980ac4808e8c7f2
+      build_id: bd-9980ac4808e8c7f2_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2b/2b0b8410f8a37bc6884a27890cf8abc8666a3988b3dca11e6252835b9d53927a/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/pandas_python:2b37d95cd180123e
+      build_id: bd-2b37d95cd180123e_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/41/41f62bcbc25aec2fd7a1f861be52b57ef78f6f13d77111766a20a1fb4c7524df/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/custom/filterdifferentialtable/.conda-lock/linux_amd64-bd-3116f093aa26dc56_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/custom/filterdifferentialtable/.conda-lock/linux_arm64-bd-09ac177fe7cf9c94_1.txt

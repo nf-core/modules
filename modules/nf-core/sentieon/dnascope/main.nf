@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SENTIEON_DNASCOPE {
     tag "${meta.id}"
     label 'process_high'
     label 'sentieon'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0f/0f1dfe59ef66d7326b43db9ab1f39ce6220b358a311078c949a208f9c9815d4e/data'
-        : 'community.wave.seqera.io/library/sentieon:202503.01--1863def31ed8e4d5'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2c/2c157e27981ec529b03e7ae5cfc88e51b6158332d2a82db399eef8dd8f2b1d5d/data'
+        : 'community.wave.seqera.io/library/sentieon:202503.03--5e34aa16344b911c' }"
 
     input:
     tuple val(meta), path(bam), path(bai), path(intervals)
@@ -26,7 +29,7 @@ process SENTIEON_DNASCOPE {
     // these output-files have to have the extension ".vcf.gz", otherwise the subsequent GATK-MergeVCFs will fail.
     tuple val(meta), path("*.g.vcf.gz"),              emit: gvcf,     optional: true
     tuple val(meta), path("*.g.vcf.gz.tbi"),          emit: gvcf_tbi, optional: true
-    path "versions.yml",                              emit: versions
+    tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
     when:
     task.ext.when == null || task.ext.when
@@ -63,26 +66,23 @@ process SENTIEON_DNASCOPE {
     """
     ${sentieonLicense}
 
-    sentieon driver ${args} -r ${fasta} -t ${task.cpus} -i ${bam} ${interval} ${vcf_cmd} ${gvcf_cmd}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-    END_VERSIONS
+    sentieon driver \\
+        ${args} \\
+        -r ${fasta} \\
+        -t ${task.cpus} \\
+        -i ${bam} \\
+        ${interval} \\
+        ${vcf_cmd} \\
+        ${gvcf_cmd}
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def gvcf_cmd = emit_gvcf ? "echo | gzip > ${prefix}.g.vcf.gz; touch ${prefix}.g.vcf.gz.tbi" : ""
+    def gvcf_cmd = emit_gvcf ? "echo \"\" | gzip > ${prefix}.g.vcf.gz; touch ${prefix}.g.vcf.gz.tbi" : ""
 
     """
-    echo | gzip > ${prefix}.unfiltered.vcf.gz
+    echo "" | gzip > ${prefix}.unfiltered.vcf.gz
     touch ${prefix}.unfiltered.vcf.gz.tbi
     ${gvcf_cmd}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g" )
-    END_VERSIONS
     """
 }

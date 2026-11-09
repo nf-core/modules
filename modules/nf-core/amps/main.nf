@@ -1,10 +1,13 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process AMPS {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hops:0.35--hdfd78af_1' :
-        'biocontainers/hops:0.35--hdfd78af_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/90/908fb0fd95516f91026df526e5603b82f5b663be977a70a10131aa6b01dcde5b/data'
+        : 'community.wave.seqera.io/library/hops:0.35--ec5d92deb3e899f2'}"
 
     input:
     path maltextract_results
@@ -16,7 +19,7 @@ process AMPS {
     path "results/heatmap_overview_Wevid.pdf" , emit: summary_pdf
     path "results/heatmap_overview_Wevid.tsv" , emit: tsv
     path "results/pdf_candidate_profiles/"    , emit: candidate_pdfs
-    path "versions.yml"                       , emit: versions
+    tuple val("${task.process}"), val('hops'), eval("hops --version 2>&1 | sed 's/HOPS version//' "), emit: versions_hops, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,10 +35,6 @@ process AMPS {
         -j \\
         ${args}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        amps: \$(echo \$(hops --version 2>&1) | sed 's/HOPS version//')
-    END_VERSIONS
     """
 
     stub:

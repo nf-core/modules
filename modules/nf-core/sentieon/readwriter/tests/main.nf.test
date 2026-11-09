@@ -4,15 +4,18 @@ nextflow_process {
     script "../main.nf"
     process "SENTIEON_READWRITER"
 
+    config "./nextflow.config"
     tag "modules"
     tag "modules_nfcore"
     tag "sentieon"
     tag "sentieon/readwriter"
 
     test("merge bam") {
-        config "./nextflow.config"
 
         when {
+            params {
+                module_prefix = ''
+            }
             process {
                 """
                 input[0] =  [ [id: 'test' ],
@@ -31,15 +34,17 @@ nextflow_process {
                 { assert snapshot(
                     bam(process.out.output[0][1], stringency: "lenient").getReadsMD5(),
                     file(process.out.index.get(0).get(1)).name,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
     }
 
     test("cram") {
-        config "./nextflow_outputcram.config"
         when {
+            params {
+                module_prefix = 'test.cram'
+            }
             process {
                 """
                 input[0] =  [ [id: 'test', fasta: params.modules_testdata_base_path + '/genomics/homo_sapiens/genome/genome.fasta' ],
@@ -58,16 +63,18 @@ nextflow_process {
                 { assert snapshot(
                     bam(process.out.output[0][1], process.out.output[0][0].fasta).getReadsMD5(),
                     file(process.out.index.get(0).get(1)).name,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
     }
 
     test("merging - output bam") {
-        config "./nextflow.config"
 
         when {
+            params {
+                module_prefix = ''
+            }
             process {
                 """
                 input[0] =  [ [id: 'test' ],
@@ -92,16 +99,18 @@ nextflow_process {
                 { assert snapshot(
                     bam(process.out.output[0][1], stringency: "lenient").getReadsMD5(),
                     file(process.out.index.get(0).get(1)).name,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
     }
 
     test("merging - output bam to cram") {
-        config "./nextflow_outputcram.config"
 
         when {
+            params {
+                module_prefix = 'test.cram'
+            }
             process {
                 """
                 input[0] =  [ [id: 'test', fasta: params.modules_testdata_base_path + '/genomics/sarscov2/genome/genome.fasta' ],
@@ -126,7 +135,7 @@ nextflow_process {
                 { assert snapshot(
                     bam(process.out.output[0][1], process.out.output[0][0].fasta).getReadsMD5(),
                     file(process.out.index.get(0).get(1)).name,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -134,9 +143,11 @@ nextflow_process {
 
     test("sentieon readwriter - stub") {
         options "-stub"
-        config "./nextflow.config"
 
         when {
+            params {
+                module_prefix = ''
+            }
             process {
                 """
                 input[0] =  [ [id: 'test' ],

@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MITOHIFI_FINDMITOREFERENCE {
     tag "$species"
     label 'process_single'
@@ -16,9 +19,10 @@ process MITOHIFI_FINDMITOREFERENCE {
     tuple val(meta), val(species)
 
     output:
-    tuple val(meta), path("*.fasta"), emit: fasta
-    tuple val(meta), path("*.gb")   , emit: gb
-    path "versions.yml"             , emit: versions
+    tuple val(meta), path("*.fasta"), path("*.gb"), emit: reference
+    // WARN: Incorrect version information is provided by tool on CLI. Please update this string when bumping container versions.
+    // old version command: \$(mitohifi.py -v | sed 's/.* //')
+    tuple val("${task.process}"), val('mitohifi'), val('3.2.3'), emit: versions_mitohifi, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,8 +34,6 @@ process MITOHIFI_FINDMITOREFERENCE {
     }
 
     def args         = task.ext.args ?: ''
-    // WARN: Incorrect version information is provided by tool on CLI. Please update this string when bumping container versions.
-    def VERSION      = '3.2.3'
     def ncbi_api_key = secrets.NCBI_API_KEY ? "--ncbi-api-key \$NCBI_API_KEY" : ""
     """
     findMitoReference.py \\
@@ -39,24 +41,11 @@ process MITOHIFI_FINDMITOREFERENCE {
         --species "$species" \\
         --outfolder . \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mitohifi: ${VERSION}
-    END_VERSIONS
     """
 
     stub:
-    // WARN: Incorrect version information is provided by tool on CLI. Please update this string when bumping container versions.
-    def VERSION = '3.2.3'
     """
     touch accession.fasta
     touch accession.gb
-
-    ## old version command: \$(mitohifi.py -v | sed 's/.* //')
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mitohifi: ${VERSION}
-    END_VERSIONS
     """
 }

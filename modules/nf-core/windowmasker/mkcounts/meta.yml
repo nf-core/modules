@@ -34,13 +34,27 @@ output:
           description: A file containing frequency counts of repetitive units.
           pattern: "*.txt"
           ontologies: []
+  versions_windowmasker:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - windowmasker:
+          type: string
+          description: The name of the tool
+      - windowmasker -version-full | head -n 1 | sed 's/^.*windowmasker. //; s/ .*\$//':
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - windowmasker:
+          type: string
+          description: The name of the tool
+      - windowmasker -version-full | head -n 1 | sed 's/^.*windowmasker. //; s/ .*\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@DLBPointon"
 maintainers:

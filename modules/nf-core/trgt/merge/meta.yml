@@ -72,14 +72,39 @@ output:
           description: "Merged output file"
           pattern: "*.{vcf,vcf.gz,bcf,bcf.gz}"
           ontologies: []
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.{tbi,csi}":
+          type: file
+          description: "Index of merged output file"
+          pattern: "*.{tbi,csi}"
+          ontologies: []
+  versions_trgt:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - trgt:
+          type: string
+          description: The name of the tool
+      - trgt --version | sed 's/.* //g':
+          type: eval
+          description: The expression to obtain the version of the tool
 
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - trgt:
+          type: string
+          description: The name of the tool
+      - trgt --version | sed 's/.* //g':
+          type: eval
+          description: The expression to obtain the version
 authors:
   - "@Schmytzi"
 maintainers:

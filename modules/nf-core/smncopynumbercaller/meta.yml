@@ -33,6 +33,26 @@ input:
         description: BAM/CRAM index file
         pattern: "*.{bai,crai}"
         ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'genome' ]
+    - fasta:
+        type: file
+        description: |
+          Reference FASTA the alignments were made against. Required for CRAM
+          input; pass `[[],[],[]]` when the input is BAM.
+        pattern: "*.{fa,fna,fasta}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+    - fai:
+        type: file
+        description: |
+          FASTA index (`samtools faidx`), required alongside `fasta` so htslib
+          does not have to rebuild it per task.
+        pattern: "*.fai"
+        ontologies: []
 output:
   smncopynumber:
     - - meta:
@@ -58,13 +78,27 @@ output:
           pattern: "*.{json}"
           ontologies:
             - edam: http://edamontology.org/format_3464 # JSON
+  versions_smncopynumbercaller:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - smncopynumbercaller:
+          type: string
+          description: The name of the tool
+      - 1.1.2:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - smncopynumbercaller:
+          type: string
+          description: The name of the tool
+      - 1.1.2:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@peterpru"
 maintainers:

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SIMPLEAF_QUANT {
     tag "${meta.id ?: meta4.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/simpleaf:0.19.5--ha6fb395_0':
-        'biocontainers/simpleaf:0.19.5--ha6fb395_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d0/d04c6d819d0712b766a7cf18aa39a15cced3ea4d79178c0811966d8a741b4db1/data'
+:         'community.wave.seqera.io/library/piscem_simpleaf:8fd648760a75594c' }"
 
     input:
     //
@@ -21,7 +24,9 @@ process SIMPLEAF_QUANT {
     output:
     tuple val(meta), path("${prefix}/af_map")       , emit: map, optional: true // missing if map_dir is provided
     tuple val(meta), path("${prefix}/af_quant")     , emit: quant
-    path  "versions.yml"                            , emit: versions
+    tuple val("${task.process}"), val('alevin-fry'), eval("alevin-fry --version | sed 's/alevin-fry //'"),                    topic: versions, emit: versions_alevin_fry
+    tuple val("${task.process}"), val('piscem'),     eval("piscem --version | sed 's/piscem //'"),                            topic: versions, emit: versions_piscem
+    tuple val("${task.process}"), val('simpleaf'),   eval("ALEVIN_FRY_HOME=. simpleaf --version | sed 's/simpleaf //'"),      topic: versions, emit: versions_simpleaf
 
     when:
     task.ext.when == null || task.ext.when
@@ -56,14 +61,6 @@ process SIMPLEAF_QUANT {
         --anndata-out \\
         ${cf_option} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        alevin-fry: \$(alevin-fry --version | sed -e "s/alevin-fry //g")
-        piscem: \$(piscem --version | sed -e "s/piscem //g")
-        salmon: \$(salmon --version | sed -e "s/salmon //g")
-        simpleaf: \$(simpleaf --version | sed -e "s/simpleaf //g")
-    END_VERSIONS
     """
 
     stub:
@@ -79,14 +76,6 @@ process SIMPLEAF_QUANT {
     touch ${prefix}/af_quant/alevin/quants_mat_rows.txt
     touch ${prefix}/af_quant/map.collated.rad
     touch ${prefix}/af_quant/permit_freq.bin
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        alevin-fry: \$(alevin-fry --version | sed -e "s/alevin-fry //g")
-        piscem: \$(piscem --version | sed -e "s/piscem //g")
-        salmon: \$(salmon --version | sed -e "s/salmon //g")
-        simpleaf: \$(simpleaf --version | sed -e "s/simpleaf //g")
-    END_VERSIONS
     """
 }
 

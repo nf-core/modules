@@ -11,20 +11,19 @@ tools:
       documentation: "https://sequali.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/rhpvorderman/sequali"
       doi: "10.5281/zenodo.10854010"
-      licence: ["AGPL v3-or-later"]
+      licence:
+        - "AGPL v3-or-later"
       identifier: biotools:sequali
-
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1', single_end:false ]`
-
     - reads:
         type: file
-        description: Input FASTQ(s) or uBAM file. The format is autodetected and compressed
-          formats are supported.
+        description: Input FASTQ(s) or uBAM file. The format is autodetected and
+          compressed formats are supported.
         pattern: "*.{fastq,fq,fastq.gz,fq.gz,bam}"
         ontologies:
           - edam: http://edamontology.org/format_1930 # FASTQ
@@ -39,7 +38,6 @@ output:
           type: file
           description: HTML output file.
           pattern: "*.{html}"
-
           ontologies: []
   json:
     - - meta:
@@ -53,13 +51,27 @@ output:
           pattern: "*.{json}"
           ontologies:
             - edam: http://edamontology.org/format_3464 # JSON
+  versions_sequali:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sequali:
+          type: string
+          description: The name of the tool
+      - sequali --version |& sed '1!d ; s/sequali //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions.
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sequali:
+          type: string
+          description: The name of the tool
+      - sequali --version |& sed '1!d ; s/sequali //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@irliampa"
   - "@DarkoCucin"

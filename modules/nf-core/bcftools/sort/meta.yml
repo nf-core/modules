@@ -11,7 +11,8 @@ tools:
       documentation: http://www.htslib.org/doc/bcftools.html
       tool_dev_url: https://github.com/samtools/bcftools
       doi: "10.1093/bioinformatics/btp352"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:bcftools
 input:
   - - meta:
@@ -36,36 +37,62 @@ output:
           description: Sorted VCF file
           pattern: "*.{vcf.gz}"
           ontologies: []
-  tbi:
+  index:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - "*.tbi":
+      - "*.{tbi,csi}":
           type: file
-          description: Alternative VCF file index
-          pattern: "*.tbi"
-          ontologies: []
-  csi:
-    - - meta:
-          type: map
-          description: |
-            Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
-      - "*.csi":
-          type: file
-          description: Default VCF file index
-          pattern: "*.csi"
-          ontologies: []
+          description: VCF file index
+          pattern: "*.{tbi,csi}"
+  versions_bcftools:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - bcftools --version | sed '1!d; s/^.*bcftools //':
+          type: eval
+          description: The command used to generate the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - bcftools:
+          type: string
+          description: The tool name
+      - bcftools --version | sed '1!d; s/^.*bcftools //':
+          type: eval
+          description: The command used to generate the version of the tool
 authors:
   - "@Gwennid"
 maintainers:
   - "@Gwennid"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bcftools_htslib:1.25--130aa7603bf3bf5c
+      build_id: bd-130aa7603bf3bf5c_9
+      scan_id: sc-b06bc84035abd22b_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/bcftools_htslib:1.25--f8757489807f9c95
+      build_id: bd-f8757489807f9c95_9
+      scan_id: sc-6fa01fa7c518cc7b_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bcftools_htslib:1.25--4dd0f0a20494e269
+      build_id: bd-4dd0f0a20494e269_9
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/91/914b9b38bbfa22c458ceee6c578fd3d70ee1bffc33d3a064b0663ed4944e7872/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bcftools_htslib:1.25--37bf17f884a2aca6
+      build_id: bd-37bf17f884a2aca6_9
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/aa/aaac198ac93d951bb9cbd8b1d83ba1c4485fa43e0cbcfa9403096fc7b88956b8/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bcftools/sort/.conda-lock/linux_amd64-bd-130aa7603bf3bf5c_9.txt
+    linux/arm64:
+      lock_file: modules/nf-core/bcftools/sort/.conda-lock/linux_arm64-bd-f8757489807f9c95_9.txt

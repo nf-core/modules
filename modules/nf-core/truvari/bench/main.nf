@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TRUVARI_BENCH {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/truvari:5.3.0--pyhdfd78af_0':
-        'biocontainers/truvari:5.3.0--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bc/bcb554578972eea4ca66731f80a41017d591edf30d34f7b3c4a6ef78b0ef4ff3/data'
+        : 'community.wave.seqera.io/library/truvari:5.4.0--a783dff809870f2f'}"
 
     input:
     tuple val(meta), path(vcf), path(tbi), path(truth_vcf), path(truth_tbi), path(bed)
@@ -22,7 +25,9 @@ process TRUVARI_BENCH {
     tuple val(meta), path("*.tp-comp.vcf.gz")    , emit: tp_comp_vcf
     tuple val(meta), path("*.tp-comp.vcf.gz.tbi"), emit: tp_comp_tbi
     tuple val(meta), path("*.summary.json")      , emit: summary
-    path "versions.yml"                          , emit: versions
+    tuple val(meta), path("*.log.txt")           , emit: log
+    tuple val("${task.process}"), val('truvari'), eval("truvari version | sed 's/Truvari v//'"), topic: versions, emit: versions_truvari
+
 
     when:
     task.ext.when == null || task.ext.when
@@ -50,29 +55,22 @@ process TRUVARI_BENCH {
     mv ${prefix}/tp-comp.vcf.gz     ./${prefix}.tp-comp.vcf.gz
     mv ${prefix}/tp-comp.vcf.gz.tbi ./${prefix}.tp-comp.vcf.gz.tbi
     mv ${prefix}/summary.json       ./${prefix}.summary.json
+    mv ${prefix}/log.txt            ./${prefix}.log.txt
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        truvari: \$(echo \$(truvari version 2>&1) | sed 's/^Truvari v//' ))
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    echo | gzip > ${prefix}.fn.vcf.gz
+    echo "" | gzip > ${prefix}.fn.vcf.gz
     touch ${prefix}.fn.vcf.gz.tbi
-    echo | gzip > ${prefix}.fp.vcf.gz
+    echo "" | gzip > ${prefix}.fp.vcf.gz
     touch ${prefix}.fp.vcf.gz.tbi
-    echo | gzip > ${prefix}.tp-base.vcf.gz
+    echo "" | gzip > ${prefix}.tp-base.vcf.gz
     touch ${prefix}.tp-base.vcf.gz.tbi
-    echo | gzip > ${prefix}.tp-comp.vcf.gz
+    echo "" | gzip > ${prefix}.tp-comp.vcf.gz
     touch ${prefix}.tp-comp.vcf.gz.tbi
     touch ${prefix}.summary.json
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        truvari: \$(echo \$(truvari version 2>&1) | sed 's/^Truvari v//' ))
-    END_VERSIONS
+    touch ${prefix}.log.txt
     """
 }

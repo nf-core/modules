@@ -11,9 +11,9 @@ tools:
       documentation: "https://sourcepredict.readthedocs.io/en/latest/index.html"
       tool_dev_url: "https://github.com/maxibor/sourcepredict"
       doi: "10.21105/joss.01540"
-      licence: ["GPL v3-or-later"]
+      licence:
+        - "GPL v3-or-later"
       identifier: biotools:sourcepredict
-
 input:
   - - meta:
         type: map
@@ -24,38 +24,33 @@ input:
         type: file
         description: Sink TAXID count table in csv format
         pattern: "*.csv"
-
         ontologies:
           - edam: http://edamontology.org/format_3752 # CSV
   - sources:
       type: file
-      description: Sources TAXID count table in csv format. Default can be downloaded
-        from
+      description: Sources TAXID count table in csv format. Default can be
+        downloaded from
         https://raw.githubusercontent.com/maxibor/sourcepredict/master/data/modern_gut_microbiomes_sources.csv
       pattern: "*.csv"
-
       ontologies:
         - edam: http://edamontology.org/format_3752 # CSV
   - labels:
       type: file
-      description: Labels for the sources table in csv format. Default can be downloaded
-        from
+      description: Labels for the sources table in csv format. Default can be
+        downloaded from
         https://raw.githubusercontent.com/maxibor/sourcepredict/master/data/modern_gut_microbiomes_labels.csv
       pattern: "*.csv"
-
       ontologies:
         - edam: http://edamontology.org/format_3752 # CSV
   - taxa_sqlite:
       type: file
       description: taxa.sqlite file downloaded with ete3 toolkit
       pattern: "taxa.sqlite"
-
       ontologies: []
   - taxa_sqlite_traverse_pkl:
       type: file
       description: taxa.sqlite.traverse.pkl file downloaded with ete3 toolkit
       pattern: "taxa.sqlite.traverse.pkl"
-
       ontologies: []
 output:
   report:
@@ -66,20 +61,70 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.sourcepredict.csv":
           type: file
-          description: Table containing the predicted proportion of each source in each
-            sample
+          description: Table containing the predicted proportion of each source in
+            each sample
           pattern: "*.sourcepredict.csv"
-
           ontologies:
             - edam: http://edamontology.org/format_3752 # CSV
+  versions_sourcepredict:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sourcepredict:
+          type: string
+          description: The name of the tool
+      - python -c "import sourcepredict; print(sourcepredict.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_python:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python -V | sed "s/Python //g":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_sklearn:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sklearn:
+          type: string
+          description: The name of the tool
+      - python -c "import sklearn; print(sklearn.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sourcepredict:
+          type: string
+          description: The name of the tool
+      - python -c "import sourcepredict; print(sourcepredict.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - python:
+          type: string
+          description: The name of the tool
+      - python -V | sed "s/Python //g":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sklearn:
+          type: string
+          description: The name of the tool
+      - python -c "import sklearn; print(sklearn.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@MeriamOs"
 maintainers:
