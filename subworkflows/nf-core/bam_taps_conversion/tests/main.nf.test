@@ -14,6 +14,10 @@ nextflow_workflow {
     tag "rastair/mbiasparser"
     tag "rastair/call"
     tag "rastair/methylkit"
+    tag "rastair2"
+    tag "rastair2/call"
+    tag "bcftools"
+    tag "bcftools/stats"
 
     test("sarscov2 paired-end methylated [bam] / sarscov2 genome [fasta]") {
 
@@ -37,6 +41,67 @@ nextflow_workflow {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta.fai", checkIfExists: true)
                 ])
+                input[4] = false
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(workflow.out).match() }
+            )
+        }
+    }
+
+    test("rastair2 - two samples, one reference [value channel]") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of(
+                    [ [ id:'test1' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true) ],
+                    [ [ id:'test2' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true) ]
+                )
+                input[1] = Channel.of(
+                    [ [ id:'test1' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true) ],
+                    [ [ id:'test2' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true) ]
+                )
+                input[2] = Channel.value([ [ id:'genome' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ])
+                input[3] = Channel.value([ [ id:'genome' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true) ])
+                input[4] = true
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.mbias.size() == 0 && workflow.out.call.size() == 0 && workflow.out.methylkit.size() == 0 },
+                { assert workflow.out.vcf.collect { meta, vcf -> meta.id }.sort() == ['test1', 'test2'] },
+                { assert snapshot(
+                    workflow.out.vcf.collect { meta, vcf -> [ meta, path(vcf).linesGzip.findAll { !it.startsWith('##') }.join('\n').md5() ] }.sort { it[0].id },
+                    workflow.out.vcf_tbi.collect { meta, tbi -> [ meta, file(tbi).name ] }.sort { it[0].id },
+                    workflow.out.bed.sort { it[0].id },
+                    workflow.out.bed_tbi.collect { meta, tbi -> [ meta, file(tbi).name ] }.sort { it[0].id },
+                    workflow.out.bcftools_stats.collect { meta, stats -> [ meta, file(stats).name ] }.sort { it[0].id }
+                ).match() }
+            )
+        }
+    }
+
+    test("rastair2 - per-sample reference [as in methylseq] - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true) ])
+                input[1] = Channel.of([ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true) ])
+                input[2] = Channel.of([ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ])
+                input[3] = Channel.of([ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true) ])
+                input[4] = true
                 """
             }
         }
