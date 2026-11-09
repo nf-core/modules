@@ -39,7 +39,8 @@ process ISESCAN {
         --output results \\
         --nthread ${task.cpus}
 
-    # Rename results to <prefix>.<ext>; nothing is written when no IS element is found
+    # ISEScan names the subfolder after the parent dir of --seqfile, i.e. results/input/${prefix}.fna.*
+    # Rename them to <prefix>.<ext>; ISEScan writes all of them or, when no IS element is found, none
     for f in results/input/${prefix}.fna.*; do
         [ -e "\$f" ] || continue
         mv "\$f" "${prefix}.\${f##*.fna.}"
@@ -49,11 +50,15 @@ process ISESCAN {
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.sum
-    touch ${prefix}.tsv
-    touch ${prefix}.gff
-    touch ${prefix}.is.fna
-    touch ${prefix}.orf.fna
-    touch ${prefix}.orf.faa
+    # Mimic ISEScan's output layout and reuse the same renaming step as the real run
+    mkdir -p results/input
+    for ext in sum tsv gff is.fna orf.fna orf.faa; do
+        touch results/input/${prefix}.fna.\$ext
+    done
+
+    for f in results/input/${prefix}.fna.*; do
+        [ -e "\$f" ] || continue
+        mv "\$f" "${prefix}.\${f##*.fna.}"
+    done
     """
 }
