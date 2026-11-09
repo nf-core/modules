@@ -7,8 +7,8 @@ process ICOUNTMINI_SUMMARY {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/icount-mini:4.0.1--pyh106432d_0':
-        'quay.io/biocontainers/icount-mini:4.0.1--pyh106432d_0' }"
+        'https://depot.galaxyproject.org/singularity/icount-mini:4.0.2--4.0.2--pyh106432d_0':
+        'quay.io/biocontainers/icount-mini:4.0.2--4.0.2--pyh106432d_0' }"
 
     input:
     tuple val(meta), path(bed)
