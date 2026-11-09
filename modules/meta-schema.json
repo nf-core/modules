@@ -58,7 +58,7 @@
                             },
                             "doi": {
                                 "type": "string",
-                                "description": "DOI of the tool",
+                                "description": "DOI to cite for the tool: the publication's DOI if the tool has one, otherwise the DOI of the software archive (e.g. Zenodo)",
                                 "anyOf": [
                                     {
                                         "pattern": "^10\\.\\d{4,9}\\/[^,]+$"
@@ -101,9 +101,23 @@
                                     },
                                     "year": {
                                         "type": "integer",
-                                        "description": "Publication year"
+                                        "description": "Publication year",
+                                        "minimum": 1900
+                                    },
+                                    "volume": {
+                                        "type": "string",
+                                        "description": "Volume of the publication"
+                                    },
+                                    "issue": {
+                                        "type": "string",
+                                        "description": "Issue of the publication"
+                                    },
+                                    "pages": {
+                                        "type": "string",
+                                        "description": "Page range or article number of the publication"
                                     }
                                 },
+                                "additionalProperties": false,
                                 "if": {
                                     "anyOf": [
                                         { "required": ["title"] },
