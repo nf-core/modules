@@ -37,6 +37,7 @@ nextflow_process {
     }
 
     test("homo sapiens - [bam,bai,XX], [fa,fai], bed") {
+        config './nextflow.config'
 
         when {
             process {
@@ -65,7 +66,42 @@ nextflow_process {
         }
     }
 
+    test("homo sapiens - [bam,bai,fail_reads_bam,fail_reads_bai,XX], [fa,fai], bed") {
+        config './nextflow.config'
+
+        when {
+            params {
+                module_args = '--sample-name test'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.fail_reads.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.fail_reads.sorted.bam.bai', checkIfExists: true),
+                    'XX'
+                ]
+                input[1] = GUNZIP.out.gunzip
+                input[2] = SAMTOOLS_FAIDX.out.fai
+                input[3] = Channel.of('chr22\\t18890357\\t18890451\\tID=TEST;MOTIFS=AT;STRUC=(AT)n')
+                            .collectFile(name : 'repeats.bed', newLine: false)
+                            .map { file -> [ [ id : 'chr22' ], file ] }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"], variantsMD5Keys: ["vcf"])).match() }
+            )
+        }
+    }
+
     test("homo sapiens - [bam,bai,[]], [fa,fai], bed") {
+        config './nextflow.config'
 
         when {
             process {
@@ -97,6 +133,7 @@ nextflow_process {
     }
 
     test("homo sapiens - [bam,bai,XX], [fa,fai], bed - stub") {
+        config './nextflow.config'
         options "-stub"
 
         when {
@@ -130,6 +167,7 @@ nextflow_process {
     }
 
     test("homo sapiens - [bam,bai,[]], [fa,fai], bed - stub") {
+        config './nextflow.config'
         options "-stub"
         when {
             process {
