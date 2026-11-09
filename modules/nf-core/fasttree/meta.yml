@@ -24,7 +24,8 @@ input:
         type: file
         description: A FASTA format multiple sequence alignment file
         pattern: "*.{fasta,fas,fa,mfa}"
-        ontologies: []
+        ontologies: 
+        - edam: http://edamontology.org/format_1929
 output:
   phylogeny:
     - - meta:
@@ -36,7 +37,8 @@ output:
           type: file
           description: A phylogeny in Newick format
           pattern: "*.{nwk}"
-          ontologies: []
+          ontologies:
+          - edam: http://edamontology.org/format_1910
   versions_fasttree:
     - - ${task.process}:
           type: string
@@ -57,7 +59,8 @@ output:
           type: file
           description: FastTree log file with run details, useful for diagnosing failed runs
           pattern: "*.log"
-          ontologies: []
+          ontologies:
+          - edam: http://edamontology.org/format_2330
 topics:
   versions:
     - - ${task.process}:
