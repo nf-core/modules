@@ -52,11 +52,11 @@ output:
         Channel containing aligned or deduplicated BAM files.
         Structure: [ val(meta), path(bam) ]
       pattern: "*.bam"
-  - bai:
+  - index:
       type: file
       description: |
         Channel containing aligned or deduplicated BAM index files.
-        Structure: [ val(meta), path(bam.bai) ]
+        Structure: [ val(meta), path(bai) ]
       pattern: "*.bai"
   - coverage2cytosine_coverage:
       type: file
@@ -124,12 +124,6 @@ output:
         Channel containing files for MultiQC input (reports, alignment reports, methylation reports).
         Structure: [ path(files) ]
       pattern: "*.{html,txt}"
-  - versions:
-      type: file
-      description: |
-        File containing software versions.
-        Structure: [ path(versions.yml) ]
-      pattern: "versions.yml"
 authors:
   - "@sateeshperi"
 maintainers:

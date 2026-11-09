@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SAMTOOLS_COLLATEFASTQ {
     tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8c/8c5d2818c8b9f58e1fba77ce219fdaf32087ae53e857c4a496402978af26e78c/data'
-        : 'community.wave.seqera.io/library/htslib_samtools:1.23.1--5b6bb4ede7e612e5'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/83/8345056363cc2598d6185cfab19d67eda17a5ea73a4f9b56c25322347b97aef9/data'
+        : 'community.wave.seqera.io/library/htslib_samtools_xz:ca51bc8a00d53523'}"
 
     input:
     tuple val(meta), path(input)
@@ -52,17 +55,18 @@ process SAMTOOLS_COLLATEFASTQ {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def empty = "echo '' | gzip "
-    def singletoncommand = "${empty}> ${prefix}_singleton.fq.gz"
-    def interleavecommand = interleave && !meta.single_end ? "${empty}> ${prefix}_interleaved.fq.gz" : ""
-    def output1command = !interleave ? "${empty}> ${prefix}_1.fq.gz" : ""
-    def output2command = !interleave && !meta.single_end ? "${empty}> ${prefix}_2.fq.gz" : ""
+    def empty = "echo | bgzip -c "
+    def interleave_command = interleave && !meta.single_end ? "${empty}> ${prefix}_interleaved.fq.gz" : ""
+    def other_command = "${empty} > ${prefix}_other.fq.gz"
+    def output1_command = !interleave ? "${empty}> ${prefix}_1.fq.gz" : ""
+    def output2_command = !interleave && !meta.single_end ? "${empty}> ${prefix}_2.fq.gz" : ""
+    def singleton_command = "${empty}> ${prefix}_singleton.fq.gz"
 
     """
-    ${output1command}
-    ${output2command}
-    ${interleavecommand}
-    ${singletoncommand}
-    ${empty}> ${prefix}_other.fq.gz
+    ${interleave_command}
+    ${other_command}
+    ${output1_command}
+    ${output2_command}
+    ${singleton_command}
     """
 }

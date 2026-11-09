@@ -1,0 +1,184 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "aardvark_merge"
+description: A tool to evaluate and merge multiple variant calls into a consensus VCF.
+keywords:
+  - variant calling
+  - vcf
+  - comparison
+  - consensus
+  - merging
+tools:
+  - aardvark:
+      description: |
+        The aardvark merge command provides a method to merge variant calls. This functionality is helpful when multiple
+        variant callers or technologies are used for the same sample. Merging variant sets can be complex and Aardvark
+        simplifies this process by modeling the variants as haplotypes. This allows for different merge strategies for
+        resolving conflicting variant sets.
+      homepage: "https://github.com/PacificBiosciences/aardvark"
+      documentation: "https://github.com/PacificBiosciences/aardvark/blob/main/docs/methods.md#merge-strategies"
+      tool_dev_url: "https://github.com/PacificBiosciences/aardvark"
+      doi: "10.1101/2025.10.03.680257"
+      licence: ["MIT"]
+      identifier: biotools:aardvark
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - vcfs:
+        type: file
+        description: List of VCF files to be merged
+        pattern: "*.{vcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016"
+    - indexes:
+        type: file
+        description: List of index files for the input VCF files
+        pattern: "*.{vcf.gz.tbi,vcf.gz.csi,tbi,csi}"
+  - - meta2:
+        type: map
+        description: Groovy Map containing reference fasta information
+    - fasta:
+        type: file
+        description: Reference genome fasta file
+        pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - - meta3:
+        type: map
+        description: Groovy Map containing bed information
+    - bed:
+        type: file
+        description: Optional BED file containing genomic regions to restrict the merge operation
+        pattern: "*.{bed}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3586"
+
+output:
+  summary:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.summary.tsv":
+          type: file
+          description: Global summary statistics of the variant merge
+          pattern: "*.summary.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  passing_vcf:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.passing.vcf.gz":
+          type: file
+          description: Merged VCF file containing passing variants
+          pattern: "*.passing.vcf.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016"
+  passing_vcf_index:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.passing.vcf.gz.tbi":
+          type: file
+          description: Index file for the merged passing VCF
+          pattern: "*.passing.vcf.gz.tbi"
+  passing_regions:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.regions.bed.gz":
+          type: file
+          description: BED file of regions containing passing variants
+          pattern: "*.regions.bed.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3586"
+  passing_regions_index:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.regions.bed.gz.tbi":
+          type: file
+          description: Index file for the passing regions BED
+          pattern: "*.regions.bed.gz.tbi"
+  failed_regions:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.failed_regions.bed.gz":
+          type: file
+          description: BED file of regions that failed merging criteria
+          pattern: "*.failed_regions.bed.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3586"
+  failed_regions_index:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.failed_regions.bed.gz.tbi":
+          type: file
+          description: Index file for the failed regions BED
+          pattern: "*.failed_regions.bed.gz.tbi"
+  runinfo:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.json":
+          type: file
+          description: JSON file containing parameter settings used during the run
+          pattern: "*.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  versions_aardvark:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "aardvark":
+          type: string
+          description: The name of the tool
+      - "aardvark merge --version 2>&1 | sed 's/aardvark-bio-merge //; s/-conda//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "aardvark":
+          type: string
+          description: The name of the tool
+      - "aardvark merge --version 2>&1 | sed 's/aardvark-bio-merge //; s/-conda//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@kubranarci"
+maintainers:
+  - "@kubranarci"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/aardvark:0.10.5--50402c072fe171c0
+      build_id: bd-50402c072fe171c0_1
+      scan_id: sc-080b7e623c56b7e6_2
+    linux/arm64:
+      name: community.wave.seqera.io/library/aardvark:0.10.5--00f3f25cea7c1408
+      build_id: bd-00f3f25cea7c1408_1
+      scan_id: sc-86490c728551a0d7_2
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/aardvark:0.10.5--2634d8b3310864e0
+      build_id: bd-2634d8b3310864e0_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ca/cab6d57df89751e6cbcdd91b101855b2537ad39c0b815aaff42019e0a2c7748c/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/aardvark:0.10.5--a5fcbec11f134d7d
+      build_id: bd-a5fcbec11f134d7d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b1/b1594cf6a0ecac04adf5a88a88f1da08e5a8eb0f21cd6d42024b1b343cce0870/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/aardvark/merge/.conda-lock/linux_amd64-bd-50402c072fe171c0_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/aardvark/merge/.conda-lock/linux_arm64-bd-00f3f25cea7c1408_1.txt

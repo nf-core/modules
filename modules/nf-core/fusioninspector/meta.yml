@@ -161,3 +161,17 @@ authors:
   - "@sofiromano"
   - "@alanmmobbs93"
   - "@martings"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/fusion-inspector_igv-reports_perl-json-xs_pysam_pruned:9f1b4c0a736e1d8a
+      build_id: bd-9f1b4c0a736e1d8a_1
+      scan_id: sc-53ffeba2ce6a8e37_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/fusion-inspector_igv-reports_perl-json-xs_pysam_pruned:8e734c0cca9c683d
+      build_id: bd-8e734c0cca9c683d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bd/bd1e83e196b8989930525832da96ad1535bb36ef04ea5cba53be98c371b58a87/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/fusioninspector/.conda-lock/linux_amd64-bd-9f1b4c0a736e1d8a_1.txt

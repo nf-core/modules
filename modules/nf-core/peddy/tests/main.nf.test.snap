@@ -204,7 +204,7 @@
             "nextflow": "25.10.4"
         }
     },
-    "test - peddy": {
+    "test - peddy - no_plot": {
         "content": [
             {
                 "0": [
@@ -242,31 +242,13 @@
                     ]
                 ],
                 "3": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.het_check.png:md5,ce21f5e727cc6b4346d407d2963b0442"
-                    ]
+                    
                 ],
                 "4": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.ped_check.png:md5,861d8b204d78a22a59b0cedafd8d4a16"
-                    ]
+                    
                 ],
                 "5": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.sex_check.png:md5,b2ff9afe9f596dee5a22431ba920980c"
-                    ]
+                    
                 ],
                 "6": [
                     [
@@ -296,13 +278,7 @@
                     ]
                 ],
                 "9": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.ped_check.rel-difference.csv:md5,b59f50df00b5b3af6e71e774d8b99103"
-                    ]
+                    
                 ],
                 "het_check_csv": [
                     [
@@ -314,13 +290,7 @@
                     ]
                 ],
                 "het_check_png": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.het_check.png:md5,ce21f5e727cc6b4346d407d2963b0442"
-                    ]
+                    
                 ],
                 "html": [
                     [
@@ -350,22 +320,10 @@
                     ]
                 ],
                 "ped_check_png": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.ped_check.png:md5,861d8b204d78a22a59b0cedafd8d4a16"
-                    ]
+                    
                 ],
                 "ped_check_rel_difference_csv": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.ped_check.rel-difference.csv:md5,b59f50df00b5b3af6e71e774d8b99103"
-                    ]
+                    
                 ],
                 "sex_check_csv": [
                     [
@@ -377,13 +335,7 @@
                     ]
                 ],
                 "sex_check_png": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": false
-                        },
-                        "test.sex_check.png:md5,b2ff9afe9f596dee5a22431ba920980c"
-                    ]
+                    
                 ],
                 "versions_peddy": [
                     [
@@ -403,10 +355,94 @@
                 ]
             }
         ],
-        "timestamp": "2026-03-24T11:53:24.822041",
+        "timestamp": "2026-08-12T14:27:59.211934009",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "test - peddy": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.vs.html:md5,a749380edef4653dade663534ddcfbd6"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.html:md5,e3af87096747a19966222a74242943b6"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.peddy.ped:md5,8378f6599ee4ad6a9db42bfe226968a6"
+                ]
+            ],
+            "test.het_check.png",
+            "test.ped_check.png",
+            "test.sex_check.png",
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.het_check.csv:md5,b8623fa750218dade5468542d459fafe"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.ped_check.csv:md5,21dded6c03dab39859d2936d4820c426"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.sex_check.csv:md5,763950d0eff48b64da29a6a883d6b11c"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test",
+                        "single_end": false
+                    },
+                    "test.ped_check.rel-difference.csv:md5,b59f50df00b5b3af6e71e774d8b99103"
+                ]
+            ],
+            {
+                "versions_peddy": [
+                    [
+                        "PEDDY",
+                        "peddy",
+                        "0.4.8"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-08-12T15:22:21.013049062",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
         }
     }
 }

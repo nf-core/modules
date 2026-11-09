@@ -1,0 +1,143 @@
+name: "kivvi"
+description: Calls copy number and sequence variants in large-unit variable number tandem repeats from PacBio HiFi reads
+keywords:
+  - kivvi
+  - genotyper
+  - tandem repeat
+  - vntr
+  - hifi
+tools:
+  - "kivvi":
+      description: "HiFi-based genotyper for large-unit VNTRs including KIV2 and D4Z4"
+      homepage: "https://github.com/PacificBiosciences/kivvi"
+      documentation: "https://github.com/PacificBiosciences/kivvi/blob/main/README.md"
+      tool_dev_url: "https://github.com/PacificBiosciences/kivvi"
+      doi: "10.64898/2026.04.10.717730"
+      licence:
+        - "Pacific Biosciences Software License (https://github.com/PacificBiosciences/kivvi/blob/main/LICENSE.md)"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: |
+          BAM file containing PacBio HiFi whole-genome reads aligned to GRCh38,
+          or a subset covering the target KIV2 or D4Z4 regions
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+    - bai:
+        type: file
+        description: |
+          BAI index file corresponding to the BAM file
+        pattern: "*.bai"
+        ontologies:
+          - edam: "http://edamontology.org/format_2573"
+  - command:
+      type: string
+      description: The command used to run the tool, i.e. kiv2 (LPA KIV2 repeat) or d4z4 (D4Z4 repeat)
+output:
+  json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.kivvi.*.json":
+          type: file
+          description: JSON report containing genotyping results for the target KIV2 or D4Z4 region
+          pattern: "*.kivvi.*.json"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464"
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.kivvi.*.vcf":
+          type: file
+          description: Variant calls for the target KIV2 or D4Z4 region
+          pattern: "*.kivvi.*.vcf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016"
+  svg:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.kivvi.*.svg":
+          type: file
+          description: Optional SVG visualisation of genotyping results for the target KIV2 or D4Z4 region
+          pattern: "*.kivvi.*.svg"
+          ontologies: []
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.kivvi.*.bam":
+          type: file
+          description: |
+            Reads realigned to a single repeat unit of the target KIV2 or D4Z4
+            region, with HP tags identifying repeat copies
+          pattern: "*.kivvi.*.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572"
+  bai:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.kivvi.*.bam.bai":
+          type: file
+          description: BAI index file corresponding to the realigned BAM file
+          pattern: "*.kivvi.*.bam.bai"
+          ontologies:
+            - edam: "http://edamontology.org/format_2573"
+  versions_kivvi:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kivvi:
+          type: string
+          description: The name of the tool
+      - kivvi --version | sed 's/.* //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - kivvi:
+          type: string
+          description: The name of the tool
+      - kivvi --version | sed 's/.* //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@sofiademmou"
+maintainers:
+  - "@sofiademmou"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/kivvi:1.1.0--0ab7895bae051106
+      build_id: bd-0ab7895bae051106_1
+      scan_id: sc-ad3d1b149c0da9d7_2
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/kivvi:1.1.0--fd0e9004280a5067
+      build_id: bd-fd0e9004280a5067_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e7/e7fd42f324e6d2711bf04f023e7a50494bb96d20b440cb410402e2ea7f4e707f/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/kivvi/.conda-lock/linux_amd64-bd-0ab7895bae051106_1.txt

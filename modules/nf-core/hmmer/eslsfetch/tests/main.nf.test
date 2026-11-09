@@ -1,0 +1,133 @@
+nextflow_process {
+
+    name "Test Process HMMER_ESLSFETCH"
+    script "../main.nf"
+    process "HMMER_ESLSFETCH"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "hmmer"
+    tag "hmmer/eslsfetch"
+    tag "hmmer/eslsfetchindex"
+
+    setup {
+        run("HMMER_ESLSFETCHINDEX") {
+            script "../../eslsfetchindex/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/scaffolds.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - fasta - ssi - names") {
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = HMMER_ESLSFETCHINDEX.out.ssi
+                    .combine(
+                        channel.of(
+                            'NODE_4_length_458_cov_1.051360',
+                            'NODE_5_length_446_cov_1.078370'
+                        ).collectFile(name: 'keys.txt', newLine: true)
+                    )
+                    .map { meta, ssi, keyfile -> [
+                        meta,
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/scaffolds.fasta', checkIfExists: true),
+                        ssi,
+                        keyfile
+                    ] }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() },
+                { assert path(process.out.sequences[0][1]).text.contains('>NODE_4_length_458_cov_1.051360') },
+                { assert path(process.out.sequences[0][1]).text.contains('>NODE_5_length_446_cov_1.078370') }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - ssi - coords") {
+
+        when {
+            params {
+                module_args = '-C'
+            }
+            process {
+                """
+                input[0] = HMMER_ESLSFETCHINDEX.out.ssi
+                    .combine(
+                        channel.of(
+                            "sub1_fwd\\t10\\t50\\tNODE_4_length_458_cov_1.051360",
+                            "sub2_rc\\t50\\t10\\tNODE_5_length_446_cov_1.078370"
+                        ).collectFile(name: 'coords.txt', newLine: true)
+                    )
+                    .map { meta, ssi, coordfile -> [
+                        meta,
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/scaffolds.fasta', checkIfExists: true),
+                        ssi,
+                        coordfile
+                    ] }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() },
+                { assert path(process.out.sequences[0][1]).text.contains('>sub1_fwd') },
+                { assert path(process.out.sequences[0][1]).text.contains('>sub2_rc') }
+            )
+        }
+
+    }
+
+    test("sarscov2 - fasta - ssi - names - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = ''
+            }
+            process {
+                """
+                input[0] = HMMER_ESLSFETCHINDEX.out.ssi
+                    .combine(
+                        channel.of('NODE_4_length_458_cov_1.051360').collectFile(name: 'keys.txt', newLine: true)
+                    )
+                    .map { meta, ssi, keyfile -> [
+                        meta,
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/scaffolds.fasta', checkIfExists: true),
+                        ssi,
+                        keyfile
+                    ] }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}
