@@ -6,18 +6,18 @@ process ISESCAN {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2d/2dce97fbdd87dcd3a679aca334e061287849c544321bfea45d7db87240e4f1d7/data':
-        'community.wave.seqera.io/library/isescan_gzip:6c57a8237938b5a9' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2d/2dce97fbdd87dcd3a679aca334e061287849c544321bfea45d7db87240e4f1d7/data'
+        : 'community.wave.seqera.io/library/isescan_gzip:6c57a8237938b5a9'}"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("${prefix}.sum")    , optional: true, emit: sum
-    tuple val(meta), path("${prefix}.tsv")    , optional: true, emit: tsv
-    tuple val(meta), path("${prefix}.gff")    , optional: true, emit: gff
-    tuple val(meta), path("${prefix}.is.fna") , optional: true, emit: is_fna
+    tuple val(meta), path("${prefix}.sum"), optional: true, emit: sum
+    tuple val(meta), path("${prefix}.tsv"), optional: true, emit: tsv
+    tuple val(meta), path("${prefix}.gff"), optional: true, emit: gff
+    tuple val(meta), path("${prefix}.is.fna"), optional: true, emit: is_fna
     tuple val(meta), path("${prefix}.orf.fna"), optional: true, emit: orf_fna
     tuple val(meta), path("${prefix}.orf.faa"), optional: true, emit: orf_faa
     tuple val("${task.process}"), val('isescan'), eval("isescan.py --version 2>&1 | sed 's/isescan //'"), topic: versions, emit: versions_isescan
@@ -27,7 +27,7 @@ process ISESCAN {
 
     script:
     def args = task.ext.args ?: ''
-    prefix   = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     # ISEScan needs an uncompressed FASTA and writes its results to <output>/<parent dir>/<file name>.*
     mkdir -p input
