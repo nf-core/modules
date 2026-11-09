@@ -73,7 +73,7 @@
             "nextflow": "26.10.5"
         }
     },
-    "sarscov2 - [fastq1, fastq2], index, fasta, true - stub": {
+    "sarscov2 - [fastq1, fastq2], index, fasta, true, bai": {
         "content": [
             {
                 "aligned": [
@@ -82,7 +82,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.bam:md5Reads,af8628d9df18b2d3d4f6fd47ef2bb872"
                     ]
                 ],
                 "index": [
@@ -91,7 +91,7 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test.csi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.bam.bai:md5,0f8153773bd7856c7310a7a876cbbcc1"
                     ]
                 ],
                 "versions_bwamem3": [
@@ -110,10 +110,47 @@
                 ]
             }
         ],
-        "timestamp": "2026-11-04T10:40:45.166312",
+        "timestamp": "2026-11-09T09:25:57.02971",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.10.5"
+            "nextflow": "25.10.4"
+        }
+    },
+    "sarscov2 - [fastq1, fastq2], index, fasta, true - stub": {
+        "content": [
+            {
+                "aligned": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "index": [
+                    
+                ],
+                "versions_bwamem3": [
+                    [
+                        "BWAMEM3_MEM",
+                        "bwamem3",
+                        "0.16.0"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "BWAMEM3_MEM",
+                        "samtools",
+                        "1.25"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-11-09T09:29:57.18716",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
         }
     },
     "sarscov2 - [fastq1, fastq2], meth index, fasta, true - taps": {
@@ -188,6 +225,49 @@
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.10.5"
+        }
+    },
+    "sarscov2 - [fastq1, fastq2], index, fasta, true, bai - stub": {
+        "content": [
+            {
+                "aligned": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "index": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam.bai:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_bwamem3": [
+                    [
+                        "BWAMEM3_MEM",
+                        "bwamem3",
+                        "0.16.0"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "BWAMEM3_MEM",
+                        "samtools",
+                        "1.25"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-11-09T09:26:30.157855",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
         }
     },
     "sarscov2 - [fastq1, fastq2], meth index, fasta, true": {
@@ -299,6 +379,49 @@
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.10.5"
+        }
+    },
+    "sarscov2 - [fastq1, fastq2], index, fasta, true, csi": {
+        "content": [
+            {
+                "aligned": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam:md5Reads,af8628d9df18b2d3d4f6fd47ef2bb872"
+                    ]
+                ],
+                "index": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.bam.csi:md5,d4dca93fe8e12f81b15c6a7dd4534ca7"
+                    ]
+                ],
+                "versions_bwamem3": [
+                    [
+                        "BWAMEM3_MEM",
+                        "bwamem3",
+                        "0.16.0"
+                    ]
+                ],
+                "versions_samtools": [
+                    [
+                        "BWAMEM3_MEM",
+                        "samtools",
+                        "1.25"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-11-09T09:26:08.787671",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
         }
     }
 }
