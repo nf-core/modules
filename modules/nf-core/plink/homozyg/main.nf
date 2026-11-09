@@ -25,10 +25,10 @@ process PLINK_HOMOZYG {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     plink \\
+        --homozyg \\
         --bed ${bed} \\
         --bim ${bim} \\
         --fam ${fam} \\
-        --homozyg \\
         ${args} \\
         --threads ${task.cpus} \\
         --out ${prefix}_ROH
