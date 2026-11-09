@@ -1,0 +1,119 @@
+nextflow_process {
+
+    name "Test Process INSITUGAME"
+    script "../main.nf"
+    process "INSITUGAME"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "insitugame"
+
+    test("spatial - tsv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "spatial_omics/insitugame/insitugame.tsv", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["results", "tables"]),
+                    path(process.out.results[0][1]).readLines().size(),
+                    path(process.out.tables[0][1]).readLines().size(),
+                ).match() },
+                { assert file(process.out.results[0][1]).text.contains('"status": "completed"') },
+                { assert file(process.out.tables[0][1]).readLines().first() == "focal_phenotype,T_S,T_R,S_CAF" },
+            )
+        }
+
+    }
+
+    test("spatial - tsv.gz") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_gz' ],
+                    file(params.modules_testdata_base_path + "spatial_omics/insitugame/insitugame.tsv.gz", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["results", "tables"]),
+                    path(process.out.results[0][1]).readLines().size(),
+                    path(process.out.tables[0][1]).readLines().size(),
+                ).match() },
+                { assert file(process.out.results[0][1]).text.contains('"status": "completed"') },
+                { assert file(process.out.tables[0][1]).readLines().first() == "focal_phenotype,T_S,T_R,S_CAF" },
+            )
+        }
+
+    }
+
+    test("spatial - csv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_csv' ],
+                    file(params.modules_testdata_base_path + "spatial_omics/insitugame/insitugame.csv", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["results", "tables"]),
+                    path(process.out.results[0][1]).readLines().size(),
+                    path(process.out.tables[0][1]).readLines().size(),
+                ).match() },
+                { assert file(process.out.results[0][1]).text.contains('"status": "completed"') },
+                { assert file(process.out.tables[0][1]).readLines().first() == "focal_phenotype,T_S,T_R,S_CAF" },
+            )
+        }
+
+    }
+
+    test("spatial - tsv - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + "spatial_omics/insitugame/insitugame.tsv", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

@@ -4,12 +4,13 @@
 process BWAMEM3_INDEX {
     tag "${meta.id}"
     // NOTE bwa-mem3 builds an FM-index with libsais; peak memory scales with the reference size.
-    memory { 280.MB * Math.ceil(fasta.size() / 10000000) * task.attempt }
+    // `--meth` also builds a converted seed index over twice the text, roughly doubling peak memory.
+    memory { 280.MB * Math.ceil(fasta.size() / 10000000) * ("${task.ext.args ?: ''}".contains('--meth') ? 2 : 1) * task.attempt }
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/70/70c94630fc1da5d691d57ef22c9c02288838393dadffb1dbf008147441fd77ef/data'
-:         'community.wave.seqera.io/library/bwa-mem3:0.15.0--832697eee00ba922' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/98/98b0f53f5aed4a3743c17acf6fe59bb0587228a320a6bbe01b3ff3e9ccf85d43/data'
+        : 'community.wave.seqera.io/library/bwa-mem3:0.16.0--b56ccc800b165a7e'}"
 
     input:
     tuple val(meta), path(fasta)
@@ -24,24 +25,41 @@ process BWAMEM3_INDEX {
     script:
     def prefix = task.ext.prefix ?: "${fasta}"
     def args = task.ext.args ?: ''
-    """
-    mkdir bwamem3
-    bwa-mem3 \\
-        index \\
-        $args \\
-        -t ${task.cpus} \\
-        -p bwamem3/${prefix} \\
-        $fasta
-    """
+    if (args.contains('--meth')) {
+        // `index --meth` rejects -p and writes next to its input, so index a symlink named after the prefix.
+        // `mem --meth` needs neither the symlink nor the intermediate <prefix>.meth.fa.
+        """
+        mkdir bwamem3
+        ln -s ../${fasta} bwamem3/${prefix}
+        bwa-mem3 \\
+            index \\
+            $args \\
+            -t ${task.cpus} \\
+            bwamem3/${prefix}
+        rm bwamem3/${prefix} bwamem3/${prefix}.meth.fa
+        """
+    } else {
+        """
+        mkdir bwamem3
+        bwa-mem3 \\
+            index \\
+            $args \\
+            -t ${task.cpus} \\
+            -p bwamem3/${prefix} \\
+            $fasta
+        """
+    }
 
     stub:
     def prefix = task.ext.prefix ?: "${fasta}"
+    def args = task.ext.args ?: ''
+    def meth_files = args.contains('--meth') ? "touch bwamem3/${prefix}.meth.{amb,ann,bwt.2bit.64,pac}" : ''
     """
     mkdir bwamem3
-    touch bwamem3/${prefix}.0123
     touch bwamem3/${prefix}.amb
     touch bwamem3/${prefix}.ann
     touch bwamem3/${prefix}.bwt.2bit.64
     touch bwamem3/${prefix}.pac
+    ${meth_files}
     """
 }
