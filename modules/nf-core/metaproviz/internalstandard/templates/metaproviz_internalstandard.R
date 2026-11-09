@@ -321,7 +321,7 @@ if (length(is_feats) == 0) {
             ") are empty, and the names found by the default pattern could not be checked.")
   }
 }
-# Wording of the detection for the log and the report 
+# Wording of the detection for the log and the report
 is_label <- switch(strategy,
   explicit_list = "explicit list (--internal_standards)",
   user_pattern  = sprintf("pattern '%s' (--pattern)", user_pattern),
