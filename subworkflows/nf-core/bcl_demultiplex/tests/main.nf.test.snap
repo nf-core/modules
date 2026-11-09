@@ -28,10 +28,10 @@
                             "lane": 1,
                             "readgroup": {
                                 "ID": "GAACTGAGCG.TCGTGGAGCG.1",
-                                "PU": "HMTFYDRXX.1",
-                                "SM": "Sample1",
                                 "LB": "UnknownLibrary",
-                                "PL": "ILLUMINA"
+                                "PL": "ILLUMINA",
+                                "PU": "HMTFYDRXX.1",
+                                "SM": "Sample1"
                             },
                             "single_end": true
                         },
@@ -45,10 +45,10 @@
                             "lane": 1,
                             "readgroup": {
                                 "ID": "CGTCTCATAT.TATAGTAGCT.1",
-                                "PU": "HMTFYDRXX.1",
-                                "SM": "Sample23",
                                 "LB": "UnknownLibrary",
-                                "PL": "ILLUMINA"
+                                "PL": "ILLUMINA",
+                                "PU": "HMTFYDRXX.1",
+                                "SM": "Sample23"
                             },
                             "single_end": true
                         },
@@ -62,10 +62,10 @@
                             "lane": 1,
                             "readgroup": {
                                 "ID": "AGGTCAGATA.CTACAAGATA.1",
-                                "PU": "HMTFYDRXX.1",
-                                "SM": "SampleA",
                                 "LB": "UnknownLibrary",
-                                "PL": "ILLUMINA"
+                                "PL": "ILLUMINA",
+                                "PU": "HMTFYDRXX.1",
+                                "SM": "SampleA"
                             },
                             "single_end": true
                         },
@@ -79,10 +79,10 @@
                             "lane": 1,
                             "readgroup": {
                                 "ID": "ATTCCATAAG.TGCCTGGTGG.1",
-                                "PU": "HMTFYDRXX.1",
-                                "SM": "sampletest",
                                 "LB": "UnknownLibrary",
-                                "PL": "ILLUMINA"
+                                "PL": "ILLUMINA",
+                                "PU": "HMTFYDRXX.1",
+                                "SM": "sampletest"
                             },
                             "single_end": true
                         },
@@ -123,7 +123,12 @@
                             "id": "HMTFYDRXX",
                             "lane": 1
                         },
-                        "Logs"
+                        [
+                            "Errors.log",
+                            "FastqComplete.txt",
+                            "Info.log",
+                            "Warnings.log"
+                        ]
                     ]
                 ],
                 "reports": [
@@ -154,7 +159,32 @@
                         {
                             "id": "HMTFYDRXX"
                         },
-                        "multiqc_data"
+                        [
+                            "bclconvert-lane-stats-table.txt",
+                            "bclconvert-sample-stats-table.txt",
+                            "bclconvert_lane_counts.txt",
+                            "bclconvert_sample_counts_Counts_per_lane.txt",
+                            "bclconvert_sample_counts_Index_mismatches.txt",
+                            "bclconvert_undetermined.txt",
+                            "llms-full.txt",
+                            "multiqc.log",
+                            "multiqc.parquet",
+                            "multiqc_bclconvert_bylane.txt",
+                            "multiqc_bclconvert_bysample.txt",
+                            "multiqc_citations.txt",
+                            "multiqc_data.json",
+                            "multiqc_general_stats.txt",
+                            "multiqc_sav.txt",
+                            "multiqc_sources.txt",
+                            "sav-intensity-vs-cycle-plot.txt",
+                            "sav-lane-metrics-summary-table.txt",
+                            "sav-pf-vs-occ-plot.txt",
+                            "sav-qscore-heatmap-plot.txt",
+                            "sav-qscore-histogram-plot.txt",
+                            "sav-read-metrics-summary-table.txt",
+                            "sav-summary-clusters-reads-lane-plot_Clusters.txt",
+                            "sav-summary-clusters-reads-lane-plot_Reads.txt"
+                        ]
                     ]
                 ],
                 "sav_plots": [
@@ -182,10 +212,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-05-22T13:53:21.033652",
+        "timestamp": "2026-09-11T11:17:53.787200509",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.1"
+            "nextflow": "26.08.0"
         }
     },
     "bcl2fastq": {
@@ -197,17 +227,16 @@
                 "fastq": [
                     [
                         {
-                            "id": "Sample1_S1_L001",
-                            "samplename": "Sample1",
                             "fcid": "test",
+                            "id": "Sample1_S1_L001",
                             "lane": 1,
                             "readgroup": {
                                 "ID": ".1",
-                                "SM": "Sample1",
                                 "PL": "ILLUMINA",
                                 "PU": "000000000-K9H97.1",
-                                "LB": ""
+                                "SM": "Sample1"
                             },
+                            "samplename": "Sample1",
                             "single_end": true
                         },
                         [
@@ -248,7 +277,7 @@
                                         [
                                             [
                                                 "lane.html:md5,794e48287f47a9f22dcb6b6d0c22c3eb",
-                                                "laneBarcode.html:md5,2bbdae3ee57151eab520c966597d7438"
+                                                "laneBarcode.html:md5,b3ee2b3d9b55c0744789e1e73847d8a2"
                                             ],
                                             [
                                                 
@@ -262,8 +291,8 @@
                                                 "laneBarcode.html:md5,ffe2e863811c76cb9da27d5d124e0611"
                                             ],
                                             [
-                                                "lane.html:md5,cca97e771d3491dbc8cd3fe389595b09",
-                                                "laneBarcode.html:md5,cca97e771d3491dbc8cd3fe389595b09"
+                                                "lane.html:md5,8b58e9ebb82123d09209ad66ddb4e20e",
+                                                "laneBarcode.html:md5,8b58e9ebb82123d09209ad66ddb4e20e"
                                             ]
                                         ],
                                         [
@@ -289,7 +318,29 @@
                         {
                             "id": "test"
                         },
-                        "multiqc_data"
+                        [
+                            "bcl2fastq-lane-stats-table.txt",
+                            "bcl2fastq_lane_counts.txt",
+                            "bcl2fastq_sample_counts.txt",
+                            "bcl2fastq_undetermined.txt",
+                            "llms-full.txt",
+                            "multiqc.log",
+                            "multiqc.parquet",
+                            "multiqc_bcl2fastq_bylane.txt",
+                            "multiqc_bcl2fastq_bysample.txt",
+                            "multiqc_citations.txt",
+                            "multiqc_data.json",
+                            "multiqc_general_stats.txt",
+                            "multiqc_sav.txt",
+                            "multiqc_sources.txt",
+                            "sav-intensity-vs-cycle-plot.txt",
+                            "sav-lane-metrics-summary-table.txt",
+                            "sav-qscore-heatmap-plot.txt",
+                            "sav-qscore-histogram-plot.txt",
+                            "sav-read-metrics-summary-table.txt",
+                            "sav-summary-clusters-reads-lane-plot_Clusters.txt",
+                            "sav-summary-clusters-reads-lane-plot_Reads.txt"
+                        ]
                     ]
                 ],
                 "sav_plots": [
@@ -311,11 +362,11 @@
                         },
                         [
                             "AdapterTrimming.txt:md5,48ed2b914b1246c0b5d8667525550946",
-                            "ConversionStats.xml:md5,8fe0f57f3f5d256a0762dba75ac62d05",
+                            "ConversionStats.xml:md5,a2eaeb8dab2e605db56af05c53855f55",
                             "DemultiplexingStats.xml:md5,2047ff18f5b9107c084de06e9ff943ad",
-                            "DemuxSummaryF1L1.txt:md5,03e5fd0c1e3079c5f8c7b4d0501b37ff",
+                            "DemuxSummaryF1L1.txt:md5,f9782d533f8ac08e2f107f681068c605",
                             "FastqSummaryF1L1.txt:md5,0c6f2d87ee183b84d1051cde9a5643d1",
-                            "Stats.json:md5,8e5f038b8aa9e465599d3575f930e604"
+                            "Stats.json:md5,199fdf6292e0250385110bebca28b2dc"
                         ]
                     ]
                 ],
@@ -324,10 +375,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-05-22T12:11:17.997148",
+        "timestamp": "2026-09-11T11:18:17.372618629",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.1"
+            "nextflow": "26.08.0"
         }
     }
 }

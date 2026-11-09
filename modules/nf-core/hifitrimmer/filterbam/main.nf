@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HIFITRIMMER_FILTERBAM {
    tag "$meta.id"
    label 'process_medium'
@@ -20,6 +23,13 @@ process HIFITRIMMER_FILTERBAM {
    task.ext.when == null || task.ext.when
 
    script:
+   def deprecation_message = """
+   WARNING: This module has been deprecated.
+
+   Reason:
+   Command filterbam is no longer supported by hifi-trimmer, please use hifitrimmer/trim module instead.
+   """
+   assert false: deprecation_message
    def prefix = task.ext.prefix ?: "${meta.id}"
    def args = task.ext.args ?: ''
    def args2 = task.ext.args2 ?: ''
@@ -37,6 +47,13 @@ process HIFITRIMMER_FILTERBAM {
    """
 
    stub:
+   def deprecation_message = """
+   WARNING: This module has been deprecated.
+
+   Reason:
+   Command filterbam is no longer supported by hifi-trimmer, please use hifitrimmer/trim module instead.
+   """
+   assert false: deprecation_message
    def args = task.ext.args ?: ''
    def prefix = task.ext.prefix ?: "${meta.id}"
    def suffix = args.contains('-f') ? "fastq.gz"  : "fasta.gz"

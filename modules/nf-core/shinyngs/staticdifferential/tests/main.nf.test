@@ -33,7 +33,7 @@ nextflow_process {
                     "--diff_feature_id_col \"${params.differential_feature_id_column}\"",
                     "--fold_change_threshold \"${params.differential_min_fold_change}\"",
                     "--p_value_threshold \"${params.differential_max_qval}\"",
-                    "--unlog_foldchanges \"${params.differential_foldchanges_logged}\"",
+                    params.differential_foldchanges_logged ? "--unlog_foldchanges" : "",
                     "--palette_name \"${params.differential_palette_name}\""
                 ].join(' ').trim()
             }
@@ -94,7 +94,7 @@ nextflow_process {
                     "--diff_feature_id_col \"${params.differential_feature_id_column}\"",
                     "--fold_change_threshold \"${params.differential_min_fold_change}\"",
                     "--p_value_threshold \"${params.differential_max_qval}\"",
-                    "--unlog_foldchanges \"${params.differential_foldchanges_logged}\"",
+                    params.differential_foldchanges_logged ? "--unlog_foldchanges" : "",
                     "--palette_name \"${params.differential_palette_name}\""
                 ].join(' ').trim()
             }

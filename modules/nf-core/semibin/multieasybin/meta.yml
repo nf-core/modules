@@ -1,0 +1,164 @@
+name: semibin_multieasybin
+description: metagenomic binning with self-supervised learning
+keywords:
+  - binning
+  - assembly-binning
+  - metagenomics
+tools:
+  - "semibin":
+      description: "Metagenomic binning with semi-supervised siamese neural network"
+      homepage: "https://github.com/BigDataBiology/SemiBin"
+      documentation: "https://semibin.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/BigDataBiology/SemiBin"
+      doi: "10.1038/s41467-022-29843-y"
+      licence:
+        - "MIT"
+      identifier: biotools:semibin
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. [ id:'test' ]
+    - fasta:
+        type: file
+        description: |
+          Fasta file of concatenated contigs from all samples to be binned. They should have
+          a header like: `>S1:<contig1>`, `S2:<contig1>`. The `:` separator between sample and
+          contig name can be configured.
+        pattern: "*.{fa,fasta,fna,fa.gz,fasta.gz,fna.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+    - bam:
+        type: file
+        description: A list of BAM/CRAM files - one per sample, mapped to the concatenated reference.
+        pattern: "*.{bam,cram}"
+        ontologies:
+          - edam: http://edamontology.org/format_2572 # BAM
+          - edam: http://edamontology.org/format_3462 # CRAM
+    - depths:
+        type: file
+        description: |
+          Optionally, instead of BAM files, a list of text files in Strobealign --aemb format.
+          One per sample. Requires at least 5 samples.
+        pattern: "*.{tsv,txt}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+output:
+  bins:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}/bins/*.fa.gz:
+          type: file
+          description: Output bins from all samples (prefixed with sample name)
+          pattern: "*.fa.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
+            - edam: http://edamontology.org/format_3989 # GZIP format
+  csv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}/samples/*/*.csv:
+          type: file
+          description: CSV files describing the binning run, per sample.
+          pattern: "*.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  tsv:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}/samples/*/*.tsv:
+          type: file
+          description: TSV files describing the binning run, per sample.
+          pattern: "*.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - ${prefix}/SemiBinRun.log:
+          type: file
+          description: Log file of SemiBin run
+          pattern: "${prefix}/SemiBinRun.log"
+          ontologies:
+            - edam: http://edamontology.org/data_2526 # Text
+  versions_semibin:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - SemiBin:
+          type: string
+          description: The name of the tool
+      - SemiBin2 --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_cuda:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cuda:
+          type: string
+          description: The name of the runtime
+      - 'python -c "import torch; print(torch.version.cuda or ''no CUDA available'')"':
+          type: eval
+          description: CUDA version bundled with the task's pytorch build, or `no CUDA available` on the non-GPU path
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - SemiBin:
+          type: string
+          description: The name of the tool
+      - SemiBin2 --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cuda:
+          type: string
+          description: The name of the runtime
+      - 'python -c "import torch; print(torch.version.cuda or ''no CUDA available'')"':
+          type: eval
+          description: CUDA version bundled with the task's pytorch build, or `no CUDA available` on the non-GPU path
+authors:
+  - "@prototaxites"
+maintainers:
+  - "@prototaxites"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/semibin:2.4.1--f56bcc59d929ffa0
+      build_id: bd-f56bcc59d929ffa0_1
+      scan_id: sc-ac89c91c6cbc8252_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/semibin:2.4.1--594344a862aee1b8
+      build_id: bd-594344a862aee1b8_1
+      scan_id: sc-053cbcebe5fc843e_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/semibin:2.4.1--85b6858e3b6df529
+      build_id: bd-85b6858e3b6df529_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7b/7b2b3f8ee7844ec6f6ab7e89eb0397435eea5ff1c7866f055af6aac5969caf16/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/semibin:2.4.1--eefeb0dcf2ca104c
+      build_id: bd-eefeb0dcf2ca104c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4c/4c049230e87478349b2ecca53156faedfb077df85a4f6deaa8d0b22bd8a975c4/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/semibin/singleeasybin/.conda-lock/linux_amd64-bd-594344a862aee1b8_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/semibin/singleeasybin/.conda-lock/linux_arm64-bd-f56bcc59d929ffa0_1.txt

@@ -1,0 +1,83 @@
+nextflow_process {
+
+    name "Test Process REFSOLVER_IDENTIFY"
+    script "../main.nf"
+    process "REFSOLVER_IDENTIFY"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "refsolver"
+    tag "refsolver/identify"
+
+    test("grch37 dictionary - tsv") {
+
+        when {
+            process {
+                """
+                input[0] = Channel.of(
+                    "name\\tlength\\tmd5",
+                    "1\\t249250621\\t1b22b98cdeb4a9304cb5d48026a85128",
+                    "2\\t243199373\\ta0d9851da00400dec1098a9255ac712e",
+                    "3\\t198022430\\tfdfd811849cc2fadebc929bb925902e5",
+                    "4\\t191154276\\t23dccd106897542ad87d2765d28a19a1",
+                    "5\\t180915260\\t0740173db9ffd264d728f32784845cd7",
+                    "6\\t171115067\\t1d3a93a248d92a729ee764823acbbc6b",
+                    "7\\t159138663\\t618366e953d6aaad97dbe4777c29375e",
+                    "8\\t146364022\\t96f514a9929e410c6651697bded59aec",
+                    "9\\t141213431\\t3e273117f15e0a400f01055d9f393768",
+                    "10\\t135534747\\t988c28e000e84c26d552359af1ea2e1d",
+                    "11\\t135006516\\t98c59049a2df285c76ffb1c6db8f8b96",
+                    "12\\t133851895\\t51851ac0e1a115847ad36449b0015864",
+                    "13\\t115169878\\t283f8d7892baa81b510a015719ca7b0b",
+                    "14\\t107349540\\t98f3cae32b2a2e9524bc19813927542e",
+                    "15\\t102531392\\te5645a794a8238215b2cd77acb95a078",
+                    "16\\t90354753\\tfc9b1a7b42b97a864f56b348b06095e6",
+                    "17\\t81195210\\t351f64d4f4f9ddd45b35336ad97aa6de",
+                    "18\\t78077248\\tb15d4b2d29dde9d3e4f93d1d0f2cbc9c",
+                    "19\\t59128983\\t1aacd71f30db8e561810913e0b72636d",
+                    "20\\t63025520\\t0dec9660ec1efaaf33281c0d5ea2560f",
+                    "21\\t48129895\\t2979a6085bfe28e3ad6f552f361ed74d",
+                    "22\\t51304566\\ta718acaa6135fdca8357d5bfe94211dd",
+                    "X\\t155270560\\t7e0e2e580297b7764e31dbc80c2540dd",
+                    "Y\\t59373566\\t1fa3474750af0948bdf97d5a0ee52e51",
+                    "MT\\t16569\\tc68f52674c9fb33aef52dcf399755519"
+                )
+                    .collectFile(name: 'reference.tsv', newLine: true, sort: false)
+                    .map { tsv -> [ [ id:'test' ], tsv ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+    test("grch37 dictionary - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = Channel.of("name\\tlength\\tmd5", "MT\\t16569\\tc68f52674c9fb33aef52dcf399755519")
+                    .collectFile(name: 'reference.tsv', newLine: true, sort: false)
+                    .map { tsv -> [ [ id:'test' ], tsv ] }
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+
+    }
+
+}

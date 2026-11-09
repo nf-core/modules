@@ -71,3 +71,27 @@ authors:
   - "@drpatelh"
 maintainers:
   - "@drpatelh"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/ucsc-bedtobigbed:482--c718ac25f6adb1c8
+      build_id: bd-c718ac25f6adb1c8_1
+      scan_id: sc-430a65e276f3ed46_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/ucsc-bedtobigbed:482--f9a75c5237cbfded
+      build_id: bd-f9a75c5237cbfded_1
+      scan_id: sc-275d1c0aa60ddd76_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/ucsc-bedtobigbed:482--12e3ff0b5b051a1e
+      build_id: bd-12e3ff0b5b051a1e_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/39/39442202396dc06815b4e27d9e2b6af7cb0f46382540da46ebe2304ee15a1f38/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/ucsc-bedtobigbed:482--85a4394d7e399c03
+      build_id: bd-85a4394d7e399c03_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/06/06ee1b0ee08b87ca2295197c00365111068978f44c3d09e594d1f41c9b6898c5/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/ucsc/bedtobigbed/.conda-lock/linux_amd64-bd-f9a75c5237cbfded_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/ucsc/bedtobigbed/.conda-lock/linux_arm64-bd-c718ac25f6adb1c8_1.txt

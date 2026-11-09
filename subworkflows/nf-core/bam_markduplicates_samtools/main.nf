@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 //
 // Collate, fixmate, sort and markdup using Samtools
 //
@@ -17,7 +20,7 @@ workflow BAM_MARKDUPLICATES_SAMTOOLS {
 
     SAMTOOLS_COLLATE(ch_bam, ch_fasta_fai)
 
-    SAMTOOLS_FIXMATE(SAMTOOLS_COLLATE.out.bam)
+    SAMTOOLS_FIXMATE(SAMTOOLS_COLLATE.out.bam, ch_fasta_fai)
 
     SAMTOOLS_SORT(
         SAMTOOLS_FIXMATE.out.bam,

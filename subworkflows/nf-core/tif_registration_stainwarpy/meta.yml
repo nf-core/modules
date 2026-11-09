@@ -49,18 +49,18 @@ output:
         Channel containing registered tissue image
         Structure: [ val(meta), path(ome.tif) ]
       pattern: "*_transformed_image.ome.tif"
-  - transformed_segmask:
-      type: file
-      description: |
-        Channel containing transformed segmentation mask (empty if 'ch_segmask' not provided)
-        Structure: [ val(meta), path(ome.tif) ]
-      pattern: "*_transformed_segmentation_mask.ome.tif"
   - metrics:
       type: file
       description: |
         Channel containing registration metrics and transformation map file
         Structure: [ val(meta), path(json) ]
       pattern: "*_registration_metrics_tform_map.json"
+  - transformed_segmask:
+      type: file
+      description: |
+        Channel containing transformed segmentation mask (empty if 'ch_segmask' not provided)
+        Structure: [ val(meta), path(ome.tif) ]
+      pattern: "*_transformed_segmentation_mask.ome.tif"
 authors:
   - "@tckumarasekara"
 maintainers:

@@ -14,7 +14,11 @@
                     "test.clean.nanolyse.log:md5,d41d8cd98f00b204e9800998ecf8427e"
                 ],
                 "2": [
-                    "versions.yml:md5,21c1b87b05965e1d414140994af338ef"
+                    [
+                        "NANOLYSE",
+                        "nanolyse",
+                        "1.2.0"
+                    ]
                 ],
                 "fastq": [
                     [
@@ -27,36 +31,48 @@
                 "log": [
                     "test.clean.nanolyse.log:md5,d41d8cd98f00b204e9800998ecf8427e"
                 ],
-                "versions": [
-                    "versions.yml:md5,21c1b87b05965e1d414140994af338ef"
+                "versions_nanolyse": [
+                    [
+                        "NANOLYSE",
+                        "nanolyse",
+                        "1.2.0"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-07-27T16:20:04.131999082",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-08-30T12:46:33.908168"
+            "nf-test": "0.9.5",
+            "nextflow": "26.07.0"
+        }
     },
     "test-nanolyse": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.clean.fastq.gz:md5,7567d853ada6ac142332619d0b541d76"
+            {
+                "fastq": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.clean.fastq.gz:md5,7567d853ada6ac142332619d0b541d76"
+                    ]
+                ],
+                "log": [
+                    "test.clean.nanolyse.log"
+                ],
+                "versions_nanolyse": [
+                    [
+                        "NANOLYSE",
+                        "nanolyse",
+                        "1.2.0"
+                    ]
                 ]
-            ],
-            "test.clean.nanolyse.log",
-            [
-                "versions.yml:md5,21c1b87b05965e1d414140994af338ef"
-            ]
+            }
         ],
+        "timestamp": "2026-07-27T17:49:53.720356286",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "24.04.4"
-        },
-        "timestamp": "2024-08-30T15:23:25.853435"
+            "nf-test": "0.9.5",
+            "nextflow": "26.07.0"
+        }
     }
 }

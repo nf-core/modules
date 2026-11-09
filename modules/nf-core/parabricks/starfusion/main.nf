@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PARABRICKS_STARFUSION {
     tag "$meta.id"
     label 'process_high'
@@ -5,11 +8,11 @@ process PARABRICKS_STARFUSION {
     // needed by the module to work properly can be removed when fixed upstream - see: https://github.com/nf-core/modules/issues/7226
     stageInMode 'copy'
 
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.6.0-1"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.8.0-1"
 
     input:
     tuple val(meta), path(chimeric_junction)
-    tuple val(meta1), path(genome_lib_dir)
+    tuple val(meta2), path(genome_lib_dir)
 
     output:
     tuple val(meta), path("fusion_predictions.tsv"),                emit: fusions
