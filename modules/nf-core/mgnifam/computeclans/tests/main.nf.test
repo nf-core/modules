@@ -1,0 +1,124 @@
+nextflow_process {
+
+    name "Test Process MGNIFAM_COMPUTECLANS"
+    script "../main.nf"
+    process "MGNIFAM_COMPUTECLANS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mgnifam"
+    tag "mgnifam/computeclans"
+    tag "mgnifam/generatefamilies"
+
+    test("mgnify - [ families_tsv ] - faa") {
+
+        setup {
+            run("MGNIFAM_GENERATEFAMILIES") {
+                script "../../generatefamilies/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins_trimmed_clustering.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true),
+                        []
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = MGNIFAM_GENERATEFAMILIES.out.tsv.map { meta, tsv ->
+                    [
+                        meta,
+                        tsv,
+                        file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true)
+                    ]
+                }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["log"]),
+                    process.out.log.collect { meta, log -> file(log).readLines().find { l -> l.contains('members rows=') }.replaceAll(/^.*members rows=| tasks=.*/, '') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("mgnify - [ families_tsv ] - no_fasta") {
+
+        setup {
+            run("MGNIFAM_GENERATEFAMILIES") {
+                script "../../generatefamilies/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test' ],
+                        file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins_trimmed_clustering.tsv', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true),
+                        []
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                // bare protein names need the FASTA for lengths, so keep region members only
+                input[0] = MGNIFAM_GENERATEFAMILIES.out.tsv
+                    .flatMap { meta, tsv -> tsv.readLines().findAll { l -> l.contains('/') } }
+                    .collectFile(name: 'test_families.tsv', newLine: true)
+                    .map { regions -> [ [ id:'test' ], regions, [] ] }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["log"]),
+                    process.out.log.collect { meta, log -> file(log).readLines().find { l -> l.contains('members rows=') }.replaceAll(/^.*members rows=| tasks=.*/, '') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("mgnify - [ families_tsv ] - faa - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins_trimmed_clustering.tsv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'proteomics/proteinfamilies/mgnify_proteins.faa', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

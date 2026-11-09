@@ -64,3 +64,27 @@ authors:
   - "@GallVp"
 maintainers:
   - "@GallVp"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/repeatmasker_repeatmodeler:b718c9eee4ccffcb
+      build_id: bd-b718c9eee4ccffcb_1
+      scan_id: sc-5ac2e440e2e47f79_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/repeatmasker_repeatmodeler:101d1bb6478d9d67
+      build_id: bd-101d1bb6478d9d67_1
+      scan_id: sc-3dde39665156369d_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/repeatmasker_repeatmodeler:7191db696d4698bd
+      build_id: bd-7191db696d4698bd_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/05/0564a5f2a508e3ba1da14f89a168805e58949d63fa3da0e3b9ebeaa50eb1813f/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/repeatmasker_repeatmodeler:3e8ecdc34f116e0e
+      build_id: bd-3e8ecdc34f116e0e_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f9/f91e94ff35696ead619551468cb593dd786709d9690cdb7e834daa6d0769571b/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/repeatmodeler/builddatabase/.conda-lock/linux_amd64-bd-b718c9eee4ccffcb_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/repeatmodeler/builddatabase/.conda-lock/linux_arm64-bd-101d1bb6478d9d67_1.txt

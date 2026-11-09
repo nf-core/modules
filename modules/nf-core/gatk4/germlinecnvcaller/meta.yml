@@ -1,16 +1,12 @@
 name: "gatk4_germlinecnvcaller"
-description: Calls copy-number variants in germline samples given their counts and
-  the output of DetermineGermlineContigPloidy.
+description: Calls copy-number variants in germline samples given their counts and the output of DetermineGermlineContigPloidy.
 keywords:
   - gatk
   - germline contig ploidy
   - germlinecnvcaller
 tools:
   - "gatk4":
-      description: Developed in the Data Sciences Platform at the Broad Institute, the
-        toolkit offers a wide variety of tools with a primary focus on variant discovery
-        and genotyping. Its powerful processing engine and high-performance computing
-        features make it capable of taking on projects of any size.
+      description: Developed in the Data Sciences Platform at the Broad Institute, the toolkit offers a wide variety of tools with a primary focus on variant discovery and genotyping. Its powerful processing engine and high-performance computing features make it capable of taking on projects of any size.
       homepage: https://gatk.broadinstitute.org/hc/en-us
       documentation: https://gatk.broadinstitute.org/hc/en-us/categories/360002369672s
       doi: "10.1158/1538-7445.AM2017-3590"
@@ -30,19 +26,16 @@ input:
           - edam: http://edamontology.org/format_3475 # TSV
     - intervals:
         type: file
-        description: Optional - A bed file containing the intervals to include in the
-          process
+        description: Optional - A bed file containing the intervals to include in the process
         pattern: "*.bed"
         ontologies: []
     - ploidy:
         type: directory
-        description: Directory containing ploidy calls produced by determinegermlinecontigploidy
-          case or cohort mode
+        description: Directory containing ploidy calls produced by determinegermlinecontigploidy case or cohort mode
         pattern: "*-calls"
     - model:
         type: directory
-        description: Optional - directory containing the model produced by germlinecnvcaller
-          cohort mode
+        description: Optional - directory containing the model produced by germlinecnvcaller cohort mode
         pattern: "*-cnv-model/*-model"
 output:
   cohortcalls:
@@ -53,8 +46,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*-cnv-model/*-calls":
           type: directory
-          description: Tar gzipped directory containing calls produced by germlinecnvcaller
-            case mode
+          description: Tar gzipped directory containing calls produced by germlinecnvcaller case mode
           pattern: "*-cnv-model/*-calls"
   cohortmodel:
     - - meta:
@@ -64,8 +56,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*-cnv-model/*-model":
           type: directory
-          description: Optional - Tar gzipped directory containing the model produced
-            by germlinecnvcaller cohort mode
+          description: Optional - Tar gzipped directory containing the model produced by germlinecnvcaller cohort mode
           pattern: "*-cnv-model/*-model"
   casecalls:
     - - meta:
@@ -75,8 +66,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*-cnv-calls/*-calls":
           type: directory
-          description: Tar gzipped directory containing calls produced by germlinecnvcaller
-            case mode
+          description: Tar gzipped directory containing calls produced by germlinecnvcaller case mode
           pattern: "*-cnv-calls/*-calls"
   versions_gatk4:
     - - ${task.process}:
@@ -105,3 +95,17 @@ authors:
 maintainers:
   - "@ryanjameskennedy"
   - "@ViktorHy"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/gatk4-main_gcnvkernel:600cef9dfbee0739
+      build_id: bd-600cef9dfbee0739_1
+      scan_id: sc-40c20bbc31bf67e6_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/gatk4-main_gcnvkernel:a98a8de6b0fd3804
+      build_id: bd-a98a8de6b0fd3804_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b9/b9822b92da68a3e7916072218082e3fa79bebc2f377947c363613adeecd56ec5/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/gatk4/germlinecnvcaller/.conda-lock/linux_amd64-bd-600cef9dfbee0739_1.txt

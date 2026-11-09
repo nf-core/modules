@@ -8,9 +8,7 @@ keywords:
   - vrhyme
 tools:
   - "vrhyme":
-      description: "vRhyme functions by utilizing coverage variance comparisons and
-        supervised machine learning classification of sequence features to construct
-        viral metagenome-assembled genomes (vMAGs)."
+      description: "vRhyme functions by utilizing coverage variance comparisons and supervised machine learning classification of sequence features to construct viral metagenome-assembled genomes (vMAGs)."
       homepage: https://github.com/AnantharamanLab/vRhyme
       documentation: https://github.com/AnantharamanLab/vRhyme
       tool_dev_url: https://github.com/AnantharamanLab/vRhyme
@@ -61,8 +59,7 @@ output:
             e.g. [ id:'test' ]
       - "**/vRhyme_best_bins.*.membership.tsv":
           type: file
-          description: TSV file describing the contig/scaffold membership of each
-            bin
+          description: TSV file describing the contig/scaffold membership of each bin
           pattern: "vRhyme_best_bins.*.membership.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475
@@ -103,3 +100,27 @@ authors:
   - "@CarsonJM"
 maintainers:
   - "@CarsonJM"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/vrhyme_numpy_python_scikit-learn_setuptools:02d8cf67999994aa
+      build_id: bd-02d8cf67999994aa_1
+      scan_id: sc-3a2762ac88fd0e93_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/vrhyme_numpy_python_scikit-learn_setuptools:aeb34d9fe83a41a6
+      build_id: bd-aeb34d9fe83a41a6_1
+      scan_id: sc-feb3fa90a1128747_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/vrhyme_numpy_python_scikit-learn_setuptools:352643913fff2089
+      build_id: bd-352643913fff2089_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/34/3498744ca1f8ee741ffcb1349ca8ccab70ce860c9f92f14fefddebf6226fe542/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/vrhyme_numpy_python_scikit-learn_setuptools:1ef4ab3669c6cc75
+      build_id: bd-1ef4ab3669c6cc75_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9d/9d994695f60fba485a0e2679c84965fa6fc2787e5b24df2c2d3e2969c7702ad5/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/vrhyme/vrhyme/.conda-lock/linux_amd64-bd-02d8cf67999994aa_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/vrhyme/vrhyme/.conda-lock/linux_arm64-bd-aeb34d9fe83a41a6_1.txt

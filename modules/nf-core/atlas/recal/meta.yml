@@ -6,8 +6,7 @@ keywords:
   - bias
 tools:
   - "atlas":
-      description: "ATLAS, a suite of methods to accurately genotype and estimate genetic\
-        \ diversity"
+      description: "ATLAS, a suite of methods to accurately genotype and estimate genetic diversity"
       homepage: "https://bitbucket.org/wegmannlab/atlas/wiki/Home"
       documentation: "https://bitbucket.org/wegmannlab/atlas/wiki/Home"
       doi: "10.1101/105346"
@@ -58,8 +57,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.txt":
           type: file
-          description: file containing the sequencing bias for each of the Read Group
-            pools
+          description: file containing the sequencing bias for each of the Read Group pools
           pattern: "*.txt"
           ontologies: []
   versions_atlas:
@@ -87,3 +85,17 @@ authors:
   - "@ltcrod"
 maintainers:
   - "@ltcrod"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/atlas:0.9.9--18077f78d3bd1a61
+      build_id: bd-18077f78d3bd1a61_1
+      scan_id: sc-f3e827eab4b797e6_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/atlas:0.9.9--852fad8f3f62173f
+      build_id: bd-852fad8f3f62173f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a4/a494a4d166b29fdf9a27ac525c7aa4dc8ec476d0e624d174e6c72a0e87499dab/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/atlas/recal/.conda-lock/linux_amd64-bd-18077f78d3bd1a61_1.txt

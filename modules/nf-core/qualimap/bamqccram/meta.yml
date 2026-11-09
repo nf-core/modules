@@ -109,3 +109,27 @@ authors:
   - "@FriederikeHanssen"
 maintainers:
   - "@FriederikeHanssen"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/qualimap_samtools:36c0048b499c176d
+      build_id: bd-36c0048b499c176d_1
+      scan_id: sc-d3dd225444b51121_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/qualimap_samtools:6e480f0199178584
+      build_id: bd-6e480f0199178584_1
+      scan_id: sc-8349be88712c5f4d_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/qualimap_samtools:9ed325048cffa36b
+      build_id: bd-9ed325048cffa36b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0b/0bac616cceae959063312086a92313145e96f9f2d5edb78a410a7e92459daa38/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/qualimap_samtools:2ccd3e7301a9c6d4
+      build_id: bd-2ccd3e7301a9c6d4_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a6/a67cd2fed2d1e951052fdea57c914851c08a3d8e32a11937636d1d84ba36b201/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/qualimap/bamqccram/.conda-lock/linux_amd64-bd-36c0048b499c176d_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/qualimap/bamqccram/.conda-lock/linux_arm64-bd-6e480f0199178584_1.txt
