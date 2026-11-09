@@ -21,7 +21,8 @@ tools:
       documentation: https://github.com/Ecogenomics/CheckM/wiki
       tool_dev_url: https://github.com/Ecogenomics/CheckM
       doi: "10.1101/gr.186072.114"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:checkm
 input:
   - - meta:
@@ -75,14 +76,28 @@ output:
           description: CheckM summary completeness statistics table
           pattern: "*.tsv"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
+  versions_checkm:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - checkm:
+          type: string
+          description: The name of the tool
+      - checkm 2>&1 | grep '...:::' | sed 's/.*CheckM v//;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - checkm:
+          type: string
+          description: The name of the tool
+      - checkm 2>&1 | grep '...:::' | sed 's/.*CheckM v//;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@jfy133"
 maintainers:

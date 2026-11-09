@@ -6,8 +6,7 @@ keywords:
   - antibiotic resistance
 tools:
   - amrfinderplus:
-      description: AMRFinderPlus finds antimicrobial resistance and other genes in protein
-        or nucleotide sequences.
+      description: AMRFinderPlus finds antimicrobial resistance and other genes in protein or nucleotide sequences.
       homepage: https://github.com/ncbi/amr/wiki
       documentation: https://github.com/ncbi/amr/wiki
       tool_dev_url: https://github.com/ncbi/amr
@@ -26,6 +25,17 @@ input:
         pattern: "*.{fasta,fasta.gz,fa,fa.gz,fna,fna.gz,faa,faa.gz}"
         ontologies:
           - edam: "http://edamontology.org/format_1929" # FASTA
+    - organism:
+        type: string
+        description: |
+          Organism name as listed by `amrfinder --list_organisms`
+          (e.g. 'Escherichia'). Enables organism-specific point-mutation
+          screening and the mutation report. Set to '' or [] to disable.
+    - is_proteins:
+        type: boolean
+        description: |
+          Whether the FASTA contains protein sequences (true, passed with `-p`)
+          or nucleotide sequences (false, passed with `-n`)
   - db:
       type: file
       description: A compressed tarball of the AMRFinderPlus database to query
@@ -40,7 +50,7 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}.tsv:
+      - "${prefix}.tsv":
           type: file
           description: AMRFinder+ final report
           pattern: "*.tsv"
@@ -52,29 +62,60 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}-mutations.tsv:
+      - "${prefix}-mutations.tsv":
           type: file
           description: Report of organism-specific point-mutations
           pattern: "*-mutations.tsv"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
-  versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
   tool_version:
     - VER:
         type: string
-        description: The version of the tool in string format (useful for downstream
-          tools such as hAMRronization)
+        description: The version of the tool in string format (useful for downstream tools such as hAMRronization)
   db_version:
     - DBVER:
         type: string
-        description: The version of the used database in string format (useful for downstream
-          tools such as hAMRronization)
+        description: The version of the used database in string format (useful for downstream tools such as hAMRronization)
+  versions_amrfinderplus:
+    - - "${task.process}":
+          type: string
+          description: Process name
+      - amrfinderplus:
+          type: string
+          description: Tool name
+      - amrfinder --version:
+          type: string
+          description: Tool version command
+  versions_amrfinderplus_database:
+    - - "${task.process}":
+          type: string
+          description: Process name
+      - amrfinderplus_database:
+          type: string
+          description: Database name
+      - "amrfinder --database amrfinderdb --database_version 2>&1 | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[0-9]+' | tail -1":
+          type: string
+          description: Database version command
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: Process name
+      - amrfinderplus:
+          type: string
+          description: Tool name
+      - amrfinder --version:
+          type: string
+          description: Tool version command
+    - - "${task.process}":
+          type: string
+          description: Process name
+      - amrfinderplus_database:
+          type: string
+          description: Database name
+      - "amrfinder --database amrfinderdb --database_version 2>&1 | grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}\\.[0-9]+' | tail -1":
+          type: string
+          description: Database version command
 authors:
   - "@rpetit3"
   - "@louperelo"
@@ -83,3 +124,27 @@ maintainers:
   - "@rpetit3"
   - "@louperelo"
   - "@jfy133"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/ncbi-amrfinderplus:4.2.7--60903f6584a51c19
+      build_id: bd-60903f6584a51c19_1
+      scan_id: sc-21711be33bce781c_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/ncbi-amrfinderplus:4.2.7--01f7d2a8fad0d3aa
+      build_id: bd-01f7d2a8fad0d3aa_1
+      scan_id: sc-934b3c935d77b92b_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/ncbi-amrfinderplus:4.2.7--75163eb7e6851518
+      build_id: bd-75163eb7e6851518_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/00/00cad0bb4c7cb85b0906f357e5197bcabb32569f9b48ff049f081b5bafd04aca/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/ncbi-amrfinderplus:4.2.7--62e4093a6de0ba85
+      build_id: bd-62e4093a6de0ba85_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/10/105a6193a3e527cdd00a755ef7bd9362ea8defda0831268b010cdee48db30e7c/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/amrfinderplus/run/.conda-lock/linux_amd64-bd-01f7d2a8fad0d3aa_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/amrfinderplus/run/.conda-lock/linux_arm64-bd-60903f6584a51c19_1.txt

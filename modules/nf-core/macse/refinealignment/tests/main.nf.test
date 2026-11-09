@@ -1,0 +1,66 @@
+// nf-core modules test macse/refinealignment
+nextflow_process {
+
+    name "Test Process MACSE_REFINEALIGNMENT"
+    script "../main.nf"
+    process "MACSE_REFINEALIGNMENT"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "macse"
+    tag "macse/refinealignment"
+
+    test("Raphidioptera - fasta") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/Raphidioptera/Raphidioptera_BOLD_COI_final_align_NT.aln', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot (
+                    process.out.aa,
+                    process.out.nt,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match()}
+            )
+        }
+
+    }
+
+    test("Raphidioptera - fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/eukaryotes/Raphidioptera/Raphidioptera_BOLD_COI_final_align_NT.aln', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot (
+                    process.out.aa,
+                    process.out.nt,
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match()}
+            )
+        }
+
+    }
+
+}

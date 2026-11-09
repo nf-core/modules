@@ -1,9 +1,12 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GFASTATS {
     tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f7/f7150110bea918bd523e41aab58f3be2eda949bbe7f715500681b01965e5f667/data':
         'community.wave.seqera.io/library/gfastats:1.3.11--692f8595aa6b06a8' }"
 
@@ -35,6 +38,9 @@ process GFASTATS {
     def output_sequences = out_fmt ? "--out-format ${prefix}.${out_fmt}.gz" : ""
     """
     gfastats \\
+        $assembly \\
+        $genome_size \\
+        $target \\
         $args \\
         --threads $task.cpus \\
         $agp \\
@@ -42,9 +48,6 @@ process GFASTATS {
         $ebed \\
         $sak \\
         $output_sequences \\
-        --input-sequence $assembly \\
-        $genome_size \\
-        $target \\
         > ${prefix}.assembly_summary
     """
 

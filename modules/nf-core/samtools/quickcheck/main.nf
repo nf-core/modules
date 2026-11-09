@@ -1,17 +1,20 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SAMTOOLS_QUICKCHECK {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.23--h96c455f_0':
-        'biocontainers/samtools:1.23--h96c455f_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/57/5749b5efca036c73d7b427c0ba347c94773330fe228b8eb395cdb619e7a5635c/data'
+        : 'community.wave.seqera.io/library/samtools_htslib:1.25--65a8db39c6e3f5bd'}"
 
     input:
     tuple val(meta), path(bam)
 
     output:
-    tuple val(meta), path(bam), env("EXIT_CODE"),   emit: bam
+    tuple val(meta), path(bam), env("EXIT_CODE"), emit: bam
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
@@ -21,8 +24,8 @@ process SAMTOOLS_QUICKCHECK {
     def args = task.ext.args ?: ''
     """
     samtools quickcheck \\
-        $args \\
-        $bam || EXIT_CODE=\$?
+        ${args} \\
+        ${bam} || EXIT_CODE=\$?
 
     EXIT_CODE=\${EXIT_CODE:-0}
     """
@@ -31,6 +34,6 @@ process SAMTOOLS_QUICKCHECK {
     def args = task.ext.args ?: ''
     """
     EXIT_CODE=0
-    echo $args
+    echo ${args}
     """
 }

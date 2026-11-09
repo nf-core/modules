@@ -29,8 +29,7 @@ nextflow_process {
                 { assert snapshot(
                     process.out.gfa,
                     process.out.affixes,
-                    process.out.versions,
-                    file(process.out.versions[0]).readLines().collect { it.trim() }, // Trap for conda version mismatches
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )

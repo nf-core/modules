@@ -1,0 +1,135 @@
+name: "mgnifam_computeclans"
+description: Groups protein families into clans from residue-level overlap of their members
+keywords:
+  - protein families
+  - clans
+  - family similarity
+  - jaccard index
+  - metagenomics
+  - protein sequences
+tools:
+  - "mgnifam":
+      description: Iterative HMM-based protein family generation over large protein sequence databases
+      homepage: "https://github.com/vagkaratzas/mgnifam"
+      documentation: "https://vagkaratzas.github.io/mgnifam/"
+      tool_dev_url: "https://github.com/vagkaratzas/mgnifam"
+      licence:
+        - "MIT"
+      args_id: "$args"
+      identifier: biotools:mgnifam
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - members:
+        type: file
+        description: Headerless family<TAB>member TSV files (plain or gzipped), e.g. from mgnifam/generatefamilies
+        pattern: "*.{tsv,tsv.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3989 # GZIP format
+    - fasta_file:
+        type: file
+        description: Optional. Protein FASTA file, required when members are bare protein names
+        pattern: "*.{fa,fa.gz,fasta,fasta.gz,faa,faa.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+          - edam: http://edamontology.org/format_3989 # GZIP format
+output:
+  clans:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}/${prefix}_clans.csv:
+          type: file
+          description: Clan assignment of each family
+          pattern: "*/*_clans.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  clan_edges:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}/${prefix}_clan_edges.csv:
+          type: file
+          description: Pairwise family similarity metrics
+          pattern: "*/*_clan_edges.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}/${prefix}_clans.log:
+          type: file
+          description: Diagnostic log of the clan computation run
+          pattern: "*/*_clans.log"
+          ontologies:
+            - edam: http://edamontology.org/format_3671 # Plain text format
+  summary:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}/${prefix}_clans_summary.json:
+          type: file
+          description: Run summary with parameters and counts
+          pattern: "*/*_clans_summary.json"
+          ontologies:
+            - edam: http://edamontology.org/format_3464 # JSON
+  versions_mgnifam:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mgnifam:
+          type: string
+          description: The name of the tool
+      - mgnifam --version 2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mgnifam:
+          type: string
+          description: The name of the tool
+      - mgnifam --version 2>&1:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@vagkaratzas"
+maintainers:
+  - "@vagkaratzas"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/mgnifam:4.1.0--f1cee804024a318d
+      build_id: bd-f1cee804024a318d_1
+      scan_id: sc-34dc30352b7bd368_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/mgnifam:4.1.0--818ca9d3b99bfbca
+      build_id: bd-818ca9d3b99bfbca_1
+      scan_id: sc-5aae2a00ae27a36a_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/mgnifam:4.1.0--37584b95e8e4fe24
+      build_id: bd-37584b95e8e4fe24_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/88/88cac83f189b2e51924e0917d9097bbb696509f11c5e1bab0072f6f8b7a4fd0e/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/mgnifam:4.1.0--83ffd056fea9bea1
+      build_id: bd-83ffd056fea9bea1_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/07/07d734ffff975d82e7381943964ea0b875606d69d7f3b3c35d1488833fff960b/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/mgnifam/computeclans/.conda-lock/linux_amd64-bd-818ca9d3b99bfbca_1.txt

@@ -1,0 +1,162 @@
+nextflow_process {
+
+    name "Test Process SEGUL_ALIGNTRIM"
+    script "../main.nf"
+    process "SEGUL_ALIGNTRIM"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "segul"
+    tag "segul/aligntrim"
+    tag "gunzip"
+
+    setup {
+        run("GUNZIP") {
+            script "../../../gunzip/main.nf"
+            process {
+                """
+                input[0] = [
+                    [ id:'PF14720' ],
+                    file(params.modules_testdata_base_path + 'delete_me/hmmer/PF14720_seed.alnfaa.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("PF14720 - aa - default missing data") {
+        when {
+            params {
+                module_args = "--input-format fasta --datatype aa"
+            }
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+               { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("PF14720 - aa - missing data 0.3 - nexus output") {
+        when {
+            params {
+                module_args = "--input-format fasta --output-format nexus --datatype aa --missing-data 0.3"
+            }
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+               { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("PF14720 - aa - parsimony informative sites") {
+        when {
+            params {
+                module_args = "--input-format fasta --datatype aa --pinf 1"
+            }
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+               { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("PF14720 - aa - multiple files") {
+        when {
+            params {
+                module_args = "--input-format fasta --datatype aa --missing-data 0.5"
+            }
+            process {
+                """
+                def gunzipped = GUNZIP.out.gunzip
+                def multi = gunzipped.map { meta, file ->
+                    def copy = file.copyTo("\${file.parent}/PF14720_seed_copy.alnfaa")
+                    [ meta, [ file, copy ] ]
+                }
+                input[0] = multi
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert process.out.trimmed[0][1].size() == 2 },
+                { assert process.out.summary },
+                { assert snapshot(
+                    process.out.trimmed,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - dna - default") {
+        when {
+            params {
+                module_args = "--datatype dna --input-format fasta"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'sarscov2' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+               { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("PF14720 - aa - stub") {
+        options "-stub"
+
+        when {
+            params {
+                module_args = ""
+            }
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+               { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

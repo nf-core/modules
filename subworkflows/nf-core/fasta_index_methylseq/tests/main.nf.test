@@ -10,9 +10,13 @@ nextflow_workflow {
     tag "subworkflows/fasta_index_methylseq"
     tag "untar"
     tag "gunzip"
+    tag "bismark"
     tag "bismark/genomepreparation"
+    tag "bwameth"
     tag "bwameth/index"
+    tag "bwa"
     tag "bwa/index"
+    tag "samtools"
     tag "samtools/faidx"
 
     test("Params: bismark | download bismark index (bowtie2)") {
@@ -40,9 +44,8 @@ nextflow_workflow {
                     workflow.out.fasta_index,
                     workflow.out.bismark_index,
                     workflow.out.bwameth_index,
-                    workflow.out.bwamem_index,
-                    workflow.out.versions
-                    ).match() }
+                    workflow.out.bwamem_index
+            ).match()}
             )
         }
     }
@@ -72,9 +75,8 @@ nextflow_workflow {
                     workflow.out.fasta_index,
                     workflow.out.bismark_index,
                     workflow.out.bwameth_index,
-                    workflow.out.bwamem_index,
-                    workflow.out.versions
-                    ).match() }
+                    workflow.out.bwamem_index
+            ).match()}
             )
         }
     }
@@ -104,9 +106,8 @@ nextflow_workflow {
                     workflow.out.fasta_index,
                     workflow.out.bismark_index,
                     workflow.out.bwameth_index,
-                    workflow.out.bwamem_index,
-                    workflow.out.versions
-                    ).match() }
+                    workflow.out.bwamem_index
+                ).match()}
             )
         }
     }
@@ -136,9 +137,8 @@ nextflow_workflow {
                     workflow.out.fasta_index,
                     workflow.out.bismark_index,
                     workflow.out.bwameth_index,
-                    workflow.out.bwamem_index,
-                    workflow.out.versions
-                    ).match() }
+                    workflow.out.bwamem_index
+                ).match()}
             )
         }
     }
@@ -168,9 +168,8 @@ nextflow_workflow {
                     workflow.out.fasta_index,
                     workflow.out.bismark_index,
                     workflow.out.bwameth_index,
-                    workflow.out.bwamem_index,
-                    workflow.out.versions
-                    ).match() }
+                    workflow.out.bwamem_index
+                ).match()}
             )
         }
     }
@@ -200,9 +199,8 @@ nextflow_workflow {
                     workflow.out.fasta_index,
                     workflow.out.bismark_index,
                     workflow.out.bwameth_index,
-                    workflow.out.bwamem_index,
-                    workflow.out.versions
-                    ).match() }
+                    workflow.out.bwamem_index
+                ).match()}
             )
         }
     }
@@ -232,9 +230,8 @@ nextflow_workflow {
                     workflow.out.fasta_index,
                     workflow.out.bismark_index,
                     workflow.out.bwameth_index,
-                    workflow.out.bwamem_index,
-                    workflow.out.versions
-                    ).match() }
+                    workflow.out.bwamem_index
+                ).match()}
             )
         }
     }
@@ -264,9 +261,8 @@ nextflow_workflow {
                     workflow.out.fasta_index,
                     workflow.out.bismark_index,
                     workflow.out.bwameth_index,
-                    workflow.out.bwamem_index,
-                    workflow.out.versions
-                    ).match() }
+                    workflow.out.bwamem_index
+                ).match()}
             )
         }
     }
@@ -296,9 +292,8 @@ nextflow_workflow {
                     workflow.out.fasta_index,
                     workflow.out.bismark_index,
                     workflow.out.bwameth_index,
-                    workflow.out.bwamem_index,
-                    workflow.out.versions
-                    ).match() }
+                    workflow.out.bwamem_index
+                ).match()}
             )
         }
     }
@@ -328,9 +323,8 @@ nextflow_workflow {
                     workflow.out.fasta_index,
                     workflow.out.bismark_index,
                     workflow.out.bwameth_index,
-                    workflow.out.bwamem_index,
-                    workflow.out.versions
-                    ).match() }
+                    workflow.out.bwamem_index
+                ).match()}
             )
         }
     }
@@ -360,9 +354,8 @@ nextflow_workflow {
                     workflow.out.fasta_index,
                     workflow.out.bismark_index,
                     workflow.out.bwameth_index,
-                    workflow.out.bwamem_index,
-                    workflow.out.versions
-                    ).match() }
+                    workflow.out.bwamem_index
+                ).match()}
             )
         }
     }
@@ -392,9 +385,8 @@ nextflow_workflow {
                     workflow.out.fasta_index,
                     workflow.out.bismark_index,
                     workflow.out.bwameth_index,
-                    workflow.out.bwamem_index,
-                    workflow.out.versions
-                    ).match() }
+                    workflow.out.bwamem_index
+                ).match()}
             )
         }
     }
@@ -424,9 +416,8 @@ nextflow_workflow {
                     workflow.out.fasta_index,
                     workflow.out.bismark_index,
                     workflow.out.bwameth_index,
-                    workflow.out.bwamem_index,
-                    workflow.out.versions
-                    ).match() }
+                    workflow.out.bwamem_index
+                ).match()}
             )
         }
     }
@@ -456,9 +447,8 @@ nextflow_workflow {
                     workflow.out.fasta_index,
                     workflow.out.bismark_index,
                     workflow.out.bwameth_index,
-                    workflow.out.bwamem_index,
-                    workflow.out.versions
-                    ).match() }
+                    workflow.out.bwamem_index
+                ).match()}
             )
         }
     }

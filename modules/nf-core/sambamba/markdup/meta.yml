@@ -10,7 +10,8 @@ tools:
       homepage: "https://lomereiter.github.io/sambamba/docs/sambamba-view.html"
       documentation: "https://lomereiter.github.io/sambamba/docs/sambamba-view.html"
       tool_dev_url: "https://github.com/biod/sambamba"
-      licence: ["GPL v2"]
+      licence:
+        - "GPL v2"
       identifier: biotools:sambamba
 input:
   - - meta:
@@ -46,13 +47,27 @@ output:
           description: An optional BAM index file.
           pattern: "*.{bai}"
           ontologies: []
+  versions_sambamba:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sambamba:
+          type: string
+          description: The name of the tool
+      - sambamba --version 2>&1 | grep -oPm1 'sambamba \\K[0-9.]+':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - sambamba:
+          type: string
+          description: The name of the tool
+      - sambamba --version 2>&1 | grep -oPm1 'sambamba \\K[0-9.]+':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@BioInf2305"
 maintainers:

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ASHLAR {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ashlar:1.19.0--pyhdfd78af_0' :
-        'biocontainers/ashlar:1.19.0--pyhdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5f/5f9a902bb541dc2abba28e73c4bac2ee14d28373abe2e14b444a5096f4919cb7/data'
+        : 'community.wave.seqera.io/library/ashlar_tifffile:6466db6f351397ba'}"
 
     input:
     tuple val(meta), path(images, stageAs: 'image*/*')

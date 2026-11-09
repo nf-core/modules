@@ -1,0 +1,75 @@
+nextflow_process {
+
+    name "Test Process GETORGANELLE_FROMREADS"
+    script "../main.nf"
+    process "GETORGANELLE_FROMREADS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "getorganelle"
+    tag "getorganelle/config"
+    tag "getorganelle/fromreads"
+
+    test("homo_sapiens - animal_mt db, fastq.gz - fasta") {
+        setup {
+            run("GETORGANELLE_CONFIG") {
+                script "../../config/main.nf"
+                process {
+                    """
+                    input[0] = 'animal_mt'
+                    """
+                }
+            }
+        }
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = GETORGANELLE_CONFIG.out.db
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["etc"])).match() },
+            )
+        }
+
+    }
+
+    test("homo_sapiens - animal_mt db, fastq.gz - fasta - stub") {
+        options '-stub'
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = [
+                    'animal_mt',
+                    file('mock/getorganelle')
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

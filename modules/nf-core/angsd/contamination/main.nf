@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ANGSD_CONTAMINATION {
     tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/angsd:0.940--hf5e1c6e_3':
-        'biocontainers/angsd:0.940--hf5e1c6e_3' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a0/a0185040abdace3529e7c8ae31a80bd86a47577e0d2078b2223dc1b1c362e656/data'
+        : 'community.wave.seqera.io/library/angsd_htslib:714d1c4bd0020e05'}"
 
     input:
     tuple val(meta), path(icounts)
@@ -13,7 +16,7 @@ process ANGSD_CONTAMINATION {
 
     output:
     tuple val(meta), path("*.txt"), emit: txt
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('angsd'), eval("angsd 2>&1 | sed '1!d;s/.*version: //;s/ .*//'"), emit: versions_angsd, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,22 +33,11 @@ process ANGSD_CONTAMINATION {
         -h ${hapmap_file} \
         -p ${task.cpus} \
         2>| >(tee ${prefix}.txt >&2)
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        angsd: \$(echo \$(angsd 2>&1) | grep version | head -n 1 | sed 's/.*version: //g;s/ .*//g')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        angsd: \$(echo \$(angsd 2>&1) | grep version | head -n 1 | sed 's/.*version: //g;s/ .*//g')
-    END_VERSIONS
     """
 }

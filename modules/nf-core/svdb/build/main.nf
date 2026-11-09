@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SVDB_BUILD {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f5/f59712ead354411dd8bea4918d777737ca4ef2ad1360289507fe35acb688e74f/data':
-        'community.wave.seqera.io/library/bcftools_svdb:12db401acbacc624' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9a/9a231533a2fb561d07f4930244fbdef3ea66a7630ed0bc19129f123c514c50f6/data':
+        'community.wave.seqera.io/library/bcftools_svdb_gzip_tar:6e53c6778a8f708a' }"
 
     input:
     tuple val(meta), path(input)

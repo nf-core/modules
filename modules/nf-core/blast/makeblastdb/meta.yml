@@ -24,7 +24,14 @@ input:
         type: file
         description: Input fasta file
         pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1929
+  - taxid_map:
+      type: file
+      description: taxID mapping files are tab-delimited text files used to map custom sequence IDs to NCBI taxonomic identifiers (taxIDs) during the creation of a BLAST database
+      pattern: "*.txt"
+      ontologies:
+        - edam: http://edamontology.org/format_2330
 output:
   db:
     - - meta:

@@ -12,7 +12,8 @@ tools:
       documentation: https://github.com/DiltheyLab/MetaMaps/blob/master/README.md
       tool_dev_url: https://github.com/DiltheyLab/MetaMaps
       doi: "10.1038/s41467-019-10934-2"
-      licence: ["Public Domain"]
+      licence:
+        - "Public Domain"
       identifier: biotools:metamaps
 
 input:
@@ -77,13 +78,29 @@ output:
           description: Log with parameters
           pattern: "*.{classification_res.parameters}"
           ontologies: []
+  versions_metamaps:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metamaps:
+          type: string
+          description: The name of the tool
+      - metamaps | sed -n 's/.*MetaMaps v //p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - metamaps:
+          type: string
+          description: The name of the tool
+      - metamaps | sed -n 's/.*MetaMaps v //p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@henningonsbring"
   - "@sofstam"

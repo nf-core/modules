@@ -34,7 +34,7 @@ nextflow_process {
                     assert snapshot(
                         path(process.out.vcf_indels.get(0).get(1)).vcf.variantsMD5,
                         path(process.out.vcf_snvs.get(0).get(1)).vcf.variantsMD5,
-                        process.out.versions,
+                        sanitizeOutput(process.out, unstableKeys: ["vcf_indels", "vcf_snvs"]),
                     ).match()
                 }
             )

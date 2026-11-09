@@ -32,9 +32,32 @@ nextflow_process {
 					process.out.tsv,
 					file(process.out.genome_seq[0][1]).name, // empty
 					file(process.out.plasmid_seq[0][1]).name, // empty
-					process.out.versions
+					process.out.findAll { key, val -> key.startsWith('versions') }
 					).match()
 				}
+            )
+        }
+    }
+
+    test("test-plasmidfinder-stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ], // meta map
+				    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ]
+
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
             )
         }
     }

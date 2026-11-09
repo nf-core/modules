@@ -1,10 +1,13 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FASTK_FASTK {
     tag "$meta.id"
     label 'process_medium'
 
     // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/02/02c05b2ec421debc83883ef9a211291e3220546c12f7c54cb78e66209cb2797d/data' :
         'community.wave.seqera.io/library/fastk:1.2--4bc70c6cd0d420bd' }"
 
@@ -13,6 +16,7 @@ process FASTK_FASTK {
 
     output:
     tuple val(meta), path("*.hist")                      , emit: hist
+    tuple val(meta), path("*.log" )                      , emit: log
     tuple val(meta), path("*.ktab*", hidden: true)       , emit: ktab, optional: true
     tuple val(meta), path("*.{prof,pidx}*", hidden: true), emit: prof, optional: true
     // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
@@ -30,7 +34,8 @@ process FASTK_FASTK {
         -T$task.cpus \\
         -M${task.memory.toGiga()} \\
         -N${prefix} \\
-        $reads
+        $reads \\
+        1>${prefix}.fastK.log 2>&1
 
     find . -name '*.ktab*' -exec chmod a+r {} \\;
     """
@@ -51,6 +56,6 @@ process FASTK_FASTK {
         -T$task.cpus \\
         -M${task.memory.toGiga()} \\
         -N${prefix}_fk \\
-        $reads"
+        $reads" 1>${prefix}.fastK.log 2>&1
     """
 }

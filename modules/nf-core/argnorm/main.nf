@@ -1,10 +1,13 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ARGNORM {
     tag "${meta.id}"
     label 'process_low'
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/argnorm:0.8.0--pyhdfd78af_0'
-        : 'biocontainers/argnorm:0.8.0--pyhdfd78af_0'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4f/4f2c4d089c21f0fefaf6692b45f2cacdc1cef258beecad3481d51958395ed579/data'
+        : 'community.wave.seqera.io/library/argnorm:0.8.0--c4110b014bf1acbe'}"
 
     input:
     tuple val(meta), path(input_tsv)
@@ -13,7 +16,7 @@ process ARGNORM {
 
     output:
     tuple val(meta), path("*.tsv"), emit: tsv
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('argnorm'), eval('argnorm --version'), emit: versions_argnorm, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,11 +39,6 @@ process ARGNORM {
         -o ${prefix} \\
         ${db_args} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        argnorm: \$(argnorm --version)
-    END_VERSIONS
     """
 
     stub:
@@ -54,10 +52,5 @@ process ARGNORM {
 
     """
     touch ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        argnorm: \$(argnorm --version)
-    END_VERSIONS
     """
 }

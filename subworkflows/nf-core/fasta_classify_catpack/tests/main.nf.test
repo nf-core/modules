@@ -1,0 +1,174 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FASTA_CLASSIFY_CATPACK"
+    script "../main.nf"
+    workflow "FASTA_CLASSIFY_CATPACK"
+    config './nextflow.config'
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fasta_classify_catpack"
+    tag "catpack"
+    tag "catpack/bins"
+    tag "catpack/contigs"
+    tag "catpack/addnames"
+    tag "catpack/summarise"
+    tag "catpack/prepare"
+    tag "catpack/download"
+    tag "untar"
+
+    setup {
+        run('CATPACK_PREPARE') {
+            script 'modules/nf-core/catpack/prepare/main.nf'
+            process {
+                """
+                input[0] = [ [id:'test'], [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/proteome.fasta', checkIfExists: true) ] ]
+                input[1] = [ file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/prot_nodes.dmp', checkIfExists: true) ]
+                input[2] = [ file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/prot_names.dmp', checkIfExists: true) ]
+                input[3] = [ file(params.modules_testdata_base_path + 'genomics/sarscov2/metagenome/prot.accession2taxid.gz', checkIfExists: true) ]
+                """
+            }
+        }
+    }
+
+    // Full integration tests: these run real Diamond alignment via CATPACK_BINS/UNBINS
+    // and are therefore slow by nature. Only two real tests are kept to limit CI time:
+    // one covering bins only, one covering the full bins + unbinned path.
+    // Both run with run_summarise = true to exercise CATPACK_SUMMARISE as well.
+    // The no-summarise and structural paths are covered by the stub test below.
+
+    test("sarscov2 - bins only - summarise") {
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                ])
+                input[1] = channel.empty()
+                input[2] = CATPACK_PREPARE.out.db.map { meta, db_path -> [ meta, db_path.parent ] }
+                input[3] = channel.empty()
+                input[4] = true
+                input[5] = '.fasta'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - bins and unbinned - summarise") {
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                ])
+                input[1] = channel.of([
+                    [ id:'test_unbinned' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                ])
+                input[2] = CATPACK_PREPARE.out.db.map { meta, db_path -> [ meta, db_path.parent ] }
+                input[3] = channel.empty()
+                input[4] = true
+                input[5] = '.fasta'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - bins only") {
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                ])
+                input[1] = channel.empty()
+                input[2] = CATPACK_PREPARE.out.db.map { meta, db_path -> [ meta, db_path.parent ] }
+                input[3] = channel.empty()
+                input[4] = false
+                input[5] = '.fasta'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - bins only - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                ])
+                input[1] = channel.empty()
+                input[2] = CATPACK_PREPARE.out.db.map { meta, db_path -> [ meta, db_path.parent ] }
+                input[3] = channel.empty()
+                input[4] = false
+                input[5] = '.fasta'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(sanitizeOutput(workflow.out)).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - both ch_cat_db and ch_cat_db_download_id provided - should fail - stub") {
+
+        options "-stub"
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of([
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                ])
+                input[1] = channel.empty()
+                input[2] = CATPACK_PREPARE.out.db.map { meta, db_path -> [ meta, db_path.parent ] }
+                input[3] = channel.of([ [id:'cat_db_nr'], 'nr' ])
+                input[4] = false
+                input[5] = '.fasta'
+                """
+            }
+        }
+
+        then {
+            assert workflow.failed
+            assert workflow.errorReport.contains("Both a pre-built DB and a download ID were provided")
+        }
+    }
+}

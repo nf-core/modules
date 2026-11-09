@@ -2,20 +2,6 @@
     "sarscov2 - fastq - stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test_stub",
-                            "single_end": true
-                        },
-                        [
-                            "test_stub_single.fastq.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
-                        ]
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,eb43849d72bd1cd3c25f42ab20bb6958"
-                ],
                 "reads": [
                     [
                         {
@@ -23,45 +9,21 @@
                             "single_end": true
                         },
                         [
-                            "test_stub_single.fastq.gz:md5,d41d8cd98f00b204e9800998ecf8427e"
+                            "test_stub_single.fastq.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                         ]
                     ]
-                ],
-                "versions": [
-                    "versions.yml:md5,eb43849d72bd1cd3c25f42ab20bb6958"
                 ]
-            },
-            [
-                {
-                    "FASTQ_SANITISE_SEQKIT:SEQKIT_SANA": {
-                        "seqkit": "2.10.1"
-                    }
-                }
-            ]
+            }
         ],
+        "timestamp": "2026-06-15T10:58:37.652046254",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.04.8"
-        },
-        "timestamp": "2025-10-14T16:02:27.5747639"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
     },
     "sarscov2 - fastq - single_end": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test_single",
-                            "single_end": true
-                        },
-                        [
-                            "test_single_single.fastq.gz:md5,4161df271f9bfcd25d5845a1e220dbec"
-                        ]
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,eb43849d72bd1cd3c25f42ab20bb6958"
-                ],
                 "reads": [
                     [
                         {
@@ -72,44 +34,18 @@
                             "test_single_single.fastq.gz:md5,4161df271f9bfcd25d5845a1e220dbec"
                         ]
                     ]
-                ],
-                "versions": [
-                    "versions.yml:md5,eb43849d72bd1cd3c25f42ab20bb6958"
                 ]
-            },
-            [
-                {
-                    "FASTQ_SANITISE_SEQKIT:SEQKIT_SANA": {
-                        "seqkit": "2.10.1"
-                    }
-                }
-            ]
+            }
         ],
+        "timestamp": "2026-06-12T17:37:45.293059368",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.04.8"
-        },
-        "timestamp": "2025-10-14T16:02:10.950826193"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
     },
     "sarscov2 - fastq - paired_end": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test_paired",
-                            "single_end": false
-                        },
-                        [
-                            "test_paired_R1.paired.fastq.gz:md5,4161df271f9bfcd25d5845a1e220dbec",
-                            "test_paired_R2.paired.fastq.gz:md5,2ebae722295ea66d84075a3b042e2b42"
-                        ]
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,25acc28de3640b1e18124d09a7f3515c",
-                    "versions.yml:md5,eb43849d72bd1cd3c25f42ab20bb6958"
-                ],
                 "reads": [
                     [
                         {
@@ -121,59 +57,18 @@
                             "test_paired_R2.paired.fastq.gz:md5,2ebae722295ea66d84075a3b042e2b42"
                         ]
                     ]
-                ],
-                "versions": [
-                    "versions.yml:md5,25acc28de3640b1e18124d09a7f3515c",
-                    "versions.yml:md5,eb43849d72bd1cd3c25f42ab20bb6958"
                 ]
-            },
-            [
-                {
-                    "FASTQ_SANITISE_SEQKIT:SEQKIT_PAIR": {
-                        "seqkit": "2.9.0"
-                    }
-                },
-                {
-                    "FASTQ_SANITISE_SEQKIT:SEQKIT_SANA": {
-                        "seqkit": "2.10.1"
-                    }
-                }
-            ]
+            }
         ],
+        "timestamp": "2026-06-12T17:37:50.905358878",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.04.8"
-        },
-        "timestamp": "2025-10-14T16:02:16.79436736"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
     },
     "sarscov2 - fastq - both with single broken": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test_both",
-                            "single_end": false
-                        },
-                        [
-                            "test_both_R1.paired.fastq.gz:md5,4161df271f9bfcd25d5845a1e220dbec",
-                            "test_both_R2.paired.fastq.gz:md5,2ebae722295ea66d84075a3b042e2b42"
-                        ]
-                    ],
-                    [
-                        {
-                            "id": "test_both",
-                            "single_end": true
-                        },
-                        [
-                            "test_both_single.fastq.gz:md5,03b43487ca6aeecc5eb8b55bbc1fe2f3"
-                        ]
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,25acc28de3640b1e18124d09a7f3515c",
-                    "versions.yml:md5,eb43849d72bd1cd3c25f42ab20bb6958"
-                ],
                 "reads": [
                     [
                         {
@@ -194,29 +89,13 @@
                             "test_both_single.fastq.gz:md5,03b43487ca6aeecc5eb8b55bbc1fe2f3"
                         ]
                     ]
-                ],
-                "versions": [
-                    "versions.yml:md5,25acc28de3640b1e18124d09a7f3515c",
-                    "versions.yml:md5,eb43849d72bd1cd3c25f42ab20bb6958"
                 ]
-            },
-            [
-                {
-                    "FASTQ_SANITISE_SEQKIT:SEQKIT_PAIR": {
-                        "seqkit": "2.9.0"
-                    }
-                },
-                {
-                    "FASTQ_SANITISE_SEQKIT:SEQKIT_SANA": {
-                        "seqkit": "2.10.1"
-                    }
-                }
-            ]
+            }
         ],
+        "timestamp": "2026-06-12T17:37:56.877663489",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.04.8"
-        },
-        "timestamp": "2025-10-14T16:02:22.656481299"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
     }
 }

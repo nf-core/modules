@@ -1,26 +1,32 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BCFTOOLS_PLOTVCFSTATS {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a1/a1a870916ebd80179b1432d79ca55108ed975a2694bd862803cb086f75087e17/data'
-        : 'community.wave.seqera.io/library/bcftools_matplotlib_tectonic:b409553c39e037f0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2b/2b65a7cbe1415bb1e199b26568bcd4e3f49675060619fd2c354445d5d3017223/data'
+        : 'community.wave.seqera.io/library/bcftools_htslib_ca-certificates_matplotlib_pruned:8a4b0c7f740317fb'}"
 
     input:
     tuple val(meta), path(stats)
 
     output:
-    tuple val(meta), path("*plots*"), emit: plot_dir
-    tuple val(meta), path("*.pdf")  , emit: plot_pdf
-    tuple val("${task.process}"), val('bcftools'), eval("bcftools --version | sed '1!d; s/^.*bcftools //'"), topic: versions, emit: versions_bcftools
+    tuple val(meta), path("${prefix}_plots"),             emit: plot_dir
+    tuple val(meta), path("${prefix}.plot-vcfstats.pdf"), optional:true, emit: plot_pdf
+    tuple val(meta), path("${prefix}_plots/*.pdf"),       optional:true, emit: images_pdf
+    tuple val(meta), path("${prefix}_plots/*.png"),       optional:true, emit: images_png
+    tuple val("${task.process}"), val('bcftools'), eval("bcftools --version | sed '1!d; s/^.*bcftools //'")                    , topic: versions, emit: versions_bcftools
+    tuple val("${task.process}"), val('tectonic'), eval("tectonic --version | sed '1!d; s/^.*Tectonic //'")                    , topic: versions, emit: versions_tectonic
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     // plot-vcfstats requires an output directory, so create one with the prefix
     // The PDF output is also copied to the results directory with a standard name
@@ -36,11 +42,14 @@ process BCFTOOLS_PLOTVCFSTATS {
         $args \\
         $stats
 
-    ln -s ${prefix}_plots/*.pdf ${prefix}.plot-vcfstats.pdf
+    if [ -e ${prefix}_plots/summary.pdf ]
+    then
+        mv ${prefix}_plots/summary.pdf ${prefix}.plot-vcfstats.pdf
+    fi
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
 
     """
     mkdir ${prefix}_plots

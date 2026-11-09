@@ -33,7 +33,7 @@ nextflow_process {
                 { assert snapshot(
                     path(process.out.txt[0][1]).linesGzip[3..7],
 					bam(process.out.bam[0][1]).getReadsMD5(),
-					process.out.versions
+					process.out.findAll { key, val -> key.startsWith('versions') }
 					).match()
 				}
             )

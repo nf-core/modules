@@ -28,6 +28,9 @@ input:
         description: Draft assembly file
         pattern: "*.{txt,bed,interval,genome,bins}"
         ontologies: []
+    - suffix:
+        type: string
+        description: Output suffix
 output:
   sorted:
     - - meta:

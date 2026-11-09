@@ -77,6 +77,16 @@ output:
           description: histogram plots obtained from individual kmer sizes
           pattern: "*.pdf"
           ontologies: []
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test', single_end:false ]
+      - "*.kmergenie.log":
+          type: file
+          description: log file containing the standard output and error of the kmergenie command
+          pattern: "*.kmergenie.log"
   versions_kmergenie:
     - - ${task.process}:
           type: string

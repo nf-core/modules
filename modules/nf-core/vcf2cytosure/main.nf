@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VCF2CYTOSURE {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/58/584cf1de62ed0d65a064456ec0d052d6b657b3245c8f10c626bca7131884c0fc/data':
-        'community.wave.seqera.io/library/pip_vcf2cytosure:6852c55eb4c9d406' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4d/4dc6c9fbe153af0ea2ccb2ff21592a4bf766a676200c6f7efca67cca8e36419f/data':
+        'community.wave.seqera.io/library/pip_vcf2cytosure:19948ad2c2df9484' }"
 
     input:
     tuple val(meta), path(sv_vcf)

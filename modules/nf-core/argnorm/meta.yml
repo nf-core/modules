@@ -1,6 +1,5 @@
 name: "argnorm"
-description: Normalize antibiotic resistance genes (ARGs) using the ARO ontology (developed
-  by CARD).
+description: Normalize antibiotic resistance genes (ARGs) using the ARO ontology (developed by CARD).
 keywords:
   - amr
   - antimicrobial resistance
@@ -12,14 +11,13 @@ keywords:
   - drug categorization
 tools:
   - "argnorm":
-      description: "Normalize antibiotic resistance genes (ARGs) using the ARO ontology
-        (developed by CARD)."
+      description: "Normalize antibiotic resistance genes (ARGs) using the ARO ontology (developed by CARD)."
       homepage: "https://argnorm.readthedocs.io/en/latest/"
       documentation: "https://argnorm.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/BigDataBiology/argNorm"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:argnorm
-
 input:
   - - meta:
         type: map
@@ -53,14 +51,52 @@ output:
           pattern: "*.tsv"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
+  versions_argnorm:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "argnorm":
+          type: string
+          description: The name of the tool
+      - "argnorm --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "argnorm":
+          type: string
+          description: The name of the tool
+      - "argnorm --version":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@Vedanth-Ramji"
 maintainers:
   - "@Vedanth-Ramji"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/argnorm:0.8.0--805c6fc13883eb21
+      build_id: bd-805c6fc13883eb21_1
+      scan_id: sc-90ab0cc6f03df60a_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/argnorm:0.8.0--c4110b014bf1acbe
+      build_id: bd-c4110b014bf1acbe_1
+      scan_id: sc-030616a2cbeb2517_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/argnorm:0.8.0--536b479f09101afd
+      build_id: bd-536b479f09101afd_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4f/4f2c4d089c21f0fefaf6692b45f2cacdc1cef258beecad3481d51958395ed579/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/argnorm:0.8.0--e08d6477868378d8
+      build_id: bd-e08d6477868378d8_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/53/53e479355a10edb66e407d987a096867af58ab70e6bdc0d433580d37a032d74b/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/argnorm/.conda-lock/linux_amd64-bd-c4110b014bf1acbe_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/argnorm/.conda-lock/linux_arm64-bd-805c6fc13883eb21_1.txt

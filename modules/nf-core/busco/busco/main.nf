@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BUSCO_BUSCO {
     tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/41/4137d65ab5b90d2ae4fa9d3e0e8294ddccc287e53ca653bb3c63b8fdb03e882f/data'
-        : 'community.wave.seqera.io/library/busco:6.0.0--a9a1426105f81165'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fd/fd93359cce52c80ad33d58e18a694f37dc8aee9ccf2530cce8c42f9ade5c1f3f/data'
+        : 'community.wave.seqera.io/library/busco:6.1.0--c502c35c2ab05540' }"
     // Note: one test had to be disabled when switching to Busco 6.0.0, cf https://github.com/nf-core/modules/pull/8781/files
     // Try to restore it when upgrading Busco to a later version
 
@@ -23,6 +26,7 @@ process BUSCO_BUSCO {
 
     output:
     tuple val(meta), path("*-busco.batch_summary.txt"), emit: batch_summary
+    tuple val(meta), path("*-busco.batch_summary.failed.txt"), emit: batch_summary_failed, optional: true
     tuple val(meta), path("short_summary.*.txt"), emit: short_summaries_txt, optional: true
     tuple val(meta), path("short_summary.*.json"), emit: short_summaries_json, optional: true
     tuple val(meta), path("*-busco.log"), emit: log, optional: true
@@ -55,9 +59,16 @@ process BUSCO_BUSCO {
         './*-busco/*/auto_lineage',
         './*-busco/*/**/{miniprot,hmmer,.bbtools}_output',
         './*-busco/*/prodigal_output/predicted_genes/tmp/',
+        './*-busco/*/tmp/',
     ]
     def clean_cmd = clean_intermediates ? "rm -fr ${intermediate_files.join(' ')}" : ''
+
+    def bbtools_memory_preferred = task.memory * 0.25
+    def bbtools_memory_minimum = 120.Mb
+    def bbtools_memory = bbtools_memory_preferred > bbtools_memory_minimum ? "${bbtools_memory_preferred.toGiga()}g" : "${bbtools_memory_minimum.toMega()}m"
     """
+    export BUSCO_BBTOOLS_MEMORY=${bbtools_memory}
+
     # Fix Augustus for Apptainer
     ENV_AUGUSTUS=/opt/conda/etc/conda/activate.d/augustus.sh
     set +u
@@ -105,14 +116,12 @@ process BUSCO_BUSCO {
     find . -xtype l -delete
 
     # Move files to avoid staging/publishing issues
-    mv ${prefix}-busco/batch_summary.txt ${prefix}-busco.batch_summary.txt
+    grep -v 'Run failed; check logs' ${prefix}-busco/batch_summary.txt > ${prefix}-busco.batch_summary.txt
     mv ${prefix}-busco/*/short_summary.*.{json,txt} . || echo "Short summaries were not available: No genes were found."
     mv ${prefix}-busco/logs/busco.log ${prefix}-busco.log
 
-    if grep 'Run failed; check logs' ${prefix}-busco.batch_summary.txt > /dev/null
-    then
-        echo "Busco run failed"
-        exit 1
+    if grep -q 'Run failed; check logs' ${prefix}-busco/batch_summary.txt; then
+        grep 'Run failed; check logs' ${prefix}-busco/batch_summary.txt > ${prefix}-busco.batch_summary.failed.txt
     fi
     """
 

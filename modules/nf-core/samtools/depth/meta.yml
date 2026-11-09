@@ -7,8 +7,7 @@ keywords:
   - coverage
 tools:
   - samtools:
-      description: Tools for dealing with SAM, BAM and CRAM files; samtools depth
-        – computes the read depth at each position or region
+      description: Tools for dealing with SAM, BAM and CRAM files; samtools depth – computes the read depth at each position or region
       homepage: http://www.htslib.org
       documentation: http://www.htslib.org/doc/samtools-depth.html
       tool_dev_url: https://github.com/samtools/samtools
@@ -17,7 +16,7 @@ tools:
         - "MIT"
       identifier: biotools:samtools
 input:
-  - - meta1:
+  - - meta:
         type: map
         description: |
           Groovy Map containing sample information
@@ -32,28 +31,36 @@ input:
         description: BAM/CRAM index file
         pattern: "*.{bai,crai}"
         ontologies: []
-  - - meta2:
-        type: map
-        description: |
-          Groovy Map containing sample information
-          e.g. [ id:'test' ]
     - intervals:
         type: file
         description: list of positions or regions in specified bed file
         pattern: "*.{bed}"
         ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. [ id:'test', genome:'hg38' ]
+    - fasta:
+        type: file
+        description: Reference genome in FASTA format
+        pattern: "*.{fasta,fa,fna}"
+        ontologies: []
+    - fai:
+        type: file
+        description: Index file for the reference genome
+        pattern: "*.{fai}"
+        ontologies: []
 output:
   tsv:
-    - - meta1:
+    - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
       - "*.tsv":
           type: file
-          description: The output of samtools depth has three columns - the name
-            of the contig or chromosome, the position and the number of reads
-            aligned at that position
+          description: The output of samtools depth has three columns - the name of the contig or chromosome, the position and the number of reads aligned at that position
           pattern: "*.{tsv}"
           ontologies:
             - edam: http://edamontology.org/format_3475
@@ -84,3 +91,28 @@ authors:
 maintainers:
   - "@louperelo"
   - "@nevinwu"
+  - "@matthdsm"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/htslib_samtools:1.25--704fb80d75745bd4
+      build_id: bd-704fb80d75745bd4_7
+      scan_id: sc-03641d545f6d3bac_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/htslib_samtools:1.25--944a4060c62320c2
+      build_id: bd-944a4060c62320c2_8
+      scan_id: sc-6655c495363315c2_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/htslib_samtools:1.25--2d67558d8613e11c
+      build_id: bd-2d67558d8613e11c_8
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/87/87660348a4d032cc08d6ac8101ff9d4d27164300d39c9472043bb5001f9ba801/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/htslib_samtools:1.25--3b9e70f96c37875a
+      build_id: bd-3b9e70f96c37875a_8
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/51/514f17bd9e1c013214957c34ea8bc446a86e4350bb6da41c126f55a27618932d/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/samtools/depth/.conda-lock/linux_amd64-bd-704fb80d75745bd4_7.txt
+    linux/arm64:
+      lock_file: modules/nf-core/samtools/depth/.conda-lock/linux_arm64-bd-944a4060c62320c2_8.txt

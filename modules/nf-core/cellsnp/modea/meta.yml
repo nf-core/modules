@@ -1,9 +1,5 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "cellsnp_modea"
-description: Cellsnp-lite is a C/C++ tool for efficient genotyping bi-allelic SNPs
-  on single cells. You can use the mode A of cellsnp-lite after read alignment to
-  obtain the snp x cell pileup UMI or read count matrices for each alleles of given
-  or detected SNPs for droplet based single cell data.
+description: Cellsnp-lite is a C/C++ tool for efficient genotyping bi-allelic SNPs on single cells. You can use the mode A of cellsnp-lite after read alignment to obtain the snp x cell pileup UMI or read count matrices for each alleles of given or detected SNPs for droplet based single cell data.
 keywords:
   - genotyping
   - single cell
@@ -16,9 +12,9 @@ tools:
       documentation: "https://cellsnp-lite.readthedocs.io"
       tool_dev_url: "https://github.com/single-cell-genetics/cellsnp-lite"
       doi: "10.1093/bioinformatics/btab358"
-      licence: ["Apache-2.0"]
+      licence:
+        - "Apache-2.0"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -55,8 +51,7 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.base.vcf.gz":
           type: file
-          description: A VCF file listing genotyped SNPs and aggregated AD & DP information
-            (without GT).
+          description: A VCF file listing genotyped SNPs and aggregated AD & DP information (without GT).
           pattern: "*.base.vcf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -68,8 +63,7 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.cells.vcf.gz":
           type: file
-          description: A VCF file listing genotyped SNPs and aggregated AD & DP information
-            & genotype (GT) information for each cell or sample.
+          description: A VCF file listing genotyped SNPs and aggregated AD & DP information & genotype (GT) information for each cell or sample.
           pattern: "*.cells.vcf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -93,8 +87,7 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.tag.AD.mtx":
           type: file
-          description: A file in “Matrix Market exchange formats”, containing the allele
-            depths of the alternative (ALT) alleles.
+          description: A file in “Matrix Market exchange formats”, containing the allele depths of the alternative (ALT) alleles.
           pattern: "*.tag.AD.mtx"
           ontologies:
             - edam: http://edamontology.org/format_3916 # MTX
@@ -106,8 +99,7 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.tag.DP.mtx":
           type: file
-          description: A file in “Matrix Market exchange formats”, containing the sum
-            of allele depths of the reference and alternative alleles (REF + ALT).
+          description: A file in “Matrix Market exchange formats”, containing the sum of allele depths of the reference and alternative alleles (REF + ALT).
           pattern: "*.tag.DP.mtx"
           ontologies:
             - edam: http://edamontology.org/format_3916 # MTX
@@ -119,19 +111,56 @@ output:
             e.g. `[ id:'sample1', single_end:false ]`
       - "*.tag.OTH.mtx":
           type: file
-          description: A file in “Matrix Market exchange formats”, containing the sum
-            of allele depths of all the alleles other than REF and ALT.
+          description: A file in “Matrix Market exchange formats”, containing the sum of allele depths of all the alleles other than REF and ALT.
           pattern: "*.tag.OTH.mtx"
           ontologies:
             - edam: http://edamontology.org/format_3916 # MTX
+  versions_cellsnp:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cellsnp:
+          type: string
+          description: The name of the tool
+      - cellsnp-lite --v | cut -f2 -d ' ':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - cellsnp:
+          type: string
+          description: The name of the tool
+      - cellsnp-lite --v | cut -f2 -d ' ':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@wxicu"
 maintainers:
   - "@wxicu"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/cellsnp-lite:1.2.3--c34fd20a61861a3d
+      build_id: bd-c34fd20a61861a3d_1
+      scan_id: sc-c5945b6cf49602ac_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/cellsnp-lite:1.2.3--777dfc22dc268b85
+      build_id: bd-777dfc22dc268b85_1
+      scan_id: sc-2193023470898590_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/cellsnp-lite:1.2.3--818e537001d52888
+      build_id: bd-818e537001d52888_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/13/13800e8ca1fffa31b1ba32098814cfcb6e13a248b9dcabea334ecd36a6a169e7/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/cellsnp-lite:1.2.3--b82e6ceccaa51969
+      build_id: bd-b82e6ceccaa51969_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/78/7821bddb522e1464358357f3209f22c81988db7b1d7477be7a21b038c14aee34/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/cellsnp/modea/.conda-lock/linux_amd64-bd-777dfc22dc268b85_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/cellsnp/modea/.conda-lock/linux_arm64-bd-c34fd20a61861a3d_1.txt

@@ -1,12 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
 
 process WHATSHAP_STATS {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/whatshap:2.8--py39h2de1943_0':
-        'biocontainers/whatshap:2.8--py39h2de1943_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/59/5980a6dc5e42a7df05d07309067b15c65e6f352a83861da18ea4512d7ac7dd1e/data'
+:         'community.wave.seqera.io/library/whatshap:2.8--211c34ed806bff76' }"
 
     input:
     tuple val(meta), path(vcf) // channel: [ val(meta), path(vcf) ]

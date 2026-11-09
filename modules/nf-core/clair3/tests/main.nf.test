@@ -18,7 +18,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test'],
-                    file(params.modules_testdata_base_path + 'generic/models/clair3.hifi.tar.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'generic/models/clair3_v2.hifi.tar.gz', checkIfExists: true)
                 ]
                 """
             }
@@ -69,7 +69,7 @@ nextflow_process {
                         [file(it[1]).name, path(it[1]).vcf.summary]
                     },
                     process.out.gtbi.collect { file(it[1]).name },
-                    process.out.versions)
+                    process.out.findAll { key, val -> key.startsWith('versions') })
                     .match()}
             )
         }
@@ -120,7 +120,7 @@ nextflow_process {
                         [file(it[1]).name, path(it[1]).vcf.summary]
                     },
                     process.out.gtbi.collect { file(it[1]).name },
-                    process.out.versions)
+                    process.out.findAll { key, val -> key.startsWith('versions') })
                     .match()}
             )
         }
@@ -208,7 +208,7 @@ nextflow_process {
                         [file(it[1]).name, path(it[1]).vcf.summary]
                     },
                     process.out.gtbi.collect { file(it[1]).name },
-                    process.out.versions)
+                    process.out.findAll { key, val -> key.startsWith('versions') })
                     .match()}
             )
         }
@@ -253,7 +253,7 @@ nextflow_process {
                         process.out.phased_tbi,
                         process.out.gvcf,
                         process.out.gtbi,
-                        process.out.versions)
+                        process.out.findAll { key, val -> key.startsWith('versions') })
                         .match()}
             )
         }

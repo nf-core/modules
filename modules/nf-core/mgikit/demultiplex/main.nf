@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MGIKIT_DEMULTIPLEX {
     tag "$run_id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
 
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mgikit:2.1.0--h3ab6199_0' :
-        'biocontainers/mgikit:2.1.0--h3ab6199_0' }"
+        'quay.io/biocontainers/mgikit:2.1.0--h3ab6199_0' }"
 
     input:
     tuple val(meta), path(samplesheet), path(run_dir)

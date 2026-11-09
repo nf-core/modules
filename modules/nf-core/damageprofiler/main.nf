@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DAMAGEPROFILER {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/damageprofiler:1.1--hdfd78af_2' :
-        'biocontainers/damageprofiler:1.1--hdfd78af_2' }"
+        'quay.io/biocontainers/damageprofiler:1.1--hdfd78af_2' }"
 
     input:
     tuple val(meta), path(bam)
@@ -15,7 +18,7 @@ process DAMAGEPROFILER {
 
     output:
     tuple val(meta), path("${prefix}"), emit: results
-    path  "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('damageprofiler'), eval("damageprofiler -v | sed 's/^DamageProfiler v//'"), emit: versions_damageprofiler, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,11 +35,6 @@ process DAMAGEPROFILER {
         $args \\
         $reference \\
         $species_list
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        damageprofiler: \$(damageprofiler -v | sed 's/^DamageProfiler v//')
-    END_VERSIONS
     """
 
     stub:
@@ -64,10 +62,5 @@ process DAMAGEPROFILER {
     touch $prefix/edit_distance.svg
     touch $prefix/lgdistribution.txt
     touch $prefix/misincorporation.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        damageprofiler: \$(damageprofiler -v | sed 's/^DamageProfiler v//')
-    END_VERSIONS
     """
 }

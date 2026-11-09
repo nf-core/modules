@@ -11,21 +11,11 @@ nextflow_process {
     test("homo_sapiens illumina test_interop_bcl2fastqstats_flowcell - QC OK") {
         config "./nextflow.config"
 
-        setup {
-            run("UNTAR") {
-                script "../../untar/main.nf"
-                process {
-                    """
-                    input[0] = Channel.of([[id: 'test'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/interop_bcl2fastqstats/test_flowcell_stats.tar.gz', checkIfExists: true)])
-                    """
-                }
-            }
-        }
 
         when {
             process {
                 """
-                    input[0] = UNTAR.out.untar
+                    input[0] = Channel.of([[id: 'test'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/interop_bcl2fastqstats/test_flowcell_stats.tar.gz', checkIfExists: true)])
                     input[1] = []
                 """
             }

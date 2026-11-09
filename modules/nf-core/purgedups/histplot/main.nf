@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PURGEDUPS_HISTPLOT {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/purge_dups:1.2.6--py39h7132678_1':
-        'biocontainers/purge_dups:1.2.6--py39h7132678_1' }"
+        'quay.io/biocontainers/purge_dups:1.2.6--py39h7132678_1' }"
 
     input:
     tuple val(meta), path(statfile), path(cutoff)
@@ -25,11 +28,12 @@ process PURGEDUPS_HISTPLOT {
     }
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def cutoff_input = cutoff ? "-c ${cutoff}" : ""
     """
     hist_plot.py \\
-        -c $cutoff \\
-        $args \\
-        $statfile \\
+        ${cutoff_input} \\
+        ${args} \\
+        ${statfile} \\
         ${prefix}.png
     """
 

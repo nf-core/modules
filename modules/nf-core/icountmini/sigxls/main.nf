@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ICOUNTMINI_SIGXLS {
     tag "$meta.id"
     label "process_low"
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/icount-mini:2.0.3--pyh5e36f6f_0' :
-        'biocontainers/icount-mini:2.0.3--pyh5e36f6f_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/icount-mini:4.0.1--pyh106432d_0':
+        'quay.io/biocontainers/icount-mini:4.0.1--pyh106432d_0' }"
 
     input:
     tuple val(meta), path(bed)
@@ -13,8 +16,8 @@ process ICOUNTMINI_SIGXLS {
 
     output:
     tuple val(meta), path("*.sigxls.bed.gz"), emit: sigxls
-    tuple val(meta), path("*.scores.tsv"),    emit: scores
-    path "versions.yml",                      emit: versions
+    tuple val(meta), path("*.scores.tsv")   , emit: scores
+    tuple val("${task.process}"), val('iCount-Mini'), eval("iCount-Mini -v"), emit: versions_icount_mini, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,16 +27,11 @@ process ICOUNTMINI_SIGXLS {
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     iCount-Mini sigxls \\
-        $segmentation \\
-        $bed \\
+        ${segmentation} \\
+        ${bed} \\
         ${prefix}.sigxls.bed.gz \\
         --scores ${prefix}.scores.tsv \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        iCount-Mini: \$(iCount-Mini -v)
-    END_VERSIONS
+        ${args}
     """
 
     stub:
@@ -41,10 +39,5 @@ process ICOUNTMINI_SIGXLS {
     """
     echo "" | gzip > ${prefix}.sigxls.bed.gz
     touch ${prefix}.scores.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        iCount-Mini: \$(iCount-Mini -v)
-    END_VERSIONS
     """
 }

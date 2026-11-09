@@ -1,17 +1,18 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GATK4_FILTERMUTECTCALLS {
     tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ce/ced519873646379e287bc28738bdf88e975edd39a92e7bc6a34bccd37153d9d0/data'
-        : 'community.wave.seqera.io/library/gatk4_gcnvkernel:edb12e4f0bf02cd3'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ce/ce8f4142326abbb74e28b97633a200b09439c54480803343b1cf13dc19e51ae5/data'
+        : 'community.wave.seqera.io/library/gatk4-lite:4.7.0.0--79918b8b2632f4b1'}"
 
     input:
     tuple val(meta), path(vcf), path(vcf_tbi), path(stats), path(orientationbias), path(segmentation), path(table), val(estimate)
-    tuple val(meta2), path(fasta)
-    tuple val(meta3), path(fai)
-    tuple val(meta4), path(dict)
+    tuple val(meta2), path(fasta), path(fai), path(dict)
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
@@ -29,6 +30,7 @@ process GATK4_FILTERMUTECTCALLS {
     def orientationbias_command = orientationbias ? orientationbias.collect { orientationbias_ -> "--orientation-bias-artifact-priors ${orientationbias_}" }.join(' ') : ''
     def segmentation_command = segmentation ? segmentation.collect { segmentation_ -> "--tumor-segmentation ${segmentation_}" }.join(' ') : ''
     def estimate_command = estimate ? " --contamination-estimate ${estimate} " : ''
+    def stats_command = stats ? " --stats ${stats} " : ''
     def table_command = table ? table.collect { table_ -> "--contamination-table ${table_}" }.join(' ') : ''
 
     def avail_mem = 3072
@@ -44,6 +46,7 @@ process GATK4_FILTERMUTECTCALLS {
         --variant ${vcf} \\
         --output ${prefix}.vcf.gz \\
         --reference ${fasta} \\
+        ${stats_command} \\
         ${orientationbias_command} \\
         ${segmentation_command} \\
         ${estimate_command} \\

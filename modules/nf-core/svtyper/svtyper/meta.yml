@@ -1,6 +1,6 @@
 name: "svtyper_svtyper"
-description: SVTyper performs breakpoint genotyping of structural variants (SVs) using
-  whole genome sequencing data
+description: SVTyper performs breakpoint genotyping of structural variants (SVs)
+  using whole genome sequencing data
 keywords:
   - sv
   - structural variants
@@ -12,7 +12,8 @@ tools:
       documentation: "https://github.com/hall-lab/svtyper"
       tool_dev_url: "https://github.com/hall-lab/svtyper"
       doi: "10.1038/nmeth.3505"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:svtyper
 input:
   - - meta:
@@ -90,13 +91,29 @@ output:
           description: BAM file with
           pattern: "*.bam"
           ontologies: []
+  versions_svtyper:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - svtyper:
+          type: string
+          description: The name of the tool
+      - "svtyper -h 2>&1 | grep 'version:' | sed 's/^version: v//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - svtyper:
+          type: string
+          description: The name of the tool
+      - "svtyper -h 2>&1 | grep 'version:' | sed 's/^version: v//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@kubranarci"
 maintainers:

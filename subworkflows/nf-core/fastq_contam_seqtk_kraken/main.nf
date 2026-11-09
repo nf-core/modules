@@ -1,4 +1,5 @@
-#!/usr/bin/env nextflow
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
 
 //
 // FASTQ_CONTAM_SEQTK_KRAKEN: Subsample FASTQs and perform contamination screening
@@ -39,5 +40,6 @@ workflow FASTQ_CONTAM_SEQTK_KRAKEN {
         ch_reports  = ch_reports.mix(KRAKEN2.out.report)
 
     emit:
-        reports  = ch_reports     // channel: [ [meta], log  ]
+        reports  = ch_reports              // channel: [ [meta], log  ]
+        reads    = SEQTK_SAMPLE.out.reads // channel: [ [meta], reads  ]
 }

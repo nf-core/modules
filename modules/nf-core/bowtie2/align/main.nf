@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BOWTIE2_ALIGN {
     tag "$meta.id"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b4/b41b403e81883126c3227fc45840015538e8e2212f13abc9ae84e4b98891d51c/data' :
-        'community.wave.seqera.io/library/bowtie2_htslib_samtools_pigz:edeb13799090a2a6' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d4/d4990a9e13c1aad32d60f19e0ced204f2f1e231fe856290ce75713505a1bfe44/data'
+:         'community.wave.seqera.io/library/bowtie2_htslib_samtools_pigz:dbd18842ad7cb278' }"
 
     input:
     tuple val(meta) , path(reads)
@@ -22,7 +25,7 @@ process BOWTIE2_ALIGN {
     tuple val(meta), path("*.crai")     , emit: crai    , optional:true
     tuple val(meta), path("*.log")      , emit: log
     tuple val(meta), path("*fastq.gz")  , emit: fastq   , optional:true
-    tuple val("${task.process}"), val('bowtie2'), eval("bowtie2 --version 2>&1 | sed -n '1s/.*bowtie2-align-s version //p'"), emit: versions_bowtie2, topic: versions
+    tuple val("${task.process}"), val('bowtie2'), eval("bowtie2 --version 2>&1 | sed -n 's/.*bowtie2-align-s version //p'"), emit: versions_bowtie2, topic: versions
     tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), emit: versions_samtools, topic: versions
     tuple val("${task.process}"), val('pigz'), eval("pigz --version 2>&1 | sed 's/pigz //'"), emit: versions_pigz, topic: versions
 
@@ -83,9 +86,9 @@ process BOWTIE2_ALIGN {
     def extension = (args2 ==~ extension_pattern) ? (args2 =~ extension_pattern)[0][2].toLowerCase() : "bam"
     def create_unmapped = ""
     if (meta.single_end) {
-        create_unmapped = save_unaligned ? "touch ${prefix}.unmapped.fastq.gz" : ""
+        create_unmapped = save_unaligned ? "echo | gzip > ${prefix}.unmapped.fastq.gz" : ""
     } else {
-        create_unmapped = save_unaligned ? "touch ${prefix}.unmapped_1.fastq.gz && touch ${prefix}.unmapped_2.fastq.gz" : ""
+        create_unmapped = save_unaligned ? "echo | gzip > ${prefix}.unmapped_1.fastq.gz && echo | gzip > ${prefix}.unmapped_2.fastq.gz" : ""
     }
     if (!fasta && extension=="cram") error "Fasta reference is required for CRAM output"
 

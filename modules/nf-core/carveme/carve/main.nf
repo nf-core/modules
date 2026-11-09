@@ -1,0 +1,56 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
+process CARVEME_CARVE {
+    tag "$meta.id"
+    label 'process_single'
+
+    conda "${moduleDir}/environment.yml"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/96/9662f19dc7815dd4aaaf24cd6b19c11a3b507e3b52a066d1557c77517fed9f47/data'
+:         'community.wave.seqera.io/library/carveme_scip:8b66c18ea3a4fb1b' }"
+
+    input:
+    tuple val(meta), path(fasta), path(universe_file), path(mediadb), path(soft), path(hard), path(reference)
+
+    output:
+    tuple val(meta), path("${prefix}.xml")                                , emit: model
+    tuple val(meta), path("${prefix}_gene_scores.tsv")    , optional: true, emit: gene_scores
+    tuple val(meta), path("${prefix}_milp_problem.lp")    , optional: true, emit: milp_problem
+    tuple val(meta), path("${prefix}_milp_solution.tsv")  , optional: true, emit: milp_solution
+    tuple val(meta), path("${prefix}_protein_scores.tsv") , optional: true, emit: protein_scores
+    tuple val(meta), path("${prefix}_reaction_scores.tsv"), optional: true, emit: reaction_scores
+    tuple val("${task.process}"), val('carveme'),  eval("python -c \"from importlib.metadata import version; print(version('carveme'))\""), topic: versions, emit: versions_carveme
+
+    when:
+    task.ext.when == null || task.ext.when
+
+    script:
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    def universe_file_arg = universe_file ? "--universe-file ${universe_file}" : ''
+    def mediadb_arg       = mediadb       ? "--mediadb ${mediadb}"             : ''
+    def soft_arg          = soft          ? "--soft ${soft}"                   : ''
+    def hard_arg          = hard          ? "--hard ${hard}"                   : ''
+    def reference_arg     = reference     ? "--reference ${reference}"         : ''
+    """
+    carve \\
+        ${fasta} \\
+        --output ${prefix}.xml \\
+        ${universe_file_arg} \\
+        ${mediadb_arg} \\
+        ${soft_arg} \\
+        ${hard_arg} \\
+        ${reference_arg} \\
+        ${args}
+    """
+
+    stub:
+    def args = task.ext.args ?: ''
+    prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    echo "${args}"
+    touch ${prefix}.xml
+    [[ "${args}" == *"--debug"* ]] && touch ${prefix}_gene_scores.tsv ${prefix}_milp_problem.lp ${prefix}_milp_solution.tsv ${prefix}_protein_scores.tsv ${prefix}_reaction_scores.tsv || true
+    """
+}

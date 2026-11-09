@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BIOHANSEL {
     tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bio_hansel:2.6.1--py_0':
-        'biocontainers/bio_hansel:2.6.1--py_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b1/b1a531965c239cfcd2a4055dbd1258e5dc24fe06da4393df52d9102de0e1100e/data'
+        : 'community.wave.seqera.io/library/bio_hansel_numpy_pandas_python_setuptools:7c4db842c7382657' }"
 
     input:
     tuple val(meta), path(seqs)
@@ -15,7 +18,7 @@ process BIOHANSEL {
     tuple val(meta), path("${prefix}-summary.txt")       , emit: summary
     tuple val(meta), path("${prefix}-kmer-results.txt")  , emit: kmer_results
     tuple val(meta), path("${prefix}-simple-summary.txt"), emit: simple_summary
-    path "versions.yml"                                  , emit: versions
+    tuple val("${task.process}"), val('biohansel'), eval("hansel --version 2>&1 | sed 's/^.*hansel //'"), topic: versions, emit: versions_biohansel
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,11 +38,6 @@ process BIOHANSEL {
         --output-simple-summary ${prefix}-simple-summary.txt \\
         $input_type \\
         $seqs
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        biohansel: \$(echo \$(hansel --version 2>&1) | sed 's/^.*hansel //' )
-    END_VERSIONS
     """
 
     stub:
@@ -48,9 +46,5 @@ process BIOHANSEL {
     touch ${prefix}-summary.txt
     touch ${prefix}-kmer-results.txt
     touch ${prefix}-simple-summary.txt
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        biohansel: \$(echo \$(hansel --version 2>&1) | sed 's/^.*hansel //' )
-    END_VERSIONS
     """
 }

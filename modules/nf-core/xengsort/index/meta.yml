@@ -1,68 +1,119 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "xengsort_index"
-description: Fast lightweight accurate xenograft sorting
+description: Build a bucketed 3-way Cuckoo hash table index from host and graft reference FASTA files for xenograft read sorting.
 keywords:
   - index
-  - QC
-  - reference
-  - fasta
   - xenograft
-  - sort
+  - sorting
+  - cuckoo hash
   - k-mer
+  - host
+  - graft
 tools:
   - "xengsort":
-      description: "A fast xenograft read sorter based on space-efficient k-mer hashing"
+      description: "Fast lightweight accurate xenograft sorting using 3-way bucketed Cuckoo hashing"
       homepage: "https://gitlab.com/genomeinformatics/xengsort"
       documentation: "https://gitlab.com/genomeinformatics/xengsort"
       tool_dev_url: "https://gitlab.com/genomeinformatics/xengsort"
       doi: "10.4230/LIPIcs.WABI.2020.4"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 
 input:
-  - host_fasta:
-      type: file
-      description: |
-        Reference genome fasta file from host, compressed or uncompressed.
-      ontologies: []
-  - graft_fasta:
-      type: file
-      description: |
-        Reference genome fasta file from graft, compressed or uncompressed.
-      ontologies: []
-  - index:
-      type: string
-      description: |
-        File name prefix to store index files.
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing host reference information
+          e.g. `[ id:'host_ref' ]`
+    - host_fasta:
+        type: file
+        description: Reference FASTA file(s) for the host organism.
+        pattern: "*.{fasta,fa,fasta.gz,fa.gz,fasta.bz2,fa.bz2,fasta.xz,fa.xz}"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing graft reference information
+          e.g. `[ id:'graft_ref' ]`
+    - graft_fasta:
+        type: file
+        description: Reference FASTA file(s) for the graft organism.
+        pattern: "*.{fasta,fa,fasta.gz,fa.gz,fasta.bz2,fa.bz2,fasta.xz,fa.xz}"
+        ontologies: []
   - nobjects:
-      type: string
-      description: |
-        Number of k-mers that will be stored in the hash table. Underscore should be used, i.e for 1000000, it should be typed 1_000_000.
-  - mask:
-      type: string
-      description: |
-        Gapped k-mer mask (quoted string like '#__##_##__#').
+      type: integer
+      description: Estimated total number of k-mers to be stored in the hash table.
+
 output:
   hash:
-    - ${index}.hash:
-        type: file
-        description: File with index hash file.
-        pattern: "*hash"
-        ontologies: []
+    - - meta2:
+          type: map
+          description: |
+            Groovy Map containing metadata from the graft or combined reference.
+      - "*.hash":
+          type: file
+          description: Binary Cuckoo hash table file.
+          pattern: "*.hash"
+          ontologies: []
   info:
-    - ${index}.info:
-        type: file
-        description: File with index info file.
-        pattern: "*info"
-        ontologies: []
+    - - meta2:
+          type: map
+          description: |
+            Groovy Map containing metadata from the graft or combined reference.
+      - "*.info":
+          type: file
+          description: Header and metadata file containing hash table parameters.
+          pattern: "*.info"
+          ontologies: []
+  versions_xengsort:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - xengsort:
+          type: string
+          description: The name of the tool
+      - xengsort --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - xengsort:
+          type: string
+          description: The name of the tool
+      - xengsort --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@diegomscoelho"
+  - "@LeonHornich"
 maintainers:
-  - "@diegomscoelho"
+  - "@LeonHornich"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/xengsort:2.2.1--e1cfb6b5a292adf6
+      build_id: bd-e1cfb6b5a292adf6_1
+      scan_id: sc-ed442b920ae8f083_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/xengsort:2.2.1--b17143c96929c927
+      build_id: bd-b17143c96929c927_1
+      scan_id: sc-e082da23ce94bb1e_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/xengsort:2.2.1--7393e46e7ba482d0
+      build_id: bd-7393e46e7ba482d0_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ff/ff8d22fa13b3c18a7933b279fc4d7133855b20bc9c3072c6bb1682e8e07529b0/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/xengsort:2.2.1--e820411adbe27555
+      build_id: bd-e820411adbe27555_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/69/69087e1b7e669b929b5ff8a8d41a1156508b0feb604417a0d3388fea5a0031f6/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/xengsort/index/.conda-lock/linux_amd64-bd-e1cfb6b5a292adf6_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/xengsort/index/.conda-lock/linux_arm64-bd-b17143c96929c927_1.txt

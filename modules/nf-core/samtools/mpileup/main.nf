@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SAMTOOLS_MPILEUP {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.22.1--h96c455f_0' :
-        'biocontainers/samtools:1.22.1--h96c455f_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/83/8345056363cc2598d6185cfab19d67eda17a5ea73a4f9b56c25322347b97aef9/data'
+        : 'community.wave.seqera.io/library/htslib_samtools_xz:ca51bc8a00d53523'}"
 
     input:
     tuple val(meta), path(input), path(index), path(intervals)
@@ -19,23 +22,24 @@ process SAMTOOLS_MPILEUP {
     task.ext.when == null || task.ext.when
 
     script:
-    def args          = task.ext.args   ?: ''
-    def prefix        = task.ext.prefix ?: "${meta.id}"
-    def fasta_cmd     = fasta           ? "--fasta-ref $fasta" : ""
-    def intervals_cmd = intervals       ? "-l ${intervals}" : ""
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def fasta_cmd = fasta ? "--fasta-ref ${fasta}" : ""
+    def intervals_cmd = intervals ? "-l ${intervals}" : ""
     """
     samtools mpileup \\
-        $fasta_cmd \\
+        ${fasta_cmd} \\
         --output ${prefix}.mpileup \\
-        $args \\
-        $intervals_cmd \\
-        $input
+        ${args} \\
+        ${intervals_cmd} \\
+        ${input}
     bgzip ${prefix}.mpileup
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def bgzip_command = "echo | bgzip -c > ${prefix}.mpileup.gz"
     """
-    echo | gzip > ${prefix}.mpileup.gz
+    ${bgzip_command}
     """
 }

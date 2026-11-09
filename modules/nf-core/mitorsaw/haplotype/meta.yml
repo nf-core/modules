@@ -27,12 +27,13 @@ input:
         description: Sorted BAM file
         pattern: "*.bam"
         ontologies:
-          - edam: "http://edamontology.org/format_2572" # BAM
+          - edam: http://edamontology.org/format_2572 # BAM
     - bai:
         type: file
         description: BAM index file
         pattern: "*.bai"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3327 # BAI
   - - meta2:
         type: map
         description: |
@@ -42,7 +43,8 @@ input:
         type: file
         description: Reference genome in FASTA format
         pattern: "*.{fa,fasta}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
     - fai:
         type: file
         description: Reference genome index file
@@ -70,6 +72,7 @@ output:
           pattern: "*.vcf.gz"
           ontologies:
             - edam: http://edamontology.org/format_3016 # VCF
+            - edam: http://edamontology.org/format_3989 # GZIP
   tbi:
     - - meta:
           type: map
@@ -115,7 +118,8 @@ output:
           type: file
           description: Haplotype sequences in FASTA format
           pattern: "sequences_chrM.fa"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
   custom_alignments_bam:
     - - meta:
           type: map
@@ -126,7 +130,8 @@ output:
           type: file
           description: Custom alignments in BAM format
           pattern: "custom_alignments.bam"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_2572 # BAM
   custom_alignments_bai:
     - - meta:
           type: map
@@ -137,7 +142,8 @@ output:
           type: file
           description: Custom alignments index file
           pattern: "custom_alignments.bam.bai"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3327 # BAI
   igv_session:
     - - meta:
           type: map
@@ -160,7 +166,8 @@ output:
           type: file
           description: Custom reference genome in FASTA format
           pattern: "custom_reference.fa"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_1929 # FASTA
   custom_ref_fai:
     - - meta:
           type: map
@@ -182,7 +189,8 @@ output:
           type: file
           description: Custom regions in BED format
           pattern: "custom_regions.bed"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3003 # BED
   versions_mitorsaw:
     - - ${task.process}:
           type: string

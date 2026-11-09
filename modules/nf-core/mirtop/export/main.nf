@@ -1,9 +1,12 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MIRTOP_EXPORT {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0d/0da43138fd5dfa0d365ef64ba39061102efa11256aea303791869ce46044a3df/data':
         'community.wave.seqera.io/library/mirtop_pybedtools_pysam_samtools:b9705c2683e775b8' }"
 
@@ -16,7 +19,7 @@ process MIRTOP_EXPORT {
     tuple val(meta), path("export/*_rawData.tsv")     , emit: tsv, optional: true
     tuple val(meta), path("export/*.fasta")           , emit: fasta, optional: true
     tuple val(meta), path("export/*.vcf*")            , emit: vcf  , optional: true
-    path "versions.yml"                               , emit: versions
+    tuple val("${task.process}"), val('mirtop'), eval("mirtop --version 2>&1 | sed -n 's/^mirtop //p'"), emit: versions_mirtop, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,11 +35,6 @@ process MIRTOP_EXPORT {
         --sps $species \\
         -o export \\
         $mirtop_gff
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mirtop: \$(echo \$(mirtop --version 2>&1) | sed 's/^.*mirtop //')
-    END_VERSIONS
     """
 
     stub:
@@ -46,10 +44,5 @@ process MIRTOP_EXPORT {
     touch export/${prefix}.fasta
     touch export/${prefix}.vcf
     touch export/${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mirtop: \$(echo \$(mirtop --version 2>&1) | sed 's/^.*mirtop //')
-    END_VERSIONS
     """
 }

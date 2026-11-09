@@ -29,7 +29,9 @@ nextflow_process {
                 { assert file(process.out.fcz[0][1].find { file(it).name == "testA_1.fcz" }).exists() },
                 { assert file(process.out.fcz[0][1].find { file(it).name == "testB_0.fcz" }).exists() },
                 { assert file(process.out.fcz[0][1].find { file(it).name == "testB_1.fcz" }).exists() },
-                { assert snapshot(process.out.versions).match('versions') }
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
 
@@ -72,7 +74,9 @@ nextflow_process {
                         }
                     }
                 },
-                { assert snapshot(process.out.versions).match('versions_dir') }
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
             )
         }
 

@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ABRICATE_SUMMARY {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/abricate%3A1.0.1--ha8f3691_1':
-        'biocontainers/abricate:1.0.1--ha8f3691_1' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b7/b75992c3e2d82899245f0e5839007cc1dc053cfa72d6018a66729e2ba540af75/data'
+        : 'community.wave.seqera.io/library/abricate:1.0.1--cb0de91fb575483f'}"
 
     input:
     tuple val(meta), path(reports)
 
     output:
     tuple val(meta), path("*.txt"), emit: report
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('abricate'), eval("abricate --version 2>&1 | sed 's/^.*abricate //'"), emit: versions_abricate_summary, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,10 +26,5 @@ process ABRICATE_SUMMARY {
     abricate \\
         --summary \\
         ${reports} > ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        abricate: \$(echo \$(abricate --version 2>&1) | sed 's/^.*abricate //' )
-    END_VERSIONS
     """
 }

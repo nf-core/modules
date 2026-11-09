@@ -18,7 +18,8 @@ nextflow_process {
                     minCounts :  '1',
                     min_base_qual : '1',
                     min_map_qual  : '1',
-                    chrom_names  : 'c("21")'
+                    chrom_names  : 'c("21")',
+                    penalty: '70'
                 ]
             }
             process {
@@ -55,8 +56,7 @@ nextflow_process {
                     process.out.png.collect{it[1].collect{file(it).name}},
                     process.out.purityploidy,
                     process.out.segments,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -72,7 +72,8 @@ nextflow_process {
                     min_base_qual : '1',
                     min_map_qual  : '1',
                     chrom_names  : 'c("21")',
-                    additional_allelecounter_flags: '-f 0'
+                    additional_allelecounter_flags: '-f 0',
+                    penalty: '70'
                 ]
             }
             process {
@@ -109,8 +110,7 @@ nextflow_process {
                     process.out.png.collect{it[1].collect{file(it).name}},
                     process.out.purityploidy,
                     process.out.segments,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -126,7 +126,8 @@ nextflow_process {
                     minCounts :  '1',
                     min_base_qual : '1',
                     min_map_qual  : '1',
-                    chrom_names  : 'c("21")'
+                    chrom_names  : 'c("21")',
+                    penalty: '70'
                 ]
             }
             process {
@@ -163,8 +164,7 @@ nextflow_process {
                     process.out.png.collect{it[1].collect{file(it).name}},
                     process.out.purityploidy,
                     process.out.segments,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -181,7 +181,8 @@ nextflow_process {
                     min_base_qual : '1',
                     min_map_qual  : '1',
                     chrom_names  : 'c("21")',
-                    additional_allelecounter_flags: '-f 0'
+                    additional_allelecounter_flags: '-f 0',
+                    penalty: '70'
                 ]
             }
             process {
@@ -218,8 +219,7 @@ nextflow_process {
                     process.out.png.collect{it[1].collect{file(it).name}},
                     process.out.purityploidy,
                     process.out.segments,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }
@@ -234,7 +234,8 @@ nextflow_process {
                     minCounts :  '1',
                     min_base_qual : '1',
                     min_map_qual  : '1',
-                    chrom_names  : 'c("21")'
+                    chrom_names  : 'c("21")',
+                    penalty: '70'
                 ]
                 allele_folder = "G1000_alleles_hg38"
                 loci_folder   = "G1000_loci_hg38"
@@ -296,8 +297,7 @@ nextflow_process {
                     process.out.png.collect{it[1].collect{file(it).name}},
                     process.out.purityploidy,
                     process.out.segments,
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match() }
             )
         }

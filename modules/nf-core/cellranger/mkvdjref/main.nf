@@ -1,8 +1,11 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CELLRANGER_MKVDJREF {
     tag "$fasta"
     label 'process_high'
 
-    container "nf-core/cellranger:10.0.0"
+    container "quay.io/nf-core/cellranger:10.1.0"
 
     input:
     path fasta          // optional
@@ -12,7 +15,7 @@ process CELLRANGER_MKVDJREF {
 
     output:
     path "${reference_name}", emit: reference
-    path "versions.yml"     , emit: versions
+    tuple val("${task.process}"), val('cellranger'), eval('cellranger --version | sed "s/.*-//"'), emit: versions_cellranger, topic: versions
 
     when:
     task.ext.when == null || task.ext.when

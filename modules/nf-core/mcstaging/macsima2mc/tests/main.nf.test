@@ -1,0 +1,97 @@
+nextflow_process {
+
+    name "Test Process MCSTAGING_MACSIMA2MC"
+    script "../main.nf"
+    process "MCSTAGING_MACSIMA2MC"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mcstaging"
+    tag "mcstaging/macsima2mc"
+
+    test("macsima2mc - input_dir") {
+
+        when {
+            process {
+                """
+                def input_files = [
+                    'CYC-001_SCN-001_ST-B_R-01_W-C01_ROI-001_F-001_A-Laminin_C-_D-FITC_EXP-1200.tif',
+                    'CYC-001_SCN-001_ST-B_R-01_W-C01_ROI-001_F-001_A-Laminin_C-_D-FITC_EXP-150.tif',
+                    'CYC-001_SCN-001_ST-B_R-01_W-C01_ROI-001_F-001_D-DAPI_EXP-50.tif',
+                    'CYC-001_SCN-001_ST-B_R-01_W-C01_ROI-001_F-002_A-Laminin_C-_D-FITC_EXP-1200.tif',
+                    'CYC-001_SCN-001_ST-B_R-01_W-C01_ROI-001_F-002_A-Laminin_C-_D-FITC_EXP-150.tif',
+                    'CYC-001_SCN-001_ST-B_R-01_W-C01_ROI-001_F-002_D-DAPI_EXP-50.tif',
+                    'CYC-001_SCN-002_ST-S_R-01_W-C01_ROI-001_F-001_A-Laminin_C-_D-FITC_EXP-1200.tif',
+                    'CYC-001_SCN-002_ST-S_R-01_W-C01_ROI-001_F-001_A-Laminin_C-_D-FITC_EXP-150.tif',
+                    'CYC-001_SCN-002_ST-S_R-01_W-C01_ROI-001_F-001_D-DAPI_EXP-50.tif',
+                    'CYC-001_SCN-002_ST-S_R-01_W-C01_ROI-001_F-002_A-Laminin_C-_D-FITC_EXP-1200.tif',
+                    'CYC-001_SCN-002_ST-S_R-01_W-C01_ROI-001_F-002_A-Laminin_C-_D-FITC_EXP-150.tif',
+                    'CYC-001_SCN-002_ST-S_R-01_W-C01_ROI-001_F-002_D-DAPI_EXP-50.tif'
+                ].collect { file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1/' + it, checkIfExists: true) }
+
+                // Creates the input directory
+                def dir = file('8_Cycle1')
+                dir.mkdirs()
+                input_files.each { it.copyTo(dir) }
+
+                input[0] = [
+                    [ id:'test' ],
+                    file('8_Cycle1', checkIfExists: true, type: 'dir'),
+                    'output_dir'
+                ]
+                """
+            }
+        }
+
+    then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("macsima2mc - input_dir - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                def input_files = [
+                    'CYC-001_SCN-001_ST-B_R-01_W-C01_ROI-001_F-001_A-Laminin_C-_D-FITC_EXP-1200.tif',
+                    'CYC-001_SCN-001_ST-B_R-01_W-C01_ROI-001_F-001_A-Laminin_C-_D-FITC_EXP-150.tif',
+                    'CYC-001_SCN-001_ST-B_R-01_W-C01_ROI-001_F-001_D-DAPI_EXP-50.tif',
+                    'CYC-001_SCN-001_ST-B_R-01_W-C01_ROI-001_F-002_A-Laminin_C-_D-FITC_EXP-1200.tif',
+                    'CYC-001_SCN-001_ST-B_R-01_W-C01_ROI-001_F-002_A-Laminin_C-_D-FITC_EXP-150.tif',
+                    'CYC-001_SCN-001_ST-B_R-01_W-C01_ROI-001_F-002_D-DAPI_EXP-50.tif',
+                    'CYC-001_SCN-002_ST-S_R-01_W-C01_ROI-001_F-001_A-Laminin_C-_D-FITC_EXP-1200.tif',
+                    'CYC-001_SCN-002_ST-S_R-01_W-C01_ROI-001_F-001_A-Laminin_C-_D-FITC_EXP-150.tif',
+                    'CYC-001_SCN-002_ST-S_R-01_W-C01_ROI-001_F-001_D-DAPI_EXP-50.tif',
+                    'CYC-001_SCN-002_ST-S_R-01_W-C01_ROI-001_F-002_A-Laminin_C-_D-FITC_EXP-1200.tif',
+                    'CYC-001_SCN-002_ST-S_R-01_W-C01_ROI-001_F-002_A-Laminin_C-_D-FITC_EXP-150.tif',
+                    'CYC-001_SCN-002_ST-S_R-01_W-C01_ROI-001_F-002_D-DAPI_EXP-50.tif'
+                ].collect { file(params.modules_testdata_base_path + 'imaging/staging/8_Cycle1/' + it, checkIfExists: true) }
+
+                // Creates the input directory
+                def dir = file('8_Cycle1')
+                dir.mkdirs()
+                input_files.each { it.copyTo(dir) }
+
+                input[0] = [
+                    [ id:'test' ],
+                    file('8_Cycle1', checkIfExists: true, type: 'dir'),
+                    'output_dir'
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                {  snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

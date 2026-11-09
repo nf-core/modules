@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BCFTOOLS_CSQ {
     tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/47/474a5ea8dc03366b04df884d89aeacc4f8e6d1ad92266888e7a8e7958d07cde8/data'
-        : 'community.wave.seqera.io/library/bcftools_htslib:0a3fa2654b52006f'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/91/914b9b38bbfa22c458ceee6c578fd3d70ee1bffc33d3a064b0663ed4944e7872/data'
+        : 'community.wave.seqera.io/library/bcftools_htslib:1.25--130aa7603bf3bf5c'}"
 
     input:
     tuple val(meta), path(vcf)
@@ -15,8 +18,7 @@ process BCFTOOLS_CSQ {
 
     output:
     tuple val(meta), path("*.${extension}"), emit: vcf
-    tuple val(meta), path("*.tbi"), emit: tbi, optional: true
-    tuple val(meta), path("*.csi"), emit: csi, optional: true
+    tuple val(meta), path("*.{tbi,csi}"), emit: index, optional: true
     tuple val("${task.process}"), val('bcftools'), eval("bcftools --version | sed '1!d; s/^.*bcftools //'"), topic: versions, emit: versions_bcftools
 
     when:

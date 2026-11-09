@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process WIPERTOOLS_FASTQGATHER {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/wipertools:1.1.5--pyhdfd78af_0':
-        'biocontainers/wipertools:1.1.5--pyhdfd78af_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/66/6632f491b20426d26315353e009db1c27a8a163bf68b1e921f8338e11616c5e2/data'
+:         'community.wave.seqera.io/library/wipertools:1.1.4--042a9b3f81640596' }"
 
     input:
     tuple val(meta), path(fastq)
 
     output:
     tuple val(meta), path("${prefix}.fastq.gz"), emit: gathered_fastq
-    path "versions.yml"                        , emit: versions
+    tuple val("${task.process}"), val('wipertools'), eval("wipertools fastqgather --version"), topic: versions, emit: versions_wipertools
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,14 +33,9 @@ process WIPERTOOLS_FASTQGATHER {
     """
     wipertools \\
         fastqgather \\
-        -i $fastq_string \\
+        -i ${fastq_string} \\
         -o ${prefix}.fastq.gz \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        wipertools fastqgather: \$(wipertools fastqgather --version)
-    END_VERSIONS
     """
 
     stub:
@@ -49,10 +47,5 @@ process WIPERTOOLS_FASTQGATHER {
     }
     """
     echo "" | gzip > ${prefix}.fastq.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        wipertools fastqgather: \$(wipertools fastqgather --version)
-    END_VERSIONS
     """
 }

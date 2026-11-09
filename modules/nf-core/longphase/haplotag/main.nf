@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process LONGPHASE_HAPLOTAG {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b0/b0184a9a36d8612fbae38bbaad7b52f03b815ad17673740e107cf1f267a1f15d/data':
-        'community.wave.seqera.io/library/htslib_longphase:3071e61356fc25a4' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a4/a4c81218238ecde517d907a53f2d54958779efdafd3aafd8d6948e2e678b5a86/data'
+        : 'community.wave.seqera.io/library/htslib_longphase:3418df83ebc1fb9a'}"
 
     input:
     tuple val(meta), path(bam), path(bai), path(snps), path(svs), path(mods)
@@ -16,7 +19,7 @@ process LONGPHASE_HAPLOTAG {
     output:
     tuple val(meta), path("*.{bam,cram}"), emit: bam
     tuple val(meta), path("*.log")       , emit: log , optional: true
-    path "versions.yml"                  , emit: versions
+    tuple val("${task.process}"), val("longphase"), eval("longphase --version | head -n 1 | sed 's/^LongPhase Ver //'"), emit: versions_longphase, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -42,11 +45,6 @@ process LONGPHASE_HAPLOTAG {
     if [ -f "${prefix}.out" ]; then
         mv ${prefix}.out ${prefix}.log
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        longphase: \$(longphase --version | head -n 1 | sed 's/Version: //')
-    END_VERSIONS
     """
 
     stub:
@@ -57,10 +55,5 @@ process LONGPHASE_HAPLOTAG {
     """
     touch ${prefix}.${suffix}
     ${log}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        longphase: \$(longphase --version | head -n 1 | sed 's/Version: //')
-    END_VERSIONS
     """
 }

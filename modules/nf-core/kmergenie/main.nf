@@ -1,9 +1,12 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process KMERGENIE {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5f/5f4197eec51307131e6cb0170a7969eda60995b23942d050f7495dc4a530b118/data':
         'community.wave.seqera.io/library/kmergenie:1.7051--675dfe5a4c7ea92b' }"
 
@@ -15,6 +18,7 @@ process KMERGENIE {
     tuple val(meta), path("*.histo")      , emit: histo
     tuple val(meta), path("*.dat")        ,emit: dat
     tuple val(meta), path("*.pdf")        ,emit: pdf
+    tuple val(meta), path("*.kmergenie.log")        , emit: log
     tuple val("${task.process}"), val('kmergenie'), eval('kmergenie --version |& sed "1!d ; s/KmerGenie //"'), emit: versions_kmergenie, topic: versions
 
 
@@ -33,7 +37,8 @@ process KMERGENIE {
         $args \\
         -o ${prefix} \\
         -t $task.cpus \\
-        ${prefix}_reads.txt
+        ${prefix}_reads.txt \\
+        2>&1 | tee ${prefix}.kmergenie.log
     """
 
     stub:
@@ -47,5 +52,6 @@ process KMERGENIE {
     touch ${prefix}*.histo
     touch ${prefix}.dat
     touch ${prefix}*.pdf
+    touch ${prefix}.kmergenie.log
     """
 }

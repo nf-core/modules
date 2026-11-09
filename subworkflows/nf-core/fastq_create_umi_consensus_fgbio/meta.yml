@@ -27,50 +27,84 @@ components:
   - samtools/fastq
   - fgbio/zipperbams
 input:
-  - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. [ id:'test' ]
   - reads:
-      type: list
-      description: list umi-tagged reads
-      pattern: "[ *.{fastq.gz/fq.gz} ]"
-  - fasta:
       type: file
-      description: The reference fasta file
-      pattern: "*.fasta"
-  - read_structure:
-      type: string
       description: |
-        A read structure should always be provided for each of the fastq files.
-        If single end, the string will contain only one structure (i.e. "2M11S+T"), if paired-end the string
-        will contain two structures separated by a blank space (i.e. "2M11S+T 2M11S+T").
-        If the read does not contain any UMI, the structure will be +T (i.e. only template of any length).
-        https://github.com/fulcrumgenomics/fgbio/wiki/Read-Structures
+        List of umi-tagged reads.
+
+        Structure: [ val(meta), [ path(reads) ] ]
+      pattern: "*.{fastq.gz,fq.gz}"
+  - fasta_fai_dict:
+      type: file
+      description: |
+        The reference fasta file, index and dictionary.
+
+        Structure: [ val(meta), path(fasta), path(fai), path(dict) ]
+      pattern: "*.{fa,fasta,fna,fai,dict}"
+  - bwa_index:
+      type: file
+      description: |
+        The reference genome bwa index files.
+
+        Structure: [ val(meta), path(index) ]
+      pattern: "*.{amb,ann,bwt,pac,sa}"
   - groupreadsbyumi_strategy:
       type: string
-      description: ""
+      description: Defines the UMI assignment strategy.
       Required argument: defines the UMI assignment strategy.
       enum:
         - Identity
         - Edit
         - Adjacency
         - Paired
+  - aligner:
+      type: string
+      description: The aligner to use for mapping the reads to the reference genome. Options are bwa-mem and bwamem2.
+      enum:
+        - bwa-mem
+        - bwamem2
+  - duplex:
+      type: boolean
+      description: Whether the library contains duplex UMIs.
+  - min_reads:
+      type: integer
+      description: One integer (for non-duplex) or a string of up-to three space-separated numbers for duplex sequencing
+  - min_baseq:
+      type: integer
+      description: Minimum base quality for bases to be considered in consensus calling.
+  - max_base_error_rate:
+      type: integer
+      description: Maximum base error rate for consensus building
 output:
   - ubam:
       type: file
-      description: unmapped bam file
+      description: |
+        Unmapped bam file.
+
+        Structure: [ val(meta), path(bam) ]
       pattern: "*.bam"
   - groupbam:
       type: file
-      description: mapped bam file, where reads are grouped by UMI tag
+      description: |
+        Mapped bam file, where reads are grouped by UMI tag.
+
+        Structure: [ val(meta), path(bam) ]
       pattern: "*.bam"
   - consensusbam:
       type: file
       description: |
-        mapped bam file, where reads are created as consensus of those
-        belonging to the same UMI group
+        Mapped bam file, where reads are created as consensus of those
+        belonging to the same UMI group.
+
+        Structure: [ val(meta), path(bam) ]
+      pattern: "*.bam"
+  - mappedconsensusbam:
+      type: file
+      description: |
+        Mapped bam file, where reads are created as consensus of those
+        belonging to the same UMI group and filtered for minimum base quality and maximum error rate.
+
+        Structure: [ val(meta), path(bam) ]
       pattern: "*.bam"
 authors:
   - "@lescai"

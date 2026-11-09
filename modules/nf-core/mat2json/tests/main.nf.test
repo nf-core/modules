@@ -1,0 +1,61 @@
+nextflow_process {
+
+    name "Test Process MAT2JSON"
+    script "../main.nf"
+    process "MAT2JSON"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mat2json"
+
+    test("matlab file conversion to json") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = Channel.fromList([
+                    tuple([ id:'test'], // meta map
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/lsmquant/test_data/mat2json/thresholds.mat', checkIfExists: true))
+                ])
+                input[1] = Channel.of('test_process')
+                """
+            }
+        }
+
+        then {
+            assert process.success              // Check process completed successfully
+            assert snapshot(process.out).match() // Validate outputs match expected snapshot
+        }
+
+    }
+
+    test("matlab file conversion to json - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+            process {
+                """
+                input[0] = Channel.fromList([
+                    tuple([ id:'test'], // meta map
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/lsmquant/test_data/mat2json/thresholds.mat', checkIfExists: true))
+                ])
+                input[1] = Channel.of('test_process')
+                """
+            }
+        }
+
+        then {
+            assert process.success              // Check process completed successfully
+            assert snapshot(process.out).match() // Validate outputs match expected snapshot
+        }
+
+    }
+
+}

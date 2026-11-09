@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 //
 // ANGSD doCounts and contamination estimation on the X-chromosome
 //
@@ -12,18 +15,13 @@ workflow BAM_DOCOUNTS_CONTAMINATION_ANGSD {
     ch_hapmap_file // channel: [ val(meta), [ hapmap_file ] ]
 
     main:
-    ch_versions = channel.empty()
-
     ANGSD_DOCOUNTS ( ch_bam.combine(channel.of([[]])) )
-    ch_versions = ch_versions.mix(ANGSD_DOCOUNTS.out.versions)
 
     ANGSD_CONTAMINATION (
         ANGSD_DOCOUNTS.out.icounts,
         ch_hapmap_file
     )
-    ch_versions = ch_versions.mix(ANGSD_CONTAMINATION.out.versions)
 
     emit:
     txt      = ANGSD_CONTAMINATION.out.txt // channel: [ val(meta), [ txt ] ]
-    versions = ch_versions                 // channel: [ path(versions.yml) ]
 }

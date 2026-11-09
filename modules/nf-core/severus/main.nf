@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SEVERUS {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/severus:1.6--pyhdfd78af_0':
-        'biocontainers/severus:1.6--pyhdfd78af_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8f/8fd0858ee067f8b95246e57683a7431bc126929b4203fbda8e315cd94d2570ad/data':
+        'community.wave.seqera.io/library/severus:1.7--d16d59609ef4ee7d' }"
 
     input:
     tuple val(meta), path(target_input), path(target_index), path(control_input), path(control_index), path(vcf)
@@ -22,13 +25,12 @@ process SEVERUS {
     tuple val(meta), path("${prefix}/all_SVs/severus_all.vcf")                  , emit: all_vcf                          , optional: true
     tuple val(meta), path("${prefix}/all_SVs/breakpoints_clusters_list.tsv")    , emit: all_breakpoints_clusters_list    , optional: true
     tuple val(meta), path("${prefix}/all_SVs/breakpoints_clusters.tsv")         , emit: all_breakpoints_clusters         , optional: true
-    tuple val(meta), path("${prefix}/all_SVs/plots/severus_*.html")             , emit: all_plots                        , optional: true
+    tuple val(meta), path("${prefix}/all_SVs/plots/severus*.html")              , emit: all_plots                        , optional: true
     tuple val(meta), path("${prefix}/somatic_SVs/severus_somatic.vcf")          , emit: somatic_vcf                      , optional: true
     tuple val(meta), path("${prefix}/somatic_SVs/breakpoints_clusters_list.tsv"), emit: somatic_breakpoints_clusters_list, optional: true
     tuple val(meta), path("${prefix}/somatic_SVs/breakpoints_clusters.tsv")     , emit: somatic_breakpoints_clusters     , optional: true
-    tuple val(meta), path("${prefix}/somatic_SVs/plots/severus_*.html")         , emit: somatic_plots                    , optional: true
-    path "versions.yml"                                                         , emit: versions
-
+    tuple val(meta), path("${prefix}/somatic_SVs/plots/severus*.html")          , emit: somatic_plots                    , optional: true
+    tuple val("${task.process}"), val('severus'), eval("severus --version"), emit: versions_severus, topic: versions
     when:
     task.ext.when == null || task.ext.when
 
@@ -48,11 +50,6 @@ process SEVERUS {
         $control \\
         $phasing_vcf \\
         --out-dir ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        severus: \$(severus --version)
-    END_VERSIONS
     """
 
     stub:
@@ -79,10 +76,5 @@ process SEVERUS {
     touch ${prefix}/somatic_SVs/breakpoints_clusters.tsv
     touch ${prefix}/somatic_SVs/plots/severus_0.html
     touch ${prefix}/somatic_SVs/plots/severus_1.html
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        severus: \$(severus --version)
-    END_VERSIONS
     """
 }
