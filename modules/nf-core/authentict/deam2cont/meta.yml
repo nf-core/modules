@@ -1,6 +1,5 @@
 name: "authentict_deam2cont"
-description: Use deamination patterns to estimate contamination in
-  single-stranded libraries
+description: Use deamination patterns to estimate contamination in single-stranded libraries
 keywords:
   - authentict
   - ancientDNA
@@ -10,8 +9,7 @@ keywords:
   - damage
 tools:
   - "authentict":
-      description: "Estimates present-day DNA contamination in ancient DNA single-stranded
-        libraries."
+      description: "Estimates present-day DNA contamination in ancient DNA single-stranded libraries."
       homepage: "https://github.com/StephanePeyregne/AuthentiCT"
       documentation: "https://github.com/StephanePeyregne/AuthentiCT"
       tool_dev_url: "https://github.com/StephanePeyregne/AuthentiCT"
@@ -47,8 +45,7 @@ input:
           e.g. [ id:'test', single_end:false ]
     - positions:
         type: file
-        description: Optional text file with positions that sequences should
-          overlap
+        description: Optional text file with positions that sequences should overlap
         pattern: "*"
         ontologies: []
 output:
@@ -60,8 +57,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.txt":
           type: file
-          description: Maximum likelihood estimates with associated standard
-            errors
+          description: Maximum likelihood estimates with associated standard errors
           pattern: "*.txt"
           ontologies: []
   versions_authentict:
@@ -112,3 +108,17 @@ authors:
 maintainers:
   - "@scarlhoff"
   - "@StephanePeyregne"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/authentict_samtools_numdifftools:0a39db47b015fde7
+      build_id: bd-0a39db47b015fde7_1
+      scan_id: sc-dae983fb1b2ffa43_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/authentict_samtools_numdifftools:e4af75e371bbe24e
+      build_id: bd-e4af75e371bbe24e_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1e/1ee0e786f920e00278deca2cd60fef436b905fcd62f90e21edc7190ab16bc9e7/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/authentict/deam2cont/.conda-lock/linux_amd64-bd-0a39db47b015fde7_1.txt

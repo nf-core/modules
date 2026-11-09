@@ -1,7 +1,5 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: custom_dumpsoftwareversions
-description: Custom module used to dump software versions within the nf-core pipeline
-  template
+description: Custom module used to dump software versions within the nf-core pipeline template
 deprecated: true
 keywords:
   - custom
@@ -9,8 +7,7 @@ keywords:
   - version
 tools:
   - custom:
-      description: Custom module used to dump software versions within the nf-core pipeline
-        template
+      description: Custom module used to dump software versions within the nf-core pipeline template
       homepage: https://github.com/nf-core/tools
       documentation: https://github.com/nf-core/tools
       licence: ["MIT"]
@@ -58,3 +55,27 @@ authors:
 maintainers:
   - "@drpatelh"
   - "@grst"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/multiqc:1.27--5aad79bfb397e7db
+      build_id: bd-5aad79bfb397e7db_1
+      scan_id: sc-91455a7f40e75bf9_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/multiqc:1.27--b6b65551e6ce8ab3
+      build_id: bd-b6b65551e6ce8ab3_1
+      scan_id: sc-f721619802919679_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/multiqc:1.27--d768e6087ca7c034
+      build_id: bd-d768e6087ca7c034_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/04/043d2f0d10cc53f742deb85a68f02fd5edb2c450a40eb6bf8ecfd40ee95b7a02/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/multiqc:1.27--1779b7e777cdd871
+      build_id: bd-1779b7e777cdd871_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/30/300f8d05eaea16f84f0316eeef521c84b366bf33813d3d1676b59434a4cf26d1/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/custom/dumpsoftwareversions/.conda-lock/linux_amd64-bd-5aad79bfb397e7db_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/custom/dumpsoftwareversions/.conda-lock/linux_arm64-bd-b6b65551e6ce8ab3_1.txt

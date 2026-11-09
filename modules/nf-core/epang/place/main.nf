@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process EPANG_PLACE {
     tag "$meta.id"
     label 'process_high'
@@ -26,11 +29,17 @@ process EPANG_PLACE {
     def prefix     = task.ext.prefix ?: "${meta.id}"
     def queryarg   = queryaln        ? "--query $queryaln"       : ""
     def refalnarg  = referencealn    ? "--ref-msa $referencealn" : ""
-    def reftreearg = referencetree   ? "--tree $referencetree"   : ""
+    // epa-ng reads a gzipped MSA natively, but a gzipped tree fails with
+    // "Treeparsing failed!", so decompress that one ahead of the run.
+    def treefile   = referencetree && referencetree.name.endsWith('.gz') ? referencetree.baseName : "${referencetree}"
+    def gunzip     = referencetree && referencetree.name.endsWith('.gz') ? "gzip -cd ${referencetree} > ${treefile}" : ""
+    def reftreearg = referencetree   ? "--tree $treefile"       : ""
     def bfastarg   = bfastfile       ? "--bfast $bfastfile"      : ""
     def binaryarg  = binaryfile      ? "--binary $binaryfile"    : ""
     if ( binaryfile && ( referencealn || referencetree ) ) error "[EPANG] Cannot supply both binary and reference MSA or reference tree. Check input"
     """
+    $gunzip
+
     epa-ng \\
         $args \\
         --threads $task.cpus \\

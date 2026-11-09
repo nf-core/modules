@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process DUCKDB_TABLE2PARQUET"
     script "../main.nf"
     process "DUCKDB_TABLE2PARQUET"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
@@ -114,6 +115,130 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    // `$(touch pwned)` surviving verbatim in the output filename proves it wasn't executed --
+    // a real expansion would vanish (touch has no stdout).
+    test("csv - meta.id containing an apostrophe and shell metacharacters") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: "O'Brien" + '\$(touch pwned)`echo also_pwned`' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/generic/csv/test.csv', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.parquet[0][1].toString().tokenize('/').last() == "O'Brien\$(touch pwned)`echo also_pwned`.parquet" },
+                { assert !new File(process.out.parquet[0][1].toString()).parentFile.toPath().resolve('pwned').toFile().exists() }
+            )
+        }
+
+    }
+
+    // A newline followed by the heredoc's own delimiter must not let a trailing shell command
+    // escape it -- the delimiter is randomized per task specifically to block this. The payload
+    // rides in ext.prefix (see tests/nextflow.config), not meta.id itself: a literal newline in
+    // meta.id would also hit an unrelated Nextflow issue in how it embeds the process `tag` into
+    // .command.run's own header comment, unrelated to this module's own defense.
+    test("csv - ext.prefix containing a newline and the heredoc delimiter") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: 'heredoc-forge' ],
+                    file('https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/modules/data/generic/csv/test.csv', checkIfExists: true),
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.parquet[0][1].toString().tokenize('/').last() == '''safe\nSQL\ntouch pwned.parquet''' },
+                { assert !new File(process.out.parquet[0][1].toString()).parentFile.toPath().resolve('pwned').toFile().exists() }
+            )
+        }
+
+    }
+
+    // DuckDB types each column from the first 20480 rows. A numeric column holds no text, so "NA"
+    // in the Parquet bytes means the column was typed as text.
+    test("tsv - nullstr via ext.args, NA after the type-detection sample") {
+
+        when {
+            process {
+                """
+                def table = file("\${workDir}/late_na.tsv")
+                table.text = 'id\\tvalue\\n' +
+                    (1..25000).collect { i -> "g\${i}\\t\${i <= 24000 ? i % 7 : 'NA'}\\n" }.join()
+                input[0] = [ [ id: 'nullstr-late' ], table ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert !new String(new File(process.out.parquet[0][1].toString()).bytes, 'ISO-8859-1').contains('NA') },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("tsv - nullstr via ext.args, NA in the first rows") {
+
+        when {
+            process {
+                """
+                def table = file("\${workDir}/early_na.tsv")
+                table.text = 'id\\tvalue\\n' +
+                    (1..30).collect { i -> "g\${i}\\t\${i <= 3 ? 'NA' : i % 7}\\n" }.join()
+                input[0] = [ [ id: 'nullstr-early' ], table ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert !new String(new File(process.out.parquet[0][1].toString()).bytes, 'ISO-8859-1').contains('NA') },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+    test("tsv - NA is text without nullstr") {
+
+        when {
+            process {
+                """
+                def table = file("\${workDir}/text_na.tsv")
+                table.text = 'id\\tvalue\\n' +
+                    (1..30).collect { i -> "g\${i}\\t\${i <= 3 ? 'NA' : i % 7}\\n" }.join()
+                input[0] = [ [ id: 'plain-na' ], table ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert new String(new File(process.out.parquet[0][1].toString()).bytes, 'ISO-8859-1').contains('NA') },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }

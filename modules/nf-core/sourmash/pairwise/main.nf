@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SOURMASH_PAIRWISE {
     tag "$meta.id"
     label 'process_low'
@@ -33,7 +36,7 @@ process SOURMASH_PAIRWISE {
     } else if (signatures instanceof Collection && signatures.size() > 1) {
         // multiple individual .sig files — combine into a zip first
         pairwise_input = "${prefix}_collection.zip"
-        combine_cmd = "sourmash sig cat ${signatures.sort { it.toString() }.join(' ')} -o ${prefix}_collection.zip"
+        combine_cmd = "sourmash sig cat ${signatures.sort { item -> item.toString() }.join(' ')} -o ${prefix}_collection.zip"
     } else {
         // single file (zip or sig) — use directly
         pairwise_input = signatures

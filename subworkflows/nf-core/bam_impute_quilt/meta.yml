@@ -41,7 +41,7 @@ input:
               File containing the sample names of each BAM files listed in bampaths.
               One file per line.
             pattern: "*.{txt,tsv}"
-  - ch_hap_legend_posfile:
+  - ch_reference_panel:
       description: Channel with reference panel variants data
       structure:
         - meta:
@@ -57,9 +57,6 @@ input:
             type: file
             description: Panel VCF legend files by chromosomes
             pattern: "*.legend[.gz]+"
-        - posfile:
-            type: file
-            description: Position to impute variants file in TSV format (chromosome, position, ref, alt)
   - ch_chunks:
       description: Channel with chromosome chunks data
       structure:

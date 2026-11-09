@@ -1,27 +1,19 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Turns HMMER's --tblout format into a clean TSV, one row per hit. Every column
-# but the last (a free-text description) is whitespace-separated. The real
-# column count (N) is read per file from its dash/alignment header row: every
-# token there is a run of dashes, so counting them is unambiguous, unlike the
-# column-name row, whose labels (e.g. "target name") also contain spaces and
-# don't map one-to-one onto columns. Each data row's first N-1 whitespace
-# tokens become the named columns; the rest is rejoined into the final column.
+# Turns HMMER's --tblout format into a clean TSV, one row per hit. The header row's dashes
+# give the real column count (N) -- unlike the column-name row, whose labels contain spaces,
+# a run of dashes counts unambiguously. Each data row's first N-1 tokens become the named
+# columns; the rest is rejoined into the final (description) column. When "#" and the first
+# column's dashes aren't separated by a space, awk glues them into one token, so that column
+# is counted separately below.
 #
-# Whether HMMER leaves a space between "#" and the first column's dashes
-# depends on that column's width. With no gap, awk's default splitting glues
-# them into one token ("#---------"), so the first column needs separate
-# handling below.
+# Labels/files are quoted per element, not bare-joined, so a space in a label or path can't
+# misalign labels with files.
 #
-# Labels/files are quoted per element rather than bare-joined: an unquoted
-# join word-splits any label or path containing whitespace and misaligns the
-# label/file pairing for every entry after it.
-#
-# Once a header is found, a data row is only ever treated as a trailing
-# comment (hmmsearch's "# Program:"/"# Date:"/"# [ok]" run-metadata footer)
-# once the exact sentinel line "#" (nothing else) has been seen -- a target
-# name that happens to start with "#" is otherwise valid data, not a comment.
+# A data row seen after the exact "#" sentinel (the start of HMMER's run-metadata footer)
+# fails loudly instead of being silently dropped -- it means more than one run's output was
+# concatenated into this file.
 
 labels=(${labels.collect { "'" + it.toString().replace("'", "'\\''") + "'" }.join(' ')})
 files=(${files.collect { "'" + it.toString().replace("'", "'\\''") + "'" }.join(' ')})
@@ -57,8 +49,14 @@ files=(${files.collect { "'" + it.toString().replace("'", "'\\''") + "'" }.join(
                 }
                 next
             }
-            N > 0 && \$0 == "#" { intrailer = 1 }
-            intrailer { next }
+            N > 0 && \$0 == "#" { intrailer = 1; next }
+            intrailer {
+                if (\$0 != "" && \$0 !~ /^#/) {
+                    print "hmmer/formattsv: data row seen after the run-metadata footer -- looks like more than one HMMER run concatenated into one file" > "/dev/stderr"
+                    exit 1
+                }
+                next
+            }
             {
                 if (N == 0) {
                     print "hmmer/formattsv: data row seen before a column-count header was found" > "/dev/stderr"

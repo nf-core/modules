@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FGUMI_FASTQ {
     tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1b/1bc8b529ca211068200eb632191845e5f3fc427505845bcb695d9a8f86bff406/data'
-        : 'community.wave.seqera.io/library/fgumi_gzip:c9ed369c64a58706'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2a/2a01cc9cc4b3bf65b546d5feea63f099a68542b3f4516d4e98e923b13cdba74b/data'
+        : 'community.wave.seqera.io/library/fgumi_gzip:f6d152fa9a4b3fcd'}"
 
     input:
     tuple val(meta), path(bam)

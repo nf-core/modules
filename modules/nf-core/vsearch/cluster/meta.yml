@@ -1,19 +1,12 @@
 name: "vsearch_cluster"
-description: Cluster sequences using a single-pass, greedy centroid-based
-  clustering algorithm.
+description: Cluster sequences using a single-pass, greedy centroid-based clustering algorithm.
 keywords:
   - vsearch
   - clustering
   - microbiome
 tools:
   - vsearch:
-      description: VSEARCH is a versatile open-source tool for microbiome
-        analysis, including chimera detection, clustering, dereplication and
-        rereplication, extraction, FASTA/FASTQ/SFF file processing, masking,
-        orienting, pair-wise alignment, restriction site cutting, searching,
-        shuffling, sorting, subsampling, and taxonomic classification of amplicon
-        sequences for metagenomics, genomics, and population genetics. (USEARCH
-        alternative)
+      description: VSEARCH is a versatile open-source tool for microbiome analysis, including chimera detection, clustering, dereplication and rereplication, extraction, FASTA/FASTQ/SFF file processing, masking, orienting, pair-wise alignment, restriction site cutting, searching, shuffling, sorting, subsampling, and taxonomic classification of amplicon sequences for metagenomics, genomics, and population genetics. (USEARCH alternative)
       homepage: https://github.com/torognes/vsearch
       documentation: https://github.com/torognes/vsearch/releases/download/v2.31.0/vsearch_manual.pdf
       tool_dev_url: https://github.com/torognes/vsearch
@@ -63,8 +56,7 @@ output:
             e.g. [ id:'test' ]
       - "*.mothur.tsv.gz":
           type: file
-          description: Results in an OTU table in the mothur ’shared’
-            tab-separated plain text file format
+          description: Results in an OTU table in the mothur ’shared’ tab-separated plain text file format
           pattern: "*.mothur.tsv.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989
@@ -76,8 +68,7 @@ output:
             e.g. [ id:'test' ]
       - "*.otu.tsv.gz":
           type: file
-          description: Results in an OTU table in the classic tab-separated plain
-            text format
+          description: Results in an OTU table in the classic tab-separated plain text format
           pattern: "*.otu.tsv.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989
@@ -124,8 +115,7 @@ output:
             e.g. [ id:'test' ]
       - "*.uc.tsv.gz":
           type: file
-          description: Tab delimited results in a uclust-like format with 10
-            columns
+          description: Tab delimited results in a uclust-like format with 10 columns
           pattern: "*.uc.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989
@@ -221,3 +211,27 @@ authors:
   - "@mirpedrol"
 maintainers:
   - "@mirpedrol"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/samtools_vsearch:4f1b0d5fb299ef8e
+      build_id: bd-4f1b0d5fb299ef8e_1
+      scan_id: sc-eecd1cbb84f4a481_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/samtools_vsearch:36d56b7ebe9ea248
+      build_id: bd-36d56b7ebe9ea248_1
+      scan_id: sc-7968c17030aa2d51_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/samtools_vsearch:bb80d3550e7ff606
+      build_id: bd-bb80d3550e7ff606_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ed/edcbb466cdd90443649e121948b62d76f8ffb57699dc968f43f6d9e695d658e5/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/samtools_vsearch:fca12c4fb4837c72
+      build_id: bd-fca12c4fb4837c72_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/36/363cb3f920602951d1dee4e0d248eb7171b4dfd2611db3a581a480500ac25996/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/vsearch/cluster/.conda-lock/linux_amd64-bd-36d56b7ebe9ea248_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/vsearch/cluster/.conda-lock/linux_arm64-bd-4f1b0d5fb299ef8e_1.txt
