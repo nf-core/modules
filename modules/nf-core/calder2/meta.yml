@@ -20,8 +20,7 @@ tools:
 input:
   - - meta:
         type: map
-        description: Groovy Map containing sample information. E.g. [ id:'test',
-          single_end:false ]
+        description: Groovy Map containing sample information. E.g. [ id:'test', single_end:false ]
     - cool:
         type: file
         description: Path to COOL file
@@ -29,27 +28,22 @@ input:
         ontologies: []
   - resolution:
       type: integer
-      description: In case a .mcool file is provided, which resolution level to
-        use for the analysis
+      description: In case a .mcool file is provided, which resolution level to use for the analysis
 output:
   output_folder:
     - - meta:
           type: map
-          description: Groovy Map containing sample information. E.g. [ id:'test',
-            single_end:false ]
+          description: Groovy Map containing sample information. E.g. [ id:'test', single_end:false ]
       - ${prefix}/:
           type: directory
-          description: Output folder containing sub-compartment (.tsv/.bed) and
-            domain boundaries calls (.bed)
+          description: Output folder containing sub-compartment (.tsv/.bed) and domain boundaries calls (.bed)
   intermediate_data_folder:
     - - meta:
           type: map
-          description: Groovy Map containing sample information. E.g. [ id:'test',
-            single_end:false ]
+          description: Groovy Map containing sample information. E.g. [ id:'test', single_end:false ]
       - ${prefix}/intermediate_data/:
           type: directory
-          description: Output folder containing intermediate data produced during
-            the computation
+          description: Output folder containing intermediate data produced during the computation
   versions_calder:
     - - ${task.process}:
           type: string
@@ -75,3 +69,27 @@ authors:
   - "@lucananni93"
 maintainers:
   - "@lucananni93"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/r-calder2:0.7--cce8a313df599b5d
+      build_id: bd-cce8a313df599b5d_1
+      scan_id: sc-afb501d940e77d39_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/r-calder2:0.7--ddfbe841ca807c77
+      build_id: bd-ddfbe841ca807c77_1
+      scan_id: sc-84120293139e34f9_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/r-calder2:0.7--baf2679eacc2387d
+      build_id: bd-baf2679eacc2387d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b0/b0b8cc629084e7e837fed38f2633b51f9d54f5e3ea76625c762147d5f73366d7/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/r-calder2:0.7--19c6a2e1ccbe7249
+      build_id: bd-19c6a2e1ccbe7249_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d8/d8838d76b9e8542b64ab03633244258f523cf3124fbde79d69f42f900156e978/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/calder2/.conda-lock/linux_amd64-bd-cce8a313df599b5d_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/calder2/.conda-lock/linux_arm64-bd-ddfbe841ca807c77_1.txt

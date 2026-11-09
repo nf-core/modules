@@ -28,7 +28,93 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/haemophilus_influenzae/genome/genome.fna.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/haemophilus_influenzae/genome/genome.fna.gz', checkIfExists: true),
+                    '',
+                    false
+                ]
+                input[1] = AMRFINDERPLUS_UPDATE.out.db
+                """
+            }
+        }
+
+        then {
+            // The database is downloaded live by AMRFINDERPLUS_UPDATE, so its version changes with each NCBI release
+            def db_version_keys = ['db_version', 'versions_amrfinderplus_database']
+            assertAll(
+                { assert process.success },
+                { assert process.out.db_version[0] ==~ /\d{4}-\d{2}-\d{2}\.\d+/ },
+                { assert process.out.versions_amrfinderplus_database[0][2] ==~ /\d{4}-\d{2}-\d{2}\.\d+/ },
+                { assert snapshot(sanitizeOutput(process.out).findAll { key, val -> !(key in db_version_keys) }).match() }
+            )
+        }
+    }
+
+    test("amrfinderplus/run - haemophilus_influenzae - genome_fna_gz - organism") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/haemophilus_influenzae/genome/genome.fna.gz', checkIfExists: true),
+                    'Haemophilus_influenzae',
+                    false
+                ]
+                input[1] = AMRFINDERPLUS_UPDATE.out.db
+                """
+            }
+        }
+
+        then {
+            def db_version_keys = ['db_version', 'versions_amrfinderplus_database']
+            assertAll(
+                { assert process.success },
+                { assert process.out.db_version[0] ==~ /\d{4}-\d{2}-\d{2}\.\d+/ },
+                { assert process.out.versions_amrfinderplus_database[0][2] ==~ /\d{4}-\d{2}-\d{2}\.\d+/ },
+                { assert snapshot(sanitizeOutput(process.out).findAll { key, val -> !(key in db_version_keys) }).match() }
+            )
+        }
+    }
+
+    test("amrfinderplus/run - bacteroides_fragilis - region_faa_gz - proteins") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/region_2500000-3000000.faa.gz', checkIfExists: true),
+                    '',
+                    true
+                ]
+                input[1] = AMRFINDERPLUS_UPDATE.out.db
+                """
+            }
+        }
+
+        then {
+            def db_version_keys = ['db_version', 'versions_amrfinderplus_database']
+            assertAll(
+                { assert process.success },
+                { assert process.out.db_version[0] ==~ /\d{4}-\d{2}-\d{2}\.\d+/ },
+                { assert process.out.versions_amrfinderplus_database[0][2] ==~ /\d{4}-\d{2}-\d{2}\.\d+/ },
+                { assert snapshot(sanitizeOutput(process.out).findAll { key, val -> !(key in db_version_keys) }).match() }
+            )
+        }
+    }
+
+    test("amrfinderplus/run - haemophilus_influenzae - genome_fna_gz - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/haemophilus_influenzae/genome/genome.fna.gz', checkIfExists: true),
+                    '',
+                    false
                 ]
                 input[1] = AMRFINDERPLUS_UPDATE.out.db
                 """
@@ -43,7 +129,7 @@ nextflow_process {
         }
     }
 
-    test("amrfinderplus/run - haemophilus_influenzae - genome_fna_gz - stub") {
+    test("amrfinderplus/run - haemophilus_influenzae - genome_fna_gz - organism - stub") {
 
         options "-stub"
 
@@ -52,7 +138,9 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test' ],
-                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/haemophilus_influenzae/genome/genome.fna.gz', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/haemophilus_influenzae/genome/genome.fna.gz', checkIfExists: true),
+                    'Haemophilus_influenzae',
+                    false
                 ]
                 input[1] = AMRFINDERPLUS_UPDATE.out.db
                 """
