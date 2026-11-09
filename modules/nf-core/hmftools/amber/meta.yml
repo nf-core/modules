@@ -1,0 +1,68 @@
+name: hmftools_amber
+description: Generates a tumor BAF (B-allele frequency) file for use in PURPLE purity/ploidy estimation from tumor/normal BAM pairs.
+keywords:
+  - hmftools
+  - amber
+  - BAF
+  - tumor
+  - somatic
+  - cancer
+  - copy number
+tools:
+  - hmftools-amber:
+      description: AMBER generates a tumor BAF file for use in PURPLE.
+      homepage: https://github.com/hartwigmedical/hmftools/blob/master/amber/README.md
+      documentation: https://github.com/hartwigmedical/hmftools/blob/master/amber/README.md
+      tool_dev_url: https://github.com/hartwigmedical/hmftools
+      licence: ["GPL-3.0-only"]
+
+input:
+  - meta:
+      type: map
+      description: Groovy Map containing sample information e.g. [ id:'sample1', tumor_id:'tumor', normal_id:'normal' ]
+  - tumor_bam:
+      type: file
+      description: Tumor sorted BAM file
+      pattern: "*.bam"
+  - tumor_bai:
+      type: file
+      description: Tumor BAM index file
+      pattern: "*.bai"
+  - normal_bam:
+      type: file
+      description: Normal sorted BAM file
+      pattern: "*.bam"
+  - normal_bai:
+      type: file
+      description: Normal BAM index file
+      pattern: "*.bai"
+  - fasta:
+      type: file
+      description: Reference genome FASTA file
+      pattern: "*.{fa,fasta}"
+  - fasta_fai:
+      type: file
+      description: Reference genome FASTA index
+      pattern: "*.fai"
+  - loci:
+      type: file
+      description: VCF file of germline heterozygous SNP loci
+      pattern: "*.vcf.gz"
+
+output:
+  - meta:
+      type: map
+      description: Groovy Map containing sample information
+  - amber_dir:
+      type: directory
+      description: Directory containing AMBER output files including BAF and QC files
+      pattern: "*/"
+  - versions:
+      type: file
+      description: File containing software versions
+      pattern: "versions.yml"
+
+authors:
+  - "@JP-Bro"
+maintainers:
+  - "@JP-Bro"
