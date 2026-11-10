@@ -44,6 +44,13 @@
                         "1.0.1"
                     ]
                 ],
+                "6": [
+                    [
+                        "NGSCHECKMATE_NCM",
+                        "bcftools",
+                        "1.21"
+                    ]
+                ],
                 "all": [
                     [
                         {
@@ -79,6 +86,13 @@
                 "vcf": [
                     
                 ],
+                "versions_bcftools": [
+                    [
+                        "NGSCHECKMATE_NCM",
+                        "bcftools",
+                        "1.21"
+                    ]
+                ],
                 "versions_ngscheckmate": [
                     [
                         "NGSCHECKMATE_NCM",
@@ -88,33 +102,57 @@
                 ]
             }
         ],
+        "timestamp": "2026-10-28T12:12:20.721445",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2025-12-23T14:05:45.209620774"
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.4"
+        }
     },
     "sarscov2 - vcf": {
         "content": [
-            [
-                [
-                    {
-                        "id": "test1"
-                    },
-                    "test1_output_corr_matrix.txt:md5,3a23347ff7071d5d8e273bfc29731d4a"
-                ]
-            ],
-            "test1_matched.txt",
-            [
-                [
-                    {
-                        "id": "test1"
-                    },
-                    "test1_all.txt:md5,7e6ca5eb3daf6f589ea20fa117269edf"
-                ]
-            ],
-            "test1.pdf",
             {
+                "all": [
+                    [
+                        {
+                            "id": "test1"
+                        },
+                        "test1_all.txt:md5,7e6ca5eb3daf6f589ea20fa117269edf"
+                    ]
+                ],
+                "corr_matrix": [
+                    [
+                        {
+                            "id": "test1"
+                        },
+                        "test1_output_corr_matrix.txt:md5,3a23347ff7071d5d8e273bfc29731d4a"
+                    ]
+                ],
+                "matched": [
+                    [
+                        {
+                            "id": "test1"
+                        },
+                        "test1_matched.txt"
+                    ]
+                ],
+                "pdf": [
+                    [
+                        {
+                            "id": "test1"
+                        },
+                        "test1.pdf"
+                    ]
+                ],
+                "vcf": [
+                    
+                ],
+                "versions_bcftools": [
+                    [
+                        "NGSCHECKMATE_NCM",
+                        "bcftools",
+                        "1.21"
+                    ]
+                ],
                 "versions_ngscheckmate": [
                     [
                         "NGSCHECKMATE_NCM",
@@ -124,18 +162,60 @@
                 ]
             }
         ],
+        "timestamp": "2026-10-28T12:12:13.945331",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2025-12-23T09:06:37.902778112"
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.4"
+        }
     },
     "sarscov2 - bam": {
         "content": [
-            "combined_bams_output_corr_matrix.txt",
-            "combined_bams_matched.txt",
-            "combined_bams_all.txt",
             {
+                "all": [
+                    [
+                        {
+                            "id": "combined_bams"
+                        },
+                        "combined_bams_all.txt"
+                    ]
+                ],
+                "corr_matrix": [
+                    [
+                        {
+                            "id": "combined_bams"
+                        },
+                        "combined_bams_output_corr_matrix.txt"
+                    ]
+                ],
+                "matched": [
+                    [
+                        {
+                            "id": "combined_bams"
+                        },
+                        "combined_bams_matched.txt"
+                    ]
+                ],
+                "pdf": [
+                    
+                ],
+                "vcf": [
+                    [
+                        {
+                            "id": "combined_bams"
+                        },
+                        [
+                            "test.paired_end.methylated.sorted.vcf",
+                            "test.paired_end.sorted.vcf"
+                        ]
+                    ]
+                ],
+                "versions_bcftools": [
+                    [
+                        "NGSCHECKMATE_NCM",
+                        "bcftools",
+                        "1.21"
+                    ]
+                ],
                 "versions_ngscheckmate": [
                     [
                         "NGSCHECKMATE_NCM",
@@ -145,11 +225,11 @@
                 ]
             }
         ],
+        "timestamp": "2026-10-28T12:19:57.037444",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2025-12-21T16:48:41.297586997"
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.4"
+        }
     },
     "sarscov2 - vcf - stub": {
         "content": [
@@ -196,6 +276,13 @@
                         "1.0.1"
                     ]
                 ],
+                "6": [
+                    [
+                        "NGSCHECKMATE_NCM",
+                        "bcftools",
+                        "1.21"
+                    ]
+                ],
                 "all": [
                     [
                         {
@@ -231,6 +318,13 @@
                 "vcf": [
                     
                 ],
+                "versions_bcftools": [
+                    [
+                        "NGSCHECKMATE_NCM",
+                        "bcftools",
+                        "1.21"
+                    ]
+                ],
                 "versions_ngscheckmate": [
                     [
                         "NGSCHECKMATE_NCM",
@@ -240,10 +334,10 @@
                 ]
             }
         ],
+        "timestamp": "2026-10-28T12:12:27.696538",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2025-12-22T08:41:47.066199532"
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.4"
+        }
     }
 }

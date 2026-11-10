@@ -133,7 +133,7 @@ output:
       - strobealign:
           type: string
           description: The name of the tool
-      - strobealign --version:
+      - strobealign --version | sed '1!d;s/.* //':
           type: eval
           description: The expression to obtain the version of the tool
   versions_samtools:
@@ -164,7 +164,7 @@ topics:
       - strobealign:
           type: string
           description: The name of the tool
-      - strobealign --version:
+      - strobealign --version | sed '1!d;s/.* //':
           type: eval
           description: The expression to obtain the version of the tool
     - - ${task.process}:
@@ -193,24 +193,24 @@ maintainers:
 containers:
   docker:
     linux/arm64:
-      name: community.wave.seqera.io/library/htslib_samtools_strobealign_pigz:be473d108d6e0fb8
-      build_id: bd-be473d108d6e0fb8_1
-      scan_id: sc-1c7aa91ff75be091_1
+      name: community.wave.seqera.io/library/htslib_samtools_strobealign_pigz:8c80a62856badfa9
+      build_id: bd-8c80a62856badfa9_1
+      scan_id: sc-f88e24b0ca59faca_1
     linux/amd64:
-      name: community.wave.seqera.io/library/htslib_samtools_strobealign_pigz:90eb6a088ad3d321
-      build_id: bd-90eb6a088ad3d321_1
-      scan_id: sc-2d791fc8861014bc_1
+      name: community.wave.seqera.io/library/htslib_samtools_strobealign_pigz:b2f7ae6e1f5935e1
+      build_id: bd-b2f7ae6e1f5935e1_1
+      scan_id: sc-f99ecf97d680c912_1
   singularity:
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/htslib_samtools_strobealign_pigz:38afc784dff2496a
-      build_id: bd-38afc784dff2496a_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/58/58b8968bb248307d133950891a33c9e569f5f1aa729ad997d8bb1311ec7f2589/data
+      name: oras://community.wave.seqera.io/library/htslib_samtools_strobealign_pigz:9b6fb3bfb82d44b8
+      build_id: bd-9b6fb3bfb82d44b8_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/42/4240bef64ff1f1d212a1b7cfc57f20ae03bdc140ea043fd7757c150f3a83a360/data
     linux/arm64:
-      name: oras://community.wave.seqera.io/library/htslib_samtools_strobealign_pigz:90ad219a62d4fc12
-      build_id: bd-90ad219a62d4fc12_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/54/54a576c51485cf7af3223084b2bfffabbe1c25c92c987ba564bb061ad0a16c89/data
+      name: oras://community.wave.seqera.io/library/htslib_samtools_strobealign_pigz:1b641fc985db44a6
+      build_id: bd-1b641fc985db44a6_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0e/0e8e5ac1ad0695ef444dbd6341359035f73a097727f7727cf5604b7928035a70/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/strobealign/.conda-lock/linux_amd64-bd-90eb6a088ad3d321_1.txt
+      lock_file: modules/nf-core/strobealign/.conda-lock/linux_amd64-bd-b2f7ae6e1f5935e1_1.txt
     linux/arm64:
-      lock_file: modules/nf-core/strobealign/.conda-lock/linux_arm64-bd-be473d108d6e0fb8_1.txt
+      lock_file: modules/nf-core/strobealign/.conda-lock/linux_arm64-bd-8c80a62856badfa9_1.txt

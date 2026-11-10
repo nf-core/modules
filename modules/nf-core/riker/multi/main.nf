@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RIKER_MULTI {
     tag "$meta.id"
     label 'process_medium'
@@ -33,6 +36,7 @@ process RIKER_MULTI {
     tuple val(meta), path("*.rna-metrics.txt"),                emit: rna_metrics,               optional: true
     tuple val(meta), path("*.wgs-coverage.txt"),               emit: wgs_coverage,              optional: true
     tuple val(meta), path("*.wgs-metrics.txt"),                emit: wgs_metrics,               optional: true
+    tuple val(meta), path("*.wgs-per-base.bw"),                emit: wgs_per_base_bw,           optional: true
     tuple val("${task.process}"), val('riker'), eval("riker --version 2>&1 | sed 's/riker //'") , topic: versions, emit: versions_riker
 
     when:
@@ -94,5 +98,6 @@ process RIKER_MULTI {
     touch ${prefix}.mean-quality-by-cycle.pdf
     touch ${prefix}.quality-score-distribution.pdf
     touch ${prefix}.wgs-coverage.pdf
+    touch ${prefix}.wgs-per-base.bw
     """
 }

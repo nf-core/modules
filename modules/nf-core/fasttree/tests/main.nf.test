@@ -14,8 +14,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists: true) ]
-
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -35,8 +37,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = [ file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists: true) ]
-
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/informative_sites.fas', checkIfExists: true)
+                ]
                 """
             }
         }

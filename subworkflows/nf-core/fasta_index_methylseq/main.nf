@@ -1,10 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { UNTAR as UNTAR_BISMARK    } from '../../../modules/nf-core/untar/main'
 include { UNTAR as UNTAR_BWAMETH    } from '../../../modules/nf-core/untar/main'
+include { UNTAR as UNTAR_BWAMEM     } from '../../../modules/nf-core/untar/main'
 include { GUNZIP                    } from '../../../modules/nf-core/gunzip/main'
 include { BISMARK_GENOMEPREPARATION as BISMARK_GENOMEPREPARATION_BOWTIE } from '../../../modules/nf-core/bismark/genomepreparation/main'
 include { BISMARK_GENOMEPREPARATION as BISMARK_GENOMEPREPARATION_HISAT } from '../../../modules/nf-core/bismark/genomepreparation/main'
 include { BWAMETH_INDEX             } from '../../../modules/nf-core/bwameth/index/main'
 include { BWA_INDEX                 } from '../../../modules/nf-core/bwa/index/main'
+include { BWAMEM3_INDEX             } from '../../../modules/nf-core/bwamem3/index/main'
 include { SAMTOOLS_FAIDX            } from '../../../modules/nf-core/samtools/faidx/main'
 
 workflow FASTA_INDEX_METHYLSEQ {
@@ -14,8 +19,8 @@ workflow FASTA_INDEX_METHYLSEQ {
     fasta_index      // channel: [ val(meta), [ fasta index ] ]
     bismark_index    // channel: [ val(meta), [ bismark index ] ]
     bwameth_index    // channel: [ val(meta), [ bwameth index ] ]
-    bwamem_index     // channel: [ val(meta), [ bwamem index ] ]
-    aligner          // string: bismark, bismark_hisat, bwameth or bwamem
+    bwamem_index     // channel: [ val(meta), [ bwamem index ] ] (bwa-mem3 `--meth` index when aligner is bwamem3)
+    aligner          // string: bismark, bismark_hisat, bwameth, bwamem or bwamem3
     collecthsmetrics // boolean: whether to run picard collecthsmetrics
     use_mem2         // boolean: generate mem2 index if no index provided, and bwameth is selected
 
@@ -105,12 +110,13 @@ workflow FASTA_INDEX_METHYLSEQ {
     }
 
 
-    else if ( aligner == 'bwamem' ){
+    else if ( aligner in ['bwamem', 'bwamem3'] ){
         /*
-         * Generate BWA index from FASTA file
+         * Use the supplied BWA / bwa-mem3 index, or generate one from the FASTA file
+         * (bwa-mem3: set `ext.args = '--meth'` on BWAMEM3_INDEX for a methylation index)
          */
         if (bwamem_index) {
-            // Handle channel-based bwamem index
+            // Handle channel-based bwamem / bwamem3 index
             bwamem_index
                 .branch { _meta, file ->
                     gzipped: file.toString().endsWith('.gz')
@@ -118,11 +124,17 @@ workflow FASTA_INDEX_METHYLSEQ {
                 }
                 .set { ch_bwamem_index_branched }
 
-            UNTAR_BISMARK (
+            UNTAR_BWAMEM (
                 ch_bwamem_index_branched.gzipped
             )
 
-            ch_bwamem_index = ch_bwamem_index_branched.unzipped.mix(UNTAR_BISMARK.out.untar)
+            ch_bwamem_index = ch_bwamem_index_branched.unzipped.mix(UNTAR_BWAMEM.out.untar)
+        } else if (aligner == 'bwamem3') {
+            log.info "bwa-mem3 index not provided. Generating bwa-mem3 index from FASTA file."
+            BWAMEM3_INDEX (
+                ch_fasta
+            )
+            ch_bwamem_index = BWAMEM3_INDEX.out.index
         } else {
             log.info "BWA index not provided. Generating BWA index from FASTA file."
             BWA_INDEX (
@@ -135,7 +147,7 @@ workflow FASTA_INDEX_METHYLSEQ {
     /*
     * Generate fasta index if not supplied for bwameth workflow or picard collecthsmetrics tool
     */
-    if (aligner == 'bwameth' || aligner == 'bwamem' || collecthsmetrics) {
+    if (aligner in ['bwameth', 'bwamem', 'bwamem3'] || collecthsmetrics) {
         // already existing fasta index
         if (fasta_index) {
             ch_fasta_index = fasta_index

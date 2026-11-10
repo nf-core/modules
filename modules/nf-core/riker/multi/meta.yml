@@ -324,6 +324,16 @@ output:
           pattern: "*.wgs-metrics.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3475" # TSV
+  wgs_per_base_bw:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information
+      - "*.wgs-per-base.bw":
+          type: file
+          description: Whole-genome per-base coverage BigWig (wgs tool)
+          pattern: "*.wgs-per-base.bw"
+          ontologies:
+            - edam: "http://edamontology.org/format_3006" # BigWig
   versions_riker:
     - - ${task.process}:
           type: string
