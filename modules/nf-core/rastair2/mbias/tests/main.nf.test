@@ -81,6 +81,40 @@ nextflow_process {
         }
     }
 
+    test("sarscov2 - paired-end methylated bam - no reads in range") {
+
+        when {
+            params {
+                module_args = '--min-mapq 255'
+            }
+            process {
+                """
+                input[0] = channel.of([
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true)
+                ])
+                input[1] = channel.of([
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert process.out.cutoffs.size() == 0 },
+                { assert snapshot(
+                    process.out.html,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+
     test("sarscov2 - single-end bam - fails") {
 
         when {

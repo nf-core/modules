@@ -36,18 +36,24 @@ process RASTAIR2_MBIAS {
         --bed ${prefix}.per_read.bed.gz \\
         ${bam}
 
-    # rastair looks for its R scripts next to the binary, but conda installs them under share/
-    rastair mbias \\
-        ${args2} \\
-        --r-script-dir \$(dirname \$(which rastair))/../share/rastair/scripts \\
-        --no-vbias \\
-        --no-gc \\
-        --threads ${task.cpus} \\
-        --bed ${prefix}.per_read.bed.gz \\
-        --output-prefix .
+    # The report fails on an empty table, so reads without CpGs mean no estimate rather than an error
+    reads_with_cpgs=\$(gzip -dc ${prefix}.per_read.bed.gz | awk -F '\\t' '!/^#/ && \$10 > 0 { n++ } END { print n + 0 }')
+    if [ "\$reads_with_cpgs" -gt 0 ]; then
+        # rastair looks for its R scripts next to the binary, but conda installs them under share/
+        rastair mbias \\
+            ${args2} \\
+            --r-script-dir \$(dirname \$(which rastair))/../share/rastair/scripts \\
+            --no-vbias \\
+            --no-gc \\
+            --threads ${task.cpus} \\
+            --bed ${prefix}.per_read.bed.gz \\
+            --output-prefix .
+        mv qc_report.html ${prefix}.mbias.html
+    else
+        echo "<html><body><p>${prefix}: no reads with CpGs in range, so no M-bias estimate.</p></body></html>" > ${prefix}.mbias.html
+    fi
 
     rm ${prefix}.per_read.bed.gz ${prefix}.per_read.bed.gz.tbi
-    mv qc_report.html ${prefix}.mbias.html
     for cutoffs in *_cutoffs.txt; do
         [ -e "\$cutoffs" ] || continue
         mv "\$cutoffs" "${prefix}.\${cutoffs%_cutoffs.txt}.cutoffs.txt"

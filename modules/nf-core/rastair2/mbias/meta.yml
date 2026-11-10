@@ -94,7 +94,9 @@ output:
             `r1_start,r1_end,r2_start,r2_end` bases to ignore. Restrict the run to one
             contig or region with `--region` in `ext.args` to get a single file:
             this also keeps memory down, as the report loads every read in range.
-            Contigs with too little data get no file.
+            Contigs with too little data get no file, and if no read in range has a
+            CpG there are no cutoffs files at all (the report says so), so callers
+            can fall back to no trimming.
           pattern: "*.cutoffs.txt"
           ontologies:
             - edam: "http://edamontology.org/format_3475"
