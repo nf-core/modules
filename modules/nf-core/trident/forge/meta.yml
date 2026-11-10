@@ -1,0 +1,69 @@
+name: "trident_forge"
+description: Check Poseidon packages or package components for structural correctness
+keywords:
+  - poseidon-trident
+  - poseidon
+  - trident
+  - forge
+tools:
+  - "trident":
+      description: "A tool (trident) to work with modular genotype databases formatted using Poseidon."
+      homepage: "https://www.poseidon-adna.org/"
+      documentation: "https://www.poseidon-adna.org/#/trident?id=validate-command"
+      tool_dev_url: "https://github.com/poseidon-framework/poseidon-hs/"
+      doi: "10.7554/eLife.98317.1"
+      licence:
+        - "MIT"
+      identifier: ""
+
+input:
+  - - archive_dir:
+        type: directory
+        description: |
+          The path to the directories containing Poseidon packages, from which to forge new packages.
+    - forge_s:
+        type: string
+        description: The forgeString provided to trident forge (`--forgeString`), if any.
+    - forge_fn:
+        type: file
+        description: A file containing a list of forgeStrings provided to trident forge (`--forgeFile`), if any.
+        pattern: "*.txt"
+        ontologies:
+          - edam: http://edamontology.org/format_2330 ## Text
+output:
+  forged_package:
+    - - out_meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. [ id:'test' ]
+      - output_dir/${prefix}:
+          type: directory
+          description: The path to the forged Poseidon package.
+  versions_trident:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - trident:
+          type: string
+          description: The name of the tool
+      - trident --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - trident:
+          type: string
+          description: The name of the tool
+      - trident --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+
+authors:
+  - "@TCLamnidis"
+maintainers:
+  - "@TCLamnidis"
