@@ -6,9 +6,9 @@ process IVAR_VARIANTS {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/ivar:1.4.4--h077b44d_0' :
-        'quay.io/biocontainers/ivar:1.4.4--h077b44d_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bf/bf3ee0025f72df3ca5cabfae265b3623dcd9f9239f993ea258bf5e7846e9a4e4/data'
+        : 'community.wave.seqera.io/library/ivar:1.4.4--60def7bdef0d4d2f'}"
 
     input:
     tuple val(meta), path(bam)
