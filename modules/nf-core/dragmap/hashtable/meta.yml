@@ -66,3 +66,17 @@ authors:
   - "@edmundmiller"
 maintainers:
   - "@edmundmiller"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/dragmap:1.2.1--5d9f1388ce4b8f33
+      build_id: bd-5d9f1388ce4b8f33_1
+      scan_id: sc-394a45324d872ec6_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/dragmap:1.2.1--8c88bfec3c70031a
+      build_id: bd-8c88bfec3c70031a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5e/5e2913ec4630c51abd5e520a2f6c512720d8615f553ad59edc88c90e58df5283/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/dragmap/hashtable/.conda-lock/linux_amd64-bd-5d9f1388ce4b8f33_1.txt

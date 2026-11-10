@@ -56,7 +56,6 @@ process BWAMEM3_INDEX {
     def meth_files = args.contains('--meth') ? "touch bwamem3/${prefix}.meth.{amb,ann,bwt.2bit.64,pac}" : ''
     """
     mkdir bwamem3
-    touch bwamem3/${prefix}.0123
     touch bwamem3/${prefix}.amb
     touch bwamem3/${prefix}.ann
     touch bwamem3/${prefix}.bwt.2bit.64

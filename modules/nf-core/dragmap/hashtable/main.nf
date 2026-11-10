@@ -8,8 +8,8 @@ process DRAGMAP_HASHTABLE {
     conda "${moduleDir}/environment.yml"
     // WARN: Do not update this tool to 1.3.0 until https://github.com/Illumina/DRAGMAP/issues/47 is resolved
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/dragmap:1.2.1--h72d16da_1'
-        : 'quay.io/biocontainers/dragmap:1.2.1--h72d16da_1'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5e/5e2913ec4630c51abd5e520a2f6c512720d8615f553ad59edc88c90e58df5283/data'
+        : 'community.wave.seqera.io/library/dragmap:1.2.1--5d9f1388ce4b8f33'}"
 
     input:
     tuple val(meta), path(fasta)
