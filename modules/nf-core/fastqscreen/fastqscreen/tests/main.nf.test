@@ -34,8 +34,9 @@ nextflow_process {
             script "../../../fastqscreen/buildfromindex/main.nf"
             process {
                 """
-                input[0] = BOWTIE2_BUILD.out.index.toSortedList { a, b -> a[0].id <=> b[0].id }.map { items -> items.collect { item -> item[0].id } }
-                input[1] = BOWTIE2_BUILD.out.index.toSortedList { a, b -> a[0].id <=> b[0].id }.map { items -> items.collect { item -> item[1] } }
+                // Databases must be passed in a fixed order (sarscov2, human); collect() follows build completion order
+                input[0] = BOWTIE2_BUILD.out.index.toSortedList { a, b -> b[0].id <=> a[0].id }.map { items -> items.collect { item -> item[0].id } }
+                input[1] = BOWTIE2_BUILD.out.index.toSortedList { a, b -> b[0].id <=> a[0].id }.map { items -> items.collect { item -> item[1] } }
                 """
             }
         }
