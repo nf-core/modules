@@ -7,8 +7,8 @@ process MSISENSOR2_MSI {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/msisensor2:0.1--hd03093a_0'
-        : 'quay.io/biocontainers/msisensor2:0.1--hd03093a_0'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6d/6d71401d290ef253a61c4c72e0043fa4902fd504768d40dd8846310f3192e0dc/data'
+        : 'community.wave.seqera.io/library/msisensor2:0.1--fc3d116b90a150fc'}"
 
     input:
     tuple val(meta), path(tumor_bam), path(tumor_bam_index)

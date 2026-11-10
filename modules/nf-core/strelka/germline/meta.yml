@@ -1,6 +1,5 @@
 name: strelka_germline
-description: Strelka2 is a fast and accurate small variant caller optimized for
-  analysis of germline variation
+description: Strelka2 is a fast and accurate small variant caller optimized for analysis of germline variation
 keywords:
   - variantcalling
   - germline
@@ -9,8 +8,7 @@ keywords:
   - variants
 tools:
   - strelka:
-      description: Strelka calls somatic and germline small variants from mapped
-        sequencing reads
+      description: Strelka calls somatic and germline small variants from mapped sequencing reads
       homepage: https://github.com/Illumina/strelka
       documentation: https://github.com/Illumina/strelka/blob/v2.9.x/docs/userGuide/README.md
       tool_dev_url: https://github.com/Illumina/strelka
@@ -41,8 +39,7 @@ input:
         ontologies: []
     - target_bed_index:
         type: file
-        description: Index for BED file containing target regions for variant
-          calling
+        description: Index for BED file containing target regions for variant calling
         pattern: "*.{bed.tbi}"
         ontologies: []
   - fasta:
@@ -128,3 +125,17 @@ authors:
   - "@arontommi"
 maintainers:
   - "@arontommi"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/strelka_python:7cdcec936f624371
+      build_id: bd-7cdcec936f624371_1
+      scan_id: sc-d9b96bcd5ebb156d_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/strelka_python:53d7390d22c93fa9
+      build_id: bd-53d7390d22c93fa9_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a3/a3c08a68a21f70b5e49b4d90eae72e229e2b4e5c1493d2a3291600b067192ff7/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/strelka/germline/.conda-lock/linux_amd64-bd-7cdcec936f624371_1.txt
