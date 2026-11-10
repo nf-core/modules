@@ -14,12 +14,12 @@ process ISESCAN {
     tuple val(meta), path(fasta)
 
     output:
-    tuple val(meta), path("${prefix}.sum"), optional: true, emit: sum
-    tuple val(meta), path("${prefix}.tsv"), optional: true, emit: tsv
-    tuple val(meta), path("${prefix}.gff"), optional: true, emit: gff
-    tuple val(meta), path("${prefix}.is.fna"), optional: true, emit: is_fna
-    tuple val(meta), path("${prefix}.orf.fna"), optional: true, emit: orf_fna
-    tuple val(meta), path("${prefix}.orf.faa"), optional: true, emit: orf_faa
+    tuple val(meta), path("${prefix}.sum"), emit: sum
+    tuple val(meta), path("${prefix}.tsv"), emit: tsv
+    tuple val(meta), path("${prefix}.gff"), emit: gff
+    tuple val(meta), path("${prefix}.is.fna"), emit: is_fna
+    tuple val(meta), path("${prefix}.orf.fna"), emit: orf_fna
+    tuple val(meta), path("${prefix}.orf.faa"), emit: orf_faa
     tuple val("${task.process}"), val('isescan'), eval("isescan.py --version 2>&1 | sed 's/isescan //'"), topic: versions, emit: versions_isescan
 
     when:
@@ -40,25 +40,27 @@ process ISESCAN {
         --nthread ${task.cpus}
 
     # ISEScan names the subfolder after the parent dir of --seqfile, i.e. results/input/${prefix}.fna.*
-    # Rename them to <prefix>.<ext>; ISEScan writes all of them or, when no IS element is found, none
+    # Rename them to <prefix>.<ext>
     for f in results/input/${prefix}.fna.*; do
         [ -e "\$f" ] || continue
         mv "\$f" "${prefix}.\${f##*.fna.}"
+    done
+
+    # ISEScan writes all result files when it finds IS elements and none otherwise:
+    # create empty files in that case so every output is always emitted
+    for ext in sum tsv gff is.fna orf.fna orf.faa; do
+        [ -e "${prefix}.\$ext" ] || touch "${prefix}.\$ext"
     done
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    # Mimic ISEScan's output layout and reuse the same renaming step as the real run
-    mkdir -p results/input
-    for ext in sum tsv gff is.fna orf.fna orf.faa; do
-        touch results/input/${prefix}.fna.\$ext
-    done
-
-    for f in results/input/${prefix}.fna.*; do
-        [ -e "\$f" ] || continue
-        mv "\$f" "${prefix}.\${f##*.fna.}"
-    done
+    touch ${prefix}.sum
+    touch ${prefix}.tsv
+    touch ${prefix}.gff
+    touch ${prefix}.is.fna
+    touch ${prefix}.orf.fna
+    touch ${prefix}.orf.faa
     """
 }
