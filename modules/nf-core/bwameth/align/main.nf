@@ -29,7 +29,8 @@ process BWAMETH_ALIGN {
     def prefix     = task.ext.prefix ?: "${meta.id}"
     """
     export BWA_METH_SKIP_TIME_CHECKS=1
-    [ -e "${index}/${fasta}" ] || ln -s \$(readlink ${fasta}) ${index}/${fasta}
+    # The staged index dir is shared by concurrent tasks: tolerate another task creating the link first
+    [ -e "${index}/${fasta}" ] || ln -s \$(readlink ${fasta}) ${index}/${fasta} || [ -e "${index}/${fasta}" ]
 
     bwameth.py \\
         ${args} \\
