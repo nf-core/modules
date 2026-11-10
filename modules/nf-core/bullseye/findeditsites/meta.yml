@@ -1,121 +1,121 @@
 name: "bullseye_findeditsites"
 description: Compare an edited sample's per-base edit matrix against a control sample's to call candidate RNA editing sites
 keywords:
-- bullseye
-- rna editing
-- dart-seq
-- differential editing
+  - bullseye
+  - rna editing
+  - dart-seq
+  - differential editing
 tools:
-- "bullseye":
-    description: "An Analysis pipeline for DART-seq, scDART-seq, TRIBE, STAMP and TRIBE-STAMP. Bullseye contains a set of perl scripts for parsing BAM files and identifying RNA editing sites."
-    homepage: "https://github.com/mflamand/Bullseye"
-    documentation: "https://github.com/mflamand/Bullseye"
-    tool_dev_url: "https://github.com/mflamand/Bullseye"
-    licence:
-    - "MIT"
-    identifier: ""
+  - "bullseye":
+      description: "An Analysis pipeline for DART-seq, scDART-seq, TRIBE, STAMP and TRIBE-STAMP. Bullseye contains a set of perl scripts for parsing BAM files and identifying RNA editing sites."
+      homepage: "https://github.com/mflamand/Bullseye"
+      documentation: "https://github.com/mflamand/Bullseye"
+      tool_dev_url: "https://github.com/mflamand/Bullseye"
+      licence:
+        - "MIT"
+      identifier: ""
 
 input:
-- - meta:
-      type: map
-      description: |
-        Groovy Map containing edited-sample information
-        e.g. `[ id:'sample1' ]`
-  - edited_matrix:
-      type: file
-      description: Bgzipped per-base edit matrix for the edited sample (BULLSEYE_PARSEBAM output).
-      pattern: "*.matrix.gz"
-      ontologies:
-      - edam: "http://edamontology.org/format_3989"  # GZIP format
-  - edited_tbi:
-      type: file
-      description: Tabix index for `edited_matrix`.
-      pattern: "*.tbi"
-      ontologies:
-      - edam: "http://edamontology.org/format_3327"
-  - control_meta:
-      type: map
-      description: |
-        Groovy Map containing control-sample information
-        e.g. `[ id:'control1' ]`
-  - control_matrix:
-      type: file
-      description: Bgzipped per-base edit matrix for the control sample (BULLSEYE_PARSEBAM output).
-      pattern: "*.matrix.gz"
-      ontologies:
-      - edam: "http://edamontology.org/format_3989"  # GZIP format
-  - control_tbi:
-      type: file
-      description: Tabix index for `control_matrix`.
-      pattern: "*.tbi"
-      ontologies:
-      - edam: "http://edamontology.org/format_3327"
-- annotation:
-    type: file
-    description: refFlat gene annotation file.
-    pattern: "*.refFlat"
-    ontologies: []
-- edit_type:
-    type: string
-    description: Edit type passed to Find_edit_sites.pl (e.g. the base substitution DART-seq detects, such as C2U or A2I).
-- min_edit:
-    type: float
-    description: Minimum percent editing required at a site.
-- max_edit:
-    type: float
-    description: Maximum percent editing allowed at a site.
-- edit_fold_threshold:
-    type: float
-    description: Minimum fold-change in editing between the edited and control samples.
-- min_edit_sites:
-    type: integer
-    description: Minimum number of edited reads required at a site.
-- edited_min_coverage:
-    type: integer
-    description: Minimum read coverage required at a site in the edited sample.
-- control_min_coverage:
-    type: integer
-    description: Minimum read coverage required at a site in the control sample.
-output:
-  bed:
   - - meta:
         type: map
         description: |
           Groovy Map containing edited-sample information
           e.g. `[ id:'sample1' ]`
-    - "*.bed":
+    - edited_matrix:
         type: file
-        description: Candidate RNA editing sites found by comparing the edited sample against the control sample.
-        pattern: "*.bed"
+        description: Bgzipped per-base edit matrix for the edited sample (BULLSEYE_PARSEBAM output).
+        pattern: "*.matrix.gz"
         ontologies:
-        - edam: "http://edamontology.org/format_3003"
+          - edam: "http://edamontology.org/format_3989" # GZIP format
+    - edited_tbi:
+        type: file
+        description: Tabix index for `edited_matrix`.
+        pattern: "*.tbi"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327"
+    - control_meta:
+        type: map
+        description: |
+          Groovy Map containing control-sample information
+          e.g. `[ id:'control1' ]`
+    - control_matrix:
+        type: file
+        description: Bgzipped per-base edit matrix for the control sample (BULLSEYE_PARSEBAM output).
+        pattern: "*.matrix.gz"
+        ontologies:
+          - edam: "http://edamontology.org/format_3989" # GZIP format
+    - control_tbi:
+        type: file
+        description: Tabix index for `control_matrix`.
+        pattern: "*.tbi"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327"
+  - annotation:
+      type: file
+      description: refFlat gene annotation file.
+      pattern: "*.refFlat"
+      ontologies: []
+  - edit_type:
+      type: string
+      description: Edit type passed to Find_edit_sites.pl (e.g. the base substitution DART-seq detects, such as C2U or A2I).
+  - min_edit:
+      type: float
+      description: Minimum percent editing required at a site.
+  - max_edit:
+      type: float
+      description: Maximum percent editing allowed at a site.
+  - edit_fold_threshold:
+      type: float
+      description: Minimum fold-change in editing between the edited and control samples.
+  - min_edit_sites:
+      type: integer
+      description: Minimum number of edited reads required at a site.
+  - edited_min_coverage:
+      type: integer
+      description: Minimum read coverage required at a site in the edited sample.
+  - control_min_coverage:
+      type: integer
+      description: Minimum read coverage required at a site in the control sample.
+output:
+  bed:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing edited-sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.bed":
+          type: file
+          description: Candidate RNA editing sites found by comparing the edited sample against the control sample.
+          pattern: "*.bed"
+          ontologies:
+            - edam: "http://edamontology.org/format_3003"
   versions_bullseye:
-  - - ${task.process}:
-        type: string
-        description: The name of the process
-    - bullseye:
-        type: string
-        description: The name of the tool
-    - grep -m1 -i 'version' \$(command -v Find_edit_sites.pl) | grep -oE '[0-9]+\.[0-9]+(\.[0-9]+)?':
-        type: eval
-        description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bullseye:
+          type: string
+          description: The name of the tool
+      - grep -m1 -i 'version' \$(command -v Find_edit_sites.pl) | grep -oE '[0-9]+\.[0-9]+(\.[0-9]+)?':
+          type: eval
+          description: The expression to obtain the version of the tool
 
 topics:
   versions:
-  - - ${task.process}:
-        type: string
-        description: The name of the process
-    - bullseye:
-        type: string
-        description: The name of the tool
-    - grep -m1 -i 'version' \$(command -v Find_edit_sites.pl) | grep -oE '[0-9]+\.[0-9]+(\.[0-9]+)?':
-        type: eval
-        description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bullseye:
+          type: string
+          description: The name of the tool
+      - grep -m1 -i 'version' \$(command -v Find_edit_sites.pl) | grep -oE '[0-9]+\.[0-9]+(\.[0-9]+)?':
+          type: eval
+          description: The expression to obtain the version of the tool
 
 authors:
-- "@brovolia"
+  - "@brovolia"
 maintainers:
-- "@brovolia"
+  - "@brovolia"
 containers:
   docker:
     linux/arm64:
