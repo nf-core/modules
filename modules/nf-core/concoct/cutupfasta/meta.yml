@@ -1,6 +1,5 @@
 name: "concoct_cutupfasta"
-description: Cut up fasta file in non-overlapping or overlapping parts of equal
-  length.
+description: Cut up fasta file in non-overlapping or overlapping parts of equal length.
 keywords:
   - contigs
   - fragment
@@ -32,8 +31,7 @@ input:
         ontologies: []
   - bed:
       type: boolean
-      description: Specify whether to generate a BED file describing where each
-        contig was cut up
+      description: Specify whether to generate a BED file describing where each contig was cut up
 output:
   fasta:
     - - meta:
@@ -43,8 +41,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.fasta":
           type: file
-          description: Cut up fasta file in non-overlapping or overlapping parts
-            of equal length.
+          description: Cut up fasta file in non-overlapping or overlapping parts of equal length.
           pattern: "*.fasta"
           ontologies: []
   bed:
@@ -55,8 +52,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.bed":
           type: file
-          description: Optional BED File containing locations on original contigs
-            where they were cut up.
+          description: Optional BED File containing locations on original contigs where they were cut up.
           pattern: "*.bed"
           ontologies: []
   versions_concoct:
@@ -84,3 +80,27 @@ authors:
   - "@jfy133"
 maintainers:
   - "@jfy133"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/concoct_setuptools:cf50ef0b976d451c
+      build_id: bd-cf50ef0b976d451c_1
+      scan_id: sc-65a2cc138f9045b0_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/concoct_setuptools:7d62fa8e6704b1fe
+      build_id: bd-7d62fa8e6704b1fe_1
+      scan_id: sc-67e5baf954235361_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/concoct_setuptools:8628ab628b2d7985
+      build_id: bd-8628ab628b2d7985_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b4/b414706a0ce09cd26055f920ea4d7db8e6e0a4845f806f0918e9792a2c847f95/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/concoct_setuptools:75dd023b949623e3
+      build_id: bd-75dd023b949623e3_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/60/609ffa08435db7442e51f03deb9e12c01e5f7c41a7801fd0d08aced16640f34c/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/concoct/cutupfasta/.conda-lock/linux_amd64-bd-7d62fa8e6704b1fe_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/concoct/cutupfasta/.conda-lock/linux_arm64-bd-cf50ef0b976d451c_1.txt

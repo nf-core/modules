@@ -1,6 +1,5 @@
 name: "concoct_concoct"
-description: Unsupervised binning of metagenomic contigs by using nucleotide
-  composition - kmer frequencies - and coverage data for multiple samples
+description: Unsupervised binning of metagenomic contigs by using nucleotide composition - kmer frequencies - and coverage data for multiple samples
 keywords:
   - contigs
   - fragment
@@ -29,15 +28,13 @@ input:
           e.g. [ id:'test', single_end:false ]
     - coverage_file:
         type: file
-        description: Subcontig coverage TSV table (typically generated with
-          concoct_coverage_table.py)
+        description: Subcontig coverage TSV table (typically generated with concoct_coverage_table.py)
         pattern: "*.tsv"
         ontologies:
           - edam: http://edamontology.org/format_3475
     - fasta:
         type: file
-        description: FASTA file containing subcontigs (typically generated with
-          cutup_fasta.py)
+        description: FASTA file containing subcontigs (typically generated with cutup_fasta.py)
         pattern: "*.fasta"
         ontologies: []
 output:
@@ -60,8 +57,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*_clustering_gt1000.csv":
           type: file
-          description: CSV containing information which subcontig is assigned to
-            which cluster
+          description: CSV containing information which subcontig is assigned to which cluster
           pattern: "*_clustering_gt1000.csv"
           ontologies:
             - edam: http://edamontology.org/format_3752
@@ -137,3 +133,27 @@ authors:
   - "@jfy133"
 maintainers:
   - "@jfy133"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/concoct_setuptools:7d62fa8e6704b1fe
+      build_id: bd-7d62fa8e6704b1fe_1
+      scan_id: sc-67e5baf954235361_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/concoct_setuptools:cf50ef0b976d451c
+      build_id: bd-cf50ef0b976d451c_1
+      scan_id: sc-65a2cc138f9045b0_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/concoct_setuptools:75dd023b949623e3
+      build_id: bd-75dd023b949623e3_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/60/609ffa08435db7442e51f03deb9e12c01e5f7c41a7801fd0d08aced16640f34c/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/concoct_setuptools:8628ab628b2d7985
+      build_id: bd-8628ab628b2d7985_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b4/b414706a0ce09cd26055f920ea4d7db8e6e0a4845f806f0918e9792a2c847f95/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/concoct/concoct/.conda-lock/linux_amd64-bd-7d62fa8e6704b1fe_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/concoct/concoct/.conda-lock/linux_arm64-bd-cf50ef0b976d451c_1.txt
