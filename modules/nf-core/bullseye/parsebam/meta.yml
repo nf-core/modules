@@ -1,80 +1,80 @@
 name: "bullseye_parsebam"
 description: Parse an aligned, sorted, indexed BAM file into a per-base edit matrix for Bullseye
 keywords:
-- bullseye
-- rna editing
-- dart-seq
-- bam
+  - bullseye
+  - rna editing
+  - dart-seq
+  - bam
 tools:
-- "bullseye":
-    description: "An Analysis pipeline for DART-seq, scDART-seq, TRIBE, STAMP and TRIBE-STAMP. Bullseye contains a set of perl scripts for parsing BAM files and identifying RNA editing sites."
-    homepage: "https://github.com/mflamand/Bullseye"
-    documentation: "https://github.com/mflamand/Bullseye"
-    tool_dev_url: "https://github.com/mflamand/Bullseye"
-    licence:
-    - "MIT"
-    identifier: ""
+  - "bullseye":
+      description: "An Analysis pipeline for DART-seq, scDART-seq, TRIBE, STAMP and TRIBE-STAMP. Bullseye contains a set of perl scripts for parsing BAM files and identifying RNA editing sites."
+      homepage: "https://github.com/mflamand/Bullseye"
+      documentation: "https://github.com/mflamand/Bullseye"
+      tool_dev_url: "https://github.com/mflamand/Bullseye"
+      licence:
+        - "MIT"
+      identifier: ""
 input:
-- - meta:
-      type: map
-      description: |
-        Groovy Map containing sample information
-        e.g. `[ id:'sample1' ]`
-  - bam:
-      type: file
-      description: Sorted BAM file
-      pattern: "*.bam"
-      ontologies:
-      - edam: "http://edamontology.org/format_2572"
-  - bai:
-      type: file
-      description: BAM index file
-      pattern: "*.bai"
-      ontologies:
-      - edam: "http://edamontology.org/format_3327"
-- bullseye_parse_min_coverage:
-    type: integer
-    description: Minimum coverage threshold passed to parseBAM.pl
-output:
-  matrix:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
           e.g. `[ id:'sample1' ]`
-    - "*.matrix.gz":
+    - bam:
         type: file
-        description: Bgzipped per-base edit matrix. Tabix-indexing is left to a dedicated downstream step (e.g. htslib/bgziptabix).
-        pattern: "*.matrix.gz"
+        description: Sorted BAM file
+        pattern: "*.bam"
         ontologies:
-        - edam: http://edamontology.org/format_3989     # GZIP format
+          - edam: "http://edamontology.org/format_2572"
+    - bai:
+        type: file
+        description: BAM index file
+        pattern: "*.bai"
+        ontologies:
+          - edam: "http://edamontology.org/format_3327"
+  - bullseye_parse_min_coverage:
+      type: integer
+      description: Minimum coverage threshold passed to parseBAM.pl
+output:
+  matrix:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.matrix.gz":
+          type: file
+          description: Bgzipped per-base edit matrix. Tabix-indexing is left to a dedicated downstream step (e.g. htslib/bgziptabix).
+          pattern: "*.matrix.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3989 # GZIP format
   versions_bullseye:
-  - - ${task.process}:
-        type: string
-        description: The name of the process
-    - bullseye:
-        type: string
-        description: The name of the tool
-    - grep -m1 -i 'version' \$(command -v parseBAM.pl) | grep -oE '[0-9]+\.[0-9]+(\.[0-9]+)?':
-        type: eval
-        description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bullseye:
+          type: string
+          description: The name of the tool
+      - grep -m1 -i 'version' \$(command -v parseBAM.pl) | grep -oE '[0-9]+\.[0-9]+(\.[0-9]+)?':
+          type: eval
+          description: The expression to obtain the version of the tool
 
 topics:
   versions:
-  - - ${task.process}:
-        type: string
-        description: The name of the process
-    - bullseye:
-        type: string
-        description: The name of the tool
-    - grep -m1 -i 'version' \$(command -v parseBAM.pl) | grep -oE '[0-9]+\.[0-9]+(\.[0-9]+)?':
-        type: eval
-        description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bullseye:
+          type: string
+          description: The name of the tool
+      - grep -m1 -i 'version' \$(command -v parseBAM.pl) | grep -oE '[0-9]+\.[0-9]+(\.[0-9]+)?':
+          type: eval
+          description: The expression to obtain the version of the tool
 
 authors:
-- "@brovolia"
+  - "@brovolia"
 maintainers:
-- "@brovolia"
+  - "@brovolia"
 containers:
   docker:
     linux/amd64:
