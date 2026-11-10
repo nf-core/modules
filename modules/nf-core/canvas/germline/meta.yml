@@ -3,9 +3,11 @@ description: |
   Calls germline copy number variants (CNVs) from whole genome sequencing data using
   Illumina Canvas in SmallPedigree-WGS mode. Although named SmallPedigree-WGS, this
   mode is recommended for single germline samples as well as small pedigrees.
-  The module accepts aligned reads (BAM), germline SNV calls, and sex-specific ploidy
+  The module accepts aligned reads (BAM), germline SNV calls, and sample-specific ploidy
   information, and outputs a VCF with copy number status across the genome together
-  with a coverage-and-variant-frequency file used for downstream segmentation.
+  with a coverage-and-variant-frequency file used for downstream segmentation. For
+  _de-novo_ CNV calling, specify the `--mother`, `--father`, and `--proband` arguments
+  using the `ext.args` directive.
 keywords:
   - CNV
   - copy number variants
@@ -28,13 +30,13 @@ input:
         description: Groovy map containing sample information
     - bam:
         type: file
-        description: BAM file for the sample
+        description: BAM files for the samples
         pattern: "*.bam"
         ontologies:
           - edam: "http://edamontology.org/format_2572"
     - bai:
         type: file
-        description: BAM index file for the sample
+        description: BAM index files for the samples
         pattern: "*.bai"
         ontologies:
           - edam: "http://edamontology.org/format_3327"
@@ -107,7 +109,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information.
-      - ${prefix}.vcf.gz:
+      - ${prefix}/CNV.vcf.gz:
           type: file
           description: Bgzipped VCF file containing germline CNV calls.
           pattern: "*.vcf.gz"
@@ -118,7 +120,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information.
-      - ${prefix}.CoverageAndVariantFrequency.txt:
+      - ${prefix}/TempCNV_*/CNV.CoverageAndVariantFrequency.txt:
           type: file
           description: |
             Tab-separated file with per-bin coverage and variant allele frequency values.
