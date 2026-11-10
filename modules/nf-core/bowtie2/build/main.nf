@@ -7,8 +7,8 @@ process BOWTIE2_BUILD {
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d4/d4990a9e13c1aad32d60f19e0ced204f2f1e231fe856290ce75713505a1bfe44/data'
-:         'community.wave.seqera.io/library/bowtie2_htslib_samtools_pigz:dbd18842ad7cb278' }"
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/70/7093a62c894ad3337cabda5efadce78a3ecdb5ba34cf8646743c6d43d8c4b77d/data'
+:         'community.wave.seqera.io/library/bowtie2_htslib_samtools_pigz:e1c7af09e1513a6c' }"
 
     input:
     tuple val(meta), path(fasta)
