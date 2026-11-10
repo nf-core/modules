@@ -24,18 +24,20 @@ process FAIRBIOHEADERS_CONVERT {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    // --to follows ext.args so that the format input wins over any --to there.
+    // Nextflow already shell-escapes staged inputs, so only the prefix is quoted.
     """
     bioheaders \\
         convert \\
-        --to ${format} \\
         ${args} \\
+        --to ${format} \\
         ${input} \\
-        ${prefix}.${format}
+        "${prefix}.${format}"
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch ${prefix}.${format}
+    touch "${prefix}.${format}"
     """
 }
