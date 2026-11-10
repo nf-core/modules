@@ -19,13 +19,13 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true),
                     []
                 ])
-                input[1] = Channel.of([
+                input[1] = channel.of([
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
@@ -35,11 +35,11 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert path(process.out.vcf[0][1]).linesGzip.any { it.startsWith('##rastairVersion=') } },
+                { assert path(process.out.vcf[0][1]).linesGzip.any { line -> line.startsWith('##rastairVersion=') } },
                 { assert snapshot(
-                    path(process.out.vcf[0][1]).linesGzip.findAll { !it.startsWith('##') }.join('\n').md5(),
+                    path(process.out.vcf[0][1]).linesGzip.findAll { line -> !line.startsWith('##') }.join('\n').md5(),
                     process.out.tbi.collect { meta, tbi -> file(tbi).name },
                     process.out.bed,
                     process.out.bed_tbi.collect { meta, tbi -> file(tbi).name },
@@ -54,13 +54,13 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id:'test', single_end:true ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam.bai', checkIfExists: true),
                     []
                 ])
-                input[1] = Channel.of([
+                input[1] = channel.of([
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
@@ -70,11 +70,11 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert path(process.out.vcf[0][1]).linesGzip.any { it.startsWith('##rastairCommand=') && it.contains('--unpaired') } },
+                { assert path(process.out.vcf[0][1]).linesGzip.any { line -> line.startsWith('##rastairCommand=') && line.contains('--unpaired') } },
                 { assert snapshot(
-                    path(process.out.vcf[0][1]).linesGzip.findAll { !it.startsWith('##') }.join('\n').md5(),
+                    path(process.out.vcf[0][1]).linesGzip.findAll { line -> !line.startsWith('##') }.join('\n').md5(),
                     process.out.tbi.collect { meta, tbi -> file(tbi).name },
                     process.out.bed,
                     process.out.bed_tbi.collect { meta, tbi -> file(tbi).name },
@@ -89,13 +89,13 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true),
                     []
                 ])
-                input[1] = Channel.of([
+                input[1] = channel.of([
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
@@ -105,11 +105,11 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert path(process.out.vcf[0][1]).linesGzip.any { !it.startsWith('#') } },
+                { assert path(process.out.vcf[0][1]).linesGzip.any { line -> !line.startsWith('#') } },
                 { assert snapshot(
-                    path(process.out.vcf[0][1]).linesGzip.findAll { !it.startsWith('##') }.join('\n').md5(),
+                    path(process.out.vcf[0][1]).linesGzip.findAll { line -> !line.startsWith('##') }.join('\n').md5(),
                     process.out.tbi.collect { meta, tbi -> file(tbi).name },
                     process.out.bed,
                     process.out.bed_tbi.collect { meta, tbi -> file(tbi).name },
@@ -126,12 +126,12 @@ nextflow_process {
                 script "../../mbias/main.nf"
                 process {
                     """
-                    input[0] = Channel.of([
+                    input[0] = channel.of([
                         [ id:'test', single_end:false ],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true)
                     ])
-                    input[1] = Channel.of([
+                    input[1] = channel.of([
                         [ id:'genome' ],
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
@@ -144,12 +144,12 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true)
                 ]).join(RASTAIR2_MBIAS.out.cutoffs)
-                input[1] = Channel.of([
+                input[1] = channel.of([
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
@@ -159,11 +159,11 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert path(process.out.vcf[0][1]).linesGzip.any { it.startsWith('##rastairCommand=') && it.contains('--nOT') && it.contains('--nOB') } },
+                { assert path(process.out.vcf[0][1]).linesGzip.any { line -> line.startsWith('##rastairCommand=') && line.contains('--nOT') && line.contains('--nOB') } },
                 { assert snapshot(
-                    path(process.out.vcf[0][1]).linesGzip.findAll { !it.startsWith('##') }.join('\n').md5(),
+                    path(process.out.vcf[0][1]).linesGzip.findAll { line -> !line.startsWith('##') }.join('\n').md5(),
                     process.out.tbi.collect { meta, tbi -> file(tbi).name },
                     process.out.bed,
                     process.out.bed_tbi.collect { meta, tbi -> file(tbi).name },
@@ -180,13 +180,13 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true),
                     []
                 ])
-                input[1] = Channel.of([
+                input[1] = channel.of([
                     [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
@@ -196,8 +196,8 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
