@@ -3,6 +3,7 @@ nextflow_process {
 
     name "Test Process TRGT_GENOTYPE"
     script "../main.nf"
+    config './nextflow.config'
     process "TRGT_GENOTYPE"
 
     tag "modules"
@@ -37,7 +38,6 @@ nextflow_process {
     }
 
     test("homo sapiens - [bam,bai,XX], [fa,fai], bed") {
-        config './nextflow.config'
 
         when {
             process {
@@ -67,7 +67,6 @@ nextflow_process {
     }
 
     test("homo sapiens - [bam,bai,fail_reads_bam,fail_reads_bai,XX], [fa,fai], bed") {
-        config './nextflow.config'
 
         when {
             params {
@@ -101,7 +100,6 @@ nextflow_process {
     }
 
     test("homo sapiens - [bam,bai,[]], [fa,fai], bed") {
-        config './nextflow.config'
 
         when {
             process {
@@ -133,7 +131,6 @@ nextflow_process {
     }
 
     test("homo sapiens - [bam,bai,XX], [fa,fai], bed - stub") {
-        config './nextflow.config'
         options "-stub"
 
         when {
@@ -167,7 +164,6 @@ nextflow_process {
     }
 
     test("homo sapiens - [bam,bai,[]], [fa,fai], bed - stub") {
-        config './nextflow.config'
         options "-stub"
         when {
             process {
