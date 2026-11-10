@@ -28,7 +28,7 @@ nextflow_process {
             process {
                 """
                 input[0] = UNZIP.out.unzipped_archive
-                    .map { _, bundle ->
+                    .map { _meta, bundle ->
                         [
                             [id: "test_xeniumranger_relabel"],
                             bundle,
@@ -55,7 +55,7 @@ nextflow_process {
             process {
                 """
                 input[0] = UNZIP.out.unzipped_archive
-                    .map { _, bundle ->
+                    .map { _meta, bundle ->
                         [
                             [id: "test_xeniumranger_relabel"],
                             bundle,
