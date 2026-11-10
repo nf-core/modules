@@ -63,7 +63,15 @@
                     {
                         "id": "test"
                     },
-                    "test.bam:readsMD5,d41d8cd98f00b204e9800998ecf8427e"
+                    "test.bam",
+                    [
+                        "@HD\tVN:1.6\tSO:coordinate",
+                        "@SQ\tSN:MT192765.1\tLN:29829",
+                        "@RG\tID:1\tLB:lib1\tPL:ILLUMINA\tSM:test\tPU:barcode1"
+                    ],
+                    [
+                        
+                    ]
                 ]
             ],
             {
@@ -77,7 +85,7 @@
             },
             true
         ],
-        "timestamp": "2026-11-10T17:33:18.906662",
+        "timestamp": "2026-11-10T17:44:04.989347",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.10.2"
