@@ -3,9 +3,9 @@ process UNZIP {
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/p7zip:16.02' :
-        'quay.io/biocontainers/p7zip:16.02' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/11/116a4471ab3510a409f146f5616f5641e926da51ae88114b29e242bcdd8d6300/data'
+        : 'community.wave.seqera.io/library/p7zip:16.02--8f317b695e2373ad'}"
 
     input:
     tuple val(meta), path(archive)
