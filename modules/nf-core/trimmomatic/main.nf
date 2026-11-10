@@ -6,9 +6,9 @@ process TRIMMOMATIC {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/trimmomatic:0.39--hdfd78af_2':
-        'quay.io/biocontainers/trimmomatic:0.39--hdfd78af_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2a/2aac61eceef146ec8b1c0bb117542dfffb0dce0b720efb867c69a71ee4774f57/data'
+        : 'community.wave.seqera.io/library/trimmomatic:0.39--1ffbebb3556a75f8'}"
 
     input:
     tuple val(meta), path(reads)

@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "deacon_indexintersect"
 description: Intersect multiple deacon indexes (A ∩ B ...)
 keywords:
@@ -66,3 +65,27 @@ topics:
           description: The expression to obtain the version of the tool
 authors:
   - "@pmoris"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/deacon:0.15.0--5e86af07e040e1d8
+      build_id: bd-5e86af07e040e1d8_1
+      scan_id: sc-c1e82658c379ec95_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/deacon:0.15.0--ac1f965b3a6ea82e
+      build_id: bd-ac1f965b3a6ea82e_1
+      scan_id: sc-acd9a29d29e49fb8_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/deacon:0.15.0--64095a60c1c0d4e1
+      build_id: bd-64095a60c1c0d4e1_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f6/f628781900b19a962ce706a66d7b1d83c26acb5b08d5085947ae1bbea879b1f8/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/deacon:0.15.0--174302354dcfcfa2
+      build_id: bd-174302354dcfcfa2_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/24/244019644d6907dd8be852af47477882b729eeac11602522c18b46309ec6f320/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/deacon/indexintersect/.conda-lock/linux_amd64-bd-ac1f965b3a6ea82e_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/deacon/indexintersect/.conda-lock/linux_arm64-bd-5e86af07e040e1d8_1.txt

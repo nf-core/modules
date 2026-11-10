@@ -1,6 +1,5 @@
 name: "glimpse_concordance"
-description: Compute the r2 correlation between imputed dosages (in MAF bins)
-  and highly-confident genotype calls from the high-coverage dataset.
+description: Compute the r2 correlation between imputed dosages (in MAF bins) and highly-confident genotype calls from the high-coverage dataset.
 keywords:
   - concordance
   - low-coverage
@@ -8,8 +7,7 @@ keywords:
   - imputation
 tools:
   - "glimpse":
-      description: "GLIMPSE is a phasing and imputation method for large-scale low-coverage
-        sequencing studies."
+      description: "GLIMPSE is a phasing and imputation method for large-scale low-coverage sequencing studies."
       homepage: "https://odelaneau.github.io/GLIMPSE"
       documentation: "https://odelaneau.github.io/GLIMPSE/"
       tool_dev_url: "https://github.com/odelaneau/GLIMPSE"
@@ -43,8 +41,7 @@ input:
         ontologies: []
     - truth:
         type: file
-        description: Validation dataset called at the same positions as the
-          imputed file.
+        description: Validation dataset called at the same positions as the imputed file.
         pattern: "*.{vcf,bcf,vcf.gz,bcf.gz}"
         ontologies: []
     - truth_index:
@@ -53,8 +50,7 @@ input:
         ontologies: []
     - region:
         type: string
-        description: Target region used for imputation, including left and right
-          buffers (e.g. chr20:1000000-2000000).
+        description: Target region used for imputation, including left and right buffers (e.g. chr20:1000000-2000000).
         pattern: "chrXX:leftBufferPosition-rightBufferPosition"
   - min_prob:
       type: float
@@ -79,8 +75,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.error.cal.txt.gz":
           type: file
-          description: Calibration correlation errors between imputed dosages (in
-            MAF bins) and highly-confident genotype.
+          description: Calibration correlation errors between imputed dosages (in MAF bins) and highly-confident genotype.
           pattern: "*.errors.cal.txt.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -92,8 +87,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.error.grp.txt.gz":
           type: file
-          description: Groups correlation errors between imputed dosages (in MAF
-            bins) and highly-confident genotype.
+          description: Groups correlation errors between imputed dosages (in MAF bins) and highly-confident genotype.
           pattern: "*.errors.grp.txt.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -105,8 +99,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.error.spl.txt.gz":
           type: file
-          description: Samples correlation errors between imputed dosages (in MAF
-            bins) and highly-confident genotype.
+          description: Samples correlation errors between imputed dosages (in MAF bins) and highly-confident genotype.
           pattern: "*.errors.spl.txt.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -118,8 +111,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.rsquare.grp.txt.gz":
           type: file
-          description: Groups r-squared correlation between imputed dosages (in
-            MAF bins) and highly-confident genotype.
+          description: Groups r-squared correlation between imputed dosages (in MAF bins) and highly-confident genotype.
           pattern: "*.rsquare.grp.txt.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -131,8 +123,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.rsquare.spl.txt.gz":
           type: file
-          description: Samples r-squared correlation between imputed dosages (in
-            MAF bins) and highly-confident genotype.
+          description: Samples r-squared correlation between imputed dosages (in MAF bins) and highly-confident genotype.
           pattern: "*.rsquare.spl.txt.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -161,3 +152,17 @@ authors:
   - "@louislenezet"
 maintainers:
   - "@louislenezet"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/glimpse-bio:1.1.1--26d63752054f98c5
+      build_id: bd-26d63752054f98c5_1
+      scan_id: sc-7ad632fb69bc6b37_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/glimpse-bio:1.1.1--53a7702d43b45563
+      build_id: bd-53a7702d43b45563_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f7/f722eb1dd56d995b28e1ec47f7808450bf6477e0b4ec28ec5f294c1a66fd479e/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/glimpse/concordance/.conda-lock/linux_amd64-bd-26d63752054f98c5_1.txt
