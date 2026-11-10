@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { QUILT_QUILT2    } from '../../../modules/nf-core/quilt/quilt2/main'
 include { GLIMPSE2_LIGATE } from '../../../modules/nf-core/glimpse2/ligate/main'
 include { BCFTOOLS_INDEX  } from '../../../modules/nf-core/bcftools/index/main'

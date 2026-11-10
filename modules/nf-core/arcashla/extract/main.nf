@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ARCASHLA_EXTRACT {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/arcas-hla:0.5.0--hdfd78af_0':
-        'quay.io/biocontainers/arcas-hla:0.5.0--hdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cb/cb783fd6aeff146e9cd9a28c02d7b13bd4bac594b7f6ae15ab34d1e62c7e3647/data'
+        : 'community.wave.seqera.io/library/arcas-hla:0.5.0--2c5eef54bb09f8c8'}"
 
     input:
     tuple val(meta), path(bam)

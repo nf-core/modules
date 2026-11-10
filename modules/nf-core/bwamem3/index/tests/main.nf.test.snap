@@ -1,4 +1,39 @@
 {
+    "sarscov2 - fasta - meth": {
+        "content": [
+            {
+                "index": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "genome.fasta.amb:md5,3a68b8b2287e07dd3f5f95f4344ba76e",
+                            "genome.fasta.ann:md5,c32e11f6c859f166c7525a9c1d583567",
+                            "genome.fasta.bwt.2bit.64:md5,aca80601c43c58cf25f2b145fbd12d56",
+                            "genome.fasta.meth.amb:md5,249a4195069071ce47cd0bae68abe376",
+                            "genome.fasta.meth.ann:md5,023fd54c8009cfa429a5b5f53c8d702b",
+                            "genome.fasta.meth.bwt.2bit.64:md5,e3cb324c0ab522f68b622968d8f3c0ca",
+                            "genome.fasta.meth.pac:md5,4d8e51cb0bbdeaf24576bdf0264d8653",
+                            "genome.fasta.pac:md5,983e3d2cd6f36e2546e6d25a0da78d66"
+                        ]
+                    ]
+                ],
+                "versions_bwamem3": [
+                    [
+                        "BWAMEM3_INDEX",
+                        "bwamem3",
+                        "0.16.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-11-04T10:38:01.971762",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.5"
+        }
+    },
     "sarscov2 - fasta - stub": {
         "content": [
             {
@@ -8,7 +43,6 @@
                             "id": "test"
                         },
                         [
-                            "genome.fasta.0123:md5,d41d8cd98f00b204e9800998ecf8427e",
                             "genome.fasta.amb:md5,d41d8cd98f00b204e9800998ecf8427e",
                             "genome.fasta.ann:md5,d41d8cd98f00b204e9800998ecf8427e",
                             "genome.fasta.bwt.2bit.64:md5,d41d8cd98f00b204e9800998ecf8427e",
@@ -20,15 +54,85 @@
                     [
                         "BWAMEM3_INDEX",
                         "bwamem3",
-                        "0.8.0"
+                        "0.16.0"
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-08-04T09:45:25.497129",
+        "timestamp": "2026-11-09T09:27:11.538896",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.3"
+            "nextflow": "25.10.4"
+        }
+    },
+    "sarscov2 - fasta - meth - stub": {
+        "content": [
+            {
+                "index": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "genome.fasta.amb:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.fasta.ann:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.fasta.bwt.2bit.64:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.fasta.meth.amb:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.fasta.meth.ann:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.fasta.meth.bwt.2bit.64:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.fasta.meth.pac:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "genome.fasta.pac:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "versions_bwamem3": [
+                    [
+                        "BWAMEM3_INDEX",
+                        "bwamem3",
+                        "0.16.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-11-09T09:27:39.562761",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    },
+    "sarscov2 - fasta - meth - custom prefix": {
+        "content": [
+            {
+                "index": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "custom_ref.amb:md5,3a68b8b2287e07dd3f5f95f4344ba76e",
+                            "custom_ref.ann:md5,c32e11f6c859f166c7525a9c1d583567",
+                            "custom_ref.bwt.2bit.64:md5,aca80601c43c58cf25f2b145fbd12d56",
+                            "custom_ref.meth.amb:md5,249a4195069071ce47cd0bae68abe376",
+                            "custom_ref.meth.ann:md5,023fd54c8009cfa429a5b5f53c8d702b",
+                            "custom_ref.meth.bwt.2bit.64:md5,e3cb324c0ab522f68b622968d8f3c0ca",
+                            "custom_ref.meth.pac:md5,4d8e51cb0bbdeaf24576bdf0264d8653",
+                            "custom_ref.pac:md5,983e3d2cd6f36e2546e6d25a0da78d66"
+                        ]
+                    ]
+                ],
+                "versions_bwamem3": [
+                    [
+                        "BWAMEM3_INDEX",
+                        "bwamem3",
+                        "0.16.0"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-11-04T10:34:44.480625",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.5"
         }
     },
     "sarscov2 - fasta": {
@@ -42,7 +146,7 @@
                         [
                             "genome.fasta.amb:md5,3a68b8b2287e07dd3f5f95f4344ba76e",
                             "genome.fasta.ann:md5,c32e11f6c859f166c7525a9c1d583567",
-                            "genome.fasta.bwt.2bit.64:md5,d097a1b82dee375d41a1ea69895a9216",
+                            "genome.fasta.bwt.2bit.64:md5,aca80601c43c58cf25f2b145fbd12d56",
                             "genome.fasta.pac:md5,983e3d2cd6f36e2546e6d25a0da78d66"
                         ]
                     ]
@@ -51,15 +155,15 @@
                     [
                         "BWAMEM3_INDEX",
                         "bwamem3",
-                        "0.8.0"
+                        "0.16.0"
                     ]
                 ]
             }
         ],
-        "timestamp": "2026-08-04T09:45:09.084464",
+        "timestamp": "2026-11-04T10:37:45.14069",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.3"
+            "nextflow": "26.10.5"
         }
     }
 }

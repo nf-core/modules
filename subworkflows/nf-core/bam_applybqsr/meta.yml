@@ -45,9 +45,10 @@ input:
   - output_format:
       type: tuple
       description: |
-        Output file type and index format as a two-element tuple.
-        First element: 'bam' or 'cram' (passed to GATK4 ApplyBQSR).
-        Second element: 'bai', 'csi', or 'crai' (passed to samtools merge).
+        Output file type and index format as a two-element tuple, passed to
+        GATK4 ApplyBQSR (which validates the combination) and to samtools merge.
+        First element: 'bam' or 'cram'.
+        Second element: 'bai', 'csi', or 'crai'.
 
         Valid combinations: ['bam', 'bai'], ['bam', 'csi'], ['cram', 'crai'].
       pattern: "{bam,cram}"
