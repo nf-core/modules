@@ -1,6 +1,5 @@
 name: "isescan"
-description: Identify insertion sequence (IS) elements in prokaryotic genome
-  or metagenome assemblies
+description: Identify insertion sequence (IS) elements in prokaryotic genome or metagenome assemblies
 keywords:
   - insertion sequence
   - is element
@@ -10,8 +9,7 @@ keywords:
   - genomics
 tools:
   - "isescan":
-      description: "A python pipeline to identify insertion sequence (IS) elements
-        in genome and metagenome"
+      description: "A python pipeline to identify insertion sequence (IS) elements in genome and metagenome"
       homepage: "https://github.com/xiezhq/ISEScan"
       documentation: "https://github.com/xiezhq/ISEScan"
       tool_dev_url: "https://github.com/xiezhq/ISEScan"
@@ -129,3 +127,17 @@ authors:
   - "@pabloestepaa"
 maintainers:
   - "@pabloestepaa"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/isescan_gzip:3b76a4d36cb407ff
+      build_id: bd-3b76a4d36cb407ff_1
+      scan_id: sc-496191f534b5f3bd_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/isescan_gzip:8beee00ef67972aa
+      build_id: bd-8beee00ef67972aa_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/df/df934e3ebb408aeb00babbbbbc2775ac67fe1ec85bfae8b46053616164bdc9f6/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/isescan/.conda-lock/linux_amd64-bd-3b76a4d36cb407ff_1.txt

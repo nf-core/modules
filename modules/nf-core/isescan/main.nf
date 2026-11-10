@@ -7,8 +7,8 @@ process ISESCAN {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2d/2dce97fbdd87dcd3a679aca334e061287849c544321bfea45d7db87240e4f1d7/data'
-        : 'community.wave.seqera.io/library/isescan_gzip:6c57a8237938b5a9'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/df/df934e3ebb408aeb00babbbbbc2775ac67fe1ec85bfae8b46053616164bdc9f6/data'
+        : 'community.wave.seqera.io/library/isescan_gzip:3b76a4d36cb407ff'}"
 
     input:
     tuple val(meta), path(fasta)
