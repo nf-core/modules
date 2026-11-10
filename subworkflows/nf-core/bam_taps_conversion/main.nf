@@ -8,6 +8,7 @@
  * By default runs rastair 0.8 (mbias -> mbiasparser -> call -> methylkit). With `use_rastair2`,
  * runs rastair version 2 instead (mbias -> call), which writes a VCF (methylation, SNVs) and a CpG BED, plus
  * bcftools stats. rastair2 mbias needs paired-end reads, so single-end samples are called without trimming.
+ * With `trims`, both callers use those bases to ignore and the M-bias steps are skipped.
  * Note: rastair version 2 is free for non-commercial use only (University of Oxford licence).
  */
 
@@ -27,6 +28,7 @@ workflow BAM_TAPS_CONVERSION {
     ch_fasta               // channel: [ val(meta), [ fa ] ]
     ch_fasta_index         // channel: [ val(meta), [ fa.fai ] ]
     use_rastair2           // boolean: run rastair version 2 instead of rastair 0.8
+    trims                  // list: [ nOT, nOB ] bases to ignore, each 'r1_start,r1_end,r2_start,r2_end'; [] to use the M-bias estimate
 
     main:
     ch_rastair_mbias = channel.empty()
@@ -40,6 +42,10 @@ workflow BAM_TAPS_CONVERSION {
     ch_mbias_html    = channel.empty()
     ch_mbias_cutoffs = channel.empty()
 
+    if (trims && !(trims.size() == 2 && trims.every { trim -> trim ==~ /\d+,\d+,\d+,\d+/ })) {
+        error("bam_taps_conversion: trims must be [] or [ nOT, nOB ], each as 'r1_start,r1_end,r2_start,r2_end' (got ${trims})")
+    }
+
     if (use_rastair2) {
         // One reference for every sample, whether it is passed once or once per sample
         ch_reference = ch_fasta
@@ -49,33 +55,44 @@ workflow BAM_TAPS_CONVERSION {
 
         ch_bam_bai = ch_bam.join(ch_bai)
 
-        RASTAIR2_MBIAS (
-            ch_bam_bai.filter { meta, _bam, _bai -> !meta.single_end },
-            ch_reference,
-        )
-        ch_mbias_html = RASTAIR2_MBIAS.out.html // channel: [ val(meta), html ]
+        if (trims) {
+            ch_trims_file = channel.of("${trims[0]}\n${trims[1]}\n")
+                .collectFile(name: 'trims.cutoffs.txt')
+                .first()
+            ch_call_cutoffs = ch_bam_bai
+                .combine(ch_trims_file)
+                .map { meta, _bam, _bai, cutoffs -> [ meta, cutoffs ] }
+        }
+        else {
+            RASTAIR2_MBIAS (
+                ch_bam_bai.filter { meta, _bam, _bai -> !meta.single_end },
+                ch_reference,
+            )
+            ch_mbias_html = RASTAIR2_MBIAS.out.html // channel: [ val(meta), html ]
 
-        // Without --region, mbias writes cutoffs for every contig with enough data: use the longest contig
-        ch_mbias_cutoffs = RASTAIR2_MBIAS.out.cutoffs
-            .combine(ch_reference)
-            .map { meta, cutoffs, _meta2, _fasta, fai ->
-                def files = cutoffs instanceof List ? cutoffs : [ cutoffs ]
-                def contig_lengths = fai.readLines().collectEntries { line ->
-                    def fields = line.split('\t')
-                    [ (fields[0]): fields[1] as long ]
-                }
-                def longest = files.max { cutoffs_file ->
-                    def contig = contig_lengths.keySet()
-                        .findAll { name -> cutoffs_file.name.endsWith(".${name}.cutoffs.txt") }
-                        .max { name -> name.length() }
-                    contig ? contig_lengths[contig] : 0L
-                }
-                [ meta, longest ]
-            } // channel: [ val(meta), cutoffs.txt ]
+            // Without --region, mbias writes cutoffs for every contig with enough data: use the longest contig
+            ch_mbias_cutoffs = RASTAIR2_MBIAS.out.cutoffs
+                .combine(ch_reference)
+                .map { meta, cutoffs, _meta2, _fasta, fai ->
+                    def files = cutoffs instanceof List ? cutoffs : [ cutoffs ]
+                    def contig_lengths = fai.readLines().collectEntries { line ->
+                        def fields = line.split('\t')
+                        [ (fields[0]): fields[1] as long ]
+                    }
+                    def longest = files.max { cutoffs_file ->
+                        def contig = contig_lengths.keySet()
+                            .findAll { name -> cutoffs_file.name.endsWith(".${name}.cutoffs.txt") }
+                            .max { name -> name.length() }
+                        contig ? contig_lengths[contig] : 0L
+                    }
+                    [ meta, longest ]
+                } // channel: [ val(meta), cutoffs.txt ]
+            ch_call_cutoffs = ch_mbias_cutoffs
+        }
 
         RASTAIR2_CALL (
             ch_bam_bai
-                .join(ch_mbias_cutoffs, remainder: true)
+                .join(ch_call_cutoffs, remainder: true)
                 .map { meta, bam, bai, cutoffs -> [ meta, bam, bai, cutoffs ?: [] ] },
             ch_reference,
         )
@@ -95,26 +112,31 @@ workflow BAM_TAPS_CONVERSION {
         ch_bcftools_stats = BCFTOOLS_STATS.out.stats // channel: [ val(meta), stats.txt ]
     }
     else {
-        RASTAIR_MBIAS (
-            ch_bam,
-            ch_bai,
-            ch_fasta,
-            ch_fasta_index,
-        )
-        ch_rastair_mbias = RASTAIR_MBIAS.out.txt // channel: [ val(meta), txt ]
+        if (trims) {
+            ch_trims = ch_bam.map { meta, _bam -> [ meta, trims[0], trims[1] ] }
+        }
+        else {
+            RASTAIR_MBIAS (
+                ch_bam,
+                ch_bai,
+                ch_fasta,
+                ch_fasta_index,
+            )
+            ch_rastair_mbias = RASTAIR_MBIAS.out.txt // channel: [ val(meta), txt ]
 
-        RASTAIR_MBIASPARSER (
-            ch_rastair_mbias
-        )
-        ch_rastair_mbiasparser = RASTAIR_MBIASPARSER.out.mbias_processed_str // channel: [ val(meta), nOT_clip, nOB_clip ]
+            RASTAIR_MBIASPARSER (
+                ch_rastair_mbias
+            )
+            ch_trims = RASTAIR_MBIASPARSER.out.mbias_processed_str // channel: [ val(meta), nOT_clip, nOB_clip ]
+        }
 
         RASTAIR_CALL (
             ch_bam,
             ch_bai,
             ch_fasta,
             ch_fasta_index,
-            ch_rastair_mbiasparser.map{ meta, nOT_clip, _nOB_clip -> [ meta, nOT_clip ] },
-            ch_rastair_mbiasparser.map{ meta, _nOT_clip, nOB_clip -> [ meta, nOB_clip ] },
+            ch_trims.map{ meta, nOT_clip, _nOB_clip -> [ meta, nOT_clip ] },
+            ch_trims.map{ meta, _nOT_clip, nOB_clip -> [ meta, nOB_clip ] },
         )
         ch_rastair_call = RASTAIR_CALL.out.txt // channel: [ val(meta), txt ]
 

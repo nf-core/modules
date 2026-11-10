@@ -50,6 +50,15 @@ input:
         (`rastair/mbias`, `rastair/mbiasparser`, `rastair/call`, `rastair/methylkit`).
         rastair version 2 is free for non-commercial use only (University of Oxford licence);
         the outputs of the caller that was not run are empty channels.
+  - trims:
+      type: list
+      description: |
+        Bases to ignore at read ends instead of the M-bias estimate, as
+        `[ nOT, nOB ]`, each `r1_start,r1_end,r2_start,r2_end` (for example
+        `[ '0,0,10,0', '0,0,10,0' ]`). With `[]`, rastair estimates them: rastair 0.8
+        with `rastair/mbias` and `rastair/mbiasparser`, rastair version 2 with
+        `rastair2/mbias` (paired-end samples; single-end samples are not trimmed).
+        When set, the M-bias steps are skipped for both callers.
 output:
   - mbias:
       type: file
