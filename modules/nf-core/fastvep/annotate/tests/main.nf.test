@@ -43,10 +43,11 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    file(process.out.vcf[0][1]).name,
-                    path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    process.out.transcript_cache.collect { file(it[1]).name },
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    sanitizeOutput(
+                    process.out,
+                    variantsMD5Keys: ["vcf"],
+                    unstableKeys:    ["transcript_cache"]
+                    )
                 ).match() }
             )
         }
@@ -86,15 +87,16 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    file(process.out.tab[0][1]).name,
-                    path(process.out.tab[0][1]).linesGzip.findAll { !it.startsWith('#') }.join('\n').md5(),
-                    process.out.transcript_cache.collect { file(it[1]).name },
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    sanitizeOutput(
+                        process.out,
+                        tableMD5Keys: ["tab"],
+                        unstableKeys:   ["transcript_cache"]
+                    )
                 ).match() }
             )
         }
-
     }
+    
 
     test("caenorhabditis_elegans - vcf.gz - json") {
 
@@ -129,11 +131,11 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    file(process.out.json[0][1]).name,
-                    process.out.transcript_cache.collect { file(it[1]).name },
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match() },
-                { assert path(process.out.json[0][1]).linesGzip.size() > 0 }
+                    sanitizeOutput(
+                        process.out,
+                        unstableKeys: ["transcript_cache"]
+                    )
+                ).match() }
             )
         }
 
@@ -168,10 +170,11 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    file(process.out.vcf[0][1]).name,
-                    path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    process.out.transcript_cache.collect { file(it[1]).name },
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    sanitizeOutput(
+                        process.out,
+                        variantsMD5Keys: ["vcf"],
+                        unstableKeys:   ["transcript_cache"]
+                    )
                 ).match() }
             )
         }
@@ -211,10 +214,11 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    file(process.out.tab[0][1]).name,
-                    path(process.out.tab[0][1]).linesGzip.findAll { !it.startsWith('#') }.join('\n').md5(),
-                    process.out.transcript_cache.collect { file(it[1]).name },
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    sanitizeOutput(
+                        process.out,
+                        tableMD5Keys: ["tab"],
+                        unstableKeys: ["transcript_cache"]
+                        )
                 ).match() }
             )
         }
@@ -257,10 +261,11 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    file(process.out.vcf[0][1]).name,
-                    path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    process.out.transcript_cache.collect { file(it[1]).name },
-                    process.out.findAll { key, val -> key.startsWith("versions") }
+                    sanitizeOutput(
+                        process.out,
+                        variantsMD5Keys: ["vcf"],
+                        unstableKeys:   ["transcript_cache"]
+                    )
                 ).match() }
             )
         }
