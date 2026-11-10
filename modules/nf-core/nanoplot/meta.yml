@@ -87,3 +87,27 @@ authors:
 maintainers:
   - "@drpatelh"
   - "@yuukiiwa"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/nanoplot:1.48.0--649a3f677050dd45
+      build_id: bd-649a3f677050dd45_1
+      scan_id: sc-d3949be38903c806_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/nanoplot:1.48.0--ec07a019f2ec14a8
+      build_id: bd-ec07a019f2ec14a8_1
+      scan_id: sc-f29d80ba723050f2_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/nanoplot:1.48.0--96a6e5e50158c0da
+      build_id: bd-96a6e5e50158c0da_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/72/724f8beca118ef2c85b1dd65a42cf20e588d40dcf9f78e287bc46900860a75a0/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/nanoplot:1.48.0--b2b1c3c9e8af8313
+      build_id: bd-b2b1c3c9e8af8313_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ee/ee7f882a297dba3dad24681a2df6aa4c111ea2c31c5fb2be4db7275adcdc4508/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/nanoplot/.conda-lock/linux_amd64-bd-ec07a019f2ec14a8_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/nanoplot/.conda-lock/linux_arm64-bd-649a3f677050dd45_1.txt
