@@ -8,6 +8,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "rastair2"
     tag "rastair2/call"
+    tag "rastair2/mbias"
 
     // NOTE The VCF header records the command line (including --threads), so only the #CHROM line
     // and records are snapshotted. They are hashed as text because rastair declares Number=M
@@ -21,7 +22,8 @@ nextflow_process {
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true),
+                    []
                 ])
                 input[1] = Channel.of([
                     [ id:'genome' ],
@@ -55,7 +57,8 @@ nextflow_process {
                 input[0] = Channel.of([
                     [ id:'test', single_end:true ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam.bai', checkIfExists: true),
+                    []
                 ])
                 input[1] = Channel.of([
                     [ id:'genome' ],
@@ -89,7 +92,8 @@ nextflow_process {
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/cram/test.paired_end.sorted.cram.crai', checkIfExists: true),
+                    []
                 ])
                 input[1] = Channel.of([
                     [ id:'genome' ],
@@ -115,6 +119,60 @@ nextflow_process {
         }
     }
 
+    test("sarscov2 - paired-end methylated bam - mbias cutoffs") {
+
+        setup {
+            run("RASTAIR2_MBIAS") {
+                script "../../mbias/main.nf"
+                process {
+                    """
+                    input[0] = Channel.of([
+                        [ id:'test', single_end:false ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true)
+                    ])
+                    input[1] = Channel.of([
+                        [ id:'genome' ],
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                    ])
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true)
+                ]).join(RASTAIR2_MBIAS.out.cutoffs)
+                input[1] = Channel.of([
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.vcf[0][1]).linesGzip.any { it.startsWith('##rastairCommand=') && it.contains('--nOT') && it.contains('--nOB') } },
+                { assert snapshot(
+                    path(process.out.vcf[0][1]).linesGzip.findAll { !it.startsWith('##') }.join('\n').md5(),
+                    process.out.tbi.collect { meta, tbi -> file(tbi).name },
+                    process.out.bed,
+                    process.out.bed_tbi.collect { meta, tbi -> file(tbi).name },
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
+            )
+        }
+    }
+
     test("sarscov2 - paired-end methylated bam - stub") {
 
         options "-stub"
@@ -125,7 +183,8 @@ nextflow_process {
                 input[0] = Channel.of([
                     [ id:'test', single_end:false ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true),
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true),
+                    []
                 ])
                 input[1] = Channel.of([
                     [ id:'genome' ],

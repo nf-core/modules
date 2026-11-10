@@ -8,7 +8,7 @@ process RASTAIR2_CALL {
         : 'community.wave.seqera.io/library/htslib_rastair:4ffd26b40813e268'}"
 
     input:
-    tuple val(meta), path(bam), path(index)
+    tuple val(meta), path(bam), path(index), path(mbias_cutoffs)
     tuple val(meta2), path(fasta), path(fai)
 
     output:
@@ -27,10 +27,17 @@ process RASTAIR2_CALL {
     def prefix = task.ext.prefix ?: "${meta.id}"
     // Single-end reads carry no pairing flags: strand comes from the alignment direction alone.
     def unpaired = meta.single_end ? '--unpaired' : ''
+    // Bases to ignore at read ends, as suggested by rastair2/mbias: line 1 is --nOT, line 2 --nOB
+    def cutoffs_files = mbias_cutoffs instanceof List ? mbias_cutoffs : [mbias_cutoffs]
+    if (cutoffs_files.size() > 1) {
+        error("rastair2/call takes one M-bias cutoffs file per sample, got ${cutoffs_files.size()}: restrict rastair2/mbias to one contig with --region")
+    }
+    def trim = cutoffs_files ? "--nOT \$(sed -n 1p ${mbias_cutoffs}) --nOB \$(sed -n 2p ${mbias_cutoffs})" : ''
     """
     rastair call \\
         ${args} \\
         ${unpaired} \\
+        ${trim} \\
         --threads ${task.cpus} \\
         --fasta-file ${fasta} \\
         --vcf ${prefix}.vcf.gz \\
