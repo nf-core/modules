@@ -29,7 +29,7 @@ nextflow_process {
             process {
                 """
                 // Get the 1k_pbmc_v3 subdirectory from the extracted archive
-                input[0] = UNZIP.out.unzipped_archive.map { meta, dir ->
+                input[0] = UNZIP.out.unzipped_archive.map { _meta, dir ->
                     def quant_dir = file("\${dir}/test_data/1k_pbmc_v3")
                     [[id:'1k_pbmc_v3'], '10X_3p_v3', quant_dir]
                 }
@@ -69,7 +69,7 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = UNZIP.out.unzipped_archive.map { meta, dir ->
+                input[0] = UNZIP.out.unzipped_archive.map { _meta, dir ->
                     def quant_dir = file("\${dir}/test_data/1k_pbmc_v3")
                     [[id:'1k_pbmc_v3_doublets'], '10X_3p_v3', quant_dir]
                 }
