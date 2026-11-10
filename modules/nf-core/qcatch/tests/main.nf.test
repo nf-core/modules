@@ -40,8 +40,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                // Report embeds UMAP coordinates, which vary with the platform's numerical libraries
+                { assert path(process.out.report[0][1]).size() > 0 },
                 { assert snapshot(
-                    path(process.out.report[0][1]).size(),
                     process.out.filtered_h5ad,
                     process.out.metrics_summary,
                     process.out.findAll { key, val -> key.startsWith('versions') }
