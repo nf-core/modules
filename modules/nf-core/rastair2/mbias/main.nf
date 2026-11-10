@@ -27,9 +27,7 @@ process RASTAIR2_MBIAS {
     if (meta.single_end) {
         error("rastair2 mbias needs paired-end reads: it assigns strands and read ends from read-pair flags")
     }
-    // The report resolves symlinks, so it would look for the .bai and .fai next to the original
-    // files rather than in the work directory. Writing the per-read BED here avoids that; the
-    // V-bias plots need the FASTA from inside R, so they are off (GC plots need a VCF).
+    // `rastair mbias --bam` resolves symlinks and misses the staged .bai/.fai, so per-read runs here
     """
     rastair per-read \\
         ${args} \\
