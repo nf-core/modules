@@ -49,7 +49,8 @@ nextflow_workflow {
                 { assert snapshot(
                     file(workflow.out.bam_orig[0][1]).name,
                     workflow.out.fastq,
-                    workflow.out.log_out,
+                    // Some bowtie2 builds print an x86-64-v3 launch warning into the log
+                    path(workflow.out.log_out[0][1]).readLines().findAll { line -> !line.contains("Failed to launch x86-64-v3") },
                     file(workflow.out.bam[0][1]).name,
                     file(workflow.out.index[0][1]).name,
                     workflow.out.stats,
@@ -101,7 +102,8 @@ nextflow_workflow {
                 { assert snapshot(
                     file(workflow.out.bam_orig[0][1]).name,
                     workflow.out.fastq,
-                    workflow.out.log_out,
+                    // Some bowtie2 builds print an x86-64-v3 launch warning into the log
+                    path(workflow.out.log_out[0][1]).readLines().findAll { line -> !line.contains("Failed to launch x86-64-v3") },
                     file(workflow.out.bam[0][1]).name,
                     file(workflow.out.index[0][1]).name,
                     workflow.out.stats,
@@ -152,7 +154,8 @@ nextflow_workflow {
                 { assert snapshot(
                     file(workflow.out.bam_orig[0][1]).name,
                     workflow.out.fastq,
-                    workflow.out.log_out,
+                    // Some bowtie2 builds print an x86-64-v3 launch warning into the log
+                    path(workflow.out.log_out[0][1]).readLines().findAll { line -> !line.contains("Failed to launch x86-64-v3") },
                     file(workflow.out.bam[0][1]).name,
                     file(workflow.out.index[0][1]).name,
                     workflow.out.stats,
@@ -203,7 +206,8 @@ nextflow_workflow {
                 { assert snapshot(
                     file(workflow.out.bam_orig[0][1]).name,
                     workflow.out.fastq,
-                    workflow.out.log_out,
+                    // Some bowtie2 builds print an x86-64-v3 launch warning into the log
+                    path(workflow.out.log_out[0][1]).readLines().findAll { line -> !line.contains("Failed to launch x86-64-v3") },
                     file(workflow.out.bam[0][1]).name,
                     file(workflow.out.index[0][1]).name,
                     workflow.out.stats,

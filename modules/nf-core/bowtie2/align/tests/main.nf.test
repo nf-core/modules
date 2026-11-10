@@ -53,7 +53,8 @@ nextflow_process {
                     // statistics.
                     file(process.out.bam[0][1]).name,
                     bam(process.out.bam[0][1], stringency: "silent").getStatistics(exclude:["sorted"]),
-                    process.out.log,
+                    // Some bowtie2 builds print an x86-64-v3 launch warning into the log
+                    path(process.out.log[0][1]).readLines().findAll { line -> !line.contains("Failed to launch x86-64-v3") },
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
@@ -103,7 +104,8 @@ nextflow_process {
                 { assert snapshot(
                     file(process.out.sam[0][1]).name,
                     bam(process.out.sam[0][1], stringency: "silent").getStatistics(exclude:["sorted"]),
-                    process.out.log,
+                    // Some bowtie2 builds print an x86-64-v3 launch warning into the log
+                    path(process.out.log[0][1]).readLines().findAll { line -> !line.contains("Failed to launch x86-64-v3") },
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
@@ -153,7 +155,8 @@ nextflow_process {
                 { assert snapshot(
                     file(process.out.sam[0][1]).name,
                     bam(process.out.sam[0][1], stringency: "silent").getStatistics(exclude:["sorted"]),
-                    process.out.log,
+                    // Some bowtie2 builds print an x86-64-v3 launch warning into the log
+                    path(process.out.log[0][1]).readLines().findAll { line -> !line.contains("Failed to launch x86-64-v3") },
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
@@ -206,7 +209,8 @@ nextflow_process {
                     // statistics.
                     file(process.out.bam[0][1]).name,
                     bam(process.out.bam[0][1], stringency: "silent").getStatistics(exclude:["sorted"]),
-                    process.out.log,
+                    // Some bowtie2 builds print an x86-64-v3 launch warning into the log
+                    path(process.out.log[0][1]).readLines().findAll { line -> !line.contains("Failed to launch x86-64-v3") },
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
@@ -262,7 +266,8 @@ nextflow_process {
                     // statistics.
                     file(process.out.bam[0][1]).name,
                     bam(process.out.bam[0][1], stringency: "silent").getStatistics(exclude:["sorted"]),
-                    process.out.log,
+                    // Some bowtie2 builds print an x86-64-v3 launch warning into the log
+                    path(process.out.log[0][1]).readLines().findAll { line -> !line.contains("Failed to launch x86-64-v3") },
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
@@ -318,7 +323,8 @@ nextflow_process {
                     // statistics.
                     file(process.out.bam[0][1]).name,
                     bam(process.out.bam[0][1], stringency: "silent").getStatistics(exclude:["sorted"]),
-                    process.out.log,
+                    // Some bowtie2 builds print an x86-64-v3 launch warning into the log
+                    path(process.out.log[0][1]).readLines().findAll { line -> !line.contains("Failed to launch x86-64-v3") },
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
@@ -371,7 +377,8 @@ nextflow_process {
                     // statistics.
                     file(process.out.bam[0][1]).name,
                     bam(process.out.bam[0][1], stringency: "silent").getStatistics(exclude:["sorted"]),
-                    process.out.log,
+                    // Some bowtie2 builds print an x86-64-v3 launch warning into the log
+                    path(process.out.log[0][1]).readLines().findAll { line -> !line.contains("Failed to launch x86-64-v3") },
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
@@ -427,7 +434,8 @@ nextflow_process {
                     // statistics.
                     file(process.out.bam[0][1]).name,
                     bam(process.out.bam[0][1], stringency: "silent").getStatistics(exclude:["sorted"]),
-                    process.out.log,
+                    // Some bowtie2 builds print an x86-64-v3 launch warning into the log
+                    path(process.out.log[0][1]).readLines().findAll { line -> !line.contains("Failed to launch x86-64-v3") },
                     process.out.fastq,
                     process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
