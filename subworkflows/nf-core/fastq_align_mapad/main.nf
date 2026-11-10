@@ -20,6 +20,7 @@ workflow FASTQ_ALIGN_MAPAD {
     val_deam_rate_double_stranded
     val_deam_rate_single_stranded
     val_indel_rate
+    index_format // string: index written alongside the sorted file, one of 'bai', 'csi' or 'crai'
 
     main:
 
@@ -54,7 +55,7 @@ workflow FASTQ_ALIGN_MAPAD {
     MAPAD_MAP(ch_preppedinput_for_mapad.reads, ch_preppedinput_for_mapad.index, val_mismatch_parameter, val_double_stranded_library, val_five_prime_overhang, val_three_prime_overhang, val_deam_rate_double_stranded, val_deam_rate_single_stranded, val_indel_rate)
 
     // Sort, index BAM file and run samtools stats, flagstat and idxstats
-    BAM_SORT_STATS_SAMTOOLS(MAPAD_MAP.out.bam, ch_fasta_fai, 'bai')
+    BAM_SORT_STATS_SAMTOOLS(MAPAD_MAP.out.bam, ch_fasta_fai, index_format)
 
     emit:
     bam_unsorted = MAPAD_MAP.out.bam // channel: [ val(meta), path(bam) ]

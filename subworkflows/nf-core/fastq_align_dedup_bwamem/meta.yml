@@ -59,6 +59,14 @@ input:
       description: |
         Structure: [ val(meta), path(known sites) ]
       pattern: "*.{vcf,vcf.gz}"
+  - index_format:
+      type: string
+      description: |
+        Index format written by samtools sort alongside the sorted file.
+        Use 'csi' for genomes with contigs longer than 2^29 bp; 'crai' requires CRAM output.
+        Applies to the sorted BAM before deduplication. The index of the deduplicated BAM
+        is written by SAMTOOLS_INDEX and follows its ext.args (e.g. '-c' for csi).
+      pattern: "bai|csi|crai"
 output:
   - bam:
       type: file

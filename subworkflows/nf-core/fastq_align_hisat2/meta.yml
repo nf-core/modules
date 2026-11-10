@@ -48,6 +48,12 @@ input:
   - save_unaligned:
       type: boolean
       description: Save unaligned reads to FastQ files
+  - index_format:
+      type: string
+      description: |
+        Index format written by samtools sort alongside the sorted file.
+        Use 'csi' for genomes with contigs longer than 2^29 bp; 'crai' requires CRAM output.
+      pattern: "bai|csi|crai"
 output:
   - orig_bam:
       type: file

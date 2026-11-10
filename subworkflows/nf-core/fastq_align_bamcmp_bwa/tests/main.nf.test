@@ -48,6 +48,7 @@ nextflow_workflow {
                 input[3] = Channel.value([[ id:'homo_sapiens_genome' ],
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true),
                             file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true) ])
+                input[4] = 'bai'
                 """
             }
         }
