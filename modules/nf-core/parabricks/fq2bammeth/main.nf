@@ -5,8 +5,6 @@ process PARABRICKS_FQ2BAMMETH {
     tag "${meta.id}"
     label 'process_high'
     label 'process_gpu'
-    // needed by the module to work properly can be removed when fixed upstream - see: https://github.com/nf-core/modules/issues/7226
-    stageInMode 'copy'
 
     container "nvcr.io/nvidia/clara/clara-parabricks:4.8.0-1"
 
@@ -39,20 +37,20 @@ process PARABRICKS_FQ2BAMMETH {
     def known_sites_output  = known_sites ? "--out-recal-file ${prefix}.table" : ""
     def num_gpus            = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
     """
-    if [ -L ${fasta} ]; then
-        ln -sf \$(readlink ${fasta}) ${index}/${fasta}
-    else
-        ln -sf ../${fasta} ${index}/${fasta}
-    fi
+    # Parabricks needs the fasta next to the index files, so build a local reference dir of symlinks
+    mkdir -p ref
+    for f in \$(readlink -f ${index})/*; do ln -sf \$f ref/; done
+    ln -sf \$(readlink -f ${fasta}) ref/${fasta}
 
     pbrun \\
         fq2bam_meth \\
-        --ref ${index}/${fasta} \\
+        --ref ref/${fasta} \\
         ${in_fq_command} \\
         --out-bam ${prefix}.bam \\
         ${known_sites_command} \\
         ${known_sites_output} \\
         ${num_gpus} \\
+        --preserve-file-symlinks \\
         ${args}
     """
 
