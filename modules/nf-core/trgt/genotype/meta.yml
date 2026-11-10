@@ -30,7 +30,19 @@ input:
     - bai:
         type: file
         description: "Index of the BAM file"
+        pattern: "*.bai"
+        ontologies: []
+    - fail_reads_bam:
+        type: file
+        description: "Optional sorted BAM file with failed reads"
         pattern: "*.bam"
+        optional: true
+        ontologies: []
+    - fail_reads_bai:
+        type: file
+        description: "Index of the failed reads BAM file; required when fail_reads_bam is supplied"
+        pattern: "*.bai"
+        optional: true
         ontologies: []
     - karyotype:
         type: string
