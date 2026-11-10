@@ -6,7 +6,8 @@
  *
  * Uses rastair to assess C->T conversion as a readout for methylation in a genome-wide basis.
  * By default runs rastair 0.8 (mbias -> mbiasparser -> call -> methylkit). With `use_rastair2`,
- * runs rastair version 2 instead, which writes a VCF (methylation, SNVs) and a CpG BED, plus bcftools stats.
+ * runs rastair version 2 instead (mbias -> call), which writes a VCF (methylation, SNVs) and a CpG BED, plus
+ * bcftools stats. rastair2 mbias needs paired-end reads, so single-end samples are called without trimming.
  * Note: rastair version 2 is free for non-commercial use only (University of Oxford licence).
  */
 
@@ -14,6 +15,7 @@ include { RASTAIR_MBIAS             } from '../../../modules/nf-core/rastair/mbi
 include { RASTAIR_MBIASPARSER       } from '../../../modules/nf-core/rastair/mbiasparser/main'
 include { RASTAIR_CALL              } from '../../../modules/nf-core/rastair/call/main'
 include { RASTAIR_METHYLKIT         } from '../../../modules/nf-core/rastair/methylkit/main'
+include { RASTAIR2_MBIAS            } from '../../../modules/nf-core/rastair2/mbias/main'
 include { RASTAIR2_CALL             } from '../../../modules/nf-core/rastair2/call/main'
 include { BCFTOOLS_STATS            } from '../../../modules/nf-core/bcftools/stats/main'
 
@@ -35,6 +37,8 @@ workflow BAM_TAPS_CONVERSION {
     ch_bed           = channel.empty()
     ch_bed_tbi       = channel.empty()
     ch_bcftools_stats = channel.empty()
+    ch_mbias_html    = channel.empty()
+    ch_mbias_cutoffs = channel.empty()
 
     if (use_rastair2) {
         // One reference for every sample, whether it is passed once or once per sample
@@ -43,8 +47,36 @@ workflow BAM_TAPS_CONVERSION {
             .map { meta, fasta, _meta2, fai -> [ meta, fasta, fai ] }
             .first()
 
+        ch_bam_bai = ch_bam.join(ch_bai)
+
+        RASTAIR2_MBIAS (
+            ch_bam_bai.filter { meta, _bam, _bai -> !meta.single_end },
+            ch_reference,
+        )
+        ch_mbias_html = RASTAIR2_MBIAS.out.html // channel: [ val(meta), html ]
+
+        // Without --region, mbias writes cutoffs for every contig with enough data: use the longest contig
+        ch_mbias_cutoffs = RASTAIR2_MBIAS.out.cutoffs
+            .combine(ch_reference)
+            .map { meta, cutoffs, _meta2, _fasta, fai ->
+                def files = cutoffs instanceof List ? cutoffs : [ cutoffs ]
+                def contig_lengths = fai.readLines().collectEntries { line ->
+                    def fields = line.split('\t')
+                    [ (fields[0]): fields[1] as long ]
+                }
+                def longest = files.max { cutoffs_file ->
+                    def contig = contig_lengths.keySet()
+                        .findAll { name -> cutoffs_file.name.endsWith(".${name}.cutoffs.txt") }
+                        .max { name -> name.length() }
+                    contig ? contig_lengths[contig] : 0L
+                }
+                [ meta, longest ]
+            } // channel: [ val(meta), cutoffs.txt ]
+
         RASTAIR2_CALL (
-            ch_bam.join(ch_bai),
+            ch_bam_bai
+                .join(ch_mbias_cutoffs, remainder: true)
+                .map { meta, bam, bai, cutoffs -> [ meta, bam, bai, cutoffs ?: [] ] },
             ch_reference,
         )
         ch_vcf     = RASTAIR2_CALL.out.vcf     // channel: [ val(meta), vcf.gz ]
@@ -101,4 +133,6 @@ workflow BAM_TAPS_CONVERSION {
     bed            = ch_bed                   // channel: [ val(meta), path("*.bed.gz") ] rastair 2
     bed_tbi        = ch_bed_tbi               // channel: [ val(meta), path("*.bed.gz.tbi") ] rastair 2
     bcftools_stats = ch_bcftools_stats        // channel: [ val(meta), path("*stats.txt") ] rastair 2
+    mbias_html     = ch_mbias_html            // channel: [ val(meta), path("*.mbias.html") ] rastair 2
+    mbias_cutoffs  = ch_mbias_cutoffs         // channel: [ val(meta), path("*.cutoffs.txt") ] rastair 2
 }

@@ -15,6 +15,7 @@ nextflow_workflow {
     tag "rastair/call"
     tag "rastair/methylkit"
     tag "rastair2"
+    tag "rastair2/mbias"
     tag "rastair2/call"
     tag "bcftools"
     tag "bcftools/stats"
@@ -25,19 +26,19 @@ nextflow_workflow {
             workflow {
                 """
                 // Define the input channels required by the BAM_TAPS_CONVERSION workflow
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id:'test' ],
 				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true),
                 ])
-                input[1] = Channel.of([
+                input[1] = channel.of([
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + "genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai", checkIfExists: true)
                 ])
-                input[2] = Channel.of([
+                input[2] = channel.of([
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta", checkIfExists: true)
                 ])
-                input[3] = Channel.of([
+                input[3] = channel.of([
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + "genomics/sarscov2/genome/genome.fasta.fai", checkIfExists: true)
                 ])
@@ -47,68 +48,107 @@ nextflow_workflow {
         }
 
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success },
                 { assert snapshot(workflow.out).match() }
             )
         }
     }
 
-    test("rastair2 - two samples, one reference [value channel]") {
+    test("sarscov2 - two samples [ bam, bai ], one reference [ fasta, fai ] value channel - rastair2") {
 
         when {
             workflow {
                 """
-                input[0] = Channel.of(
+                input[0] = channel.of(
                     [ [ id:'test1' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true) ],
                     [ [ id:'test2' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true) ]
                 )
-                input[1] = Channel.of(
+                input[1] = channel.of(
                     [ [ id:'test1' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true) ],
                     [ [ id:'test2' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true) ]
                 )
-                input[2] = Channel.value([ [ id:'genome' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ])
-                input[3] = Channel.value([ [ id:'genome' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true) ])
+                input[2] = channel.value([ [ id:'genome' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ])
+                input[3] = channel.value([ [ id:'genome' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true) ])
                 input[4] = true
                 """
             }
         }
 
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success },
                 { assert workflow.out.mbias.size() == 0 && workflow.out.call.size() == 0 && workflow.out.methylkit.size() == 0 },
                 { assert workflow.out.vcf.collect { meta, vcf -> meta.id }.sort() == ['test1', 'test2'] },
+                { assert workflow.out.vcf.every { meta, vcf -> path(vcf).linesGzip.any { line -> line.startsWith('##rastairCommand=') && line.contains('--nOT') && line.contains('--nOB') } } },
                 { assert snapshot(
-                    workflow.out.vcf.collect { meta, vcf -> [ meta, path(vcf).linesGzip.findAll { !it.startsWith('##') }.join('\n').md5() ] }.sort { it[0].id },
-                    workflow.out.vcf_tbi.collect { meta, tbi -> [ meta, file(tbi).name ] }.sort { it[0].id },
-                    workflow.out.bed.sort { it[0].id },
-                    workflow.out.bed_tbi.collect { meta, tbi -> [ meta, file(tbi).name ] }.sort { it[0].id },
-                    workflow.out.bcftools_stats.collect { meta, stats -> [ meta, file(stats).name ] }.sort { it[0].id }
+                    workflow.out.vcf.collect { meta, vcf -> [ meta, path(vcf).linesGzip.findAll { line -> !line.startsWith('##') }.join('\n').md5() ] }.sort { entry -> entry[0].id },
+                    workflow.out.vcf_tbi.collect { meta, tbi -> [ meta, file(tbi).name ] }.sort { entry -> entry[0].id },
+                    workflow.out.bed.sort { entry -> entry[0].id },
+                    workflow.out.bed_tbi.collect { meta, tbi -> [ meta, file(tbi).name ] }.sort { entry -> entry[0].id },
+                    workflow.out.bcftools_stats.collect { meta, stats -> [ meta, file(stats).name ] }.sort { entry -> entry[0].id },
+                    workflow.out.mbias_html.collect { meta, html -> [ meta, file(html).name ] }.sort { entry -> entry[0].id },
+                    workflow.out.mbias_cutoffs.sort { entry -> entry[0].id }
                 ).match() }
             )
         }
     }
 
-    test("rastair2 - per-sample reference [as in methylseq] - stub") {
+    test("sarscov2 - paired-end and single-end [ bam, bai ] - rastair2") {
+
+        when {
+            workflow {
+                """
+                input[0] = channel.of(
+                    [ [ id:'paired', single_end:false ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true) ],
+                    [ [ id:'single', single_end:true ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam', checkIfExists: true) ]
+                )
+                input[1] = channel.of(
+                    [ [ id:'paired', single_end:false ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true) ],
+                    [ [ id:'single', single_end:true ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.single_end.sorted.bam.bai', checkIfExists: true) ]
+                )
+                input[2] = channel.value([ [ id:'genome' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ])
+                input[3] = channel.value([ [ id:'genome' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true) ])
+                input[4] = true
+                """
+            }
+        }
+
+        then {
+            assert workflow.success
+            def command = { id -> path(workflow.out.vcf.find { meta, vcf -> meta.id == id }[1]).linesGzip.find { line -> line.startsWith('##rastairCommand=') } }
+            assertAll(
+                { assert workflow.out.mbias_html.collect { meta, html -> meta.id } == ['paired'] },
+                { assert command('paired').contains('--nOT') },
+                { assert !command('single').contains('--nOT') && command('single').contains('--unpaired') },
+                { assert snapshot(
+                    workflow.out.vcf.collect { meta, vcf -> [ meta, path(vcf).linesGzip.findAll { line -> !line.startsWith('##') }.join('\n').md5() ] }.sort { entry -> entry[0].id },
+                    workflow.out.bed.sort { entry -> entry[0].id },
+                    workflow.out.mbias_cutoffs
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - [ bam, bai ], per-sample reference [ fasta, fai ] as in methylseq - rastair2 - stub") {
 
         options "-stub"
 
         when {
             workflow {
                 """
-                input[0] = Channel.of([ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true) ])
-                input[1] = Channel.of([ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true) ])
-                input[2] = Channel.of([ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ])
-                input[3] = Channel.of([ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true) ])
+                input[0] = channel.of([ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam', checkIfExists: true) ])
+                input[1] = channel.of([ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.methylated.sorted.bam.bai', checkIfExists: true) ])
+                input[2] = channel.of([ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ])
+                input[3] = channel.of([ [ id:'test' ], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true) ])
                 input[4] = true
                 """
             }
         }
 
         then {
+            assert workflow.success
             assertAll(
-                { assert workflow.success },
                 { assert snapshot(workflow.out).match() }
             )
         }

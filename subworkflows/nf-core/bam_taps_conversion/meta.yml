@@ -14,6 +14,7 @@ components:
   - rastair/call
   - rastair/methylkit
   - rastair/mbiasparser
+  - rastair2/mbias
   - rastair2/call
   - bcftools/stats
 input:
@@ -44,7 +45,8 @@ input:
   - use_rastair2:
       type: boolean
       description: |
-        Run rastair version 2 (`rastair2/call` + `bcftools/stats`) instead of rastair 0.8
+        Run rastair version 2 (`rastair2/mbias` for paired-end samples, then `rastair2/call`
+        with its cutoffs, and `bcftools/stats`) instead of rastair 0.8
         (`rastair/mbias`, `rastair/mbiasparser`, `rastair/call`, `rastair/methylkit`).
         rastair version 2 is free for non-commercial use only (University of Oxford licence);
         the outputs of the caller that was not run are empty channels.
@@ -97,6 +99,21 @@ output:
         bcftools stats of the rastair version 2 VCF (MultiQC input)
         Structure: [ val(meta), path(stats) ]
       pattern: "*stats.txt"
+  - mbias_html:
+      type: file
+      description: |
+        rastair version 2 M-bias report (paired-end samples only)
+        Structure: [ val(meta), path(html) ]
+      pattern: "*.mbias.html"
+  - mbias_cutoffs:
+      type: file
+      description: |
+        Bases to ignore at read ends, as used by rastair version 2 call (paired-end
+        samples only): line 1 is `--nOT`, line 2 `--nOB`. When mbias reports several
+        contigs, the longest one is used; restrict it with `--region` in the
+        RASTAIR2_MBIAS `ext.args` to choose (and to keep memory down on large genomes).
+        Structure: [ val(meta), path(cutoffs) ]
+      pattern: "*.cutoffs.txt"
 authors:
   - "@eduard-watchmaker"
 maintainers:

@@ -1,5 +1,5 @@
 {
-    "rastair2 - two samples, one reference [value channel]": {
+    "sarscov2 - two samples [ bam, bai ], one reference [ fasta, fai ] value channel - rastair2": {
         "content": [
             [
                 [
@@ -70,12 +70,90 @@
                     },
                     "test2.bcftools_stats.txt"
                 ]
+            ],
+            [
+                [
+                    {
+                        "id": "test1"
+                    },
+                    "test1.mbias.html"
+                ],
+                [
+                    {
+                        "id": "test2"
+                    },
+                    "test2.mbias.html"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "test1"
+                    },
+                    "test1.MT192765.1.cutoffs.txt:md5,e46ba9ffc77f03688559a3007e005d91"
+                ],
+                [
+                    {
+                        "id": "test2"
+                    },
+                    "test2.MT192765.1.cutoffs.txt:md5,e46ba9ffc77f03688559a3007e005d91"
+                ]
             ]
         ],
-        "timestamp": "2026-11-09T10:02:51.260014",
+        "timestamp": "2026-11-10T11:12:37.993679",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "25.10.4"
+            "nextflow": "26.10.5"
+        }
+    },
+    "sarscov2 - paired-end and single-end [ bam, bai ] - rastair2": {
+        "content": [
+            [
+                [
+                    {
+                        "id": "paired",
+                        "single_end": false
+                    },
+                    "d1630262a4ab6255e9e441e6857e746f"
+                ],
+                [
+                    {
+                        "id": "single",
+                        "single_end": true
+                    },
+                    "1b3f2f0fde4de41a51853252c8ba063f"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "paired",
+                        "single_end": false
+                    },
+                    "paired.bed.gz:md5,ed8237adc7795a7485dab20c69146675"
+                ],
+                [
+                    {
+                        "id": "single",
+                        "single_end": true
+                    },
+                    "single.bed.gz:md5,7b23d5b66dc44a565a7d17ecde065eef"
+                ]
+            ],
+            [
+                [
+                    {
+                        "id": "paired",
+                        "single_end": false
+                    },
+                    "paired.MT192765.1.cutoffs.txt:md5,e46ba9ffc77f03688559a3007e005d91"
+                ]
+            ]
+        ],
+        "timestamp": "2026-11-10T11:12:57.414311",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.5"
         }
     },
     "sarscov2 paired-end methylated [bam] / sarscov2 genome [fasta]": {
@@ -120,6 +198,12 @@
                 "7": [
                     
                 ],
+                "8": [
+                    
+                ],
+                "9": [
+                    
+                ],
                 "bcftools_stats": [
                     
                 ],
@@ -145,6 +229,12 @@
                         "test.rastair_mbias.txt:md5,de29e280a36531145f2a0d11d4d6d53c"
                     ]
                 ],
+                "mbias_cutoffs": [
+                    
+                ],
+                "mbias_html": [
+                    
+                ],
                 "methylkit": [
                     [
                         {
@@ -161,13 +251,13 @@
                 ]
             }
         ],
-        "timestamp": "2026-11-09T10:02:36.343191",
+        "timestamp": "2026-11-10T11:10:23.613668",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "25.10.4"
+            "nextflow": "26.10.5"
         }
     },
-    "rastair2 - per-sample reference [as in methylseq] - stub": {
+    "sarscov2 - [ bam, bai ], per-sample reference [ fasta, fai ] as in methylseq - rastair2 - stub": {
         "content": [
             {
                 "0": [
@@ -219,6 +309,22 @@
                         "test.bcftools_stats.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
+                "8": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.mbias.html:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "9": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.chr1.cutoffs.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
                 "bcftools_stats": [
                     [
                         {
@@ -249,6 +355,22 @@
                 "mbias": [
                     
                 ],
+                "mbias_cutoffs": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.chr1.cutoffs.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "mbias_html": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.mbias.html:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
                 "methylkit": [
                     
                 ],
@@ -270,10 +392,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-11-09T10:01:15.410281",
+        "timestamp": "2026-11-10T11:13:10.211337",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "25.10.4"
+            "nextflow": "26.10.5"
         }
     }
 }
