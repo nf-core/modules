@@ -1,0 +1,142 @@
+name: "bullseye_findeditsites"
+description: Compare an edited sample's per-base edit matrix against a control sample's to call candidate RNA editing sites
+keywords:
+- bullseye
+- rna editing
+- dart-seq
+- differential editing
+tools:
+- "bullseye":
+    description: "An Analysis pipeline for DART-seq, scDART-seq, TRIBE, STAMP and TRIBE-STAMP. Bullseye contains a set of perl scripts for parsing BAM files and identifying RNA editing sites."
+    homepage: "https://github.com/mflamand/Bullseye"
+    documentation: "https://github.com/mflamand/Bullseye"
+    tool_dev_url: "https://github.com/mflamand/Bullseye"
+    licence:
+    - "MIT"
+    identifier: ""
+
+input:
+- - meta:
+      type: map
+      description: |
+        Groovy Map containing edited-sample information
+        e.g. `[ id:'sample1' ]`
+  - edited_matrix:
+      type: file
+      description: Bgzipped per-base edit matrix for the edited sample (BULLSEYE_PARSEBAM output).
+      pattern: "*.matrix.gz"
+      ontologies:
+      - edam: "http://edamontology.org/format_3989"  # GZIP format
+  - edited_tbi:
+      type: file
+      description: Tabix index for `edited_matrix`.
+      pattern: "*.tbi"
+      ontologies:
+      - edam: "http://edamontology.org/format_3327"
+  - control_meta:
+      type: map
+      description: |
+        Groovy Map containing control-sample information
+        e.g. `[ id:'control1' ]`
+  - control_matrix:
+      type: file
+      description: Bgzipped per-base edit matrix for the control sample (BULLSEYE_PARSEBAM output).
+      pattern: "*.matrix.gz"
+      ontologies:
+      - edam: "http://edamontology.org/format_3989"  # GZIP format
+  - control_tbi:
+      type: file
+      description: Tabix index for `control_matrix`.
+      pattern: "*.tbi"
+      ontologies:
+      - edam: "http://edamontology.org/format_3327"
+- annotation:
+    type: file
+    description: refFlat gene annotation file.
+    pattern: "*.refFlat"
+    ontologies: []
+- edit_type:
+    type: string
+    description: Edit type passed to Find_edit_sites.pl (e.g. the base substitution DART-seq detects, such as C2U or A2I).
+- min_edit:
+    type: float
+    description: Minimum percent editing required at a site.
+- max_edit:
+    type: float
+    description: Maximum percent editing allowed at a site.
+- edit_fold_threshold:
+    type: float
+    description: Minimum fold-change in editing between the edited and control samples.
+- min_edit_sites:
+    type: integer
+    description: Minimum number of edited reads required at a site.
+- edited_min_coverage:
+    type: integer
+    description: Minimum read coverage required at a site in the edited sample.
+- control_min_coverage:
+    type: integer
+    description: Minimum read coverage required at a site in the control sample.
+output:
+  bed:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing edited-sample information
+          e.g. `[ id:'sample1' ]`
+    - "*.bed":
+        type: file
+        description: Candidate RNA editing sites found by comparing the edited sample against the control sample.
+        pattern: "*.bed"
+        ontologies:
+        - edam: "http://edamontology.org/format_3003"
+  versions_bullseye:
+  - - ${task.process}:
+        type: string
+        description: The name of the process
+    - bullseye:
+        type: string
+        description: The name of the tool
+    - grep -m1 -i 'version' \$(command -v Find_edit_sites.pl) | grep -oE '[0-9]+\.[0-9]+(\.[0-9]+)?':
+        type: eval
+        description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+  - - ${task.process}:
+        type: string
+        description: The name of the process
+    - bullseye:
+        type: string
+        description: The name of the tool
+    - grep -m1 -i 'version' \$(command -v Find_edit_sites.pl) | grep -oE '[0-9]+\.[0-9]+(\.[0-9]+)?':
+        type: eval
+        description: The expression to obtain the version of the tool
+
+authors:
+- "@brovolia"
+maintainers:
+- "@brovolia"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/bullseye:1.1.0--74ed95edbe3333bd
+      build_id: bd-74ed95edbe3333bd_1
+      scan_id: sc-705e4bc82c987fde_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/bullseye:1.1.0--6a0a52edc73ac840
+      build_id: bd-6a0a52edc73ac840_1
+      scan_id: sc-7d7cdf6bf74da9a0_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bullseye:1.1.0--06fc849b7fa6ad21
+      build_id: bd-06fc849b7fa6ad21_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1d/1d1b3ef00779596d2255fc5dffeae072301ccc37d6cdb941c2aa8d67534ced41/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bullseye:1.1.0--7407dbc1d7d5fc10
+      build_id: bd-7407dbc1d7d5fc10_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ff/ffe10ad69bfe8de418e98f1091d1191206e7c851da8c43f64e6db6ab073e8f04/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bullseye/findeditsites/.conda-lock/linux_amd64-bd-6a0a52edc73ac840_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/bullseye/findeditsites/.conda-lock/linux_arm64-bd-74ed95edbe3333bd_1.txt
