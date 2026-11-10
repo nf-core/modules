@@ -70,7 +70,7 @@ nextflow_process {
                 // The table is written whether or not any site passes, and always
                 // carries its header, so this holds on any input.
                 { assert path(process.out.tsv.get(0).get(1)).readLines()[0].startsWith("chrom\tstart\tend") },
-                { assert snapshot(process.out.versions).match("versions") }
+                { assert snapshot(process.out.versions_hgtsite).match("versions") }
             )
         }
     }

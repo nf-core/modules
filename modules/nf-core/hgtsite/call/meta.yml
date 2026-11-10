@@ -109,6 +109,18 @@ output:
           pattern: "*_mqc.json"
           ontologies:
             - edam: "http://edamontology.org/format_3464"
+  versions_hgtsite:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - hgtsite:
+          type: string
+          description: The tool name
+      - hgt-site --version | sed "s/^hgt-site //":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
     - - ${task.process}:
           type: string

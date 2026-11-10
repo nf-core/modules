@@ -5,7 +5,7 @@ process HGTSITE_CALL {
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/hgt-site:0.4.0--pyhdfd78af_0' :
-        'biocontainers/hgt-site:0.4.0--pyhdfd78af_0' }"
+        'quay.io/biocontainers/hgt-site:0.4.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(alignment), path(index)
@@ -18,7 +18,7 @@ process HGTSITE_CALL {
     tuple val(meta), path("*.hgt_site.vcf{,.gz}")                , optional:true, emit: vcf
     tuple val(meta), path("*.hgt_site.vcf.gz.tbi")               , optional:true, emit: tbi
     tuple val(meta), path("*_mqc.json")                          , optional:true, emit: multiqc
-    tuple val("${task.process}"), val('hgtsite'), eval('hgt-site --version | sed "s/^hgt-site //"'), topic: versions, emit: versions
+    tuple val("${task.process}"), val('hgtsite'), eval('hgt-site --version | sed "s/^hgt-site //"'), topic: versions, emit: versions_hgtsite
 
     when:
     task.ext.when == null || task.ext.when
