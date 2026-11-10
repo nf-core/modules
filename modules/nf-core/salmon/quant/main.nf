@@ -7,8 +7,8 @@ process SALMON_QUANT {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1c/1ce42a19f9e7135babf14432e80b33ec717a13f14734d150d53347e979919629/data'
-        : 'community.wave.seqera.io/library/salmon:2.7.0--74784226202c61b9'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f3/f3f26f40dd50f421afb6797d09e75aac5baaa7aa715f2d4190e865168b0a6163/data'
+        : 'community.wave.seqera.io/library/salmon:2.11.0--989e01c80144b039'}"
 
     input:
     tuple val(meta), path(reads)

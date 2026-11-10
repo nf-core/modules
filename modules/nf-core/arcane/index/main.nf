@@ -6,9 +6,9 @@ process ARCANE_INDEX {
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/arcane:1.0.0--pyh106432d_0':
-        'quay.io/biocontainers/arcane:1.0.0--pyh106432d_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c6/c6d1b38ce02081f5481cdf0e4efe51db15ec77e1982196f01c58b66b544e1740/data'
+        : 'community.wave.seqera.io/library/arcane:1.0.0--d2e66a3ae9fa2825'}"
 
     input:
     tuple val(meta), path(reference), path(genes)
