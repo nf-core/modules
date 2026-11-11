@@ -4,5 +4,7 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
+  # Pinned to 1.21, incompatible with newer versions of bcftools and htslib
   - bioconda::bcftools=1.21
+  - bioconda::htslib=1.21
   - bioconda::ngscheckmate=1.0.1

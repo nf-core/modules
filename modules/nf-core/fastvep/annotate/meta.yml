@@ -1,0 +1,205 @@
+name: "fastvep_annotate"
+description: Annotate variants with predicted consequences using fastVEP, a fast Rust reimplementation of Ensembl VEP
+keywords:
+  - vcf
+  - annotation
+  - variant effect prediction
+  - vep
+  - genomics
+tools:
+  - "fastvep":
+      description: "A high-performance variant effect predictor with clinical database integration, written in Rust"
+      homepage: "https://github.com/Huang-lab/fastVEP/blob/master/README.md"
+      documentation: "https://github.com/Huang-lab/fastVEP/blob/master/README.md"
+      tool_dev_url: "https://github.com/Huang-lab/fastVEP"
+      licence: ["Apache-2.0"]
+      identifier: ""
+  - "htslib":
+      description: "C library for high-throughput sequencing data formats"
+      homepage: "https://github.com/samtools/htslib"
+      documentation: "https://www.htslib.org/doc/"
+      tool_dev_url: "https://github.com/samtools/htslib"
+      doi: "10.1093/gigascience/giab007"
+      licence: ["MIT"]
+      identifier: biotools:htslib
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - vcf:
+        type: file
+        description: VCF file to annotate, optionally gzip compressed
+        pattern: "*.{vcf,vcf.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3016" # VCF
+    - custom_extra_files:
+        type: file
+        description: |
+          Optional sample-specific files to be staged and used with `ext.args`
+          (e.g. path to a gene panel file)
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing annotation information
+          e.g. `[ id:'genome' ]`
+    - gff3:
+        type: file
+        description: GFF3 file with the transcript models used for annotation
+        pattern: "*.{gff,gff3}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1975" # GFF3
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'genome' ]`
+    - fasta:
+        type: file
+        description: Optional reference genome FASTA file
+        pattern: "*.{fa,fasta,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+    - fai:
+        type: file
+        description: Optional reference genome FASTA index file
+        pattern: "*.fai"
+        ontologies:
+          - edam: "http://edamontology.org/format_3326" # FASTA index
+  - sa_files:
+      type: file
+      description: |
+        Optional fastVEP supplementary annotation files (.osa, .osa2, .osi, .oga),
+        staged into a `fastvep_sa/` directory and passed with `--sa-dir`. You can generate these annotation files with `fastvep sa-build`
+      pattern: "*.{osa,osa2,osi,oga}"
+      ontologies: []
+  - - meta4:
+        type: map
+        description: |
+          Groovy Map containing VEP cache information
+          e.g. `[ id:'115_WBcel235' ]`
+    - cache_dir:
+        type: directory
+        description: |
+          Optional VEP cache directory for known-variant lookup.
+        ontologies: []
+  - output_format:
+      type: string
+      description: |
+        Output format, passed to `--output-format`. One of `vcf`, `tab` or `json`.
+        The output is always bgzip compressed.
+
+output:
+  vcf:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.vcf.gz:
+          type: file
+          description: Annotated bgzip compressed VCF file, produced when `output_format` is `vcf`
+          pattern: "*.vcf.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3016" # VCF
+            - edam: "http://edamontology.org/format_3989" # GZIP format
+  tab:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.tab.gz:
+          type: file
+          description: Annotated variants in bgzip compressed tab-delimited format, produced when `output_format` is `tab`
+          pattern: "*.tab.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+            - edam: "http://edamontology.org/format_3989" # GZIP format
+  json:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.json.gz:
+          type: file
+          description: Annotated variants in bgzip compressed JSON format, produced when `output_format` is `json`
+          pattern: "*.json.gz"
+          ontologies:
+            - edam: "http://edamontology.org/format_3464" # JSON
+            - edam: "http://edamontology.org/format_3989" # GZIP format
+  transcript_cache:
+    - - meta2:
+          type: map
+          description: |
+            Groovy Map containing annotation information
+            e.g. `[ id:'genome' ]`
+      - ${gff3}.fastvep.cache:
+          type: file
+          description: Binary transcript cache built by fastVEP from the GFF3
+          pattern: "*.fastvep.cache"
+          ontologies:
+            - edam: "http://edamontology.org/format_2333" # Binary format
+  versions_fastvep:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "fastvep":
+          type: string
+          description: The name of the tool
+      - "fastvep --version | sed 's/^fastvep //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_htslib:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "htslib":
+          type: string
+          description: The name of the tool
+      - "bgzip --version | sed '1!d; s/.* //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - fastvep:
+          type: string
+          description: The name of the tool
+      - fastvep --version | sed 's/^fastvep //':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - htslib:
+          type: string
+          description: The name of the tool
+      - bgzip --version | sed '1!d; s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@DylanMHouse"
+maintainers:
+  - "@DylanMHouse"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/fastvep_htslib:1cb9b1d86ed7c379
+      build_id: bd-1cb9b1d86ed7c379_1
+      scan_id: sc-58f43c01a4abf17b_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/fastvep_htslib:c478897ef6e609a2
+      build_id: bd-c478897ef6e609a2_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c3/c3dda8b0c7fd437d6a0e82050ea78debf20dfbcb566dd8b63dbfecef51ae5979/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/fastvep/annotate/.conda-lock/linux_amd64-bd-1cb9b1d86ed7c379_1.txt

@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process COOLER_BALANCE {
     tag "$meta.id"
     label 'process_high'
@@ -24,7 +27,7 @@ process COOLER_BALANCE {
     extension = cool.getExtension()
     if ("$cool" == "${prefix}.${extension}") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
     """
-    ln -s ${cool} ${prefix}.${extension}
+    cp ${cool} ${prefix}.${extension}
 
     cooler balance \\
         $args \\

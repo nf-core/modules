@@ -53,3 +53,27 @@ authors:
   - "@rannick"
 maintainers:
   - "@rannick"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/python:3.12.2--37a94ef16a29fce0
+      build_id: bd-37a94ef16a29fce0_1
+      scan_id: sc-0f3eaa4147c2179f_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/python:3.12.2--99f5044fffa8bc7e
+      build_id: bd-99f5044fffa8bc7e_1
+      scan_id: sc-abad654ff250c684_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/python:3.12.2--9c8c6342dd9d1c8a
+      build_id: bd-9c8c6342dd9d1c8a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ca/ca12480e865de90051752075ee6b31c83559fa37775901622ca685b776912bb0/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/python:3.12.2--1c3360acef1d79c8
+      build_id: bd-1c3360acef1d79c8_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/50/50be2626c0fbfffc1470f1e75e0a4319d05d39df68d51acbf64e7683f56259a7/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/rrnatranscripts/.conda-lock/linux_amd64-bd-37a94ef16a29fce0_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/rrnatranscripts/.conda-lock/linux_arm64-bd-99f5044fffa8bc7e_1.txt

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process REPEATMODELER_REPEATMODELER {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/repeatmodeler:2.0.5--pl5321hdfd78af_0':
-        'quay.io/biocontainers/repeatmodeler:2.0.5--pl5321hdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f9/f91e94ff35696ead619551468cb593dd786709d9690cdb7e834daa6d0769571b/data'
+        : 'community.wave.seqera.io/library/repeatmasker_repeatmodeler:b718c9eee4ccffcb'}"
 
     input:
     tuple val(meta), path(db)
@@ -14,7 +17,7 @@ process REPEATMODELER_REPEATMODELER {
     tuple val(meta), path("*.fa") , emit: fasta
     tuple val(meta), path("*.stk"), emit: stk
     tuple val(meta), path("*.log"), emit: log
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('repeatmodeler'), eval("RepeatModeler --version  2>&1 | sed 's/RepeatModeler version //'") , emit: versions_repeatmodeler, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,18 +28,13 @@ process REPEATMODELER_REPEATMODELER {
     def db_name = file(db[0]).getBaseName()
     """
     RepeatModeler \\
-        -database $db_name \\
-        $args \\
-        -threads $task.cpus
+        -database ${db_name} \\
+        ${args} \\
+        -threads ${task.cpus}
 
     mv ${db_name}-families.fa   ${prefix}.fa
     mv ${db_name}-families.stk  ${prefix}.stk
     mv ${db_name}-rmod.log      ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        repeatmodeler: \$(RepeatModeler --version | sed 's/RepeatModeler version //')
-    END_VERSIONS
     """
 
     stub:
@@ -45,10 +43,5 @@ process REPEATMODELER_REPEATMODELER {
     touch ${prefix}.fa
     touch ${prefix}.stk
     touch ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        repeatmodeler: \$(RepeatModeler --version | sed 's/RepeatModeler version //')
-    END_VERSIONS
     """
 }

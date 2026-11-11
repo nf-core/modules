@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PRESTO_PAIRSEQ {
     tag "$meta.id"
     label 'process_low'
@@ -39,7 +42,6 @@ process PRESTO_PAIRSEQ {
     """
 
     stub:
-    def args = task.ext.args?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}-1_pair-pass.fastq.gz \\
