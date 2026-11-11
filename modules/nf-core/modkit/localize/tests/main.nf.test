@@ -69,7 +69,8 @@ nextflow_process {
         then {
             assert process.success
             assertAll(
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                // the debug log carries timestamps, so only its name is snapshotted
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log"])).match() }
             )
         }
     }

@@ -24,13 +24,16 @@ input:
     - bedmethyl:
         type: file
         description: bgzip-compressed bedMethyl file from modkit pileup
-        pattern: "*.bed.gz"
-        ontologies: []
+        pattern: "*.{bed,bedmethyl}.gz"
+        ontologies:
+          - edam: http://edamontology.org/format_3003 # BED
+          - edam: http://edamontology.org/format_3989 # GZIP format
     - tbi:
         type: file
         description: Tabix index for the bedMethyl file
-        pattern: "*.bed.gz.tbi"
-        ontologies: []
+        pattern: "*.gz.tbi"
+        ontologies:
+          - edam: http://edamontology.org/format_3616 # tabix
   - - meta2:
         type: map
         description: |
@@ -40,7 +43,8 @@ input:
         type: file
         description: TSV of genome sizes with columns chrom and size_in_bp
         pattern: "*.{sizes,tsv,txt,genome}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
   - - meta3:
         type: map
         description: |
@@ -53,7 +57,8 @@ input:
           as the points from which the window number of bases is centered
           (e.g. CpG islands, gene bodies, repeat elements).
         pattern: "*.bed"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3003 # BED
 output:
   tsv:
     - - meta:
@@ -65,7 +70,8 @@ output:
           type: file
           description: TSV output with percent-modification vs. offset from feature midpoints
           pattern: "*.tsv"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
   chart:
     - - meta:
           type: map
@@ -77,7 +83,8 @@ output:
           description: HTML document with interactive chart showing percent-modification
             vs. offset
           pattern: "*.html"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_2331 # HTML
   log:
     - - meta:
           type: map
@@ -86,9 +93,10 @@ output:
             e.g. `[ id:'test', single_end:false ]`
       - "*.log":
           type: file
-          description: File for debug logs to be written to
+          description: Debug log written by modkit (`--log-filepath`)
           pattern: "*.log"
-          ontologies: []
+          ontologies:
+            - edam: http://edamontology.org/format_2330 # Textual format
   versions_modkit:
     - - ${task.process}:
           type: string
