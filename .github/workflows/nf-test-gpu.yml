@@ -23,6 +23,8 @@ concurrency:
   cancel-in-progress: true
 
 env:
+  # renovate: datasource=github-releases depName=apptainer/apptainer versioning=semver
+  APPTAINER_VER: "1.5.5"
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   # renovate: datasource=github-releases depName=askimed/nf-test versioning=semver
   NFT_VER: "0.9.5"
