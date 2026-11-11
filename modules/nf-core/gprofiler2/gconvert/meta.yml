@@ -1,0 +1,139 @@
+name: "gprofiler2_gconvert"
+description: Convert gene and feature identifiers with gProfiler g:Convert
+keywords:
+  - gprofiler2
+  - gconvert
+  - identifier conversion
+  - gene ids
+tools:
+  - "gprofiler2":
+      description: "An R package for gene list functional enrichment analysis and namespace conversion with g:Profiler."
+      homepage: "https://biit.cs.ut.ee/gprofiler/page/r"
+      documentation: "https://cran.r-project.org/package=gprofiler2"
+      tool_dev_url: "https://github.com/gprofiler/gprofiler2"
+      doi: "10.1093/bioinformatics/btab213"
+      licence:
+        - "GPL-3.0-or-later"
+      identifier: biotools:gprofiler
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - ids_tsv:
+        type: file
+        description: TSV, TXT, or CSV table containing input IDs in the first column.
+        pattern: "*.{tsv,txt,csv}"
+        ontologies:
+          - edam: http://edamontology.org/format_3475 # TSV
+          - edam: http://edamontology.org/format_3752 # CSV
+    - target:
+        type: string
+        description: Target namespace to pass to gprofiler2::gconvert().
+output:
+  converted_ids:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.gprofiler2.gconvert.tsv":
+          type: file
+          description: TSV table returned by gprofiler2::gconvert().
+          pattern: "*.gprofiler2.gconvert.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  session_info:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*R_sessionInfo.log":
+          type: file
+          description: R session information.
+          pattern: "*R_sessionInfo.log"
+          ontologies: []
+  versions_rbase:
+    - - ${task.process}:
+          type: string
+          description: The process
+      - r-base:
+          type: string
+          description: The tool name
+      - "Rscript -e 'cat(as.character(getRversion()))'":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_nfcoreutils:
+    - - ${task.process}:
+          type: string
+          description: The process
+      - r-nfcore.utils:
+          type: string
+          description: The tool name
+      - "Rscript -e 'cat(as.character(packageVersion(\"nfcore.utils\")))'":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_gprofiler2:
+    - - ${task.process}:
+          type: string
+          description: The process
+      - r-gprofiler2:
+          type: string
+          description: The tool name
+      - "Rscript -e 'cat(as.character(packageVersion(\"gprofiler2\")))'":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_gprofilerdata:
+    - - ${task.process}:
+          type: string
+          description: The process
+      - gprofiler-data:
+          type: string
+          description: The tool name
+      - "Rscript -e 'cat(gprofiler2::get_version_info()[[\"gprofiler_version\"]])'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The process
+      - r-base:
+          type: string
+          description: The tool name
+      - "Rscript -e 'cat(as.character(getRversion()))'":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process
+      - r-nfcore.utils:
+          type: string
+          description: The tool name
+      - "Rscript -e 'cat(as.character(packageVersion(\"nfcore.utils\")))'":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process
+      - r-gprofiler2:
+          type: string
+          description: The tool name
+      - "Rscript -e 'cat(as.character(packageVersion(\"gprofiler2\")))'":
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process
+      - gprofiler-data:
+          type: string
+          description: The tool name
+      - "Rscript -e 'cat(gprofiler2::get_version_info()[[\"gprofiler_version\"]])'":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@Schansiate"
+maintainers:
+  - "@Schansiate"
