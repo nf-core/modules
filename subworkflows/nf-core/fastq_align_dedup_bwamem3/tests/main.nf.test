@@ -33,6 +33,17 @@ nextflow_workflow {
                 """
             }
         }
+        run("BWAMEM3_INDEX", alias: "BWAMEM3_INDEX_METH") {
+            script "../../../../modules/nf-core/bwamem3/index/main.nf"
+            process {
+                """
+                input[0] = Channel.value([
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                """
+            }
+        }
     }
 
     test("sarscov2 - fastq paired-end - taps") {
@@ -55,7 +66,7 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ])
-                input[2] = BWAMEM3_INDEX.out.index
+                input[2] = BWAMEM3_INDEX_METH.out.index
                 input[3] = false // skip_deduplication
                 """
             }
@@ -95,7 +106,7 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ])
-                input[2] = BWAMEM3_INDEX.out.index
+                input[2] = BWAMEM3_INDEX_METH.out.index
                 input[3] = false // skip_deduplication
                 """
             }
@@ -181,7 +192,7 @@ nextflow_workflow {
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
                 ])
-                input[2] = BWAMEM3_INDEX.out.index
+                input[2] = BWAMEM3_INDEX_METH.out.index
                 input[3] = false // skip_deduplication
                 """
             }
