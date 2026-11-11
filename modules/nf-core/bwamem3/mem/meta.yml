@@ -21,6 +21,11 @@ tools:
       homepage: "http://www.htslib.org"
       documentation: "http://www.htslib.org/doc/samtools.html"
       doi: "10.1093/bioinformatics/btp352"
+      publication:
+        author: "Li, H., Handsaker, B., Wysoker, A., Fennell, T., Ruan, J., Homer, N., Marth, G., Abecasis, G., Durbin, R. & 1000 Genome Project Data Processing Subgroup"
+        year: 2009
+        title: "The Sequence Alignment/Map format and SAMtools"
+        source: "Bioinformatics"
       licence: ["MIT"]
       identifier: "biotools:samtools"
 input:
@@ -47,8 +52,10 @@ input:
         description: |
           bwa-mem3 genome index files. Methylation-aware alignment (`ext.args = '--meth=taps'`
           for TAPS; the `=` is required) needs an index built with `bwa-mem3 index --meth`,
-          which adds the `*.meth.*` seed index.
-        pattern: "Directory containing bwa-mem3 index *.{0123,amb,ann,bwt.2bit.64,pac}"
+          which adds the `*.meth.*` seed index. Aligning against a `--meth` index needs about
+          1.7x the memory of a plain index (measured on human chr21 with bwa-mem3 0.16.0);
+          for a human genome that is tens of GB.
+        pattern: "Directory containing bwa-mem3 index *.{amb,ann,bwt.2bit.64,pac}"
         ontologies:
           - edam: "http://edamontology.org/data_3210"
   - - meta3:
@@ -66,6 +73,12 @@ input:
   - sort_bam:
       type: boolean
       description: use samtools sort (true) or samtools view (false)
+  - index_format:
+      type: string
+      description: |
+        Index to write alongside the sorted output: `bai` or `csi` for BAM, `crai` for CRAM.
+        Leave empty (`''`) to write no index. Requires `sort_bam = true`.
+      pattern: "bai|csi|crai"
 output:
   aligned:
     - - meta:

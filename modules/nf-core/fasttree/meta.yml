@@ -15,18 +15,30 @@ tools:
         - "GPL v2"
       identifier: biotools:fasttree
 input:
-  - alignment:
-      type: file
-      description: A FASTA format multiple sequence alignment file
-      pattern: "*.{fasta,fas,fa,mfa}"
-      ontologies: []
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - alignment:
+        type: file
+        description: A FASTA format multiple sequence alignment file
+        pattern: "*.{fasta,fas,fa,mfa}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929
 output:
   phylogeny:
-    - "*.tre":
-        type: file
-        description: A phylogeny in Newick format
-        pattern: "*.{tre}"
-        ontologies: []
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.nwk":
+          type: file
+          description: A phylogeny in Newick format
+          pattern: "*.{nwk}"
+          ontologies:
+            - edam: http://edamontology.org/format_1910
   versions_fasttree:
     - - ${task.process}:
           type: string
@@ -37,6 +49,18 @@ output:
       - fasttree -help 2>&1 | head -1 | sed 's/^FastTree \([0-9.]*\) .*$/\1/':
           type: eval
           description: The expression to obtain the version of the tool
+  log:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*.log":
+          type: file
+          description: FastTree log file with run details, useful for diagnosing failed runs
+          pattern: "*.log"
+          ontologies:
+            - edam: http://edamontology.org/format_2330
 topics:
   versions:
     - - ${task.process}:
