@@ -1,0 +1,72 @@
+nextflow_process {
+
+    name "Test Process SVDSS_SMOOTH"
+    script "../main.nf"
+    process "SVDSS_SMOOTH"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "svdss"
+    tag "svdss/smooth"
+
+    test("homo_sapiens - pacbio - bam, fasta") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22_chr22_KI270734v1_random/sequence/genome.fa.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.bam.collect { meta, bam_file -> [ meta, bam(bam_file).getReadsMD5() ] },
+                    process.out.bai.collect { meta, bai -> [ meta, file(bai).name ] },
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - pacbio - bam, fasta - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22_chr22_KI270734v1_random/sequence/genome.fa.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

@@ -1,0 +1,115 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "svdss_smooth"
+description: Smooth aligned reads with SVDSS by removing SNPs, small indels and sequencing errors, producing a sorted and indexed BAM for SFS extraction with SVDSS search
+keywords:
+  - structural variants
+  - sv calling
+  - smoothing
+  - long reads
+  - bam
+tools:
+  - svdss:
+      description: "Structural Variant Discovery from Sample-specific Strings."
+      homepage: "https://github.com/Parsoa/SVDSS"
+      documentation: "https://github.com/Parsoa/SVDSS/blob/v2.1.1/README.md"
+      tool_dev_url: "https://github.com/Parsoa/SVDSS"
+      doi: "10.1038/s41592-022-01674-1"
+      licence:
+        - "MIT"
+      identifier: biotools:svdss
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - bam:
+        type: file
+        description: Coordinate-sorted BAM file of reads aligned to the reference
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572" # BAM
+    - bai:
+        type: file
+        description: Index of the input BAM file
+        pattern: "*.bai"
+        ontologies: []
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing reference information
+          e.g. `[ id:'genome' ]`
+    - fasta:
+        type: file
+        description: Reference genome the reads were aligned to, plain or gzip-compressed
+        pattern: "*.{fasta,fa,fna}{,.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929" # FASTA
+output:
+  bam:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.bam:
+          type: file
+          description: Smoothed BAM file, sorted in the same order as the input
+          pattern: "*.bam"
+          ontologies:
+            - edam: "http://edamontology.org/format_2572" # BAM
+  bai:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - ${prefix}.bam.bai:
+          type: file
+          description: Index of the smoothed BAM file
+          pattern: "*.bam.bai"
+          ontologies: []
+  versions_svdss:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - svdss:
+          type: string
+          description: The name of the tool
+      - SVDSS --version 2>&1 | sed 's/SVDSS, v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - svdss:
+          type: string
+          description: The name of the tool
+      - SVDSS --version 2>&1 | sed 's/SVDSS, v//':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - samtools version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@krannich479"
+maintainers:
+  - "@krannich479"
