@@ -1,0 +1,32 @@
+nextflow_process {
+
+    name "Test Process COLABFOLD_DOWNLOADMODELS"
+    script "../main.nf"
+    process "COLABFOLD_DOWNLOADMODELS"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "colabfold"
+    tag "colabfold/downloadmodels"
+
+    // Stub only: the real ~3.5 GB download runs in colabfold/colabfold's GPU tests
+    test("alphafold2_ptm - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = 'alphafold2_ptm'
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}
