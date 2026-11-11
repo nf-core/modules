@@ -45,7 +45,7 @@ nextflow_process {
             assertAll (
                 { assert process.success },
                 { assert snapshot(
-                    process.out.bam,
+                    process.out.mapped,
                     file(process.out.log[0][1]).readLines().findAll { it.startsWith("decompHash") },
                     process.out.findAll { key, val -> key.startsWith("versions") },
                 ).match()
