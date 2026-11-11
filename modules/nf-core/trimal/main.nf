@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process TRIMAL {
     tag "$meta.id"
     label 'process_single'
@@ -14,7 +17,7 @@ process TRIMAL {
     output:
     tuple val(meta), path("${prefix}.${out_extension}"), emit: trimal
     tuple val(meta), path("${prefix}.html")            , emit: summary, optional: true
-    path "versions.yml"                                , emit: versions
+    tuple val("${task.process}"), val('trimal'), eval("trimal --version | sed '2!d;s/trimAl v//;s/ .*//'"), emit: versions_trimal, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,12 +30,7 @@ process TRIMAL {
     trimal \\
         -in ${aln} \\
         -out ${prefix}.${out_extension} \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        trimal: \$(trimal --version | sed -n 's/.*\\(v[0-9]\\+\\.[0-9]\\+\\.rev[0-9]\\+\\).*/\\1/p')
-    END_VERSIONS
+        ${args}
     """
 
     stub:
@@ -41,10 +39,5 @@ process TRIMAL {
     """
     touch ${prefix}.${out_extension}
     touch ${prefix}.html
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        trimal: \$(trimal --version | sed -n 's/.*\\(v[0-9]\\+\\.[0-9]\\+\\.rev[0-9]\\+\\).*/\\1/p')
-    END_VERSIONS
     """
 }

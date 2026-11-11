@@ -65,3 +65,27 @@ authors:
   - "@sofstam"
 maintainers:
   - "@sofstam"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/sylph-tax:1.9.2--861d9f8322018f98
+      build_id: bd-861d9f8322018f98_1
+      scan_id: sc-99d215b76ca5fc0b_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/sylph-tax:1.9.2--ad11d4ceb75f921d
+      build_id: bd-ad11d4ceb75f921d_1
+      scan_id: sc-e5f493ce3a44b3f7_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/sylph-tax:1.9.2--ae22ecd0b8ef5f21
+      build_id: bd-ae22ecd0b8ef5f21_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f2/f299731866f7b830801a515c1f624e6fabf5fe2e22af31d347409636c21db3b9/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/sylph-tax:1.9.2--73ed79cd6be4279e
+      build_id: bd-73ed79cd6be4279e_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5a4c0c28770356e330b855f85fd3e373eedecf9cbe29fbee6f4a81f49deb0c74/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/sylphtax/merge/.conda-lock/linux_amd64-bd-861d9f8322018f98_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/sylphtax/merge/.conda-lock/linux_arm64-bd-ad11d4ceb75f921d_1.txt

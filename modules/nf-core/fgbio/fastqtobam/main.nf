@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process FGBIO_FASTQTOBAM {
     tag "${meta.id}"
     label 'process_low'
@@ -9,6 +12,7 @@ process FGBIO_FASTQTOBAM {
 
     input:
     tuple val(meta), path(reads)
+    val extension
 
     output:
     tuple val(meta), path("*.{bam,cram}"), emit: bam
@@ -20,21 +24,13 @@ process FGBIO_FASTQTOBAM {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "bam"
+    def suffix = extension ?: "bam"
     def sample_name = args.contains("--sample") ? "" : "--sample ${prefix}"
     def library_name = args.contains("--library") ? "" : "--library ${prefix}"
 
-    def mem_gb = 8
+    def mem_gb = task.memory ? Math.max(1, task.memory.giga - 1) : 8
     if (!task.memory) {
         log.info('[fgbio FastqToBam] Available memory not known - defaulting to 8GB. Specify process memory requirements to change this.')
-    }
-    else if (mem_gb > task.memory.giga) {
-        if (task.memory.giga < 2) {
-            mem_gb = 1
-        }
-        else {
-            mem_gb = task.memory.giga - 1
-        }
     }
 
     """
@@ -52,7 +48,7 @@ process FGBIO_FASTQTOBAM {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def suffix = task.ext.suffix ?: "bam"
+    def suffix = extension ?: "bam"
     """
     touch ${prefix}.${suffix}
     """

@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { BCFTOOLS_MPILEUP                 } from '../../../modules/nf-core/bcftools/mpileup'
 include { BCFTOOLS_MERGE                   } from '../../../modules/nf-core/bcftools/merge'
 include { BCFTOOLS_ANNOTATE                } from '../../../modules/nf-core/bcftools/annotate'

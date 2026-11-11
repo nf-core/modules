@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process RPBP_PREPAREGENOME {
     tag "$meta.id"
     label 'process_medium'
@@ -21,8 +24,13 @@ process RPBP_PREPAREGENOME {
     task.ext.when == null || task.ext.when
 
     script:
-    task_ext_args = task.ext.args ?: ''
+    args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: meta.id
+
+    """
+    echo ${args}
+    """
+
     template 'prepare_rpbp_genome.py'
 
     stub:
