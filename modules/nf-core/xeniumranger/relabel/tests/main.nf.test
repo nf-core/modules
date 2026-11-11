@@ -40,13 +40,6 @@ nextflow_process {
             }
         }
         then {
-            // TEMPORARY CI DIAGNOSTICS
-            if (new File('/proc/meminfo').exists()) println new File('/proc/meminfo').readLines().take(3).join('\n')
-            new File('.nf-test/tests').eachFileRecurse { f ->
-                if (f.name == '_log' && f.parentFile.name == 'XENIUMRANGER_RELABEL') {
-                    println f.readLines().findAll { it.contains('jobmngr') || it.contains('WARN') }.take(40).join('\n')
-                }
-            }
             assertAll(
                 { assert process.success },
                 { assert process.out.outs != null },

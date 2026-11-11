@@ -3,6 +3,7 @@ nextflow_process {
     name "Test Process CELLRANGERARC_COUNT"
     script "../main.nf"
     process "CELLRANGERARC_COUNT"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
