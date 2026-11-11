@@ -210,30 +210,6 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - fhr yaml - json - spaced names") {
-
-        when {
-            process {
-                """
-                input[0] = channel.of(file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true).text)
-                    .collectFile(name: 'test sample.fhr.yaml')
-                    .map { metadata -> [ [ id:'test sample' ], metadata ] }
-                input[1] = 'json'
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert process.out.metadata[0][1].endsWith('/test sample.json') },
-                { assert path(process.out.metadata[0][1]).json.genome == 'SARS-CoV-2 test genome' },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
-            )
-        }
-
-    }
-
     test("sarscov2 - fhr json - yaml - ext.args --to overridden") {
 
         config "./nextflow.config"
@@ -288,6 +264,29 @@ nextflow_process {
 
     }
 
+    test("sarscov2 - fhr yaml - yaml - same input and output names - fails") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'genome.fhr' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true)
+                ]
+                input[1] = 'yaml'
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.stdout.toString().contains("Input and output names are the same") }
+            )
+        }
+
+    }
+
     test("sarscov2 - fasta - fhr - yaml - stub") {
 
         options "-stub"
@@ -325,26 +324,26 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - fhr yaml - json - spaced names - stub") {
+    test("sarscov2 - fhr yaml - yaml - same input and output names - fails - stub") {
 
         options "-stub"
 
         when {
             process {
                 """
-                input[0] = channel.of(file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true).text)
-                    .collectFile(name: 'test sample.fhr.yaml')
-                    .map { metadata -> [ [ id:'test sample' ], metadata ] }
-                input[1] = 'json'
+                input[0] = [
+                    [ id:'genome.fhr' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true)
+                ]
+                input[1] = 'yaml'
                 """
             }
         }
 
         then {
             assertAll(
-                { assert process.success },
-                { assert process.out.metadata[0][1].endsWith('/test sample.json') },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
+                { assert process.failed },
+                { assert process.stdout.toString().contains("Input and output names are the same") }
             )
         }
 

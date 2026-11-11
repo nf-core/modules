@@ -24,20 +24,21 @@ process FAIRBIOHEADERS_CONVERT {
     script:
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+    if ("${input}" == "${prefix}.${format}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     // --to follows ext.args so that the format input wins over any --to there.
-    // Nextflow already shell-escapes staged inputs, so only the prefix is quoted.
     """
     bioheaders \\
         convert \\
         ${args} \\
         --to ${format} \\
         ${input} \\
-        "${prefix}.${format}"
+        ${prefix}.${format}
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
+    if ("${input}" == "${prefix}.${format}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
-    touch "${prefix}.${format}"
+    touch ${prefix}.${format}
     """
 }
