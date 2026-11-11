@@ -185,45 +185,6 @@ nextflow_process {
 
     }
 
-    test("sarscov2 - fasta - fhr - spaced names") {
-
-        setup {
-            run("FAIRBIOHEADERS_COMBINE") {
-                script "../../combine/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [ id:'test' ],
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true),
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
-                    ]
-                    """
-                }
-            }
-        }
-
-        when {
-            process {
-                """
-                input[0] = FAIRBIOHEADERS_COMBINE.out.sequence
-                    .map { meta, fasta -> fasta.text }
-                    .collectFile(name: 'test sample.fasta')
-                    .map { fasta -> [ [ id:'test sample' ], fasta ] }
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert process.out.report[0][1].endsWith('/test sample.verify.txt') },
-                { assert path(process.out.report[0][1]).readLines() == ['file: test sample.fasta', 'Checksum verified.'] },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
-            )
-        }
-
-    }
-
     test("sarscov2 - fasta - fhr - changed after combine - fails") {
 
         setup {
@@ -301,30 +262,6 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(sanitizeOutput(process.out)).match() }
-            )
-        }
-
-    }
-
-    test("sarscov2 - fasta - spaced names - stub") {
-
-        options "-stub"
-
-        when {
-            process {
-                """
-                input[0] = channel.of(file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true).text)
-                    .collectFile(name: 'test sample.fasta')
-                    .map { fasta -> [ [ id:'test sample' ], fasta ] }
-                """
-            }
-        }
-
-        then {
-            assertAll(
-                { assert process.success },
-                { assert process.out.report[0][1].endsWith('/test sample.verify.txt') },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }

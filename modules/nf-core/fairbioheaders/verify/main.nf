@@ -24,7 +24,6 @@ process FAIRBIOHEADERS_VERIFY {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     // A group, not a pipe, so that a failed check fails the task.
-    // Nextflow already shell-escapes staged inputs, so only the prefix is quoted.
     """
     {
         printf 'file: %s\\n' ${sequence}
@@ -32,12 +31,12 @@ process FAIRBIOHEADERS_VERIFY {
             verify \\
             ${args} \\
             ${sequence}
-    } > "${prefix}.verify.txt"
+    } > ${prefix}.verify.txt
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    touch "${prefix}.verify.txt"
+    touch ${prefix}.verify.txt
     """
 }
