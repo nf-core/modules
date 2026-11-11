@@ -5,7 +5,9 @@ description: |
   fairbioheaders/combine as a sidecar YAML file that carries the file's checksum.
   The metadata is validated against its schema; the task fails when it is invalid,
   when a sequence file has no header, or when the output name would overwrite the input
-  (set `ext.prefix` in that case). FHGFF3 metadata cannot be written as JSON-LD or HTML.
+  (choose a different `ext.prefix` in that case). The output is named
+  `<prefix>.<format>`, where the prefix defaults to `<meta.id>_converted`.
+  FHGFF3 metadata cannot be written as JSON-LD or HTML.
 keywords:
   - metadata
   - provenance
@@ -57,7 +59,8 @@ output:
             e.g. `[ id:'sample1' ]`
       - ${prefix}.${format}:
           type: file
-          description: The metadata in the requested format
+          description: The metadata in the requested format, named `<prefix>.<format>`
+            (prefix defaults to `<meta.id>_converted`)
           pattern: "*.{json,yaml,jsonld,html}"
           ontologies:
             - edam: "http://edamontology.org/format_3464" # JSON

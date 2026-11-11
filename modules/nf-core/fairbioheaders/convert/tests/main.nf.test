@@ -232,7 +232,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.metadata[0][1].endsWith('/test.yaml') },
+                { assert process.out.metadata[0][1].endsWith('/test_converted.yaml') },
                 { assert !path(process.out.metadata[0][1]).text.trim().startsWith('{') },
                 { assert path(process.out.metadata[0][1]).readLines().contains('genome: SARS-CoV-2 test genome') },
                 { assert snapshot(sanitizeOutput(process.out)).match() }
@@ -266,11 +266,16 @@ nextflow_process {
 
     test("sarscov2 - fhr yaml - yaml - same input and output names - fails") {
 
+        config "./nextflow.config"
+
         when {
+            params {
+                module_prefix = 'genome.fhr'
+            }
             process {
                 """
                 input[0] = [
-                    [ id:'genome.fhr' ],
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true)
                 ]
                 input[1] = 'yaml'
@@ -328,11 +333,16 @@ nextflow_process {
 
         options "-stub"
 
+        config "./nextflow.config"
+
         when {
+            params {
+                module_prefix = 'genome.fhr'
+            }
             process {
                 """
                 input[0] = [
-                    [ id:'genome.fhr' ],
+                    [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/fairbioheaders/genome.fhr.yaml', checkIfExists: true)
                 ]
                 input[1] = 'yaml'

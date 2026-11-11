@@ -23,7 +23,7 @@ process FAIRBIOHEADERS_CONVERT {
 
     script:
     def args = task.ext.args ?: ''
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}_converted"
     if ("${input}" == "${prefix}.${format}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     // --to follows ext.args so that the format input wins over any --to there.
     """
@@ -36,7 +36,7 @@ process FAIRBIOHEADERS_CONVERT {
     """
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}_converted"
     if ("${input}" == "${prefix}.${format}") error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     touch ${prefix}.${format}
