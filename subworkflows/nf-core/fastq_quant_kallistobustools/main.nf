@@ -37,15 +37,13 @@ workflow FASTQ_QUANT_KALLISTOBUSTOOLS {
         kb_workflow
     )
 
-    ch_raw_counts = KALLISTOBUSTOOLS_COUNT.out.count.map{ meta, kb_dir ->
-        if (file("${kb_dir.toUriString()}/counts_unfiltered").exists()) {
-            [meta + [input_type: 'raw'], file("${kb_dir.toUriString()}/counts_unfiltered")]
-        }
+    ch_raw_counts = KALLISTOBUSTOOLS_COUNT.out.count.flatMap{ meta, kb_dir ->
+        def target = file("${kb_dir.toUriString()}/counts_unfiltered")
+        target.exists() ? [[meta + [input_type: 'raw'], target]] : []
     }
-    ch_filtered_counts = KALLISTOBUSTOOLS_COUNT.out.count.map{ meta, kb_dir ->
-        if (file("${kb_dir.toUriString()}/counts_filtered").exists()) {
-            [meta + [input_type: 'filtered'], file("${kb_dir.toUriString()}/counts_filtered")]
-        }
+    ch_filtered_counts = KALLISTOBUSTOOLS_COUNT.out.count.flatMap{ meta, kb_dir ->
+        def target = file("${kb_dir.toUriString()}/counts_filtered")
+        target.exists() ? [[meta + [input_type: 'filtered'], target]] : []
     }
 
     emit:
