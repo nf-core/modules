@@ -1,4 +1,25 @@
 {
+    "test_cooler_balance - mcool": {
+        "content": [
+            {
+                "versions_cooler": [
+                    [
+                        "COOLER_BALANCE",
+                        "cooler",
+                        "0.10.4"
+                    ]
+                ]
+            },
+            [
+                "test_balanced.mcool"
+            ]
+        ],
+        "timestamp": "2026-11-11T14:57:13.856805977",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.0"
+        }
+    },
     "test_cooler_balance - stub": {
         "content": [
             {
@@ -34,11 +55,11 @@
                 ]
             }
         ],
+        "timestamp": "2026-02-10T12:56:53.088011",
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.3"
-        },
-        "timestamp": "2026-02-10T12:56:53.088011"
+        }
     },
     "test_cooler_balance": {
         "content": [
@@ -55,10 +76,51 @@
                 "test.cool"
             ]
         ],
+        "timestamp": "2026-02-10T12:56:47.719373",
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.3"
-        },
-        "timestamp": "2026-02-10T12:56:47.719373"
+        }
+    },
+    "test_cooler_balance - mcool - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test_balanced"
+                        },
+                        "test_balanced.mcool:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "1": [
+                    [
+                        "COOLER_BALANCE",
+                        "cooler",
+                        "0.10.4"
+                    ]
+                ],
+                "cool": [
+                    [
+                        {
+                            "id": "test_balanced"
+                        },
+                        "test_balanced.mcool:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_cooler": [
+                    [
+                        "COOLER_BALANCE",
+                        "cooler",
+                        "0.10.4"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-11-11T14:57:19.70701531",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.0"
+        }
     }
 }

@@ -1,6 +1,7 @@
 nextflow_process {
 
     name "Test Process COOLER_BALANCE"
+    config "./nextflow.config"
 
     script "../main.nf"
     process "COOLER_BALANCE"
@@ -9,6 +10,7 @@ nextflow_process {
     tag "modules_nfcore"
     tag "cooler"
     tag "cooler/balance"
+    tag "cooler/zoomify"
 
     test("test_cooler_balance") {
         when {
@@ -48,6 +50,73 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/merge/toy/toy.symm.upper.2.cool', checkIfExists:true),
                     ''
                 ]
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("test_cooler_balance - mcool") {
+        setup {
+            run("COOLER_ZOOMIFY") {
+                script "../../zoomify/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id:'test'],// meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/merge/toy/toy.symm.upper.2.cool', checkIfExists:true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = COOLER_ZOOMIFY.out.mcool.map { meta, mcool -> [meta + [id:'test_balanced'], mcool, 4] }
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert !java.nio.file.Files.isSymbolicLink(java.nio.file.Paths.get(process.out.cool[0][1])) },
+                { assert snapshot(
+                    process.out.findAll { key, val -> key.startsWith("versions")},
+                    process.out.cool.collect{ file(it[1]).name }
+                ).match() }
+            )
+        }
+    }
+
+    test("test_cooler_balance - mcool - stub") {
+
+        options "-stub"
+
+        setup {
+            run("COOLER_ZOOMIFY") {
+                script "../../zoomify/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [id:'test'],// meta map
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/cooler/merge/toy/toy.symm.upper.2.cool', checkIfExists:true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            process {
+                """
+                input[0] = COOLER_ZOOMIFY.out.mcool.map { meta, mcool -> [meta + [id:'test_balanced'], mcool, 4] }
                 """
             }
         }
