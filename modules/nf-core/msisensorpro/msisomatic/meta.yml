@@ -1,8 +1,5 @@
 name: msisensorpro_msisomatic
-description: MSIsensor-pro evaluates Microsatellite Instability (MSI) for cancer
-  patients with next generation sequencing data. It accepts the whole genome
-  sequencing, whole exome sequencing and target region (panel) sequencing data
-  as input
+description: MSIsensor-pro evaluates Microsatellite Instability (MSI) for cancer patients with next generation sequencing data. It accepts the whole genome sequencing, whole exome sequencing and target region (panel) sequencing data as input
 keywords:
   - micro-satellite-scan
   - msisensor-pro
@@ -10,8 +7,7 @@ keywords:
   - somatic
 tools:
   - msisensorpro:
-      description: Microsatellite Instability (MSI) detection using
-        high-throughput sequencing data.
+      description: Microsatellite Instability (MSI) detection using high-throughput sequencing data.
       homepage: https://github.com/xjtu-omics/msisensor-pro
       documentation: https://github.com/xjtu-omics/msisensor-pro/wiki
       tool_dev_url: https://github.com/xjtu-omics/msisensor-pro
@@ -74,8 +70,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - ${prefix}:
           type: file
-          description: File containing final report with all detected
-            microsatellites, unstable somatic microsatellites, msi score
+          description: File containing final report with all detected microsatellites, unstable somatic microsatellites, msi score
           ontologies: []
   output_dis:
     - - meta:
@@ -87,25 +82,25 @@ output:
           type: file
           description: File containing distribution results
           ontologies: []
-  output_germline:
+  output_all:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}_germline:
+      - ${prefix}_all:
           type: file
-          description: File containing germline results
+          description: File containing the per-site test results (difference, P value, FDR) for all evaluated microsatellites
           ontologies: []
-  output_somatic:
+  output_unstable:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}_somatic:
+      - ${prefix}_unstable:
           type: file
-          description: File containing somatic results
+          description: File containing the unstable (somatic MSI) sites; only the header line if no site is unstable
           ontologies: []
   versions_msisensorpro:
     - - ${task.process}:
@@ -132,3 +127,27 @@ authors:
   - "@FriederikeHanssen"
 maintainers:
   - "@FriederikeHanssen"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/msisensor-pro:1.3.0--31bc4af4e656f312
+      build_id: bd-31bc4af4e656f312_1
+      scan_id: sc-ba3c2710d55240a5_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/msisensor-pro:1.3.0--dd8fd5ba4d009a4b
+      build_id: bd-dd8fd5ba4d009a4b_1
+      scan_id: sc-6a996ada97d33faa_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/msisensor-pro:1.3.0--f1cf37c64667fa3f
+      build_id: bd-f1cf37c64667fa3f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f1/f18c39447b9e009d46655155aae3eb06895038baee4424da87e3b1ad229a546c/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/msisensor-pro:1.3.0--cd033f0c1921d7c9
+      build_id: bd-cd033f0c1921d7c9_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/78/78b9be849e5052505c2c7369b8c080dd0cfddb239c7f48f7a9fef65bc6e88dcd/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/msisensorpro/msisomatic/.conda-lock/linux_amd64-bd-31bc4af4e656f312_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/msisensorpro/msisomatic/.conda-lock/linux_arm64-bd-dd8fd5ba4d009a4b_1.txt

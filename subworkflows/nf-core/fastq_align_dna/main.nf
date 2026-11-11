@@ -1,4 +1,5 @@
-#!/usr/bin/env nextflow
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
 
 //
 // FASTQ_ALIGN_DNA: Align fastq files to a reference genome
@@ -48,7 +49,7 @@ workflow FASTQ_ALIGN_DNA {
         ch_bam = ch_bam.mix(BWAMEM2_MEM.out.bam)
     }
     else if (aligner == 'bwamem3') {
-        BWAMEM3_MEM(ch_reads, ch_aligner_index, ch_fasta, sort)
+        BWAMEM3_MEM(ch_reads, ch_aligner_index, ch_fasta, sort, '')
         // If aligner is bwa-mem3
         ch_bam = ch_bam.mix(BWAMEM3_MEM.out.aligned)
         ch_bam_index = ch_bam_index.mix(BWAMEM3_MEM.out.index)

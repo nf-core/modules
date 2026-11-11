@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PRESEQ_LCEXTRAP {
     tag "$meta.id"
     label 'process_single'
     label 'error_retry'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/preseq:3.2.0--hdcf5f25_6':
-        'quay.io/biocontainers/preseq:3.2.0--hdcf5f25_6' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/49/497b9b64f7a0554e9e0eaba8b789fc8796a01f61547a52d6006774bea4b853d0/data'
+        : 'community.wave.seqera.io/library/preseq:3.2.0--c485d1f68d51de10'}"
 
     input:
     tuple val(meta), path(bam)
