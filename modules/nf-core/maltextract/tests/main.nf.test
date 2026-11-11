@@ -7,28 +7,19 @@ nextflow_process {
     tag "modules"
     tag "modules_nfcore"
     tag "maltextract"
-    tag "unzip"
 
     test("test_maltextract") {
-        setup{
-            run("UNZIP") {
-                script "../../unzip/main.nf"
-                process {
-                    """
-                    input[0] = [[], file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/maltextract/ncbi_taxmap.zip')]
-                    """
-                }
-            }
-        }
 
         when {
+            def ncbi_dir = "${outputDir}/ncbi_taxmap"
+            curlAndExtract('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/db/maltextract/ncbi_taxmap.zip', ncbi_dir)
             process {
                 """
                 input[0] = [ [],
                     file(params.modules_testdata_base_path + 'delete_me/malt/test.rma6')
                 ]
                 input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/maltextract/taxon_list.txt')
-                input[2] = UNZIP.out.unzipped_archive.map { it[1] }
+                input[2] = file('${ncbi_dir}')
                 """
             }
         }
