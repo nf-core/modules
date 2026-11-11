@@ -52,8 +52,9 @@ input:
     - fai:
         type: file
         description: |
-          FASTA index (.fai) for the reference. Required when reference is a FASTA.
-          Pass `[]` when reference is a minimap2 .mmi index.
+          FASTA index (.fai) for the reference. Optional: without it dorado
+          builds the index in the work directory. Pass `[]` when reference is a
+          minimap2 .mmi index.
         pattern: "*.fai"
         ontologies:
           - edam: http://edamontology.org/format_3003
