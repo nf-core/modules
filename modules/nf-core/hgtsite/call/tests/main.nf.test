@@ -38,13 +38,16 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                // The table is written whether or not any site passes, and always
-                // carries its header.
                 { assert path(process.out.tsv.get(0).get(1)).readLines()[0].startsWith("chrom\tstart\tend") },
+                // Two candidate positions are found and neither clears the
+                // enrichment test on three foreign reads, so the BED of passing
+                // sites is legitimately empty and is checked rather than
+                // snapshotted.
+                { assert path(process.out.bed.get(0).get(1)).readLines().size() == 0 },
                 // The VCF header carries the date and the command, so only its
                 // records are compared.
                 { assert snapshot(
-                    sanitizeOutput(process.out, unstableKeys:["vcf", "tbi"]),
+                    sanitizeOutput(process.out, unstableKeys:["vcf", "tbi", "bed"]),
                     path(process.out.vcf.get(0).get(1)).vcf.variantsMD5
                 ).match() }
             )

@@ -48,11 +48,14 @@ process HGTSITE_CALL {
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def bed_stub = save_bed ? "touch ${prefix}.bed" : ""
-    def vcf_stub = save_vcf ? "echo '' | gzip > ${prefix}.vcf.gz && touch ${prefix}.vcf.gz.tbi" : ""
-    def multiqc_stub = save_multiqc ? "touch ${prefix}_mqc.json" : ""
+    // One representative line per file rather than an empty one, so the stub
+    // resembles the real output. gzip -n keeps the timestamp out, which would
+    // otherwise change the checksum on every run.
+    def bed_stub = save_bed ? "printf 'chr1\\t1000\\t1200\\ttaxid_562\\t12\\t.\\n' > ${prefix}.bed" : ""
+    def vcf_stub = save_vcf ? "printf '##fileformat=VCFv4.2\\n#CHROM\\tPOS\\tID\\tREF\\tALT\\tQUAL\\tFILTER\\tINFO\\n' | gzip -n > ${prefix}.vcf.gz" : ""
+    def multiqc_stub = save_multiqc ? "echo '{\"id\": \"hgt_site\"}' > ${prefix}_mqc.json" : ""
     """
-    touch ${prefix}.tsv
+    printf 'chrom\\tstart\\tend\\n' > ${prefix}.tsv
     ${bed_stub}
     ${vcf_stub}
     ${multiqc_stub}
