@@ -37,10 +37,8 @@ process COOLER_BALANCE {
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    suffix = resolution ? "::/resolutions/$resolution" : ""
     extension = cool.getExtension()
-    def creation_cmd = suffix.endsWith(".gz") ? "echo '' | gzip -c >" : "touch"
     """
-    ${creation_cmd} ${prefix}.${extension}${suffix}
+    touch ${prefix}.${extension}
     """
 }

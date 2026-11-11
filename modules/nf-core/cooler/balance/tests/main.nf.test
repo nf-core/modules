@@ -26,6 +26,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
+                { assert !java.nio.file.Files.isSymbolicLink(java.nio.file.Paths.get(process.out.cool[0][1])) },
                 { assert snapshot(
                     process.out.findAll { key, val -> key.startsWith("versions")},
                     process.out.cool.collect{ file(it[1]).name }
