@@ -7,9 +7,9 @@ process GRAPHMAP2_ALIGN {
     tag "$meta.id"
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/graphmap:0.6.3--he513fc3_0' :
-        'quay.io/biocontainers/graphmap:0.6.3--he513fc3_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/2c/2cc3104dc1685c517113b64d39a936d04977410994ec5982ef22fd2b76199d8f/data'
+        : 'community.wave.seqera.io/library/graphmap:0.6.4--4c694751d262fa1f'}"
 
     input:
     tuple val(meta), path(reads)

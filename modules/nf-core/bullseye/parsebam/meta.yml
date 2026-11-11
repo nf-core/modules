@@ -75,3 +75,27 @@ authors:
   - "@brovolia"
 maintainers:
   - "@brovolia"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bullseye:1.1.0--6a0a52edc73ac840
+      build_id: bd-6a0a52edc73ac840_1
+      scan_id: sc-7d7cdf6bf74da9a0_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/bullseye:1.1.0--74ed95edbe3333bd
+      build_id: bd-74ed95edbe3333bd_1
+      scan_id: sc-705e4bc82c987fde_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bullseye:1.1.0--06fc849b7fa6ad21
+      build_id: bd-06fc849b7fa6ad21_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1d/1d1b3ef00779596d2255fc5dffeae072301ccc37d6cdb941c2aa8d67534ced41/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bullseye:1.1.0--7407dbc1d7d5fc10
+      build_id: bd-7407dbc1d7d5fc10_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ff/ffe10ad69bfe8de418e98f1091d1191206e7c851da8c43f64e6db6ab073e8f04/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bullseye/parsebam/.conda-lock/linux_amd64-bd-6a0a52edc73ac840_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/bullseye/parsebam/.conda-lock/linux_arm64-bd-74ed95edbe3333bd_1.txt
