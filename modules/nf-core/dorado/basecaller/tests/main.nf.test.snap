@@ -1,5 +1,5 @@
 {
-    "homo sapiens - GIAB HG002 pod5, sup,5mCG_5hmCG@latest, no models_dir, no reference - stub": {
+    "homo sapiens - pod5, sup,5mCG_5hmCG@latest - stub": {
         "content": [
             {
                 "bam": [
@@ -10,7 +10,22 @@
                         "HG002.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "summary": [],
+                "log": [
+                    [
+                        {
+                            "id": "HG002"
+                        },
+                        "HG002.log:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "summary": [
+                    [
+                        {
+                            "id": "HG002"
+                        },
+                        "HG002.sequencing_summary.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
                 "versions_dorado": [
                     [
                         "DORADO_BASECALLER",
@@ -20,24 +35,39 @@
                 ]
             }
         ],
-        "timestamp": "2026-09-06T13:05:19.696943112",
+        "timestamp": "2026-11-11T18:41:27.408011848",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"
         }
     },
-    "homo sapiens - GIAB HG002 pod5, sup,5mCG_5hmCG@latest, no models_dir, with reference - stub": {
+    "homo sapiens - pod5, sup,5mCG_5hmCG@latest - gpu": {
         "content": [
             {
                 "bam": [
                     [
                         {
-                            "id": "HG002_aligned"
+                            "id": "HG002"
                         },
-                        "HG002_aligned.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "HG002.bam"
                     ]
                 ],
-                "summary": [],
+                "log": [
+                    [
+                        {
+                            "id": "HG002"
+                        },
+                        "HG002.log"
+                    ]
+                ],
+                "summary": [
+                    [
+                        {
+                            "id": "HG002"
+                        },
+                        "HG002.sequencing_summary.txt"
+                    ]
+                ],
                 "versions_dorado": [
                     [
                         "DORADO_BASECALLER",
@@ -47,16 +77,35 @@
                 ]
             }
         ],
-        "timestamp": "2026-09-06T13:05:31.549023866",
+        "timestamp": "2026-11-11T18:41:20.013694827",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"
         }
     },
-    "homo sapiens - GIAB HG002 pod5, sup,5mCG_5hmCG@latest, no models_dir, no reference": {
+    "homo sapiens - pod5, fast@v5.0.0 - cpu": {
         "content": [
             {
-                "versions": [
+                "bam": [
+                    [
+                        {
+                            "id": "HG002"
+                        },
+                        "HG002.bam"
+                    ]
+                ],
+                "log": [
+                    [
+                        {
+                            "id": "HG002"
+                        },
+                        "HG002.log"
+                    ]
+                ],
+                "summary": [
+                    
+                ],
+                "versions_dorado": [
                     [
                         "DORADO_BASECALLER",
                         "dorado",
@@ -65,28 +114,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-04-06T17:37:06.751443581",
+        "timestamp": "2026-11-11T18:40:58.033697542",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "25.04.6"
-        }
-    },
-    "homo sapiens - GIAB HG002 pod5, sup,5mCG_5hmCG@latest, no models_dir, with reference": {
-        "content": [
-            {
-                "versions": [
-                    [
-                        "DORADO_BASECALLER",
-                        "dorado",
-                        "1.4.0+ba44a013"
-                    ]
-                ]
-            }
-        ],
-        "timestamp": "2026-04-06T17:37:22.678175168",
-        "meta": {
-            "nf-test": "0.9.5",
-            "nextflow": "25.04.6"
+            "nextflow": "25.10.4"
         }
     }
 }

@@ -1,5 +1,5 @@
 process DORADO_BASECALLER {
-    tag "$meta.id"
+    tag "${meta.id}"
     // process_gpu only requests the accelerator; process_low/process_long set the
     // CPU, memory and time budget for the surrounding task.
     label 'process_low'
@@ -7,19 +7,17 @@ process DORADO_BASECALLER {
     label 'process_gpu'
 
     // dorado is not on bioconda (ONTPL licence). Using
-    // Docker Hub image directly. SHA tag pins to v1.4.0; a semver tag is tracked in
-    // nanoporetech/dorado#1584. Same pattern as nf-core/parabricks modules.
-    conda null
+    // Docker Hub image directly. SHA tag pins to v1.4.0
     container "docker.io/nanoporetech/dorado:shac8f356489fa8b44b31beba841b84d2879de2088e"
 
     input:
-    tuple val(meta), path(pod5)                         // pod5 file or directory of pod5 files
-    val(model)                                          // combined model string e.g. "sup,5mCG_5hmCG@latest", "hac@v5.0.0"
-    tuple val(meta2), path(models_dir)                  // optional pre-downloaded models directory; pass [[],[]] to auto-download
-    tuple val(meta3), path(reference), path(fai)        // optional reference FASTA for alignment; pass [[],[],[]] to skip
+    tuple val(meta), path(pod5)
+    val model
+    tuple val(meta2), path(models_dir)
 
     output:
-    tuple val(meta), path("*.bam")                   , emit: bam
+    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("*.log"), emit: log
     tuple val(meta), path("*.sequencing_summary.txt"), emit: summary, optional: true
     tuple val("${task.process}"), val('dorado'), eval("dorado --version 2>&1 | head -1"), emit: versions_dorado, topic: versions
 
@@ -27,21 +25,25 @@ process DORADO_BASECALLER {
     task.ext.when == null || task.ext.when
 
     script:
-    def args         = task.ext.args ?: ''
-    def prefix       = task.ext.prefix ?: "${meta.id}"
-    def models_arg   = models_dir ? "--models-directory ${models_dir}" : "--models-directory ."
-    def ref_arg      = reference  ? "--reference ${reference}"          : ""
-
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error("Dorado module does not support Conda. Please use Docker / Singularity / Podman instead.")
+    }
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    // basecall on the GPU only when the pipeline requests one
+    def device = task.accelerator ? 'cuda:all' : 'cpu'
+    def models_arg = models_dir ? "--models-directory ${models_dir}" : "--models-directory ."
     """
     dorado \\
         basecaller \\
         ${args} \\
-        --device cuda:all \\
+        --device ${device} \\
         ${models_arg} \\
-        ${ref_arg} \\
         ${model} \\
         ${pod5} \\
-        > ${prefix}.bam
+        > ${prefix}.bam \\
+        2>| >( tee ${prefix}.log >&2 )
 
     # --emit-summary writes a fixed-name `sequencing_summary.txt` into the working
     # directory; prefix it so outputs stay per-sample.
@@ -51,11 +53,16 @@ process DORADO_BASECALLER {
     """
 
     stub:
-    def args    = task.ext.args ?: ''
-    def prefix  = task.ext.prefix ?: "${meta.id}"
+    // Exit if running this module with -profile conda / -profile mamba
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        error("Dorado module does not support Conda. Please use Docker / Singularity / Podman instead.")
+    }
+    def args = task.ext.args ?: ''
+    def prefix = task.ext.prefix ?: "${meta.id}"
     def summary = args.contains('--emit-summary') ? "touch ${prefix}.sequencing_summary.txt" : ''
     """
     touch ${prefix}.bam
+    touch ${prefix}.log
     ${summary}
     """
 }
