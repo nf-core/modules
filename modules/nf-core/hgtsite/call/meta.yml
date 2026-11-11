@@ -52,6 +52,15 @@ input:
   - host_taxid:
       type: integer
       description: NCBI taxid of the host, for example 9606 for human
+  - save_bed:
+      type: boolean
+      description: Write the sites that passed every filter as a BED file
+  - save_vcf:
+      type: boolean
+      description: Write every candidate site as a block compressed, tabix indexed VCF
+  - save_multiqc:
+      type: boolean
+      description: Write a summary table for MultiQC
 
 output:
   tsv:
@@ -59,10 +68,10 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-      - "*.hgt_site.tsv":
+      - "*.tsv":
           type: file
           description: Every candidate site, with the reason each one failed in the filter column
-          pattern: "*.hgt_site.tsv"
+          pattern: "*.tsv"
           ontologies:
             - edam: "http://edamontology.org/format_3475"
   bed:
@@ -70,10 +79,10 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-      - "*.hgt_site.bed":
+      - "*.bed":
           type: file
-          description: The sites that passed every filter, written when --bed is given in ext.args
-          pattern: "*.hgt_site.bed"
+          description: The sites that passed every filter, written when save_bed is true
+          pattern: "*.bed"
           ontologies:
             - edam: "http://edamontology.org/format_3003"
   vcf:
@@ -81,11 +90,10 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-      - "*.hgt_site.vcf{,.gz}":
+      - "*.vcf.gz":
           type: file
-          description: Every candidate site as a VCF insertion record, written when --vcf is given
-            in ext.args
-          pattern: "*.hgt_site.vcf{,.gz}"
+          description: Every candidate site as a VCF insertion record, written when save_vcf is true
+          pattern: "*.vcf.gz"
           ontologies:
             - edam: "http://edamontology.org/format_3016"
   tbi:
@@ -93,10 +101,10 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-      - "*.hgt_site.vcf.gz.tbi":
+      - "*.vcf.gz.tbi":
           type: file
-          description: Tabix index, written when the VCF name given in ext.args ends in .gz
-          pattern: "*.hgt_site.vcf.gz.tbi"
+          description: Tabix index for the VCF, written when save_vcf is true
+          pattern: "*.vcf.gz.tbi"
           ontologies: []
   multiqc:
     - - meta:
@@ -105,7 +113,7 @@ output:
             Groovy Map containing sample information
       - "*_mqc.json":
           type: file
-          description: Summary table for MultiQC, written when --multiqc is given in ext.args
+          description: Summary table for MultiQC, written when save_multiqc is true
           pattern: "*_mqc.json"
           ontologies:
             - edam: "http://edamontology.org/format_3464"
