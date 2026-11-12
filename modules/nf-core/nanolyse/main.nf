@@ -6,9 +6,9 @@ process NANOLYSE {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/nanolyse:1.2.0--py_0' :
-        'quay.io/biocontainers/nanolyse:1.2.0--py_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/65/65a7fa811e03299a0566533a684ddcc5479911959d19c7d5a72bdf83baf1d48e/data'
+        : 'community.wave.seqera.io/library/nanolyse:1.2.1--b47934bc562d4df6'}"
 
     input:
     tuple val(meta), path(fastq)

@@ -62,3 +62,27 @@ authors:
   - "@adamrtalbot"
 maintainers:
   - "@adamrtalbot"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/fq:0.12.0--b3082ff93d0ccff0
+      build_id: bd-b3082ff93d0ccff0_1
+      scan_id: sc-f21a88680f9cdf16_2
+    linux/arm64:
+      name: community.wave.seqera.io/library/fq:0.12.0--41c3b62452310f82
+      build_id: bd-41c3b62452310f82_1
+      scan_id: sc-55cb6598f426fae1_2
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/fq:0.12.0--2eebf4e58a46525e
+      build_id: bd-2eebf4e58a46525e_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1e/1edbe701f591caa7f7a930781d0364392706d291016f1028b5b9fe501ec6ef8c/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/fq:0.12.0--8bfef4392e820de8
+      build_id: bd-8bfef4392e820de8_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/80/80ba09e7d98be1120310df58960280440253953eaba0da00d71cd6b3f13211f9/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/fq/lint/.conda-lock/linux_amd64-bd-b3082ff93d0ccff0_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/fq/lint/.conda-lock/linux_arm64-bd-41c3b62452310f82_1.txt

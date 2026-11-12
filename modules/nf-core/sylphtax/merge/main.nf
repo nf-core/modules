@@ -7,8 +7,8 @@ process SYLPHTAX_MERGE {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/sylph-tax:1.9.0--pyhdfd78af_0'
-        : 'quay.io/biocontainers/sylph-tax:1.9.0--pyhdfd78af_0'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f2/f299731866f7b830801a515c1f624e6fabf5fe2e22af31d347409636c21db3b9/data'
+        : 'community.wave.seqera.io/library/sylph-tax:1.9.2--861d9f8322018f98'}"
 
     input:
     tuple val(meta), path(sylphtax_reports)

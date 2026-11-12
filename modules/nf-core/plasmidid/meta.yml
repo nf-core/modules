@@ -243,3 +243,17 @@ authors:
 maintainers:
   - "@joseespinosa"
   - "@drpatelh"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/blast_circos_mash_plasmidid_pruned:5ccfacf97162cdbc
+      build_id: bd-5ccfacf97162cdbc_1
+      scan_id: sc-17da85855eadf8ce_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/blast_circos_mash_plasmidid_pruned:647acb0db8629462
+      build_id: bd-647acb0db8629462_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/65/654d6253835ad4cbc59d48e862b1dc1c990cfd31e956b77013f9709eb6e09145/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/plasmidid/.conda-lock/linux_amd64-bd-5ccfacf97162cdbc_1.txt
