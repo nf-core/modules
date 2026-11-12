@@ -50,7 +50,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(file(process.out.pdf.get(0).get(1)).name,
                                   process.out.matrix,
-                                  process.out.versions)
+                                  process.out.findAll { key, val -> key.startsWith('version') })
                                   .match()
                 }
             )
@@ -74,7 +74,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(file(process.out.pdf.get(0).get(1)).name,
                                   process.out.matrix,
-                                  process.out.versions)
+                                  process.out.findAll { key, val -> key.startsWith('version') })
                                   .match()
                 }
             )
@@ -98,7 +98,7 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(file(process.out.pdf.get(0).get(1)).name,
                                   process.out.matrix,
-                                  process.out.versions)
+                                  process.out.findAll { key, val -> key.startsWith('version') })
                                   .match()
                 }
             )

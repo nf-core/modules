@@ -1,44 +1,35 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BUSCO_DOWNLOAD {
-    tag "$lineage"
+    tag "${lineage}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/c6/c607f319867d96a38c8502f751458aa78bbd18fe4c7c4fa6b9d8350e6ba11ebe/data'
-        : 'community.wave.seqera.io/library/busco_sepp:f2dbc18a2f7a5b64'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fd/fd93359cce52c80ad33d58e18a694f37dc8aee9ccf2530cce8c42f9ade5c1f3f/data'
+        : 'community.wave.seqera.io/library/busco:6.1.0--c502c35c2ab05540' }"
 
     input:
     val lineage
 
     output:
     path "busco_downloads", emit: download_dir
-    path "versions.yml"   , emit: versions
+    tuple val("${task.process}"), val('busco'), eval("busco --version 2> /dev/null | sed 's/BUSCO //g'"), emit: versions_busco, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${lineage}"
     """
     busco \\
-        --download $lineage \\
-        $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        busco: \$( busco --version 2> /dev/null | sed 's/BUSCO //g' )
-    END_VERSIONS
+        --download ${lineage} \\
+        ${args}
     """
 
     stub:
-    def args = task.ext.args ?: ''
     """
     mkdir busco_downloads
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        busco: \$( busco --version 2> /dev/null | sed 's/BUSCO //g' )
-    END_VERSIONS
     """
 }

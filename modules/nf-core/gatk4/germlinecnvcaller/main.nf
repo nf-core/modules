@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GATK4_GERMLINECNVCALLER {
     tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ce/ced519873646379e287bc28738bdf88e975edd39a92e7bc6a34bccd37153d9d0/data'
-        : 'community.wave.seqera.io/library/gatk4_gcnvkernel:edb12e4f0bf02cd3'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b9/b9822b92da68a3e7916072218082e3fa79bebc2f377947c363613adeecd56ec5/data'
+        : 'community.wave.seqera.io/library/gatk4-main_gcnvkernel:600cef9dfbee0739'}"
 
     input:
     tuple val(meta), path(tsv), path(intervals), path(ploidy), path(model)
@@ -13,8 +16,8 @@ process GATK4_GERMLINECNVCALLER {
     output:
     tuple val(meta), path("*-cnv-model/*-calls"), emit: cohortcalls, optional: true
     tuple val(meta), path("*-cnv-model/*-model"), emit: cohortmodel, optional: true
-    tuple val(meta), path("*-cnv-calls/*-calls"), emit: casecalls,   optional: true
-    path "versions.yml",                          emit: versions
+    tuple val(meta), path("*-cnv-calls/*-calls"), emit: casecalls, optional: true
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,7 +28,7 @@ process GATK4_GERMLINECNVCALLER {
     def intervals_command = intervals ? "--intervals ${intervals}" : ""
     def ploidy_command = ploidy ? "--contig-ploidy-calls ${ploidy}" : ""
     def model_command = model ? "--model ${model}" : ""
-    def input_list = tsv.collect { "--input ${it}" }.join(' ')
+    def input_list = tsv.collect { tsv_ -> "--input ${tsv_}" }.join(' ')
     def output_command = model ? "--output ${prefix}-cnv-calls" : "--output ${prefix}-cnv-model"
 
     def avail_mem = 3072
@@ -38,6 +41,8 @@ process GATK4_GERMLINECNVCALLER {
     """
     export THEANO_FLAGS="base_compiledir=\$PWD"
     export PYTENSOR_FLAGS="base_compiledir=\$PWD"
+    export MPLCONFIGDIR="\$PWD"
+    export XDG_CACHE_HOME="\$PWD"
     export OMP_NUM_THREADS=${task.cpus}
     export MKL_NUM_THREADS=${task.cpus}
 
@@ -50,11 +55,6 @@ process GATK4_GERMLINECNVCALLER {
         ${args} \\
         ${intervals_command} \\
         ${model_command}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -63,10 +63,5 @@ process GATK4_GERMLINECNVCALLER {
     mkdir -p ${prefix}-cnv-calls/${prefix}-calls
     mkdir -p ${prefix}-cnv-model/${prefix}-model
     mkdir -p ${prefix}-cnv-model/${prefix}-calls
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }

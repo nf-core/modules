@@ -33,8 +33,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                        process.out.versions,
-                        path(process.out.versions[0]).yaml,
+                        process.out.findAll { key, val -> key.startsWith("versions") },
                         file(process.out.vcf_gz_tbi.get(0).get(1)).name,
                         path(process.out.vcf_gz[0][1]).vcf.variantsMD5
                     ).match()
@@ -66,8 +65,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                        process.out.versions,
-                        path(process.out.versions[0]).yaml,
+                        process.out.findAll { key, val -> key.startsWith("versions") },
                         file(process.out.vcf_gz_tbi.get(0).get(1)).name,
                         path(process.out.vcf_gz[0][1]).vcf.variantsMD5
                     ).match()
@@ -99,8 +97,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                        process.out.versions,
-                        path(process.out.versions[0]).yaml,
+                        process.out.findAll { key, val -> key.startsWith("versions") },
                         file(process.out.vcf_gz_tbi.get(0).get(1)).name,
                         path(process.out.vcf_gz[0][1]).vcf.variantsMD5
                     ).match()
@@ -132,8 +129,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                        process.out.versions,
-                        path(process.out.versions[0]).yaml,
+                        process.out.findAll { key, val -> key.startsWith("versions") },
                         file(process.out.vcf_gz_tbi.get(0).get(1)).name,
                         path(process.out.vcf_gz[0][1]).vcf.variantsMD5
                     ).match()
@@ -165,8 +161,7 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                        process.out.versions,
-                        path(process.out.versions[0]).yaml,
+                        process.out.findAll { key, val -> key.startsWith("versions") },
                         file(process.out.vcf_gz_tbi.get(0).get(1)).name,
                         path(process.out.vcf_gz[0][1]).vcf.variantsMD5
                     ).match()

@@ -4,7 +4,8 @@
 
     "remoteEnv": {
         // Workspace path on the host for mounting with docker-outside-of-docker
-        "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
+        "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}",
+        "DOCKER_API_VERSION": "1.43"
     },
 
     "onCreateCommand": "./.devcontainer/setup.sh",

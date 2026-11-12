@@ -7,11 +7,11 @@ nextflow_process {
     tag "collectvcmetrics"
     tag "sentieon/collectvcmetrics"
 
+    config "./nextflow.config"
     script "../main.nf"
     process "SENTIEON_COLLECTVCMETRICS"
 
     test("Test VCF") {
-        config "./nextflow.config"
 
         when {
             process {
@@ -40,8 +40,7 @@ nextflow_process {
                     assert snapshot(
                         file(process.out.metrics[0][1]).readLines().findAll { !it.startsWith("#") },
                         file(process.out.summary[0][1]).readLines().findAll { !it.startsWith("#") },
-                        process.out.versions,
-                        path(process.out.versions[0]).yaml
+                        process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
@@ -49,7 +48,6 @@ nextflow_process {
     }
 
     test("Test VCF with intervals") {
-        config "./nextflow.config"
 
         when {
             process {
@@ -78,8 +76,7 @@ nextflow_process {
                     assert snapshot(
                         file(process.out.metrics[0][1]).readLines().findAll { !it.startsWith("#") },
                         file(process.out.summary[0][1]).readLines().findAll { !it.startsWith("#") },
-                        process.out.versions,
-                        path(process.out.versions[0]).yaml
+                        process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
                 }
             )
@@ -87,7 +84,6 @@ nextflow_process {
     }
 
     test("Test VCF - stub") {
-        config "./nextflow.config"
         options "-stub"
 
         when {

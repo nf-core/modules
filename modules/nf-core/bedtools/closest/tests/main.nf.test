@@ -31,7 +31,6 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
 
     test("homo_sapiens - fai") {
@@ -54,7 +53,6 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
 
     test("homo_sapiens - vcf") {
@@ -80,7 +78,80 @@ nextflow_process {
                 { assert snapshot(process.out).match() }
             )
         }
-
     }
 
+    test("homo_sapiens - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.multi_intervals.bed', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/multi_intervals.bed', checkIfExists: true)
+                    ]
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - fai - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.multi_intervals.bed', checkIfExists: true)
+                ]
+                input[1] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - vcf - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.bed', checkIfExists: true),
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/vcf/gnomAD.r2.1.1.vcf.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = []
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
 }

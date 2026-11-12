@@ -33,7 +33,11 @@
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,fef55c16db446db21f73a19204640ced"
+                    [
+                        "DATAVZRD",
+                        "datavzrd",
+                        "2.75.3"
+                    ]
                 ],
                 "report": [
                     [
@@ -65,27 +69,32 @@
                         ]
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,fef55c16db446db21f73a19204640ced"
+                "versions_datavzrd": [
+                    [
+                        "DATAVZRD",
+                        "datavzrd",
+                        "2.75.3"
+                    ]
                 ]
-            },
-            {
-                "DATAVZRD": {
-                    "datavzrd": "2.61.7"
-                }
             }
         ],
+        "timestamp": "2026-02-09T15:42:32.540265",
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.04.8"
-        },
-        "timestamp": "2025-11-07T15:51:59.303911"
+            "nextflow": "25.10.2"
+        }
     },
     "tsv": {
         "content": [
-            [
-                "versions.yml:md5,fef55c16db446db21f73a19204640ced"
-            ],
+            {
+                "versions_datavzrd": [
+                    [
+                        "DATAVZRD",
+                        "datavzrd",
+                        "2.75.3"
+                    ]
+                ]
+            },
             [
                 "index.html",
                 "network/config.js",
@@ -96,11 +105,11 @@
                 "static/bundle.js"
             ]
         ],
+        "timestamp": "2026-02-09T15:42:27.067191",
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.04.8"
-        },
-        "timestamp": "2025-11-07T15:51:54.770914"
+            "nextflow": "25.10.2"
+        }
     },
     "no_config_file": {
         "content": [
@@ -114,22 +123,95 @@
                 "report": [
                     
                 ],
-                "versions": [
+                "versions_datavzrd": [
                     
                 ]
             }
         ],
+        "timestamp": "2026-02-09T15:42:36.184057",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-06-26T10:15:09.362847938"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.2"
+        }
+    },
+    "generic - [ yaml, [ csv, tsv ] ] - report": {
+        "content": [
+            {
+                "report": [
+                    [
+                        {
+                            "id": "multiple_config"
+                        },
+                        [
+                            "index.html",
+                            [
+                                "config.js",
+                                [
+                                    "data_1.js"
+                                ],
+                                "functions.js",
+                                "index_1.html",
+                                [
+                                    "plots.js"
+                                ]
+                            ],
+                            [
+                                "bundle.js"
+                            ],
+                            [
+                                "config.js",
+                                [
+                                    "data_1.js"
+                                ],
+                                "functions.js",
+                                "index_1.html",
+                                [
+                                    "plots.js"
+                                ]
+                            ]
+                        ]
+                    ]
+                ],
+                "versions_datavzrd": [
+                    [
+                        "DATAVZRD",
+                        "datavzrd",
+                        "2.75.3"
+                    ]
+                ]
+            },
+            [
+                "index.html",
+                "network/config.js",
+                "network/data/data_1.js",
+                "network/functions.js",
+                "network/index_1.html",
+                "network/plots/plots.js",
+                "static/bundle.js",
+                "test/config.js",
+                "test/data/data_1.js",
+                "test/functions.js",
+                "test/index_1.html",
+                "test/plots/plots.js"
+            ]
+        ],
+        "timestamp": "2026-10-23T23:20:40.734358",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     },
     "csv": {
         "content": [
-            [
-                "versions.yml:md5,fef55c16db446db21f73a19204640ced"
-            ],
+            {
+                "versions_datavzrd": [
+                    [
+                        "DATAVZRD",
+                        "datavzrd",
+                        "2.75.3"
+                    ]
+                ]
+            },
             [
                 "index.html",
                 "static/bundle.js",
@@ -140,10 +222,10 @@
                 "test/plots/plots.js"
             ]
         ],
+        "timestamp": "2026-02-09T15:42:20.848415",
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.04.8"
-        },
-        "timestamp": "2025-11-07T15:51:50.079745"
+            "nextflow": "25.10.2"
+        }
     }
 }

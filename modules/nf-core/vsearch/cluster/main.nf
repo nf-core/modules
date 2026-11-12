@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VSEARCH_CLUSTER {
     tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-53dae514294fca7b44842b784ed85a5303ac2d80:7b3365d778c690ca79bc85aaaeb86bb39a2dec69-0':
-        'biocontainers/mulled-v2-53dae514294fca7b44842b784ed85a5303ac2d80:7b3365d778c690ca79bc85aaaeb86bb39a2dec69-0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/36/363cb3f920602951d1dee4e0d248eb7171b4dfd2611db3a581a480500ac25996/data'
+:         'community.wave.seqera.io/library/samtools_vsearch:36d56b7ebe9ea248' }"
 
     input:
     tuple val(meta), path(fasta)
@@ -23,7 +26,8 @@ process VSEARCH_CLUSTER {
     tuple val(meta), path('*.clusters.fasta*.gz')    , optional: true, emit: clusters
     tuple val(meta), path('*.profile.txt.gz')        , optional: true, emit: profile
     tuple val(meta), path('*.msa.fasta.gz')          , optional: true, emit: msa
-    path "versions.yml"                              , emit: versions
+    tuple val("${task.process}"), val('vsearch'), eval('vsearch --version 2>&1 | sed -n "1s/.*v\\([0-9.]*\\).*/\\\\1/p"'), emit: versions_vsearch, topic: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), emit: versions_samtools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -65,17 +69,13 @@ process VSEARCH_CLUSTER {
     then
         gzip -n ${prefix}.${out_ext}
     else
-        samtools view -T $fasta -S -b ${prefix}.${out_ext} > ${prefix}.bam
+        # samtools needs an uncompressed (or bgzipped) reference to build @SQ lines
+        gzip -cdf $fasta > ${prefix}.reference
+        samtools view -T ${prefix}.reference -S -b ${prefix}.${out_ext} > ${prefix}.bam
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vsearch: \$(vsearch --version 2>&1 | head -n 1 | sed 's/vsearch //g' | sed 's/,.*//g' | sed 's/^v//' | sed 's/_.*//')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def args3 = task.ext.args3 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
@@ -102,10 +102,5 @@ process VSEARCH_CLUSTER {
     """
     echo | gzip > ${output}
     ${non_gz_out}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vsearch: \$(vsearch --version 2>&1 | head -n 1 | sed 's/vsearch //g' | sed 's/,.*//g' | sed 's/^v//' | sed 's/_.*//')
-    END_VERSIONS
     """
 }

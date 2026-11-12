@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GFAFFIX {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
 
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gfaffix:0.1.5b--h031d066_0' :
-        'biocontainers/gfaffix:0.1.5b--h031d066_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://depot.galaxyproject.org/singularity/gfaffix:0.2.1--hc1c3326_0' :
+        'quay.io/biocontainers/gfaffix:0.2.1--hc1c3326_0' }"
 
     input:
     tuple val(meta), path(gfa)
@@ -14,7 +17,8 @@ process GFAFFIX {
     output:
     tuple val(meta), path("*.gfa"), emit: gfa
     tuple val(meta), path("*.txt"), emit: affixes
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('gfaffix'), eval('gfaffix --version | cut -d" " -f2'), emit: versions_gfaffix, topic: versions
+
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,12 +30,8 @@ process GFAFFIX {
     gfaffix \\
         $args \\
         $gfa \\
-        -o ${prefix}.gfaffix.gfa > ${prefix}.affixes.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gfaffix: \$(gfaffix --version | grep -o 'gfaffix .*' | cut -f2 -d ' ')
-    END_VERSIONS
+        -o ${prefix}.gfaffix.gfa \\
+        -a ${prefix}.affixes.txt
     """
 
     stub:
@@ -39,10 +39,5 @@ process GFAFFIX {
     """
     touch ${prefix}.gfaffix.gfa
     touch ${prefix}.affixes.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gfaffix: \$(gfaffix --version | grep -o 'gfaffix .*' | cut -f2 -d ' ')
-    END_VERSIONS
     """
 }

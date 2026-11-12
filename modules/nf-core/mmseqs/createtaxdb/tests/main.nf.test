@@ -10,33 +10,32 @@ nextflow_process {
     tag "mmseqs/createtaxdb"
     tag "untar"
 
-    test("sarscov2 - mmseqs db") {
-
-        setup {
-            run("UNTAR", alias: "UNTAR_MMSEQS_DB") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/mmseqs.tar.gz', checkIfExists: true)
-                    ]
-                    """
-                }
-            }
-            run("UNTAR", alias: "UNTAR_TAXDUMP") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [id: 'taxdump'],
-                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdump/taxdump.tar.gz', checkIfExists: true)
-                    ]
-                    """
-                }
+    setup {
+        run("UNTAR", alias: "UNTAR_MMSEQS_DB") {
+            script "../../../untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/mmseqs.tar.gz', checkIfExists: true)
+                ]
+                """
             }
         }
+        run("UNTAR", alias: "UNTAR_TAXDUMP") {
+            script "../../../untar/main.nf"
+            process {
+                """
+                input[0] = [
+                    [id: 'taxdump'],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdump/taxdump.tar.gz', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
 
+    test("sarscov2 - mmseqs db") {
         when {
             process {
                 """
@@ -63,47 +62,20 @@ nextflow_process {
                 }
                 .first()
 
-            assert process.success
             assertAll(
+                { assert process.success },
                 { assert snapshot(
                         mapping_file.getName(), // mapping file will be empty in this test data
-                        taxonomy_file.getName() // taxonomy file is not stable and it's binary, so just check the name
+                        taxonomy_file.getName(), // taxonomy file is not stable and it's binary, so just check the name
+                        process.out.findAll { key, val -> key.startsWith("versions") }
                     ).match()
-                },
-                { assert snapshot(process.out.versions_mmseqs).match("versions") }
+                }
             )
         }
-
     }
 
     test("sarscov2 - mmseqs db - stub") {
-
         options "-stub"
-
-        setup {
-            run("UNTAR", alias: "UNTAR_MMSEQS_DB") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [id:'test'],
-                        file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/mmseqs.tar.gz', checkIfExists: true)
-                    ]
-                    """
-                }
-            }
-            run("UNTAR", alias: "UNTAR_TAXDUMP") {
-                script "../../../untar/main.nf"
-                process {
-                    """
-                    input[0] = [
-                        [id: 'taxdump'],
-                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/metagenome/taxonomy/taxdump/taxdump.tar.gz', checkIfExists: true)
-                    ]
-                    """
-                }
-            }
-        }
 
         when {
             process {
@@ -116,8 +88,8 @@ nextflow_process {
         }
 
         then {
-            assert process.success
             assertAll(
+                { assert process.success },
                 { assert snapshot(process.out).match() }
             )
         }

@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "picard_collectvariantcallingmetrics"
 description: Collects per-sample and aggregate (spanning all samples) metrics from the provided VCF file
 keywords:
@@ -12,9 +11,9 @@ tools:
       homepage: "https://broadinstitute.github.io/picard/"
       documentation: "https://broadinstitute.github.io/picard/"
       tool_dev_url: "https://github.com/broadinstitute/picard"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:picard_tools
-
 input:
   - - meta:
         type: map
@@ -26,35 +25,39 @@ input:
         description: Input VCF file for analysis
         pattern: "*.{vcf,vcf.gz}"
         ontologies:
-          - edam: "http://edamontology.org/format_3016" # VCF
+          - edam: "http://edamontology.org/format_3016"
     - index:
         type: file
         description: Index file for the input VCF file
         pattern: "*.{idx,tbi}"
+        ontologies: []
     - intervals_file:
         type: file
         description: Optional BED file specifying target intervals
         pattern: "*.{bed,bed.gz,intervals_list}"
+        ontologies: []
     - fasta:
         type: file
         description: Reference sequence file
         pattern: "*.{fasta,fa,fasta.gz,fa.gz}"
         ontologies:
-          - edam: "http://edamontology.org/format_1929" # FASTA
+          - edam: "http://edamontology.org/format_1929"
     - dict:
         type: file
         description: Reference sequence dictionary file
         pattern: "*.{dict}"
+        ontologies: []
     - dbsnp:
         type: file
         description: Reference dbSNP file in dbSNP or VCF format
         pattern: "*.{vcf,vcf.gz}"
         ontologies:
-          - edam: "http://edamontology.org/format_3016" # VCF
+          - edam: "http://edamontology.org/format_3016"
     - dbsnp_index:
         type: file
         description: Reference dbSNP file in dbSNP or VCF format
         pattern: "*.{idx,tbi}"
+        ontologies: []
 output:
   detail_metrics:
     - - meta:
@@ -66,6 +69,7 @@ output:
           type: file
           description: Detailed variant calling metrics file
           pattern: "*.variant_calling_detail_metrics"
+          ontologies: []
   summary_metrics:
     - - meta:
           type: map
@@ -76,13 +80,53 @@ output:
           type: file
           description: Summary variant calling metrics file
           pattern: "*.variant_calling_summary_metrics"
+          ontologies: []
+  versions_picard:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - picard:
+          type: string
+          description: The tool name
+      - "picard CollectVariantCallingMetrics --version 2>&1 | sed -n 's/.*Version://p'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - picard:
+          type: string
+          description: The tool name
+      - "picard CollectVariantCallingMetrics --version 2>&1 | sed -n 's/.*Version://p'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@georgiakes"
 maintainers:
   - "@georgiakes"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/picard:3.5.0--be20f299a1924f0d
+      build_id: bd-be20f299a1924f0d_1
+      scan_id: sc-ad63bee994dd89b0_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/picard:3.5.0--5516268008db5ab4
+      build_id: bd-5516268008db5ab4_1
+      scan_id: sc-c16455a3c81bb32a_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/picard:3.5.0--89375ac386b71342
+      build_id: bd-89375ac386b71342_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b4/b474c6f12c0502377b95062b75ef4b7778864b1353c7fc1d5a3b1f3b3017fd2e/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/picard:3.5.0--51fe15653ca25a7c
+      build_id: bd-51fe15653ca25a7c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/35/35ed881e77f6b66f1b9204394c8909fd66da367891434a81f536704a13fad3c3/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/picard/collectvariantcallingmetrics/.conda-lock/linux_amd64-bd-be20f299a1924f0d_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/picard/collectvariantcallingmetrics/.conda-lock/linux_arm64-bd-5516268008db5ab4_1.txt

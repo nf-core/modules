@@ -7,13 +7,16 @@ nextflow_workflow {
     tag "subworkflows"
     tag "subworkflows_nfcore"
     tag "subworkflows/vcf_annotate_ensemblvep_snpeff"
-    tag "ensemblvep/vep"
-    tag "snpeff/snpeff"
-    tag "tabix/tabix"
-    tag "tabix/bgzip"
-    tag "bcftools/pluginscatter"
+    tag "bcftools"
     tag "bcftools/concat"
+    tag "bcftools/pluginscatter"
     tag "bcftools/sort"
+    tag "ensemblvep"
+    tag "ensemblvep/vep"
+    tag "htslib"
+    tag "htslib/bgziptabix"
+    tag "snpeff"
+    tag "snpeff/snpeff"
 
     config "./nextflow.config"
 
@@ -22,9 +25,12 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                vep_cache = Channel.of(file('s3://annotation-cache/vep_cache/113_WBcel235/')).collect()
+                vep_cache = channel.of([
+                    [ id:'115_WBcel235' ],
+                    file('s3://annotation-cache/vep_cache/115_WBcel235/')
+                ]).collect()
 
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id:'custom_test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
@@ -36,13 +42,14 @@ nextflow_workflow {
                 input[1] = [[],[]]
                 input[2] = "WBcel235"
                 input[3] = "caenorhabditis_elegans"
-                input[4] = "113"
+                input[4] = "115"
                 input[5] = vep_cache
                 input[6] = []
                 input[7] = []
                 input[8] = []
                 input[9] = ["ensemblvep"]
                 input[10] = 5
+                input[11] = [[], []]
                 """
             }
         }
@@ -52,7 +59,7 @@ nextflow_workflow {
             assertAll(
                 { assert snapshot(
                     workflow.out.vcf_tbi.collect { [it[0], "${file(it[1]).name},variantsMD5:${path(it[1]).vcf.variantsMD5}", file(it[2]).name] },
-                    workflow.out.vep_reports.collect { it instanceof String ? file(it).name : it },
+                    workflow.out.vep_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_html.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_genes.collect { it.collect { it instanceof String ? file(it).name : it } },
@@ -67,12 +74,12 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                snpeff_cache = Channel.of([
+                snpeff_cache = channel.of([
                     [ id:'WBcel235.99' ],
                     file('s3://annotation-cache/snpeff_cache/WBcel235.99/')
                 ]).collect()
 
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id:'test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test.vcf.gz.tbi', checkIfExists: true),
@@ -90,13 +97,14 @@ nextflow_workflow {
                 input[1] = [[],[]]
                 input[2] = "WBcel235"
                 input[3] = "caenorhabditis_elegans"
-                input[4] = "113"
+                input[4] = "115"
                 input[5] = []
                 input[6] = []
                 input[7] = "WBcel235.99"
                 input[8] = snpeff_cache
                 input[9] = ["snpeff"]
                 input[10] = 5
+                input[11] = [[], []]
                 """
             }
         }
@@ -106,7 +114,7 @@ nextflow_workflow {
             assertAll(
                 { assert snapshot(
                     workflow.out.vcf_tbi.collect { [it[0], "${file(it[1]).name},variantsMD5:${path(it[1]).vcf.variantsMD5}", file(it[2]).name] },
-                    workflow.out.vep_reports.collect { it instanceof String ? file(it).name : it },
+                    workflow.out.vep_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_html.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_genes.collect { it.collect { it instanceof String ? file(it).name : it } },
@@ -121,13 +129,16 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                snpeff_cache = Channel.of([
+                snpeff_cache = channel.of([
                     [ id:'WBcel235.99' ],
                     file('s3://annotation-cache/snpeff_cache/WBcel235.99/')
                 ]).collect()
-                vep_cache = Channel.of(file('s3://annotation-cache/vep_cache/113_WBcel235/')).collect()
+                vep_cache = channel.of([
+                    [ id:'115_WBcel235' ],
+                    file('s3://annotation-cache/vep_cache/115_WBcel235/')
+                ]).collect()
 
-                input[0] = Channel.of(                [
+                input[0] = channel.of(                [
                     [ id:'custom_test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
@@ -139,13 +150,14 @@ nextflow_workflow {
                 input[1] = [[],[]]
                 input[2] = "WBcel235"
                 input[3] = "caenorhabditis_elegans"
-                input[4] = "113"
+                input[4] = "115"
                 input[5] = vep_cache
                 input[6] = []
                 input[7] = "WBcel235.99"
                 input[8] = snpeff_cache
                 input[9] = ["snpeff", "ensemblvep"]
                 input[10] = 5
+                input[11] = [[], []]
                 """
             }
         }
@@ -155,7 +167,7 @@ nextflow_workflow {
             assertAll(
                 { assert snapshot(
                     workflow.out.vcf_tbi.collect { [it[0], "${file(it[1]).name},variantsMD5:${path(it[1]).vcf.variantsMD5}", file(it[2]).name] },
-                    workflow.out.vep_reports.collect { it instanceof String ? file(it).name : it },
+                    workflow.out.vep_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_html.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_genes.collect { it.collect { it instanceof String ? file(it).name : it } },
@@ -170,9 +182,12 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                vep_cache = Channel.of(file('s3://annotation-cache/vep_cache/113_WBcel235/')).collect()
+                vep_cache = channel.of([
+                    [ id:'115_WBcel235' ],
+                    file('s3://annotation-cache/vep_cache/115_WBcel235/')
+                ]).collect()
 
-                input[0] = Channel.of(                [
+                input[0] = channel.of(                [
                     [ id:'custom_test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
@@ -184,13 +199,14 @@ nextflow_workflow {
                 input[1] = [[],[]]
                 input[2] = "WBcel235"
                 input[3] = "caenorhabditis_elegans"
-                input[4] = "113"
+                input[4] = "115"
                 input[5] = vep_cache
                 input[6] = []
                 input[7] = []
                 input[8] = []
                 input[9] = ["ensemblvep"]
                 input[10] = 100
+                input[11] = [[], []]
                 """
             }
         }
@@ -200,7 +216,7 @@ nextflow_workflow {
             assertAll(
                 { assert snapshot(
                     workflow.out.vcf_tbi.collect { [it[0], "${file(it[1]).name},variantsMD5:${path(it[1]).vcf.variantsMD5}", file(it[2]).name] },
-                    workflow.out.vep_reports.collect { it instanceof String ? file(it).name : it },
+                    workflow.out.vep_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_html.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_genes.collect { it.collect { it instanceof String ? file(it).name : it } },
@@ -215,9 +231,12 @@ nextflow_workflow {
         when {
             workflow {
                 """
-                vep_cache = Channel.of(file('s3://annotation-cache/vep_cache/113_WBcel235/')).collect()
+                vep_cache = channel.of([
+                    [ id:'115_WBcel235' ],
+                    file('s3://annotation-cache/vep_cache/115_WBcel235/')
+                ]).collect()
 
-                input[0] = Channel.of([
+                input[0] = channel.of([
                     [ id:'custom_test', single_end:false ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/vcf/test2.vcf.gz.tbi', checkIfExists: true),
@@ -229,13 +248,14 @@ nextflow_workflow {
                 input[1] = [[],[]]
                 input[2] = "WBcel235"
                 input[3] = "caenorhabditis_elegans"
-                input[4] = "113"
+                input[4] = "115"
                 input[5] = vep_cache
                 input[6] = []
                 input[7] = []
                 input[8] = []
                 input[9] = ["ensemblvep"]
                 input[10] = []
+                input[11] = [[], []]
                 """
             }
         }
@@ -245,7 +265,7 @@ nextflow_workflow {
             assertAll(
                 { assert snapshot(
                     workflow.out.vcf_tbi.collect { [it[0], "${file(it[1]).name},variantsMD5:${path(it[1]).vcf.variantsMD5}", file(it[2]).name] },
-                    workflow.out.vep_reports.collect { it instanceof String ? file(it).name : it },
+                    workflow.out.vep_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_reports.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_html.collect { it.collect { it instanceof String ? file(it).name : it } },
                     workflow.out.snpeff_genes.collect { it.collect { it instanceof String ? file(it).name : it } },

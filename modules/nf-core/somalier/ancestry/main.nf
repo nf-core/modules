@@ -1,12 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
 
 process SOMALIER_ANCESTRY {
     tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/somalier:0.2.19--h0c29559_0':
-        'biocontainers/somalier:0.2.19--h0c29559_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f5/f5ad8a7223d537f18f2899b16bd2b14f93866656c4ddce6d16181319d9a82f63/data'
+        : 'community.wave.seqera.io/library/somalier:0.3.6--127e0e29751f4940'}"
 
     input:
     tuple val(meta),  path(query_somalier_files, stageAs: "query_files/*")
@@ -15,7 +17,7 @@ process SOMALIER_ANCESTRY {
     output:
     tuple val(meta), path("*.somalier-ancestry.tsv") , emit: tsv
     tuple val(meta), path("*.somalier-ancestry.html"), emit: html
-    path "versions.yml"                    , emit: versions
+    tuple val("${task.process}"), val('somalier'), eval('somalier 2>&1 | sed -n \'s/.*version: \\([0-9.]*\\).*/\\1/p\''), emit: versions_somalier, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,11 +32,6 @@ process SOMALIER_ANCESTRY {
         ++ $query_somalier_files  \\
         --output-prefix=$prefix  \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        somalier: \$(echo \$(somalier 2>&1) | sed 's/^.*somalier version: //; s/Commands:.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -42,11 +39,6 @@ process SOMALIER_ANCESTRY {
     """
     touch "${prefix}.somalier-ancestry.tsv"
     touch "${prefix}.somalier-ancestry.html"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        somalier: \$(echo \$(somalier 2>&1) | sed 's/^.*somalier version: //; s/Commands:.*\$//')
-    END_VERSIONS
     """
 
 }

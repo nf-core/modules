@@ -11,7 +11,8 @@ tools:
         Fast BAM/CRAM depth calculation for WGS, exome, or targeted sequencing.
       documentation: https://github.com/brentp/mosdepth
       doi: 10.1093/bioinformatics/btx699
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:mosdepth
 input:
   - - meta:
@@ -44,6 +45,12 @@ input:
         description: Reference genome FASTA file
         pattern: "*.{fa,fasta}"
         ontologies: []
+  - quantize_labels:
+      type: list
+      description: |
+        List of labels for quantized coverage bins, e.g. [ "NO_COVERAGE", "LOW_COVERAGE", "MEDIUM_COVERAGE", "HIGH_COVERAGE" ]
+        The first value will be assigned to the `MOSDEPTH_Q0` environment variable, the second to `MOSDEPTH_Q1`, and so on.
+        These can then be used in the `--quantize` option of mosdepth to assign labels to quantized coverage bins.
 output:
   global_txt:
     - - meta:
@@ -64,7 +71,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.summary.txt":
           type: file
-          description: Text file with summary mean depths per chromosome and regions
+          description: Text file with summary mean depths per chromosome and
+            regions
           pattern: "*.{summary.txt}"
           ontologies: []
   regions_txt:
@@ -163,8 +171,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.thresholds.bed.gz":
           type: file
-          description: BED file with the number of bases in each region that are covered
-            at or above each threshold
+          description: BED file with the number of bases in each region that are
+            covered at or above each threshold
           pattern: "*.{thresholds.bed.gz}"
           ontologies: []
   thresholds_csi:
@@ -185,10 +193,19 @@ output:
       - mosdepth:
           type: string
           description: The tool name
-      - "mosdepth --version | sed 's/mosdepth //g'":
-          type: string
+      - mosdepth --version | sed 's/mosdepth //g':
+          type: eval
           description: The command used to generate the version of the tool
-
+  versions_gzip:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - gzip:
+          type: string
+          description: The name of the tool
+      - gzip -V 2>&1 | sed 's/gzip \([0-9.]*\).*/\1/;q':
+          type: eval
+          description: The expression to obtain the version of the tool
 topics:
   versions:
     - - ${task.process}:
@@ -197,9 +214,18 @@ topics:
       - mosdepth:
           type: string
           description: The tool name
-      - "mosdepth --version | sed 's/mosdepth //g'":
-          type: string
+      - mosdepth --version | sed 's/mosdepth //g':
+          type: eval
           description: The command used to generate the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - gzip:
+          type: string
+          description: The name of the tool
+      - gzip -V 2>&1 | sed 's/gzip \([0-9.]*\).*/\1/;q':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@joseespinosa"
   - "@drpatelh"

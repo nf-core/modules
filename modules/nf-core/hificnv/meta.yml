@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "hificnv"
 description: "Copy number variant calling from PacBio HiFi reads"
 keywords:
@@ -15,8 +14,9 @@ tools:
       documentation: "https://github.com/PacificBiosciences/HiFiCNV"
       tool_dev_url: "https://github.com/PacificBiosciences/HiFiCNV"
       doi: "10.1093/bioinformatics/btac808"
-      licence: ["Pacific Biosciences Software License Agreement"]
-
+      licence:
+        - "Pacific Biosciences Software License Agreement"
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -27,15 +27,18 @@ input:
         type: file
         description: "Sorted BAM or CRAM file from PacBio HiFi reads"
         pattern: "*.{bam,cram}"
+        ontologies: []
     - bai:
         type: file
         description: BAM index file (CSI, CRAI, or BAI format)
         pattern: "*.{bai,csi,crai}"
+        ontologies: []
     - maf:
         type: file
         description: "Minor allele frequency file (VCF format)"
         pattern: "*.{vcf,vcf.gz}"
         optional: true
+        ontologies: []
   - - meta2:
         type: map
         description: |
@@ -45,6 +48,7 @@ input:
         type: file
         description: "Reference genome FASTA file"
         pattern: "*.{fa,fasta,fa.gz,fasta.gz}"
+        ontologies: []
   - - meta3:
         type: map
         description: |
@@ -55,6 +59,7 @@ input:
         description: "BED file containing regions to exclude from CNV calling"
         pattern: "*.{bed,bed.gz}"
         optional: true
+        ontologies: []
   - - meta4:
         type: map
         description: |
@@ -65,7 +70,7 @@ input:
         description: "BED file containing expected copy number regions"
         pattern: "*.{bed,bed.gz}"
         optional: true
-
+        ontologies: []
 output:
   copynum:
     - - meta:
@@ -77,6 +82,7 @@ output:
           type: file
           description: "Copy number bedGraph file"
           pattern: "*.copynum.bedgraph"
+          ontologies: []
   depth:
     - - meta:
           type: map
@@ -87,6 +93,7 @@ output:
           type: file
           description: "Depth coverage bigWig file"
           pattern: "*.depth.bw"
+          ontologies: []
   maf:
     - - meta:
           type: map
@@ -98,6 +105,7 @@ output:
           description: "Minor allele frequency bigWig file"
           pattern: "*.maf.bw"
           optional: true
+          ontologies: []
   vcf:
     - - meta:
           type: map
@@ -108,14 +116,29 @@ output:
           type: file
           description: "Copy number variants in VCF format"
           pattern: "*.{vcf.gz}"
+          ontologies: []
+  versions_hificnv:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - hificnv:
+          type: string
+          description: Name of the tool
+      - hificnv --version | sed 's/.* //g':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - "versions.yml":
-        type: file
-        description: "File containing software versions"
-        pattern: "versions.yml"
-
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - hificnv:
+          type: string
+          description: Name of the tool
+      - hificnv --version | sed 's/.* //g':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@chaochaowong"
-
 maintainers:
   - "@chaochaowong"

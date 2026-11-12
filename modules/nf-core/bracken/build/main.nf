@@ -1,9 +1,12 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BRACKEN_BUILD {
     tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f3/f30aa99d8d4f6ff1104f56dbacac95c1dc0905578fb250c80f145b6e80703bd1/data'
         : 'community.wave.seqera.io/library/bracken:3.1--22a4e66ce04c5e01'}"
 
@@ -13,7 +16,7 @@ process BRACKEN_BUILD {
     output:
     tuple val(meta), path("bracken-database/", includeInputs: true), emit: db
     tuple val(meta), path("bracken-database/database*", includeInputs: true), path("bracken-database/*k2d", includeInputs: true), path("bracken-database/*map", includeInputs: true), path("bracken-database/library/added/*", includeInputs: true), path("bracken-database/taxonomy/*", includeInputs: true), emit: db_separated
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val("bracken"), eval("bracken -v | cut -f2 -d'v'"), topic: versions, emit: versions_bracken
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,11 +29,6 @@ process BRACKEN_BUILD {
         ${args} \\
         -t ${task.cpus} \\
         -d bracken-database/
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bracken: \$(echo \$(bracken -v) | cut -f2 -d'v')
-    END_VERSIONS
     """
 
     stub:
@@ -47,10 +45,5 @@ process BRACKEN_BUILD {
     touch bracken-database/seqid2taxid.map
     touch bracken-database/library/added/test.fa
     touch bracken-database/taxonomy/{nodes,names}.dmp
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bracken: \$(echo \$(bracken -v) | cut -f2 -d'v')
-    END_VERSIONS
     """
 }

@@ -78,4 +78,28 @@ nextflow_process {
             )
         }
     }
+
+    test("test_ribocode_metaplots - empty config failure") {
+
+        config "./nextflow_fail.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:false ],
+                    file(params.modules_testdata_base_path + "genomics/homo_sapiens/riboseq_expression/aligned_reads/SRX11780887.Aligned.toTranscriptome.out.bam", checkIfExists: true)
+                ]
+                input[1] = UNTAR.out.untar
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert !process.success },
+                { assert process.stdout.toString().contains("ERROR: metaplots created config file with no data") }
+            )
+        }
+    }
 }

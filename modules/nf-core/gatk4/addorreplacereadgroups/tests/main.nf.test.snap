@@ -1,13 +1,22 @@
 {
-    "bam_name": {
+    "homo_sapiens - cram": {
         "content": [
-            "null.replaced.bam"
+            "test.replaced.cram",
+            {
+                "versions_gatk4": [
+                    [
+                        "GATK4_ADDORREPLACEREADGROUPS",
+                        "gatk4",
+                        "4.7.0.0"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-08-18T10:43:59.534604",
         "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-03-20T12:05:21.587215"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     },
     "sarscov2 - bam - stub": {
         "content": [
@@ -32,7 +41,11 @@
                     
                 ],
                 "3": [
-                    "versions.yml:md5,f4834ff096bf4322434ada508bd48253"
+                    [
+                        "GATK4_ADDORREPLACEREADGROUPS",
+                        "gatk4",
+                        "4.7.0.0"
+                    ]
                 ],
                 "bai": [
                     [
@@ -53,47 +66,39 @@
                 "cram": [
                     
                 ],
-                "versions": [
-                    "versions.yml:md5,f4834ff096bf4322434ada508bd48253"
+                "versions_gatk4": [
+                    [
+                        "GATK4_ADDORREPLACEREADGROUPS",
+                        "gatk4",
+                        "4.7.0.0"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-08-18T10:44:07.425775",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-09-11T11:09:29.368820808"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     },
-    "versions": {
+    "sarscov2 - bam": {
         "content": [
-            [
-                "versions.yml:md5,f4834ff096bf4322434ada508bd48253"
-            ]
+            "null.replaced.bam",
+            "null.replaced.bai",
+            {
+                "versions_gatk4": [
+                    [
+                        "GATK4_ADDORREPLACEREADGROUPS",
+                        "gatk4",
+                        "4.7.0.0"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-08-18T10:43:46.787413",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-09-11T11:09:13.700454278"
-    },
-    "cram_name": {
-        "content": [
-            "test.replaced.cram"
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-03-20T12:06:05.10743"
-    },
-    "bai_name": {
-        "content": [
-            "null.replaced.bai"
-        ],
-        "meta": {
-            "nf-test": "0.8.4",
-            "nextflow": "23.10.1"
-        },
-        "timestamp": "2024-03-20T12:05:21.604866"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     }
 }

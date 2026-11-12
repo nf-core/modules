@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "custom_addmostseverepli"
 description: Annotate a VEP annotated VCF with the most severe pLi field
 keywords:
@@ -8,12 +7,11 @@ keywords:
   - vcf
 tools:
   - "custom":
-      description: "Custom module to annotate a VEP annotated VCF with the most severe
-        pLi field"
+      description: "Custom module to annotate a VEP annotated VCF with the most severe pLi field"
       tool_dev_url: "https://github.com/nf-core/modules/blob/master/modules/nf-core/custom/addmostseverepli/main.nf"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
-
 input:
   - - meta:
         type: map
@@ -24,7 +22,6 @@ input:
         type: file
         description: VEP annotated VCF file
         pattern: "*.{vcf,vcf.gz}"
-
         ontologies: []
 output:
   vcf:
@@ -37,20 +34,75 @@ output:
           type: file
           description: Annotated VCF file
           pattern: "*.vcf.gz"
-
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
+  versions_addmostseverepli:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - addmostseverepli:
+          type: string
+          description: The name of the tool
+      - 1.2.0:
+          type: string
+          description: The expression to obtain the version of the tool
+  versions_bgzip:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bgzip:
+          type: string
+          description: The name of the tool
+      - bgzip --version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - addmostseverepli:
+          type: string
+          description: The name of the tool
+      - 1.2.0:
+          type: string
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bgzip:
+          type: string
+          description: The name of the tool
+      - bgzip --version | sed '1!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@ramprasadn"
   - "@fellen31"
 maintainers:
   - "@ramprasadn"
   - "@fellen31"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/htslib_python:2700cd1b1e45679d
+      build_id: bd-2700cd1b1e45679d_1
+      scan_id: sc-af180c6a31a6f459_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/htslib_python:1cb13a63908506a2
+      build_id: bd-1cb13a63908506a2_1
+      scan_id: sc-562da422eaed76b5_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/htslib_python:f753592c584d1a56
+      build_id: bd-f753592c584d1a56_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f2/f22cf1561637980fb7738361847c9214fcb6f29805d963afd764ac8f35ca763c/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/htslib_python:32ddc77f024520c6
+      build_id: bd-32ddc77f024520c6_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cf/cff1dbbd32233e16c017b28a62ef5d13f4ea49a15865fa85c372fdd3e4adba3f/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/custom/addmostseverepli/.conda-lock/linux_amd64-bd-1cb13a63908506a2_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/custom/addmostseverepli/.conda-lock/linux_arm64-bd-2700cd1b1e45679d_1.txt

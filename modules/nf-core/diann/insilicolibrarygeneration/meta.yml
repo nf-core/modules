@@ -18,7 +18,8 @@ tools:
       documentation: "https://github.com/vdemichev/DiaNN"
       tool_dev_url: "https://github.com/vdemichev/DiaNN"
       doi: "10.1038/s41592-020-01009-0"
-      licence: ["https://github.com/vdemichev/DiaNN/blob/1.8.1/LICENSE.txt"]
+      licence:
+        - "https://github.com/vdemichev/DiaNN/blob/1.8.1/LICENSE.txt"
       identifier: "biotools:diann"
 input:
   - - meta:
@@ -41,7 +42,8 @@ output:
             e.g. `[ id:'sample1' ]`
       - "*.predicted.speclib":
           type: file
-          description: In silico predicted spectral library by DIA-NN deep learning predictor
+          description: In silico predicted spectral library by DIA-NN deep
+            learning predictor
           pattern: "*.predicted.speclib"
           ontologies:
             - edam: http://edamontology.org/format_3240 # Spectral library format
@@ -57,13 +59,27 @@ output:
           pattern: "*.log"
           ontologies:
             - edam: http://edamontology.org/format_2330 # Text format
+  versions_diann:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - diann:
+          type: string
+          description: The name of the tool
+      - diann | grep "DIA-NN" | grep -oP "\d+\.\d+(\.\w+)*(\.[\d]+)?":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - diann:
+          type: string
+          description: The name of the tool
+      - diann | grep "DIA-NN" | grep -oP "\d+\.\d+(\.\w+)*(\.[\d]+)?":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@daichengxin"
   - "@pinin4fjords"

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SURVIVOR_SIMSV {
     tag "simSV"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/survivor:1.0.7--hd03093a_2':
-        'biocontainers/survivor:1.0.7--hd03093a_2' }"
+        'quay.io/biocontainers/survivor:1.0.7--hd03093a_2' }"
 
     input:
     tuple val(meta) , path(fasta)
@@ -20,7 +23,7 @@ process SURVIVOR_SIMSV {
     tuple val(meta), path("*.bed")          , emit: bed, optional:true
     tuple val(meta), path("*.fasta")        , emit: fasta, optional:true
     tuple val(meta), path("*.insertions.fa"), emit: insertions, optional:true
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('survivor'), eval("SURVIVOR 2>&1 | grep 'Version' | sed 's/Version: //'"), topic: versions, emit: versions_survivor
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,11 +39,6 @@ process SURVIVOR_SIMSV {
     ${create_parameters}
 
     ${create_vcf}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        survivor: \$(echo \$(SURVIVOR 2>&1 | grep "Version" | sed 's/^Version: //'))
-    END_VERSIONS
     """
 
     stub:
@@ -53,10 +51,5 @@ process SURVIVOR_SIMSV {
     ${create_parameters}
 
     ${create_vcf}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        survivor: \$(echo \$(SURVIVOR 2>&1 | grep "Version" | sed 's/^Version: //'))
-    END_VERSIONS
     """
 }

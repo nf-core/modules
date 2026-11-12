@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ABRA2 {
     tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/abra2:2.24--hdcf5f25_3'
-        : 'biocontainers/abra2:2.24--hdcf5f25_3'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1c/1ce5e46000b343d8ec352a19ac8b067d69efacc0d82ba98346b837fc2fd9b321/data'
+        : 'community.wave.seqera.io/library/abra2:2.24--1d9acdc762079672'} "
 
     input:
     tuple val(meta), path(bams), path(bais)
@@ -17,8 +20,8 @@ process ABRA2 {
 
     output:
     tuple val(meta), path("*.bam"),     emit: bam
-    tuple val(meta), path("*.bam.bai"), emit: bai, optional: true
-    path "versions.yml",                emit: versions
+    tuple val(meta), path("*.bai"),     emit: bai, optional: true
+    tuple val("${task.process}"), val('abra2'), eval("abra2 2>&1 | sed -n 's/.*Abra version: //p'"), topic: versions, emit: versions_abra2
 
     when:
     task.ext.when == null || task.ext.when
@@ -43,22 +46,12 @@ process ABRA2 {
         ${gtf_arg} \\
         ${known_indels_arg} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        abra2: \$(abra2 2>&1 | grep 'Abra version:' | sed 's/.*Abra version: //')
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.abra.bam
-    touch ${prefix}.abra.bam.bai
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        abra2: \$(abra2 2>&1 | grep 'Abra version:' | sed 's/.*Abra version: //')
-    END_VERSIONS
+    touch ${prefix}.abra.bai
     """
 }

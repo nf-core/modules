@@ -1,16 +1,19 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CELLRANGER_COUNT {
     tag "$meta.id"
     label 'process_high'
 
-    container "nf-core/cellranger:10.0.0"
+    container "quay.io/nf-core/cellranger:10.1.0"
 
     input:
     tuple val(meta), path(reads, stageAs: "fastq_???/*")
-    path  reference
+    tuple val(meta2), path(reference)
 
     output:
     tuple val(meta), path("**/outs/**"), emit: outs
-    path "versions.yml"                , emit: versions
+    path "versions.yml"                , emit: versions_cellranger, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,6 +25,11 @@ process CELLRANGER_COUNT {
     }
     args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
+
+    """
+    echo ${args}
+    """
+
     template "cellranger_count.py"
 
     stub:
@@ -29,7 +37,7 @@ process CELLRANGER_COUNT {
     if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
         error "CELLRANGER_COUNT module does not support Conda. Please use Docker / Singularity / Podman instead."
     }
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir -p "${prefix}/outs/"
     echo "$prefix" > ${prefix}/outs/fake_file.txt

@@ -6,20 +6,20 @@ keywords:
   - wastewater
 tools:
   - "freyja":
-      description: "Freyja recovers relative lineage abundances from mixed SARS-CoV-2
-        samples and provides functionality to analyze lineage dynamics."
+      description: "Freyja recovers relative lineage abundances from mixed SARS-CoV-2 samples and provides functionality to analyze lineage dynamics."
       homepage: "https://github.com/andersen-lab/Freyja"
       documentation: "https://github.com/andersen-lab/Freyja/wiki"
       tool_dev_url: "https://github.com/andersen-lab/Freyja"
       doi: "10.1038/s41586-022-05049-6"
-      licence: ["BSD-2-Clause"]
-      identifier: ""
+      licence:
+        - "BSD-2-Clause"
+      identifier: "biotools:freyja"
 input:
   - - meta:
         type: map
         description: |
           Groovy Map containing sample information
-          e.g. [ id:'test', single_end:false ]
+          e.g. [ id:'test' ]
     - bam:
         type: file
         description: Sorted BAM file
@@ -36,7 +36,7 @@ output:
           type: map
           description: |
             Groovy Map containing sample information
-            e.g. [ id:'test', single_end:false ]
+            e.g. [ id:'test' ]
       - "*.variants.tsv":
           type: file
           description: File containing identified variants in a gff-like format
@@ -45,18 +45,56 @@ output:
             - edam: http://edamontology.org/format_3475 # TSV
       - "*.depth.tsv":
           type: file
-          description: File containing identified variants in a gff-like format
-          pattern: "*.variants.tsv"
+          description: File containing depth of the variants
+          pattern: "*.depth.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
+  versions_freyja:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - freyja:
+          type: string
+          description: The name of the tool
+      - freyja --version | sed 's/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - freyja:
+          type: string
+          description: The name of the tool
+      - freyja --version | sed 's/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@Joon-Klaps"
 maintainers:
   - "@Joon-Klaps"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/freyja:2.0.6--be3cbd6f14f9d542
+      build_id: bd-be3cbd6f14f9d542_1
+      scan_id: sc-3925bc9edd3eee24_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/freyja:2.0.6--55d2f3a5585cc140
+      build_id: bd-55d2f3a5585cc140_1
+      scan_id: sc-51ac25613c0c09f0_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/freyja:2.0.6--cf88d96736eb2a40
+      build_id: bd-cf88d96736eb2a40_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6d/6d33da33b3dc4cf7a77bf69ba64313890cb6e6e98ed26c94b8c51eef50c63b22/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/freyja:2.0.6--04f94a9ca1164ac2
+      build_id: bd-04f94a9ca1164ac2_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f0/f0b023f9c9e25f338d72ed6710e4d2a54a4c3a9a3ac34f17e08683894dc40830/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/freyja/variants/.conda-lock/linux_amd64-bd-be3cbd6f14f9d542_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/freyja/variants/.conda-lock/linux_arm64-bd-55d2f3a5585cc140_1.txt

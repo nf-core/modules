@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ARCASHLA_EXTRACT {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/arcas-hla:0.5.0--hdfd78af_0':
-        'biocontainers/arcas-hla:0.5.0--hdfd78af_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cb/cb783fd6aeff146e9cd9a28c02d7b13bd4bac594b7f6ae15ab34d1e62c7e3647/data'
+        : 'community.wave.seqera.io/library/arcas-hla:0.5.0--2c5eef54bb09f8c8'}"
 
     input:
     tuple val(meta), path(bam)
@@ -16,7 +19,8 @@ process ARCASHLA_EXTRACT {
     tuple val(meta), path("temp_files/**.sam")       , emit: intermediate_sam       , optional: true
     tuple val(meta), path("temp_files/**.bam")       , emit: intermediate_bam       , optional: true
     tuple val(meta), path("temp_files/**.sorted.bam"), emit: intermediate_sorted_bam, optional: true
-    path "versions.yml"                              , emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update version string below when bumping container versions.
+    tuple val("${task.process}"), val('arcashla'), val('0.5.0'), emit: versions_arcashla, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,7 +29,6 @@ process ARCASHLA_EXTRACT {
     def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def single_end  = meta.single_end ? "--single" : ""
-    def VERSION = "0.5.0" // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
 
     """
     arcasHLA \\
@@ -37,10 +40,5 @@ process ARCASHLA_EXTRACT {
         --log ${prefix}.log \\
         ${single_end} \\
         ${bam}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        arcashla: ${VERSION}
-    END_VERSIONS
     """
 }

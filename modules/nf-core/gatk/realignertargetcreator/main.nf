@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GATK_REALIGNERTARGETCREATOR {
     tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/gatk:3.5--hdfd78af_11':
-        'biocontainers/gatk:3.5--hdfd78af_11' }"
+        'quay.io/biocontainers/gatk:3.5--hdfd78af_11' }"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -16,7 +19,7 @@ process GATK_REALIGNERTARGETCREATOR {
 
     output:
     tuple val(meta), path("*.intervals"), emit: intervals
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val('gatk'), eval('gatk3 --version'), emit: versions_gatk, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -45,9 +48,5 @@ process GATK_REALIGNERTARGETCREATOR {
         ${known} \\
         $args
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk: \$(echo \$(gatk3 --version))
-    END_VERSIONS
     """
 }

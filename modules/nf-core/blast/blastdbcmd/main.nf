@@ -1,9 +1,12 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BLAST_BLASTDBCMD {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0c/0c86cbb145786bf5c24ea7fb13448da5f7d5cd124fd4403c1da5bc8fc60c2588/data':
         'community.wave.seqera.io/library/blast:2.17.0--d4fb881691596759' }"
 
@@ -14,7 +17,7 @@ process BLAST_BLASTDBCMD {
     output:
     tuple val(meta), path("*.fasta"), optional: true, emit: fasta
     tuple val(meta), path("*.txt")  , optional: true, emit: text
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val('blastdbcmd'), eval('blastdbcmd -version 2>&1 | head -n1 | sed \'s/^.*blastdbcmd: //; s/ .*\$//\''), topic: versions, emit: versions_blastdbcmd
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,10 +34,10 @@ process BLAST_BLASTDBCMD {
     }
     def extension  = args.contains("-outfmt") && !args.contains("-outfmt %f") ? "txt" : "fasta"
     """
-    DB=`find -L ./ -name "*.nhr" | sed 's/\\.nhr\$//'`
+    DB=`find -L ./ -name "*.nto" | sed 's/\\.nto\$//'`
     if test -z "\$DB"
     then
-        DB=`find -L ./ -name "*.phr" | sed 's/\\.phr\$//'`
+        DB=`find -L ./ -name "*.pto" | sed 's/\\.pto\$//'`
     fi
 
     blastdbcmd \\
@@ -43,10 +46,6 @@ process BLAST_BLASTDBCMD {
         -out ${prefix}.${extension} \\
         ${input}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        blast: \$(blastdbcmd -version 2>&1 | head -n1 | sed 's/^.*blastdbcmd: //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -56,9 +55,5 @@ process BLAST_BLASTDBCMD {
     """
     touch ${prefix}.${extension}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        blast: \$(blastdbcmd -version 2>&1 | head -n1 | sed 's/^.*blastdbcmd: //; s/ .*\$//')
-    END_VERSIONS
     """
 }

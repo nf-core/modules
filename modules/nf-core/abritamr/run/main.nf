@@ -1,9 +1,12 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ABRITAMR_RUN {
     tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b6/b6078836553c48db86c8a1d126ca764bc812b11aaeb7222299fe7be3a06ed68e/data'
         : 'community.wave.seqera.io/library/abritamr:6aee07e42fbc9d88' }"
 
@@ -16,7 +19,7 @@ process ABRITAMR_RUN {
     tuple val(meta), path("*.summary_virulence.txt"), emit: virulence
     tuple val(meta), path("*.amrfinder.out")        , emit: out
     tuple val(meta), path("*.abritamr.txt")         , emit: txt, optional: true
-    path "versions.yml"                             , emit: versions
+    tuple val("${task.process}"), val('abritamr'), eval("abritamr --version 2>&1 | sed 's/^.*abritamr \\([0-9.]*\\).*/\\1/'"), emit: versions_abritamr, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -46,11 +49,6 @@ process ABRITAMR_RUN {
         # This file is not always present
         mv ${prefix}/abritamr.txt ${prefix}.abritamr.txt
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        \$(echo \$(abritamr --version 2>&1) | sed 's/^.*abritamr \\([0-9.]*\\).*/\\1/')
-    END_VERSIONS
     """
 
     stub:
@@ -61,10 +59,5 @@ process ABRITAMR_RUN {
     touch ${prefix}.summary_virulence.txt
     touch ${prefix}.amrfinder.out
     touch ${prefix}.amrfinder.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        \$(echo \$(abritamr --version 2>&1) | sed 's/^.*abritamr \\([0-9.]*\\).*/\\1/')
-    END_VERSIONS
     """
 }

@@ -1,0 +1,70 @@
+name: "mat2json"
+description: converst matlab .mat files into json or csv files.
+keywords:
+  - file conversion
+  - matlab
+  - json
+  - csv
+tools:
+  - "mat2json":
+      description: "Converts matlab .mat files into json or csv files."
+      homepage: "https://github.com/qbic-pipelines/mat2json"
+      documentation: "https://github.com/qbic-pipelines/mat2json/blob/main/README.md"
+      tool_dev_url: "https://github.com/qbic-pipelines/mat2json"
+      licence:
+        - "MIT"
+      identifier: ""
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1']`
+    - matfile:
+        type: file
+        description: matlab file
+        pattern: "*.{mat}"
+        ontologies: []
+  - process:
+      type: string
+      description: Name of the process to be used in the output file name and as a tag
+output:
+  converted_file:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1']`
+      - ${process}/*/*.*:
+          type: file
+          description: JSON or CSV file containing the the data from the input .mat
+            file
+          pattern: "*.{json,csv}"
+          ontologies:
+            - edam: http://edamontology.org/format_3464
+            - edam: http://edamontology.org/format_3752
+  versions_mat2json:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mat2json:
+          type: string
+          description: The name of the tool
+      - 1.0.0:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mat2json:
+          type: string
+          description: The name of the tool
+      - 1.0.0:
+          type: string
+          description: The expression to obtain the version of the tool
+authors:
+  - "@CaroAMN"
+maintainers:
+  - "@CaroAMN"

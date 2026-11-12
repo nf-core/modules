@@ -45,8 +45,9 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.log[0][1]).name,
+                    file(process.out.log[0][1]).readLines()[15..16],  // seqs_in and seqs_out
                     process.out.fastq_filtered,
-                    process.out.versions.collect { path(it).yaml }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
                 ).match()}
             )
         }
@@ -91,9 +92,9 @@ nextflow_process {
                 { assert process.success },
                 { assert snapshot(
                     file(process.out.log[0][1]).name,
-                    process.out.fastq_filtered
-                ).match()},
-                { assert snapshot(process.out.versions).match("versions") }
+                    process.out.fastq_filtered,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match()}
             )
         }
 
@@ -134,10 +135,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out,
-                    process.out.versions.collect { path(it).yaml }
-                ).match()}
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

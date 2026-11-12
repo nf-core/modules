@@ -29,8 +29,8 @@ nextflow_process {
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
-                input[1] = [[],[]]
-                input[2] = false
+                    .combine(channel.of([[]]))
+                input[1] = false
                 """
             }
         }
@@ -42,6 +42,8 @@ nextflow_process {
                     [ id:'test' ],
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
                     file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true),
+                    [],
+                    [],
                     'XX'
                 ]
                 input[1] = GUNZIP.out.gunzip

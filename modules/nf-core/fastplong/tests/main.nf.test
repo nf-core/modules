@@ -35,7 +35,7 @@ nextflow_process {
                     process.out.json,
                     process.out.reads,
                     process.out.reads_fail,
-                    process.out.versions).match() }
+                    process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
     }

@@ -7,12 +7,13 @@ keywords:
   - demultiplexed reads
 tools:
   - artic:
-      description: ARTIC pipeline - a bioinformatics pipeline for working with virus
-        sequencing data sequenced with nanopore
+      description: ARTIC pipeline - a bioinformatics pipeline for working with
+        virus sequencing data sequenced with nanopore
       homepage: https://artic.readthedocs.io/en/latest/
       documentation: https://artic.readthedocs.io/en/latest/
       tool_dev_url: https://github.com/artic-network/fieldbioinformatics
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:artic
 input:
   - - meta:
@@ -32,8 +33,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - model_dir:
         type: directory
-        description: Path containing clair3 models, defaults to models packaged with
-          conda installation
+        description: Path containing clair3 models, defaults to models packaged
+          with conda installation
         pattern: "*"
     - model:
         type: string
@@ -55,6 +56,9 @@ input:
         description: Scheme BED file
         pattern: "*.{bed}"
         ontologies: []
+  - hdf5_plugin_path:
+      type: directory
+      description: Optional path to HDF5 plugin library
 output:
   results:
     - - meta:
@@ -153,7 +157,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - ${prefix}.pass.vcf.gz:
           type: file
-          description: VCF file containing detected variants passing quality filter
+          description: VCF file containing detected variants passing quality
+            filter
           pattern: "*.{pass.vcf.gz}"
           ontologies: []
   tbi:
@@ -179,13 +184,27 @@ output:
           pattern: "*.json"
           ontologies:
             - edam: http://edamontology.org/format_3464 # JSON
+  versions_artic:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - artic:
+          type: string
+          description: The tool name
+      - artic -v 2>&1 | sed 's/^.*artic //; s/ .*\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - artic:
+          type: string
+          description: The tool name
+      - artic -v 2>&1 | sed 's/^.*artic //; s/ .*\$//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@joseespinosa"
   - "@drpatelh"

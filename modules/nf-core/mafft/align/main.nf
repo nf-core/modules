@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MAFFT_ALIGN {
     tag "$meta.id"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/mulled-v2-12eba4a074f913c639117640936668f5a6a01da6:425707898cf4f85051b77848be253b88f1d2298a-0':
-        'biocontainers/mulled-v2-12eba4a074f913c639117640936668f5a6a01da6:425707898cf4f85051b77848be253b88f1d2298a-0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/83/8382f745a6a2e3e868d5484628be21113b921d8aedb60dc948af5aeb7d7ec079/data'
+        : 'community.wave.seqera.io/library/mafft_pigz:71bb76c5b24d4466'}"
 
     input:
     tuple val(meta) , path(fasta)
@@ -18,58 +21,46 @@ process MAFFT_ALIGN {
 
     output:
     tuple val(meta), path("*.fas{.gz,}"), emit: fas
-    path "versions.yml"                 , emit: versions
+    tuple val("${task.process}"), val("mafft"), eval("mafft --version 2>&1 | sed 's/v//;s/ .*//'"), topic: versions, emit: versions_mafft
+    tuple val("${task.process}"), val("pigz"), eval("pigz --version 2>&1 | sed 's/pigz //g'")   , topic: versions, emit: versions_pigz
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def args         = task.ext.args   ?: ''
-    def prefix       = task.ext.prefix ?: "${meta.id}"
-    def add          = add             ? "--add <(unpigz -cdf ${add})"                   : ''
-    def addfragments = addfragments    ? "--addfragments <(unpigz -cdf ${addfragments})" : ''
-    def addfull      = addfull         ? "--addfull <(unpigz -cdf ${addfull})"           : ''
-    def addprofile   = addprofile      ? "--addprofile <(unpigz -cdf ${addprofile})"     : ''
-    def addlong      = addlong         ? "--addlong <(unpigz -cdf ${addlong})"           : ''
-    def write_output = compress ? " | pigz -cp ${task.cpus} > ${prefix}.fas.gz" : "> ${prefix}.fas"
-    // this will not preserve MAFFTs return value, but mafft crashes when it receives a process substitution
+    def args             = task.ext.args   ?: ''
+    def prefix           = task.ext.prefix ?: "${meta.id}"
+    def add_opt          = add             ? "--add <(unpigz -cdf ${add})"                   : ''
+    def addfragments_opt = addfragments    ? "--addfragments <(unpigz -cdf ${addfragments})" : ''
+    def addfull_opt      = addfull         ? "--addfull <(unpigz -cdf ${addfull})"           : ''
+    def addprofile_opt   = addprofile      ? "--addprofile <(unpigz -cdf ${addprofile})"     : ''
+    def addlong_opt      = addlong         ? "--addlong <(unpigz -cdf ${addlong})"           : ''
+    def write_output     = compress ? " | pigz -cp ${task.cpus} > ${prefix}.fas.gz" : "> ${prefix}.fas"
+    // Piping the output loses MAFFT's return value, but MAFFT cannot write into a process
+    // substitution. Reading from one is fine, which is how the gzip-capable inputs work.
     if ("$fasta" == "${prefix}.fas" ) error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
     mafft \\
         --thread ${task.cpus} \\
-        ${add} \\
-        ${addfragments} \\
-        ${addfull} \\
-        ${addprofile} \\
-        ${addlong} \\
+        ${add_opt} \\
+        ${addfragments_opt} \\
+        ${addfull_opt} \\
+        ${addprofile_opt} \\
+        ${addlong_opt} \\
         ${args} \\
-        ${fasta} \\
+        <(unpigz -cdf ${fasta}) \\
         ${write_output}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mafft: \$(mafft --version 2>&1 | sed 's/^v//' | sed 's/ (.*)//')
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
-    END_VERSIONS
     """
 
     stub:
-    def args         = task.ext.args   ?: ''
-    def prefix       = task.ext.prefix ?: "${meta.id}"
-    def add          = add             ? "--add ${add}"                   : ''
-    def addfragments = addfragments    ? "--addfragments ${addfragments}" : ''
-    def addfull      = addfull         ? "--addfull ${addfull}"           : ''
-    def addprofile   = addprofile      ? "--addprofile ${addprofile}"     : ''
-    def addlong      = addlong         ? "--addlong ${addlong}"           : ''
-    if ("$fasta" == "${prefix}.fas" )  error "Input and output names are the same, set prefix in module configuration to disambiguate!"
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    if ("${fasta}" == "${prefix}.fas" ) error "Input and output names are the same, set prefix in module configuration to disambiguate!"
     """
-    touch ${prefix}.fas${compress ? '.gz' : ''}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mafft: \$(mafft --version 2>&1 | sed 's/^v//' | sed 's/ (.*)//')
-        pigz: \$(echo \$(pigz --version 2>&1) | sed 's/^.*pigz\\w*//' ))
-    END_VERSIONS
+    if [[ "${compress}" == "true" ]]; then
+        echo "" | gzip > ${prefix}.fas.gz
+    else
+        touch ${prefix}.fas
+    fi
     """
 
 }

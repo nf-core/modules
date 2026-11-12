@@ -1,19 +1,22 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SEQKIT_SEQ {
     tag "${meta.id}"
     label 'process_low'
     // File IO can be a bottleneck. See: https://bioinf.shenwei.me/seqkit/usage/#parallelization-of-cpu-intensive-jobs
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/seqkit:2.9.0--h9ee0642_0'
-        : 'biocontainers/seqkit:2.9.0--h9ee0642_0'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/29/297e985dd395d87f9089b314dbe685ddce59fa0770c4d1f5e1009bc7b6ec7a8d/data'
+        : 'community.wave.seqera.io/library/seqkit:2.13.0--3bacfb68370dd835'}"
 
     input:
     tuple val(meta), path(fastx)
 
     output:
     tuple val(meta), path("${prefix}.*"), emit: fastx
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('seqkit'), eval("seqkit version | sed 's/^.*v//'"), emit: versions_seqkit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,14 +42,11 @@ process SEQKIT_SEQ {
         ${fastx} \\
         ${call_gzip} \\
         > ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqkit: \$(seqkit version | cut -d' ' -f2)
-    END_VERSIONS
     """
 
     stub:
+    def args = task.ext.args ?: ''
+    def args2 = task.ext.args2 ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     def extension = "fastq"
     if ("${fastx}" ==~ /.+\.fasta|.+\.fasta.gz|.+\.fa|.+\.fa.gz|.+\.fas|.+\.fas.gz|.+\.fna|.+\.fna.gz|.+\.fsa|.+\.fsa.gz/) {
@@ -56,12 +56,11 @@ process SEQKIT_SEQ {
     if ("${prefix}.${extension}" == "${fastx}") {
         error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
     }
+    def create_cmd = extension.endsWith('gz') ? "echo '' | gzip >" : "touch"
     """
-    touch ${prefix}.${extension}
+    echo ${args}
+    echo ${args2}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        seqkit: \$(seqkit version | cut -d' ' -f2)
-    END_VERSIONS
+    ${create_cmd} ${prefix}.${extension}
     """
 }

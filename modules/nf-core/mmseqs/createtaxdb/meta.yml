@@ -14,7 +14,8 @@ tools:
       documentation: "https://mmseqs.com/latest/userguide.pdf"
       tool_dev_url: "https://github.com/soedinglab/MMseqs2"
       doi: "10.1093/bioinformatics/btw006"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: biotools:mmseqs
 input:
   - - meta:
@@ -63,6 +64,17 @@ output:
             Directory containing the database with added taxonomy information
           pattern: "*"
   versions_mmseqs:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mmseqs:
+          type: string
+          description: The name of the tool
+      - "mmseqs | grep 'Version' | sed 's/MMseqs2 Version: //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
     - - ${task.process}:
           type: string
           description: The name of the process

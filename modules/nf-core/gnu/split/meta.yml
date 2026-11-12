@@ -39,13 +39,27 @@ output:
           description: Split files
           pattern: "${prefix}.*"
           ontologies: []
+  versions_coreutils:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - coreutils:
+          type: string
+          description: The tool name
+      - "sort --version |& sed '1!d ; s/sort (GNU coreutils) //'":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - coreutils:
+          type: string
+          description: The tool name
+      - "sort --version |& sed '1!d ; s/sort (GNU coreutils) //'":
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@k1sauce"
 maintainers:

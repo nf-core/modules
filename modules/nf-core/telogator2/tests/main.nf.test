@@ -1,0 +1,141 @@
+// nf-core modules test telogator2
+nextflow_process {
+
+    name "Test Process TELOGATOR2"
+    script "../main.nf"
+    process "TELOGATOR2"
+    config "./nextflow.config"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "telogator2"
+
+    test("homo_sapiens - ont bam - telomere reads") {
+        when {
+            params {
+                module_args = '--rng 42'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test_tel' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.bam.bai', checkIfExists: true)
+                ]
+                input[1] = [ [ id:'genome' ], [], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.tlens.get(0).get(1)).readLines().first() ==
+                    '#chr\tposition\tref_samp\tallele_id\tTL_p75\tread_TLs\tread_lengths\tread_mapq\ttvr_len\ttvr_consensus\tsupporting_reads' },
+                { assert process.out.plots },
+                { assert snapshot(
+                    file(process.out.tlens.get(0).get(1)).name,
+                    process.out.plots.collect { meta, pngs -> pngs.collect { png -> file(png).name } },
+                    process.out.cmd,
+                    process.out.stats,
+                    process.out.qc_readlens,
+                    process.out.readlens,
+                    process.out.rng,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - ont cram - telomere reads") {
+        when {
+            params {
+                module_args = '--rng 42'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test_cram' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.cram', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub.cram.crai', checkIfExists: true)
+                ]
+                input[1] = [
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub_ref.fa', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/HG002_ont_telomere/HG002_ont_tel_sub_ref.fa.fai', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert process.out.plots },
+                { assert snapshot(
+                    path(process.out.tlens.get(0).get(1)).readLines().first(),
+                    file(process.out.tlens.get(0).get(1)).name,
+                    process.out.plots.collect { meta, pngs -> pngs.collect { png -> file(png).name } },
+                    process.out.cmd,
+                    process.out.stats,
+                    process.out.qc_readlens,
+                    process.out.readlens,
+                    process.out.rng,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - pacbio bam - no telomere reads") {
+        when {
+            params {
+                module_args = '--rng 42'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true)
+                ]
+                input[1] = [ [ id:'genome' ], [], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.stdout.toString().contains('No telomere reads found') }
+            )
+        }
+    }
+
+    test("homo_sapiens - pacbio bam - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--rng 42'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'stub' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/pacbio/bam/test.sorted.bam.bai', checkIfExists: true)
+                ]
+                input[1] = [ [ id:'genome' ], [], [] ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

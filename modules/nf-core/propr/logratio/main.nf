@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PROPR_LOGRATIO {
     tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/r-propr:4.2.6':
-        'biocontainers/r-propr:4.2.6' }"
+        'quay.io/biocontainers/r-propr:4.2.6' }"
 
     input:
     tuple val(meta), path(count)
@@ -13,7 +16,7 @@ process PROPR_LOGRATIO {
     output:
     tuple val(meta), path("*.logratio.tsv")     , emit: logratio
     tuple val(meta), path("*.R_sessionInfo.log"), emit: session_info
-    path "versions.yml"                         , emit: versions
+    path "versions.yml"                         , emit: versions, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -22,7 +25,7 @@ process PROPR_LOGRATIO {
     template 'logratio.R'
 
     stub:
-    prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.logratio.tsv
     touch ${prefix}.R_sessionInfo.log

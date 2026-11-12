@@ -1,23 +1,24 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PARABRICKS_APPLYBQSR {
     tag "${meta.id}"
     label 'process_high'
     label 'process_gpu'
-    // needed by the module to work properly can be removed when fixed upstream - see: https://github.com/nf-core/modules/issues/7226
-    stageInMode 'copy'
 
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.6.0-1"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.8.0-1"
 
     input:
-    tuple val(meta),  path(bam)
-    tuple val(meta2), path(bam_index)
-    tuple val(meta3), path(bqsr_table)
-    tuple val(meta4), path(intervals)
+    tuple val(meta), path(input), path(input_index), path(bqsr_table), path(intervals)
     tuple val(meta5), path(fasta)
+    val output_fmt
 
     output:
-    tuple val(meta), path("*.bam"), emit: bam
-    tuple val(meta), path("*.bai"), emit: bai
-    path "versions.yml",            emit: versions
+    tuple val(meta), path("*.bam"), emit: bam, optional: true
+    tuple val(meta), path("*.bai"), emit: bai, optional: true
+    tuple val(meta), path("*.cram"), emit: cram, optional: true
+    tuple val(meta), path("*.crai"), emit: crai, optional: true
+    tuple val("${task.process}"), val('parabricks'), eval("pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'"), topic: versions, emit: versions_parabricks
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,35 +30,29 @@ process PARABRICKS_APPLYBQSR {
     }
     def args             = task.ext.args    ?: ''
     def prefix           = task.ext.prefix  ?: "${meta.id}"
-    def interval_command = intervals        ? intervals.collect { "--interval-file ${it}" }.join(' ') : ""
+    def extension        = "${output_fmt}"
+    def interval_command = intervals        ? intervals.collect { interval -> "--interval-file ${interval}" }.join(' ') : ""
     def num_gpus         = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ''
     """
     pbrun \\
         applybqsr \\
         --ref ${fasta} \\
-        --in-bam ${bam} \\
+        --in-bam ${input} \\
         --in-recal-file ${bqsr_table} \\
         ${interval_command} \\
-        --out-bam ${prefix}.bam \\
+        --out-bam ${prefix}.${extension} \\
         --num-threads ${task.cpus} \\
         ${num_gpus} \\
+        --preserve-file-symlinks \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-            pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
-    END_VERSIONS
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    def prefix          = task.ext.prefix ?: "${meta.id}"
+    def extension       = "${output_fmt}"
+    def extension_index = "${output_fmt}" == "cram" ? "crai" : "bai"
     """
-    touch ${prefix}.bam
-    touch ${prefix}.bam.bai
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-            pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
-    END_VERSIONS
+    touch ${prefix}.${extension}
+    touch ${prefix}.${extension}.${extension_index}
     """
 }

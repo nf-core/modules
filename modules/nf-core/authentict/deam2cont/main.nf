@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process AUTHENTICT_DEAM2CONT {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/authentict:1.0.1--py311h9f5acd7_0':
-        'biocontainers/authentict:1.0.1--py311h9f5acd7_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1e/1ee0e786f920e00278deca2cd60fef436b905fcd62f90e21edc7190ab16bc9e7/data'
+        : 'community.wave.seqera.io/library/authentict_samtools_numdifftools:0a39db47b015fde7'}"
 
     input:
     tuple val(meta), path(bam)
@@ -14,7 +17,8 @@ process AUTHENTICT_DEAM2CONT {
 
     output:
     tuple val(meta), path("*.txt"), emit: txt
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('authentict'), eval("AuthentiCT --version"), emit: versions_authentict, topic: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools --version 2>&1 | head -n1 | sed 's/^.*samtools //'"), emit: versions_samtools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,22 +38,11 @@ process AUTHENTICT_DEAM2CONT {
         ${positions_file} \\
         - \\
         > ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        authentict: \$(echo \$(AuthentiCT --version 2>&1) )
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 
     stub :
     prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.txt
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        authentict: \$(echo \$(AuthentiCT --version 2>&1) )
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 }

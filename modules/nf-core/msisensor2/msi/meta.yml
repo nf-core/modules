@@ -8,15 +8,12 @@ keywords:
   - cfDNA
 tools:
   - "msisensor2":
-      description: "MSIsensor2 is a novel algorithm based machine learning, featuring
-        a large upgrade in the microsatellite instability (MSI) detection for tumor
-        only sequencing data, including Cell-Free DNA (cfDNA), Formalin-Fixed Paraffin-Embedded(FFPE)
-        and other sample types. The original MSIsensor is specially designed for tumor/normal
-        paired sequencing data."
+      description: "MSIsensor2 is a novel algorithm based machine learning, featuring a large upgrade in the microsatellite instability (MSI) detection for tumor only sequencing data, including Cell-Free DNA (cfDNA), Formalin-Fixed Paraffin-Embedded(FFPE) and other sample types. The original MSIsensor is specially designed for tumor/normal paired sequencing data."
       homepage: "https://github.com/niu-lab/msisensor2"
       documentation: "https://github.com/niu-lab/msisensor2/blob/master/README.md"
       tool_dev_url: "https://github.com/niu-lab/msisensor2"
-      license: ["GPL-3.0"]
+      license:
+        - "GPL-3.0"
       identifier: ""
 input:
   - - meta:
@@ -41,8 +38,7 @@ input:
           e.g. [ id:'test', single_end:false ]
     - models:
         type: file
-        description: Folder of MSISensor2 models (available from Github or as a
-          product of msisensor2/scan)
+        description: Folder of MSISensor2 models (available from Github or as a product of msisensor2/scan)
         pattern: "*/*"
         ontologies: []
 output:
@@ -76,14 +72,42 @@ output:
           type: file
           description: Somatic MSI regions detected.
           ontologies: []
+  versions_msisensor2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - msisensor2:
+          type: string
+          description: The name of the tool
+      - "msisensor2 2> >(grep Version) | sed 's/Version: v//g'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - msisensor2:
+          type: string
+          description: The name of the tool
+      - "msisensor2 2> >(grep Version) | sed 's/Version: v//g'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@adamrtalbot"
 maintainers:
   - "@adamrtalbot"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/msisensor2:0.1--fc3d116b90a150fc
+      build_id: bd-fc3d116b90a150fc_1
+      scan_id: sc-93d571de0c6f1b5f_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/msisensor2:0.1--7d82db43a95c34aa
+      build_id: bd-7d82db43a95c34aa_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6d/6d71401d290ef253a61c4c72e0043fa4902fd504768d40dd8846310f3192e0dc/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/msisensor2/msi/.conda-lock/linux_amd64-bd-fc3d116b90a150fc_1.txt

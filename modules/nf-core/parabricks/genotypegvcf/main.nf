@@ -1,11 +1,12 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PARABRICKS_GENOTYPEGVCF {
     tag "${meta.id}"
     label 'process_high'
     label 'process_gpu'
-    // needed by the module to work properly can be removed when fixed upstream - see: https://github.com/nf-core/modules/issues/7226
-    stageInMode 'copy'
 
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.6.0-1"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.8.0-1"
 
     input:
     tuple val(meta),  path(input)
@@ -13,7 +14,7 @@ process PARABRICKS_GENOTYPEGVCF {
 
     output:
     tuple val(meta), path("*.vcf"), emit: vcf
-    path "versions.yml",            emit: versions
+    tuple val("${task.process}"), val('parabricks'), eval("pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'"), topic: versions, emit: versions_parabricks
 
     when:
     task.ext.when == null || task.ext.when
@@ -34,24 +35,14 @@ process PARABRICKS_GENOTYPEGVCF {
         --in-gvcf ${input} \\
         --out-vcf ${output_file} \\
         --num-threads ${task.cpus} \\
+        --preserve-file-symlinks \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-            pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def output_file = "${prefix}.vcf"
     """
     touch ${output_file}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-            pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
-    END_VERSIONS
     """
 }

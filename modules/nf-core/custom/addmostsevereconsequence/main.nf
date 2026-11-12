@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CUSTOM_ADDMOSTSEVERECONSEQUENCE {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/cb/cbeb20c898a76bec809629320ece9e1f84a3e355e96568bfbe14b9f411bdf3e7/data':
-        'community.wave.seqera.io/library/htslib_python:9c6265e98ef06930' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f2/f22cf1561637980fb7738361847c9214fcb6f29805d963afd764ac8f35ca763c/data'
+        : 'community.wave.seqera.io/library/htslib_python:1cb13a63908506a2'}"
 
     input:
     tuple val(meta), path(vcf)
@@ -14,7 +17,8 @@ process CUSTOM_ADDMOSTSEVERECONSEQUENCE {
 
     output:
     tuple val(meta), path("*.vcf.gz"), emit: vcf
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('addmostsevereconsequence'), val("1.2.0"), topic: versions, emit: versions_addmostsevereconsequence
+    tuple val("${task.process}"), val('bgzip'), eval("bgzip --version | sed '1!d;s/.* //'"), topic: versions, emit: versions_bgzip
 
     when:
     task.ext.when == null || task.ext.when
@@ -23,8 +27,6 @@ process CUSTOM_ADDMOSTSEVERECONSEQUENCE {
     def args = task.ext.args ?: ''
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.1' // WARN: Version information not provided by tool on CLI.
-
     """
     add_most_severe_consequence.py \\
         $args \\
@@ -36,26 +38,11 @@ process CUSTOM_ADDMOSTSEVERECONSEQUENCE {
         $args2 \\
         --threads ${task.cpus} \\
         ${prefix}.vcf
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        add_most_severe_consequence: $VERSION
-        bgzip: \$(bgzip --version |& sed '1!d ; s/bgzip (htslib) //')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
-    def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.1' // WARN: Version information not provided by tool on CLI.
     """
-    echo | gzip > ${prefix}.vcf.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        add_most_severe_consequence: $VERSION
-        bgzip: \$(bgzip --version |& sed '1!d ; s/bgzip (htslib) //')
-    END_VERSIONS
+    echo "" | gzip > ${prefix}.vcf.gz
     """
 }

@@ -1,23 +1,30 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PARABRICKS_MUTECTCALLER {
     tag "${meta.id}"
     label 'process_high'
     label 'process_gpu'
-    // needed by the module to work properly can be removed when fixed upstream - see: https://github.com/nf-core/modules/issues/7226
-    stageInMode 'copy'
 
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.6.0-1"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.8.0-1"
 
     input:
-    tuple val(meta), path(tumor_bam), path(tumor_bam_index), path(normal_bam), path(normal_bam_index), path(interval_file)
-    tuple val(ref_meta), path(fasta)
+    tuple val(meta), path(tumor_bam), path(tumor_bam_index), path(normal_bam), path(normal_bam_index), path(intervals)
+    tuple val(meta2), path(fasta), path(fasta_fai)
     path panel_of_normals
     path panel_of_normals_index
+    path germline_resource
+    path germline_resource_index
+    path alleles
+    path alleles_index
 
     output:
-    tuple val(meta), path("*.vcf.gz"),       emit: vcf
-    tuple val(meta), path("*.vcf.gz.stats"), emit: stats
-    path "compatible_versions.yml",          emit: compatible_versions, optional: true
-    path "versions.yml",                     emit: versions
+    tuple val(meta), path("${prefix}.vcf.gz"),       emit: vcf
+    tuple val(meta), path("${prefix}.vcf.gz.tbi"),   emit: tbi
+    tuple val(meta), path("${prefix}.vcf.gz.stats"), emit: stats
+    tuple val(meta), path("${prefix}.f1r2.tar.gz"),  emit: f1r2, optional: true
+    path "compatible_versions.yml",                  emit: compatible_versions, optional: true
+    tuple val("${task.process}"), val('parabricks'), eval("pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'"), topic: versions, emit: versions_parabricks
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,43 +36,62 @@ process PARABRICKS_MUTECTCALLER {
     }
 
     def args = task.ext.args ?: ''
-    def prefix = task.ext.prefix ?: "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
 
-    def interval_file_command = interval_file ? interval_file.collect { "--interval-file ${it}" }.join(' ') : ""
-    def prepon_command = panel_of_normals ? "cp -L ${panel_of_normals_index} `readlink -f ${panel_of_normals}`.tbi && pbrun prepon --in-pon-file ${panel_of_normals}" : ""
-    def postpon_command = panel_of_normals ? "pbrun postpon --in-vcf ${prefix}.vcf.gz --in-pon-file ${panel_of_normals} --out-vcf ${prefix}_annotated.vcf.gz" : ""
+    def intervals_command  = intervals     ? (intervals instanceof List ? intervals.collect { interval -> "--interval-file ${interval}" }.join(' ') : "--interval-file ${intervals}") : ""
+    // prepon and postpon expect the index at <pon>.tbi
+    def pon_index_command = panel_of_normals && panel_of_normals_index.name != "${panel_of_normals.name}.tbi" ? "cp -L ${panel_of_normals_index} ${panel_of_normals}.tbi" : ""
+    def prepon_command = panel_of_normals ? "pbrun prepon --in-pon-file ${panel_of_normals} --preserve-file-symlinks" : ""
+    def pon_command    = panel_of_normals ? "--pon ${panel_of_normals}" : ""
+    // pbrun postpon requires uncompressed .vcf input; output uncompressed when PON is provided
+    def mutect_out     = panel_of_normals ? "${prefix}.vcf"    : "${prefix}.vcf.gz"
+    def stats_rename   = panel_of_normals ? "mv ${prefix}.vcf.stats ${prefix}.vcf.gz.stats" : ""
+    def postpon_command = panel_of_normals ? "pbrun postpon --in-vcf ${prefix}.vcf --in-pon-file ${panel_of_normals} --out-vcf ${prefix}.vcf.gz --preserve-file-symlinks" : ""
+
+    // mutectcaller expects the germline resource index at <germline_resource>.tbi
+    def germline_index_command = germline_resource && germline_resource_index.name != "${germline_resource.name}.tbi" ? "cp -L ${germline_resource_index} ${germline_resource}.tbi" : ""
+    def germline_command = germline_resource ? "--mutect-germline-resource ${germline_resource}" : ""
+
+    // mutectcaller only finds the alleles index at <alleles>.tbi and reads the VCF without it otherwise
+    def alleles_index_command = alleles && alleles_index.name != "${alleles.name}.tbi" ? "cp -L ${alleles_index} ${alleles}.tbi" : ""
+    def alleles_command = alleles ? "--mutect-alleles ${alleles}" : ""
 
     def num_gpus = task.accelerator ? "--num-gpus ${task.accelerator.request}" : ""
+    def normal_bam_flag = normal_bam ? "--in-normal-bam ${normal_bam}" : ""
     """
-    # if panel of normals specified, run prepon
+    # if panel of normals specified, place its index at <pon>.tbi and run prepon
+    ${pon_index_command}
     ${prepon_command}
+
+    ${germline_index_command}
+    ${alleles_index_command}
 
     pbrun \\
         mutectcaller \\
         --ref ${fasta} \\
         --in-tumor-bam ${tumor_bam} \\
-        --tumor-name ${meta.tumor_id} \\
-        --out-vcf ${prefix}.vcf.gz \\
-        ${interval_file_command} \\
+        ${normal_bam_flag} \\
+        ${pon_command} \\
+        ${germline_command} \\
+        ${alleles_command} \\
+        --out-vcf ${mutect_out} \\
+        ${intervals_command} \\
         ${num_gpus} \\
+        --preserve-file-symlinks \\
         ${args}
 
-    # if panel of normals specified, run postpon
+    # if panel of normals specified, rename stats and run postpon
+    ${stats_rename}
     ${postpon_command}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-            pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
-    END_VERSIONS
     """
 
     stub:
-    def prefix = task.ext.prefix ?: "${meta.id}"
-    def postpon_command = panel_of_normals ? "echo '' | gzip > ${prefix}_annotated.vcf.gz" : ""
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
     echo "" | gzip > ${prefix}.vcf.gz
+    touch ${prefix}.vcf.gz.tbi
     touch ${prefix}.vcf.gz.stats
-    ${postpon_command}
+    echo "" | gzip > ${prefix}.f1r2.tar.gz
 
     # Capture the full version output once and store it in a variable
     pbrun_version_output=\$(pbrun mutectcaller --version 2>&1)
@@ -77,10 +103,5 @@ process PARABRICKS_MUTECTCALLER {
         compatible_with:
         \$(echo "\$pbrun_version_output" | awk '/Compatible With:/,/^---/{ if (\$1 ~ /^[A-Z]/ && \$1 != "Compatible" && \$1 != "---") { printf "  %s: %s\\n", \$1, \$2 } }')
     EOF
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-            pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
-    END_VERSIONS
     """
 }

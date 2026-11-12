@@ -245,6 +245,29 @@ keep <- apply(boolean_matrix, 1, all)
 
 prefix = ifelse('$task.ext.prefix' == 'null', '$meta.id', '$task.ext.prefix')
 
+thresholds <- data.frame(
+    rule = c(
+        "minimum_samples_not_na",
+        if (!is.null(opt\$minimum_abundance)) c("minimum_abundance", "minimum_samples"),
+        if (!is.null(opt\$most_variant_features)) "most_variant_features"
+    ),
+    threshold = c(
+        opt\$minimum_samples_not_na,
+        if (!is.null(opt\$minimum_abundance)) c(opt\$minimum_abundance, opt\$minimum_samples),
+        if (!is.null(opt\$most_variant_features)) opt\$most_variant_features
+    ),
+    check.names = FALSE
+)
+
+    write.table(
+        thresholds,
+        file = paste0(prefix, ".thresholds.tsv"),
+        sep = "\t",
+        quote = FALSE,
+        row.names = FALSE
+    )
+
+
 write.table(
     data.frame(rownames(abundance_matrix)[keep], abundance_matrix[keep,,drop = FALSE]),
     file = paste0(

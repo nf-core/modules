@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CELLSNP_MODEA {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/cellsnp-lite:1.2.3--h6141fd1_2' :
-        'biocontainers/cellsnp-lite:1.2.3--h6141fd1_2' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/78/7821bddb522e1464358357f3209f22c81988db7b1d7477be7a21b038c14aee34/data'
+        : 'community.wave.seqera.io/library/cellsnp-lite:1.2.3--777dfc22dc268b85'}"
 
     input:
     tuple val(meta), path(bam), path(bai), path(region_vcf), path(barcode)
@@ -17,7 +20,7 @@ process CELLSNP_MODEA {
     tuple val(meta), path('*.tag.AD.mtx')  , emit: allele_depth
     tuple val(meta), path('*.tag.DP.mtx')  , emit: depth_coverage
     tuple val(meta), path('*.tag.OTH.mtx') , emit: depth_other
-    path 'versions.yml'                    , emit: versions
+    tuple val("${task.process}"), val("cellsnp"), eval("cellsnp-lite --v | cut -f2 -d ' '"), emit: versions_cellsnp, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -43,11 +46,6 @@ process CELLSNP_MODEA {
     mv cellSNP.tag.DP.mtx ${prefix}.tag.DP.mtx
     mv cellSNP.tag.OTH.mtx ${prefix}.tag.OTH.mtx
     mv cellSNP.samples.tsv ${prefix}.samples.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellsnp: \$(cellsnp-lite --v | awk '{print \$2}')
-    END_VERSIONS
     """
 
     stub:
@@ -59,10 +57,5 @@ process CELLSNP_MODEA {
     touch ${prefix}.tag.AD.mtx
     touch ${prefix}.tag.DP.mtx
     touch ${prefix}.tag.OTH.mtx
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        cellsnp: \$(cellsnp-lite --v | awk '{print \$2}')
-    END_VERSIONS
     """
 }

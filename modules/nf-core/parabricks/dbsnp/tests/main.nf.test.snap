@@ -2,15 +2,21 @@
     "human - vcf": {
         "content": [
             "242dbff8325d7f958c95b34598146a0d",
-            [
-                "versions.yml:md5,dc7395a69ef1a4b942e7b02d8fd6f3ab"
-            ]
+            {
+                "versions_parabricks": [
+                    [
+                        "PARABRICKS_DBSNP",
+                        "parabricks",
+                        "4.8.0-1"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-10-22T06:50:15.663443627",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.04.8"
-        },
-        "timestamp": "2025-10-13T16:32:33.155707013"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     },
     "human - vcf - stub": {
         "content": [
@@ -25,13 +31,17 @@
                     ]
                 ],
                 "1": [
-                    "compatible_versions.yml:md5,a9c1bf2bcf9b5fef44bf582d2b41cbca"
+                    "compatible_versions.yml:md5,128cca8d6af50a20825df17947d4e2e3"
                 ],
                 "2": [
-                    "versions.yml:md5,dc7395a69ef1a4b942e7b02d8fd6f3ab"
+                    [
+                        "PARABRICKS_DBSNP",
+                        "parabricks",
+                        "4.8.0-1"
+                    ]
                 ],
                 "compatible_versions": [
-                    "compatible_versions.yml:md5,a9c1bf2bcf9b5fef44bf582d2b41cbca"
+                    "compatible_versions.yml:md5,128cca8d6af50a20825df17947d4e2e3"
                 ],
                 "vcf": [
                     [
@@ -42,28 +52,27 @@
                         "test.vcf:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,dc7395a69ef1a4b942e7b02d8fd6f3ab"
+                "versions_parabricks": [
+                    [
+                        "PARABRICKS_DBSNP",
+                        "parabricks",
+                        "4.8.0-1"
+                    ]
                 ]
             },
             {
                 "PARABRICKS_DBSNP": {
-                    "pbrun": "4.6.0-1"
-                }
-            },
-            {
-                "PARABRICKS_DBSNP": {
-                    "pbrun_version": "4.6.0-1",
+                    "pbrun_version": "4.8.0-1",
                     "compatible_with": {
                         "GATK:": "4.3.0.0"
                     }
                 }
             }
         ],
+        "timestamp": "2026-10-22T06:50:22.941926795",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.04.8"
-        },
-        "timestamp": "2025-10-13T16:32:41.686796236"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     }
 }

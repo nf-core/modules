@@ -1,80 +1,13 @@
 {
     "sarscov2 - [bam, []], fasta, true": {
         "content": [
-            "d2a6624d03c450aa382ab889563ac29",
-            "test.vcf.gz.tbi",
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.bcftools_stats.txt:md5,a3ed9abd409e4aa435f85924e4d0bad4"
-                ]
-            ],
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.mpileup.gz:md5,86f0f5fcaba16e1b4af035ff2b5a9bf3"
-                ]
-            ],
             {
-                "versions_bcftools": [
-                    [
-                        "BCFTOOLS_MPILEUP",
-                        "bcftools",
-                        "1.22"
-                    ]
-                ]
-            }
-        ],
-        "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2025-12-21T14:06:18.298267588"
-    },
-    "sarscov2 - [bam, []], fasta, false stub": {
-        "content": [
-            {
-                "0": [
+                "index": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.bcftools_stats.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "3": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.mpileup.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "4": [
-                    [
-                        "BCFTOOLS_MPILEUP",
-                        "bcftools",
-                        "1.22"
+                        "test.vcf.gz.tbi"
                     ]
                 ],
                 "mpileup": [
@@ -82,8 +15,53 @@
                         {
                             "id": "test"
                         },
-                        "test.mpileup.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "test.mpileup.gz:md5,4dd120039fcf4ff945d0ca749ad9465b"
                     ]
+                ],
+                "stats": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bcftools_stats.txt:md5,e534df91b8c27be0eb520bd02182d62b"
+                    ]
+                ],
+                "vcf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.vcf.gz:md5Variants,113f3e0b28ca8d7746963bd5a0d40bc0"
+                    ]
+                ],
+                "versions_bcftools": [
+                    [
+                        "BCFTOOLS_MPILEUP",
+                        "bcftools",
+                        "1.25"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-28T10:05:23.172208",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.4"
+        }
+    },
+    "sarscov2 - [bam, []], fasta, false stub": {
+        "content": [
+            {
+                "index": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "mpileup": [
+                    
                 ],
                 "stats": [
                     [
@@ -93,12 +71,44 @@
                         "test.bcftools_stats.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "tbi": [
+                "vcf": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.bcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "versions_bcftools": [
+                    [
+                        "BCFTOOLS_MPILEUP",
+                        "bcftools",
+                        "1.25"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-28T10:05:18.012452",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.4"
+        }
+    },
+    "sarscov2 - [bam, bed_mpileup], fasta, false": {
+        "content": [
+            {
+                "index": [
+                    
+                ],
+                "mpileup": [
+                    
+                ],
+                "stats": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bcftools_stats.txt:md5,2d94085e36c72c784c1d077d41a8bd4e"
                     ]
                 ],
                 "vcf": [
@@ -106,51 +116,23 @@
                         {
                             "id": "test"
                         },
-                        "test.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "test.vcf:md5Variants,7341fd584a827cddfc5f181a81ed5076"
                     ]
                 ],
                 "versions_bcftools": [
                     [
                         "BCFTOOLS_MPILEUP",
                         "bcftools",
-                        "1.22"
+                        "1.25"
                     ]
                 ]
             }
         ],
+        "timestamp": "2026-10-28T10:05:33.092417",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2025-12-22T09:01:23.428267089"
-    },
-    "sarscov2 - [bam, bed], fasta, false": {
-        "content": [
-            "7341fd584a827cddfc5f181a81ed5076",
-            "test.vcf.gz.tbi",
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.bcftools_stats.txt:md5,ddfe3704ece40c8d3b8a8beb31cfbcf9"
-                ]
-            ],
-            {
-                "versions_bcftools": [
-                    [
-                        "BCFTOOLS_MPILEUP",
-                        "bcftools",
-                        "1.22"
-                    ]
-                ]
-            }
-        ],
-        "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2025-12-21T14:06:32.030402944"
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.4"
+        }
     },
     "sarscov2 - [bam, []], fasta, true stub": {
         "content": [
@@ -160,16 +142,11 @@
                         {
                             "id": "test"
                         },
-                        "test.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "test.vcf:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "1": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
+                    
                 ],
                 "2": [
                     [
@@ -191,8 +168,11 @@
                     [
                         "BCFTOOLS_MPILEUP",
                         "bcftools",
-                        "1.22"
+                        "1.25"
                     ]
+                ],
+                "index": [
+                    
                 ],
                 "mpileup": [
                     [
@@ -210,101 +190,44 @@
                         "test.bcftools_stats.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "tbi": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
                 "vcf": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "test.vcf:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
                 "versions_bcftools": [
                     [
                         "BCFTOOLS_MPILEUP",
                         "bcftools",
-                        "1.22"
+                        "1.25"
                     ]
                 ]
             }
         ],
+        "timestamp": "2026-10-28T10:05:27.173107",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2025-12-22T09:01:37.014405367"
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.4"
+        }
     },
-    "sarscov2 - [bam, bed], fasta, false stub": {
+    "sarscov2 - [bam, bed_mpileup, bed_call], fasta, false": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.bcftools_stats.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "3": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.mpileup.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "4": [
-                    [
-                        "BCFTOOLS_MPILEUP",
-                        "bcftools",
-                        "1.22"
-                    ]
+                "index": [
+                    
                 ],
                 "mpileup": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.mpileup.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
+                    
                 ],
                 "stats": [
                     [
                         {
                             "id": "test"
                         },
-                        "test.bcftools_stats.txt:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "tbi": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.bcftools_stats.txt:md5,76808a644b9d73ee77c15795e61f679a"
                     ]
                 ],
                 "vcf": [
@@ -312,50 +235,107 @@
                         {
                             "id": "test"
                         },
-                        "test.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                        "test.vcf:md5Variants,c3e829c86ad6ce72945789383bb0108f"
                     ]
                 ],
                 "versions_bcftools": [
                     [
                         "BCFTOOLS_MPILEUP",
                         "bcftools",
-                        "1.22"
+                        "1.25"
                     ]
                 ]
             }
         ],
+        "timestamp": "2026-10-28T10:06:08.361406",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2025-12-22T09:01:50.667461984"
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.4"
+        }
+    },
+    "sarscov2 - [bam, bed_call], fasta, false": {
+        "content": [
+            {
+                "index": [
+                    
+                ],
+                "mpileup": [
+                    
+                ],
+                "stats": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bcftools_stats.txt:md5,5faeeeedc7308bd2d8596ec9b864dafa"
+                    ]
+                ],
+                "vcf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.vcf:md5Variants,46cbd80967ad92b1d603492e503e6a06"
+                    ]
+                ],
+                "versions_bcftools": [
+                    [
+                        "BCFTOOLS_MPILEUP",
+                        "bcftools",
+                        "1.25"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-28T10:05:59.68717",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.4"
+        }
     },
     "sarscov2 - [bam, []], fasta, false": {
         "content": [
-            "d2a6624d03c450aa382ab889563ac29",
-            "test.vcf.gz.tbi",
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.bcftools_stats.txt:md5,a3ed9abd409e4aa435f85924e4d0bad4"
-                ]
-            ],
             {
+                "index": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.vcf.gz.csi"
+                    ]
+                ],
+                "mpileup": [
+                    
+                ],
+                "stats": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.bcftools_stats.txt:md5,e534df91b8c27be0eb520bd02182d62b"
+                    ]
+                ],
+                "vcf": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.vcf.gz:md5Variants,113f3e0b28ca8d7746963bd5a0d40bc0"
+                    ]
+                ],
                 "versions_bcftools": [
                     [
                         "BCFTOOLS_MPILEUP",
                         "bcftools",
-                        "1.22"
+                        "1.25"
                     ]
                 ]
             }
         ],
+        "timestamp": "2026-10-28T10:05:13.280266",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2025-12-21T14:06:04.63975552"
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.4"
+        }
     }
 }

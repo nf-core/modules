@@ -1,0 +1,128 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "traitar"
+description: "Traitar3 - predict microbial phenotypes from genomic sequences using\
+  \ protein families"
+keywords:
+  - phenotype
+  - prediction
+  - microbial
+  - traits
+  - genomics
+  - protein families
+tools:
+  - "traitar":
+      description: "Traitar3 - the microbial trait analyzer (for Python3)"
+      homepage: "https://github.com/nick-youngblut/traitar3"
+      documentation: "https://github.com/nick-youngblut/traitar3"
+      tool_dev_url: "https://github.com/nick-youngblut/traitar3"
+      doi: "10.1128/mSystems.00101-16"
+      licence: ["GPL-3.0"]
+      identifier: biotools:traitar
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: Input sequences in FASTA format (nucleotides, genes, or annotation
+          summary), can be gzipped
+        pattern: "*.{fa,fasta,faa,fna,fa.gz,fasta.gz,faa.gz,fna.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+  - input_type:
+      type: string
+      description: Input type specifying the format of input sequences (from_nucleotides,
+        from_genes, or from_annotation_summary)
+  - pfam_db:
+      type: directory
+      description: |
+        PFAM database directory created by traitar/pfamget module or downloaded from https://ftp.ebi.ac.uk/pub/databases/Pfam/
+      pattern: "pfam_data"
+
+output:
+  predictions_combined:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*/phenotype_prediction/predictions_majority-vote_combined.txt":
+          type: file
+          description: Combined phenotype predictions using majority voting
+          ontologies: []
+  predictions_single_votes:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*/phenotype_prediction/predictions_single-votes_combined.txt":
+          type: file
+          description: Single vote phenotype predictions
+          ontologies: []
+  predictions_flat:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*/phenotype_prediction/predictions_flat_*.txt":
+          type: file
+          description: Flattened phenotype predictions
+          ontologies: []
+  predictions_raw:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*/predictions_*.txt":
+          type: file
+          description: Raw phenotype predictions
+          ontologies: []
+  pfam_annotation:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*/annotation/pfam/":
+          type: directory
+          description: Pfam annotation directory
+  gene_prediction:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*/gene_prediction/":
+          type: directory
+          description: Gene prediction directory
+  versions_traitar:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - traitar:
+          type: string
+          description: The name of the tool
+      - "traitar --version 2>&1 | tail -1":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - traitar:
+          type: string
+          description: The name of the tool
+      - "traitar --version 2>&1 | tail -1":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@brovolia"
+maintainers:
+  - "@brovolia"

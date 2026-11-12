@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MAGECK_TEST {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/mageck:0.5.9.5--py39h1f90b4d_3':
-        'biocontainers/mageck:0.5.9.5--py39h1f90b4d_3' }"
+        'quay.io/biocontainers/mageck:0.5.9.5--py39h1f90b4d_3' }"
 
     input:
     tuple val(meta), path(count_table)
@@ -14,7 +17,7 @@ process MAGECK_TEST {
     tuple val(meta), path("*.gene_summary.txt")  , emit: gene_summary
     tuple val(meta), path("*.sgrna_summary.txt") , emit: sgrna_summary
     tuple val(meta), path("*.R")                 , emit: r_script, optional: true
-    path "versions.yml"                          , emit: versions
+    tuple val("${task.process}"), val("mageck"), eval("mageck -v"), emit: versions_mageck, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,24 +32,13 @@ process MAGECK_TEST {
         $args \\
         -k $count_table \\
         -n $prefix
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mageck: \$(mageck -v)
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch ${prefix}.gene_summary.txt
     touch ${prefix}.sgrna_summary.txt
     touch ${prefix}.R
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        mageck: \$(mageck -v)
-    END_VERSIONS
     """
 }

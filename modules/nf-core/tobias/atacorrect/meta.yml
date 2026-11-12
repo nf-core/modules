@@ -1,0 +1,155 @@
+name: "tobias_atacorrect"
+description: Correct ATAC-seq signal for Tn5 sequence bias with TOBIAS ATACorrect
+keywords:
+  - ATAC-seq
+  - footprinting
+  - Tn5
+  - bigWig
+tools:
+  - tobias:
+      description: "Transcription factor Occupancy prediction By Investigation of ATAC-seq Signal"
+      homepage: "https://github.com/loosolab/TOBIAS"
+      documentation: "https://github.com/loosolab/TOBIAS/wiki"
+      tool_dev_url: "https://github.com/loosolab/TOBIAS"
+      doi: "10.1038/s41467-020-18035-1"
+      licence: ["MIT"]
+      identifier: "biotools:tobias"
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1', single_end:false ]`
+    - bam:
+        type: file
+        description: Coordinate-sorted BAM file
+        pattern: "*.bam"
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+    - bai:
+        type: file
+        description: BAM index file
+        pattern: "*.{bai,csi}"
+        ontologies: []
+    - peaks:
+        type: file
+        description: BED file containing ATAC-seq peaks for bias correction
+        pattern: "*.bed"
+        ontologies:
+          - edam: "http://edamontology.org/format_3003"
+    - fasta:
+        type: file
+        description: Reference genome FASTA file
+        pattern: "*.{fa,fasta,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
+output:
+  corrected:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*_corrected.bw":
+          type: file
+          description: Tn5 bias-corrected ATAC-seq signal track
+          pattern: "*_corrected.bw"
+          ontologies:
+            - edam: "http://edamontology.org/format_3006"
+  expected:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*_expected.bw":
+          type: file
+          description: Expected ATAC-seq signal track estimated from Tn5 bias
+          pattern: "*_expected.bw"
+          ontologies:
+            - edam: "http://edamontology.org/format_3006"
+  uncorrected:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*_uncorrected.bw":
+          type: file
+          description: Uncorrected ATAC-seq signal track
+          pattern: "*_uncorrected.bw"
+          ontologies:
+            - edam: "http://edamontology.org/format_3006"
+  bias:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*_bias.bw":
+          type: file
+          description: Tn5 sequence-bias signal track
+          pattern: "*_bias.bw"
+          ontologies:
+            - edam: "http://edamontology.org/format_3006"
+  report:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*_atacorrect.pdf":
+          type: file
+          description: TOBIAS ATACorrect diagnostic PDF
+          pattern: "*_atacorrect.pdf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3508"
+  versions_tobias:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tobias:
+          type: string
+          description: The name of the tool
+      - TOBIAS --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - tobias:
+          type: string
+          description: The name of the tool
+      - TOBIAS --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@PFRoux"
+maintainers:
+  - "@PFRoux"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/tobias:0.17.5--1e531f4271d7ec91
+      build_id: bd-1e531f4271d7ec91_1
+      scan_id: sc-dea405694ad75469_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/tobias:0.17.5--c8a1fc25c0434848
+      build_id: bd-c8a1fc25c0434848_1
+      scan_id: sc-6afcedfc5e89ab55_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/tobias:0.17.5--14aff19c797f58bc
+      build_id: bd-14aff19c797f58bc_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d1/d1f8f1f92ff81376a701317861ea1e2f40fdbc735fc2a5aa3546f39c6d58d183/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/tobias:0.17.5--96a5c8f44eed0741
+      build_id: bd-96a5c8f44eed0741_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7e/7ef3c907d0716170e89d682217a43d8675d2122aa0641dbf4581022f7848ebba/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/tobias/atacorrect/.conda-lock/linux_amd64-bd-1e531f4271d7ec91_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/tobias/atacorrect/.conda-lock/linux_arm64-bd-c8a1fc25c0434848_1.txt

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DRAGONFLYE {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/dragonflye:1.2.1--hdfd78af_0' :
-        'biocontainers/dragonflye:1.2.1--hdfd78af_0' }"
+        'quay.io/biocontainers/dragonflye:1.2.1--hdfd78af_0' }"
 
     input:
     tuple val(meta), path(shortreads), path(longreads)
@@ -16,7 +19,7 @@ process DRAGONFLYE {
     tuple val(meta), path("{flye,miniasm,raven}.fasta")         , emit: raw_contigs
     tuple val(meta), path("{flye,miniasm,raven}-unpolished.gfa"), emit: gfa, optional:true
     tuple val(meta), path("flye-info.txt")                      , emit: txt, optional:true
-    path "versions.yml"                                         , emit: versions
+    tuple val("${task.process}"), val('dragonflye'), eval("dragonflye --version 2>&1 | sed 's/^.*dragonflye //'"), emit: versions_dragonflye, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,11 +39,6 @@ process DRAGONFLYE {
         --ram $memory \\
         --outdir ./ \\
         --force
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        dragonflye: \$(dragonflye --version 2>&1 | sed 's/^.*dragonflye //' )
-    END_VERSIONS
     """
 
     stub:
@@ -59,10 +57,5 @@ process DRAGONFLYE {
     if [ "${assembler_name}" == "flye" ]; then
         touch flye-info.txt
     fi
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        dragonflye: \$(dragonflye --version 2>&1 | sed 's/^.*dragonflye //' )
-    END_VERSIONS
     """
 }

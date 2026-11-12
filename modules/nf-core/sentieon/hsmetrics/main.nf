@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SENTIEON_HSMETRICS {
     tag "${meta.id}"
     label 'process_low'
     label 'sentieon'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0f/0f1dfe59ef66d7326b43db9ab1f39ce6220b358a311078c949a208f9c9815d4e/data'
-        : 'community.wave.seqera.io/library/sentieon:202503.01--1863def31ed8e4d5'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7e/7ee64f3b4cd58eaa6ed3a7a0769c0a5f4fbd150842fa64358831970bacaf37e6/data'
+        : 'community.wave.seqera.io/library/sentieon:202503.03--df1987151f8b6d33'}"
 
     input:
     tuple val(meta), path(bam), path(bai), path(bait_intervals), path(target_intervals)
@@ -23,7 +26,7 @@ process SENTIEON_HSMETRICS {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def input = bam.sort().collect {bam_ -> "-i ${bam_}" }.join(' ')
+    def input = bam.sort().collect {in -> "-i ${in}" }.join(' ')
     def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64
         ? "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; "
         : ""

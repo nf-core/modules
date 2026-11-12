@@ -13,7 +13,8 @@ tools:
       homepage: https://blast.ncbi.nlm.nih.gov/Blast.cgi
       documentation: https://blast.ncbi.nlm.nih.gov/Blast.cgi?CMD=Web&PAGE_TYPE=Blastdocs
       doi: 10.1016/S0022-2836(05)80360-2
-      licence: ["US-Government-Work"]
+      licence:
+        - "US-Government-Work"
       identifier: ""
 input:
   - - meta:
@@ -53,7 +54,7 @@ output:
           description: File containing blastp hits in XML format
           pattern: "*.{xml}"
           ontologies:
-            - edam: http://edamontology.org/format_2332 # XML
+            - edam: http://edamontology.org/format_2332
   tsv:
     - - meta:
           type: map
@@ -65,7 +66,7 @@ output:
           description: File containing blastp hits in tabular format
           pattern: "*.{tsv}"
           ontologies:
-            - edam: http://edamontology.org/format_3475 # TSV
+            - edam: http://edamontology.org/format_3475
   csv:
     - - meta:
           type: map
@@ -77,14 +78,28 @@ output:
           description: File containing blastp hits in comma separated format
           pattern: "*.csv"
           ontologies:
-            - edam: http://edamontology.org/format_3752 # CSV
+            - edam: http://edamontology.org/format_3752
+  versions_blastp:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - blastp:
+          type: string
+          description: The name of the tool
+      - "blastp -version 2>&1 | sed 's/^.*blastp: //; s/ .*\\$//'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - blastp:
+          type: string
+          description: The name of the tool
+      - "blastp -version 2>&1 | sed 's/^.*blastp: //; s/ .*\\$//'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@vagkaratzas"
 maintainers:

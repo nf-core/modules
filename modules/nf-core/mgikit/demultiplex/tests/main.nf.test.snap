@@ -91,7 +91,11 @@
                     ]
                 ],
                 "9": [
-                    "versions.yml:md5,12c655f9c26afc6ca142fe032e941707"
+                    [
+                        "MGIKIT_DEMULTIPLEX",
+                        "mgikit",
+                        "2.1.0"
+                    ]
                 ],
                 "ambiguous": [
                     
@@ -181,15 +185,206 @@
                         ]
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,12c655f9c26afc6ca142fe032e941707"
+                "versions_mgikit": [
+                    [
+                        "MGIKIT_DEMULTIPLEX",
+                        "mgikit",
+                        "2.1.0"
+                    ]
                 ]
             }
         ],
         "meta": {
-            "nf-test": "0.9.1",
-            "nextflow": "24.10.4"
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
         },
-        "timestamp": "2025-06-06T10:53:51.576356"
+        "timestamp": "2026-02-12T09:24:52.766630608"
+    },
+    "run mgikit demultiplex without errors - stub": {
+        "content": [
+            {
+                "0": [
+                    [
+                        {
+                            "id": "test",
+                            "lane": 1
+                        },
+                        [
+                            "23-001_S1_L01_R1_001.fastq.gz:md5,c8c3d4e857944bce7f5bbebf2a8dd339",
+                            "23-001_S1_L01_R2_001.fastq.gz:md5,a2ed84ae93b89206153041e8d9f4aa28",
+                            "23-002_S2_L01_R1_001.fastq.gz:md5,c8c3d4e857944bce7f5bbebf2a8dd339",
+                            "23-002_S2_L01_R2_001.fastq.gz:md5,a2ed84ae93b89206153041e8d9f4aa28"
+                        ]
+                    ]
+                ],
+                "1": [
+                    [
+                        {
+                            "id": "test",
+                            "lane": 1
+                        },
+                        [
+                            "Undetermined_L01_R1_001.fastq.gz:md5,c8c3d4e857944bce7f5bbebf2a8dd339",
+                            "Undetermined_L01_R2_001.fastq.gz:md5,a2ed84ae93b89206153041e8d9f4aa28"
+                        ]
+                    ]
+                ],
+                "2": [
+                    
+                ],
+                "3": [
+                    [
+                        {
+                            "id": "test",
+                            "lane": 1
+                        },
+                        "FC1.L01.mgikit.undetermined_barcode:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "4": [
+                    
+                ],
+                "5": [
+                    [
+                        {
+                            "id": "test",
+                            "lane": 1
+                        },
+                        "FC1.L01.mgikit.general:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "6": [
+                    [
+                        {
+                            "id": "test",
+                            "lane": 1
+                        },
+                        "FC1.L01.mgikit.info:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "7": [
+                    [
+                        {
+                            "id": "test",
+                            "lane": 1
+                        },
+                        "FC1.L01.mgikit.sample_stats:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "8": [
+                    [
+                        {
+                            "id": "test",
+                            "lane": 1
+                        },
+                        [
+                            "FC1.L01.mgikit.general:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "FC1.L01.mgikit.info:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "FC1.L01.mgikit.undetermined_barcode:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "9": [
+                    [
+                        "MGIKIT_DEMULTIPLEX",
+                        "mgikit",
+                        "2.1.0"
+                    ]
+                ],
+                "ambiguous": [
+                    
+                ],
+                "ambiguous_reports": [
+                    
+                ],
+                "fastq": [
+                    [
+                        {
+                            "id": "test",
+                            "lane": 1
+                        },
+                        [
+                            "23-001_S1_L01_R1_001.fastq.gz:md5,c8c3d4e857944bce7f5bbebf2a8dd339",
+                            "23-001_S1_L01_R2_001.fastq.gz:md5,a2ed84ae93b89206153041e8d9f4aa28",
+                            "23-002_S2_L01_R1_001.fastq.gz:md5,c8c3d4e857944bce7f5bbebf2a8dd339",
+                            "23-002_S2_L01_R2_001.fastq.gz:md5,a2ed84ae93b89206153041e8d9f4aa28"
+                        ]
+                    ]
+                ],
+                "general_info_reports": [
+                    [
+                        {
+                            "id": "test",
+                            "lane": 1
+                        },
+                        "FC1.L01.mgikit.general:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "index_reports": [
+                    [
+                        {
+                            "id": "test",
+                            "lane": 1
+                        },
+                        "FC1.L01.mgikit.info:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "qc_reports": [
+                    [
+                        {
+                            "id": "test",
+                            "lane": 1
+                        },
+                        [
+                            "FC1.L01.mgikit.general:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "FC1.L01.mgikit.info:md5,d41d8cd98f00b204e9800998ecf8427e",
+                            "FC1.L01.mgikit.undetermined_barcode:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        ]
+                    ]
+                ],
+                "sample_stat_reports": [
+                    [
+                        {
+                            "id": "test",
+                            "lane": 1
+                        },
+                        "FC1.L01.mgikit.sample_stats:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "undetermined": [
+                    [
+                        {
+                            "id": "test",
+                            "lane": 1
+                        },
+                        [
+                            "Undetermined_L01_R1_001.fastq.gz:md5,c8c3d4e857944bce7f5bbebf2a8dd339",
+                            "Undetermined_L01_R2_001.fastq.gz:md5,a2ed84ae93b89206153041e8d9f4aa28"
+                        ]
+                    ]
+                ],
+                "undetermined_reports": [
+                    [
+                        {
+                            "id": "test",
+                            "lane": 1
+                        },
+                        "FC1.L01.mgikit.undetermined_barcode:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_mgikit": [
+                    [
+                        "MGIKIT_DEMULTIPLEX",
+                        "mgikit",
+                        "2.1.0"
+                    ]
+                ]
+            }
+        ],
+        "meta": {
+            "nf-test": "0.9.3",
+            "nextflow": "25.10.3"
+        },
+        "timestamp": "2026-02-12T09:25:02.823269163"
     }
 }

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CONTROLFREEC_MAKEGRAPH2 {
     tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/control-freec:11.6b--hdbdd923_0'
-        : 'biocontainers/control-freec:11.6b--hdbdd923_0'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/86/86e7bfef8a43af72880501e04fb817268228715f4854102ce4a90fd3ad2cd66a/data'
+:         'community.wave.seqera.io/library/control-freec:11.6b--6482bd27b629122a' }"
 
     input:
     tuple val(meta), path(ratio), path(baf)
@@ -14,8 +17,8 @@ process CONTROLFREEC_MAKEGRAPH2 {
     tuple val(meta), path("*_BAF.png"), emit: png_baf
     tuple val(meta), path("*_ratio.log2.png"), emit: png_ratio_log2
     tuple val(meta), path("*_ratio.png"), emit: png_ratio
-
-    path "versions.yml", emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('controlfreec'), val("11.6b"), emit: versions_controlfreec, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,33 +27,19 @@ process CONTROLFREEC_MAKEGRAPH2 {
     def args = task.ext.args ?: ""
     def prefix = task.ext.prefix ?: "${meta.id}"
     def baf_cmd = baf ?: ""
-    def VERSION = '11.6b'
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     cat \$(which makeGraph2.0.R) | R --slave --args ${args} ${ratio} ${baf_cmd}
 
     mv *_BAF.txt.png ${prefix}_BAF.png
     mv *_ratio.txt.log2.png ${prefix}_ratio.log2.png
     mv *_ratio.txt.png ${prefix}_ratio.png
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        controlfreec: ${VERSION}
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '11.6b'
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     touch ${prefix}_BAF.png
     touch ${prefix}_ratio.log2.png
     touch ${prefix}_ratio.png
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        controlfreec: ${VERSION}
-    END_VERSIONS
     """
 }

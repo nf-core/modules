@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SAWFISH_DISCOVER {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ca/ca71c93b472a8b9a7701a744a5f123e4474ce9bf1e0d110aae5b84b5134dd74c/data' :
-        'community.wave.seqera.io/library/sawfish:2.2.0--430c21f2b465b4f7' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4b/4bc9cc7ec96890d36b0d4a95e4bb60b4ec41fcec9ddf2fb58b7c0ea7e4cc3f19/data'
+        : 'community.wave.seqera.io/library/sawfish:2.3.1--1e964dca544b9188'}"
 
     input:
     tuple val(meta), path(bam), path(bai)
@@ -34,7 +37,7 @@ process SAWFISH_DISCOVER {
     tuple val(meta), path("${prefix}/maf.mpack")                    , emit: maf_mpack                , optional: true
     tuple val(meta), path("${prefix}/expected.copy.number.bed")     , emit: expected_cn              , optional: true
     tuple val(meta), path("${prefix}")                              , emit: discover_dir
-    path("versions.yml")                                            , emit: versions
+    tuple val("${task.process}"), val('sawfish'), eval("sawfish --version | sed 's/.* //g'"), emit: versions_sawfish, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -58,11 +61,6 @@ process SAWFISH_DISCOVER {
         $cnv_exclude_regions \\
         $maf \\
         --output-dir ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sawfish: \$(sawfish --version | sed 's/sawfish //g')
-    END_VERSIONS
     """
 
     stub:
@@ -100,10 +98,5 @@ process SAWFISH_DISCOVER {
     ${copynum_files}
     ${expected_cn}
     ${maf_mpack}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sawfish: \$(sawfish --version | sed 's/sawfish //g')
-    END_VERSIONS
     """
 }

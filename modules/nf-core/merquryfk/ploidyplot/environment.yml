@@ -1,9 +1,13 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/environment-schema.json
 channels:
   - conda-forge
   - bioconda
 
 dependencies:
-  - bioconda::fastk=1.1.0
+  - bioconda::fastk=1.2
   - bioconda::merquryfk=1.1.1
+  - conda-forge::r-argparse=2.2.3
+  - conda-forge::r-cowplot=1.1.3
   - conda-forge::r-ggplot2=3.4.0
   - conda-forge::r-viridis=0.6.5

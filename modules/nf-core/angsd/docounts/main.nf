@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ANGSD_DOCOUNTS {
     tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/angsd:0.939--h468462d_0':
-        'biocontainers/angsd:0.939--h468462d_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a0/a0185040abdace3529e7c8ae31a80bd86a47577e0d2078b2223dc1b1c362e656/data'
+        : 'community.wave.seqera.io/library/angsd_htslib:714d1c4bd0020e05'}"
 
     input:
     tuple val(meta), path(bam), path(bai), path(minqfile)
@@ -17,7 +20,7 @@ process ANGSD_DOCOUNTS {
     tuple val(meta), path("*.pos.gz")     , emit: pos         , optional: true
     tuple val(meta), path("*.counts.gz")  , emit: counts      , optional: true
     tuple val(meta), path("*.icnts.gz")   , emit: icounts     , optional: true
-    path "versions.yml"                   , emit: versions
+    tuple val("${task.process}"), val('angsd'), eval("angsd 2>&1 | sed '1!d;s/.*version: //;s/ .*//'"), emit: versions_angsd, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -36,11 +39,6 @@ process ANGSD_DOCOUNTS {
         -bam bamlist.txt \\
         -out ${prefix} \\
         ${minq}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        angsd: \$(echo \$(angsd 2>&1) | grep version | head -n 1 | sed 's/.*version: //g;s/ .*//g')
-    END_VERSIONS
     """
 
     stub:
@@ -60,10 +58,5 @@ process ANGSD_DOCOUNTS {
     ${pos_cmd}
     ${counts_cmd}
     ${icounts_cmd}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        angsd: \$(echo \$(angsd 2>&1) | grep version | head -n 1 | sed 's/.*version: //g;s/ .*//g')
-    END_VERSIONS
     """
 }

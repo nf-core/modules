@@ -8,37 +8,48 @@ nextflow_process {
     tag "modules_nfcore"
     tag "crispresso2"
 
-    test("crispresso2 - single_end") {
+    config "./nextflow.config"
 
-        config "./single_end.config"
+    test("crispresso2 - single_end - auto") {
 
         when {
+            params {
+                module_args = "--suppress_plots --auto"
+            }
             process {
                 """
                 input[0] = [
                     [ id:'test', single_end:true ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
                 ]
+                input[1] = []
+                input[2] = []
                 """
             }
         }
 
         then {
+            def html_out = process.out.html[0][1]
+            def htmls = html_out instanceof List ? html_out : [html_out]
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("single_end_versions") },
-                { assert process.out.results[0][1].size() > 0 },
-                { assert process.out.html[0][1].size() > 0 },
-                { assert process.out.txt[0][1].size() > 0 }
+                { assert snapshot(
+                    process.out.results[0][1].size(),
+                    htmls.collect{ html -> file(html).name }.sort(),
+                    process.out.txt[0][1].size(),
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() },
             )
         }
     }
 
-    test("crispresso2 - paired_end") {
-
-        config "./paired_end.config"
+    test("crispresso2 - paired_end - auto") {
 
         when {
+            params {
+                // fastp argument added due to https://github.com/pinellolab/CRISPResso2/issues/648
+                module_args = "--suppress_plots --auto --fastp_command 'fastp --merged_out /dev/stdout'"
+            }
             process {
                 """
                 input[0] = [
@@ -48,43 +59,132 @@ nextflow_process {
                         file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
                     ]
                 ]
+                input[1] = []
+                input[2] = []
                 """
             }
         }
 
         then {
+            def html_out = process.out.html[0][1]
+            def htmls = html_out instanceof List ? html_out : [html_out]
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("paired_end_versions") },
-                { assert process.out.results[0][1].size() > 0 },
-                { assert process.out.html[0][1].size() > 0 },
-                { assert process.out.txt[0][1].size() > 0 }
+                { assert snapshot(
+                    process.out.results[0][1].size(),
+                    htmls.collect{ html -> file(html).name }.sort(),
+                    process.out.txt[0][1].size(),
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() },
             )
         }
     }
 
-    test("crispresso2 - nhej_analysis") {
-
-        config "./nhej.config"
+    test("crispresso2 - paired_end - amplicon string") {
 
         when {
+            params {
+                module_args = "--suppress_plots"
+            }
             process {
                 """
                 input[0] = [
-                    [ id:'nhej_test', single_end:true ],
-                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                    [ id:'paired_test', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
                 ]
+                input[1] = "CCTGTTGTCTATGTGATAGACGTGCCACATGCTTTTCCACTGCTTCAGACACTTATGCCTGTTGGCATCATTCTATTGGATTTGATTACGTCTATAATCCGTTTATGATTGATGTTCAACAATGGGGTTTTACAGGTAACCTACAAAGCA"
+                input[2] = []
                 """
             }
         }
 
         then {
+            def html_out = process.out.html[0][1]
+            def htmls = html_out instanceof List ? html_out : [html_out]
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match("nhej_analysis_versions") },
-                { assert process.out.results[0][1].size() > 0 },
-                { assert process.out.html[0][1].size() > 0 },
-                { assert process.out.txt[0][1].size() > 0 }
+                { assert snapshot(
+                    process.out.results[0][1].size(),
+                    htmls.collect{ html -> file(html).name }.sort(),
+                    process.out.txt[0][1].size(),
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() },
+            )
+        }
+    }
+
+    test("crispresso2 - paired_end - amplicon file") {
+
+        when {
+            params {
+                module_args = "--suppress_plots"
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'paired_test', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ]
+                input[1] = []
+                input[2] = file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/amplicon.txt', checkIfExists: true)
+                """
+            }
+        }
+
+        then {
+            def html_out = process.out.html[0][1]
+            def htmls = html_out instanceof List ? html_out : [html_out]
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    process.out.results[0][1].size(),
+                    htmls.collect{ html -> file(html).name }.sort(),
+                    process.out.txt[0][1].size(),
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() },
+            )
+        }
+    }
+
+    test("crispresso2 - single_end - stub") {
+
+        options '-stub'
+
+        when {
+            params {
+                module_args = ""
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ]
+                input[1] = []
+                input[2] = []
+                """
+            }
+        }
+
+        then {
+            def html_out = process.out.html[0][1]
+            def htmls = html_out instanceof List ? html_out : [html_out]
+            def results_out = process.out.results[0][1]
+            def results_size = results_out instanceof List ? results_out.size() : file(results_out).list().size()
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    results_size,
+                    htmls.collect{ html -> file(html).name }.sort(),
+                    process.out.txt[0][1].size(),
+                    process.out.findAll { key, val -> key.startsWith("versions")}
+                ).match() },
             )
         }
     }

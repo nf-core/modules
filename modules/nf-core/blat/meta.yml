@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "blat"
 description: Queries a sequence subject
 keywords:
@@ -7,12 +6,12 @@ keywords:
   - search
 tools:
   - "blat":
-      description: "BLAT is a bioinformatics software tool which performs rapid mRNA/DNA
-        and cross-species protein alignments."
+      description: "BLAT is a bioinformatics software tool which performs rapid mRNA/DNA and cross-species protein alignments."
       homepage: "https://kentinformatics.com/"
       documentation: "https://kentinformatics.com/documentation"
       doi: "10.1101/gr.229202"
-      licence: ["Free for academic, nonprofit and personal use"]
+      licence:
+        - "Free for academic, nonprofit and personal use"
       identifier: biotools:blat
 input:
   - - meta:
@@ -47,14 +46,52 @@ output:
           description: Search results
           pattern: "*.{psl}"
           ontologies: []
+  versions_blat:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - blat:
+          type: string
+          description: The name of the tool
+      - blat 2>&1 | sed '1!d;s/^.*BLAT v. //;s/ fast.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - blat:
+          type: string
+          description: The name of the tool
+      - blat 2>&1 | sed '1!d;s/^.*BLAT v. //;s/ fast.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@d-jch"
 maintainers:
   - "@d-jch"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/ucsc-blat:472--3b87dacc9a173a42
+      build_id: bd-3b87dacc9a173a42_1
+      scan_id: sc-f7ce5f8ed827af69_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/ucsc-blat:472--73500381ee237047
+      build_id: bd-73500381ee237047_1
+      scan_id: sc-dde5505778a16f50_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/ucsc-blat:472--6a3719fbf7b81f43
+      build_id: bd-6a3719fbf7b81f43_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b6/b6daae06b6d6e1fc5d1ce8fe53435c16679b959d9fdb2f545dd59a111a21bcf7/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/ucsc-blat:472--73205ca0987c70bb
+      build_id: bd-73205ca0987c70bb_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/8f/8f1c01ef5544da297e213b49ad010a6de4bb152c1bd34881a8b65cb825192ed5/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/blat/.conda-lock/linux_amd64-bd-3b87dacc9a173a42_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/blat/.conda-lock/linux_arm64-bd-73500381ee237047_1.txt

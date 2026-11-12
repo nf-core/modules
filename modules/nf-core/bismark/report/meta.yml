@@ -15,7 +15,7 @@ tools:
         Bismark is a tool to map bisulfite treated sequencing reads
         and perform methylation calling in a quick and easy-to-use fashion.
       homepage: https://github.com/FelixKrueger/Bismark
-      documentation: https://github.com/FelixKrueger/Bismark/tree/master/Docs
+      documentation: https://github.com/FelixKrueger/Bismark/tree/master/docs
       doi: 10.1093/bioinformatics/btr167
       licence: ["GPL-3.0-or-later"]
       identifier: biotools:bismark
@@ -57,15 +57,53 @@ output:
           description: Bismark reports
           pattern: "*.{html,txt}"
           ontologies: []
+  versions_bismark:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bismark:
+          type: string
+          description: The name of the tool
+      - "bismark --version 2>&1 | grep -Eo '[0-9]+\\.[0-9]+\\.[0-9]+'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bismark:
+          type: string
+          description: The name of the tool
+      - "bismark --version 2>&1 | grep -Eo '[0-9]+\\.[0-9]+\\.[0-9]+'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@phue"
 maintainers:
   - "@phue"
   - "@sateeshperi"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bismark:3.2.0--3978d640d774e7f9
+      build_id: bd-3978d640d774e7f9_1
+      scan_id: sc-4abd35b7c26146e7_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/bismark:3.2.0--681359ad711abfb6
+      build_id: bd-681359ad711abfb6_1
+      scan_id: sc-eb526dc5796867c8_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bismark:3.2.0--272a01efd4049352
+      build_id: bd-272a01efd4049352_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/65/65d4877a6dc7b42a4fb5086d4620cdfdba48a5e2407e81f1de27357743b4aaf1/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bismark:3.2.0--abc3cb88528d5b67
+      build_id: bd-abc3cb88528d5b67_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/51/518f237635ae7675757c23269db37b53112ada32e106a6e6523cd3311fbefc71/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bismark/report/.conda-lock/linux_amd64-bd-3978d640d774e7f9_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/bismark/report/.conda-lock/linux_arm64-bd-681359ad711abfb6_1.txt

@@ -1,0 +1,109 @@
+nextflow_process {
+
+    name "Test Process SAVANA_TO"
+    script "../main.nf"
+    process "SAVANA_TO"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "savana"
+    tag "savana/to"
+
+    test("homo_sapiens - nanopore - bam") {
+        when {
+            params {
+                module_args = '--overrule_cellularity 1 --chromosomes 22 --overwrite'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/savana/colo829.PAU61426.sup.chr22.subset.0.05.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/savana/colo829.PAU61426.sup.chr22.subset.0.05.bam.bai', checkIfExists: true),
+                    [],
+                    [],
+                    []
+                ]
+                input[1] = [
+                    [ id:'ref' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/hg38.chr22.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/hg38.chr22.fasta.fai', checkIfExists: true),
+                ]
+                input[2] = [
+                    [ id:'contigs' ],
+                    []
+                ]
+                input[3] = [
+                    [ id:'blacklist' ],
+                    []
+                ]
+                input[4] = [
+                    [ id:'g1000_vcf' ],
+                    ''
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(
+                    path(process.out.sv_breakpoints_vcf.get(0).get(1)).vcf.summary,
+                    file(process.out.sv_breakpoints_bedpe.get(0).get(1)).name,
+                    file(process.out.sv_breakpoints_read_support.get(0).get(1)).readLines().size(),
+                    file(process.out.inserted_sequences.get(0).get(1)).name,
+                    path(process.out.classified_vcf.get(0).get(1)).vcf.summary,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
+                ).match() }
+            )
+        }
+    }
+
+    test("homo_sapiens - nanopore - stub") {
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--overrule_cellularity 1 --chromosomes 22 --overwrite'
+            }
+            process {
+                """
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/savana/colo829.PAU61426.sup.chr22.subset.0.05.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/nanopore/bam/savana/colo829.PAU61426.sup.chr22.subset.0.05.bam.bai', checkIfExists: true),
+                    [],
+                    [],
+                    []
+                ]
+                input[1] = [
+                    [ id:'ref' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/hg38.chr22.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr22/sequence/hg38.chr22.fasta.fai', checkIfExists: true),
+                ]
+                input[2] = [
+                    [ id:'contigs' ],
+                    []
+                ]
+                input[3] = [
+                    [ id:'blacklist' ],
+                    []
+                ]
+                input[4] = [
+                    [ id:'g1000_vcf' ],
+                    ''
+                ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+}

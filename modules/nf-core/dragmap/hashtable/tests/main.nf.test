@@ -27,8 +27,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                         file(process.out.hashmap[0][1]).name,
-                        process.out.versions,
-                        path(process.out.versions[0]).yaml
+                        process.out.findAll { key, val -> key.startsWith("versions") },
                     ).match()
                 }
             )
@@ -55,7 +54,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     process.out,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith("versions") },
                 ).match() }
             )
         }

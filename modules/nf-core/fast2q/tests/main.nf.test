@@ -41,8 +41,7 @@ nextflow_process {
                         file(process.out.distribution_plot[0][1]).name,
                         file(process.out.reads_plot[0][1]).name,
                         file(process.out.reads_plot_percentage[0][1]).name,
-                        process.out.versions,                       // versions file
-                        path(process.out.versions[0]).yaml          // Validate against the versions snapshot
+                        process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -61,7 +60,7 @@ nextflow_process {
                 """
                 input[0] = [
                     [ id:'test1' ], // meta map
-                    file(params.test_data_base + '/data/genomics/mus_musculus/mageck/ERR376998.small.fastq.gz', checkIfExists: true) // FASTQ file
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/ERR376998.small.fastq.gz', checkIfExists: true) // FASTQ file
                 ]
                 input[1] = [
                     [ id:'library_name', multiple_features_per_read:false ], // meta map for second input
@@ -80,8 +79,7 @@ nextflow_process {
                         file(process.out.distribution_plot[0][1]).name,
                         file(process.out.reads_plot[0][1]).name,
                         file(process.out.reads_plot_percentage[0][1]).name,
-                        process.out.versions,                       // versions file
-                        path(process.out.versions[0]).yaml          // Validate against the versions snapshot
+                        process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -99,12 +97,12 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                    [ id:'test1' ], // meta map
-                    file(params.test_data_base + '/data/genomics/mus_musculus/mageck/ERR376998.small.fastq.gz', checkIfExists: true) // FASTQ file
+                    [ id:'test1' ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/ERR376998.small.fastq.gz', checkIfExists: true) // FASTQ file
                 ]
                 input[1] = [
-                    [ id:'library_name', multiple_features_per_read:false ], // meta map for second input
-                    file(params.test_data_base + '/data/genomics/mus_musculus/mageck/yusa_library.csv', checkIfExists: true) // library file
+                    [ id:'library_name', multiple_features_per_read:false ],
+                    file(params.modules_testdata_base_path + 'genomics/mus_musculus/mageck/yusa_library.csv', checkIfExists: true) // library file
                 ]
                 """
             }
@@ -119,8 +117,7 @@ nextflow_process {
                         file(process.out.distribution_plot[0][1]).name,
                         file(process.out.reads_plot[0][1]).name,
                         file(process.out.reads_plot_percentage[0][1]).name,
-                        process.out.versions,                       // versions file
-                        path(process.out.versions[0]).yaml          // Validate against the versions snapshot
+                        process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 }
             )
@@ -152,11 +149,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                        process.out,
-                        path(process.out.versions[0]).yaml // Validate against the versions snapshot
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

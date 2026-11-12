@@ -38,13 +38,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert path("${process.out.ms_statistics[0][1]}").exists() },
-                { assert path("${process.out.log[0][1]}").exists() },
-                { assert snapshot(
-                    process.out.versions
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["log", "ms_statistics"])).match() }
             )
         }
     }
@@ -65,13 +61,9 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert path("${process.out.ms_statistics[0][1]}").exists() },
-                { assert snapshot(
-                    process.out.versions,
-                    process.out.log
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

@@ -44,7 +44,7 @@ test("A. thaliana Col-0 test data - ragtag - patch") {
                     process.out.patch_components_fasta,
                     process.out.target_splits_agp,
                     process.out.target_splits_fasta,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match()
                 },
             )

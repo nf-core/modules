@@ -47,6 +47,10 @@ nextflow_process {
 
         when {
 
+            params {
+                blobtk_args = "-s 1000"
+            }
+
             process {
                 """
                 input[0] = Channel.of(

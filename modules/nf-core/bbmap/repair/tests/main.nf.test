@@ -30,7 +30,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(
+                        process.out.repaired,
+                        file(process.out.singleton[0][1]).name,
+                        file(process.out.log.get(0)).name,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
             )
         }
     }
@@ -55,7 +61,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(
+                        process.out.repaired,
+                        file(process.out.singleton[0][1]).name,
+                        file(process.out.log.get(0)).name,
+                        process.out.findAll { key, val -> key.startsWith('versions') }
+                    ).match()
+                }
             )
         }
     }

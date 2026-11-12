@@ -14,7 +14,12 @@ tools:
         sequencing reads to long reference sequences.
       homepage: http://bowtie-bio.sourceforge.net/bowtie2/index.shtml
       documentation: http://bowtie-bio.sourceforge.net/bowtie2/manual.shtml
-      doi: 10.1186/gb-2009-10-3-r25
+      doi: "10.1038/nmeth.1923"
+      publication:
+        author: "Langmead, B. & Salzberg, S. L."
+        year: 2012
+        title: "Fast gapped-read alignment with Bowtie 2"
+        source: "Nature Methods"
       licence: ["GPL-3.0-or-later"]
       identifier: ""
 input:
@@ -46,9 +51,10 @@ input:
           e.g. [ id:'test', single_end:false ]
     - fasta:
         type: file
-        description: Bowtie2 genome fasta file
-        pattern: "*.fasta"
-        ontologies: []
+        description: Reference genome FASTA file
+        pattern: "*.{fa,fasta,fna}"
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
   - save_unaligned:
       type: boolean
       description: |
@@ -123,16 +129,94 @@ output:
           pattern: "*.fastq.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
+  versions_bowtie2:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bowtie2:
+          type: string
+          description: The name of the tool
+      - "bowtie2 --version 2>&1 | sed -En 's/.*bowtie2-align-s(-v[0-9]+)? version //p'":
+          type: eval
+          description: The expression to obtain the version of bowtie2
+  versions_samtools:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - "samtools version | sed '1!d;s/.* //'":
+          type: eval
+          description: The expression to obtain the version of samtools
+  versions_pigz:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool
+      - "pigz --version 2>&1 | sed 's/pigz //'":
+          type: eval
+          description: The expression to obtain the version of pigz
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - bowtie2:
+          type: string
+          description: The name of the tool
+      - "bowtie2 --version 2>&1 | sed -En 's/.*bowtie2-align-s(-v[0-9]+)? version //p'":
+          type: eval
+          description: The expression to obtain the version of bowtie2
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - samtools:
+          type: string
+          description: The name of the tool
+      - "samtools version | sed '1!d;s/.* //'":
+          type: eval
+          description: The expression to obtain the version of samtools
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - pigz:
+          type: string
+          description: The name of the tool
+      - "pigz --version 2>&1 | sed 's/pigz //'":
+          type: eval
+          description: The expression to obtain the version of pigz
+
 authors:
   - "@joseespinosa"
   - "@drpatelh"
 maintainers:
   - "@joseespinosa"
   - "@drpatelh"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bowtie2_htslib_samtools_pigz:e1c7af09e1513a6c
+      build_id: bd-e1c7af09e1513a6c_1
+      scan_id: sc-02541d8602e7f719_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/bowtie2_htslib_samtools_pigz:6b1d52d30298d2b2
+      build_id: bd-6b1d52d30298d2b2_1
+      scan_id: sc-44672350bef23f3b_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bowtie2_htslib_samtools_pigz:346827d9a7966ca8
+      build_id: bd-346827d9a7966ca8_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/45/45e88a89dab2752d16f23d7a43cd7c6850fd3b85465c8077bea282efe7955c15/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bowtie2_htslib_samtools_pigz:17bc0abde2c56dd2
+      build_id: bd-17bc0abde2c56dd2_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/70/7093a62c894ad3337cabda5efadce78a3ecdb5ba34cf8646743c6d43d8c4b77d/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/bowtie2/align/.conda-lock/linux_amd64-bd-e1c7af09e1513a6c_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/bowtie2/align/.conda-lock/linux_arm64-bd-6b1d52d30298d2b2_1.txt

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CATPACK_ADDNAMES {
     tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/cat:6.0.1--hdfd78af_1'
-        : 'biocontainers/cat:6.0.1--hdfd78af_1'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1f/1fc8ea63d90f6b164b197ef1077183c909391ef70e65955b9e5fee54ffcfe3d5/data'
+        : 'community.wave.seqera.io/library/cat:6.0.1--45eb3de71f06f426'}"
 
     input:
     tuple val(meta), path(input)
@@ -13,7 +16,7 @@ process CATPACK_ADDNAMES {
 
     output:
     tuple val(meta), path("${prefix}.txt"), emit: txt
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('catpack'), eval("CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g'"), topic: versions, emit: versions_catpack
 
     when:
     task.ext.when == null || task.ext.when
@@ -30,11 +33,6 @@ process CATPACK_ADDNAMES {
         -i ${input} \\
         -t ${taxonomy} \\
         -o ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        catpack: \$(CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g')
-    END_VERSIONS
     """
 
     stub:
@@ -47,10 +45,5 @@ process CATPACK_ADDNAMES {
         -o ${prefix}.txt"
 
     touch ${prefix}.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        catpack: \$(CAT_pack --version | sed 's/CAT_pack pack v//g;s/ .*//g')
-    END_VERSIONS
     """
 }

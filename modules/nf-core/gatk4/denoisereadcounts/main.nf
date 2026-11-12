@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GATK4_DENOISEREADCOUNTS {
     tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ce/ced519873646379e287bc28738bdf88e975edd39a92e7bc6a34bccd37153d9d0/data'
-        : 'community.wave.seqera.io/library/gatk4_gcnvkernel:edb12e4f0bf02cd3'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ce/ce8f4142326abbb74e28b97633a200b09439c54480803343b1cf13dc19e51ae5/data'
+        : 'community.wave.seqera.io/library/gatk4-lite:4.7.0.0--79918b8b2632f4b1'}"
 
     input:
     tuple val(meta), path(counts)
@@ -13,8 +16,8 @@ process GATK4_DENOISEREADCOUNTS {
 
     output:
     tuple val(meta), path("*_standardizedCR.tsv"), emit: standardized
-    tuple val(meta), path("*_denoisedCR.tsv"),     emit: denoised
-    path "versions.yml",                           emit: versions
+    tuple val(meta), path("*_denoisedCR.tsv"), emit: denoised
+    tuple val("${task.process}"), val('gatk4'), eval("gatk --version | sed -n '/GATK.*v/s/.*v//p'"), topic: versions, emit: versions_gatk4
 
     when:
     task.ext.when == null || task.ext.when
@@ -39,11 +42,6 @@ process GATK4_DENOISEREADCOUNTS {
         --count-panel-of-normals ${pon} \\
         --standardized-copy-ratios ${prefix}_standardizedCR.tsv \\
         --denoised-copy-ratios ${prefix}_denoisedCR.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -51,10 +49,5 @@ process GATK4_DENOISEREADCOUNTS {
     """
     touch ${prefix}_standardizedCR.tsv
     touch ${prefix}_denoisedCR.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gatk4: \$(echo \$(gatk --version 2>&1) | sed 's/^.*(GATK) v//; s/ .*\$//')
-    END_VERSIONS
     """
 }

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process YAHS {
     tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/yahs:1.2.2--h577a1d6_1':
-        'biocontainers/yahs:1.2.2--h577a1d6_1' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/47/47e6425421c6823260bf4bd8d2d431f1f509e9bc9110bb3aa6b4652b85e63eac/data'
+:         'community.wave.seqera.io/library/yahs:1.2.2--5a61538ab6dbd63d' }"
 
     input:
     tuple val(meta), path(fasta), path(fai), path(hic_map), path(agp)
@@ -18,7 +21,7 @@ process YAHS {
     tuple val(meta), path("${prefix}_r*_*.agp")              , emit: round_agp         ,  optional: true
     tuple val(meta), path("${prefix}.bin")                   , emit: binary
     tuple val(meta), path("${prefix}.log")                   , emit: log
-    path "versions.yml"                                      , emit: versions
+    tuple val("${task.process}"), val('yahs'), eval("yahs --version 2>&1"), emit: versions_yahs, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,11 +38,6 @@ process YAHS {
         ${fasta} \\
         ${hic_map} \\
         2>| >( tee ${prefix}.log >&2 )
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        yahs: \$(yahs --version 2>&1)
-    END_VERSIONS
     """
 
     stub:
@@ -53,10 +51,5 @@ process YAHS {
     touch ${prefix}_r01_break.agp
     touch ${prefix}.bin
     touch ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        yahs: \$(yahs --version 2>&1)
-    END_VERSIONS
     """
 }

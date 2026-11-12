@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { MAFFT_ALIGN as MAFFT_ALIGN_MODULE } from '../../../modules/nf-core/mafft/align/main'
 
 workflow MAFFT_ALIGN {
@@ -11,5 +14,4 @@ workflow MAFFT_ALIGN {
 
     emit:
     alignment = MAFFT_ALIGN_MODULE.out.fas      // channel: [ val(meta), *.fas ]
-    versions  = MAFFT_ALIGN_MODULE.out.versions // channel: [ versions.yml ]
 }

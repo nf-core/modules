@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SVDB_BUILD {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/svdb:2.8.2--py39h5371cbf_0':
-        'biocontainers/svdb:2.8.2--py39h5371cbf_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/9a/9a231533a2fb561d07f4930244fbdef3ea66a7630ed0bc19129f123c514c50f6/data':
+        'community.wave.seqera.io/library/bcftools_svdb_gzip_tar:6e53c6778a8f708a' }"
 
     input:
     tuple val(meta), path(input)
@@ -13,7 +16,7 @@ process SVDB_BUILD {
 
     output:
     tuple val(meta), path("*.db"), emit: db
-    path "versions.yml"          , emit: versions
+    tuple val("${task.process}"), val('svdb'), eval("svdb | sed -nE 's/.*SVDB-([0-9.]+).*/\\1/p'"), emit: versions_svdb, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,13 +29,10 @@ process SVDB_BUILD {
     """
     svdb \\
         --build \\
+        ${args} \\
         --$input_type $input \\
         --prefix ${prefix}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        svdb: \$( echo \$(svdb) | head -1 | sed 's/usage: SVDB-\\([0-9]\\.[0-9]\\.[0-9]\\).*/\\1/' )
-    END_VERSIONS
     """
 
     stub:
@@ -40,9 +40,5 @@ process SVDB_BUILD {
     """
     touch ${prefix}.db
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        svdb: \$( echo \$(svdb) | head -1 | sed 's/usage: SVDB-\\([0-9]\\.[0-9]\\.[0-9]\\).*/\\1/' )
-    END_VERSIONS
     """
 }

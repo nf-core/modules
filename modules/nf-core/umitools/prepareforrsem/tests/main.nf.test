@@ -26,8 +26,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bam).match('bam_sarscov2_bam') },
-                { assert snapshot(process.out.versions).match('versions_sarscov2_bam') }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys:["bam"], unstableKeys: ["log"])).match() },
             )
         }
 
@@ -52,8 +51,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.bam).match('bam_sarscov2_bam - stub') },
-                { assert snapshot(process.out.versions).match('versions_sarscov2_bam - stub') }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

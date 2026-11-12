@@ -12,8 +12,6 @@ nextflow_process {
 
     test("homo_sapiens - bam") {
 
-        config "./alignment.config"
-
         setup {
             run("RSEM_PREPAREREFERENCE") {
                 script "../../../rsem/preparereference/main.nf"
@@ -27,9 +25,6 @@ nextflow_process {
         }
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = Channel.of([
@@ -47,7 +42,7 @@ nextflow_process {
                     process.out.counts_gene,
                     process.out.counts_transcript,
                     process.out.stat,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }
@@ -70,9 +65,6 @@ nextflow_process {
         }
 
         when {
-            params {
-                outdir = "$outputDir"
-            }
             process {
                 """
                 input[0] = Channel.of([
@@ -93,7 +85,7 @@ nextflow_process {
                     process.out.counts_gene,
                     process.out.counts_transcript,
                     process.out.stat,
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() },
                 { assert path(process.out.logs.get(0).get(1)).exists() }
             )
@@ -140,7 +132,7 @@ nextflow_process {
                 { assert path(process.out.stat.get(0).get(1)).exists() },
                 { assert path(process.out.logs.get(0).get(1)).exists() },
                 { assert snapshot(
-                    process.out.versions
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                 ).match() }
             )
         }

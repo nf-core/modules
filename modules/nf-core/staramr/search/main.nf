@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process STARAMR_SEARCH {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/staramr:0.10.0--pyhdfd78af_0':
-        'biocontainers/staramr:0.10.0--pyhdfd78af_0' }"
+        'quay.io/biocontainers/staramr:0.10.0--pyhdfd78af_0' }"
 
     input:
     tuple val(meta), path(genome_fasta) // genome as a fasta file
@@ -19,7 +22,7 @@ process STARAMR_SEARCH {
     tuple val(meta), path("*_results/mlst.tsv")            , emit: mlst_tsv
     tuple val(meta), path("*_results/settings.txt")        , emit: settings_txt
     tuple val(meta), path("*_results/pointfinder.tsv")     , emit: pointfinder_tsv, optional: true
-    path "versions.yml"                                    , emit: versions
+    tuple val("${task.process}"), val('staramr'), eval("staramr --version 2>&1 | sed 's/^.*staramr //'"), emit: versions_staramr, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,25 +43,14 @@ process STARAMR_SEARCH {
         --nprocs $task.cpus \\
         -o ${prefix}_results \\
         $genome_uncompressed_name
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        staramr : \$(echo \$(staramr --version 2>&1) | sed 's/^.*staramr //' )
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     mkdir ${prefix}_results
     touch ${prefix}_results/results.xlsx
-    touch ${prefix}_results/{summary,detailed_summary,resfinder,pointfinder,plasmidfinder,mlst}.tsv.gz
-    touch ${prefix}_results/settings.txt.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        staramr : \$(echo \$(staramr --version 2>&1) | sed 's/^.*staramr //' )
-    END_VERSIONS
+    echo "" | gzip > ${prefix}_results/{summary,detailed_summary,resfinder,pointfinder,plasmidfinder,mlst}.tsv.gz
+    echo "" | gzip > ${prefix}_results/settings.txt.gz
     """
 }

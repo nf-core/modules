@@ -13,7 +13,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -34,7 +37,10 @@ nextflow_process {
         when {
             process {
                 """
-                input[0] = file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                input[0] = [
+                    [ id:'test' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)
+                ]
                 """
             }
         }

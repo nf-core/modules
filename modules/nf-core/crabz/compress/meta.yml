@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "crabz_compress"
 description: Compress files with crabz
 keywords:
@@ -11,11 +10,10 @@ tools:
       homepage: "https://github.com/sstadick/crabz"
       documentation: "https://github.com/sstadick/crabz"
       tool_dev_url: "https://github.com/sstadick/crabz"
-      licence: ["MIT"]
-      identifier: ""
-
+      licence:
+        - "MIT"
+      identifier: biotools:crabz
 input:
-  # Only when we have meta
   - - meta:
         type: map
         description: |
@@ -27,7 +25,6 @@ input:
         pattern: "*.*"
         ontologies: []
 output:
-  #Only when we have meta
   archive:
     - - meta:
           type: map
@@ -39,14 +36,28 @@ output:
           description: The compressed file
           pattern: "*.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
+  versions_crabz:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - crabz:
+          type: string
+          description: The name of the tool
+      - 0.10.0:
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - crabz:
+          type: string
+          description: The name of the tool
+      - 0.10.0:
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@camlloyd"
 maintainers:

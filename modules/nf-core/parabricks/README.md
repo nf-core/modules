@@ -4,7 +4,7 @@ These nf-core modules implement functionality of the NVIDIA Parabricks software 
 
 ## General considerations
 
-Parabricks is available only through a docker container: `nvcr.io/nvidia/clara/clara-parabricks:4.6.0-1`. The main entrypoint to the Parabricks is the command line program `pbrun`, which calls several sub-programs within the container. The Parabricks authors combined several common patterns into a single tool, such as `fq2bam` performing alignment, sorting, mark duplicates, and base quality score recalibration, all within a single command. Generally, the tools can be used for only a subset of the entire functionality as well.
+Parabricks is available only through a docker container: `nvcr.io/nvidia/clara/clara-parabricks:4.8.0-1`. The main entrypoint to the Parabricks is the command line program `pbrun`, which calls several sub-programs within the container. The Parabricks authors combined several common patterns into a single tool, such as `fq2bam` performing alignment, sorting, mark duplicates, and base quality score recalibration, all within a single command. Generally, the tools can be used for only a subset of the entire functionality as well.
 
 ## Hardware Requirements
 
@@ -42,11 +42,11 @@ For additional considerations, including information about how readgroups are ad
 
 ## rnafq2bam
 
-The `rnafq2bam` module is based on STAR version `2.7.2a`. Therefore the genome lib directory required as input for this module must also be generated using this version of STAR. For convenience, a module with this version of STAR is included in this directory under `parabricks/stargenomegenerate`.
+Parabricks `rnafq2bam` is based on STAR version `2.7.2a` and the STAR index directory required as input for this module must also be generated using this version. An example for how to use the existing STAR genomegenerate module with Parabricks can be found in the [nextflow.config](./rnafq2bam/tests/nextflow.config) for the rnafq2bam tests.
 
 ## starfusion
 
-The `starfusion` module is based on starfusion 1.7.0. Therefore the genome lib directory required as input for this module must also be generated using this version of starfusion. For convenience, a module with this version of starfusion is included in this directory under `parabricks/starfusion_build`.
+Parabricks `starfusion` is based on STAR-Fusion version `1.7.0` and the STAR-Fusion build indices required as input for this module must also be generated using this version. An example for how to use the existing STAR-Fusion build module with Parabricks can be found in the [nextflow.config](./starfusion/tests/nextflow.config) for the starfusion tests.
 
 ## compatible_with.yaml
 

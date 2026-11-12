@@ -101,9 +101,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    process.out.collectEntries { key, value -> key.matches("^\\d+\$") ? null : [ key, value ]}.findAll { it != null }
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

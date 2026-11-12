@@ -24,17 +24,15 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     file(process.out.vcf[0][1]).name,
                     file(process.out.vcf[0][2]).name,
-                    process.out.versions
-                    ).match()
-                }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
     test("test_gatk4_reblockgvcf_intervals") {
@@ -52,17 +50,15 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     file(process.out.vcf[0][1]).name,
                     file(process.out.vcf[0][2]).name,
-                    process.out.versions
-                    ).match()
-                }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
     test("test_gatk4_reblockgvcf_stub") {
@@ -83,17 +79,14 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     file(process.out.vcf[0][1]).name,
                     file(process.out.vcf[0][2]).name,
-                    process.out.versions
-                    ).match()
-                }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
-
 }

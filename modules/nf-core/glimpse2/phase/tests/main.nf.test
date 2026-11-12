@@ -38,24 +38,23 @@ nextflow_process {
                     .combine(ref_panel)
                     .combine(map_file)
                 input[1] = channel.of([[],[],[]])
+                input[2] = []
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.phased_variants.collect{ meta, vcf -> [
+            assert process.success
+            assert snapshot(
+                process.out.phased_variants.collect { meta, vcf -> [
                         meta,
                         file(vcf).name,
                         path(vcf).vcf.summary,
                         path(vcf).vcf.variantsMD5
-                    ]},
-                    process.out.stats_coverage,
-                    process.out.versions
-                ).match()}
-            )
+                ] },
+                process.out.stats_coverage,
+                process.out.findAll { key, val -> key.startsWith('versions') }
+            ).match()
         }
 
     }
@@ -85,24 +84,23 @@ nextflow_process {
                     .combine(ref_panel)
                     .combine(map_file)
                 input[1] = channel.of([[],[],[]])
+                input[2] = []
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.phased_variants.collect{ meta, vcf -> [
+            assert process.success
+            assert snapshot(
+                process.out.phased_variants.collect { meta, vcf -> [
                         meta,
                         file(vcf).name,
                         path(vcf).vcf.summary,
                         path(vcf).vcf.variantsMD5
-                    ]},
-                    process.out.stats_coverage,
-                    process.out.versions
-                ).match()}
-            )
+                ] },
+                process.out.stats_coverage,
+                process.out.findAll { key, val -> key.startsWith('versions') }
+            ).match()
         }
 
     }
@@ -120,10 +118,12 @@ nextflow_process {
                     ])
                     input[1] = channel.of([
                         [id: 'Hg38'],
-                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genomeGRCh38_chr21_22.fa.gz", checkIfExists: true)
+                        file(params.modules_testdata_base_path + "genomics/homo_sapiens/genome/genomeGRCh38_chr21_22.fa.gz", checkIfExists: true),
+                        []
                     ])
-                    input[2] = []
-                    input[3] = "crai"
+                    input[2] = [[], []]
+                    input[3] = [[], []]
+                    input[4] = "crai"
                     """
                 }
             }
@@ -157,24 +157,23 @@ nextflow_process {
                     .combine(ref_panel)
                     .combine(map_file)
                 input[1] = reference_genome
+                input[2] = []
                 """
                 }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.phased_variants.collect{ meta, vcf -> [
+            assert process.success
+            assert snapshot(
+                process.out.phased_variants.collect { meta, vcf -> [
                         meta,
                         file(vcf).name,
                         path(vcf).vcf.summary,
                         path(vcf).vcf.variantsMD5
-                    ]},
-                    process.out.stats_coverage,
-                    process.out.versions
-                ).match()}
-            )
+                ] },
+                process.out.stats_coverage,
+                process.out.findAll { key, val -> key.startsWith('versions') }
+            ).match()
         }
     }
 
@@ -208,24 +207,23 @@ nextflow_process {
                     .combine(ref_panel)
                     .combine(map_file)
                 input[1] = channel.of([[],[],[]])
+                input[2] = []
                 """
                 }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.phased_variants.collect{ meta, vcf -> [
+            assert process.success
+            assert snapshot(
+                process.out.phased_variants.collect { meta, vcf -> [
                         meta,
                         file(vcf).name,
                         path(vcf).vcf.summary,
                         path(vcf).vcf.variantsMD5
-                    ]},
-                    process.out.stats_coverage,
-                    process.out.versions
-                ).match()}
-            )
+                ] },
+                process.out.stats_coverage,
+                process.out.findAll { key, val -> key.startsWith('versions') }
+            ).match()
         }
     }
 
@@ -252,15 +250,14 @@ nextflow_process {
                 // [meta, vcf, index, sample_infos, regionin, regionout,ref, index, map] [meta, fasta, fai]
                 input[0] = input_bam
                 input[1] = channel.of([[],[],[]])
+                input[2] = []
                 """
                 }
         }
 
         then {
-            assertAll(
-                { assert process.failed },
-                { assert process.errorReport.contains("Input files must be of the same type and either .bam/.cram or .vcf/.vcf.gz/.bcf format. Found: [bam, gl]") }
-            )
+            assert process.failed
+            assert process.errorReport.contains("Input files must be of the same type and either .bam/.cram or .vcf/.vcf.gz/.bcf format. Found: [bam, gl]")
         }
     }
 
@@ -287,15 +284,14 @@ nextflow_process {
                 // [meta, vcf, index, sample_infos, regionin, regionout,ref, index, map] [meta, fasta, fai]
                 input[0] = input_bam
                 input[1] = channel.of([[],[],[]])
+                input[2] = []
                 """
                 }
         }
 
         then {
-            assertAll(
-                { assert process.failed },
-                { assert process.errorReport.contains("Only one input .vcf/.vcf.gz/.bcf file can be provided") }
-            )
+            assert process.failed
+            assert process.errorReport.contains("Only one input .vcf/.vcf.gz/.bcf file can be provided")
         }
     }
 
@@ -336,28 +332,27 @@ nextflow_process {
                     .combine(ref_panel)
                     .combine(map_file)
                 input[1] = channel.of([[],[],[]])
+                input[2] = []
                 """
                 }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(
-                    process.out.phased_variants.collect{ meta, vcf -> [
+            assert process.success
+            assert snapshot(
+                process.out.phased_variants.collect { meta, vcf -> [
                         meta,
                         file(vcf).name,
                         path(vcf).vcf.summary,
                         path(vcf).vcf.variantsMD5
-                    ]},
-                    process.out.stats_coverage,
-                    process.out.versions
-                ).match()}
-            )
+                ] },
+                process.out.stats_coverage,
+                process.out.findAll { key, val -> key.startsWith('versions') }
+            ).match()
         }
     }
 
-    test("homo_sapiens - vcf region - panel -- stub") {
+    test("homo_sapiens - vcf region - panel - bcf output -- stub") {
         options "-stub"
         when {
             process {
@@ -375,15 +370,14 @@ nextflow_process {
                 // [meta, vcf, index, sample_infos, regionin, regionout,ref, index, map] [meta, fasta, fai]
                 input[0] = input_vcf
                 input[1] = channel.of([[],[],[]])
+                input[2] = "bcf"
                 """
             }
         }
 
         then {
-            assertAll(
-                { assert process.success },
-                { assert snapshot(process.out).match()}
-            )
+            assert process.success
+            assert snapshot(sanitizeOutput(process.out)).match()
         }
 
     }

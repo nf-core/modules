@@ -1,20 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PARABRICKS_STARFUSION {
     tag "$meta.id"
     label 'process_high'
     label 'process_gpu'
-    // needed by the module to work properly can be removed when fixed upstream - see: https://github.com/nf-core/modules/issues/7226
-    stageInMode 'copy'
 
-    container "nvcr.io/nvidia/clara/clara-parabricks:4.6.0-1"
+    container "nvcr.io/nvidia/clara/clara-parabricks:4.8.0-1"
 
     input:
     tuple val(meta), path(chimeric_junction)
-    tuple val(meta1), path(genome_lib_dir)
+    tuple val(meta2), path(genome_lib_dir)
 
     output:
     tuple val(meta), path("fusion_predictions.tsv"),                emit: fusions
     tuple val(meta), path("fusion_predictions.abridged.tsv"),       emit: abridged
-    path "versions.yml",                                            emit: versions
+    tuple val("${task.process}"), val('parabricks'), eval("pbrun version | grep -m1 '^pbrun:' | sed 's/^pbrun:[[:space:]]*//'"), topic: versions, emit: versions_parabricks
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,15 +36,11 @@ process PARABRICKS_STARFUSION {
         --genome-lib-dir ${genome_lib_dir} \\
         --output-dir ${prefix}_starfusion \\
         ${num_gpus} \\
+        --preserve-file-symlinks \\
         ${args}
 
     mv ${prefix}_starfusion/fusion_predictions.tsv .
     mv ${prefix}_starfusion/fusion_predictions.abridged.tsv .
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-            pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
-    END_VERSIONS
     """
 
     stub:
@@ -54,11 +51,5 @@ process PARABRICKS_STARFUSION {
     """
     touch fusion_predictions.tsv
     touch fusion_predictions.abridged.tsv
-
-    # Capture the full version output once and store it in a variable
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-            pbrun: \$(echo \$(pbrun version 2>&1) | sed 's/^Please.* //' )
-    END_VERSIONS
     """
 }

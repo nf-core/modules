@@ -33,17 +33,15 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     file(process.out.vcf[0][1]).name,
                     file(process.out.tbi[0][1]).name,
-                    process.out.versions
-                    ).match()
-                }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
     test("homo_sapiens - [cram, crai] - fasta - fai - dict") {
@@ -68,17 +66,15 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     file(process.out.vcf[0][1]).name,
                     file(process.out.tbi[0][1]).name,
-                    process.out.versions
-                    ).match()
-                }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
     test("homo_sapiens - [cram, crai] - fasta - fai - dict - sites - sites_tbi") {
@@ -103,17 +99,15 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     file(process.out.vcf[0][1]).name,
                     file(process.out.tbi[0][1]).name,
-                    process.out.versions
-                    ).match()
-                }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
     test("homo_sapiens - [cram, crai, dragstr_model] - fasta - fai - dict - sites - sites_tbi") {
@@ -138,17 +132,47 @@ nextflow_process {
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
                     file(process.out.vcf[0][1]).name,
                     file(process.out.tbi[0][1]).name,
-                    process.out.versions
-                    ).match()
-                }
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
-
     }
 
+    test("homo_sapiens - [bam, bai] - fasta - fai - dict - realigned bam and bai - stub") {
+
+        options "-stub"
+        config "./bamout.config"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'test_bam' ], // meta map
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/bam/test.paired_end.sorted.bam.bai', checkIfExists: true),
+                    [],
+                    []
+                ]
+                input[1] = [ [ id:'test_fa' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                input[2] = [ [ id:'test_fai' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta.fai', checkIfExists: true) ]
+                input[3] = [ [ id:'test_dict' ], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.dict', checkIfExists: true) ]
+                input[4] = [ [], [] ]
+                input[5] = [ [], [] ]
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assertAll(
+                { assert file(process.out.bam[0][1]).name == "test_bam.realigned.bam" },
+                { assert file(process.out.bai[0][1]).name == "test_bam.realigned.bai" }
+            )
+        }
+    }
 }

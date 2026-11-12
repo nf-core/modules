@@ -30,7 +30,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.alignment.get(0).get(1)).getTextGzip().contains("1ahl") },
-                { assert snapshot(process.out.versions).match()}
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
     }
@@ -54,7 +54,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.alignment.get(0).get(1)).getText().contains("1ahl") },
-                { assert snapshot(process.out.versions).match()}
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
     }
@@ -93,7 +93,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.alignment.get(0).get(1)).getTextGzip().contains("1ahl") },
-                { assert snapshot(process.out.versions).match()}
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
 
@@ -136,7 +136,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.alignment.get(0).get(1)).getTextGzip().contains("1ahl") },
-                { assert snapshot(process.out.versions).match() }
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
 
@@ -163,7 +163,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert path(process.out.alignment.get(0).get(1)).getTextGzip().contains("1ahl") },
-                { assert snapshot(process.out.versions).match()}
+                { assert snapshot(process.out.findAll { key, val -> key.startsWith('versions') }).match() }
             )
         }
     }

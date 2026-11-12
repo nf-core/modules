@@ -1,9 +1,12 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ASCAT {
     tag "${meta.id}"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/4c/4cf02c7911ee5e974ce7db978810770efbd8d872ff5ab3462d2a11bcf022fab5/data'
         : 'community.wave.seqera.io/library/ascat_cancerit-allelecount:c3e8749fa4af0e99'}"
 
@@ -25,7 +28,8 @@ process ASCAT {
     tuple val(meta), path("*png"),                        emit: png
     tuple val(meta), path("*purityploidy.txt"),           emit: purityploidy
     tuple val(meta), path("*segments.txt"),               emit: segments
-    path "versions.yml",                                  emit: versions
+    tuple val("${task.process}"), val('bioconductor-ascat'), eval('Rscript -e "library(ASCAT); cat(as.character(packageVersion(\'ASCAT\')))"'), topic: versions, emit: versions_ascat
+    tuple val("${task.process}"), val('alleleCounter'), eval("alleleCounter --version"), topic: versions, emit: versions_allelecounter
 
     when:
     task.ext.when == null || task.ext.when
@@ -37,6 +41,7 @@ process ASCAT {
     def gender        = args.gender        ? "${args.gender}"        : "NULL"
     def genomeVersion = args.genomeVersion ? "${args.genomeVersion}" : "NULL"
     def purity        = args.purity        ? "${args.purity}"        : "NULL"
+    def penalty       = args.penalty       ? "${args.penalty}"       : "NULL"
     def ploidy        = args.ploidy        ? "${args.ploidy}"        : "NULL"
     def gc_input      = gc_file            ? "${gc_file}"            : "NULL"
     def rt_input      = rt_file            ? "${rt_file}"            : "NULL"
@@ -63,7 +68,7 @@ process ASCAT {
     }
 
     """
-    #!/usr/bin/env Rscript
+    Rscript - <<'EOF'
     library(RColorBrewer)
     library(ASCAT)
     options(bitmapType='cairo')
@@ -177,7 +182,7 @@ process ASCAT {
     }
 
     # Segment the data
-    ascat.bc = ascat.aspcf(ascat.bc, seed=42)
+    ascat.bc = ascat.aspcf(ascat.bc, penalty=${penalty}, seed=42)
 
     # Plot the segmented data
     ascat.plotSegmentedData(ascat.bc)
@@ -217,15 +222,7 @@ process ASCAT {
     write.table(summary, file=paste0("${prefix}",".purityploidy.txt"), sep="\t", quote=F, row.names=F, col.names=T)
 
     write.table(QC, file=paste0("${prefix}", ".metrics.txt"), sep="\t", quote=F, row.names=F)
-
-    # Version export
-    f <- file("versions.yml","w")
-    alleleCounter_version = system(paste("alleleCounter --version"), intern = T)
-    ascat_version = as.character(packageVersion('ASCAT'))
-    writeLines(paste0('"', "${task.process}", '"', ":"), f)
-    writeLines(paste("    ascat:", ascat_version), f)
-    writeLines(paste("    alleleCounter:", alleleCounter_version), f)
-    close(f)
+    EOF
     """
 
     stub:
@@ -249,11 +246,5 @@ process ASCAT {
     touch ${prefix}.tumour_normalLogR.txt
     touch ${prefix}.tumour_tumourBAF.txt
     touch ${prefix}.tumour_tumourLogR.txt
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bioconductor-ascat: \$(Rscript -e "library(ASCAT); cat(as.character(packageVersion('ASCAT')))")
-        alleleCounter: \$(alleleCounter --version)
-    END_VERSIONS
     """
 }

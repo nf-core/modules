@@ -6,19 +6,22 @@ nextflow_workflow {
     workflow "FASTQ_REMOVE_RRNA"
     config "./nextflow.config"
 
-    tag "subworkflows"
-    tag "subworkflows_nfcore"
-    tag "subworkflows/fastq_remove_rrna"
-
-    tag "cat/fastq"
+    tag "bowtie2"
     tag "bowtie2/align"
     tag "bowtie2/build"
+    tag "cat"
+    tag "cat/fastq"
     tag "ribodetector"
-    tag "samtools/view"
+    tag "samtools"
     tag "samtools/fastq"
+    tag "samtools/view"
+    tag "seqkit"
     tag "seqkit/replace"
     tag "seqkit/stats"
     tag "sortmerna"
+    tag "subworkflows"
+    tag "subworkflows/fastq_remove_rrna"
+    tag "subworkflows_nfcore"
 
     // Global setup: Create test data with synthetic rRNA reads using CAT_FASTQ
     // The rRNA reads (from generic/fastq/) are 5.8S rRNA sequences that will be detected
@@ -78,7 +81,6 @@ nextflow_workflow {
                 { assert pelines2.size() == 16636 },
                 { assert sortmernaRrnaCount == 20 },  // 10 pairs = 20 individual reads (100% detection)
                 { assert snapshot(
-                    workflow.out.versions,
                     pelines1.join('\n').md5(),
                     pelines2.join('\n').md5()
                 ).match() }
@@ -127,7 +129,6 @@ nextflow_workflow {
                 { assert pelines2.size() == 16648 },
                 { assert ribodetectorRrnaCount == 7 },  // 7 pairs detected (70% - ML model misses some)
                 { assert snapshot(
-                    workflow.out.versions,
                     sortedLines1.join('\n').md5(),
                     sortedLines2.join('\n').md5()
                 ).match() }
@@ -173,7 +174,6 @@ nextflow_workflow {
                 { assert pelines2.size() == 16636 },
                 { assert bowtie2RrnaCount == 17 },  // 17 mates aligned to rRNA reference
                 { assert snapshot(
-                    workflow.out.versions,
                     pelines1.join('\n').md5(),
                     pelines2.join('\n').md5()
                 ).match() }
@@ -236,7 +236,6 @@ nextflow_workflow {
                 { assert selines.size() == 16636 },  // 4159 reads × 4 lines/read
                 { assert bowtie2RrnaCount == 10 },   // 10 reads aligned to rRNA reference
                 { assert snapshot(
-                    workflow.out.versions,
                     selines.join('\n').md5()
                 ).match() }
             )
@@ -294,7 +293,6 @@ nextflow_workflow {
                 { assert selines.size() == 16636 },  // 4159 reads × 4 lines/read
                 { assert sortmernaRrnaCount == 10 },  // 10 reads detected (100% detection)
                 { assert snapshot(
-                    workflow.out.versions,
                     selines.join('\n').md5()
                 ).match() }
             )
@@ -338,7 +336,6 @@ nextflow_workflow {
             // even when the same rRNA databases are provided multiple times
             assertAll(
                 { assert workflow.success },
-                { assert snapshot(workflow.out.versions).match() },
                 { assert pelines1.size() >= 0 },  // Should have some reads
                 { assert pelines2.size() >= 0 },  // Should have some reads
                 { assert !workflow.stderr.contains("Duplicate entry") },  // No duplicate header errors in stderr

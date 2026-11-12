@@ -15,7 +15,6 @@ nextflow_process {
             process {
                 """
                 input[0] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/alignment/all_sites.fas', checkIfExists: true)
-
                 """
             }
         }
@@ -33,7 +32,7 @@ nextflow_process {
 					process.out.embl_branch,
 					process.out.tree[0].collect { file(it).name }, // unstable
 					file(process.out.tree_labelled[0]).name,  // unstable
-					process.out.versions
+					process.out.findAll { key, val -> key.startsWith('versions') }
 					).match()
 				}
             )
@@ -55,7 +54,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

@@ -1,12 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
 
 process AUTOCYCLER_SUBSAMPLE {
     tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/autocycler:0.5.2--h3ab6199_0':
-        'biocontainers/autocycler:0.5.2--h3ab6199_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3a/3a59a19abe50e65d964ea723d2c310a0005ef5a965beb7bc740d02894dd056e8/data'
+:         'community.wave.seqera.io/library/autocycler:0.5.2--91b58d5b8fccdfb9' }"
 
     input:
     tuple val(meta), path(reads)
@@ -14,7 +16,7 @@ process AUTOCYCLER_SUBSAMPLE {
 
     output:
     tuple val(meta), path("$prefix/*.fastq.gz"), emit: subsampled_reads
-    path "versions.yml",                         emit: versions
+    tuple val("${task.process}"), val("autocycler"), eval("autocycler --version |  sed 's/^[^ ]* //'"), emit: versions_autocycler, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,24 +34,12 @@ process AUTOCYCLER_SUBSAMPLE {
         --genome_size $genome_size
 
     gzip $prefix/*.fastq
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        autocycler: \$(autocycler --version |  sed 's/^[^ ]* //')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
     """
-
     mkdir $prefix
-    echo | gzip > ${prefix}/sample_00.fastq.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        autocycler: \$(autocycler --version |  sed 's/^[^ ]* //')
-    END_VERSIONS
+    echo "" | gzip > ${prefix}/sample_00.fastq.gz
     """
 }

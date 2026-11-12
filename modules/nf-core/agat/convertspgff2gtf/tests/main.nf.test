@@ -15,8 +15,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                            [ id: 'test' ], // meta map
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3', checkIfExists: true)
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3', checkIfExists: true)
                 ]
                 """
             }
@@ -25,10 +25,9 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.output_gtf,
-                                process.out.versions).match() },
-                { assert path(process.out.log[0][1]).exists() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
+
         }
 
     }
@@ -41,8 +40,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-                            [ id: 'test' ], // meta map
-                            file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3', checkIfExists: true)
+                    [ id: 'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.gff3', checkIfExists: true)
                 ]
                 """
             }
@@ -51,9 +50,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out.output_gtf.collect { file(it[1]).getName() } +
-                                process.out.log.collect { file(it[1]).getName() } +
-                                process.out.versions ).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

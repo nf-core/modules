@@ -12,7 +12,13 @@ tools:
         SnpEff is a variant annotation and effect prediction tool.
         It annotates and predicts the effects of genetic variants on genes and proteins (such as amino acid changes).
       homepage: https://pcingola.github.io/SnpEff/
-      documentation: https://pcingola.github.io/SnpEff/se_introduction/
+      documentation: https://pcingola.github.io/SnpEff/snpeff/introduction/
+      doi: "10.4161/fly.19695"
+      publication:
+        author: "Cingolani, P., Platts, A., Wang, L. L., Coon, M., Nguyen, T., Wang, L., Land, S. J., Lu, X. & Ruden, D. M."
+        year: 2012
+        title: "A program for annotating and predicting the effects of single nucleotide polymorphisms, SnpEff: SNPs in the genome of Drosophila melanogaster strain w1118; iso-2; iso-3"
+        source: "Fly"
       licence: ["MIT"]
       identifier: biotools:snpeff
 input:
@@ -61,6 +67,12 @@ output:
             annotated vcf
           pattern: "*.ann.vcf"
           ontologies: []
+      - ${task.process}:
+          type: string
+          description: The process
+      - snpeff:
+          type: string
+          description: The tool name
       - "*.csv":
           type: file
           description: snpEff report csv file
@@ -74,6 +86,12 @@ output:
             annotated vcf
           pattern: "*.ann.vcf"
           ontologies: []
+      - ${task.process}:
+          type: string
+          description: The process
+      - snpeff:
+          type: string
+          description: The tool name
       - "*.html":
           type: file
           description: snpEff summary statistics in html file
@@ -86,6 +104,12 @@ output:
             annotated vcf
           pattern: "*.ann.vcf"
           ontologies: []
+      - ${task.process}:
+          type: string
+          description: The process
+      - snpeff:
+          type: string
+          description: The tool name
       - "*.genes.txt":
           type: file
           description: txt (tab separated) file having counts of the number of variants
@@ -103,6 +127,60 @@ output:
           type: string
           description: The command used to generate the version of the tool
 topics:
+  multiqc_files:
+    - - meta:
+          type: file
+          description: |
+            annotated vcf
+          pattern: "*.ann.vcf"
+          ontologies: []
+      - ${task.process}:
+          type: string
+          description: The process
+      - snpeff:
+          type: string
+          description: The tool name
+      - "*.csv":
+          type: file
+          description: snpEff report csv file
+          pattern: "*.csv"
+          ontologies:
+            - edam: http://edamontology.org/format_3752 # CSV
+    - - meta:
+          type: file
+          description: |
+            annotated vcf
+          pattern: "*.ann.vcf"
+          ontologies: []
+      - ${task.process}:
+          type: string
+          description: The process
+      - snpeff:
+          type: string
+          description: The tool name
+      - "*.html":
+          type: file
+          description: snpEff summary statistics in html file
+          pattern: "*.html"
+          ontologies: []
+    - - meta:
+          type: file
+          description: |
+            annotated vcf
+          pattern: "*.ann.vcf"
+          ontologies: []
+      - ${task.process}:
+          type: string
+          description: The process
+      - snpeff:
+          type: string
+          description: The tool name
+      - "*.genes.txt":
+          type: file
+          description: txt (tab separated) file having counts of the number of variants
+            affecting each transcript and gene
+          pattern: "*.genes.txt"
+          ontologies: []
   versions:
     - - ${task.process}:
           type: string

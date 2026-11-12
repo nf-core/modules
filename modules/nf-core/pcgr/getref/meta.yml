@@ -45,13 +45,65 @@ output:
           description: PCGR reference data directory
           pattern: "{bundleversion}/"
           ontologies: []
+  versions_curl:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - curl:
+          type: string
+          description: The tool name
+      - "curl --version | head -1 | cut -d ' ' -f 2":
+          type: string
+          description: The command used to generate the version of the tool
+  versions_gzip:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - gzip:
+          type: string
+          description: The tool name
+      - "gzip --version | head -1 | cut -d ' ' -f 2":
+          type: string
+          description: The command used to generate the version of the tool
+  versions_tar:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - tar:
+          type: string
+          description: The tool name
+      - "tar --version | head -1 | cut -d ' ' -f 4":
+          type: string
+          description: The command used to generate the version of the tool
+topics:
   versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - curl:
+          type: string
+          description: The tool name
+      - "curl --version | head -1 | cut -d ' ' -f 2":
+          type: string
+          description: The command used to generate the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - gzip:
+          type: string
+          description: The tool name
+      - "gzip --version | head -1 | cut -d ' ' -f 2":
+          type: string
+          description: The command used to generate the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - tar:
+          type: string
+          description: The tool name
+      - "tar --version | head -1 | cut -d ' ' -f 4":
+          type: string
+          description: The command used to generate the version of the tool
 
 authors:
   - "@famosab"

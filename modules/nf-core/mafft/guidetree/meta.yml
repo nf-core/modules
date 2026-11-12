@@ -6,13 +6,13 @@ keywords:
   - guide tree
 tools:
   - "mafft":
-      description: Multiple alignment program for amino acid or nucleotide sequences
-        based on fast Fourier transform
+      description: Multiple alignment program for amino acid or nucleotide sequences based on fast Fourier transform
       homepage: https://mafft.cbrc.jp/alignment/software/
       documentation: https://mafft.cbrc.jp/alignment/software/manual/manual.html
       tool_dev_url: https://mafft.cbrc.jp/alignment/software/source.html
       doi: "10.1093/nar/gkf436"
-      licence: ["BSD"]
+      licence:
+        - "BSD"
       identifier: biotools:MAFFT
 input:
   - - meta:
@@ -40,14 +40,54 @@ output:
           pattern: "*.dnd"
           ontologies:
             - edam: http://edamontology.org/format_2006 # PHYLOGENETIC TREE
+  versions_mafft:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mafft:
+          type: string
+          description: The name of the tool
+      - mafft --version 2>&1 | sed 's/v//;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - mafft:
+          type: string
+          description: The name of the tool
+      - mafft --version 2>&1 | sed 's/v//;s/ .*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@luisas"
 maintainers:
   - "@luisas"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/mafft:7.525--f4970860dd4f8697
+      build_id: bd-f4970860dd4f8697_1
+      scan_id: sc-4a10603ea74013ee_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/mafft:7.525--4aca6f7273f4ec85
+      build_id: bd-4aca6f7273f4ec85_1
+      scan_id: sc-1f796448043d4a2f_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/mafft:7.525--f9e6ddaf83b55457
+      build_id: bd-f9e6ddaf83b55457_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/35/355faf61033f2246b1f9f14e5f5a7e394fa5c08f32159986281686296d20affc/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/mafft:7.525--c46d6defa72378d7
+      build_id: bd-c46d6defa72378d7_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/a9/a9b5f7cf454276d05245c75f1a678497145abf9bb76a3f0ea24e0ffd4b2d27a3/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/mafft/guidetree/.conda-lock/linux_amd64-bd-f4970860dd4f8697_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/mafft/guidetree/.conda-lock/linux_arm64-bd-4aca6f7273f4ec85_1.txt

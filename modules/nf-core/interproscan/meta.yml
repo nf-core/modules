@@ -31,8 +31,12 @@ input:
           - edam: http://edamontology.org/format_1929 # FASTA
   - interproscan_database:
       type: directory
-      description: Path to the interproscan database (untarred
-        http://ftp.ebi.ac.uk/pub/software/unix/iprscan/5/${version_major}-${version_minor}/interproscan-${version_major}-${version_minor}-64-bit.tar.gz)
+      description: |
+        Path to the data/ folder of an InterProScan release matching the module
+        version (untarred from
+        http://ftp.ebi.ac.uk/pub/software/unix/iprscan/5/${version_major}-${version_minor}/interproscan-${version_major}-${version_minor}-64-bit.tar.gz).
+        HMMs should already be pressed (python3 setup.py -f interproscan.properties),
+        otherwise hmmpress runs in every task and parallel tasks may race.
 output:
   tsv:
     - - meta:
@@ -74,13 +78,27 @@ output:
           pattern: "*.{json}"
           ontologies:
             - edam: http://edamontology.org/format_3464 # JSON
+  versions_interproscan:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - interproscan:
+          type: string
+          description: The name of the tool
+      - interproscan.sh --version | sed "1!d; s/.*version //":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - interproscan:
+          type: string
+          description: The name of the tool
+      - interproscan.sh --version | sed "1!d; s/.*version //":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@toniher"
   - "@mahesh-panchal"

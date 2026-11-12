@@ -1,23 +1,26 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SAMTOOLS_COLLATEFASTQ {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/samtools:1.22.1--h96c455f_0' :
-        'biocontainers/samtools:1.22.1--h96c455f_0' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/83/8345056363cc2598d6185cfab19d67eda17a5ea73a4f9b56c25322347b97aef9/data'
+        : 'community.wave.seqera.io/library/htslib_samtools_xz:ca51bc8a00d53523'}"
 
     input:
     tuple val(meta), path(input)
-    tuple val(meta2), path(fasta)
-    val(interleave)
+    tuple val(meta2), path(fasta), path(fai)
+    val interleave
 
     output:
-    tuple val(meta), path("*_{1,2}.fq.gz")     , optional:true, emit: fastq
-    tuple val(meta), path("*_interleaved.fq")  , optional:true, emit: fastq_interleaved
-    tuple val(meta), path("*_other.fq.gz")     , emit: fastq_other
-    tuple val(meta), path("*_singleton.fq.gz") , optional:true, emit: fastq_singleton
-    path "versions.yml"                        , emit: versions
+    tuple val(meta), path("*_{1,2}.fq.gz"), emit: fastq, optional: true
+    tuple val(meta), path("*_interleaved.fq"), emit: fastq_interleaved, optional: true
+    tuple val(meta), path("*_other.fq.gz"), emit: fastq_other
+    tuple val(meta), path("*_singleton.fq.gz"), emit: fastq_singleton, optional: true
+    tuple val("${task.process}"), val('samtools'), eval("samtools version | sed '1!d;s/.* //'"), topic: versions, emit: versions_samtools
 
     when:
     task.ext.when == null || task.ext.when
@@ -27,50 +30,43 @@ process SAMTOOLS_COLLATEFASTQ {
     def args2 = task.ext.args2 ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
     def reference = fasta ? "--reference ${fasta}" : ""
-    def output =    (interleave && ! meta.single_end) ? "> ${prefix}_interleaved.fq"                     :
-                    meta.single_end                   ? "-1 ${prefix}_1.fq.gz -s ${prefix}_singleton.fq.gz" :
-                    "-1 ${prefix}_1.fq.gz -2 ${prefix}_2.fq.gz -s ${prefix}_singleton.fq.gz"
+    def output = interleave && !meta.single_end
+        ? "> ${prefix}_interleaved.fq"
+        : meta.single_end
+            ? "-1 ${prefix}_1.fq.gz -s ${prefix}_singleton.fq.gz"
+            : "-1 ${prefix}_1.fq.gz -2 ${prefix}_2.fq.gz -s ${prefix}_singleton.fq.gz"
 
     """
     samtools collate \\
-        $args \\
-        --threads $task.cpus \\
+        ${args} \\
+        --threads ${task.cpus} \\
         ${reference} \\
         -O \\
-        $input \\
+        ${input} \\
         . |
 
     samtools fastq \\
-        $args2 \\
-        --threads $task.cpus \\
+        ${args2} \\
+        --threads ${task.cpus} \\
         ${reference} \\
         -0 ${prefix}_other.fq.gz \\
-        $output
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
+        ${output}
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def empty = "echo '' | gzip "
-    def singletoncommand = "${empty}> ${prefix}_singleton.fq.gz"
-    def interleavecommand = interleave && !meta.single_end ? "${empty}> ${prefix}_interleaved.fq.gz" : ""
-    def output1command = !interleave ? "${empty}> ${prefix}_1.fq.gz" : ""
-    def output2command = !interleave && !meta.single_end ? "${empty}> ${prefix}_2.fq.gz" : ""
+    def empty = "echo | bgzip -c "
+    def interleave_command = interleave && !meta.single_end ? "${empty}> ${prefix}_interleaved.fq.gz" : ""
+    def other_command = "${empty} > ${prefix}_other.fq.gz"
+    def output1_command = !interleave ? "${empty}> ${prefix}_1.fq.gz" : ""
+    def output2_command = !interleave && !meta.single_end ? "${empty}> ${prefix}_2.fq.gz" : ""
+    def singleton_command = "${empty}> ${prefix}_singleton.fq.gz"
 
     """
-    ${output1command}
-    ${output2command}
-    ${interleavecommand}
-    ${singletoncommand}
-    ${empty}> ${prefix}_other.fq.gz
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
+    ${interleave_command}
+    ${other_command}
+    ${output1_command}
+    ${output2_command}
+    ${singleton_command}
     """
 }

@@ -1,9 +1,12 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BLAST_BLASTP {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0c/0c86cbb145786bf5c24ea7fb13448da5f7d5cd124fd4403c1da5bc8fc60c2588/data':
         'community.wave.seqera.io/library/blast:2.17.0--d4fb881691596759' }"
 
@@ -16,7 +19,7 @@ process BLAST_BLASTP {
     tuple val(meta), path("*.xml*") , emit: xml, optional: true
     tuple val(meta), path("*.tsv*") , emit: tsv, optional: true
     tuple val(meta), path("*.csv*") , emit: csv, optional: true
-    path "versions.yml"             , emit: versions
+    tuple val("${task.process}"), val("blastp"), eval("blastp -version 2>&1 | sed 's/^.*blastp: //; s/ .*\$//'"), topic: versions, emit: versions_blastp
 
     when:
     task.ext.when == null || task.ext.when
@@ -58,14 +61,9 @@ process BLAST_BLASTP {
 
     $compress_output
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        blast: \$(blastp -version 2>&1 | sed 's/^.*blastp: //; s/ .*\$//')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     def outfmt = 6
@@ -89,9 +87,5 @@ process BLAST_BLASTP {
 
     $compress_output
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        blast: \$(blastp -version 2>&1 | sed 's/^.*blastp: //; s/ .*\$//')
-    END_VERSIONS
     """
 }

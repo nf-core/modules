@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DATAVZRD {
     tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7e/7e1ff6edeffa771f340c0c044fde514b61bc4691ede6b79728263bf20c7990f6/data'
-        : 'community.wave.seqera.io/library/datavzrd:2.61.7--3dfa5861de05f6ac'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/60/600b32995bbb9788982b9321aa24aec837819b9fccca915591a927c54724f4f6/data'
+:         'community.wave.seqera.io/library/datavzrd:2.75.3--58fb85a496607c2e' }"
 
     input:
-    tuple val(meta), path(config_file), path(table)
+    tuple val(meta), path(config_file), path(files)
 
     output:
     tuple val(meta), path("${prefix}"), emit: report
-    path "versions.yml",                emit: versions
+    tuple val("${task.process}"), val('datavzrd'),  eval("datavzrd --version | sed -e 's/[^0-9.]//g'"), topic: versions, emit: versions_datavzrd
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,16 +24,11 @@ process DATAVZRD {
     def args = task.ext.args ?: ''
     prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir ${prefix}
+    mkdir "${prefix}"
     datavzrd \\
         ${args} \\
-        ${config_file} \\
-        --output ${prefix} \\
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        datavzrd: \$(echo \$( datavzrd --version | sed -e 's/[^0-9.]//g' ))
-    END_VERSIONS
+        "${config_file}" \\
+        --output "${prefix}" \\
     """
 
     stub:
@@ -54,10 +52,5 @@ process DATAVZRD {
     touch ./${prefix}/network/heatmap.js
     touch ./${prefix}/network/data/data_1.js
     touch ./${prefix}/network/plots/plot_0.js
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        datavzrd: \$(echo \$( datavzrd --version | sed -e 's/[^0-9.]//g' ))
-    END_VERSIONS
     """
 }

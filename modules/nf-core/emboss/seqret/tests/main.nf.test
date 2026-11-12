@@ -12,26 +12,22 @@ nextflow_process {
     tag "gunzip"
 
     setup {
-            run("GUNZIP") {
-                script "modules/nf-core/gunzip/main.nf"
+        run("GUNZIP") {
+            script "modules/nf-core/gunzip/main.nf"
 
-                process {
-                    """
-                    input[0] = [
-                        [id:'test',single_end:false],// meta map
-                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.gbff.gz',checkIfExists:true)
-                        ]
-                    """
-                }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/genome.gbff.gz',checkIfExists:true)
+                ]
+                """
             }
         }
+    }
 
     test("bacteroides_fragilis - gbff - gz - embl") {
-
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
@@ -42,18 +38,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
     test("bacteroides_fragilis - gbff - gz - gff") {
-
-
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
@@ -64,18 +55,16 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(
+                    file(process.out.outseq[0][1]).name,
+                    process.out.versions
+                ).match() }
             )
         }
     }
 
     test("bacteroides_fragilis - gbff - gz - pir") {
-
-
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
@@ -86,18 +75,13 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
     test("bacteroides_fragilis - gbff - gz - fasta") {
-
-
         when {
-            params {
-                module_args = ''
-            }
             process {
                 """
                 input[0] = GUNZIP.out.gunzip
@@ -108,7 +92,26 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("bacteroides_fragilis - gbff - gz - fasta -- stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = GUNZIP.out.gunzip
+                input[1] = 'fasta'
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }

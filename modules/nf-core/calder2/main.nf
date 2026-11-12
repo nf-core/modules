@@ -1,22 +1,24 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CALDER2 {
     tag "$meta.id"
     label 'process_high'
 
-    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/r-calder2:0.7--r43hdfd78af_1' :
-        'biocontainers/r-calder2:0.7--r43hdfd78af_1' }"
-
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b0/b0b8cc629084e7e837fed38f2633b51f9d54f5e3ea76625c762147d5f73366d7/data'
+        : 'community.wave.seqera.io/library/r-calder2:0.7--cce8a313df599b5d'}"
 
     input:
     tuple val(meta), path(cool)
     val resolution
 
     output:
-    tuple val(meta), path("${prefix}/")                     , emit: output_folder
-    tuple val(meta), path("${prefix}/intermediate_data/")   , emit: intermediate_data_folder      , optional: true
-    path "versions.yml"                                     , emit: versions
+    tuple val(meta), path("${prefix}/")                    , emit: output_folder
+    tuple val(meta), path("${prefix}/intermediate_data/")  , emit: intermediate_data_folder, optional: true
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('calder'), val('0.7'), emit: versions_calder, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -26,7 +28,6 @@ process CALDER2 {
     prefix = task.ext.prefix ?: "${meta.id}"
     def suffix = resolution ? "::/resolutions/$resolution" : ""
     def cpus = task.cpus ?: 1
-    def VERSION = '0.7' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     # getting binsize as mandatory input for calder
     binsize="\$(cooler info --field bin-size $cool$suffix)"
@@ -37,16 +38,10 @@ process CALDER2 {
         --type cool \\
         --bin_size "\${binsize}" \\
         $args
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        calder: $VERSION
-    END_VERSIONS
     """
 
     stub:
     prefix = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '0.7' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     """
     mkdir -p ${prefix}/sub_compartments
     mkdir -p ${prefix}/sub_domains
@@ -58,10 +53,5 @@ process CALDER2 {
     touch ${prefix}/sub_compartments/cor_with_ref.txt
 
     touch ${prefix}/sub_domains/all_nested_boundaries.bed
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        calder: $VERSION
-    END_VERSIONS
     """
 }

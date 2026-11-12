@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MINIMAP2_ALIGN {
     tag "$meta.id"
     label 'process_high'
 
     // Note: the versions here need to match the versions used in the mulled container below and minimap2/index
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/66/66dc96eff11ab80dfd5c044e9b3425f52d818847b9c074794cf0c02bfa781661/data' :
-        'community.wave.seqera.io/library/minimap2_samtools:33bb43c18d22e29c' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
+        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/37/37671219cfd244eb9b33db9345d3543ffd83037419a1c57f4648aace493ec2c2/data' :
+        'community.wave.seqera.io/library/minimap2_samtools:b09096fc890429ce' }"
 
     input:
     tuple val(meta), path(reads)
@@ -20,7 +23,7 @@ process MINIMAP2_ALIGN {
     tuple val(meta), path("*.paf")                       , optional: true, emit: paf
     tuple val(meta), path("*.bam")                       , optional: true, emit: bam
     tuple val(meta), path("*.bam.${bam_index_extension}"), optional: true, emit: index
-    path "versions.yml"                                  , emit: versions
+    tuple val("${task.process}"), val("minimap2"), eval("minimap2 --version"), topic: versions, emit: versions_minimap2
 
     when:
     task.ext.when == null || task.ext.when
@@ -38,25 +41,17 @@ process MINIMAP2_ALIGN {
     def bam_input = "${reads.extension}".matches('sam|bam|cram')
     def samtools_reset_fastq = bam_input ? "samtools reset --threads ${task.cpus-1} $args3 $reads | samtools fastq --threads ${task.cpus-1} $args4 |" : ''
     def query = bam_input ? "-" : reads
-    def target = reference ?: (bam_input ? error("BAM input requires reference") : reads)
-
+    def target = reference ?: (bam_input ? error("Error: minimap2/align BAM input mode requires reference") : reads)
     """
     $samtools_reset_fastq \\
     minimap2 \\
-        $args \\
-        -t $task.cpus \\
-        $target \\
-        $query \\
-        $cigar_paf \\
-        $set_cigar_bam \\
-        $bam_output
-
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        minimap2: \$(minimap2 --version 2>&1)
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
+        ${args} \\
+        -t ${task.cpus} \\
+        ${target} \\
+        ${query} \\
+        ${cigar_paf} \\
+        ${set_cigar_bam} \\
+        ${bam_output}
     """
 
     stub:
@@ -64,15 +59,11 @@ process MINIMAP2_ALIGN {
     def output_file = bam_format ? "${prefix}.bam" : "${prefix}.paf"
     def bam_index = bam_index_extension ? "touch ${prefix}.bam.${bam_index_extension}" : ""
     def bam_input = "${reads.extension}".matches('sam|bam|cram')
-    def target = reference ?: (bam_input ? error("BAM input requires reference") : reads)
-
+    if(bam_input && !reference) {
+        error("Error: minimap2/align BAM input mode requires reference!")
+	}
     """
     touch $output_file
     ${bam_index}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        minimap2: \$(minimap2 --version 2>&1)
-    END_VERSIONS
     """
 }

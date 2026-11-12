@@ -9,7 +9,8 @@ tools:
       description: "Evaluate genome assemblies with k-mers and more."
       tool_dev_url: "https://github.com/marbl/merqury"
       doi: "10.1186/s13059-020-02134-9"
-      licence: ["PUBLIC DOMAIN"]
+      licence:
+        - "PUBLIC DOMAIN"
       identifier: biotools:merqury
 input:
   - - meta:
@@ -82,6 +83,7 @@ output:
           type: file
           description: "Unstacked copy number spectra filled plot in PNG format"
           pattern: "*.spectra-cn.fl.png"
+          optional: true
           ontologies: []
   spectra_cn_hist:
     - - meta:
@@ -115,6 +117,7 @@ output:
           type: file
           description: "Stacked copy number spectra line plot in PNG format"
           pattern: "*.spectra-cn.st.png"
+          optional: true
           ontologies: []
   spectra_asm_fl_png:
     - - meta:
@@ -126,6 +129,7 @@ output:
           type: file
           description: "Unstacked assembly spectra filled plot in PNG format"
           pattern: "*.spectra-asm.fl.png"
+          optional: true
           ontologies: []
   spectra_asm_hist:
     - - meta:
@@ -159,6 +163,7 @@ output:
           type: file
           description: "Stacked assembly spectra line plot in PNG format"
           pattern: "*.spectra-asm.st.png"
+          optional: true
           ontologies: []
   assembly_qv:
     - - meta:
@@ -203,14 +208,29 @@ output:
           type: file
           description: "Hap-mer blob plot"
           pattern: "*.hapmers.blob.png"
+          optional: true
           ontologies: []
+  versions_merqury:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - merqury:
+          type: string
+          description: The name of the tool
+      - '"1.3"':
+          type: string
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - merqury:
+          type: string
+          description: The name of the tool
+      - '"1.3"':
+          type: string
+          description: The expression to obtain the version of the tool
 authors:
   - "@mahesh-panchal"
 maintainers:

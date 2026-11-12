@@ -25,12 +25,22 @@ nextflow_process {
         }
 
         then {
+            def log_text = path(process.out.log[0][1]).getText().replaceAll(/\x1b\[[0-9;]*m/, '')
+            def fq1 = path(process.out.fastq[0][1][0]).fastq
+            def fq2 = path(process.out.fastq[0][1][1]).fastq
             assertAll(
                 { assert process.success },
-                { assert process.out.fastq },
-                { assert process.out.log },
-                { assert path(process.out.log[0][1]).getText().contains("Writing output non-rRNA sequences") },
-                { assert snapshot(process.out.findAll { key, val -> key.startsWith("versions") }).match() }
+                { assert log_text.contains("4159 sequences loaded") },
+                { assert log_text.contains("Processed 4159 sequences in total") },
+                { assert log_text.contains("Detected 4159 non-rRNA sequences") },
+                { assert log_text.contains("Detected 0 rRNA sequences") },
+                { assert fq1.getNumberOfRecords() == 4159 },
+                { assert fq2.getNumberOfRecords() == 4159 },
+                { assert snapshot(
+                    fq1.getReadNames().sort(),
+                    fq2.getReadNames().sort(),
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
 

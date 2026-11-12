@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process PICARD_FIXMATEINFORMATION {
-    tag "$meta.id"
+    tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/08/0861295baa7c01fc593a9da94e82b44a729dcaf8da92be8e565da109aa549b25/data' :
-        'community.wave.seqera.io/library/picard:3.4.0--e9963040df0a9bf6' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b4/b474c6f12c0502377b95062b75ef4b7778864b1353c7fc1d5a3b1f3b3017fd2e/data'
+        : 'community.wave.seqera.io/library/picard:3.5.0--be20f299a1924f0d'}"
 
     input:
     tuple val(meta), path(bam)
 
     output:
     tuple val(meta), path("*.bam"), emit: bam
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('picard'), eval("picard FixMateInformation --version 2>&1 | sed -n 's/.*Version://p'"), topic: versions, emit: versions_picard
 
     when:
     task.ext.when == null || task.ext.when
@@ -20,41 +23,32 @@ process PICARD_FIXMATEINFORMATION {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-    def STRINGENCY = task.ext.stringency ?: "STRICT"
     def avail_mem = 3072
     if (!task.memory) {
-        log.info '[Picard FixMateInformation] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.'
-    } else {
-        avail_mem = (task.memory.mega*0.8).intValue()
+        log.info('[Picard FixMateInformation] Available memory not known - defaulting to 3GB. Specify process memory requirements to change this.')
+    }
+    else {
+        avail_mem = (task.memory.mega * 0.8).intValue()
     }
 
-    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
-
+    if ("${bam}" == "${prefix}.bam") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
     picard \\
-        FixMateInformation \\
         -Xmx${avail_mem}M \\
+        FixMateInformation \\
         --INPUT ${bam} \\
         --OUTPUT ${prefix}.bam \\
-        --VALIDATION_STRINGENCY ${STRINGENCY} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        picard: \$(picard FixMateInformation --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
-    if ("$bam" == "${prefix}.bam") error "Input and output names are the same, use \"task.ext.prefix\" to disambiguate!"
+    if ("${bam}" == "${prefix}.bam") {
+        error("Input and output names are the same, use \"task.ext.prefix\" to disambiguate!")
+    }
     """
     touch ${prefix}.bam
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        picard: \$(picard FixMateInformation --version 2>&1 | grep -o 'Version:.*' | cut -f2- -d:)
-    END_VERSIONS
     """
-
 }

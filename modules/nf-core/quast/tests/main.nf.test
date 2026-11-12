@@ -37,7 +37,7 @@ nextflow_process {
                     process.out.tsv,
                     process.out.misassemblies,
                     process.out.unaligned,
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith('versions') }
                     ).match() }
             )
         }
@@ -64,7 +64,7 @@ nextflow_process {
                 { assert file(process.out.results[0][1]).list().size() == 12 },
                 { assert snapshot(
                     process.out.tsv,
-                    process.out.versions,
+                    process.out.findAll { key, val -> key.startsWith('versions') },
                     ).match() }
             )
         }

@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "toulligqc"
 description: "A post sequencing QC tool for Oxford Nanopore sequencers"
 keywords:
@@ -11,9 +10,9 @@ tools:
       homepage: https://github.com/GenomiqueENS/toulligQC
       documentation: https://github.com/GenomiqueENS/toulligQC
       tool_dev_url: https://github.com/GenomiqueENS/toulligQC
-      licence: ["CECILL-2.1"]
+      licence:
+        - "CECILL-2.1"
       identifier: biotools:ToulligQC
-
 input:
   - - meta:
         type: map
@@ -25,7 +24,7 @@ input:
         description: Input ONT file
         pattern: "*.{fastq,fastq.gz,fq,fq.gz,txt,txt.gz,bam}"
         ontologies:
-          - edam: http://edamontology.org/format_1930 # FASTQ
+          - edam: http://edamontology.org/format_1930
 output:
   report_data:
     - - meta:
@@ -71,14 +70,52 @@ output:
           description: Plots emitted from toulligqc
           pattern: "plotly.min.js"
           ontologies: []
+  versions_toulligqc:
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - toulligqc:
+          type: string
+          description: Name of the tool
+      - toulligqc --version:
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: Name of the process
+      - toulligqc:
+          type: string
+          description: Name of the tool
+      - toulligqc --version:
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@Salome-Brunon"
 maintainers:
   - "@Salome-Brunon"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/toulligqc_huggingface_hub_matplotlib_numpy_pruned:8fb8c512e78bd585
+      build_id: bd-8fb8c512e78bd585_2
+      scan_id: sc-0036641301d1b704_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/toulligqc_huggingface_hub_matplotlib_numpy_pruned:190ebbd12957a8dd
+      build_id: bd-190ebbd12957a8dd_2
+      scan_id: sc-7afeb095a1c1924c_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/toulligqc_huggingface_hub_matplotlib_numpy_pruned:05de4982a596a66e
+      build_id: bd-05de4982a596a66e_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f4/f440dee75898572093e68b0ecfbea21618eeed36f2063df625c94d0819f08ddc/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/toulligqc_huggingface_hub_matplotlib_numpy_pruned:b6c140eec6b7719d
+      build_id: bd-b6c140eec6b7719d_2
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b1/b11e9914580bb058958bd3b2496f9bce00b001a38b0888252415ebee5c828207/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/toulligqc/.conda-lock/linux_amd64-bd-190ebbd12957a8dd_2.txt
+    linux/arm64:
+      lock_file: modules/nf-core/toulligqc/.conda-lock/linux_arm64-bd-8fb8c512e78bd585_2.txt

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process HMMER_HMMFETCH {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/hmmer:3.3.2--h87f3376_2':
-        'biocontainers/hmmer:3.3.2--h87f3376_2' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b1/b171806a7b780537073c1e9ffe50885ba7917d8072b5941a125698df1253c4f7/data'
+:         'community.wave.seqera.io/library/hmmer:3.4--ab3efa7c16f46920' }"
 
     // The module can be called with either a key, a file containing keys or neither.
     // In the latter case, the hmm database will be indexed and an index but no output
@@ -19,7 +22,7 @@ process HMMER_HMMFETCH {
     output:
     tuple val(meta), path("*.hmm"), emit: hmm,   optional: true
     tuple val(meta), path("*.ssi"), emit: index, optional: true
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('hmmer'), eval("hmmsearch -h | sed '2!d;s/^# HMMER *//;s/ .*//'"), emit: versions_hmmer, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,35 +32,24 @@ process HMMER_HMMFETCH {
     def prefix  = task.ext.prefix ?: "${meta.id}"
     def keyarg  = key ?: ''
     def kfopt   = keyfile ? '-f' : ''
-    def index   = ! key && ! keyfile ? '--index' : ''
+    def index_opt   = ! key && ! keyfile ? '--index' : ''
     def outfile = ! key && ! keyfile ? '' : "> ${prefix}.hmm"
 
     """
     hmmfetch \\
         $kfopt \\
-        $index \\
+        $index_opt \\
         $args \\
         $hmm \\
         $keyarg \\
         $keyfile \\
         $outfile
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hmmer: \$(hmmsearch -h | grep -o '^# HMMER [0-9.]*' | sed 's/^# HMMER *//')
-    END_VERSIONS
     """
 
     stub:
-    def args = task.ext.args ?: ''
     def prefix  = task.ext.prefix ?: "${meta.id}"
 
     """
     touch ${prefix}.hmm
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hmmer: \$(hmmsearch -h | grep -o '^# HMMER [0-9.]*' | sed 's/^# HMMER *//')
-    END_VERSIONS
     """
 }

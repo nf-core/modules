@@ -1,0 +1,49 @@
+nextflow_process {
+
+    name "Test Process MMSEQS_MAKEPADDEDSEQDB"
+    script "../main.nf"
+    process "MMSEQS_MAKEPADDEDSEQDB"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "mmseqs"
+    tag "mmseqs/makepaddedseqdb"
+    tag "mmseqs/createdb"
+
+    config "./nextflow.config"
+
+    setup {
+        run("MMSEQS_CREATEDB") {
+            script "../../../mmseqs/createdb/main.nf"
+            process {
+                """
+                input[0] = [ [ id:'test_query' ],
+                file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fasta/contigs.fasta', checkIfExists: true)
+                ]
+                """
+            }
+        }
+    }
+
+    test("mmseqs_db sarscov2 contigs") {
+
+        when {
+            params {
+                module_prefix = "test_query_gpu"
+            }
+            process {
+                """
+                input[0] = MMSEQS_CREATEDB.out.db
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match()
+                }
+            )
+        }
+
+    }
+}

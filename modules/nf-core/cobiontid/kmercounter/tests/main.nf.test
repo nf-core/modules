@@ -1,0 +1,75 @@
+nextflow_process {
+    name "Test Process COBIONTID_KMERCOUNTER"
+    script "../main.nf"
+    process "COBIONTID_KMERCOUNTER"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "cobiontid"
+    tag "cobiontid/kmercounter"
+
+    test("kmercount - fasta.gz - chr1") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: "Homo_sapiens" ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.fasta.gz', checkIfExists: true),
+                ]
+                input[1] = 11
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success               },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("kmercount - fasta - chr21") {
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: "Homo_sapiens" ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr21/sequence/genome.fasta', checkIfExists: true),
+                ]
+                input[1] = 11
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success               },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+
+    test("kmercount - fasta - stub") {
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id: "Homo_sapiens" ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/chr1/genome.fasta.gz', checkIfExists: true),
+                ]
+                input[1] = 11
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success               },
+                { assert snapshot(process.out).match() }
+            )
+        }
+    }
+}

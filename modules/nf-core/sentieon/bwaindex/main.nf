@@ -1,19 +1,22 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SENTIEON_BWAINDEX {
     tag "${fasta}"
     label 'process_high'
     label 'sentieon'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0f/0f1dfe59ef66d7326b43db9ab1f39ce6220b358a311078c949a208f9c9815d4e/data'
-        : 'community.wave.seqera.io/library/sentieon:202503.01--1863def31ed8e4d5'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7e/7ee64f3b4cd58eaa6ed3a7a0769c0a5f4fbd150842fa64358831970bacaf37e6/data'
+        : 'community.wave.seqera.io/library/sentieon:202503.03--df1987151f8b6d33'}"
 
     input:
     tuple val(meta), path(fasta)
 
     output:
     tuple val(meta), path("bwa"), emit: index
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,7 +24,11 @@ process SENTIEON_BWAINDEX {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ? "bwa/${task.ext.prefix}" : "bwa/${fasta.baseName}"
+    def sentieonLicense = secrets.SENTIEON_LICENSE_BASE64
+        ? "export SENTIEON_LICENSE=\$(mktemp);echo -e \"${secrets.SENTIEON_LICENSE_BASE64}\" | base64 -d > \$SENTIEON_LICENSE; "
+        : ""
     """
+    ${sentieonLicense}
     mkdir bwa
 
     sentieon \\
@@ -29,12 +36,6 @@ process SENTIEON_BWAINDEX {
         ${args} \\
         -p ${prefix} \\
         ${fasta}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bwa: \$(echo \$(sentieon bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-    END_VERSIONS
     """
 
     stub:
@@ -46,11 +47,5 @@ process SENTIEON_BWAINDEX {
     touch bwa/genome.bwt
     touch bwa/genome.pac
     touch bwa/genome.sa
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bwa: \$(echo \$(sentieon bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-    END_VERSIONS
     """
 }

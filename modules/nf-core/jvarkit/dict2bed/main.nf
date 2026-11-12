@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process JVARKIT_DICT2BED {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/jvarkit:2024.08.25--hdfd78af_1':
-        'biocontainers/jvarkit:2024.08.25--hdfd78af_1' }"
+        'quay.io/biocontainers/jvarkit:2024.08.25--hdfd78af_1' }"
 
     input:
     tuple val(meta), path(dict_files)
 
     output:
     tuple val(meta), path("*.bed"), emit: bed
-    path "versions.yml"           , emit: versions
+    tuple val("${task.process}"), val('jvarkit'), eval("jvarkit -v"), emit: versions_jvarkit, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,24 +27,17 @@ process JVARKIT_DICT2BED {
     """
     mkdir TMP
 
-    jvarkit -Xmx${task.memory.giga}g -XX:-UsePerfData -Djava.io.tmpdir=TMP dict2bed ${args} ${dict_files} ${args2} > ${prefix}.bed
+    jvarkit -Xmx${task.memory.giga}g -XX:-UsePerfData -Djava.io.tmpdir=TMP \\
+        dict2bed \\
+        ${args} ${dict_files} \\
+        ${args2} > ${prefix}.bed
 
     rm -rf TMP
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        jvarkit: \$(jvarkit -v)
-    END_VERSIONS
     """
 
     stub:
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
     touch "${prefix}.bed"
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        jvarkit: \$(jvarkit -v)
-    END_VERSIONS
     """
 }

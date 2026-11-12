@@ -1,0 +1,70 @@
+name: "stainwarpy_extractchannel"
+description: Extract a single channel image from multiplexed tissue images using stainwarpy
+keywords:
+  - image registration
+  - histology
+  - hne
+  - multiplexed
+  - channel extraction
+tools:
+  - "stainwarpy":
+      description: "Register H&E stained and Multiplexed tissue images using feature-based image registration"
+      homepage: "https://github.com/tckumarasekara/stainwarpy"
+      documentation: "https://github.com/tckumarasekara/stainwarpy"
+      tool_dev_url: "https://github.com/tckumarasekara/stainwarpy"
+      licence: ["MIT License", "Apache-2.0"]
+      identifier: ""
+
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing sample information
+          e.g. `[ id:'sample1' ]`
+    - multiplx_img:
+        type: file
+        description: Multiplexed image file
+        pattern: "*.{ome.tif,ome.tiff,tif,tiff}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3727"
+          - edam: "http://edamontology.org/format_3591"
+
+output:
+  single_ch_image:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1' ]`
+      - "*_multiplexed_single_channel_img.ome.tif":
+          type: file
+          description: Single channel extracted image file in OME-TIFF format
+          pattern: "*_multiplexed_single_channel_img.ome.tif"
+          ontologies:
+            - edam: "http://edamontology.org/format_3727"
+  versions_stainwarpy:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "stainwarpy":
+          type: string
+          description: The name of the tool
+      - "stainwarpy --version | sed 's/.* //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - stainwarpy:
+          type: string
+          description: The name of the tool
+      - stainwarpy --version | sed 's/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@tckumarasekara"
+maintainers:
+  - "@tckumarasekara"

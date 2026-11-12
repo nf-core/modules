@@ -1,9 +1,12 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BBMAP_BBNORM {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/5a/5aae5977ff9de3e01ff962dc495bfa23f4304c676446b5fdf2de5c7edfa2dc4e/data' :
         'community.wave.seqera.io/library/bbmap_pigz:07416fe99b090fa9' }"
 
@@ -13,7 +16,7 @@ process BBMAP_BBNORM {
     output:
     tuple val(meta), path("*.fastq.gz"), emit: fastq
     tuple val(meta), path("*.log")     , emit: log
-    path "versions.yml"                , emit: versions
+    tuple val("${task.process}"), val('bbmap'), eval('bbversion.sh | grep -v "Duplicate cpuset"'), emit: versions_bbmap, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -32,18 +35,20 @@ process BBMAP_BBNORM {
         memory = "-Xmx${Math.round(Math.max(1, Math.floor(task.memory.toGiga() * 0.95)))}g"
     }
 
+    // Nextflow forwards the host's \$TMPDIR into Singularity/Apptainer containers without
+    // bind-mounting it, so multipass temp files must stay under the task's own (bound) work dir.
     """
+    mkdir -p tmp
+
     bbnorm.sh \\
         $input \\
         $output \\
         $args \\
         threads=$task.cpus \\
         $memory \\
+        tmpdir=tmp \\
         &> ${prefix}.bbnorm.log
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bbmap: \$(bbversion.sh | grep -v "Duplicate cpuset")
-    END_VERSIONS
+    rm -rf tmp
     """
 }

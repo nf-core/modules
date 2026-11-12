@@ -2,36 +2,25 @@
     "sarscov2 genome [fasta] | sarscov2 single-end methylated [fastq]": {
         "content": [
             "test.methylated_1_bismark_bt2_SE_report.html",
-            [
-                "versions.yml:md5,56f91acc2e138055909d66a78a49e014"
-            ],
             {
-                "BISMARK_REPORT": {
-                    "bismark": "0.25.1"
-                }
+                "versions_bismark": [
+                    [
+                        "BISMARK_REPORT",
+                        "bismark",
+                        "3.2.0"
+                    ]
+                ]
             }
         ],
+        "timestamp": "2026-11-10T13:31:54.193974158",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-09-25T20:54:59.192426509"
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.3"
+        }
     },
     "sarscov2 genome [fasta] | sarscov2 single-end methylated [fastq] | stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test",
-                            "single_end": true
-                        },
-                        "test.report.html:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "1": [
-                    "versions.yml:md5,56f91acc2e138055909d66a78a49e014"
-                ],
                 "report": [
                     [
                         {
@@ -41,20 +30,19 @@
                         "test.report.html:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,56f91acc2e138055909d66a78a49e014"
+                "versions_bismark": [
+                    [
+                        "BISMARK_REPORT",
+                        "bismark",
+                        "3.2.0"
+                    ]
                 ]
-            },
-            {
-                "BISMARK_REPORT": {
-                    "bismark": "0.25.1"
-                }
             }
         ],
+        "timestamp": "2026-11-10T13:32:02.047614565",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-09-25T20:55:12.462061495"
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.3"
+        }
     }
 }

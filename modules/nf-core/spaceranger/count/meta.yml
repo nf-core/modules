@@ -1,7 +1,6 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/yaml-schema.json
 name: "spaceranger_count"
-description: Module to use the 10x Space Ranger pipeline to process 10x spatial transcriptomics
-  data
+description: Module to use the 10x Space Ranger pipeline to process 10x spatial
+  transcriptomics data
 keywords:
   - align
   - count
@@ -86,7 +85,8 @@ input:
           - edam: http://edamontology.org/format_3464 # JSON
   - reference:
       type: directory
-      description: Folder containing all the reference indices needed by Space Ranger
+      description: Folder containing all the reference indices needed by Space
+        Ranger
   - probeset:
       type: file
       description: OPTIONAL - Probe set specification.
@@ -102,18 +102,35 @@ output:
             e.g. [ id:'test', single_end:false ]
       - outs/**:
           type: file
-          description: Files containing the outputs of Space Ranger, see official 10X
-            Genomics documentation for a complete list
+          description: Files containing the outputs of Space Ranger, see official
+            10X Genomics documentation for a complete list
           pattern: "outs/*"
           ontologies: []
+  versions_spaceranger:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - spaceranger:
+          type: string
+          description: The name of the tool
+      - spaceranger -V | sed "s/spaceranger spaceranger-//":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - spaceranger:
+          type: string
+          description: The name of the tool
+      - spaceranger -V | sed "s/spaceranger spaceranger-//":
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@grst"
 maintainers:
   - "@grst"
+  - "@fasterius"

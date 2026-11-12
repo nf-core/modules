@@ -16,9 +16,8 @@ nextflow_process {
             process {
                 """
                 input[0] = [ [ id:'test' ],
-				    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true)
-				]
-
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true)
+                ]
                 """
             }
         }
@@ -27,12 +26,30 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-					path(process.out.vcf[0][1]).vcf.variantsMD5,
-					process.out.versions
-					).match()
-				}
+                    path(process.out.vcf[0][1]).vcf.variantsMD5,
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match()}
             )
         }
     }
 
+    test("test-picard-renamesampleinvcf - stub") {
+        options "-stub"
+        when {
+            process {
+                """
+                input[0] = [ [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/homo_sapiens/illumina/gvcf/test.genome.vcf', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
 }

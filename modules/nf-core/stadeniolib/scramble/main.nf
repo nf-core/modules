@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process STADENIOLIB_SCRAMBLE {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
         'https://depot.galaxyproject.org/singularity/staden_io_lib:1.14.14--h0d9da7e_3' :
-        'biocontainers/staden_io_lib:1.14.14--h0d9da7e_3' }"
+        'quay.io/biocontainers/staden_io_lib:1.14.14--h0d9da7e_3' }"
 
     input:
     tuple val(meta), path(reads)
@@ -16,7 +19,7 @@ process STADENIOLIB_SCRAMBLE {
     output:
     tuple val(meta), path("*.{cram,bam}")   , emit: cram
     path "*.gzi"                            , emit: gzi         , optional: true
-    path "versions.yml"                     , emit: versions
+    tuple val("${task.process}"), val('scramble'), eval("scramble -h | head -n 1 | sed 's/^.*version //'"), emit: versions_scramble, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -53,18 +56,12 @@ process STADENIOLIB_SCRAMBLE {
         -t $task.cpus \
         ${reads} \
         ${prefix}.${outputformat}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        stadeniolib: \$(echo \$(scramble -h | head -n 1 |sed 's/^.*version //'))
-    END_VERSIONS
     """
 
     stub:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
-    def inputformat = reads.extension
     def outputformat = "cram"
     if ( "-O sam" in args ) {
         outputformat = "sam"
@@ -86,10 +83,5 @@ process STADENIOLIB_SCRAMBLE {
 
     """
     touch ${prefix}.${outputformat}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        stadeniolib: \$(echo \$(scramble -h | head -n 1 |sed 's/^.*version //'))
-    END_VERSIONS
     """
 }

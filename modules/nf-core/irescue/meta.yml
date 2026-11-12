@@ -1,4 +1,3 @@
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "irescue"
 description: Quantification of transposable elements expression in scRNA-seq
 keywords:
@@ -13,9 +12,9 @@ tools:
       documentation: "https://pypi.org/project/IRescue"
       tool_dev_url: "https://github.com/bodegalab/irescue"
       doi: "10.1093/nar/gkae793"
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: biotools:irescue
-
 input:
   - - meta:
         type: map
@@ -39,7 +38,6 @@ input:
       pattern: "*.bed"
       ontologies:
         - edam: "http://edamontology.org/format_3003"
-
 output:
   results:
     - - meta:
@@ -84,14 +82,27 @@ output:
             Folder containing temporary files,
             if kept using the "--keeptmp" argument (optional).
           pattern: "${prefix}/tmp"
-
+  versions_irescue:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - irescue:
+          type: string
+          description: The name of the tool
+      - irescue --version 2>&1 | sed '1!d ; s/IRescue //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - irescue:
+          type: string
+          description: The name of the tool
+      - irescue --version 2>&1 | sed '1!d ; s/IRescue //':
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@bepoli"
 maintainers:

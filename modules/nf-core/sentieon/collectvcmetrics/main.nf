@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SENTIEON_COLLECTVCMETRICS {
     tag "${meta.id}"
     label 'process_medium'
     label 'sentieon'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/0f/0f1dfe59ef66d7326b43db9ab1f39ce6220b358a311078c949a208f9c9815d4e/data'
-        : 'community.wave.seqera.io/library/sentieon:202503.01--1863def31ed8e4d5'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/7e/7ee64f3b4cd58eaa6ed3a7a0769c0a5f4fbd150842fa64358831970bacaf37e6/data'
+        : 'community.wave.seqera.io/library/sentieon:202503.03--df1987151f8b6d33'}"
 
     input:
     tuple val(meta), path(vcf), path(tbi)
@@ -18,7 +21,7 @@ process SENTIEON_COLLECTVCMETRICS {
     output:
     tuple val(meta), path("*.variant_calling_detail_metrics"),  emit: metrics
     tuple val(meta), path("*.variant_calling_summary_metrics"), emit: summary
-    path "versions.yml",                                        emit: versions
+    tuple val("${task.process}"), val('sentieon'), eval('sentieon driver --version | sed "s/.*-//g"'), topic: versions, emit: versions_sentieon
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,11 +43,6 @@ process SENTIEON_COLLECTVCMETRICS {
         -d ${dbsnp} \\
         ${args2} \\
         ${prefix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-    END_VERSIONS
     """
 
     stub:
@@ -52,10 +50,5 @@ process SENTIEON_COLLECTVCMETRICS {
     """
     touch ${prefix}.variant_calling_detail_metrics
     touch ${prefix}.variant_calling_summary_metrics
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        sentieon: \$(echo \$(sentieon driver --version 2>&1) | sed -e "s/sentieon-genomics-//g")
-    END_VERSIONS
     """
 }

@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VEMBRANE_FILTER {
     tag "${meta.id}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/vembrane:2.4.0--pyhdfd78af_0'
-        : 'biocontainers/vembrane:2.4.0--pyhdfd78af_0'}"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6a/6a1bc5a7c85eebca118ae436bda77e005cc6c1ca0e60687185fb1d2f195e5eaf/data'
+        : 'community.wave.seqera.io/library/vembrane:2.6.2--0bc429af0e13a402'}"
 
     input:
     tuple val(meta), path(vcf)
@@ -13,7 +16,7 @@ process VEMBRANE_FILTER {
 
     output:
     tuple val(meta), path("*.{vcf,bcf,bcf.gz}"), emit: vcf
-    path "versions.yml"                        , emit: versions
+    tuple val("${task.process}"), val('vembrane'), eval("vembrane --version | sed '1!d;s/.* //'"), topic: versions, emit: versions_vembrane
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,22 +28,15 @@ process VEMBRANE_FILTER {
                     args.contains("--output-fmt bcf") || args.contains("-Obcf") ? "bcf" :
                     args.contains("--output-fmt uncompressed-bcf") || args.contains("-Ouncompressed-bcf") ? "bcf.gz" :
                     "vcf"
-
     if ("${vcf}" == "${prefix}.${extension}") {
         error("Input and output names are the same, use \"task.ext.prefix\" in module configuration to disambiguate!")
     }
-
     """
     vembrane filter \\
         ${args} \\
         ${expression} \\
         -o ${prefix}.${extension} \\
         ${vcf}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vembrane: \$(vembrane --version | sed '1!d;s/.* //')
-    END_VERSIONS
     """
 
     stub:
@@ -49,17 +45,10 @@ process VEMBRANE_FILTER {
                     args.contains("--output-fmt bcf") || args.contains("-Obcf") ? "bcf" :
                     args.contains("--output-fmt uncompressed-bcf") || args.contains("-Ouncompressed-bcf") ? "bcf.gz" :
                     "vcf"
-
     if ("${vcf}" == "${prefix}.${extension}") {
         error("Input and output names are the same, use \"task.ext.prefix\" in module configuration to disambiguate!")
     }
-
     """
     touch ${prefix}.${extension}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vembrane: \$(vembrane --version | sed '1!d;s/.* //')
-    END_VERSIONS
     """
 }

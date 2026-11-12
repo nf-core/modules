@@ -1,6 +1,7 @@
 {
     "sarscov2 - nanopore sequencing_summary": {
         "content": [
+            "report.html",
             [
                 "sequencing.telemetry.extractor.software.analysis=1d_basecalling",
                 "basecaller.sequencing.summary.1d.extractor.read.count=100",
@@ -66,28 +67,26 @@
                 "basecaller.sequencing.summary.1d.extractor.fail.reads.mean.qscore.50%=nan",
                 "basecaller.sequencing.summary.1d.extractor.fail.reads.mean.qscore.75%=nan",
                 "basecaller.sequencing.summary.1d.extractor.fail.reads.mean.qscore.max=nan"
-            ]
+            ],
+            {
+                "versions_toulligqc": [
+                    [
+                        "TOULLIGQC",
+                        "toulligqc",
+                        "2.9.1"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-10-15T12:56:20.300735",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2024-05-02T16:00:29.481355"
-    },
-    "toulligqc_versions_sequencing_summary_barcodes": {
-        "content": [
-            [
-                "versions.yml:md5,cf868ab645663c8e30396b733d9fdd30"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-09-04T13:34:41.406227395"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     },
     "sarscov2 - nanopore sequencing_summary + barcodes": {
         "content": [
+            "report.html",
             [
                 "toulligqc.info.extractor.duration=0.0",
                 "sequencing.telemetry.extractor.software.analysis=1d_basecalling",
@@ -153,28 +152,26 @@
                 "basecaller.sequencing.summary.1d.extractor.fail.reads.mean.qscore.25%=nan",
                 "basecaller.sequencing.summary.1d.extractor.fail.reads.mean.qscore.50%=nan",
                 "basecaller.sequencing.summary.1d.extractor.fail.reads.mean.qscore.75%=nan"
-            ]
+            ],
+            {
+                "versions_toulligqc": [
+                    [
+                        "TOULLIGQC",
+                        "toulligqc",
+                        "2.9.1"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-10-15T12:56:56.248246",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2024-05-02T16:00:41.63299"
-    },
-    "toulligqc_versions_bam": {
-        "content": [
-            [
-                "versions.yml:md5,cf868ab645663c8e30396b733d9fdd30"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-09-04T13:36:09.017460415"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     },
     "sarscov2 - nanopore bam": {
         "content": [
+            "report.html",
             [
                 "sequencing.telemetry.extractor.run.id=Unknown",
                 "sequencing.telemetry.extractor.sample.id=Unknown",
@@ -240,56 +237,31 @@
                 "basecaller.sequencing.summary.1d.extractor.pass.reads.mean.qscore.50%=12.820000171661377",
                 "basecaller.sequencing.summary.1d.extractor.pass.reads.mean.qscore.75%=14.09500002861023",
                 "basecaller.sequencing.summary.1d.extractor.pass.reads.mean.qscore.max=18.110000610351562"
-            ]
+            ],
+            {
+                "versions_toulligqc": [
+                    [
+                        "TOULLIGQC",
+                        "toulligqc",
+                        "2.9.1"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-10-15T12:58:05.169206",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2024-05-02T16:01:05.091838"
-    },
-    "toulligqc_versions_stub": {
-        "content": [
-            [
-                "versions.yml:md5,cf868ab645663c8e30396b733d9fdd30"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-09-04T13:37:17.104275439"
-    },
-    "toulligqc_versions_fastq": {
-        "content": [
-            [
-                "versions.yml:md5,cf868ab645663c8e30396b733d9fdd30"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-09-04T13:35:56.755396126"
-    },
-    "toulligqc_versions_sequencing_summary": {
-        "content": [
-            [
-                "versions.yml:md5,cf868ab645663c8e30396b733d9fdd30"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-09-04T13:34:26.320114673"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     },
     "sarscov2 - nanopore fastq": {
         "content": [
+            "report.html",
             [
                 "sequencing.telemetry.extractor.run.id=97ca62ca093ff43533aa34c38a10b1d6325e7e7b",
                 "sequencing.telemetry.extractor.sample.id=RN20097",
-                "sequencing.telemetry.extractor.model.file=Unknow",
+                "sequencing.telemetry.extractor.model.file=Unknown",
+                "sequencing.telemetry.extractor.flowcell.id=FAP51364",
                 "basecaller.sequencing.summary.1d.extractor.read.count=100",
                 "basecaller.sequencing.summary.1d.extractor.read.pass.count=96",
                 "basecaller.sequencing.summary.1d.extractor.read.fail.count=4",
@@ -342,14 +314,22 @@
                 "basecaller.sequencing.summary.1d.extractor.pass.reads.mean.qscore.mean=13.002917289733887",
                 "basecaller.sequencing.summary.1d.extractor.pass.reads.mean.qscore.std=1.737709403038025",
                 "basecaller.sequencing.summary.1d.extractor.pass.reads.mean.qscore.min=9.84000015258789",
-                "basecaller.sequencing.summary.1d.extractor.pass.reads.mean.qscore.25%=11.90749979019165",
-                "basecaller.sequencing.summary.1d.extractor.pass.reads.mean.qscore.50%=12.820000171661377"
-            ]
+                "basecaller.sequencing.summary.1d.extractor.pass.reads.mean.qscore.25%=11.90749979019165"
+            ],
+            {
+                "versions_toulligqc": [
+                    [
+                        "TOULLIGQC",
+                        "toulligqc",
+                        "2.9.1"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-10-15T12:57:28.249831",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
-        },
-        "timestamp": "2025-09-04T13:35:56.791357294"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     }
 }

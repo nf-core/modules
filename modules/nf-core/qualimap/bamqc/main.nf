@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process QUALIMAP_BAMQC {
     tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/qualimap:2.3--hdfd78af_0' :
-        'biocontainers/qualimap:2.3--hdfd78af_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/43/43d53d976495e04b250e36cb8dd5dcbb0b1390542e9103071cd533a74269877d/data'
+:         'community.wave.seqera.io/library/qualimap:2.3--e70af3f76915782f' }"
 
     input:
     tuple val(meta), path(bam)
@@ -13,7 +16,7 @@ process QUALIMAP_BAMQC {
 
     output:
     tuple val(meta), path("${prefix}"), emit: results
-    path  "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('qualimap'), eval("qualimap -h | sed -n 's/^QualiMap v.//p'"), topic: versions, emit: versions_qualimap
 
     when:
     task.ext.when == null || task.ext.when
@@ -24,42 +27,30 @@ process QUALIMAP_BAMQC {
 
     def collect_pairs = meta.single_end ? '' : '--collect-overlap-pairs'
     def memory = (task.memory.mega*0.8).intValue() + 'M'
-    def regions = gff ? "--gff $gff" : ''
+    def regions = gff ? "--gff ${gff}" : ''
 
-    def strandedness = 'non-strand-specific'
-    if (meta.strandedness == 'forward') {
-        strandedness = 'strand-specific-forward'
-    } else if (meta.strandedness == 'reverse') {
-        strandedness = 'strand-specific-reverse'
-    }
     """
     unset DISPLAY
     mkdir -p tmp
     export _JAVA_OPTIONS=-Djava.io.tmpdir=./tmp
     qualimap \\
-        --java-mem-size=$memory \\
+        --java-mem-size=${memory} \\
         bamqc \\
-        $args \\
-        -bam $bam \\
-        $regions \\
-        -p $strandedness \\
-        $collect_pairs \\
-        -outdir $prefix \\
-        -nt $task.cpus
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        qualimap: \$(echo \$(qualimap 2>&1) | sed 's/^.*QualiMap v.//; s/Built.*\$//')
-    END_VERSIONS
+        ${args} \\
+        -bam ${bam} \\
+        ${regions} \\
+        ${collect_pairs} \\
+        -outdir ${prefix} \\
+        -nt ${task.cpus}
     """
 
     stub:
-    prefix = task.ext.suffix ? "${meta.id}${task.ext.suffix}" : "${meta.id}"
+    prefix = task.ext.prefix ?: "${meta.id}"
     """
-    mkdir -p $prefix/css
-    mkdir $prefix/images_qualimapReport
-    mkdir $prefix/raw_data_qualimapReport
-    cd $prefix/css
+    mkdir -p ${prefix}/css
+    mkdir ${prefix}/images_qualimapReport
+    mkdir ${prefix}/raw_data_qualimapReport
+    cd ${prefix}/css
     touch agogo.css
     touch basic.css
     touch bgtop.png
@@ -114,10 +105,5 @@ process QUALIMAP_BAMQC {
     touch genome_results.txt
     touch qualimapReport.html
     cd ../
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        qualimap: \$(echo \$(qualimap 2>&1) | sed 's/^.*QualiMap v.//; s/Built.*\$//')
-    END_VERSIONS
     """
 }

@@ -2,17 +2,21 @@
     "bclconvert": {
         "content": [
             {
+                "autodetect_samplesheet": [
+                    
+                ],
                 "empty_fastq": [
                     [
                         {
-                            "empty": true,
-                            "fcid": "HMTFYDRXX",
                             "id": "SampleZ_S5_L001",
                             "lane": 1,
                             "readgroup": {
-                                
+                                "ID": "AAAATTTTGG.GGCCCCAAAA.1",
+                                "LB": "UnknownLibrary",
+                                "PL": "ILLUMINA",
+                                "PU": "HMTFYDRXX.1",
+                                "SM": "SampleZ"
                             },
-                            "samplename": "SampleZ",
                             "single_end": true
                         },
                         [
@@ -24,16 +28,14 @@
                     [
                         {
                             "id": "Sample1_S1_L001",
-                            "samplename": "Sample1",
-                            "fcid": "HMTFYDRXX",
                             "lane": 1,
                             "readgroup": {
-                                "ID": "HMTFYDRXX.1",
-                                "SM": "Sample1",
+                                "ID": "GAACTGAGCG.TCGTGGAGCG.1",
+                                "LB": "UnknownLibrary",
                                 "PL": "ILLUMINA",
-                                "PU": "HMTFYDRXX.1.GAACTGAGCG+TCGTGGAGCG"
+                                "PU": "HMTFYDRXX.1",
+                                "SM": "Sample1"
                             },
-                            "empty": false,
                             "single_end": true
                         },
                         [
@@ -43,16 +45,14 @@
                     [
                         {
                             "id": "Sample23_S3_L001",
-                            "samplename": "Sample23",
-                            "fcid": "HMTFYDRXX",
                             "lane": 1,
                             "readgroup": {
-                                "ID": "HMTFYDRXX.1",
-                                "SM": "Sample23",
+                                "ID": "CGTCTCATAT.TATAGTAGCT.1",
+                                "LB": "UnknownLibrary",
                                 "PL": "ILLUMINA",
-                                "PU": "HMTFYDRXX.1.CGTCTCATAT+TATAGTAGCT"
+                                "PU": "HMTFYDRXX.1",
+                                "SM": "Sample23"
                             },
-                            "empty": false,
                             "single_end": true
                         },
                         [
@@ -62,16 +62,14 @@
                     [
                         {
                             "id": "SampleA_S2_L001",
-                            "samplename": "SampleA",
-                            "fcid": "HMTFYDRXX",
                             "lane": 1,
                             "readgroup": {
-                                "ID": "HMTFYDRXX.1",
-                                "SM": "SampleA",
+                                "ID": "AGGTCAGATA.CTACAAGATA.1",
+                                "LB": "UnknownLibrary",
                                 "PL": "ILLUMINA",
-                                "PU": "HMTFYDRXX.1.AGGTCAGATA+CTACAAGATA"
+                                "PU": "HMTFYDRXX.1",
+                                "SM": "SampleA"
                             },
-                            "empty": false,
                             "single_end": true
                         },
                         [
@@ -81,16 +79,14 @@
                     [
                         {
                             "id": "sampletest_S4_L001",
-                            "samplename": "sampletest",
-                            "fcid": "HMTFYDRXX",
                             "lane": 1,
                             "readgroup": {
-                                "ID": "HMTFYDRXX.1",
-                                "SM": "sampletest",
+                                "ID": "ATTCCATAAG.TGCCTGGTGG.1",
+                                "LB": "UnknownLibrary",
                                 "PL": "ILLUMINA",
-                                "PU": "HMTFYDRXX.1.ATTCCATAAG+TGCCTGGTGG"
+                                "PU": "HMTFYDRXX.1",
+                                "SM": "sampletest"
                             },
-                            "empty": false,
                             "single_end": true
                         },
                         [
@@ -130,7 +126,12 @@
                             "id": "HMTFYDRXX",
                             "lane": 1
                         },
-                        "Logs"
+                        [
+                            "Errors.log",
+                            "FastqComplete.txt",
+                            "Info.log",
+                            "Warnings.log"
+                        ]
                     ]
                 ],
                 "reports": [
@@ -156,40 +157,92 @@
                         ]
                     ]
                 ],
+                "sav_data": [
+                    [
+                        {
+                            "id": "HMTFYDRXX"
+                        },
+                        [
+                            "bclconvert-lane-stats-table.txt",
+                            "bclconvert-sample-stats-table.txt",
+                            "bclconvert_lane_counts.txt",
+                            "bclconvert_sample_counts_Counts_per_lane.txt",
+                            "bclconvert_sample_counts_Index_mismatches.txt",
+                            "bclconvert_undetermined.txt",
+                            "llms-full.txt",
+                            "multiqc.log",
+                            "multiqc.parquet",
+                            "multiqc_bclconvert_bylane.txt",
+                            "multiqc_bclconvert_bysample.txt",
+                            "multiqc_citations.txt",
+                            "multiqc_data.json",
+                            "multiqc_general_stats.txt",
+                            "multiqc_sav.txt",
+                            "multiqc_sources.txt",
+                            "sav-intensity-vs-cycle-plot.txt",
+                            "sav-lane-metrics-summary-table.txt",
+                            "sav-pf-vs-occ-plot.txt",
+                            "sav-qscore-heatmap-plot.txt",
+                            "sav-qscore-histogram-plot.txt",
+                            "sav-read-metrics-summary-table.txt",
+                            "sav-summary-clusters-reads-lane-plot_Clusters.txt",
+                            "sav-summary-clusters-reads-lane-plot_Reads.txt"
+                        ]
+                    ]
+                ],
+                "sav_plots": [
+                    
+                ],
+                "sav_report": [
+                    [
+                        {
+                            "id": "HMTFYDRXX"
+                        },
+                        "multiqc_report.html"
+                    ]
+                ],
                 "stats": [
                     
                 ],
-                "versions": [
-                    "versions.yml:md5,b1427a2b3abad63b04f1dd62c8f40e2e"
+                "undetermined": [
+                    [
+                        {
+                            "id": "HMTFYDRXX",
+                            "lane": 1
+                        },
+                        "Undetermined_S0_L001_R1_001.fastq.gz"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-11-11T18:14:52.758998",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.10.0"
-        },
-        "timestamp": "2025-11-04T16:13:41.469897018"
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.5"
+        }
     },
     "bcl2fastq": {
         "content": [
             {
+                "autodetect_samplesheet": [
+                    
+                ],
                 "empty_fastq": [
                     
                 ],
                 "fastq": [
                     [
                         {
-                            "id": "Sample1_S1_L001",
-                            "samplename": "Sample1",
                             "fcid": "test",
+                            "id": "Sample1_S1_L001",
                             "lane": 1,
                             "readgroup": {
-                                "ID": "000000000-K9H97.1",
-                                "SM": "Sample1",
+                                "ID": ".1",
                                 "PL": "ILLUMINA",
-                                "PU": "000000000-K9H97.1"
+                                "PU": "000000000-K9H97.1",
+                                "SM": "Sample1"
                             },
-                            "empty": false,
+                            "samplename": "Sample1",
                             "single_end": true
                         },
                         [
@@ -229,8 +282,8 @@
                                     [
                                         [
                                             [
-                                                "lane.html:md5,794e48287f47a9f22dcb6b6d0c22c3eb",
-                                                "laneBarcode.html:md5,2bbdae3ee57151eab520c966597d7438"
+                                                "lane.html",
+                                                "laneBarcode.html"
                                             ],
                                             [
                                                 
@@ -240,18 +293,18 @@
                                     [
                                         [
                                             [
-                                                "lane.html:md5,f741870307050dcea79a838f5971770f",
-                                                "laneBarcode.html:md5,ffe2e863811c76cb9da27d5d124e0611"
+                                                "lane.html",
+                                                "laneBarcode.html"
                                             ],
                                             [
-                                                "lane.html:md5,cca97e771d3491dbc8cd3fe389595b09",
-                                                "laneBarcode.html:md5,cca97e771d3491dbc8cd3fe389595b09"
+                                                "lane.html",
+                                                "laneBarcode.html"
                                             ]
                                         ],
                                         [
                                             [
-                                                "lane.html:md5,c383b0768d9978733d3f5d3b91c15af0",
-                                                "laneBarcode.html:md5,48842c23b9a2816aec540177df870968"
+                                                "lane.html",
+                                                "laneBarcode.html"
                                             ],
                                             [
                                                 
@@ -259,11 +312,52 @@
                                         ]
                                     ]
                                 ],
-                                "Report.css:md5,eb7d3eb68fc1539f411404987246b59b",
-                                "index.html:md5,5747c407854ae2c358d0ec201ce622d8",
-                                "tree.html:md5,a1b9bf592973ca829ec69ddf888b7e34"
+                                "Report.css",
+                                "index.html",
+                                "tree.html"
                             ]
                         ]
+                    ]
+                ],
+                "sav_data": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        [
+                            "bcl2fastq-lane-stats-table.txt",
+                            "bcl2fastq_lane_counts.txt",
+                            "bcl2fastq_sample_counts.txt",
+                            "bcl2fastq_undetermined.txt",
+                            "llms-full.txt",
+                            "multiqc.log",
+                            "multiqc.parquet",
+                            "multiqc_bcl2fastq_bylane.txt",
+                            "multiqc_bcl2fastq_bysample.txt",
+                            "multiqc_citations.txt",
+                            "multiqc_data.json",
+                            "multiqc_general_stats.txt",
+                            "multiqc_sav.txt",
+                            "multiqc_sources.txt",
+                            "sav-intensity-vs-cycle-plot.txt",
+                            "sav-lane-metrics-summary-table.txt",
+                            "sav-qscore-heatmap-plot.txt",
+                            "sav-qscore-histogram-plot.txt",
+                            "sav-read-metrics-summary-table.txt",
+                            "sav-summary-clusters-reads-lane-plot_Clusters.txt",
+                            "sav-summary-clusters-reads-lane-plot_Reads.txt"
+                        ]
+                    ]
+                ],
+                "sav_plots": [
+                    
+                ],
+                "sav_report": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "multiqc_report.html"
                     ]
                 ],
                 "stats": [
@@ -273,24 +367,24 @@
                             "lane": 1
                         },
                         [
-                            "AdapterTrimming.txt:md5,48ed2b914b1246c0b5d8667525550946",
-                            "ConversionStats.xml:md5,8fe0f57f3f5d256a0762dba75ac62d05",
-                            "DemultiplexingStats.xml:md5,2047ff18f5b9107c084de06e9ff943ad",
-                            "DemuxSummaryF1L1.txt:md5,03e5fd0c1e3079c5f8c7b4d0501b37ff",
-                            "FastqSummaryF1L1.txt:md5,0c6f2d87ee183b84d1051cde9a5643d1",
-                            "Stats.json:md5,8e5f038b8aa9e465599d3575f930e604"
+                            "AdapterTrimming.txt",
+                            "ConversionStats.xml",
+                            "DemultiplexingStats.xml",
+                            "DemuxSummaryF1L1.txt",
+                            "FastqSummaryF1L1.txt",
+                            "Stats.json"
                         ]
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,513271615cb02dbe541a6202d713ef81"
+                "undetermined": [
+                    
                 ]
             }
         ],
+        "timestamp": "2026-11-11T18:15:45.670697",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.10.0"
-        },
-        "timestamp": "2025-11-04T15:08:58.666466636"
+            "nf-test": "0.9.5",
+            "nextflow": "26.10.5"
+        }
     }
 }

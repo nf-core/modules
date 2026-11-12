@@ -13,7 +13,8 @@ tools:
       documentation: "https://github.com/AstraZeneca-NGS/VarDictJava"
       tool_dev_url: "https://github.com/AstraZeneca-NGS/VarDictJava"
       doi: "10.1093/nar/gkw227 "
-      licence: ["MIT"]
+      licence:
+        - "MIT"
       identifier: ""
 input:
   - - meta:
@@ -23,8 +24,8 @@ input:
           e.g. [ id:'test', single_end:false ]
     - bams:
         type: file
-        description: One or two BAM files. Supply two BAM files to run Vardict in paired
-          mode.
+        description: One or two BAM files. Supply two BAM files to run Vardict in
+          paired mode.
         pattern: "*.bam"
         ontologies: []
     - bais:
@@ -69,14 +70,66 @@ output:
           description: VCF file output
           pattern: "*.vcf.gz"
           ontologies:
-            - edam: http://edamontology.org/format_3989 # GZIP format
+            - edam: http://edamontology.org/format_3989
+  versions_vardictjava:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vardict-java:
+          type: string
+          description: The name of the tool
+      - realpath \$( command -v vardict-java ) | sed 's/.*java-//;s/-.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_var2vcfvalid:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - var2vcf_valid.pl:
+          type: string
+          description: The name of the tool
+      - var2vcf_valid.pl -h | sed '2!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_htslib:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - htslib:
+          type: string
+          description: The name of the tool
+      - "tabix -h 2>&1 | sed -n '2s/Version: *//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - vardict-java:
+          type: string
+          description: The name of the tool
+      - realpath \$( command -v vardict-java ) | sed 's/.*java-//;s/-.*//':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - var2vcf_valid.pl:
+          type: string
+          description: The name of the tool
+      - var2vcf_valid.pl -h | sed '2!d;s/.* //':
+          type: eval
+          description: The expression to obtain the version of the tool
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - htslib:
+          type: string
+          description: The name of the tool
+      - "tabix -h 2>&1 | sed -n '2s/Version: *//p'":
+          type: eval
+          description: The expression to obtain the version of the tool
 authors:
   - "@nvnieuwk"
 maintainers:

@@ -1,19 +1,18 @@
 name: nucmer
-description: NUCmer is a pipeline for the alignment of multiple closely related nucleotide
-  sequences.
+description: NUCmer is a pipeline for the alignment of multiple closely related nucleotide sequences.
 keywords:
   - align
   - nucleotide
   - sequence
 tools:
   - nucmer:
-      description: NUCmer is a pipeline for the alignment of multiple closely related
-        nucleotide sequences.
+      description: NUCmer is a pipeline for the alignment of multiple closely related nucleotide sequences.
       homepage: http://mummer.sourceforge.net/
       documentation: http://mummer.sourceforge.net/
       tool_dev_url: http://mummer.sourceforge.net/
       doi: "10.1186/gb-2004-5-2-r12"
-      licence: ["The Artistic License"]
+      licence:
+        - "The Artistic License"
       identifier: ""
 input:
   - - meta:
@@ -40,8 +39,7 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.delta":
           type: file
-          description: File containing coordinates of matches between reference and
-            query
+          description: File containing coordinates of matches between reference and query
           ontologies: []
   coords:
     - - meta:
@@ -54,13 +52,29 @@ output:
           description: NUCmer1.1 coords output file
           pattern: "*.{coords}"
           ontologies: []
+  versions_nucmer:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - nucmer:
+          type: string
+          description: The name of the tool
+      - nucmer --version 2>&1  | sed -n 's/NUCmer (NUCleotide MUMmer) version //p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - nucmer:
+          type: string
+          description: The name of the tool
+      - nucmer --version 2>&1  | sed -n 's/NUCmer (NUCleotide MUMmer) version //p':
+          type: eval
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@sateeshperi"
   - "@mjcipriano"

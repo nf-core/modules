@@ -1,5 +1,3 @@
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
 name: "autocycler_cluster"
 description: Cluster replicons in compressed assemblies with Autocycler.
 keywords:
@@ -35,10 +33,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "$prefix/clustering/qc_pass/*/*.gfa":
+      - "clustering/$prefix/qc_pass/*/*.gfa":
           type: file
           description: Aassembly graphs of clustered contigs.
-          pattern: "clustering/qc_pass/*/*.gfa"
+          pattern: "clustering/*/qc_pass/*/*.gfa"
           ontologies:
             - edam: "http://edamontology.org/format_3975" #GFA1
   clusterstats:
@@ -47,10 +45,10 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "$prefix/clustering/qc_pass/*/*.yaml":
+      - "clustering/$prefix/qc_pass/*/*.yaml":
           type: file
           description: Per-cluster metrics reported by Autocycler.
-          pattern: "clustering/qc_pass/*/*.yaml"
+          pattern: "clustering/*/qc_pass/*/*.yaml"
           ontologies:
             - edam: "http://edamontology.org/format_3750" # YAML
   newick:
@@ -59,51 +57,91 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "$prefix/clustering/*.newick":
+      - "clustering/$prefix/*.newick":
           type: file
           description: Newick tree relating contigs.
-          pattern: "clustering/*.newick"
+          pattern: "clustering/*/*.newick"
   tsv:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "$prefix/clustering/*.tsv":
+      - "clustering/$prefix/*.tsv":
           type: file
           description: Tabular summary of cluster relationships.
-          pattern: "clustering/*.tsv"
+          pattern: "clustering/*/*.tsv"
   pairwisedistances:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "$prefix/clustering/*.phylip":
+      - "clustering/$prefix/*.phylip":
           type: file
           description: Pairwise distance matrix in PHYLIP format.
-          pattern: "clustering/*.phylip"
+          pattern: "clustering/*/*.phylip"
   stats:
     - - meta:
           type: map
           description: |
             Groovy Map containing sample information
             e.g. `[ id:'sample1' ]`
-      - "$prefix/clustering/*.yaml":
+      - "clustering/$prefix/*.yaml":
           type: file
           description: Run-level statistics for the clustering step.
-          pattern: "clustering/*.yaml"
+          pattern: "clustering/*/*.yaml"
           ontologies:
             - edam: "http://edamontology.org/format_3750" # YAML
+  versions_autocycler:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - autocycler:
+          type: string
+          description: The name of the tool
+      - "autocycler --version |  sed 's/^[^ ]* //'":
+          type: eval
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - "versions.yml":
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: "http://edamontology.org/format_3750" # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - autocycler:
+          type: string
+          description: The name of the tool
+      - "autocycler --version |  sed 's/^[^ ]* //'":
+          type: eval
+          description: The expression to obtain the version of the tool
 
 authors:
   - "@dwells-eit"
+  - "@eit-maxlcummins"
 maintainers:
   - "@dwells-eit"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/autocycler:0.5.2--acbc9f6f3af08e2c
+      build_id: bd-acbc9f6f3af08e2c_1
+      scan_id: sc-f0d8e4da115673f7_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/autocycler:0.5.2--91b58d5b8fccdfb9
+      build_id: bd-91b58d5b8fccdfb9_1
+      scan_id: sc-555ce0e82495a54c_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/autocycler:0.5.2--9e42c6c874cccf1f
+      build_id: bd-9e42c6c874cccf1f_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/94/945c5053805b84d0f8ef56f3ecbee814f80d70f0f32195102462553d9488fa77/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/autocycler:0.5.2--5a049a6b812149c6
+      build_id: bd-5a049a6b812149c6_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/3a/3a59a19abe50e65d964ea723d2c310a0005ef5a965beb7bc740d02894dd056e8/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/autocycler/cluster/.conda-lock/linux_amd64-bd-91b58d5b8fccdfb9_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/autocycler/cluster/.conda-lock/linux_arm64-bd-acbc9f6f3af08e2c_1.txt

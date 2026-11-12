@@ -1,0 +1,55 @@
+nextflow_process {
+
+    name "Test Process SINGLEM_DBDOWNLOAD"
+    script "../main.nf"
+    process "SINGLEM_DBDOWNLOAD"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "singlem"
+    tag "singlem/dbdownload"
+
+    test("singlem - dbdownload") {
+
+        when {
+            process {
+                """
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.singlem_database.get(0)).exists() },
+                { assert snapshot(["versions_singlem": process.out.versions_singlem]).match() }
+            )
+        }
+
+    }
+
+    test("singlem - dbdownload - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(
+                    ["singlem_database": process.out.singlem_database,
+                     "versions_singlem": process.out.versions_singlem]
+                    ).match() }
+            )
+        }
+
+    }
+
+}

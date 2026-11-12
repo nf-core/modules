@@ -5,10 +5,16 @@ keywords:
   - mgi
   - fastq
 tools:
-  - "mgikit demultiplex":
+  - "mgikit":
       description: "Demultiplex MGI fastq files"
       homepage: "https://sagc-bioinformatics.github.io/mgikit/"
       documentation: "https://sagc-bioinformatics.github.io/mgikit/"
+      doi: "10.1093/bioinformatics/btae554"
+      publication:
+        author: "Al Bkhetan, Z. & Wang, S."
+        year: 2024
+        title: "mgikit: demultiplexing toolkit for MGI fastq files"
+        source: "Bioinformatics"
       identifier: ""
 input:
   - - meta:
@@ -146,12 +152,26 @@ output:
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
           pattern: "mgikit.{info,general,ambiguous_barcode,undetermined_barcode}"
+  versions_mgikit:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - mgikit:
+          type: string
+          description: The tool name
+      - 'mgikit --version | sed -n "s/.*kit. //p"':
+          type: string
+          description: The command used to generate the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - mgikit:
+          type: string
+          description: The tool name
+      - 'mgikit --version | sed -n "s/.*kit. //p"':
+          type: string
+          description: The command used to generate the version of the tool
 authors:
   - "@ziadbkh"

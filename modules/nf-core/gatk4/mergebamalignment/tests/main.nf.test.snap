@@ -11,7 +11,11 @@
                     ]
                 ],
                 "1": [
-                    "versions.yml:md5,9ce4f945ec83dda5802a695fb8dec7d2"
+                    [
+                        "GATK4_MERGEBAMALIGNMENT",
+                        "gatk4",
+                        "4.7.0.0"
+                    ]
                 ],
                 "bam": [
                     [
@@ -21,28 +25,40 @@
                         "test.bam:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,9ce4f945ec83dda5802a695fb8dec7d2"
+                "versions_gatk4": [
+                    [
+                        "GATK4_MERGEBAMALIGNMENT",
+                        "gatk4",
+                        "4.7.0.0"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-08-18T12:33:50.143331",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.7"
-        },
-        "timestamp": "2025-09-15T15:44:25.615487805"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     },
     "test-gatk4-mergebamalignment": {
         "content": [
-            "30c325e1e032eb1782a280d34c0fb1c7",
             [
-                "versions.yml:md5,9ce4f945ec83dda5802a695fb8dec7d2"
-            ]
+                "test.bam:readsMD5,30c325e1e032eb1782a280d34c0fb1c7"
+            ],
+            {
+                "versions_gatk4": [
+                    [
+                        "GATK4_MERGEBAMALIGNMENT",
+                        "gatk4",
+                        "4.7.0.0"
+                    ]
+                ]
+            }
         ],
+        "timestamp": "2026-08-19T09:34:52.074529",
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.7"
-        },
-        "timestamp": "2025-09-15T15:44:14.870006437"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     }
 }

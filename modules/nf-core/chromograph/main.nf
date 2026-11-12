@@ -1,12 +1,15 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CHROMOGRAPH {
     // $meta.id can be [] because autozyg is not required, so use all ids
     tag "${[meta, meta2, meta3, meta4, meta5, meta6, meta7].collect { meta_map -> meta_map.id }.findAll().unique().join('_') ?: 'chromograph'}"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
         ? 'https://depot.galaxyproject.org/singularity/chromograph:1.3.1--pyhdfd78af_2'
-        : 'biocontainers/chromograph:1.3.1--pyhdfd78af_2'}"
+        : 'quay.io/biocontainers/chromograph:1.3.1--pyhdfd78af_2'}"
 
     input:
     tuple val(meta), path(autozyg)
@@ -19,7 +22,7 @@ process CHROMOGRAPH {
 
     output:
     tuple val(meta), path("*.png"), emit: plots, optional: true
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('chromograph'), eval("chromograph --version | sed 's/.* //'")   , topic: versions   , emit: versions_chromograph
 
     when:
     task.ext.when == null || task.ext.when
@@ -46,10 +49,6 @@ process CHROMOGRAPH {
         ${sites_param} \\
         --outd .
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        chromograph: \$(chromograph --version | sed 's/.* //' )
-    END_VERSIONS
     """
 
     stub:
@@ -65,10 +64,6 @@ process CHROMOGRAPH {
     ${touchCmd(euploidy, regions)}
     ${touchCmd(euploidy, sites)}
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        chromograph: \$(chromograph --version | sed 's/.* //' )
-    END_VERSIONS
     """
 }
 

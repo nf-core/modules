@@ -16,24 +16,22 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:false ], // meta map
-				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
 				]
-
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
                 { assert snapshot(
 					file(process.out.readgroup[0][1]).readLines(),
 					file(process.out.programs[0][1]).readLines(),
 					file(process.out.sequences[0][1]).readLines(),
-					process.out.versions
-					).match()
-				}
+                    process.out.findAll { key, val -> key.startsWith("versions") }
+                ).match() }
             )
         }
     }
@@ -46,26 +44,18 @@ nextflow_process {
             process {
                 """
                 input[0] = [
-				    [ id:'test', single_end:false ], // meta map
-				    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/bam/test.paired_end.bam', checkIfExists: true)
 				]
-
                 """
             }
         }
 
         then {
+            assert process.success
             assertAll(
-                { assert process.success },
-                { assert snapshot(
-					file(process.out.readgroup[0][1]).readLines(),
-					file(process.out.programs[0][1]).readLines(),
-					file(process.out.sequences[0][1]).readLines(),
-					process.out.versions
-					).match()
-				}
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
-
 }

@@ -2,25 +2,6 @@
     "sarscov2 - mat - stub": {
         "content": [
             {
-                "0": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.computeMatrix.mat.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
-                    ]
-                ],
-                "1": [
-                    [
-                        {
-                            "id": "test"
-                        },
-                        "test.computeMatrix.vals.mat.tab:md5,d41d8cd98f00b204e9800998ecf8427e"
-                    ]
-                ],
-                "2": [
-                    "versions.yml:md5,ccf4527952be3b834d42b6a968193b09"
-                ],
                 "matrix": [
                     [
                         {
@@ -37,36 +18,121 @@
                         "test.computeMatrix.vals.mat.tab:md5,d41d8cd98f00b204e9800998ecf8427e"
                     ]
                 ],
-                "versions": [
-                    "versions.yml:md5,ccf4527952be3b834d42b6a968193b09"
+                "versions_deeptools": [
+                    [
+                        "DEEPTOOLS_COMPUTEMATRIX",
+                        "deeptools",
+                        "3.5.6"
+                    ]
                 ]
             }
         ],
+        "timestamp": "2026-10-04T14:29:06.109358",
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.3"
-        },
-        "timestamp": "2024-08-05T10:31:20.853496401"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     },
-    "sarscov2 - bigwig - bed": {
+    "sarscov2 - mat with blacklist - stub": {
         "content": [
-            "test.computeMatrix.mat.gz",
-            [
-                [
-                    {
-                        "id": "test"
-                    },
-                    "test.computeMatrix.vals.mat.tab:md5,19e22051cc44edb7db3e0f8345330d90"
+            {
+                "matrix": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.computeMatrix.mat.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
+                    ]
+                ],
+                "table": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.computeMatrix.vals.mat.tab:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
+                "versions_deeptools": [
+                    [
+                        "DEEPTOOLS_COMPUTEMATRIX",
+                        "deeptools",
+                        "3.5.6"
+                    ]
                 ]
-            ],
-            [
-                "versions.yml:md5,ccf4527952be3b834d42b6a968193b09"
-            ]
+            }
         ],
+        "timestamp": "2026-10-04T14:29:13.134065",
         "meta": {
-            "nf-test": "0.9.0",
-            "nextflow": "24.04.3"
-        },
-        "timestamp": "2024-08-05T10:31:15.614009233"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "sarscov2 - bigwig - bed - blacklist": {
+        "content": [
+            {
+                "matrix": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.computeMatrix.mat.gz:md5,2bc77c2c0bdc61463c3aaebdb48e4bad"
+                    ]
+                ],
+                "table": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.computeMatrix.vals.mat.tab:md5,19e22051cc44edb7db3e0f8345330d90"
+                    ]
+                ],
+                "versions_deeptools": [
+                    [
+                        "DEEPTOOLS_COMPUTEMATRIX",
+                        "deeptools",
+                        "3.5.6"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-04T14:29:00.890259",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    },
+    "sarscov2 - bigwig - bed - no blacklist": {
+        "content": [
+            {
+                "matrix": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.computeMatrix.mat.gz:md5,2bc77c2c0bdc61463c3aaebdb48e4bad"
+                    ]
+                ],
+                "table": [
+                    [
+                        {
+                            "id": "test"
+                        },
+                        "test.computeMatrix.vals.mat.tab:md5,19e22051cc44edb7db3e0f8345330d90"
+                    ]
+                ],
+                "versions_deeptools": [
+                    [
+                        "DEEPTOOLS_COMPUTEMATRIX",
+                        "deeptools",
+                        "3.5.6"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-04T14:28:52.588229",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
     }
 }

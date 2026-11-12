@@ -1,18 +1,21 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BFTOOLS_SHOWINF {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/bftools:8.0.0--hdfd78af_0':
-        'biocontainers/bftools:8.0.0--hdfd78af_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/b3/b3f18a7262bb2d6c2f64b1e09c65bb1b0b315baabb9bded73678a33c5fcb55ac/data'
+        : 'community.wave.seqera.io/library/bftools:8.0.0--3d36406c00785003' }"
 
     input:
     tuple val(meta), path(image)
 
     output:
-    tuple val(meta), path("*.xml"), emit: xml
-    path "versions.yml"           , emit: versions
+    tuple val(meta), path("*.xml.gz")                                                             , emit: xml
+    tuple val("${task.process}"), val("bftools"), eval("showinf -version | sed -n '1s/[^ ]* //p'"), emit: versions_bftools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -25,24 +28,13 @@ process BFTOOLS_SHOWINF {
     export BF_FLAGS='-XX:+PerfDisableSharedMem'
     showinf -nopix -no-upgrade -omexml-only \\
         $args \\
-        $image > ${prefix}.xml
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        showinf: \$(showinf -version | head -n1 | cut -d' ' -f2)
-    END_VERSIONS
+        $image | gzip > ${prefix}.xml.gz
     """
 
     stub:
-    def args   = task.ext.args   ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
 
     """
-    echo '<?xml version="1.0" encoding="UTF-8">' > ${prefix}.xml
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        showinf: \$(showinf -version | head -n1 | cut -d' ' -f2)
-    END_VERSIONS
+    echo "" | gzip > ${prefix}.xml.gz
     """
 }

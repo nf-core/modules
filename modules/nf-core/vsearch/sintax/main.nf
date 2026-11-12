@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process VSEARCH_SINTAX {
     tag "${meta.id}"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/vsearch:2.21.1--h95f258a_0':
-        'biocontainers/vsearch:2.21.1--h95f258a_0' }"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ee/eec4fdf832cbd591111a702a1942476674a71e76fafbd5ae3fc18018b9ebe2e2/data'
+:         'community.wave.seqera.io/library/vsearch:2.31.0--80e3b2da3ae2f3d8' }"
 
     input:
     tuple val(meta), path(queryfasta)
@@ -13,7 +16,7 @@ process VSEARCH_SINTAX {
 
     output:
     tuple val(meta), path('*.tsv')   , optional: true, emit: tsv
-    path "versions.yml"              , emit: versions
+    tuple val("${task.process}"), val('vsearch'), eval('vsearch --version 2>&1 | sed -n "1s/.*v\\([0-9.]*\\).*/\\\\1/p"'), emit: versions_vsearch, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -21,7 +24,6 @@ process VSEARCH_SINTAX {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
-
     """
     vsearch \\
         --sintax $queryfasta \\
@@ -29,10 +31,10 @@ process VSEARCH_SINTAX {
         --threads $task.cpus \\
         $args \\
         --tabbedout ${prefix}.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        vsearch: \$(vsearch --version 2>&1 | head -n 1 | sed 's/vsearch //g' | sed 's/,.*//g' | sed 's/^v//' | sed 's/_.*//')
-    END_VERSIONS
+    """
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    """
+    touch ${prefix}.tsv
     """
 }
