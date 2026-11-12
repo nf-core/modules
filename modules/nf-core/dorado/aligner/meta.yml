@@ -3,6 +3,7 @@ description: |
   Align unaligned Oxford Nanopore BAM files (typically produced by dorado basecaller)
   to a reference genome using the dorado aligner, which wraps minimap2 and
   preserves modified base tags (MM/ML) and other BAM auxiliary tags.
+  Research use only: see the licensing note in the dorado tool description.
 keywords:
   - alignment
   - minimap2
@@ -13,8 +14,11 @@ keywords:
   - nanopore
 tools:
   - "dorado":
-      description: Oxford Nanopore's aligner that wraps minimap2 and preserves
+      description: |
+        Oxford Nanopore's aligner that wraps minimap2 and preserves
         modification tags (MM/ML) from basecaller output.
+        Licensing: dorado is released under the Oxford Nanopore Technologies PLC.
+        Public License Version 1.0, which permits use for research purposes only.
       homepage: https://github.com/nanoporetech/dorado
       documentation: https://software-docs.nanoporetech.com/dorado/latest/
       tool_dev_url: https://github.com/nanoporetech/dorado
