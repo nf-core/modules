@@ -23,6 +23,7 @@ workflow BAM_DEDUP_UMI {
     ch_transcriptome_bam // channel: [ val(meta), path(bam) ]
     ch_transcript_fasta_fai // channel: [ val(meta), path(fasta), path(fai) ]
     umitools_dedup_primary_only // boolean: whether to filter to primary alignments before dedup
+    index_format // string: index written alongside the sorted file, one of 'bai', 'csi' or 'crai'
 
     main:
     ch_tsv_edit_distance = channel.empty()
@@ -66,6 +67,7 @@ workflow BAM_DEDUP_UMI {
     BAM_SORT_STATS_SAMTOOLS(
         ch_transcriptome_bam,
         ch_transcript_fasta_fai,
+        index_format,
     )
     ch_sorted_transcriptome_bam = BAM_SORT_STATS_SAMTOOLS.out.bam.join(BAM_SORT_STATS_SAMTOOLS.out.index)
 

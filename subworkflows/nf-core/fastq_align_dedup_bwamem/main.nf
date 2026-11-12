@@ -17,6 +17,7 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
     output_fmt // string: output format for parabricks fq2bam (e.g., 'bam' or 'cram')
     interval_file // channel: [ val(meta), [ interval file ] ]
     known_sites // channel: [ val(meta), [ known sites ], [known sites index] ]
+    index_format // string: index written alongside the sorted file, one of 'bai', 'csi' or 'crai'
 
     main:
     ch_alignment = channel.empty()
@@ -44,6 +45,7 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
         BAM_SORT_STATS_SAMTOOLS(
             ch_alignment,
             ch_fasta_fai,
+            index_format,
         )
         ch_alignment = BAM_SORT_STATS_SAMTOOLS.out.bam
         ch_alignment_index = BAM_SORT_STATS_SAMTOOLS.out.index
@@ -56,7 +58,8 @@ workflow FASTQ_ALIGN_DEDUP_BWAMEM {
             ch_reads,
             ch_bwamem_index,
             true,
-            ch_fasta_fai
+            ch_fasta_fai,
+            index_format,
         )
         ch_alignment = FASTQ_ALIGN_BWA.out.bam
     }

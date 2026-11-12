@@ -11,6 +11,7 @@ workflow FASTQ_ALIGN_HISAT2 {
     splicesites // channel: /path/to/genome.splicesites.txt
     ch_fasta_fai // channel: [meta, fasta, fai ]
     save_unaligned // val: boolean
+    index_format // string: index written alongside the sorted file, one of 'bai', 'csi' or 'crai'
 
     main:
     //
@@ -21,7 +22,7 @@ workflow FASTQ_ALIGN_HISAT2 {
     //
     // Sort, index BAM file and run samtools stats, flagstat and idxstats
     //
-    BAM_SORT_STATS_SAMTOOLS(HISAT2_ALIGN.out.bam, ch_fasta_fai)
+    BAM_SORT_STATS_SAMTOOLS(HISAT2_ALIGN.out.bam, ch_fasta_fai, index_format)
 
     emit:
     orig_bam = HISAT2_ALIGN.out.bam // channel: [ val(meta), bam   ]

@@ -14,6 +14,7 @@ workflow FASTQ_ALIGN_BWA {
     ch_index // channel (mandatory): [ val(meta2), path(index) ]
     val_sort_bam // boolean (mandatory): true or false
     ch_fasta_fai // channel (optional) : [ val(meta3), path(fasta), path(fai) ]
+    index_format // string: index written alongside the sorted file, one of 'bai', 'csi' or 'crai'
 
     main:
 
@@ -27,7 +28,7 @@ workflow FASTQ_ALIGN_BWA {
     // Sort, index BAM file and run samtools stats, flagstat and idxstats
     //
 
-    BAM_SORT_STATS_SAMTOOLS(BWA_MEM.out.bam, ch_fasta_fai)
+    BAM_SORT_STATS_SAMTOOLS(BWA_MEM.out.bam, ch_fasta_fai, index_format)
 
     emit:
     bam_orig = BWA_MEM.out.bam // channel: [ val(meta), path(bam) ]

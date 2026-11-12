@@ -90,6 +90,16 @@ input:
               When true, secondary and supplementary alignments (SAM flag 0x900) are
               removed before running UMI-tools dedup so that dedup statistics reflect
               only primary alignments.
+  - index_format:
+      description: Index format for the sorted transcriptome BAM
+      structure:
+        - value:
+            type: string
+            description: |
+              Index format written by samtools sort alongside the sorted file.
+              Use 'csi' for genomes with contigs longer than 2^29 bp; 'crai' requires CRAM output.
+              Applies to the coordinate-sorted transcriptome BAM; the genome BAM is supplied already indexed.
+            pattern: "bai|csi|crai"
 
 output:
   - bam:

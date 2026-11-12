@@ -19,6 +19,7 @@ workflow FASTQ_ALIGN_CHROMAP {
     ch_chr_order // channel (optional):  [ chr_order ]
     ch_pairs_chr_order // channel (optional):  [ pairs_chr_order ]
     update_readgroups // boolean (optional): true or false controls whether readgroups should be updated post alignment
+    index_format // string: index written alongside the sorted file, one of 'bai', 'csi' or 'crai'
 
     main:
 
@@ -48,7 +49,7 @@ workflow FASTQ_ALIGN_CHROMAP {
     //
     // Sort, index BAM file and run samtools stats, flagstat and idxstats
     //
-    BAM_SORT_STATS_SAMTOOLS(ch_bam, ch_fasta_fai)
+    BAM_SORT_STATS_SAMTOOLS(ch_bam, ch_fasta_fai, index_format)
 
     emit:
     bam      = BAM_SORT_STATS_SAMTOOLS.out.bam // channel: [ val(meta), [ bam ] ]

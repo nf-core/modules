@@ -11,7 +11,6 @@ keywords:
 components:
   - mapad/map
   - samtools/sort
-  - samtools/index
   - samtools/stats
   - samtools/idxstats
   - samtools/flagstat
@@ -63,6 +62,12 @@ input:
       type: float
       description: |
         `-i` parameter. Specifies the expected rate of InDels.
+  - index_format:
+      type: string
+      description: |
+        Index format written by samtools sort alongside the sorted file.
+        Use 'csi' for genomes with contigs longer than 2^29 bp; 'crai' requires CRAM output.
+      pattern: "bai|csi|crai"
 output:
   - bam_unsorted:
       description: |

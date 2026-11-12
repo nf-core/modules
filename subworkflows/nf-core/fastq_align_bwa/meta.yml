@@ -10,7 +10,6 @@ components:
   - bwa/mem
   - bwa/align
   - samtools/sort
-  - samtools/index
   - samtools/stats
   - samtools/idxstats
   - samtools/flagstat
@@ -34,6 +33,12 @@ input:
       description: |
         Optional reference fasta file and index. This only needs to be given if val_sort_bam = true.
         Structure: [ val(meta), path(fasta), path(fai) ]
+  - index_format:
+      type: string
+      description: |
+        Index format written by samtools sort alongside the sorted file.
+        Use 'csi' for genomes with contigs longer than 2^29 bp; 'crai' requires CRAM output.
+      pattern: "bai|csi|crai"
 output:
   - bam_orig:
       description: |

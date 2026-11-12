@@ -14,6 +14,7 @@ workflow FASTQ_ALIGN_STAR {
     val_star_ignore_sjdbgtf // boolean: when using pre-built STAR indices do not re-extract and use splice junctions from the GTF file
     ch_fasta_fai // channel: [ val(meta), path(fasta), path(fai) ]
     ch_transcripts_fasta_fai // channel: [ val(meta), path(fasta), path(fai) ]
+    index_format // string: index written alongside the sorted file, one of 'bai', 'csi' or 'crai'
 
     main:
 
@@ -25,7 +26,7 @@ workflow FASTQ_ALIGN_STAR {
     //
     // Sort, index BAM file and run samtools stats, flagstat and idxstats
     //
-    BAM_SORT_STATS_SAMTOOLS_GENOME(STAR_ALIGN.out.bam, ch_fasta_fai)
+    BAM_SORT_STATS_SAMTOOLS_GENOME(STAR_ALIGN.out.bam, ch_fasta_fai, index_format)
 
     //
     // Sort, index BAM file and run samtools stats, flagstat and idxstats
@@ -34,7 +35,7 @@ workflow FASTQ_ALIGN_STAR {
     // STAR_ALIGN.out.bam_transcript is populated
     //
 
-    BAM_SORT_STATS_SAMTOOLS_TRANSCRIPTOME(STAR_ALIGN.out.bam_transcript, ch_transcripts_fasta_fai)
+    BAM_SORT_STATS_SAMTOOLS_TRANSCRIPTOME(STAR_ALIGN.out.bam_transcript, ch_transcripts_fasta_fai, index_format)
 
     emit:
     orig_bam            = STAR_ALIGN.out.bam // channel: [ val(meta), path(bam)            ]

@@ -9,7 +9,6 @@ keywords:
 components:
   - star/align
   - samtools/sort
-  - samtools/index
   - samtools/stats
   - samtools/idxstats
   - samtools/flagstat
@@ -42,6 +41,13 @@ input:
       type: file
       description: Optional reference genome fasta file and index
       pattern: "*.{fasta,fa,fna,fai}"
+  - index_format:
+      type: string
+      description: |
+        Index format written by samtools sort alongside the sorted file.
+        Use 'csi' for genomes with contigs longer than 2^29 bp; 'crai' requires CRAM output.
+        Applies to both the genome and the transcriptome sorted BAMs.
+      pattern: "bai|csi|crai"
 output:
   - orig_bam:
       description: |
