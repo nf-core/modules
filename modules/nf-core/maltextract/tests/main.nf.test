@@ -13,7 +13,7 @@ nextflow_process {
         setup {
             // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
             def testdata_base = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
-            ncbi_taxmap = extract("${testdata_base}genomics/sarscov2/genome/db/maltextract/ncbi_taxmap.zip")
+            ncbi_taxmap = extract(testdata_base + 'genomics/sarscov2/genome/db/maltextract/ncbi_taxmap.zip')
         }
 
         when {
