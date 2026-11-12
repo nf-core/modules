@@ -9,10 +9,10 @@ nextflow_process {
     tag "maltextract"
 
     test("test_maltextract") {
-
         when {
+            def testdata_base = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
             def ncbi_dir = "${outputDir}/ncbi_taxmap"
-            curlAndExtract('https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/sarscov2/genome/db/maltextract/ncbi_taxmap.zip', ncbi_dir)
+            extract("${testdata_base}genomics/sarscov2/genome/db/maltextract/ncbi_taxmap.zip", ncbi_dir)
             process {
                 """
                 input[0] = [ [],
