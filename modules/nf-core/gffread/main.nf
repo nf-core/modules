@@ -6,9 +6,9 @@ process GFFREAD {
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/gffread:0.12.7--hdcf5f25_4' :
-        'quay.io/biocontainers/gffread:0.12.7--hdcf5f25_4' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/28/289df0627a0c0dbe84732c9c358a2d51783e58fe5fcb3d82bfb7ab93cd0ecf1d/data'
+        : 'community.wave.seqera.io/library/gffread:0.12.9--fde1489f7e69618e'}"
 
     input:
     tuple val(meta), path(gff)

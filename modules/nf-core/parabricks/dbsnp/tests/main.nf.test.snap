@@ -2,6 +2,7 @@
     "human - vcf": {
         "content": [
             "242dbff8325d7f958c95b34598146a0d",
+            "test.vcf.gz.tbi",
             {
                 "versions_parabricks": [
                     [
@@ -12,10 +13,10 @@
                 ]
             }
         ],
-        "timestamp": "2026-10-22T06:50:15.663443627",
+        "timestamp": "2026-11-12T13:39:31.308612881",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.6"
+            "nextflow": "26.10.3"
         }
     },
     "human - vcf - stub": {
@@ -27,13 +28,22 @@
                             "id": "test",
                             "single_end": false
                         },
-                        "test.vcf:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "1": [
-                    "compatible_versions.yml:md5,128cca8d6af50a20825df17947d4e2e3"
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
                 ],
                 "2": [
+                    "compatible_versions.yml:md5,128cca8d6af50a20825df17947d4e2e3"
+                ],
+                "3": [
                     [
                         "PARABRICKS_DBSNP",
                         "parabricks",
@@ -43,13 +53,22 @@
                 "compatible_versions": [
                     "compatible_versions.yml:md5,128cca8d6af50a20825df17947d4e2e3"
                 ],
+                "tbi": [
+                    [
+                        {
+                            "id": "test",
+                            "single_end": false
+                        },
+                        "test.vcf.gz.tbi:md5,d41d8cd98f00b204e9800998ecf8427e"
+                    ]
+                ],
                 "vcf": [
                     [
                         {
                             "id": "test",
                             "single_end": false
                         },
-                        "test.vcf:md5,d41d8cd98f00b204e9800998ecf8427e"
+                        "test.vcf.gz:md5,68b329da9893e34099c7d8ad5cb9c940"
                     ]
                 ],
                 "versions_parabricks": [
@@ -69,10 +88,10 @@
                 }
             }
         ],
-        "timestamp": "2026-10-22T06:50:22.941926795",
+        "timestamp": "2026-11-12T13:39:44.86524702",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.6"
+            "nextflow": "26.10.3"
         }
     }
 }
