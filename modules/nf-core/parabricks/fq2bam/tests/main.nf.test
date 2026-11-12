@@ -22,6 +22,7 @@ nextflow_process {
                     [ id:'test' ], // meta map
                     file('https://github.com/nf-core/test-datasets/raw/methylseq/reference/genome.fa', checkIfExists: true)
                 ])
+                input[1] = []
                 """
             }
         }
@@ -34,6 +35,7 @@ nextflow_process {
                     [ id:'test' ], // meta map
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ])
+                input[1] = []
                 """
             }
         }
@@ -46,6 +48,7 @@ nextflow_process {
                     [id: 'test'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
+                input[1] = []
                 """
             }
         }

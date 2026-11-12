@@ -12,6 +12,12 @@ tools:
         a large reference genome, such as the human genome.
       homepage: http://bio-bwa.sourceforge.net/
       documentation: https://bio-bwa.sourceforge.net/bwa.shtml
+      doi: "10.1093/bioinformatics/btp324"
+      publication:
+        author: "Li, H. & Durbin, R."
+        year: 2009
+        title: "Fast and accurate short read alignment with Burrows–Wheeler transform"
+        source: "Bioinformatics"
       arxiv: arXiv:1303.3997
       licence: ["GPL-3.0-or-later"]
       identifier: "biotools:bwa"
@@ -27,6 +33,9 @@ input:
         ontologies:
           - edam: "http://edamontology.org/data_2044" # Sequence
           - edam: "http://edamontology.org/format_1929" # FASTA
+  - index_dir_name:
+      type: string
+      description: Name of the output directory holding the index files. Defaults to "bwa".
 output:
   index:
     - - meta:
@@ -34,11 +43,9 @@ output:
           description: |
             Groovy Map containing reference information.
             e.g. [ id:'test', single_end:false ]
-      - bwa:
-          type: map
-          description: |
-            Groovy Map containing reference information.
-            e.g. [ id:'test', single_end:false ]
+      - ${outdir}:
+          type: directory
+          description: Directory containing the BWA genome index files
           pattern: "*.{amb,ann,bwt,pac,sa}"
           ontologies:
             - edam: "http://edamontology.org/data_3210" # Genome index
