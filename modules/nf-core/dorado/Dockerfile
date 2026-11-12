@@ -1,7 +1,7 @@
 # Dockerfile to create a container with dorado
 # Push to quay.io/nf-core/dorado:<VER>
 #
-# The vendor image (docker.io/nanoporetech/dorado) is 9.4 GB compressed because
+# The vendor image (docker.io/nanoporetech/dorado) is about 10 GB compressed because
 # it also ships a second copy of the CUDA runtime and 4.3 GB of basecalling
 # models. This image carries only the official release tarball, which bundles the
 # libraries dorado links against, so it serves both the CPU and the GPU modules.
@@ -9,8 +9,8 @@
 
 FROM ubuntu:22.04 AS builder
 
-ARG DORADO_VER=1.4.0
-ARG DORADO_SHA256=ea15250d911c6b6efdb21cc142008b2be8a5c781c8b0a4593b82f27b07385731
+ARG DORADO_VER=2.1.2
+ARG DORADO_SHA256=f4ed83acfb75cf07ffe8a0fc78e26828fc911fcfc8177920be6104e1d0e02485
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \

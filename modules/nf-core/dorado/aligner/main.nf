@@ -1,10 +1,13 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DORADO_ALIGNER {
     tag "${meta.id}"
     label 'process_high'
 
     // dorado is not on bioconda (ONTPL licence). Using
-    // Docker Hub image directly. SHA tag pins to v1.4.0
-    container "docker.io/nanoporetech/dorado:shac8f356489fa8b44b31beba841b84d2879de2088e"
+    // Docker Hub image directly. SHA tag pins to v2.1.1
+    container "docker.io/nanoporetech/dorado:sha9809639e07a927bcc0f584dadd5e59674cf59f3f"
 
     input:
     tuple val(meta), path(bam)
