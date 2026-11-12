@@ -38,11 +38,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf", "vcf_gz", "gvcf"], unstableKeys: ["vcf_tbi", "gvcf_tbi"])).match() }
             )
         }
 
@@ -74,13 +70,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert process.out.vcf == [] },
-                { assert snapshot(
-                    path(process.out.vcf_gz[0][1]).vcf.variantsMD5,
-                    file(process.out.vcf_tbi[0][1]).name,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf", "vcf_gz", "gvcf"], unstableKeys: ["vcf_tbi", "gvcf_tbi"])).match() }
             )
         }
 
@@ -112,11 +102,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    path(process.out.vcf[0][1]).vcf.variantsMD5,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf", "vcf_gz", "gvcf"], unstableKeys: ["vcf_tbi", "gvcf_tbi"])).match() }
             )
         }
 
@@ -148,12 +134,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    path(process.out.gvcf[0][1]).vcf.variantsMD5,
-                    file(process.out.gvcf_tbi[0][1]).name,
-                    process.out.findAll { key, val -> key.startsWith('versions') }
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf", "vcf_gz", "gvcf"], unstableKeys: ["vcf_tbi", "gvcf_tbi"])).match() }
             )
         }
 
@@ -185,11 +166,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    path(process.out.gvcf[0][1]).vcf.variantsMD5,
-                    file(process.out.gvcf_tbi[0][1]).name,
-                    ).match()
-                }
+                { assert snapshot(sanitizeOutput(process.out, variantsMD5Keys: ["vcf", "vcf_gz", "gvcf"], unstableKeys: ["vcf_tbi", "gvcf_tbi"])).match() }
             )
         }
 
@@ -224,7 +201,7 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    process.out,
+                    sanitizeOutput(process.out),
                     path(process.out.compatible_versions.get(0)).yaml
                     ).match() }
             )
@@ -260,7 +237,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
@@ -294,7 +271,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() }
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 
