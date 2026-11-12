@@ -49,7 +49,7 @@ nextflow_process {
 
         when {
             params {
-                module_args = '--tools wgs gcbias'
+                module_args = '--tools wgs gcbias --wgs::per-base-coverage'
             }
             process {
                 """

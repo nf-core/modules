@@ -1,0 +1,211 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FASTQ_ALIGN_DEDUP_BWAMEM3"
+    script "../main.nf"
+    workflow "FASTQ_ALIGN_DEDUP_BWAMEM3"
+    config "./nextflow.config"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fastq_align_dedup_bwamem3"
+    tag "subworkflows/bam_stats_samtools"
+    tag "bam_stats_samtools"
+    tag "bwamem3"
+    tag "bwamem3/index"
+    tag "bwamem3/mem"
+    tag "picard"
+    tag "picard/markduplicates"
+    tag "samtools"
+    tag "samtools/index"
+    tag "samtools/stats"
+    tag "samtools/flagstat"
+    tag "samtools/idxstats"
+
+    setup {
+        run("BWAMEM3_INDEX") {
+            script "../../../../modules/nf-core/bwamem3/index/main.nf"
+            process {
+                """
+                input[0] = Channel.value([
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                """
+            }
+        }
+        run("BWAMEM3_INDEX", alias: "BWAMEM3_INDEX_METH") {
+            script "../../../../modules/nf-core/bwamem3/index/main.nf"
+            process {
+                """
+                input[0] = Channel.value([
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
+                ])
+                """
+            }
+        }
+    }
+
+    test("sarscov2 - fastq paired-end - taps") {
+
+        when {
+            params {
+                module_args = '--meth=taps'
+            }
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = Channel.value([
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ])
+                input[2] = BWAMEM3_INDEX_METH.out.index
+                input[3] = false // skip_deduplication
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert bam(workflow.out.bam[0][1]).getSamLines().every { it.contains('\tXM:Z:') } },
+                { assert snapshot(
+                    workflow.out.bam.collect { meta, bamfile -> [ file(bamfile).name, bam(bamfile).getReadsMD5() ] },
+                    workflow.out.index.collect { meta, index -> file(index).name },
+                    workflow.out.samtools_flagstat,
+                    workflow.out.samtools_stats.collect { meta, stats -> file(stats).name },
+                    workflow.out.samtools_idxstats,
+                    workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
+                    workflow.out.multiqc.flatten().collect { path -> file(path).name }.sort()
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - fastq single-end - bisulfite") {
+
+        when {
+            params {
+                module_args = '--meth'
+            }
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:true ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true)
+                ])
+                input[1] = Channel.value([
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ])
+                input[2] = BWAMEM3_INDEX_METH.out.index
+                input[3] = false // skip_deduplication
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.bam.collect { meta, bamfile -> [ file(bamfile).name, bam(bamfile).getReadsMD5() ] },
+                    workflow.out.index.collect { meta, index -> file(index).name },
+                    workflow.out.samtools_flagstat,
+                    workflow.out.samtools_stats.collect { meta, stats -> file(stats).name },
+                    workflow.out.samtools_idxstats,
+                    workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
+                    workflow.out.multiqc.flatten().collect { path -> file(path).name }.sort()
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - fastq paired-end - plain - skip_deduplication") {
+
+        when {
+            params {
+                module_args = ''
+            }
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = Channel.value([
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ])
+                input[2] = BWAMEM3_INDEX.out.index
+                input[3] = true // skip_deduplication
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.bam.collect { meta, bamfile -> [ file(bamfile).name, bam(bamfile).getReadsMD5() ] },
+                    workflow.out.index.collect { meta, index -> file(index).name },
+                    workflow.out.samtools_flagstat,
+                    workflow.out.samtools_stats.collect { meta, stats -> file(stats).name },
+                    workflow.out.samtools_idxstats,
+                    workflow.out.picard_metrics.collect { meta, metrics -> file(metrics).name },
+                    workflow.out.multiqc.flatten().collect { path -> file(path).name }.sort()
+                ).match() }
+            )
+        }
+    }
+
+    test("sarscov2 - fastq paired-end - taps - stub") {
+
+        options "-stub"
+
+        when {
+            params {
+                module_args = '--meth=taps'
+            }
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'test', single_end:false ],
+                    [
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_1.fastq.gz', checkIfExists: true),
+                        file(params.modules_testdata_base_path + 'genomics/sarscov2/illumina/fastq/test_2.fastq.gz', checkIfExists: true)
+                    ]
+                ])
+                input[1] = Channel.value([
+                    [ id:'genome' ],
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta.fai', checkIfExists: true)
+                ])
+                input[2] = BWAMEM3_INDEX_METH.out.index
+                input[3] = false // skip_deduplication
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(
+                    workflow.out.findAll { key, val -> !(key ==~ /\d+/) && key != 'multiqc' },
+                    workflow.out.multiqc.flatten().collect { path -> file(path).name }.sort()
+                ).match() }
+            )
+        }
+    }
+}

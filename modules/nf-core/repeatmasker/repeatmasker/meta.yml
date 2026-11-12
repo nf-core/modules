@@ -32,8 +32,13 @@ input:
           - edam: http://edamontology.org/format_1929 # FASTA
   - lib:
       type: file
-      description: Custom library (e.g. from another species)
-      pattern: "*.{fasta,fa,fas,fsa,faa,fna}"
+      description: |
+        Custom repeat library (e.g. from another species), in FASTA or HMM format
+        (HMM libraries require `-engine hmmer` in `ext.args`).
+        Note: the module container does not bundle the Dfam database, so either
+        provide a library here or point RepeatMasker to a local Dfam/FamDB
+        installation via `ext.args` (e.g. `-libdir`).
+      pattern: "*.{fasta,fa,fas,fsa,faa,fna,hmm}"
       ontologies:
         - edam: http://edamontology.org/format_1929 # FASTA
 output:
@@ -111,3 +116,27 @@ authors:
 maintainers:
   - "@kherronism"
   - "@gallvp"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/repeatmasker:4.1.5--3cc5e72bc3d6ed07
+      build_id: bd-3cc5e72bc3d6ed07_1
+      scan_id: sc-64b59d0980fb55dc_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/repeatmasker:4.1.5--aa52fe680e699a29
+      build_id: bd-aa52fe680e699a29_1
+      scan_id: sc-42ce95c18a291849_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/repeatmasker:4.1.5--0d09875ba11ecdf3
+      build_id: bd-0d09875ba11ecdf3_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/92/92d028817d6ba2afc60f0d7550b7b510395b3b5426420b7e1c6666ee38ebd5a1/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/repeatmasker:4.1.5--590b6139e73054f3
+      build_id: bd-590b6139e73054f3_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/48/483bec9ab06bab9dd3e45472eb9a5e57e74f22b7aabd2275ea9aa07b5a8266e9/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/repeatmasker/repeatmasker/.conda-lock/linux_amd64-bd-3cc5e72bc3d6ed07_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/repeatmasker/repeatmasker/.conda-lock/linux_arm64-bd-aa52fe680e699a29_1.txt

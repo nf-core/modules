@@ -99,6 +99,15 @@ output:
 
         Structure: [ val(meta), path(plots) ]
       pattern: "*_plots"
+  - autodetect_samplesheet:
+      type: file
+      description: |
+        Revised sample sheet written by bcl-convert in autodetect mode
+        (`--bcl-output-format demux-autodetect`, bclconvert only). No FASTQ files
+        are produced in this mode.
+
+        Structure: [ val(meta), path(csv) ]
+      pattern: "SampleSheet.autodetect.csv"
 authors:
   - "@matthdsm"
 maintainers:

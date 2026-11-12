@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 // NB 1: You'll likely want to override this with a container containing all
 // required dependencies for your analyses. Or use wave to build the container
 // for you from the environment.yml You'll at least need Quarto itself,
@@ -63,6 +66,10 @@ process QUARTO_NOTEBOOK {
     # Set environment variables needed for Quarto rendering
     export XDG_CACHE_HOME="./.xdg_cache_home"
     export XDG_DATA_HOME="./.xdg_data_home"
+
+    # Without a _quarto.yml here, Quarto searches parent directories for a project and can
+    # pick one outside the task (https://github.com/quarto-dev/quarto-cli/issues/14980)
+    [ -e _quarto.yml ] || printf 'project:\\n  type: default\\n' > _quarto.yml
 
     # Fix Quarto for Apptainer (see https://community.seqera.io/t/confusion-over-why-a-tool-works-in-docker-but-fails-in-singularity-when-the-installation-doesnt-differ-i-e-using-wave-micromamba/1244)
     ENV_QUARTO=/opt/conda/etc/conda/activate.d/quarto.sh

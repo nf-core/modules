@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process DRAGMAP_ALIGN {
     tag "${meta.id}"
     label 'process_high'
@@ -5,8 +8,8 @@ process DRAGMAP_ALIGN {
     conda "${moduleDir}/environment.yml"
     // WARN: Do not update this tool to 1.3.0 until https://github.com/Illumina/DRAGMAP/issues/47 is resolved
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/mulled-v2-580d344d9d4a496cd403932da8765f9e0187774d:df80ed8d23d0a2c43181a2b3dd1b39f2d00fab5c-0'
-        : 'quay.io/biocontainers/mulled-v2-580d344d9d4a496cd403932da8765f9e0187774d:df80ed8d23d0a2c43181a2b3dd1b39f2d00fab5c-0'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/32/3201c3e56c44236fb3405db218f09a7a81b60efc34130beeb4ba2a6528cfc208/data'
+        : 'community.wave.seqera.io/library/dragmap_samtools_pigz:53a3f0cf77356ef1'}"
 
     input:
     tuple val(meta), path(reads)

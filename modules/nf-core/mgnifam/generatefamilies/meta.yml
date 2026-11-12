@@ -1,6 +1,5 @@
 name: "mgnifam_generatefamilies"
-description: Iteratively builds protein family HMM profiles from MMseqs2 sequence
-  clusters and expands them against a protein database
+description: Iteratively builds protein family HMM profiles from MMseqs2 sequence clusters and expands them against a protein database
 keywords:
   - protein families
   - hidden markov model
@@ -12,10 +11,7 @@ keywords:
   - protein sequences
 tools:
   - "mgnifam":
-      description: Python package for iterative HMM-based protein family generation
-        over large sequence databases, building an HMM from each cluster, recruiting
-        new members, re-aligning, and either converging on a family or discarding the
-        cluster
+      description: Iterative HMM-based protein family generation over large protein sequence databases
       homepage: "https://github.com/vagkaratzas/mgnifam"
       documentation: "https://vagkaratzas.github.io/mgnifam/"
       tool_dev_url: "https://github.com/vagkaratzas/mgnifam"
@@ -31,24 +27,19 @@ input:
           e.g. `[ id:'sample1' ]`
     - clustering:
         type: file
-        description: Headerless TSV file of MMseqs2 sequence clusters, one representative-member
-          pair per line (representative<TAB>member)
+        description: Headerless TSV file of MMseqs2 sequence clusters, one representative-member pair per line (representative<TAB>member)
         pattern: "*.tsv"
         ontologies:
           - edam: http://edamontology.org/format_3475 # TSV
     - fasta_file:
         type: file
-        description: Uncompressed FASTA file of the protein sequence database, with
-          unique sequence names, referenced by the cluster members
+        description: Uncompressed FASTA file of the protein sequence database, with unique sequence names, referenced by the cluster members
         pattern: "*.{fa,fasta,faa}"
         ontologies:
           - edam: http://edamontology.org/format_1929 # FASTA
     - fasta_index:
         type: file
-        description: Optional. Precomputed Easel SSI index of the FASTA file, e.g.
-          from `esl-sfetch --index` (hmmer/eslsfetchindex). Used as given and never
-          rebuilt, so parallel chunk tasks can share one read-only index. Built
-          automatically when omitted
+        description: Optional. Easel SSI index of the FASTA file (e.g. from hmmer/eslsfetchindex), built when omitted
         pattern: "*.ssi"
         ontologies: []
 output:
@@ -60,8 +51,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - ${prefix}/seed_msa/*.sto.gz:
           type: file
-          description: Optional. Per-family seed multiple sequence alignment in gzipped
-            Stockholm format
+          description: Optional. Per-family seed multiple sequence alignment in gzipped Stockholm format
           pattern: "*/seed_msa/*.sto.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -73,8 +63,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - ${prefix}/full_msa/*.sto.gz:
           type: file
-          description: Optional. Per-family full multiple sequence alignment, including
-            recruited members, in gzipped Stockholm format
+          description: Optional. Per-family full multiple sequence alignment, including recruited members, in gzipped Stockholm format
           pattern: "*/full_msa/*.sto.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -98,8 +87,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - ${prefix}/rf/*.txt:
           type: file
-          description: Optional. Per-family reference annotation (RF) line, marking
-            match-state columns of the seed alignment
+          description: Optional. Per-family reference annotation (RF) line, marking match-state columns of the seed alignment
           pattern: "*/rf/*.txt"
           ontologies:
             - edam: http://edamontology.org/format_3671 # Plain text format
@@ -147,8 +135,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - ${prefix}/${prefix}_reps.fasta.gz:
           type: file
-          description: Optional. Representative sequences of the generated families
-            in gzipped FASTA format
+          description: Optional. Representative sequences of the generated families in gzipped FASTA format
           pattern: "*/*_reps.fasta.gz"
           ontologies:
             - edam: http://edamontology.org/format_3989 # GZIP format
@@ -196,9 +183,7 @@ output:
             e.g. `[ id:'sample1' ]`
       - ${prefix}/${prefix}_mgnifam_stats.json:
           type: file
-          description: Optional. MultiQC-ready summary of the run - family counts,
-            discard reasons, and histograms of seed and full MSA size, model length and
-            representative length. Written only after a completed run
+          description: Optional. MultiQC-ready summary of the run - family counts, discard reasons, and histograms of seed and full MSA size, model length and representative length. Written only after a completed run
           pattern: "*/*_mgnifam_stats.json"
           ontologies:
             - edam: http://edamontology.org/format_3464 # JSON
@@ -227,3 +212,25 @@ authors:
   - "@vagkaratzas"
 maintainers:
   - "@vagkaratzas"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/mgnifam:4.1.0--818ca9d3b99bfbca
+      build_id: bd-818ca9d3b99bfbca_1
+      scan_id: sc-5aae2a00ae27a36a_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/mgnifam:4.1.0--f1cee804024a318d
+      build_id: bd-f1cee804024a318d_1
+      scan_id: sc-34dc30352b7bd368_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/mgnifam:4.1.0--83ffd056fea9bea1
+      build_id: bd-83ffd056fea9bea1_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/07/07d734ffff975d82e7381943964ea0b875606d69d7f3b3c35d1488833fff960b/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/mgnifam:4.1.0--37584b95e8e4fe24
+      build_id: bd-37584b95e8e4fe24_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/88/88cac83f189b2e51924e0917d9097bbb696509f11c5e1bab0072f6f8b7a4fd0e/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/mgnifam/generatefamilies/.conda-lock/linux_amd64-bd-818ca9d3b99bfbca_1.txt

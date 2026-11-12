@@ -1,6 +1,5 @@
 name: racon
-description: Consensus module for raw de novo DNA assembly of long uncorrected
-  reads
+description: Consensus module for raw de novo DNA assembly of long uncorrected reads
 keywords:
   - assembly
   - pacbio
@@ -8,8 +7,7 @@ keywords:
   - polish
 tools:
   - racon:
-      description: Ultrafast consensus module for raw de novo genome assembly of
-        long uncorrected reads.
+      description: Ultrafast consensus module for raw de novo genome assembly of long uncorrected reads.
       homepage: https://github.com/lbcb-sci/racon
       documentation: https://github.com/lbcb-sci/racon
       tool_dev_url: https://github.com/lbcb-sci/racon
@@ -77,3 +75,17 @@ authors:
   - "@avantonder"
 maintainers:
   - "@avantonder"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/racon:1.4.20--5a7230c7590a8e2e
+      build_id: bd-5a7230c7590a8e2e_1
+      scan_id: sc-76a9f20553086fb0_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/racon:1.4.20--5956e187961be33c
+      build_id: bd-5956e187961be33c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6d/6da4caadf7fa541480c2498a763e7689350a97ee27ed8a661072ebcfd01f4bf9/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/racon/.conda-lock/linux_amd64-bd-5a7230c7590a8e2e_1.txt

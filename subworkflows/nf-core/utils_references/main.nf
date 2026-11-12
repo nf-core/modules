@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 // DISCLAIMER:
 // This subworkflow is just to test the functions and the schema
 // It should not be used in any pipeline

@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { MIRTOP_GFF        } from '../../../modules/nf-core/mirtop/gff'
 include { MIRTOP_COUNTS     } from '../../../modules/nf-core/mirtop/counts'
 include { MIRTOP_EXPORT     } from '../../../modules/nf-core/mirtop/export'
@@ -22,6 +25,7 @@ workflow BAM_STATS_MIRNA_MIRTOP {
     MIRTOP_STATS ( MIRTOP_GFF.out.gff )
 
     emit:
+    gff            = MIRTOP_GFF.out.gff                     // channel: [ val(meta), [ gff ] ]
     isomirs        = MIRTOP_EXPORT.out.tsv                  // channel: [ val(meta), [ tsv ] ]
     counts         = MIRTOP_COUNTS.out.tsv                  // channel: [ val(meta), [ tsv ] ]
     stats_txt      = MIRTOP_STATS.out.txt                   // channel: [ val(meta), [ txt ] ]

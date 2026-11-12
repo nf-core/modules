@@ -3,70 +3,144 @@ nextflow_process {
     name "Test Process RUNDBCAN_EASYCGC"
     script "../main.nf"
     process "RUNDBCAN_EASYCGC"
+    config "./nextflow.config"
 
     tag "modules"
     tag "modules_nfcore"
     tag "rundbcan"
-    tag "rundbcan/database"
     tag "rundbcan/easycgc"
+    tag "untar"
 
-
-    test("easycgc - simplified") {
+    test("bacteroides_fragilis - faa, gff") {
 
         setup {
-            run("RUNDBCAN_DATABASE"){
-                script "../../database/main.nf"
+            run("UNTAR") {
+                script "../../../untar/main.nf"
                 process {
                     """
+                    input[0] = [
+                        [],
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/db/dbcan.tar.gz', checkIfExists: true)
+                    ]
                     """
                 }
             }
         }
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [
                     [id:'test'],
-                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/proteome.fasta', checkIfExists: true)
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/region_2500000-3000000.faa.gz', checkIfExists: true)
                 ]
                 input[1] = [
                     [id:'test'],
-                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/candidatus_portiera_aleyrodidarum/genome/gff/test1.gff', checkIfExists: true)
-                    ,"prodigal"
-                    ]
-                input[2] = RUNDBCAN_DATABASE.out.dbcan_db
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/region_2500000-3000000.gff', checkIfExists: true),
+                    'NCBI_prok'
+                ]
+                input[2] = UNTAR.out.untar.map { _meta, db -> db }
                 """
             }
         }
 
         then {
-            assert process.success
+            def cgc = path(process.out.cgc_standard_out[0][1]).readLines()
+            def cgc_info = path(process.out.total_cgc_info[0][1]).readLines()
+            def tf_diamond = path(process.out.diamond_out_tf[0][1]).readLines()
+            def peptidase = path(process.out.diamond_out_peptidase[0][1]).readLines()
+            def sulfatase = path(process.out.diamond_out_sulfatase[0][1]).readLines()
             assertAll(
-                { assert snapshot(process.out).match()
-                }
+                { assert process.success },
+                { assert cgc.drop(1).collect { it.split('\t')[0] }.unique().size() == 15 },
+                { assert cgc.contains('CGC1\tTC\tNZ_CP069563.1\tWP_005784783.1\t2500426\t2502108\t-\tTC|8.A.46.3.4') },
+                { assert cgc_info.size() == 167 },
+                { assert cgc_info.any { it.startsWith('2.A.95.1.4\t216\tWP_005778522.1\t214\t') } },
+                { assert tf_diamond.size() == 5 },
+                { assert tf_diamond.any { it.startsWith('ARGR_PSEAE\t329\tWP_005813432.1\t335\t') } },
+                { assert peptidase.size() == 14 },
+                { assert peptidase.any { it.startsWith('M28.UPA\t225\tWP_008769399.1\t333\t') } },
+                { assert sulfatase.size() == 38 },
+                { assert sulfatase.any { it.startsWith('S1_27\t4331\tWP_008769404.1\t1061\t') } },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
 
-    test("easycgc - stub") {
+    test("bacteroides_fragilis - faa, gff - fungi") {
+
+        setup {
+            run("UNTAR") {
+                script "../../../untar/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [],
+                        file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/db/dbcan.tar.gz', checkIfExists: true)
+                    ]
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                module_args = '--fungi'
+            }
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/region_2500000-3000000.faa.gz', checkIfExists: true)
+                ]
+                input[1] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + 'genomics/prokaryotes/bacteroides_fragilis/genome/region_2500000-3000000.gff', checkIfExists: true),
+                    'NCBI_prok'
+                ]
+                input[2] = UNTAR.out.untar.map { _meta, db -> db }
+                """
+            }
+        }
+
+        then {
+            def tf = path(process.out.tf_hmm_results[0][1]).readLines()
+            def cgc = path(process.out.cgc_standard_out[0][1]).readLines()
+            assertAll(
+                { assert process.success },
+                { assert tf.size() == 20 },
+                { assert process.out.diamond_out_tf.size() == 1 },
+                { assert tf.any { it.startsWith('Sigma70_r2\t71\tWP_005784022.1\t') } },
+                { assert cgc.contains('CGC8\tTF\tNZ_CP069563.1\tWP_008769331.1\t2701693\t2702253\t+\tTF|Sigma70_r2+STP|Sigma70_r4_2') },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
+    test("bacteroides_fragilis - faa, gff - stub") {
+
         options "-stub"
 
         when {
+            params {
+                module_args = ''
+            }
             process {
                 """
                 input[0] = [[id: 'stub'], file('stub')]
-                input[1] = [[id: 'stub'], file('stub.gff'), "prodigal"]
+                input[1] = [[id: 'stub'], file('stub.gff'), 'NCBI_prok']
                 input[2] = file('stub_db')
                 """
             }
         }
 
         then {
-            assert process.success
             assertAll(
-                { assert snapshot(process.out).match()
-                }
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
     }
