@@ -28,28 +28,36 @@ input:
         type: file
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_2572 # BAM
+          - edam: http://edamontology.org/format_3462 # CRAM
+          - edam: http://edamontology.org/format_2573 # SAM
     - input_1_index:
         type: file
         description: BAM/CRAM/SAM index file
         pattern: "*.{bai,crai}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3327 # BAI/CRAI index
     - input_2:
         type: file
         description: BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_2572 # BAM
+          - edam: http://edamontology.org/format_3462 # CRAM
+          - edam: http://edamontology.org/format_2573 # SAM
     - input_2_index:
         type: file
         description: BAM/CRAM/SAM index file
         pattern: "*.{bai,crai}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3327 # BAI/CRAI index
     - target_bed:
         type: file
-        description: Optional - Limit analysis to targets listed in this
-          BED-format FILE.
+        description: Optional - Limit analysis to targets listed in this BED-format FILE.
         pattern: "*.bed"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3003 # BED
   - - meta2:
         type: map
         description: |
@@ -59,7 +67,8 @@ input:
         type: file
         description: reference fasta file
         pattern: ".{fa,fa.gz,fasta,fasta.gz}"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
   - - meta3:
         type: map
         description: |
@@ -69,7 +78,8 @@ input:
         type: file
         description: reference fasta file index
         pattern: "*.{fa,fasta}.fai"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3327 # FASTA index
   - - meta4:
         type: map
         description: |
@@ -77,10 +87,10 @@ input:
           e.g. [ id:'test_samples' ]
     - samples:
         type: file
-        description: Optional - Limit analysis to samples listed (one per line) in
-          the FILE.
+        description: Optional - Limit analysis to samples listed (one per line) in the FILE.
         pattern: "*.txt"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_2330 # Textual format
   - - meta5:
         type: map
         description: |
@@ -88,10 +98,10 @@ input:
           e.g. [ id:'test_populations' ]
     - populations:
         type: file
-        description: Optional - Each line of FILE should list a sample and a
-          population which it is part of.
+        description: Optional - Each line of FILE should list a sample and a population which it is part of.
         pattern: "*.txt"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_2330 # Textual format
   - - meta6:
         type: map
         description: |
@@ -105,7 +115,8 @@ input:
           or a region-specific format:
           seq_name start end sample_name copy_number
         pattern: "*.bed"
-        ontologies: []
+        ontologies:
+          - edam: http://edamontology.org/format_3003 # BED
 output:
   vcf:
     - - meta:
@@ -148,3 +159,27 @@ maintainers:
   - "@maxibor"
   - "@FriederikeHanssen"
   - "@maxulysse"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/freebayes:1.3.10--eb582c8d7a2fbaa4
+      build_id: bd-eb582c8d7a2fbaa4_1
+      scan_id: sc-df62e6340071d4c5_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/freebayes:1.3.10--3dac6d7386bd15b1
+      build_id: bd-3dac6d7386bd15b1_1
+      scan_id: sc-9a34595f62a4fa9d_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/freebayes:1.3.10--83e4f94de6b0a39a
+      build_id: bd-83e4f94de6b0a39a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/33/33affa8178aead86c260955b13c1dfd36ff872da5258f4489613370b63c80c29/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/freebayes:1.3.10--7d036bab34326f52
+      build_id: bd-7d036bab34326f52_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/ab/abb3d9c18900061a28746b4fc80fd65b0edf12545ae5f918f602a08bac8e7bc3/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/freebayes/.conda-lock/linux_amd64-bd-eb582c8d7a2fbaa4_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/freebayes/.conda-lock/linux_arm64-bd-3dac6d7386bd15b1_1.txt

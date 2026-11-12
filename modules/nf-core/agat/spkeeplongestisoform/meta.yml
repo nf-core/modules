@@ -10,8 +10,7 @@ keywords:
   - agat
 tools:
   - "agat":
-      description: "Another Gff Analysis Toolkit (AGAT). Suite of tools to handle gene
-        annotations in any GTF/GFF format."
+      description: "Another Gff Analysis Toolkit (AGAT). Suite of tools to handle gene annotations in any GTF/GFF format."
       homepage: "https://agat.readthedocs.io/en/latest/"
       documentation: "https://agat.readthedocs.io/en/latest/"
       tool_dev_url: "https://github.com/NBISweden/AGAT"
@@ -78,3 +77,27 @@ authors:
   - "@Juke34"
 maintainers:
   - "@Juke34"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/agat:1.6.1--1f8d94d325805bb4
+      build_id: bd-1f8d94d325805bb4_1
+      scan_id: sc-17e27e93a9bb33d5_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/agat:1.6.1--17bf4f0ea8d3a395
+      build_id: bd-17bf4f0ea8d3a395_1
+      scan_id: sc-c4c33cbaa2841dc0_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/agat:1.6.1--e5a4f4791c927b59
+      build_id: bd-e5a4f4791c927b59_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bd/bdf86a4db56d388b2cad1599b640e1e33ab964dcdb74a8147981d48a429bc7d5/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/agat:1.6.1--67738e316620e3a3
+      build_id: bd-67738e316620e3a3_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/23/2367781b766f04924be7c1d732b0e74c4132fea879c044b02aa91c64ec411bd2/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/agat/spkeeplongestisoform/.conda-lock/linux_amd64-bd-1f8d94d325805bb4_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/agat/spkeeplongestisoform/.conda-lock/linux_arm64-bd-17bf4f0ea8d3a395_1.txt

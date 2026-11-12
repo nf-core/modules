@@ -132,7 +132,7 @@ INFO     Linting module: fastqc                                                 
 
 ## Adding new modules
 
-If you wish to contribute a new module, please see the documentation on the [nf-core website](https://nf-co.re/developers/modules#writing-a-new-module-reference).
+If you wish to contribute a new module, please see the documentation on the [nf-core website](https://nf-co.re/docs/contributing/contribute-components).
 
 > Please be kind to our code reviewers and submit one pull request per module :)
 

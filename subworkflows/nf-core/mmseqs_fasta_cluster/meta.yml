@@ -22,10 +22,6 @@ input:
       description: |
         Clustering algorithm of MMSeqs to use for cluster generation. Options are 'linclust' or 'cluster'.
 output:
-  - versions:
-      type: file
-      description: |
-        Versions file containing the software versions used in the workflow.
   - seqs:
       type: file
       description: The input FASTA file mapped to its corresponding clustering tsv, per input entry.

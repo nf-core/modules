@@ -1,6 +1,9 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process GLIMPSE2_CHUNK {
     tag "${meta.id}"
-    label 'process_low'
+    label 'process_single'
 
     beforeScript """
         if cat /proc/cpuinfo | grep avx2 -q

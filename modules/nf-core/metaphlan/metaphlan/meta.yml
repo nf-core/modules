@@ -1,6 +1,6 @@
 name: metaphlan_metaphlan
-description: MetaPhlAn is a tool for profiling the composition of microbial communities
-  from metagenomic shotgun sequencing data.
+description: MetaPhlAn is a tool for profiling the composition of microbial
+  communities from metagenomic shotgun sequencing data.
 keywords:
   - metagenomics
   - classification
@@ -9,12 +9,13 @@ keywords:
   - sam
 tools:
   - metaphlan:
-      description: Identify clades (phyla to species) present in the metagenome obtained
-        from a microbiome sample and their relative abundance
+      description: Identify clades (phyla to species) present in the metagenome
+        obtained from a microbiome sample and their relative abundance
       homepage: https://huttenhower.sph.harvard.edu/metaphlan/
       documentation: https://github.com/biobakery/MetaPhlAn
       doi: "10.1038/s41587-023-01688-w"
-      licence: ["MIT License"]
+      licence:
+        - "MIT License"
       identifier: biotools:metaphlan
 input:
   - - meta:
@@ -24,13 +25,13 @@ input:
           e.g. [ id:'test', single_end:false ]
     - input:
         type: file
-        description: Metaphlan can classify the metagenome from a variety of input data
-          types, including FASTQ files (single-end and paired-end), FASTA, bowtie2-produced
-          SAM files (produced from alignments to the MetaPHlAn marker database) and
-          intermediate bowtie2 alignment files (bowtie2out)
+        description: Metaphlan can classify the metagenome from a variety of input
+          data types, including FASTQ files (single-end and paired-end), FASTA,
+          bowtie2-produced SAM files (produced from alignments to the MetaPHlAn
+          marker database) and intermediate bowtie2 alignment files (bowtie2out)
         pattern: "*.{fastq.gz, fasta, fasta.gz, sam, bowtie2out.txt}"
         ontologies: []
-  - metaphlan_db_latest:
+  - db_metaphlan_latest:
       type: file
       description: |
         Directory containing pre-downloaded and uncompressed MetaPhlAn database downloaded from: http://cmprod1.cibio.unitn.it/biobakery4/metaphlan_databases/.
@@ -50,7 +51,8 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*_profile.txt":
           type: file
-          description: Tab-separated output file of the predicted taxon relative abundances
+          description: Tab-separated output file of the predicted taxon relative
+            abundances
           pattern: "*.{txt}"
           ontologies: []
   biom:
@@ -61,11 +63,11 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.biom":
           type: file
-          description: General-use format for representing biological sample by observation
-            contingency tables
+          description: General-use format for representing biological sample by
+            observation contingency tables
           pattern: "*.{biom}"
           ontologies:
-            - edam: http://edamontology.org/format_3746 # BIOM format
+            - edam: http://edamontology.org/format_3746
   bt2out:
     - - meta:
           type: map
@@ -74,9 +76,9 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.bowtie2out.txt":
           type: file
-          description: Intermediate Bowtie2 output produced from mapping the metagenome
-            against the MetaPHlAn marker database ( not compatible with `bowtie2out`
-            files generated with MetaPhlAn versions below 3 )
+          description: Intermediate Bowtie2 output produced from mapping the
+            metagenome against the MetaPHlAn marker database ( not compatible with
+            `bowtie2out` files generated with MetaPhlAn versions below 3 )
           pattern: "*.{bowtie2out.txt}"
           ontologies: []
   sam:
@@ -87,16 +89,31 @@ output:
             e.g. [ id:'test', single_end:false ]
       - "*.sam":
           type: file
-          description: SAM file produced by MetaPPhlAn of read alignments to MetaPhlAn database gene sequences
+          description: SAM file produced by MetaPPhlAn of read alignments to
+            MetaPhlAn database gene sequences
           pattern: "*.{sam}"
           ontologies: []
+  versions_metaphlan:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - metaphlan:
+          type: string
+          description: The tool name
+      - "metaphlan --version 2>&1 | cut -d ' ' -f 3":
+          type: eval
+          description: The command used to generate the version of the tool
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - metaphlan:
+          type: string
+          description: The tool name
+      - "metaphlan --version 2>&1 | cut -d ' ' -f 3":
+          type: eval
+          description: The command used to generate the version of the tool
 authors:
   - "@MGordon09"
   - "@LilyAnderssonLee"

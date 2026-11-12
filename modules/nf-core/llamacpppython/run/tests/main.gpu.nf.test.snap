@@ -8,14 +8,20 @@
             "test_run.txt",
             {
                 "versions_llama_cpp_python": [
-                    "versions.yml:md5,3650e9ce14ab350b69387f6631b57885"
+                    "versions.yml:md5,61fbd5009d68b70e4a7097dfe114534d"
                 ]
-            }
+            },
+            [
+                {
+                    "llama-cpp-python": "0.3.36",
+                    "cuda": "no CUDA available"
+                }
+            ]
         ],
-        "timestamp": "2026-04-21T13:52:56.739988372",
+        "timestamp": "2026-06-12T18:48:36.516586462",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "25.10.4"
+            "nextflow": "26.04.3"
         }
     },
     "llamacpppython/run - GPU run inference with downloaded gguf model": {
@@ -28,14 +34,20 @@
             true,
             {
                 "versions_llama_cpp_python": [
-                    "versions.yml:md5,28ef3c6aa93df0de54e66c13cc9db845"
+                    "versions.yml:md5,a218fd3ed0da96e0c75791710cad7f9b"
                 ]
-            }
+            },
+            [
+                {
+                    "llama-cpp-python": "0.3.36",
+                    "cuda": 12.9
+                }
+            ]
         ],
-        "timestamp": "2026-04-21T13:52:48.948862428",
+        "timestamp": "2026-06-12T18:48:25.857178068",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "25.10.4"
+            "nextflow": "26.04.3"
         }
     }
 }

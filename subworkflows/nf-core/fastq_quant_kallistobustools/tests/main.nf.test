@@ -1,0 +1,96 @@
+nextflow_workflow {
+
+    name "Test Subworkflow FASTQ_QUANT_KALLISTOBUSTOOLS"
+    script "../main.nf"
+    workflow "FASTQ_QUANT_KALLISTOBUSTOOLS"
+
+    tag "subworkflows"
+    tag "subworkflows_nfcore"
+    tag "subworkflows/fastq_quant_kallistobustools"
+    tag "kallistobustools/ref"
+    tag "kallistobustools/count"
+
+    test("Build a standard reference") {
+        when {
+            workflow {
+                """
+                input[0] = channel.value([[id: 'genome'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)])
+                input[1] = channel.value([[id: 'genome'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)])
+                input[2] = []
+                input[3] = []
+                input[4] = []
+                input[5] = []
+                input[6] = '10XV3'
+                input[7] = 'standard'
+                input[8] = channel.of([[id: 'sample'], [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R1_001.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R2_001.fastq.gz', checkIfExists: true)]])
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(sanitizeOutput(workflow.out, unstableKeys: ["counts"])).match() }
+            )
+        }
+    }
+
+    test("Build a nac reference") {
+        when {
+            workflow {
+                """
+                input[0] = channel.value([[id: 'genome'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)])
+                input[1] = channel.value([[id: 'genome'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)])
+                input[2] = []
+                input[3] = []
+                input[4] = []
+                input[5] = []
+                input[6] = '10XV3'
+                input[7] = 'nac'
+                input[8] = channel.of([[id: 'sample'], [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R1_001.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R2_001.fastq.gz', checkIfExists: true)]])
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(sanitizeOutput(workflow.out, unstableKeys: ["counts"])).match() }
+            )
+        }
+    }
+
+    test("Use a prebuilt reference") {
+        setup {
+            run("KALLISTOBUSTOOLS_REF") {
+                script "../../../../modules/nf-core/kallistobustools/ref/main.nf"
+                process {
+                    """
+                    input[0] = [[id: 'genome'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true)]
+                    input[1] = [[id: 'genome'], file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.gtf', checkIfExists: true)]
+                    input[2] = 'nac'
+                    """
+                }
+            }
+        }
+        when {
+            workflow {
+                """
+                input[0] = []
+                input[1] = []
+                input[2] = KALLISTOBUSTOOLS_REF.out.index.map { meta, index -> index }
+                input[3] = KALLISTOBUSTOOLS_REF.out.t2g
+                input[4] = KALLISTOBUSTOOLS_REF.out.cdna_t2c
+                input[5] = KALLISTOBUSTOOLS_REF.out.intron_t2c
+                input[6] = '10XV3'
+                input[7] = 'nac'
+                input[8] = channel.of([[id: 'sample'], [file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R1_001.fastq.gz', checkIfExists: true), file(params.modules_testdata_base_path + 'genomics/homo_sapiens/10xgenomics/cellranger/10k_pbmc_cmo/fastqs/gex_1/subsampled_SC3_v3_NextGem_DI_CellPlex_Human_PBMC_10K_1_gex_S2_L001_R2_001.fastq.gz', checkIfExists: true)]])
+                """
+            }
+        }
+        then {
+            assertAll(
+                { assert workflow.success },
+                { assert snapshot(sanitizeOutput(workflow.out, unstableKeys: ["counts"])).match() }
+            )
+        }
+    }
+}

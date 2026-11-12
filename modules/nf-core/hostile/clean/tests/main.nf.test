@@ -46,12 +46,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                        process.out.fastq,
-                        process.out.versions,
-                        path(process.out.versions.get(0)).yaml,
-                        path(process.out.json[0][1]).readLines().any{ it.contains('\"reads_removed\": 0')}
-                    ).match() }
+                { assert path(process.out.json[0][1]).readLines().any{ it.contains('\"reads_removed\": 0')} },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["json"])).match() }
             )
         }
 
@@ -80,12 +76,8 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                        process.out.fastq,
-                        process.out.versions,
-                        path(process.out.versions.get(0)).yaml,
-                        path(process.out.json[0][1]).readLines().any{ it.contains('\"reads_removed\": 0')}
-                    ).match() }
+                { assert path(process.out.json[0][1]).readLines().any{ it.contains('\"reads_removed\": 0')} },
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys:["json"])).match() }
             )
         }
 
@@ -113,8 +105,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(process.out).match() },
-                { assert path(process.out.versions.get(0)).yaml}
+                { assert snapshot(sanitizeOutput(process.out)).match() }
             )
         }
 

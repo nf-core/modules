@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process EXPANSIONHUNTER {
     tag "$meta.id"
     label 'process_low'
@@ -31,6 +34,7 @@ process EXPANSIONHUNTER {
     """
     ExpansionHunter \\
         ${args} \\
+        --threads ${task.cpus} \\
         --reads ${bam} \\
         --output-prefix ${prefix} \\
         --reference ${fasta} \\

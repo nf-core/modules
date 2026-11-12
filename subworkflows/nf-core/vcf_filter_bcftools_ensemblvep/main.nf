@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 include { BCFTOOLS_VIEW        } from '../../../modules/nf-core/bcftools/view'
 include { ENSEMBLVEP_FILTERVEP } from '../../../modules/nf-core/ensemblvep/filtervep'
 include { HTSLIB_BGZIPTABIX    } from '../../../modules/nf-core/htslib/bgziptabix'
@@ -25,7 +28,7 @@ workflow VCF_FILTER_BCFTOOLS_ENSEMBLVEP {
         )
 
         ch_vcf = BCFTOOLS_VIEW.out.vcf
-        ch_tbi = BCFTOOLS_VIEW.out.tbi
+        ch_tbi = BCFTOOLS_VIEW.out.index
     }
 
     if (filter_with_filter_vep) {
@@ -33,6 +36,7 @@ workflow VCF_FILTER_BCFTOOLS_ENSEMBLVEP {
         ENSEMBLVEP_FILTERVEP(
             ch_vcf,
             ch_filter_vep_feature_file.map { _meta, file -> file },
+            "vcf"
         )
 
         HTSLIB_BGZIPTABIX(

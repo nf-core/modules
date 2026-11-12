@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CENTRIFUGER_QUANTIFICATION {
     tag "$meta.id"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
     container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container ?
-        'https://depot.galaxyproject.org/singularity/centrifuger:1.1.0--hf426362_0':
-        'quay.io/biocontainers/centrifuger:1.1.0--hf426362_0' }"
+        'https://depot.galaxyproject.org/singularity/centrifuger:1.1.2--h3be2455_0':
+        'quay.io/biocontainers/centrifuger:1.1.2--h3be2455_0' }"
 
     input:
     tuple val(meta), path(classification_file)
@@ -15,7 +18,7 @@ process CENTRIFUGER_QUANTIFICATION {
     path size_table
 
     output:
-    tuple val(meta), path("${meta.id}.tsv"), emit: report_file
+    tuple val(meta), path("*.tsv"), emit: report_file
     tuple val("${task.process}"), val('centrifuger'), eval("centrifuger -v 2>&1 | sed 's/Centrifuger v//'"), emit: versions_centrifuger,  topic: versions
 
     when:

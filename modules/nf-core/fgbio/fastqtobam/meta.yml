@@ -25,6 +25,12 @@ input:
         description: pair of reads to be converted into BAM file
         pattern: "*.{fastq.gz}"
         ontologies: []
+  - extension:
+      type: string
+      description: |
+        File extension of the output file, which determines the output format
+        (e.g. 'bam' or 'cram'). Defaults to 'bam' if empty.
+      enum: ["bam", "cram"]
 output:
   bam:
     - - meta:

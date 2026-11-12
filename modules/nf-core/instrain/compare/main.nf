@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process INSTRAIN_COMPARE {
     tag "$meta.id"
     label 'process_high'
@@ -17,7 +20,7 @@ process INSTRAIN_COMPARE {
     tuple val(meta), path("*.IS_compare/output/*.IS_compare_pooled_SNV_data.tsv")       , emit: pooled_snv
     tuple val(meta), path("*.IS_compare/output/*.IS_compare_pooled_SNV_data_keys.tsv")  , emit: snv_keys
     tuple val(meta), path("*.IS_compare/output/*.IS_compare_pooled_SNV_info.tsv")       , emit: snv_info
-    path "versions.yml"                                                                 , emit: versions
+    tuple val("${task.process}"), val('instrain'), eval("inStrain compare --version 2>&1 | sed -n 's/.*inStrain version //p'"), emit: versions_instrain, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -35,11 +38,6 @@ process INSTRAIN_COMPARE {
         --bams ${bams} \\
         ${stb_args} \\
         ${args}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        instrain: \$(echo \$(inStrain compare --version 2>&1) | awk 'NF{ print \$NF }')
-    END_VERSIONS
     """
 
     stub:
@@ -50,10 +48,5 @@ process INSTRAIN_COMPARE {
     touch ${prefix}.IS_compare/output/${prefix}.IS_compare_comparisonsTable.tsv
     touch ${prefix}.IS_compare/output/${prefix}.IS_compare_pooled_SNV_data.tsv
     touch ${prefix}.IS_compare/output/${prefix}.IS_compare_pooled_SNV_data_keys.tsv
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        instrain: \$(echo \$(inStrain compare --version 2>&1) | awk 'NF{ print \$NF }')
-    END_VERSIONS
     """
 }

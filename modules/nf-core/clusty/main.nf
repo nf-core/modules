@@ -1,3 +1,5 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
 
 process CLUSTY {
     tag "$meta.id"
@@ -14,7 +16,7 @@ process CLUSTY {
 
     output:
     tuple val(meta), path("*.tsv"), emit: assignments
-    tuple val("${task.process}"), val('clusty'), eval('echo $(clusty --version 2>&1)'), topic: versions, emit: versions_clusty
+    tuple val("${task.process}"), val('clusty'), eval("clusty --version 2>&1 || true"), topic: versions, emit: versions_clusty
 
     when:
     task.ext.when == null || task.ext.when

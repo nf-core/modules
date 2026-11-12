@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process BBMAP_CLUMPIFY {
     tag "$meta.id"
     label 'process_single'
@@ -30,5 +33,15 @@ process BBMAP_CLUMPIFY {
         $clumped \\
         $args \\
         &> ${prefix}.clumpify.log
+    """
+
+    stub:
+    def prefix = task.ext.prefix ?: "${meta.id}"
+    def output_command = meta.single_end ?
+        "echo '' | gzip > ${prefix}.clumped.fastq.gz" :
+        "echo '' | gzip > ${prefix}_1.clumped.fastq.gz ; echo '' | gzip > ${prefix}_2.clumped.fastq.gz"
+    """
+    touch ${prefix}.clumpify.log
+    $output_command
     """
 }

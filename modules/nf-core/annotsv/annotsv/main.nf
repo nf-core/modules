@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process ANNOTSV_ANNOTSV {
     tag "$meta.id"
     label 'process_low'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container ?
-        'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/36/363f212881f1b2f5c3395a6c7d1270694392e3a6f886e46e091e83527fed9b6b/data' :
-        'community.wave.seqera.io/library/annotsv:3.5.3--71a461cb86d570b7' }"
+    container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/66/664c800960f1b08bcae320959b20db6b606f3c5de2488d63376eed58f32b1a10/data'
+        : 'community.wave.seqera.io/library/annotsv:3.5.10--28ac84a07bcbf122'}"
 
     // Container options are needed to allow AnnotSV to overwrite a file in a dependency directory in Singularity
     containerOptions "${ workflow.containerEngine in ['singularity', 'apptainer'] ? '--writable-tmpfs' : ''}"

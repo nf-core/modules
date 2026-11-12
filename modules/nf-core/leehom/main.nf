@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process LEEHOM {
     tag "$meta.id"
     label 'process_low'
@@ -20,7 +23,8 @@ process LEEHOM {
     tuple val(meta), path("${prefix}_r2.fq.gz")     , emit: unmerged_r2_fq_pass, optional: true
     tuple val(meta), path("${prefix}_r2.fail.fq.gz"), emit: unmerged_r2_fq_fail, optional: true
     tuple val(meta), path("*.log")                  , emit: log
-    path "versions.yml"                             , emit: versions
+    // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
+    tuple val("${task.process}"), val('last'), val("1.2.15"), emit: versions_last, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -28,7 +32,6 @@ process LEEHOM {
     script:
     def args = task.ext.args   ?: ''
     prefix   = task.ext.prefix ?: "${meta.id}"
-    def VERSION = '1.2.15' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     if (reads.toString().endsWith('.bam')) {
         """
         leeHom \\
@@ -37,11 +40,6 @@ process LEEHOM {
             -o ${prefix}.bam \\
             --log ${prefix}.log \\
             ${reads}
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            leehom: ${VERSION}
-        END_VERSIONS
         """
     } else if (meta.single_end) {
         """
@@ -51,11 +49,6 @@ process LEEHOM {
             -fq1 ${reads} \\
             -fqo ${prefix} \\
             --log ${prefix}.log
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            leehom: ${VERSION}
-        END_VERSIONS
         """
     } else {
         """
@@ -66,17 +59,11 @@ process LEEHOM {
             -fq2 ${reads[1]} \\
             -fqo ${prefix} \\
             --log ${prefix}.log
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            leehom: ${VERSION}
-        END_VERSIONS
         """
     }
 
     stub:
     prefix        = task.ext.prefix ?: "${meta.id}"
-    def VERSION   = '1.2.15' // WARN: Version information not provided by tool on CLI. Please update this string when bumping container versions.
     is_bam        = reads.toString().endsWith('.bam')
     is_single_end = meta.single_end
 
@@ -94,11 +81,6 @@ process LEEHOM {
         fi
     fi
     touch ${prefix}.log
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        leehom: ${VERSION}
-    END_VERSIONS
     """
 
 }

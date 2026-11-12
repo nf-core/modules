@@ -1,0 +1,184 @@
+name: "dexseq_exon"
+description: Test a contrast for differential exon usage with DEXSeq, from the exon counts of dexseq/count
+keywords:
+  - dexseq
+  - exon
+  - differential exon usage
+  - alternative splicing
+  - rna-seq
+tools:
+  - "dexseq":
+      description: "Inference of differential exon usage in RNA-Seq"
+      homepage: "https://bioconductor.org/packages/release/bioc/html/DEXSeq.html"
+      documentation: "https://bioconductor.org/packages/release/bioc/vignettes/DEXSeq/inst/doc/DEXSeq.html"
+      tool_dev_url: "https://git.bioconductor.org/packages/DEXSeq"
+      doi: "10.1101/gr.133744.111"
+      licence: ["GPL >=3"]
+      identifier: biotools:dexseq
+input:
+  - - meta:
+        type: map
+        description: |
+          Groovy Map containing contrast information
+          e.g. `[ id:'treated_vs_control' ]`
+    - contrast_variable:
+        type: string
+        description: |
+          The column of the sample sheet that defines the groups to compare
+    - reference:
+        type: string
+        description: |
+          The value of `contrast_variable` that defines the reference samples
+    - target:
+        type: string
+        description: |
+          The value of `contrast_variable` that defines the target samples. The
+          fold changes are those of the target over the reference
+  - - meta2:
+        type: map
+        description: |
+          Groovy Map containing study-wide information
+          e.g. `[ id:'study' ]`
+    - samplesheet:
+        type: file
+        description: |
+          CSV or TSV sample sheet with a sample ID column (`--sample_id_col`,
+          default `sample`) and the `contrast_variable` column
+        pattern: "*.{csv,tsv,txt}"
+        ontologies:
+          - edam: "http://edamontology.org/format_3752" # CSV
+          - edam: "http://edamontology.org/format_3475" # TSV
+    - counts:
+        type: file
+        description: |
+          Exon counts of each sample as written by dexseq/count, named after the
+          sample ID followed by `--count_suffix` (default `.txt`)
+        pattern: "*.txt"
+        ontologies:
+          - edam: "http://edamontology.org/format_3475" # TSV
+  - - meta3:
+        type: map
+        description: |
+          Groovy Map containing annotation information
+          e.g. `[ id:'genome' ]`
+    - gff:
+        type: file
+        description: Flattened DEXSeq annotation, as created by dexseq/prepareannotation
+        pattern: "*.{gff,gff.gz}"
+        ontologies:
+          - edam: "http://edamontology.org/format_2305" # GFF
+output:
+  results:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information, same as input meta
+      - "*.dexseq.results.tsv":
+          type: file
+          description: Exon level DEXSeq results, without the list columns of the DEXSeqResults object
+          pattern: "*.dexseq.results.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  gene_qvalues:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information, same as input meta
+      - "*.dexseq.gene_qvalues.tsv":
+          type: file
+          description: Gene level q-values from DEXSeq perGeneQValue
+          pattern: "*.dexseq.gene_qvalues.tsv"
+          ontologies:
+            - edam: "http://edamontology.org/format_3475" # TSV
+  dataset_rds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information, same as input meta
+      - "*.dexseq.dataset.rds":
+          type: file
+          description: Serialised DEXSeqDataSet object
+          pattern: "*.dexseq.dataset.rds"
+          ontologies: []
+  results_rds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information, same as input meta
+      - "*.dexseq.results.rds":
+          type: file
+          description: Serialised DEXSeqResults object
+          pattern: "*.dexseq.results.rds"
+          ontologies: []
+  gene_qvalues_rds:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information, same as input meta
+      - "*.dexseq.gene_qvalues.rds":
+          type: file
+          description: Serialised named vector of the gene level q-values
+          pattern: "*.dexseq.gene_qvalues.rds"
+          ontologies: []
+  plots:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information, same as input meta
+      - "*.dexseq.plots.pdf":
+          type: file
+          description: plotDEXSeq plots of the `--n_plot` genes with the smallest p-values. Not written when `--n_plot` is 0 or no result is valid
+          pattern: "*.dexseq.plots.pdf"
+          ontologies:
+            - edam: "http://edamontology.org/format_3508" # PDF
+  session_info:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing contrast information, same as input meta
+      - "*.R_sessionInfo.log":
+          type: file
+          description: Dump of the R sessionInfo
+          pattern: "*.R_sessionInfo.log"
+          ontologies: []
+  versions:
+    - versions.yml:
+        type: file
+        description: YAML file containing versions of tools used in the module
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+topics:
+  versions:
+    - versions.yml:
+        type: file
+        description: YAML file containing versions of tools used in the module
+        ontologies:
+          - edam: http://edamontology.org/format_3750 # YAML
+authors:
+  - "@piplus2"
+maintainers:
+  - "@piplus2"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/bioconductor-dexseq:1.56.0--67969e95327c513f
+      build_id: bd-67969e95327c513f_1
+      scan_id: sc-a5ab2ee96f9b89b4_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/bioconductor-dexseq:1.56.0--548bf2f0349db29a
+      build_id: bd-548bf2f0349db29a_1
+      scan_id: sc-193504248b0b9b1f_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bioconductor-dexseq:1.56.0--1e6406dafe30519b
+      build_id: bd-1e6406dafe30519b_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/e4/e42feb37a257a80b9a48a628d05a6f3a1283bed077b0bb0a6a97bb7a57c25c5f/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/bioconductor-dexseq:1.56.0--f47df91b5de8abc9
+      build_id: bd-f47df91b5de8abc9_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/f5/f55adfb9b57806acfb7d48892631d9f09e1a54e417c1930db12ccce9d4eb066d/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/dexseq/exon/.conda-lock/linux_amd64-bd-548bf2f0349db29a_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/dexseq/exon/.conda-lock/linux_arm64-bd-67969e95327c513f_1.txt

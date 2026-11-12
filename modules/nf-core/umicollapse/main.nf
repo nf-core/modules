@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process UMICOLLAPSE {
     tag "${meta.id}"
     label "process_high"
@@ -5,8 +8,8 @@ process UMICOLLAPSE {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/umicollapse:1.1.0--hdfd78af_0'
-        : 'quay.io/biocontainers/umicollapse:1.1.0--hdfd78af_0'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/05/05696e308cb4debe91dde77b5f9525c267044ae6bc71b85ae1ac6ac2f8203a47/data'
+        : 'community.wave.seqera.io/library/umicollapse:1.1.0--b477e0da15c79404'}"
 
     input:
     tuple val(meta), path(input), path(bai)
@@ -36,16 +39,13 @@ process UMICOLLAPSE {
     }
     extension = mode.contains("fastq") ? "fastq.gz" : "bam"
     """
-    # Getting the umicollapse jar file like this because `umicollapse` is a Python wrapper script generated
-    # by conda that allows to set the heap size (Xmx), but not the stack size (Xss).
-    # `which` allows us to get the directory that contains `umicollapse`, independent of whether we
-    # are in a container or conda environment.
-    # WARN: Please update this string when bumping container versions.
-    UMICOLLAPSE_JAR=\$(dirname \$(which umicollapse))/../share/umicollapse-1.1.0-0/umicollapse.jar
+    # The generated launcher allows configuring heap size, but not stack size.
+    UMICOLLAPSE_JAR=\$(find "\$(dirname "\$(command -v umicollapse)")/../share" -maxdepth 2 -name umicollapse.jar -print -quit)
+
     java \\
         -Xmx${max_heap_size_mega}M \\
         -Xss${max_stack_size_mega}M \\
-        -jar \$UMICOLLAPSE_JAR \\
+        -jar "\$UMICOLLAPSE_JAR" \\
         ${mode} \\
         -i ${input} \\
         -o ${prefix}.${extension} \\
