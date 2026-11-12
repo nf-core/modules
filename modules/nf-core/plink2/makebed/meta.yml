@@ -27,19 +27,17 @@ input:
           e.g. `[ id:'population1' ]`
     - pgen:
         type: file
-        description: PLINK 2 binary genotype table; must share its basename with the PSAM and PVAR files
+        description: PLINK 2 binary genotype table
         pattern: "*.pgen"
         ontologies: []
     - psam:
         type: file
-        description: PLINK 2 sample information file; must share its basename with the PGEN and PVAR files
+        description: PLINK 2 sample information file
         pattern: "*.psam"
         ontologies: []
     - pvar:
         type: file
-        description: |
-          PLINK 2 variant information file; must share its basename with the PGEN and PSAM files.
-          A Zstandard-compressed `.pvar.zst` file is not read, as `--pfile` is used without the `vzs` modifier.
+        description: PLINK 2 variant information file
         pattern: "*.pvar"
         ontologies: []
 output:
@@ -104,14 +102,24 @@ maintainers:
 containers:
   docker:
     linux/amd64:
-      name: community.wave.seqera.io/library/plink2:2.0.0a.6.9--549de283a2a87237
-      build_id: bd-549de283a2a87237_1
-      scan_id: sc-8029dc1850d6eb4c_1
+      name: community.wave.seqera.io/library/plink2:2.0.0a7.post13--1df32678f52384f3
+      build_id: bd-1df32678f52384f3_1
+      scan_id: sc-b3a805a2307b87ff_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/plink2:2.0.0a7.post13--b1ee59e4f9fd5897
+      build_id: bd-b1ee59e4f9fd5897_1
+      scan_id: sc-e1eedfc45b393e85_1
   singularity:
     linux/amd64:
-      name: oras://community.wave.seqera.io/library/plink2:2.0.0a.6.9--c11ae8fea2238ccf
-      build_id: bd-c11ae8fea2238ccf_1
-      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/df/dfe4443bcab39516a2063882b788b30ec8f9d2edc6a83b783f89cc03e1c1e66c/data
+      name: oras://community.wave.seqera.io/library/plink2:2.0.0a7.post13--68e59982dac4bc0d
+      build_id: bd-68e59982dac4bc0d_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d0/d0745d58f97f7ada3bad4ece2d69f97922da71c47cb4530cce8d7264b8142990/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/plink2:2.0.0a7.post13--b25f56f1423aa9c5
+      build_id: bd-b25f56f1423aa9c5_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/fc/fcbb4aecc571de442343eed21be544e8c18f3c43a65bfe8fc4fee174a11fa001/data
   conda:
     linux/amd64:
-      lock_file: modules/nf-core/plink2/makebed/.conda-lock/linux_amd64-bd-549de283a2a87237_1.txt
+      lock_file: modules/nf-core/plink2/makebed/.conda-lock/linux_amd64-bd-1df32678f52384f3_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/plink2/makebed/.conda-lock/linux_arm64-bd-b1ee59e4f9fd5897_1.txt

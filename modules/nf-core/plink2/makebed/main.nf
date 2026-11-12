@@ -7,8 +7,8 @@ process PLINK2_MAKEBED {
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/df/dfe4443bcab39516a2063882b788b30ec8f9d2edc6a83b783f89cc03e1c1e66c/data'
-        : 'community.wave.seqera.io/library/plink2:2.0.0a.6.9--549de283a2a87237'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/d0/d0745d58f97f7ada3bad4ece2d69f97922da71c47cb4530cce8d7264b8142990/data'
+        : 'community.wave.seqera.io/library/plink2:2.0.0a7.post13--1df32678f52384f3'}"
 
     input:
     tuple val(meta), path(pgen), path(psam), path(pvar)
