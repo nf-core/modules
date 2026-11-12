@@ -1,0 +1,86 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "eukcc_single"
+description: Estimate completeness and contamination of a single eukaryotic genome or MAG
+keywords:
+  - eukaryotes
+  - completeness
+  - contamination
+  - mag
+  - metagenomics
+  - quality control
+tools:
+  - "eukcc":
+      description: "Check eukaryotic genomes or MAGs for completeness and contamination."
+      homepage: "https://eukcc.readthedocs.io/en/latest/"
+      documentation: "https://eukcc.readthedocs.io/en/latest/"
+      tool_dev_url: "https://github.com/EBI-Metagenomics/EukCC"
+      doi: "10.1186/s13059-020-02155-4"
+      licence: ["GPL v3-or-later"]
+      identifier: biotools:eukcc
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+    - fasta:
+        type: file
+        description: Genome or MAG in FASTA format (DNA, or amino acids with `--AA`), optionally gzipped
+        pattern: "*.{fa,fasta,fna,faa,fa.gz,fasta.gz,fna.gz,faa.gz}"
+        ontologies:
+          - edam: http://edamontology.org/format_1929 # FASTA
+  - db:
+      type: directory
+      description: EukCC database directory (e.g. from `eukcc download_db`)
+output:
+  tsv:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - ${prefix}/eukcc.tsv:
+          type: file
+          description: Table with completeness, contamination and NCBI lineage of the input
+          pattern: "eukcc.tsv"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  log:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - ${prefix}/eukcc.log:
+          type: file
+          description: EukCC log file
+          pattern: "eukcc.log"
+  marker_table:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1' ]`
+      - ${prefix}/scmg_marker_table.csv.gz:
+          type: file
+          description: Single copy marker gene table, produced only with `--extra`
+          pattern: "scmg_marker_table.csv.gz"
+          ontologies:
+            - edam: http://edamontology.org/format_3475 # TSV
+  versions_eukcc:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - eukcc:
+          type: string
+          description: The name of the tool
+      - eukcc --version | sed 's/^EukCC version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - eukcc:
+          type: string
+          description: The name of the tool
+      - eukcc --version | sed 's/^EukCC version //':
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@dezordi"
+maintainers:
+  - "@dezordi"
