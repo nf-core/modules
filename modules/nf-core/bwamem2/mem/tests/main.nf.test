@@ -45,8 +45,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.bam[0][1]).name+":headermd5,"+bam(process.out.bam[0][1]).getHeaderMD5(),
-                    file(process.out.bam[0][1]).name+":readsmd5,"+bam(process.out.bam[0][1]).getReadsMD5(),
+                    bam(process.out.bam[0][1]).getHeaderMD5(),
+                    bam(process.out.bam[0][1]).getReadsMD5(),
                     process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
@@ -73,8 +73,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.bam[0][1]).name+":headermd5,"+bam(process.out.bam[0][1]).getHeaderMD5(),
-                    file(process.out.bam[0][1]).name+":readsmd5,"+bam(process.out.bam[0][1]).getReadsMD5(),
+                    bam(process.out.bam[0][1]).getHeaderMD5(),
+                    bam(process.out.bam[0][1]).getReadsMD5(),
                     process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
@@ -104,8 +104,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.bam[0][1]).name+":headermd5,"+bam(process.out.bam[0][1]).getHeaderMD5(),
-                    file(process.out.bam[0][1]).name+":readsmd5,"+bam(process.out.bam[0][1]).getReadsMD5(),
+                    bam(process.out.bam[0][1]).getHeaderMD5(),
+                    bam(process.out.bam[0][1]).getReadsMD5(),
                     process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )
@@ -135,8 +135,8 @@ nextflow_process {
             assertAll(
                 { assert process.success },
                 { assert snapshot(
-                    file(process.out.bam[0][1]).name+":headermd5,"+bam(process.out.bam[0][1]).getHeaderMD5(),
-                    file(process.out.bam[0][1]).name+":readsmd5,"+bam(process.out.bam[0][1]).getReadsMD5(),
+                    bam(process.out.bam[0][1]).getHeaderMD5(),
+                    bam(process.out.bam[0][1]).getReadsMD5(),
                     process.out.findAll { key, val -> key.startsWith("versions")}
                 ).match() }
             )

@@ -2,7 +2,7 @@
 // See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
 
 process BWAMEM2_INDEX {
-    tag "${fasta}"
+    tag "$fasta"
     // NOTE Requires 28N GB memory where N is the size of the reference sequence, floor of 280M
     // source: https://github.com/bwa-mem2/bwa-mem2/issues/9
     // For bgzipped inputs this is scaled by a factor of 4.
@@ -15,37 +15,38 @@ process BWAMEM2_INDEX {
 
     input:
     tuple val(meta), path(fasta)
-    val index_name
+    val input_dir
 
     output:
-    tuple val(meta), path("${prefix}"), emit: index
+    tuple val(meta), path("${outdir}"), emit: index
     tuple val("${task.process}"), val('bwamem2'), eval('bwa-mem2 version | grep -o -E "[0-9]+(\\.[0-9]+)+"'), emit: versions_bwamem2, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
-    def name = index_name ?: fasta.name.replaceAll(/\.(fa|fasta|fna)(\.gz)?$/, '')
-    prefix = task.ext.prefix ?: meta.id ?: name
+    outdir = input_dir ?: 'bwamem2'
+    def prefix = task.ext.prefix ?: "${fasta}"
     def args = task.ext.args ?: ''
     """
-    mkdir ${prefix}
+    mkdir ${outdir}
     bwa-mem2 \\
         index \\
-        ${args} \\
-        -p ${prefix}/${name} \\
-        ${fasta}
+        $args \\
+        -p ${outdir}/${prefix} \\
+        $fasta
     """
 
     stub:
-    def name = index_name ?: fasta.name.replaceAll(/\.(fa|fasta|fna)(\.gz)?$/, '')
-    prefix = task.ext.prefix ?: meta.id ?: name
+    outdir = input_dir ?: 'bwamem2'
+    def prefix = task.ext.prefix ?: "${fasta}"
+
     """
-    mkdir ${prefix}
-    touch ${prefix}/${name}.0123
-    touch ${prefix}/${name}.ann
-    touch ${prefix}/${name}.pac
-    touch ${prefix}/${name}.amb
-    touch ${prefix}/${name}.bwt.2bit.64
+    mkdir ${outdir}
+    touch ${outdir}/${prefix}.0123
+    touch ${outdir}/${prefix}.ann
+    touch ${outdir}/${prefix}.pac
+    touch ${outdir}/${prefix}.amb
+    touch ${outdir}/${prefix}.bwt.2bit.64
     """
 }

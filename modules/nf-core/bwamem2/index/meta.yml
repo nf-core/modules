@@ -33,11 +33,9 @@ input:
         ontologies:
           - edam: "http://edamontology.org/data_2044"
           - edam: "http://edamontology.org/format_1929"
-  - index_name:
+  - input_dir:
       type: string
-      description: |
-        Basename of the index files.
-        Defaults to the fasta file name without its .fa, .fasta or .fna (and .gz) extension.
+      description: Name of the output directory holding the index files. Defaults to "bwamem2".
 output:
   index:
     - - meta:
@@ -45,11 +43,9 @@ output:
           description: |
             Groovy Map containing sample information
             e.g. [ id:'test', single_end:false ]
-      - ${prefix}:
+      - ${outdir}:
           type: directory
-          description: |
-            Directory containing the BWA-mem2 index files.
-            Named after task.ext.prefix, meta.id or index_name, in that order.
+          description: Directory containing the BWA genome index files
           pattern: "*.{0123,amb,ann,bwt.2bit.64,pac}"
           ontologies:
             - edam: "http://edamontology.org/data_3210"
