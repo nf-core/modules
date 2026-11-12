@@ -9,9 +9,11 @@ nextflow_process {
     tag "maltextract"
 
     test("test_maltextract") {
+        def ncbi_taxmap
         setup {
+            // params.modules_testdata_base_path is null outside the process string, so use the same env var and default as tests/config/nf-test.config
             def testdata_base = System.getenv('NXF_MODULES_TESTDATA_BASE') ?: 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
-            extract("${testdata_base}genomics/sarscov2/genome/db/maltextract/ncbi_taxmap.zip", extractDir: "${launchDir}/ncbi_taxmap")
+            ncbi_taxmap = extract("${testdata_base}genomics/sarscov2/genome/db/maltextract/ncbi_taxmap.zip")
         }
 
         when {
@@ -21,7 +23,7 @@ nextflow_process {
                     file(params.modules_testdata_base_path + 'delete_me/malt/test.rma6')
                 ]
                 input[1] = file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/db/maltextract/taxon_list.txt')
-                input[2] = file('${launchDir}/ncbi_taxmap')
+                input[2] = file('${ncbi_taxmap}')
                 """
             }
         }
