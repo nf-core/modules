@@ -6,9 +6,7 @@ keywords:
   - coverage
 tools:
   - allelecounter:
-      description: Takes a file of locations and a [cr|b]am file and generates a
-        count of coverage of each allele at that location (given any filter
-        settings)
+      description: Takes a file of locations and a [cr|b]am file and generates a count of coverage of each allele at that location (given any filter settings)
       homepage: https://github.com/cancerit/alleleCount
       documentation: https://github.com/cancerit/alleleCount
       tool_dev_url: https://github.com/cancerit/alleleCount
@@ -86,3 +84,27 @@ authors:
 maintainers:
   - "@fullama"
   - "@fbdtemme"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/cancerit-allelecount:4.3.0--91e19f305ccc2f90
+      build_id: bd-91e19f305ccc2f90_1
+      scan_id: sc-326ae0c70bd11b43_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/cancerit-allelecount:4.3.0--f6665280ed179e43
+      build_id: bd-f6665280ed179e43_1
+      scan_id: sc-cf3b83d93f8ebf26_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/cancerit-allelecount:4.3.0--ac5f6552a1e1b3f7
+      build_id: bd-ac5f6552a1e1b3f7_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/20/2009f48de55b9a633b784ce7acd3bd5d5d56fa74a0dc20543d8af624b6611faa/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/cancerit-allelecount:4.3.0--f8efaef944501098
+      build_id: bd-f8efaef944501098_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/1d/1da997eec7c2a2e97616a81304a3894f829719de92b2225800ed6f474afc41d5/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/allelecounter/.conda-lock/linux_amd64-bd-91e19f305ccc2f90_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/allelecounter/.conda-lock/linux_arm64-bd-f6665280ed179e43_1.txt

@@ -14,13 +14,14 @@ nextflow_workflow {
     tag "bwa/mem"
     tag "parabricks/fq2bam"
     tag "samtools"
-    tag "samtools/sort"
-    tag "samtools/index"
-    tag "samtools/idxstats"
     tag "samtools/flagstat"
+    tag "samtools/idxstats"
+    tag "samtools/index"
+    tag "samtools/sort"
     tag "samtools/stats"
     tag "bam_sort_stats_samtools"
     tag "fastq_align_bwa"
+    tag "picard"
     tag "picard/markduplicates"
     tag "picard/addorreplacereadgroups"
 
@@ -32,6 +33,7 @@ nextflow_workflow {
                 input[0] = Channel.value([ [ id:'genome' ],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ])
+                input[1] = []
                 """
             }
         }
@@ -57,7 +59,7 @@ nextflow_workflow {
                 input[4] = false            // use_gpu
                 input[5] = "bam"            // output_fmt
                 input[6] = [[:], [] ]       // interval_file
-                input[7] = [[:], [] ]       // known_sites
+                input[7] = [[:], [], [] ]   // known_sites
                 """
             }
         }
@@ -101,7 +103,7 @@ nextflow_workflow {
                 input[4] = false            // use_gpu
                 input[5] = "bam"            // output_fmt
                 input[6] = [[:], [] ]       // interval_file
-                input[7] = [[:], [] ]       // known_sites
+                input[7] = [[:], [], [] ]   // known_sites
                 """
             }
         }
@@ -145,7 +147,7 @@ nextflow_workflow {
                 input[4] = false            // use_gpu
                 input[5] = "bam"            // output_fmt
                 input[6] = [[:], [] ]       // interval_file
-                input[7] = [[:], [] ]       // known_sites
+                input[7] = [[:], [], [] ]   // known_sites
                 """
             }
         }
@@ -186,7 +188,7 @@ nextflow_workflow {
                 input[4] = false            // use_gpu
                 input[5] = "bam"            // output_fmt
                 input[6] = [[:], [] ]       // interval_file
-                input[7] = [[:], [] ]       // known_sites
+                input[7] = [[:], [], [] ]   // known_sites
                 """
             }
         }

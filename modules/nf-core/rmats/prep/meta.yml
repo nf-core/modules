@@ -1,6 +1,5 @@
 name: "rmats_prep"
-description: MATS is a computational tool to detect differential alternative
-  splicing events from RNA-Seq data.
+description: MATS is a computational tool to detect differential alternative splicing events from RNA-Seq data.
 keywords:
   - splicing
   - RNA-Seq
@@ -10,8 +9,7 @@ keywords:
   - rMATS
 tools:
   - "rmats":
-      description: "MATS is a computational tool to detect differential alternative
-        splicing events from RNA-Seq data."
+      description: "MATS is a computational tool to detect differential alternative splicing events from RNA-Seq data."
       homepage: "https://github.com/Xinglab/rmats-turbo"
       documentation: "https://github.com/Xinglab/rmats-turbo/blob/v4.3.0/README.md"
       doi: "10.1038/s41596-023-00944-2"
@@ -21,8 +19,7 @@ tools:
 input:
   - - meta:
         type: map
-        description: Groovy Map containing sample information. e.g. `[
-          id:'sample1', single_end:false, strandness:'auto']`
+        description: Groovy Map containing sample information. e.g. `[ id:'sample1', single_end:false, strandness:'auto']`
     - genome_bam:
         type: file
         description: BAM file aligned to the genome
@@ -45,23 +42,19 @@ output:
   rmats:
     - - meta:
           type: map
-          description: Groovy Map containing sample information. e.g. `[
-            id:'sample1'single_end:false, strandness:'auto']`
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1'single_end:false, strandness:'auto']`
       - "*.rmats":
           type: file
-          description: rmats junction count information, after processing the BAM
-            file
+          description: rmats junction count information, after processing the BAM file
           pattern: "*.rmats"
           ontologies: []
   read_outcomes:
     - - meta:
           type: map
-          description: Groovy Map containing sample information. e.g. `[
-            id:'sample1'single_end:false, strandness:'auto']`
+          description: Groovy Map containing sample information. e.g. `[ id:'sample1'single_end:false, strandness:'auto']`
       - "*read_outcomes_by_bam.txt":
           type: file
-          description: text file detailing number of reads used and not used for
-            various reasons (clipped, not paired, wrong length, etc.)
+          description: text file detailing number of reads used and not used for various reasons (clipped, not paired, wrong length, etc.)
           pattern: "*read_outcomes_by_bam.txt"
           ontologies:
             - edam: http://edamontology.org/format_2330
@@ -90,3 +83,27 @@ authors:
   - "@akaviaLab"
 maintainers:
   - "@akaviaLab"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/rmats:4.3.0--85c9d01519f77bc5
+      build_id: bd-85c9d01519f77bc5_1
+      scan_id: sc-a6c4b9ba133524aa_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/rmats:4.3.0--fe6118c5a161cf16
+      build_id: bd-fe6118c5a161cf16_1
+      scan_id: sc-8233dfb116ec4d8e_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/rmats:4.3.0--c55ed988a3e2b858
+      build_id: bd-c55ed988a3e2b858_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/bd/bdb37d05bf5e599a98854bc9393b4e98d3430f8285c3897183de2f0fab6f5d57/data
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/rmats:4.3.0--79be7d14d1755828
+      build_id: bd-79be7d14d1755828_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/62/6260e95a31cf07d7e00f18648f111f37509d1d9feafc4372a009a9fd3563b071/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/rmats/prep/.conda-lock/linux_amd64-bd-85c9d01519f77bc5_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/rmats/prep/.conda-lock/linux_arm64-bd-fe6118c5a161cf16_1.txt

@@ -8,8 +8,7 @@ keywords:
   - tumor-only
 tools:
   - controlfreec:
-      description: Copy number and genotype annotation from whole genome and whole exome
-        sequencing data.
+      description: Copy number and genotype annotation from whole genome and whole exome sequencing data.
       homepage: http://boevalab.inf.ethz.ch/FREEC
       documentation: http://boevalab.inf.ethz.ch/FREEC/tutorial.html
       tool_dev_url: https://github.com/BoevaLab/FREEC/
@@ -91,3 +90,27 @@ topics:
           description: The expression to obtain the version of the tool
 authors:
   - "@FriederikeHanssen"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/control-freec:11.6b--6482bd27b629122a
+      build_id: bd-6482bd27b629122a_1
+      scan_id: sc-eb3fb3faa98e3da5_1
+    linux/arm64:
+      name: community.wave.seqera.io/library/control-freec:11.6b--a702c93b198e1a99
+      build_id: bd-a702c93b198e1a99_1
+      scan_id: sc-93c58bbe60b2bd02_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/control-freec:11.6b--a63a5ec817c8e38a
+      build_id: bd-a63a5ec817c8e38a_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/6a/6a69837db4f5887867a1f9a81365a24b7e2e9703efba458c51e98b277bc2d9b9/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/control-freec:11.6b--1a5621072b7092db
+      build_id: bd-1a5621072b7092db_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/86/86e7bfef8a43af72880501e04fb817268228715f4854102ce4a90fd3ad2cd66a/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/controlfreec/makegraph2/.conda-lock/linux_amd64-bd-6482bd27b629122a_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/controlfreec/makegraph2/.conda-lock/linux_arm64-bd-a702c93b198e1a99_1.txt

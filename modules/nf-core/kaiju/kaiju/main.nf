@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process KAIJU_KAIJU {
     tag "${meta.id}"
     label 'process_high'
 
     conda "${moduleDir}/environment.yml"
     container "${workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/kaiju:1.10.0--h43eeafb_0'
-        : 'quay.io/biocontainers/kaiju:1.10.0--h43eeafb_0'}"
+        ? 'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/40/40cd79a6bb3b5feabe877bef8498d63a3b91fed44b30556af4c7e6554c4310f2/data'
+        : 'community.wave.seqera.io/library/kaiju:1.10.3--8b4a2069cc29ac7a'}"
 
     input:
     tuple val(meta), path(reads)
@@ -23,7 +26,9 @@ process KAIJU_KAIJU {
     def prefix = task.ext.prefix ?: "${meta.id}"
     def input = meta.single_end ? "-i ${reads}" : "-i ${reads[0]} -j ${reads[1]}"
 
-    if (!db.find { db_files -> db_files.name.endsWith('names.dmp') } || !db.find { db_files -> db_files.name.endsWith('nodes.dmp') }) {
+    def db_list = db instanceof List ? db : db.listDirectory()
+
+    if (!db_list.find { db_files -> db_files.name.endsWith('names.dmp') } || !db_list.find { db_files -> db_files.name.endsWith('nodes.dmp') }) {
         error('[KAIJU_KAIJU] Module error: Missing one of `nodes.dmp`, `names.dmp`. Check input.')
     }
     """

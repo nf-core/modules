@@ -38,6 +38,7 @@ nextflow_process {
                     [ id:'sarscov2'],
                     file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true)
                 ]
+                input[1] = []
                 """
             }
         }
@@ -84,11 +85,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    bam(process.out.bam[0][1]).getReadsMD5(),
-                    file(process.out.log[0][1]).readLines()[0..1],
-                    sanitizeOutput(process.out, unstableKeys: ["log", "bam"])
-                ).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["log"])).match() }
             )
         }
 
@@ -109,11 +106,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    bam(process.out.bam[0][1]).getReadsMD5(),
-                    file(process.out.log[0][1]).readLines()[0..1],
-                    sanitizeOutput(process.out, unstableKeys: ["log", "bam"])
-                    ).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["log"])).match() }
             )
         }
 
@@ -134,11 +127,7 @@ nextflow_process {
         then {
             assertAll(
                 { assert process.success },
-                { assert snapshot(
-                    bam(process.out.bam[0][1]).getReadsMD5(),
-                    file(process.out.log[0][1]).readLines()[0..1],
-                    sanitizeOutput(process.out, unstableKeys: ["log", "bam"])
-                    ).match() }
+                { assert snapshot(sanitizeOutput(process.out, readsMD5Keys: ["bam"], unstableKeys: ["log"])).match() }
             )
         }
 

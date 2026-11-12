@@ -1,0 +1,71 @@
+nextflow_process {
+
+    name "Test Process DEXSEQ_DTU"
+    script "../main.nf"
+    process "DEXSEQ_DTU"
+    config "./nextflow.config"
+
+    tag "modules"
+    tag "modules_nfcore"
+    tag "dexseq"
+    tag "dexseq/dtu"
+
+    test("homo_sapiens - chrX - GBR vs YRI") {
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'GBR_vs_YRI' ], 'condition', 'YRI', 'GBR' ]
+                input[1] = [
+                    [ id:'study' ],
+                    file(params.modules_testdata_base_path + 'delete_me/dexseq/dtu/chrX.samplesheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/dexseq/dtu/chrX.transcript_counts.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            // The fitted values differ in the last digits between the OpenBLAS kernels selected for each CPU
+            def rounded = { f -> path(f).readLines().collect { l -> l.split('\t', -1).collect { v -> v.isNumber() ? String.format(Locale.ROOT, '%.6f', v as double) : v }.join('\t') }.join('\n').md5() }
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.results[0][1]).readLines()[0].split('\t').contains('log2fold_GBR_YRI') },
+                { assert path(process.out.gene_qvalues[0][1]).readLines().tail().count { l -> l.split('\t')[1] != 'NA' && (l.split('\t')[1] as double) < 0.05 } == 23 },
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["results", "gene_qvalues", "dataset_rds", "results_rds", "gene_qvalues_rds", "session_info"]),
+                    rounded(process.out.results[0][1]),
+                    rounded(process.out.gene_qvalues[0][1])
+                ).match() }
+            )
+        }
+
+    }
+
+    test("homo_sapiens - chrX - GBR vs YRI - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [ [ id:'GBR_vs_YRI' ], 'condition', 'YRI', 'GBR' ]
+                input[1] = [
+                    [ id:'study' ],
+                    file(params.modules_testdata_base_path + 'delete_me/dexseq/dtu/chrX.samplesheet.csv', checkIfExists: true),
+                    file(params.modules_testdata_base_path + 'delete_me/dexseq/dtu/chrX.transcript_counts.tsv', checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+
+    }
+
+}

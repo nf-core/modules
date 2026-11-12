@@ -12,7 +12,8 @@ tools:
       documentation: "https://github.com/motu-tool/mOTUs/wiki"
       tool_dev_url: "https://github.com/motu-tool/mOTUs"
       doi: "10.1186/s40168-022-01410-z"
-      licence: ["GPL v3"]
+      licence:
+        - "GPL v3"
       identifier: ""
 input:
   - - meta:
@@ -80,14 +81,44 @@ output:
           description: Standard error logging file containing summary statistics
           pattern: "*.log"
           ontologies: []
+  versions_motus:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - motus:
+          type: string
+          description: The name of the tool
+      - 3.1.0:
+          type: string
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - motus:
+          type: string
+          description: The name of the tool
+      - 3.1.0:
+          type: string
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@jianhong"
 maintainers:
   - "@jianhong"
+containers:
+  docker:
+    linux/amd64:
+      name: community.wave.seqera.io/library/bwa_motus_metasnv_htslib_pruned:813ab30f1d170975
+      build_id: bd-813ab30f1d170975_1
+      scan_id: sc-bd8c2a9526024ea0_1
+  singularity:
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/bwa_motus_metasnv_htslib_pruned:15132326f9459f25
+      build_id: bd-15132326f9459f25_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/58/580145dd529afb23666d3e79ed2dfffce058ab73b55785a23023c104b74cb52b/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/motus/profile/.conda-lock/linux_amd64-bd-813ab30f1d170975_1.txt

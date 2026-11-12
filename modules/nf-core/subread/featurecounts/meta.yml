@@ -7,12 +7,9 @@ keywords:
   - reference
 tools:
   - featurecounts:
-      description: featureCounts is a highly efficient general-purpose read summarization
-        program that counts mapped reads for genomic features such as genes, exons,
-        promoter, gene bodies, genomic bins and chromosomal locations. It can be used
-        to count both RNA-seq and genomic DNA-seq reads.
-      homepage: http://bioinf.wehi.edu.au/featureCounts/
-      documentation: http://bioinf.wehi.edu.au/subread-package/SubreadUsersGuide.pdf
+      description: featureCounts is a highly efficient general-purpose read summarization program that counts mapped reads for genomic features such as genes, exons, promoter, gene bodies, genomic bins and chromosomal locations. It can be used to count both RNA-seq and genomic DNA-seq reads.
+      homepage: https://subread.sourceforge.net/featureCounts.html
+      documentation: https://subread.sourceforge.net/SubreadUsersGuide.pdf
       doi: "10.1093/bioinformatics/btt656"
       licence: ["GPL v3"]
       identifier: biotools:subread
@@ -83,3 +80,27 @@ authors:
   - "@ntoda03"
 maintainers:
   - "@ntoda03"
+containers:
+  docker:
+    linux/arm64:
+      name: community.wave.seqera.io/library/subread:2.1.1--c679a27ba0414b06
+      build_id: bd-c679a27ba0414b06_1
+      scan_id: sc-8ae250e6fc8af9c0_1
+    linux/amd64:
+      name: community.wave.seqera.io/library/subread:2.1.1--c888fa34748dca4c
+      build_id: bd-c888fa34748dca4c_1
+      scan_id: sc-305796d6c9c607bc_1
+  singularity:
+    linux/arm64:
+      name: oras://community.wave.seqera.io/library/subread:2.1.1--79290d28764dd01c
+      build_id: bd-79290d28764dd01c_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/64/645c046036985ed9f2b87b02b5f28993e91c345c535a97aa891742199bddd5a4/data
+    linux/amd64:
+      name: oras://community.wave.seqera.io/library/subread:2.1.1--5e9483dad33863a2
+      build_id: bd-5e9483dad33863a2_1
+      https: https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/49/49d1257914d0c2c6bbf05d04b8bad37f23c20369a269033d9973fca590da89ca/data
+  conda:
+    linux/amd64:
+      lock_file: modules/nf-core/subread/featurecounts/.conda-lock/linux_amd64-bd-c888fa34748dca4c_1.txt
+    linux/arm64:
+      lock_file: modules/nf-core/subread/featurecounts/.conda-lock/linux_arm64-bd-c679a27ba0414b06_1.txt

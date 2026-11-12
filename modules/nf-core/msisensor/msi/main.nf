@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process MSISENSOR_MSI {
     tag "$meta.id"
     label 'process_low'
@@ -15,7 +18,7 @@ process MSISENSOR_MSI {
     tuple val(meta), path("${prefix}_dis")     , emit: output_dis
     tuple val(meta), path("${prefix}_germline"), emit: output_germline
     tuple val(meta), path("${prefix}_somatic") , emit: output_somatic
-    path "versions.yml"                        , emit: versions
+    tuple val("${task.process}"), val('msisensor'), eval("msisensor 2>&1 | sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p'"), emit: versions_msisensor, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,10 +43,6 @@ process MSISENSOR_MSI {
         -o $prefix \\
         $args
 
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        msisensor: \$(msisensor 2>&1 | sed -nE 's/Version:\\sv([0-9]\\.[0-9])/\\1/ p')
-    END_VERSIONS
     """
 
     stub:

@@ -1,0 +1,63 @@
+name: "cpc2"
+description: Coding Potential Calculator 2
+keywords:
+  - coding potential
+  - genomics
+  - transcriptomics
+tools:
+  - "cpc2":
+      description: "Coding Potential Calculator 2 (CPC2)"
+      homepage: "https://github.com/gao-lab/CPC2_standalone"
+      documentation: "https://github.com/gao-lab/CPC2_standalone"
+      tool_dev_url: "https://github.com/gao-lab/CPC2_standalone"
+      doi: "10.1093/nar/gkx428"
+      licence:
+        - "MIT"
+      identifier: biotools:cpc2
+input:
+  - - meta:
+        type: map
+        description: Groovy Map containing sample information. e.g. `[
+          id:'sample1' ]`
+    - fasta:
+        type: file
+        description: Input FASTA file containing nucleotide sequences
+        pattern: "*.{fasta,fa}"
+        ontologies:
+          - EDAM: http://edamontology.org/format_1929
+output:
+  txt:
+    - - meta:
+          type: map
+          description: Groovy Map containing sample information e.g. `[
+            id:'sample1' ]`
+      - "*.txt":
+          type: file
+          description: CPC2 output file
+          pattern: "*.{txt}"
+          ontologies: []
+  versions_cpc2:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "CPC2":
+          type: string
+          description: The name of the tool
+      - "CPC2.py --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+topics:
+  versions:
+    - - "${task.process}":
+          type: string
+          description: The name of the process
+      - "CPC2":
+          type: string
+          description: The name of the tool
+      - "CPC2.py --version":
+          type: eval
+          description: The expression to obtain the version of the tool
+authors:
+  - "@razmia02"
+maintainers:
+  - "@razmia02"

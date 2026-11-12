@@ -1,11 +1,14 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process CARVEME_CARVE {
     tag "$meta.id"
     label 'process_single'
 
     conda "${moduleDir}/environment.yml"
-    container "${ workflow.containerEngine == 'singularity' && !task.ext.singularity_pull_docker_container
-        ? 'https://depot.galaxyproject.org/singularity/carveme:1.6.6--pyhdfd78af_1'
-        : 'quay.io/biocontainers/carveme:1.6.6--pyhdfd78af_1'}"
+    container "${ workflow.containerEngine in ['singularity', 'apptainer'] && !task.ext.singularity_pull_docker_container
+?         'https://community-cr-prod.seqera.io/docker/registry/v2/blobs/sha256/96/9662f19dc7815dd4aaaf24cd6b19c11a3b507e3b52a066d1557c77517fed9f47/data'
+:         'community.wave.seqera.io/library/carveme_scip:8b66c18ea3a4fb1b' }"
 
     input:
     tuple val(meta), path(fasta), path(universe_file), path(mediadb), path(soft), path(hard), path(reference)
@@ -17,7 +20,7 @@ process CARVEME_CARVE {
     tuple val(meta), path("${prefix}_milp_solution.tsv")  , optional: true, emit: milp_solution
     tuple val(meta), path("${prefix}_protein_scores.tsv") , optional: true, emit: protein_scores
     tuple val(meta), path("${prefix}_reaction_scores.tsv"), optional: true, emit: reaction_scores
-    tuple val("${task.process}"), val('carveme'), eval("pip show carveme | sed -n 's/^Version: //p'"), topic: versions, emit: versions_carveme
+    tuple val("${task.process}"), val('carveme'),  eval("python -c \"from importlib.metadata import version; print(version('carveme'))\""), topic: versions, emit: versions_carveme
 
     when:
     task.ext.when == null || task.ext.when

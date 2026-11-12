@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process SMNCOPYNUMBERCALLER {
     tag "$meta.id"
     label 'process_low'
@@ -9,6 +12,7 @@ process SMNCOPYNUMBERCALLER {
 
     input:
     tuple val(meta), path(bam), path(bai)
+    tuple val(meta2), path(fasta), path(fai)
 
     output:
     tuple val(meta), path("out/*.tsv"),  emit: smncopynumber
@@ -22,11 +26,13 @@ process SMNCOPYNUMBERCALLER {
     script:
     def args = task.ext.args ?: ''
     def prefix = task.ext.prefix ?: "${meta.id}"
+    def reference = fasta ? "--reference ${fasta}" : ''
     """
     echo $bam | tr ' ' '
     ' > manifest.txt
     smn_caller.py \\
         $args \\
+        $reference \\
         --manifest manifest.txt \\
         --prefix $prefix \\
         --outDir "out" \\

@@ -20,6 +20,7 @@ nextflow_process {
                     """
                     input[0] = [[ id:'homo_sapiens_genome' ],
                                 file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/genome.fasta', checkIfExists: true) ]
+                    input[1] = []
                     """
                 }
             }
@@ -30,6 +31,7 @@ nextflow_process {
                     """
                     input[0] = [[ id:'sarscov2_genome' ],
                                 file(params.modules_testdata_base_path + 'genomics/sarscov2/genome/genome.fasta', checkIfExists: true) ]
+                    input[1] = []
                     """
                 }
             }
@@ -76,10 +78,8 @@ nextflow_process {
             assert process.success
             assertAll(
                 { assert snapshot(
-                    bam(process.out.primary_filtered_bam[0][1]).getReadsMD5(),
-                    bam(process.out.contamination_bam[0][1]).getReadsMD5(),
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                ).match() }
+                    sanitizeOutput(process.out, readsMD5Keys:["primary_filtered_bam", "contamination_bam"])).match()
+                }
             )
         }
 

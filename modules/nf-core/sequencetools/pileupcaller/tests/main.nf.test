@@ -30,8 +30,7 @@ nextflow_process {
             assertAll(
                 { assert snapshot(
                     path(process.out.freqsum[0][1]).linesGzip[0..4],
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith('versions') },
                     ).match() }
             )
         }
@@ -59,8 +58,7 @@ nextflow_process {
                     file(process.out.eigenstrat[0][1]).name,
                     process.out.eigenstrat[0][2],
                     process.out.eigenstrat[0][3],
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith('versions') },
                     ).match() }
             )
         }
@@ -88,8 +86,7 @@ nextflow_process {
                     file(process.out.plink[0][1]).name,
                     process.out.plink[0][2],
                     process.out.plink[0][3],
-                    process.out.versions,
-                    path(process.out.versions[0]).yaml
+                    process.out.findAll { key, val -> key.startsWith('versions') },
                     ).match() }
             )
         }

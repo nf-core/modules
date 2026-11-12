@@ -23,7 +23,10 @@ input:
         type: file
         description: Sorted BAM/CRAM/SAM file
         pattern: "*.{bam,cram,sam}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_2572"
+          - edam: "http://edamontology.org/format_2573"
+          - edam: "http://edamontology.org/format_3462"
   - - meta2:
         type: map
         description: |
@@ -33,7 +36,8 @@ input:
         type: file
         description: fasta file to align bam to
         pattern: "*.{fasta}"
-        ontologies: []
+        ontologies:
+          - edam: "http://edamontology.org/format_1929"
 output:
   bam:
     - - meta:
@@ -49,6 +53,18 @@ output:
             - edam: "http://edamontology.org/format_2572"
             - edam: "http://edamontology.org/format_2573"
             - edam: "http://edamontology.org/format_3462"
+  index:
+    - - meta:
+          type: map
+          description: |
+            Groovy Map containing sample information
+            e.g. `[ id:'sample1', single_end:false ]`
+      - "*.{bai,csi}":
+          type: file
+          description: BAM index file
+          pattern: "*.{bai,csi}"
+          ontologies:
+            - edam: "http://edamontology.org/format_3327"
   versions_pbmm2:
     - - ${task.process}:
           type: string

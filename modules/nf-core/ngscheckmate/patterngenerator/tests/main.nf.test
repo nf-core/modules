@@ -45,13 +45,9 @@ nextflow_process {
         }
 
         then {
-            assert process.success
             assertAll(
-                { assert snapshot(
-                    file(process.out.pt.get(0).get(1)).name,
-                    process.out.findAll { key, val -> key.startsWith("versions") }
-                    ).match()
-                }
+                { assert process.success},
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ['pt'])).match()}
             )
         }
 

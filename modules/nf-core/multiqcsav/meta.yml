@@ -13,11 +13,25 @@ tools:
       description: |
         MultiQC searches a given directory for analysis logs and compiles a HTML report.
         It's a general use tool, perfect for summarising the output from numerous bioinformatics tools.
-      homepage: https://multiqc.info/
-      documentation: https://multiqc.info/docs/
+      homepage: https://seqera.io/multiqc/
+      documentation: https://docs.seqera.io/multiqc/
+      doi: 10.1093/bioinformatics/btw354
+      publication:
+        author: "Ewels, P., Magnusson, M., Lundin, S. & Käller, M."
+        year: 2016
+        title: "MultiQC: summarize analysis results for multiple tools and samples in a single report"
+        source: "Bioinformatics"
       licence:
         - "GPL-3.0-or-later"
       identifier: biotools:multiqc
+  - multiqcsav:
+      description: MultiQC plugin replicating the most used plots and tables
+        from Illumina's Sequencing Analysis Viewer (SAV)
+      homepage: https://github.com/MultiQC/MultiQC_SAV
+      documentation: https://github.com/MultiQC/MultiQC_SAV
+      licence:
+        - "MIT"
+      identifier: ""
 input:
   - - meta:
         type: map
@@ -112,16 +126,6 @@ output:
       - multiqc --version | sed "s/.* //g":
           type: eval
           description: The expression to obtain the version of the tool
-  versions_interop:
-    - - ${task.process}:
-          type: string
-          description: The process the versions were collected from
-      - interop:
-          type: string
-          description: The tool name
-      - python -c "import interop; print(interop.__version__)":
-          type: eval
-          description: The expression to obtain the version of the tool
   versions_multiqcsav:
     - - ${task.process}:
           type: string
@@ -130,6 +134,16 @@ output:
           type: string
           description: The name of the tool
       - python -c "import multiqc_sav; print(multiqc_sav.__version__)":
+          type: eval
+          description: The expression to obtain the version of the tool
+  versions_interop:
+    - - ${task.process}:
+          type: string
+          description: The process the versions were collected from
+      - interop:
+          type: string
+          description: The tool name
+      - python -c "import interop; print(interop.__version__)":
           type: eval
           description: The expression to obtain the version of the tool
 authors:

@@ -1,5 +1,8 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process KALLISTOBUSTOOLS_REF {
-    tag "$fasta"
+    tag "$meta.id"
     label 'process_medium'
 
     conda "${moduleDir}/environment.yml"
@@ -8,18 +11,18 @@ process KALLISTOBUSTOOLS_REF {
         'quay.io/biocontainers/kb-python:0.28.2--pyhdfd78af_2' }"
 
     input:
-    path fasta
-    path gtf
+    tuple val(meta), path(fasta)
+    tuple val(meta2), path(gtf)
     val  workflow_mode
 
     output:
-    path "kb_ref_out.idx" , emit: index
-    path "t2g.txt"        , emit: t2g
-    path "cdna.fa"        , emit: cdna
-    path "intron.fa"      , optional:true, emit: intron
-    path "cdna_t2c.txt"   , optional:true, emit: cdna_t2c
-    path "intron_t2c.txt" , optional:true, emit: intron_t2c
-    tuple val("${task.process}"), val('kallistobustools'), eval("kb --version 2>&1 | grep -Eo '[0-9]+\\.[0-9]+\\.[0-9]+' | head -n1"), emit: versions_kallistobustools, topic: versions
+    tuple val(meta), path("kb_ref_out.idx") , emit: index
+    path "t2g.txt"                          , emit: t2g
+    path "cdna.fa"                          , emit: cdna
+    path "intron.fa"                        , emit: intron, optional: true
+    path "cdna_t2c.txt"                     , emit: cdna_t2c, optional: true
+    path "intron_t2c.txt"                   , emit: intron_t2c, optional: true
+    tuple val("${task.process}"), val('kallistobustools'), eval("kb --version 2>&1 | sed -n 's/kb_python //p'"), emit: versions_kallistobustools, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -55,18 +58,12 @@ process KALLISTOBUSTOOLS_REF {
     stub:
     if (workflow_mode == "standard") {
         """
-        touch kb_ref_out.idx \\
-        touch t2g.txt \\
-        touch cdna.fa
+        touch kb_ref_out.idx t2g.txt cdna.fa
         """
     } else {
         """
-        touch kb_ref_out.idx \\
-        touch t2g.txt \\
-        touch cdna.fa
-        touch intron.fa \\
-        touch cdna_t2c.txt \\
-        touch intron_t2c.txt
+        touch kb_ref_out.idx t2g.txt cdna.fa
+        touch intron.fa cdna_t2c.txt intron_t2c.txt
         """
     }
 }

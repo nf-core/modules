@@ -1,0 +1,43 @@
+nextflow_process {
+
+    name "Test Process SEMIBIN_SINGLEEASYBIN (GPU)"
+
+    script "../main.nf"
+    process "SEMIBIN_SINGLEEASYBIN"
+
+    tag "gpu"
+    tag "modules"
+    tag "modules_nfcore"
+    tag "semibin"
+    tag "semibin/singleeasybin"
+    config './nextflow.gpu.config'
+
+    test("metagenome - binning - gpu") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [id:'test'],
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/contigs.fasta.gz", checkIfExists:true),
+                    file(params.modules_testdata_base_path + "genomics/prokaryotes/metagenome/binning/s1.sorted.bam", checkIfExists:true)
+                ]
+                """
+            }
+        }
+        then {
+            assert process.success
+            def bins = process.out.output_fasta.get(0).get(1).collect { path(it).fasta }
+            def featurised = path(process.out.csv.get(0).get(1).find { it.endsWith('/data.csv') })
+                .readLines().drop(1).collect { it.split(',')[0] }
+            assertAll(
+                // every contig SemiBin featurised lands in exactly one bin. Which bin varies between machines
+                { assert featurised && bins.collectMany { it.keySet().toList() }.sort() == featurised.sort() },
+                { assert snapshot(
+                    sanitizeOutput(process.out, unstableKeys: ["csv", "tsv"], ignoreKeys: ["output_fasta"])
+                ).match() }
+            )
+        }
+    }
+
+}

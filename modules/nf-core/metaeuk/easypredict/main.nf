@@ -1,3 +1,6 @@
+// Copyright (c) the nf-core community under an open-source MIT license.
+// See https://github.com/nf-core/modules for full license, file patching instructions and upstream contributing.
+
 process METAEUK_EASYPREDICT {
     tag "$meta.id"
     label 'process_medium'
@@ -16,7 +19,7 @@ process METAEUK_EASYPREDICT {
     tuple val(meta), path("${prefix}.codon.fas"), emit: codon
     tuple val(meta), path("*.tsv")              , emit: tsv
     tuple val(meta), path("*.gff")              , emit: gff
-    path "versions.yml"                         , emit: versions
+    tuple val("${task.process}"), val('metaeuk'), eval("metaeuk | sed -n 's/.*Version: //p'"), emit: versions_metaeuk, topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -40,11 +43,6 @@ process METAEUK_EASYPREDICT {
         tmp/ \\
         ${args} \\
         --threads ${task.cpus}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        metaeuk: \$(metaeuk | grep 'Version' | sed 's/metaeuk Version: //')
-    END_VERSIONS
     """
 
     stub:
@@ -54,10 +52,5 @@ process METAEUK_EASYPREDICT {
     touch ${prefix}.codon.fas
     touch ${prefix}.headersMap.tsv
     touch ${prefix}.gff
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        metaeuk: \$(metaeuk | grep 'Version' | sed 's/metaeuk Version: //')
-    END_VERSIONS
     """
 }

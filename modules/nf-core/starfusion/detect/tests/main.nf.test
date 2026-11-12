@@ -7,6 +7,7 @@ nextflow_process {
     tag "starfusion/build"
     tag "starfusion"
     tag "starfusion/detect"
+    tag "star/align"
     tag "modules"
     config "./nextflow.config"
 
@@ -64,9 +65,7 @@ nextflow_process {
         then {
             assert process.success
             assert snapshot(
-                process.out.fusions,
-                process.out.abridged,
-                process.out.versions,
+                sanitizeOutput(process.out, unstableKeys: ["coding_effect"]),
                 process.out.coding_effect.collect { meta, tsv ->
                     [meta, path(tsv).readLines().collect { line ->
                         line.split('\t')[0] // Get first column (tab-separated)
@@ -100,9 +99,7 @@ nextflow_process {
         then {
             assert process.success
             assert snapshot(
-                process.out.fusions,
-                process.out.abridged,
-                process.out.versions,
+                sanitizeOutput(process.out, unstableKeys: ["coding_effect"]),
                 process.out.coding_effect.collect { meta, tsv ->
                     [meta, path(tsv).readLines().collect { line ->
                         line.split('\t')[0] // Get first column (tab-separated)
@@ -139,7 +136,114 @@ nextflow_process {
         then {
             assert process.success
             assert snapshot(
-                process.out
+                sanitizeOutput(process.out)
+            ).match()
+        }
+
+    }
+
+    test("Junction file - Should run without failures") {
+        tag "junction"
+
+        setup {
+            run("STAR_ALIGN") {
+                script "../../../star/align/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:false ], // meta map
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_2.fastq.gz', checkIfExists: true)
+                        ]
+                    ]
+                    input[1] = STARFUSION_BUILD.out.reference.map { meta, reference ->
+                        [ meta, file("\${reference}/ref_genome.fa.star.idx") ]
+                    }
+                    input[2] = STARFUSION_BUILD.out.reference.map { meta, reference ->
+                        [ meta, file("\${reference}/ref_annot.gtf") ]
+                    }
+                    input[3] = false
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                starfusion_detect_args = "--examine_coding_effect"
+            }
+            process {
+                """
+                input[0] = STAR_ALIGN.out.junction.map { meta, junction ->
+                    [ meta, [], junction ] // empty list for reads, STAR-Fusion runs on the pre-computed Chimeric.out.junction
+                }
+                input[1] = STARFUSION_BUILD.out.reference.map { it[1] }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(
+                sanitizeOutput(process.out, unstableKeys: ["coding_effect"]),
+                process.out.coding_effect.collect { meta, tsv ->
+                    [meta, path(tsv).readLines().collect { line ->
+                        line.split('\t')[0] // Get first column (tab-separated)
+                    }]
+                }
+            ).match()
+        }
+
+    }
+
+    test("Junction file - Should create stub files") {
+        tag "junction"
+
+        options "-stub"
+
+        setup {
+            run("STAR_ALIGN") {
+                script "../../../star/align/main.nf"
+                process {
+                    """
+                    input[0] = [
+                        [ id:'test', single_end:false ], // meta map
+                        [
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_1.fastq.gz', checkIfExists: true),
+                            file(params.modules_testdata_base_path + 'genomics/homo_sapiens/genome/test_starfusion_rnaseq_2.fastq.gz', checkIfExists: true)
+                        ]
+                    ]
+                    input[1] = STARFUSION_BUILD.out.reference.map { meta, reference ->
+                        [ meta, file("\${reference}/ref_genome.fa.star.idx") ]
+                    }
+                    input[2] = STARFUSION_BUILD.out.reference.map { meta, reference ->
+                        [ meta, file("\${reference}/ref_annot.gtf") ]
+                    }
+                    input[3] = false
+                    """
+                }
+            }
+        }
+
+        when {
+            params {
+                starfusion_detect_args = "--examine_coding_effect"
+            }
+            process {
+                """
+                input[0] = STAR_ALIGN.out.junction.map { meta, junction ->
+                    [ meta, [], junction ]
+                }
+                input[1] = STARFUSION_BUILD.out.reference.map { it[1] }
+                """
+            }
+        }
+
+        then {
+            assert process.success
+            assert snapshot(
+                sanitizeOutput(process.out)
             ).match()
         }
 

@@ -1,6 +1,5 @@
 name: dastool_scaffolds2bin
-description: Helper script to convert a set of bins in fasta format to tabular scaffolds2bin
-  format
+description: Helper script to convert a set of bins in fasta format to tabular scaffolds2bin format
 deprecated: true
 keywords:
   - binning
@@ -21,7 +20,8 @@ tools:
       documentation: https://github.com/cmks/DAS_Tool
       tool_dev_url: https://github.com/cmks/DAS_Tool
       doi: "10.1038/s41564-018-0171-1"
-      licence: ["BSD"]
+      licence:
+        - "BSD"
       identifier: biotools:dastool
 input:
   - - meta:
@@ -31,14 +31,12 @@ input:
           e.g. [ id:'test', single_end:false ]
     - fasta:
         type: file
-        description: Fasta or list of fasta files recommended to be gathered via with
-          .collect() of bins
+        description: Fasta or list of fasta files recommended to be gathered via with .collect() of bins
         pattern: "*.{fa,fa.gz,fas,fas.gz,fna,fna.gz,fasta,fasta.gz}"
         ontologies: []
   - extension:
       type: string
-      description: Fasta file extension (fa | fas | fasta | ...), but without .gz suffix,
-        even if gzipped input.
+      description: Fasta file extension (fa | fas | fasta | ...), but without .gz suffix, even if gzipped input.
 output:
   scaffolds2bin:
     - - meta:
@@ -52,13 +50,29 @@ output:
           pattern: "*.scaffolds2bin.tsv"
           ontologies:
             - edam: http://edamontology.org/format_3475 # TSV
+  versions_dastool:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dastool:
+          type: string
+          description: The name of the tool
+      - 1.1.3:
+          type: string
+          description: The expression to obtain the version of the tool
+
+topics:
   versions:
-    - versions.yml:
-        type: file
-        description: File containing software versions
-        pattern: "versions.yml"
-        ontologies:
-          - edam: http://edamontology.org/format_3750 # YAML
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - dastool:
+          type: string
+          description: The name of the tool
+      - 1.1.3:
+          type: string
+          description: The expression to obtain the version of the tool
+
 authors:
   - "@maxibor"
 maintainers:

@@ -36,6 +36,39 @@ nextflow_process {
         }
     }
 
+    // gappa reads a gzipped jplace natively but not a gzipped taxon file, so the module
+    // decompresses that one. Without it gappa aborts with "A line in the taxon file didn't
+    // have two tab separated columns".
+    test("test-gappa-examineassign - gzipped taxon file") {
+
+        when {
+            params {
+                module_args = "--per-query-results --krona --sativa"
+            }
+            process {
+                """
+                def gzipped = java.nio.file.Files.createTempDirectory('gappa_tax_gz').resolve('gappa_taxonomy.tsv.gz')
+                new java.util.zip.GZIPOutputStream(gzipped.toFile().newOutputStream()).withStream { out ->
+                    out << file(params.modules_testdata_base_path + 'delete_me/gappa/gappa_taxonomy.tsv', checkIfExists: true).bytes
+                }
+
+                input[0] = [
+                    [ id:'test' ],
+                    file(params.modules_testdata_base_path + 'delete_me/gappa/epa_result.jplace.gz', checkIfExists: true),
+                    file(gzipped.toString())
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert snapshot(sanitizeOutput(process.out)).match() }
+            )
+        }
+    }
+
     test("test-gappa-examineassign-stub") {
         options '-stub'
 

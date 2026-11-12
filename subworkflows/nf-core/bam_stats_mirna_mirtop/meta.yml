@@ -31,10 +31,22 @@ input:
         Structure: [ val(meta), path(gtf), val(species)]
       pattern: "*.{gtf}"
 output:
-  - rawdata_tsv:
+  - gff:
+      type: file
+      description: |
+        Channel containing the mirGFF3 files with the annotated miRNAs and isomiRs
+        Structure: [ val(meta), path(gff) ]
+      pattern: "*.gff"
+  - isomirs:
       type: file
       description: |
         Channel containing isomiRs compatible files
+        Structure: [ val(meta), path(tsv) ]
+      pattern: "*.tsv"
+  - counts:
+      type: file
+      description: |
+        Channel containing TSV files with the miRNA and isomiR counts per sample
         Structure: [ val(meta), path(tsv) ]
       pattern: "*.tsv"
   - stats_txt:
