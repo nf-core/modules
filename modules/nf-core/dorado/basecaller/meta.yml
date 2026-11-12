@@ -4,6 +4,7 @@ description: |
   modified base calling (e.g. 5mCG_5hmCG, 5mC, m6A). Runs on the GPU when the
   pipeline sets the `accelerator` directive and on the CPU otherwise. Use
   dorado/aligner to align the reads.
+  Research use only: see the licensing note in the dorado tool description.
 keywords:
   - basecalling
   - ont
@@ -14,8 +15,11 @@ keywords:
   - nanopore
 tools:
   - "dorado":
-      description: Oxford Nanopore's basecaller supporting automatic model selection
+      description: |
+        Oxford Nanopore's basecaller supporting automatic model selection
         and modified base calling.
+        Licensing: dorado is released under the Oxford Nanopore Technologies PLC.
+        Public License Version 1.0, which permits use for research purposes only.
       homepage: https://github.com/nanoporetech/dorado
       documentation: https://software-docs.nanoporetech.com/dorado/latest/
       tool_dev_url: https://github.com/nanoporetech/dorado
